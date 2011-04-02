@@ -1,0 +1,9 @@
+{% if time_table_list %}
+    <ul>
+    {% for tt in time_table_list %}
+        <li>{{ tt.name }}</li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No time table are available.</p>
+{% endif %}
