@@ -1,4 +1,5 @@
 from django.db import models
+from django.forms import ModelForm
 
 # School year model
 class SchoolYear (models.Model):
@@ -13,3 +14,10 @@ class TimeTable(models.Model):
     apply_date = models.DateField()
     comment = models.TextField()
     locked = models.BooleanField()
+    
+    def __unicode__(self):
+        return self.name
+    
+class TimeTableForm(ModelForm):
+    class Meta:
+        model = TimeTable
