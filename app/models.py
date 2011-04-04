@@ -23,7 +23,7 @@ class TimeTableForm(ModelForm):
         model = TimeTable
 # Exam Model
 class ConcentratedExam(models.Model):
-    name = models.CharField(max_lenght = 100)
+    name = models.CharField(max_length = 100)
     create_date = models.DateField(auto_now_add = True)
     exam_date = models.DateField()
 #    mark_flow = models.ForeignKey()

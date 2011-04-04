@@ -20,9 +20,9 @@ def time_table_add(request):
 def main_page(request):
     template = get_template('main_page.html')
     variables = Context({
-        'head_title': 'Quan Ly Nha Truong',
-        'page_title': 'This is title of main_page',
-        'page_body': 'This is body of main_page.'
+        'head_title': 'School Administration',
+        'page_title': 'School Administration',
+        'page_body': 'Body '
     })
     output = template.render(variables)
     return HttpResponse(output)
