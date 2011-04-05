@@ -16,6 +16,26 @@ class TimeTableForm(ModelForm):
     class Meta:
         model = TimeTable
         
+# System - Data Type Models
+class SystemDataType(models.Model):
+    data_type_id = models.CharField(max_length=10, primary_key=True)
+    data_type_name = models.CharField(max_length=100)
+    detail_assign = models.CharField(max_length=100)
+    
+class SystemDataTypeForm(ModelForm):
+    class Meta:
+        model = SystemDataType
+
+# User Type - Data Type Model
+class UserTypeDataType(models.Model):
+    group_assign_id = models.CharField(max_length=10, primary_key=True)
+    user_type_id = models.CharField(max_length=10)
+    data_type_id = models.CharField(max_length=10)
+
+class UserTypeDataTypeForm(ModelForm):
+    class Meta:
+        model = UserTypeDataType
+        
 # School year model
 class SchoolYear (models.Model):
     name = models.CharField(max_length=100)
@@ -24,6 +44,7 @@ class SchoolYear (models.Model):
     
     def __unicode__(self):
         return self.name
+
 # School year form
 class SchoolYearForm(ModelForm):
     class Meta:
@@ -35,6 +56,7 @@ class Student (models.Model):
     last_name = models.CharField(max_length = 50)
     def __unicode__(self):
         return self.name
+
 # Student form
 class StudentForm (ModelForm):
     class Meta:
@@ -73,6 +95,7 @@ class StudentExtented (models.Model):
     group = models.CharField (max_length = 30) # Thuoc to
     def __unicode__(self):
         return self.name
+
 # Extend student's information form
 class StudentExtendedForm (ModelForm):
     class Meta:
@@ -83,6 +106,7 @@ class StandardMajor (models.Model):
     name = models.CharField (max_length = 50)
     def __unicode__(self):
         return self.name
+
 # Standard major form
 class StandardMajorForm (ModelForm):
     class Meta:
@@ -95,6 +119,7 @@ class Major (models.Model):
     specialised_major = models.CharField (max_length = 50)
     def __unicode__(self):
         return self.name
+
 # Major form
 class MajorForm (ModelForm):
     class Meta:
@@ -105,6 +130,7 @@ class Grade (models.Model):
     name = models.CharField(max_length = 50)
     def __unicode__(self):
         return self.name
+
 # Grade form
 class GradeForm (ModelForm):
     class Meta:
@@ -119,6 +145,7 @@ class Subject (models.Model):
     invalid = models.BooleanField()
     def __unicode__(self):
         return self.name
+
 # Subject form    
 class SubjectForm (ModelForm):
     class Meta:
@@ -141,6 +168,7 @@ class User (models.Model):
     phone_no2 = models.CharField(max_length = 30)
     def __unicode__(self):
         return self.name
+
 # User form
 class UserForm (ModelForm):
     class Meta:
@@ -157,6 +185,7 @@ class Class (models.Model):
     morning = models.CharField(max_length = 50) #  purpose?
     def __unicode__(self):
         return self.name
+
 # Class form
 class ClassForm (ModelForm):
     class Meta:
@@ -171,6 +200,7 @@ class ConfficentSubject (models.Model):
     subject_type = models.CharField(max_length = 20)
     def __unicode__(self):
         return self.name
+
 # Coefficent Subject form
 class ConfficentSubjectForm (ModelForm):
     class Meta:
@@ -184,6 +214,7 @@ class StudentSubject (models.Model):
     bonus_point = models.FloatField(max_length = 10)
     def __unicode__(self):
         return self.name
+
 # Student takes subject's award form
 class StudentSubjectForm (ModelForm):
     class Meta:
@@ -198,6 +229,7 @@ class StudentClass (models.Model):
     status = models.CharField (max_length = 30)
     def __unicode__(self):
         return self.name
+
 # Student_Class form
 class StudentClassForm (ModelForm):
     class Meta:
@@ -208,6 +240,7 @@ class PhaseMarkType (models.Model):
     name = models.CharField (max_length = 50)
     def __unicode__(self):
         return self.name
+
 # Phase_Mark_Type form
 class PhaseMarkTypeForm (ModelForm):
     class Meta:
@@ -230,6 +263,7 @@ class PhaseMark (models.Model):
     SMS_code6 = models.CharField(max_length = 30)
     def __unicode__(self):
         return self.name
+
 # Phase_Mark form
 class PhaseMarkForm (ModelForm):
     class Meta:
@@ -252,13 +286,12 @@ class StudentClassPhaseMark (models.Model):
     result = models.CharField(max_length = 255)
     def __unicode__(self):
         return self.name
+
 # Student_Class_PhaseMark form
 class StudentClassPhaseMarkForm (ModelForm):
     class Meta:
         model = StudentClassPhaseMark
         
-
-
 # Exam Model
 class ConcentratedExam(models.Model):
     name = models.CharField(max_length = 100)
@@ -275,15 +308,18 @@ class CEGroup(models.Model): #from ConcentratedExam
     name = models.CharField(max_length=100)
     concentrated_exam = models.ForeignKey(ConcentratedExam)
     group_prefix = models.CharField(max_length = 10)
+
 class CERoom (models.Model):
     CEGroup = models.ForeignKey(CEGroup)
     name = models.CharField(max_length = 100)
     quanlity = models.IntegerField()
+
 class CESubject (models.Model):
     concentrated_exam = models.ForeignKey(ConcentratedExam)
     #subject = models.ForeignKey()
     prefix = models.CharField(max_length = 20)
     difference = models.CharField(max_length = 50) # do lech
+
 class CEGroupClass (models.Model):
     group = models.ForeignKey(CEGroup)
 #    clazz = models.ForeignKey()

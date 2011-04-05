@@ -1,7 +1,7 @@
 from django.conf.urls.defaults import patterns, include, url
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
-from app.models import TimeTable
+from app.models import TimeTable, SystemDataType
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
@@ -24,5 +24,12 @@ urlpatterns = patterns('',
             template_name='app/timetable/index.html')),
     url(r'^app/timetable/(?P<pk>\d+)$', DetailView.as_view(model=TimeTable,
                                                         template_name='app/timetable/detail.html')),
-    url(r'^app/timetable/add$', 'app.views.time_table_add')
+    url(r'^app/timetable/add$', 'app.views.time_table_add'),
+    url(r'^app/systemdatatype/$', ListView.as_view(
+            queryset=SystemDataType.objects.all(),
+            context_object_name='system_datatype_list',
+            template_name='app/systemdatatype/index.html')),
+    url(r'^app/systemdatatype/(?P<pk>\d+)$', DetailView.as_view(model=SystemDataType,
+                                                        template_name='app/systemdatatype/detail.html')),
+    url(r'^app/systemdatatype/add$', 'app.views.system_datatype_add')
 )

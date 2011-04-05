@@ -1,0 +1,11 @@
+{% if system_datatype_list %}
+    <ul>
+    {% for sdt in system_datatype_list %}
+        <li><a href="/app/systemdatatype/{{ sdt.data_type_id }}">{{ sdt.data_type_name }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No System - Data type are available.</p>
+{% endif %}
+
+<a href="/app/systemdatatype/add">Add more System - Data type</a>
