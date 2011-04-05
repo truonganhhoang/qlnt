@@ -5,7 +5,6 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext, loader
 from django.template import Context
 from django.template.loader import get_template
-from app.models import *
 
 def time_table_add(request):
     if request.method == 'POST':
@@ -52,3 +51,4 @@ def system_datatype_add(request):
     return HttpResponse(t.render(c))
 
 def user_type_data_type(request):
+    pass

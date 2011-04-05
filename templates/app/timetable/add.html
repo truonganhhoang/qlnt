@@ -1,7 +1,7 @@
 <html>
 <body>
 <form action="/app/timetable/add" method="post">{% csrf_token %}
-{{ form.as_p }}
+{{ form.as_ul }}
 <input type="submit" value="Submit" />
 </form>
 </body>

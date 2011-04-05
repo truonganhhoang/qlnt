@@ -1,21 +1,6 @@
 from django.db import models
 from django.forms import ModelForm
 
-# Time table model
-class TimeTable(models.Model):
-    name = models.CharField(max_length=100)
-    date = models.DateField(auto_now_add=True)
-    apply_date = models.DateField()
-    comment = models.TextField()
-    locked = models.BooleanField()
-    
-    def __unicode__(self):
-        return self.name
-    
-class TimeTableForm(ModelForm):
-    class Meta:
-        model = TimeTable
-        
 # System - Data Type Models
 class SystemDataType(models.Model):
     data_type_id = models.CharField(max_length=10, primary_key=True)
@@ -52,11 +37,10 @@ class SchoolYearForm(ModelForm):
 
 # Student model
 class Student (models.Model):
-    first_name = models.CharField(max_length = 50)
-    last_name = models.CharField(max_length = 50)
+    first_name = models.CharField(max_length=50)
+    last_name = models.CharField(max_length=50)
     def __unicode__(self):
         return self.name
-
 # Student form
 class StudentForm (ModelForm):
     class Meta:
@@ -64,35 +48,35 @@ class StudentForm (ModelForm):
 
 # Extend student's information model
 class StudentExtented (models.Model):
-    student_id = models.ForeignKey(Student)
-    student_code = models.IntegerField(max_length = 8)
+    student = models.ForeignKey(Student)
+    student_code = models.IntegerField(max_length=8)
     birthdate = models.DateField()
-    street_id = models.CharField(max_length = 30)
-    village_id = models.CharField(max_length = 30)
-    address = models.CharField(max_length = 255)
-    birthplace = models.CharField(max_length = 255)
-    ethnic = models.CharField(max_length = 255)
-    dien_chinh_sach = models.CharField(max_length = 255) # Check
-    father_name = models.CharField (max_length = 50)
-    father_job = models.CharField (max_length = 255)
-    mother_name = models.CharField(max_length = 50)
-    mother_job = models.CharField(max_length = 255)
-    phone_no1 = models.CharField (max_length = 30)
-    phone_no2 = models.CharField (max_length = 30)
-    phone_no3 = models.CharField(max_length = 30)
-    identity_card = models.CharField(max_length = 30)
-    gender = models.CharField (max_length = 30)
-    sick_soldier_child = models.CharField(max_length = 30) # Con thuong binh
-    partiotic_martyr_child  = models.CharField (max_length = 30) # Con liet sy
-    difficult = models.CharField (max_length = 255) # "hoan canh kho khan"
-    certificate_type = models.CharField (max_length = 30)
+    street_id = models.CharField(max_length=30)
+    village_id = models.CharField(max_length=30)
+    address = models.CharField(max_length=255)
+    birthplace = models.CharField(max_length=255)
+    ethnic = models.CharField(max_length=255)
+    dien_chinh_sach = models.CharField(max_length=255) # Check
+    father_name = models.CharField (max_length=50)
+    father_job = models.CharField (max_length=255)
+    mother_name = models.CharField(max_length=50)
+    mother_job = models.CharField(max_length=255)
+    phone_no1 = models.CharField (max_length=30)
+    phone_no2 = models.CharField (max_length=30)
+    phone_no3 = models.CharField(max_length=30)
+    identity_card = models.CharField(max_length=30)
+    gender = models.CharField (max_length=30)
+    sick_soldier_child = models.CharField(max_length=30) # Con thuong binh
+    partiotic_martyr_child  = models.CharField (max_length=30) # Con liet sy
+    difficult = models.CharField (max_length=255) # "hoan canh kho khan"
+    certificate_type = models.CharField (max_length=30)
     email = models.EmailField ()
-    graduation_province = models.CharField (max_length = 255)
-    capacity_last_year = models.CharField(max_length = 255)
-    class_last_year = models.CharField (max_length = 255)
-    religion_id = models.CharField(max_length = 30)
-    school_code = models.CharField (max_length = 30)
-    group = models.CharField (max_length = 30) # Thuoc to
+    graduation_province = models.CharField (max_length=255)
+    capacity_last_year = models.CharField(max_length=255)
+    class_last_year = models.CharField (max_length=255)
+    religion_id = models.CharField(max_length=30)
+    school_code = models.CharField (max_length=30)
+    group = models.CharField (max_length=30) # Thuoc to
     def __unicode__(self):
         return self.name
 
@@ -103,31 +87,31 @@ class StudentExtendedForm (ModelForm):
  
 # Standard major model
 class StandardMajor (models.Model):
-    name = models.CharField (max_length = 50)
+    name = models.CharField (max_length=50)
     def __unicode__(self):
         return self.name
 
 # Standard major form
-class StandardMajorForm (ModelForm):
+class StandardMajorForm(ModelForm):
     class Meta:
         model = StandardMajor
                
 # Major model ("chuyen ban")
-class Major (models.Model):
-    name = models.CharField (max_length = 50)
-    standard_major_id = models.ForeignKey(StandardMajor)
-    specialised_major = models.CharField (max_length = 50)
+class Major(models.Model):
+    name = models.CharField (max_length=50)
+    standard_major = models.ForeignKey(StandardMajor)
+    specialised_major = models.CharField (max_length=50)
     def __unicode__(self):
         return self.name
 
 # Major form
-class MajorForm (ModelForm):
+class MajorForm(ModelForm):
     class Meta:
         model = Major
 
 # Grade model ("khoi")
-class Grade (models.Model):
-    name = models.CharField(max_length = 50)
+class Grade(models.Model):
+    name = models.CharField(max_length= 50)
     def __unicode__(self):
         return self.name
 
@@ -137,35 +121,35 @@ class GradeForm (ModelForm):
         model = Grade
         
 # Subject model
-class Subject (models.Model):
-    name = models.CharField(max_length = 50)
-    assessment = models.CharField (max_length = 255) # Mon hoc danh gia?
-    subject_choice = models.CharField (max_length = 255) # Mon hoc tu chon
-    order_number = models.IntegerField (max_length = 10)
+class Subject(models.Model):
+    name = models.CharField(max_length=50)
+    assessment = models.CharField (max_length=255) # Mon hoc danh gia?
+    subject_choice = models.CharField (max_length=255) # Mon hoc tu chon
+    order_number = models.IntegerField (max_length=10)
     invalid = models.BooleanField()
     def __unicode__(self):
         return self.name
 
 # Subject form    
-class SubjectForm (ModelForm):
+class SubjectForm(ModelForm):
     class Meta:
         model = Subject
         
 # User model
-class User (models.Model):
-    name = models.CharField(max_length = 50)
-    name_tat = models.CharField(max_length = 50) # "tat"?
-    type_id = models.CharField(max_length = 30)
-    password = models.CharField(max_length = 50)
+class User(models.Model):
+    name = models.CharField(max_length=50)
+    name_tat = models.CharField(max_length=50) # "tat"?
+    type_id = models.CharField(max_length=30)
+    password = models.CharField(max_length=50)
     email = models.EmailField()
     invalid = models.BooleanField()
     subject1 = models.ForeignKey(Subject) 
    # subject2 = models.ForeignKey(Subject)
    # subject3 = models.ForeignKey(Subject)
-    captain = models.CharField(max_length = 50)
-    deputy_captain = models.CharField(max_length = 50)
-    phone_no1 = models.CharField(max_length = 30)
-    phone_no2 = models.CharField(max_length = 30)
+    captain = models.CharField(max_length=50)
+    deputy_captain = models.CharField(max_length=50)
+    phone_no1 = models.CharField(max_length=30)
+    phone_no2 = models.CharField(max_length=30)
     def __unicode__(self):
         return self.name
 
@@ -176,13 +160,13 @@ class UserForm (ModelForm):
 
 # Class model
 class Class (models.Model):
-    name = models.CharField(max_length = 50)
-    school_year_id = models.ForeignKey(SchoolYear)
-    major_id = models.ForeignKey(Major)
-    class_teacher_id = models.ForeignKey(User)
-    grade_id = models.ForeignKey(Grade)
-    order_number = models.IntegerField(max_length = 10)
-    morning = models.CharField(max_length = 50) #  purpose?
+    name = models.CharField(max_length=50)
+    school_year = models.ForeignKey(SchoolYear)
+    major = models.ForeignKey(Major)
+    class_teacher = models.ForeignKey(User)
+    grade = models.ForeignKey(Grade)
+    order_number = models.IntegerField(max_length=10)
+    morning = models.CharField(max_length=50) #  purpose?
     def __unicode__(self):
         return self.name
 
@@ -193,11 +177,11 @@ class ClassForm (ModelForm):
         
 # Coefficent Subject model
 class ConfficentSubject (models.Model):
-    major_id = models.ForeignKey(Major)
-    subject_id = models.ForeignKey(Subject)
+    major = models.ForeignKey(Major)
+    subject = models.ForeignKey(Subject)
     confficent = models.FloatField ()
-    order_number = models.IntegerField(max_length = 10)
-    subject_type = models.CharField(max_length = 20)
+    order_number = models.IntegerField(max_length=10)
+    subject_type = models.CharField(max_length=20)
     def __unicode__(self):
         return self.name
 
@@ -208,10 +192,10 @@ class ConfficentSubjectForm (ModelForm):
     
 # Student takes subject's awards 
 class StudentSubject (models.Model):
-    student_id = models.ForeignKey(Student)
-    subject_id = models.ForeignKey(Subject)
-    award = models.CharField(max_length = 50)
-    bonus_point = models.FloatField(max_length = 10)
+    student = models.ForeignKey(Student)
+    subject = models.ForeignKey(Subject)
+    award = models.CharField(max_length=50)
+    bonus_point = models.FloatField(max_length=10)
     def __unicode__(self):
         return self.name
 
@@ -222,11 +206,11 @@ class StudentSubjectForm (ModelForm):
 
 # Student_Class model
 class StudentClass (models.Model):
-    student_id = models.ForeignKey(Student)
-    class_id = models.ForeignKey(Class)
-    major_id = models.ForeignKey(Major)
-    order_number = models.IntegerField(max_length = 10)
-    status = models.CharField (max_length = 30)
+    student = models.ForeignKey(Student)
+    clazz = models.ForeignKey(Class)
+    major = models.ForeignKey(Major)
+    order_number = models.IntegerField(max_length=10)
+    status = models.CharField (max_length=30)
     def __unicode__(self):
         return self.name
 
@@ -235,9 +219,9 @@ class StudentClassForm (ModelForm):
     class Meta:
         model = StudentClass
     
-# Phase_Mark_Type models
+# Phase_Mark_Type models`
 class PhaseMarkType (models.Model):
-    name = models.CharField (max_length = 50)
+    name = models.CharField (max_length=50)
     def __unicode__(self):
         return self.name
 
@@ -248,19 +232,19 @@ class PhaseMarkTypeForm (ModelForm):
     
 # Phase to check mark of student
 class PhaseMark (models.Model):
-    name = models.CharField (max_length = 50)
+    name = models.CharField (max_length=50)
     phase_mark_type  = models.ForeignKey(PhaseMarkType)
     school_year_id = models.ForeignKey(SchoolYear)
     start_date = models.DateField()
     end_date = models.DateField()
-    term = models.IntegerField(max_length = 10)
-    order_number = models.IntegerField(max_length = 10)
-    SMS_code1 = models.CharField(max_length = 30)
-    SMS_code2 = models.CharField(max_length = 30)
-    SMS_code3 = models.CharField(max_length = 30)
-    SMS_code4 = models.CharField(max_length = 30)
-    SMS_code5 = models.CharField(max_length = 30)
-    SMS_code6 = models.CharField(max_length = 30)
+    term = models.IntegerField(max_length=10)
+    order_number = models.IntegerField(max_length=10)
+    SMS_code1 = models.CharField(max_length=30)
+    SMS_code2 = models.CharField(max_length=30)
+    SMS_code3 = models.CharField(max_length=30)
+    SMS_code4 = models.CharField(max_length=30)
+    SMS_code5 = models.CharField(max_length=30)
+    SMS_code6 = models.CharField(max_length=30)
     def __unicode__(self):
         return self.name
 
@@ -271,54 +255,122 @@ class PhaseMarkForm (ModelForm):
 
 # Student_Class_PhaseMark models
 class StudentClassPhaseMark (models.Model):
-    student_class_id = models.ForeignKey(StudentClass)
-    phase_mark_id = models.ForeignKey(PhaseMark)
+    student_class = models.ForeignKey(StudentClass)
+    phase_mark = models.ForeignKey(PhaseMark)
     average = models.FloatField()
     round_average = models.FloatField()
-    capacity = models.CharField(max_length = 50) # Hoc luc?
+    capacity = models.CharField(max_length=50) # Hoc luc?
     average_conduct = models.FloatField ()
-    conduct = models.CharField(max_length = 50)
-    order = models.IntegerField(max_length = 10)
-    identifier = models.CharField(max_length = 50)
-    permit = models.IntegerField (max_length = 10) # Nghi co phep??
-    unpermitted = models.IntegerField (max_length = 10) # Nghi ko phep??
-    comment = models.CharField (max_length = 1000)
-    result = models.CharField(max_length = 255)
+    conduct = models.CharField(max_length=50)
+    order = models.IntegerField(max_length=10)
+    identifier = models.CharField(max_length=50)
+    permit = models.IntegerField (max_length=10) # Nghi co phep??
+    unpermitted = models.IntegerField (max_length=10) # Nghi ko phep??
+    comment = models.CharField (max_length=1000)
+    result = models.CharField(max_length=255)
     def __unicode__(self):
         return self.name
-
 # Student_Class_PhaseMark form
 class StudentClassPhaseMarkForm (ModelForm):
     class Meta:
         model = StudentClassPhaseMark
+
+# Time table model
+class TimeTable(models.Model):
+    name = models.CharField(max_length=100)
+    date = models.DateField(auto_now_add=True)
+    apply_date = models.DateField()
+    comment = models.TextField()
+    locked = models.BooleanField()
+    
+    def __unicode__(self):
+        return self.name
+    
+class TimeTableForm(ModelForm):
+    class Meta:
+        model = TimeTable
         
+class TeacherRules(models.Model):
+    teacher = models.ForeignKey(User, unique=True)
+    max_periods = models.IntegerField()
+    max_wait_periods = models.IntegerField()
+    only_one_moment_per_day = models.BooleanField()
+    max_subject_per_moment = models.IntegerField()
+    max_continuous_periods = models.IntegerField()
+    other_info = models.TextField()
+    priority = models.IntegerField()
+
+class ClassTabling(models.Model):
+    time_table = models.ForeignKey(TimeTable)
+    clazz = models.ForeignKey(Class)
+    subject = models.ForeignKey(Subject)
+    teacher = models.ForeignKey(User)
+    day = models.IntegerField()
+    period = models.IntegerField()
+    type = models.CharField(max_length=100)
+    
+    class Meta:
+        unique_together = ('time_table', 'clazz', 'day', 'period')
+        
+class StandardPeriod(models.Model):
+    grade = models.ForeignKey(Grade)
+    major = models.ForeignKey(Major)
+    subject = models.ForeignKey(Subject)
+    curricular_periods = models.CharField(max_length=100)
+    curricular_couple_periods = models.CharField(max_length=100)
+    extra_curricular_periods = models.CharField(max_length=100)
+    extra_curricular_couple_periods = models.CharField(max_length=100)
+    
+    class Meta:
+        unique_together = ('grade', 'major', 'subject')
+
+class ClassRules(models.Model):
+    clazz = models.ForeignKey(Class)
+    day = models.IntegerField()
+    period = models.IntegerField()
+    reserved = models.BooleanField()
+    locked = models.BooleanField()
+    # missing some fields due to incomprehension
+    
+    class Meta:
+        unique_together = ('clazz', 'day', 'period')
+
+class TeacherPeriodRules(models.Model):
+    teacher = models.ForeignKey(User)
+    day = models.IntegerField()
+    period = models.IntegerField()
+    rule_id = models.IntegerField()
+    
+    class Meta:
+        unique_together = ('teacher', 'day', 'period')
+    
 # Exam Model
 class ConcentratedExam(models.Model):
-    name = models.CharField(max_length = 100)
+    name = models.CharField(max_length=100)
     create_date = models.DateField(auto_now_add = True)
     exam_date = models.DateField()
 #    mark_flow = models.ForeignKey()
-    mark_column = models.CharField(max_length = 20) 
-    exam_type = models.CharField(max_length = 20) 
-    start_name_list_no = models.CharField(max_length = 20)
+    mark_column = models.CharField(max_length=20) 
+    exam_type = models.CharField(max_length=20) 
+    start_name_list_no = models.CharField(max_length=20)
     code_length = models.IntegerField()
     name_list_scale = models.BooleanField()
-    subject_type = models.CharField(max_length = 20)
+    subject_type = models.CharField(max_length=20)
 class CEGroup(models.Model): #from ConcentratedExam
     name = models.CharField(max_length=100)
     concentrated_exam = models.ForeignKey(ConcentratedExam)
-    group_prefix = models.CharField(max_length = 10)
+    group_prefix = models.CharField(max_length=10)
 
 class CERoom (models.Model):
     CEGroup = models.ForeignKey(CEGroup)
-    name = models.CharField(max_length = 100)
+    name = models.CharField(max_length=100)
     quanlity = models.IntegerField()
 
 class CESubject (models.Model):
     concentrated_exam = models.ForeignKey(ConcentratedExam)
     #subject = models.ForeignKey()
-    prefix = models.CharField(max_length = 20)
-    difference = models.CharField(max_length = 50) # do lech
+    prefix = models.CharField(max_length=20)
+    difference = models.CharField(max_length=50) # do lech
 
 class CEGroupClass (models.Model):
     group = models.ForeignKey(CEGroup)
@@ -329,12 +381,12 @@ class CEGroupClass (models.Model):
 #    student = models.ForeignKey()
 #    type = models.ForeignKey()
  #   order_number = models.IntegerField()
- #   status  = models.CharField(max_length = 100)
+ #   status  = models.CharField(max_length=100)
     
 class CERoomStudent(models.Model):
     room = models.ForeignKey(CERoom)
     student_class = models.ForeignKey(StudentClass)
-    name_number = models.CharField(max_length = 20)
+    name_number = models.CharField(max_length=20)
     order_number = models.IntegerField()
     room_number = models.IntegerField()
     absent = models.BooleanField()
