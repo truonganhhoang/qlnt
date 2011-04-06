@@ -28,8 +28,8 @@ class StudentForm (ModelForm):
 
 # Extend student's information model
 class StudentExtented (models.Model):
-    student = models.ForeignKey(Student)
-    student_code = models.IntegerField(max_length=8)
+    student_id = models.ForeignKey(Student)
+    window_code = models.CharField(max_length=30)
     birthdate = models.DateField()
     street_id = models.CharField(max_length=30)
     village_id = models.CharField(max_length=30)
@@ -147,8 +147,8 @@ class Class (models.Model):
     grade = models.ForeignKey(Grade)
     order_number = models.IntegerField(max_length=10)
     morning = models.CharField(max_length=50) #  purpose?
-    def __unicode__(self):
-        return self.name
+    class Meta:
+        unique_together = ('school_year', 'major', 'class_teacher', 'grade')
 
 # Class form
 class ClassForm (ModelForm):
@@ -162,8 +162,9 @@ class ConfficentSubject (models.Model):
     confficent = models.FloatField ()
     order_number = models.IntegerField(max_length=10)
     subject_type = models.CharField(max_length=20)
-    def __unicode__(self):
-        return self.name
+    
+    class Meta:
+        unique_together = ('major', 'subject')
 
 # Coefficent Subject form
 class ConfficentSubjectForm (ModelForm):
@@ -176,8 +177,9 @@ class StudentSubject (models.Model):
     subject = models.ForeignKey(Subject)
     award = models.CharField(max_length=50)
     bonus_point = models.FloatField(max_length=10)
-    def __unicode__(self):
-        return self.name
+    
+    class Meta:
+        unique_together = ('student', 'subject')
 
 # Student takes subject's award form
 class StudentSubjectForm (ModelForm):
@@ -191,8 +193,9 @@ class StudentClass (models.Model):
     major = models.ForeignKey(Major)
     order_number = models.IntegerField(max_length=10)
     status = models.CharField (max_length=30)
-    def __unicode__(self):
-        return self.name
+    
+    class Meta:
+        unique_together = ('student', 'clazz', 'major')
 
 # Student_Class form
 class StudentClassForm (ModelForm):
@@ -225,8 +228,10 @@ class PhaseMark (models.Model):
     SMS_code4 = models.CharField(max_length=30)
     SMS_code5 = models.CharField(max_length=30)
     SMS_code6 = models.CharField(max_length=30)
-    def __unicode__(self):
-        return self.name
+    
+    class Meta:
+        unique_together = ('phase_mark_type', 'school_year_id')
+
 
 # Phase_Mark form
 class PhaseMarkForm (ModelForm):
@@ -248,8 +253,10 @@ class StudentClassPhaseMark (models.Model):
     unpermitted = models.IntegerField (max_length=10) # Nghi ko phep??
     comment = models.CharField (max_length=1000)
     result = models.CharField(max_length=255)
-    def __unicode__(self):
-        return self.name
+   
+    class Meta:
+        unique_together = ('student_class', 'phase_mark')
+
 # Student_Class_PhaseMark form
 class StudentClassPhaseMarkForm (ModelForm):
     class Meta:
