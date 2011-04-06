@@ -23,7 +23,7 @@ class UserTypeDataTypeForm(ModelForm):
 # quyendt2612 -- User Type - Data Type - Class
 class UserTypeDataTypeCLass(models.Model):
 	user_assign_id = models.CharField(max_length=10, primary_key=True)
-	group_assign_id = models.ForeignKey(UserTypeDataType.group_assign_id)
+	group_assign_id = models.ForeignKey(UserTypeDataType)
 	user_id = models.CharField(max_length=10)
 	class_id = models.CharField(max_length=10)
 	
@@ -33,8 +33,8 @@ class UserTypeDataTypeClassForm(ModelForm):
 
 # quyendt2612 -- User - Data Key
 class UserDataKey(models.Model):
-	user_assign_id = models.ForeignKey(UserTypeDataTypeClass.user_assign_id)
-	phase_mark_id = models.ForeignKey(PhaseMark.id)
+	user_assign_id = models.ForeignKey(UserTypeDataTypeClass)
+	phase_mark_id = models.ForeignKey(PhaseMark)
 	all_mark = models.CharField(max_length=10)
 	oral_test_1 = models.CharField(max_length=10)
 	oral_test_2 = models.CharField(max_length=10)
@@ -58,7 +58,7 @@ class UserDataKey(models.Model):
 
 class UserDataKeyForm(ModelForm):
 	class Meta:
-		model = UserDataKey
+		unique_together = ('user_assign_id', 'phase_mark_id')
 		
 # quyendt2612 -- User Type
 class UserType(models.Model):
@@ -72,8 +72,8 @@ class UserTypeForm(ModelForm):
 
 # quyendt2612 -- Teaching Assign
 class TeachingAssign(models.Model):
-	subject_id = models.ForeignKey(Subject.id)
-	class_id = models.ForeignKey(Class.id)
+	subject_id = models.ForeignKey(Subject)
+	class_id = models.ForeignKey(Class)
 	summer_id = models.CharField(max_length=10)
 	first_term = models.CharField(max_length=10)
 	second_term = models.CharField(max_length=10)
