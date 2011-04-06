@@ -50,5 +50,3 @@ def system_datatype_add(request):
     c = RequestContext(request, {'form' : form})
     return HttpResponse(t.render(c))
 
-def user_type_data_type(request):
-    pass
