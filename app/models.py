@@ -464,3 +464,17 @@ class TeachingAssign(models.Model):
 class TeachingAssignForm(ModelForm):
 	class Meta:
 		model = TeachingAssign
+
+# D_Log_UserLogin -- quy
+class LogUserLogin (models.Model):
+	log_id = models.CharField(max_length=50, primary_key=True)
+	user_id = models.ForeignKey(User)
+	login_time = models.DateField()
+	logout_time = models.DateField()
+	host_name - models.CharField(max_length=100)
+
+#T_DM_PhanHe -- quy
+class SystemPartition (models.Model):
+	system_id = models.CharField(primary_key=True, max_length=50)
+	system_name = models.CharField(max_length=100)
+	system_index = models.CharField(max_length=10)
