@@ -471,7 +471,7 @@ class LogUserLogin (models.Model):
 	user_id = models.ForeignKey(User)
 	login_time = models.DateField()
 	logout_time = models.DateField()
-	host_name - models.CharField(max_length=100)
+	host_name = models.CharField(max_length=100)
 
 #T_DM_PhanHe -- quy
 class SystemPartition (models.Model):
