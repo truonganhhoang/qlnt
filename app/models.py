@@ -405,10 +405,10 @@ class UserTypeDataTypeForm(ModelForm):
 
 # quyendt2612 -- User Type - Data Type - Class
 class UserTypeDataTypeClass(models.Model):
-	user_assign_id = models.CharField(max_length=10, primary_key=True)
-	group_assign_id = models.ForeignKey(UserTypeDataType)
-	user_id = models.CharField(max_length=10)
-	class_id = models.CharField(max_length=10)
+    user_assign_id = models.CharField(max_length=10, primary_key=True)
+    group_assign_id = models.ForeignKey(UserTypeDataType)
+    user_id = models.CharField(max_length=10)
+    class_id = models.CharField(max_length=10)
 
 class UserTypeDataTypeClassForm(ModelForm):
     class Meta:
@@ -416,54 +416,54 @@ class UserTypeDataTypeClassForm(ModelForm):
 
 # quyendt2612 -- User - Data Key
 class UserDataKey(models.Model):
-	user_assign_id = models.ForeignKey(UserTypeDataTypeClass)
-	phase_mark_id = models.ForeignKey('PhaseMark')
-	all_mark = models.CharField(max_length=10)
-	oral_test_1 = models.CharField(max_length=10)
-	oral_test_2 = models.CharField(max_length=10)
-	oral_test_3 = models.CharField(max_length=10)
-	oral_test_4 = models.CharField(max_length=10)
-	oral_test_5 = models.CharField(max_length=10)
-	_15_test_1 = models.CharField(max_length=10)
-	_15_test_2 = models.CharField(max_length=10)
-	_15_test_3 = models.CharField(max_length=10)
-	_15_test_4 = models.CharField(max_length=10)
-	_15_test_5 = models.CharField(max_length=10)
-	_45_test_1 = models.CharField(max_length=10)
-	_45_test_2 = models.CharField(max_length=10)
-	_45_test_3 = models.CharField(max_length=10)
-	_45_test_4 = models.CharField(max_length=10)
-	_45_test_5 = models.CharField(max_length=10)
-	_45_test_6 = models.CharField(max_length=10)
-	_45_test_7 = models.CharField(max_length=10)
-	_45_test_8 = models.CharField(max_length=10)
-	exam = models.CharField(max_length=10)
+    user_assign_id = models.ForeignKey(UserTypeDataTypeClass)
+    phase_mark_id = models.ForeignKey('PhaseMark')
+    all_mark = models.CharField(max_length=10)
+    oral_test_1 = models.CharField(max_length=10)
+    oral_test_2 = models.CharField(max_length=10)
+    oral_test_3 = models.CharField(max_length=10)
+    oral_test_4 = models.CharField(max_length=10)
+    oral_test_5 = models.CharField(max_length=10)
+    _15_test_1 = models.CharField(max_length=10)
+    _15_test_2 = models.CharField(max_length=10)
+    _15_test_3 = models.CharField(max_length=10)
+    _15_test_4 = models.CharField(max_length=10)
+    _15_test_5 = models.CharField(max_length=10)
+    _45_test_1 = models.CharField(max_length=10)
+    _45_test_2 = models.CharField(max_length=10)
+    _45_test_3 = models.CharField(max_length=10)
+    _45_test_4 = models.CharField(max_length=10)
+    _45_test_5 = models.CharField(max_length=10)
+    _45_test_6 = models.CharField(max_length=10)
+    _45_test_7 = models.CharField(max_length=10)
+    _45_test_8 = models.CharField(max_length=10)
+    exam = models.CharField(max_length=10)
 
 class UserDataKeyForm(ModelForm):
-	class Meta:
-		unique_together = ('user_assign_id', 'phase_mark_id')
+    class Meta:
+        unique_together = ('user_assign_id', 'phase_mark_id')
 
 # quyendt2612 -- User Type
 class UserType(models.Model):
-	user_type_name = models.CharField(max_length=100)
-	user_level = models.CharField(max_length=100)
-	ineffective = models.BooleanField()
-	
+    user_type_name = models.CharField(max_length=100)
+    user_level = models.CharField(max_length=100)
+    ineffective = models.BooleanField()
+    
 class UserTypeForm(ModelForm):
-	class Meta:
-		model = UserType
+    class Meta:
+        model = UserType
 
 # quyendt2612 -- Teaching Assign
 class TeachingAssign(models.Model):
-	subject_id = models.ForeignKey(Subject)
-	class_id = models.ForeignKey(Class)
-	summer_id = models.CharField(max_length=10)
-	first_term = models.CharField(max_length=10)
-	second_term = models.CharField(max_length=10)
+    subject_id = models.ForeignKey(Subject)
+    class_id = models.ForeignKey(Class)
+    summer_id = models.CharField(max_length=10)
+    first_term = models.CharField(max_length=10)
+    second_term = models.CharField(max_length=10)
 
 class TeachingAssignForm(ModelForm):
-	class Meta:
-		model = TeachingAssign
+    class Meta:
+        model = TeachingAssign
 
 # Ngoc Thanh - 5/4/2011
 class MarkByPeriod(models.Model):
@@ -502,15 +502,15 @@ class SysValueMarkTypeForm(ModelForm):
 
 # D_Log_UserLogin -- quy
 class LogUserLogin (models.Model):
-	log_id = models.CharField(max_length=50, primary_key=True)
-	user_id = models.ForeignKey(User)
-	login_time = models.DateField()
-	logout_time = models.DateField()
-	host_name = models.CharField(max_length=100)
+    log_id = models.CharField(max_length=50, primary_key=True)
+    user_id = models.ForeignKey(User)
+    login_time = models.DateField()
+    logout_time = models.DateField()
+    host_name = models.CharField(max_length=100)
 
 #T_DM_PhanHe -- quy
 class SystemPartition (models.Model):
-	system_id = models.CharField(primary_key=True, max_length=50)
-	system_name = models.CharField(max_length=100)
-	system_index = models.CharField(max_length=10)
+    system_id = models.CharField(primary_key=True, max_length=50)
+    system_name = models.CharField(max_length=100)
+    system_index = models.CharField(max_length=10)
 

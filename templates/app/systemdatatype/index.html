@@ -1,7 +1,7 @@
 {% if system_datatype_list %}
     <ul>
     {% for sdt in system_datatype_list %}
-        <li><a href="/app/systemdatatype/{{ sdt.data_type_id }}">{{ sdt.data_type_name }}</a></li>
+        <li><a href="/app/systemdatatype/{{ sdt.id }}">{{ sdt.data_type_name }}</a></li>
     {% endfor %}
     </ul>
 {% else %}
