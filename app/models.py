@@ -465,6 +465,41 @@ class TeachingAssignForm(ModelForm):
 	class Meta:
 		model = TeachingAssign
 
+# Ngoc Thanh - 5/4/2011
+class MarkByPeriod(models.Model):
+    student_class_id = models.ForeignKey(StudentClass, primary_key = True)
+    subject_id = models.ForeignKey(Subject)
+    k15_1 = models.IntegerField(max_length = 10)
+    k15_2 = models.IntegerField(max_length = 10)
+    k1t_1 = models.IntegerField(max_length = 10)
+    k1t_2 = models.IntegerField(max_length = 10)
+    average_mark = models.IntegerField(max_length = 10)
+    user_id = models.CharField(max_length = 10)
+    date_k15_1 = models.DateField()
+    date_k15_2 = models.DateField()
+    date_k1t_1 = models.DateField()
+    date_k1t_2 = models.DateField()
+    miss_mark_15 = models.BooleanField()
+    miss_mark_1t = models.BooleanField()
+    miss_mark_prac = models.BooleanField()
+    speak_mark_1 = models.IntegerField(max_length = 10)
+    date_speak_mark_1 = models.DateField()
+    speak_mark_2 = models.IntegerField(max_length = 10)
+    date_speak_mark_2 = models.DateField()
+    
+class MarkByPeriodForm(ModelForm):
+    class Meta:
+        mode = MarkByPeriod
+        
+class SysValueMarkType():
+    value_mark_type_id = models.CharField(max_length = 10, primary_key = True)
+    name_value_mark_type = models.CharField(max_length = 50)
+    is_disable = models.BooleanField(False)
+
+class SysValueMarkTypeForm(ModelForm):
+    class Meta:
+        mode = SysValueMarkType
+
 # D_Log_UserLogin -- quy
 class LogUserLogin (models.Model):
 	log_id = models.CharField(max_length=50, primary_key=True)
@@ -478,3 +513,4 @@ class SystemPartition (models.Model):
 	system_id = models.CharField(primary_key=True, max_length=50)
 	system_name = models.CharField(max_length=100)
 	system_index = models.CharField(max_length=10)
+

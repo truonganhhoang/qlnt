@@ -1,6 +1,7 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from app.models import TimeTableForm
 from app.models import SystemDataTypeForm, UserTypeDataType
+from app.models import MarkByPeriod, SysValueMarkType
 from django.shortcuts import render_to_response
 from django.template import RequestContext, loader
 from django.template import Context
@@ -50,3 +51,28 @@ def system_datatype_add(request):
     c = RequestContext(request, {'form' : form})
     return HttpResponse(t.render(c))
 
+#===============================================================================
+# def mark_by_peroid(request):
+#    if request.method == 'POST':
+#        form = MarkByPeriodForm(request.POST)
+#        if form.is_valid():
+#            form.save()
+#            return HttpResponseRedirect('/app/markbyperoid/')
+#        else:
+#            form = MarkByPeriodForm()
+#        t = loader.get_template('app/markbyperiod/add.html')
+#        c = RequestContext(request, {'form' : form})
+#        return HttpResponse(t.render(c))
+# 
+# def sys_value_mark_type(request):
+#    if request.method == 'POST':
+#        form = SysValueMarkTypeForm(request.POST)
+#        if form.is_valid():
+#            form.save()
+#            return HttpResponseRedirect('app/sysvaluemarktype/')
+#        else:
+#            form = SysValueMarkTypeForm()
+#        t = loader.get_template('app/sysvaluemarktype/add.html')
+#        c = RequestContext(request, {'form' : form})
+#        return HttpResponse(t.render(c))
+#===============================================================================

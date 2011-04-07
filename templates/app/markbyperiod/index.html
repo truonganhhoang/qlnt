@@ -1,0 +1,11 @@
+{% if mark_by_period_list %}
+    <ul>
+    {% for sdt in mark_by_period_list %}
+        <li><a href="/app/markbyperoid/{{ sdt.subject_id }}">{{ sdt.k15_1 }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No mark table.</p>
+{% endif %}
+
+<a href="/app/markbyperiod/add">Add more mark table</a>
