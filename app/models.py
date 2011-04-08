@@ -490,20 +490,19 @@ class MarkByPeriod(models.Model):
     
 class MarkByPeriodForm(ModelForm):
     class Meta:
-        mode = MarkByPeriod
+        model = MarkByPeriod
         
-class SysValueMarkType():
+class SysValueMarkType(models.Model):
     value_mark_type_id = models.CharField(max_length = 10, primary_key = True)
     name_value_mark_type = models.CharField(max_length = 50)
     is_disable = models.BooleanField(False)
 
 class SysValueMarkTypeForm(ModelForm):
     class Meta:
-        mode = SysValueMarkType
+        model = SysValueMarkType
 
 # D_Log_UserLogin -- quy
 class LogUserLogin (models.Model):
-    log_id = models.CharField(max_length=50, primary_key=True)
     user_id = models.ForeignKey(User)
     login_time = models.DateField()
     logout_time = models.DateField()
@@ -511,7 +510,6 @@ class LogUserLogin (models.Model):
 
 #T_DM_PhanHe -- quy
 class SystemPartition (models.Model):
-    system_id = models.CharField(primary_key=True, max_length=50)
     system_name = models.CharField(max_length=100)
     system_index = models.CharField(max_length=10)
 

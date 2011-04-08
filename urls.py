@@ -47,7 +47,7 @@ urlpatterns = patterns('',
             template_name='app/markbyperiod/index.html')),
      url(r'^app/markbyperiod/(?P<pk>\d+)$', DetailView.as_view(model=MarkByPeriod,
                                                          template_name='app/markbyperiod/detail.html')),
-     url(r'^app/markbyperiod/add$', 'app.views.mark_by_period_add')
+     url(r'^app/markbyperiod/add$', 'app.views.mark_by_period_add'),
 
     
     #------------------------- url(r'^app/sysvaluemarktype/$', ListView.as_view(
