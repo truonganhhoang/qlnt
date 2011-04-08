@@ -1,21 +1,25 @@
 from django.db import models
-GENDER_CHOICES = ((u'Nam', u'Nam'),(u'Nu', u'Nu'),)
+GENDER_CHOICES = ((u'M', u'Nam'),(u'F', u'Nu'),)
 
 class School(models.Model):
 	school_code = models.CharField(max_length = 20, unique = True)
 	name = models.CharField(max_length = 200, unique = True)
 	address = models.CharField(max_length = 200)
-	phone = models.CharField(max_length = 15)
-	web = models.URLField()
-	
-class Teacher(models.Model):
+	phone = models.CharField(max_length = 15, null = True)
+	web = models.URLField(null = True)
+
+class CommonInfo(models.Model):
 	name = models.CharField(max_length = 45)
 	birthday = models.DateField()
 	birth_place = models.CharField(max_length = 200)
-	sex = models.CharField(max_length = 4, choices = GENDER_CHOICES)
-	phone = models.CharField(max_length = 15)
+	sex = models.CharField(max_length = 2, choices = GENDER_CHOICES)
+	phone = models.CharField(max_length = 15, null = True)
 	current_address = models.CharField(max_length = 200)
-	email = models.EmailField()
+	email = models.EmailField(null = True)
+	class Meta:
+		abstract = True
+		
+class Teacher(CommonInfo):
 	
 class Class(models.Model):
 	class_code = models.CharField(max_length = 20, unique = True)
@@ -23,26 +27,19 @@ class Class(models.Model):
 	school_id = models.ForeignKey(School)
 	teacher_id = models.ForeignKey(Teacher)
 	
-class Pupil(models.Model):
-	name = models.CharField(max_length = 45)
-	birthday = models.DateField()
-	sex = models.CharField(max_length = 4, choices = GENDER_CHOICES)
+class Pupil(CommonInfo):
 	year = models.IntegerField()
 	pupil_code = models.CharField(max_length = 20, unique = True)
-	current_status = models.CharField(max_length = 200)
-	birth_place = models.CharField(max_length = 100)
+	current_status = models.CharField(max_length = 200, blank = True)
 	home_town = models.CharField(max_length = 100) #nguyen quan
-	email = models.EmailField()
 	disable = models.BooleanField(default = FALSE)
-	current_address = models.CharField(max_length = 200)
-	phone_number = models.CharField(max_length = 15)
 	father_name = models.CharField(max_length = 45)
 	father_birthday = models.DateField()
-	father_phone = models.CharField(max_length = 15)
+	father_phone = models.CharField(max_length = 15, null = True)
 	father_job = models.CharField(max_leng = 100)
 	mother_name = models.CharField(max_length = 45)
 	mother_birthday = models.DateField()
-	mother_phone = models.CharField(max_length = 15)
+	mother_phone = models.CharField(max_length = 15, null = True)
 	mother_job = models.CharField(max_leng = 100)
 	school_id = models.ForeignKey(School)
 	class_id = models.ForeignKey(Class)
