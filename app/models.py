@@ -467,8 +467,9 @@ class TeachingAssignForm(ModelForm):
 
 # Ngoc Thanh - 5/4/2011
 class MarkByPeriod(models.Model):
-    student_class_id = models.ForeignKey(StudentClass, primary_key = True)
-    subject_id = models.ForeignKey(Subject)
+    #studentclass = models.ForeignKey(StudentClass)# primary key
+    #subject_id = models.ForeignKey(Subject)
+    #markbyperiod = models.CharField(max_length=10, primary_key=True)
     k15_1 = models.IntegerField(max_length = 10)
     k15_2 = models.IntegerField(max_length = 10)
     k1t_1 = models.IntegerField(max_length = 10)

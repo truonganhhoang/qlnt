@@ -2,6 +2,7 @@ from django.conf.urls.defaults import patterns, include, url
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from app.models import TimeTable, SystemDataType
+from app.models import MarkByPeriod
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
@@ -32,21 +33,28 @@ urlpatterns = patterns('',
     url(r'^app/systemdatatype/(?P<pk>\d+)$', DetailView.as_view(model=SystemDataType,
                                                         template_name='app/systemdatatype/detail.html')),
     url(r'^app/systemdatatype/add$', 'app.views.system_datatype_add'),
-    #------------------------------------------------------------------------- #
-    #----------------------------- url(r'^app/markbyperiod/$', ListView.as_view(
-            #------------------------------ queryset=MarkByPeriod.objects.all(),
-            #------------------------ context_object_name='mark_by_period_list',
-            #-------------------- template_name='app/markbyperiod/index.html')),
-    # url(r'^app/markbyperiod/(?P<pk>\d+)$', DetailView.as_view(model=MarkByPeriod,
-                                                        # template_name='app/markbyperiod/detail.html')),
-    #------------ url(r'^app/markbyperiod/add$', 'app.views.mark_by_period_add')
-#------------------------------------------------------------------------------ 
-    #
-   # url(r'^app/sysvaluemarktype/$', ListView.as_view(
-#            queryset=SysValueMarkType.objects.all(),
-#            context_object_name='sys_value_mark_type_list',
-#            template_name='app/sysvaluemarktype/index.html')),
- #   url(r'^app/sysvaluemarktype/(?P<pk>\d+)$', DetailView.as_view(model=SysValueMarkType,
-     #                                                   template_name='app/sysvaluemarktype/detail.html')),
-   # url(r'^app/sysvaluemarktype/add$', 'app.views.sys_value_mark_type_add')
+    
+    
+     #==========================================================================
+     # (r'app/markbyperiod/$', 'app/markbyperiod/index.html'),
+     # (r'app/markbyperiod/(?P<markbyperiod_id>\d+)/$', DetailView.as_view(model=MarkByPeroid,
+     #                                                   template_name='app/markbyperiod/detail.html'))
+     #==========================================================================
+     
+     url(r'^app/markbyperiod/$', ListView.as_view(
+            queryset=MarkByPeriod.objects.all(),
+            context_object_name='mark_by_period_list',
+            template_name='app/markbyperiod/index.html')),
+     url(r'^app/markbyperiod/(?P<pk>\d+)$', DetailView.as_view(model=MarkByPeriod,
+                                                         template_name='app/markbyperiod/detail.html')),
+     url(r'^app/markbyperiod/add$', 'app.views.mark_by_period_add')
+
+    
+    #------------------------- url(r'^app/sysvaluemarktype/$', ListView.as_view(
+            #-------------------------- queryset=SysValueMarkType.objects.all(),
+            #------------------- context_object_name='sys_value_mark_type_list',
+            #---------------- template_name='app/sysvaluemarktype/index.html')),
+    # url(r'^app/sysvaluemarktype/(?P<pk>\d+)$', DetailView.as_view(model=SysValueMarkType,
+                                                        # template_name='app/sysvaluemarktype/detail.html')),
+    #--- url(r'^app/sysvaluemarktype/add$', 'app.views.sys_value_mark_type_add')
 )

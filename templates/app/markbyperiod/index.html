@@ -1,7 +1,7 @@
 {% if mark_by_period_list %}
     <ul>
-    {% for sdt in mark_by_period_list %}
-        <li><a href="/app/markbyperoid/{{ sdt.subject_id }}">{{ sdt.k15_1 }}</a></li>
+    {% for markbyperiod in mark_by_period_list %}
+        <li><a href="/app/markbyperoid/{{ markbyperiod.subject_id }}">{{ markbyperiod.k15_1 }}</a></li>
     {% endfor %}
     </ul>
 {% else %}
