@@ -1,0 +1,16 @@
+<html>
+
+<head>
+  <title>{% block title %}School Administration{% endblock %}</title>
+  {% block js %}{% endblock %}
+  {% block css %}{% endblock %}
+</head>
+
+<body>
+  <div id="top">School Administration</div>
+  <div id="navi">{% block navi %}{% endblock %} </div>
+  <div id="content">{% block content %}{% endblock %} </div>
+  <div id="footer">{% block footer %}(c) developed by UET-VNU & Viettel{% endblock %} </div>
+</body>
+
+</html>
