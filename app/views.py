@@ -7,17 +7,17 @@ from django.template import RequestContext, loader
 from django.template import Context
 from django.template.loader import get_template
 
-def index(request):
+def index(request): 
     #template = get_template('index.html')
     #output = template.render(Context({"a":"b",}))
     #return HttpResponse(output)
-    return render_to_response("index.html")
+    return render_to_response("index.html", context_instance=RequestContext(request))
 
 def help(request):
     #template = get_template('index.html')
     #output = template.render(Context({"a":"b",}))
     #return HttpResponse(output)
-    return render_to_response("help.html")
+    return render_to_response("help.html", context_instance=RequestContext(request))
 
 def timetable(request):
     template = get_template('app/timetable.html')
