@@ -7,6 +7,28 @@ from django.template import RequestContext, loader
 from django.template import Context
 from django.template.loader import get_template
 
+def index(request):
+    #template = get_template('index.html')
+    #output = template.render(Context({"a":"b",}))
+    #return HttpResponse(output)
+    return render_to_response("index.html")
+
+def help(request):
+    #template = get_template('index.html')
+    #output = template.render(Context({"a":"b",}))
+    #return HttpResponse(output)
+    return render_to_response("help.html")
+
+def timetable(request):
+    template = get_template('app/timetable.html')
+    variables = Context({
+        'head_title': 'Quan Ly Nha Truong',
+        'page_title': 'This is title of timetable page',
+        'page_body': 'This is body of timetable page',
+    })
+    output = template.render(variables)
+    return HttpResponse(output)
+
 def time_table_add(request):
     if request.method == 'POST':
         form = TimeTableForm(request.POST)
@@ -18,26 +40,6 @@ def time_table_add(request):
     t = loader.get_template('app/timetable/add.html')
     c = RequestContext(request, {'form' : form})
     return HttpResponse(t.render(c))
-
-def main_page(request):
-    template = get_template('main_page.html')
-    variables = Context({
-        'head_title': 'School Administration',
-        'page_title': 'School Administration',
-        'page_body': 'Body '
-    })
-    output = template.render(variables)
-    return HttpResponse(output)
-
-def timetable(request):
-    template = get_template('app/timetable.html')
-    variables = Context({
-        'head_title': 'Quan Ly Nha Truong',
-        'page_title': 'This is title of timetable page',
-        'page_body': 'This is body of timetable page',
-    })
-    output = template.render(variables)
-    return HttpResponse(output)
 
 def system_datatype_add(request):
     if request.method == 'POST':

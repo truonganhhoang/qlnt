@@ -34,7 +34,7 @@ TIME_ZONE = 'Asia/Ho_Chi_Minh'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'vi' #'en-us'
 
 SITE_ID = 1
 
@@ -124,6 +124,7 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
     'app',
+    'school'
 )
 
 # A sample logging configuration. The only tangible logging

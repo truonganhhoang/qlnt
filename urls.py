@@ -1,7 +1,7 @@
 from django.conf.urls.defaults import patterns, include, url
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
-from app.models import TimeTable, SystemDataType
+from app.models import TimeTable, SystemDataType 
 from app.models import MarkByPeriod
 
 # Uncomment the next two lines to enable the admin:
@@ -9,7 +9,10 @@ from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    (r'^$', 'app.views.main_page'),
+    (r'^$', 'app.views.index'),
+    (r'^help/$', 'app.views.help'),
+    (r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'login.html'}),
+
     # Examples:
     # url(r'^$', 'qlnt.views.home', name='home'),
     # url(r'^qlnt/', include('qlnt.foo.urls')),
@@ -19,6 +22,8 @@ urlpatterns = patterns('',
 
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
+    
+                       
     url(r'^app/timetable/$', ListView.as_view(
             queryset=TimeTable.objects.all(),
             context_object_name='time_table_list',

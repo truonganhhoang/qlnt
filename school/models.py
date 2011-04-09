@@ -6,12 +6,18 @@ class School(models.Model):
 	name = models.CharField(max_length = 200, unique = True)
 	address = models.CharField(max_length = 200)
 	phone = models.CharField(max_length = 15, null = True)
-	web = models.URLField(null = True)
+	web_site = models.URLField(null = True)
 
-class CommonInfo(models.Model):
+class Class(models.Model):
+	class_code = models.CharField(max_length = 20, unique = True)
+	name = models.CharField(max_length = 20)
+	school_id = models.ForeignKey(School)
+	#teacher_id = models.ForeignKey(Teacher) class does not have teacher, a course + class => teacher?
+
+class BasicPersonInfo(models.Model):
 	first_name = models.CharField(max_length = 45)
 	last_name = models.CharField(max_length = 45) # tach ra first_name and last_name de sort va import from excel file
-   birthday = models.DateField()
+	birthday = models.DateField()
 	birth_place = models.CharField(max_length = 200)
 	sex = models.CharField(max_length = 2, choices = GENDER_CHOICES)
 	phone = models.CharField(max_length = 15, null = True)
@@ -20,20 +26,14 @@ class CommonInfo(models.Model):
 	class Meta:
 		abstract = True
 		
-class Teacher(CommonInfo): pass
+class Teacher(BasicPersonInfo): pass
 	
-class Class(models.Model):
-	class_code = models.CharField(max_length = 20, unique = True)
-	name = models.CharField(max_length = 20)
-	school_id = models.ForeignKey(School)
-	teacher_id = models.ForeignKey(Teacher)
-	
-class Pupil(CommonInfo):
+class Pupil(BasicPersonInfo):
 	year = models.IntegerField()
 	pupil_code = models.CharField(max_length = 20, unique = True)
 	current_status = models.CharField(max_length = 200, blank = True)
 	home_town = models.CharField(max_length = 100) #nguyen quan
-	disable = models.BooleanField(default = FALSE)
+	disable = models.BooleanField(default = False)
 	father_name = models.CharField(max_length = 45)
 	father_birthday = models.DateField()
 	father_phone = models.CharField(max_length = 15, null = True)
@@ -44,3 +44,5 @@ class Pupil(CommonInfo):
 	mother_job = models.CharField(max_length = 100)
 	school_id = models.ForeignKey(School)
 	class_id = models.ForeignKey(Class)
+
+

@@ -21,6 +21,7 @@ class Student (models.Model):
     last_name = models.CharField(max_length=50)
     def __unicode__(self):
         return self.name
+
 # Student form
 class StudentForm (ModelForm):
     class Meta:

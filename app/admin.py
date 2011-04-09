@@ -1,8 +1,7 @@
-from app.models import TimeTable
-from app.models import SystemDataType, UserTypeDataType
-from app.models import MarkByPeriod, SysValueMarkType
 from django.contrib import admin
+from app.models import MarkByPeriod, UserTypeDataType, TimeTable, SystemDataType
 
+#admin.site.register(School)
 admin.site.register(TimeTable)
 admin.site.register(SystemDataType)
 admin.site.register(UserTypeDataType)
