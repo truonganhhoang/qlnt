@@ -5,7 +5,9 @@ Homepage
 {% endblock %}
   
 {% block navi %}
-<a href="/login">login</a> - <a href="/help">help</a>   
+{% if user.is_authenticated %}Welcome {{user.is_authenticated}}! {% else %} <a href="/login">login</a>{% endif %}
+ 
+- <a href="/help">help</a>   
 {% endblock %}
 
 {% block content %}

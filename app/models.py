@@ -125,8 +125,8 @@ class User(models.Model):
     email = models.EmailField()
     invalid = models.BooleanField()
     subject1 = models.ForeignKey(Subject) 
-   # subject2 = models.ForeignKey(Subject)
-   # subject3 = models.ForeignKey(Subject)
+    # subject2 = models.ForeignKey(Subject)
+    # subject3 = models.ForeignKey(Subject)
     captain = models.CharField(max_length=50)
     deputy_captain = models.CharField(max_length=50)
     phone_no1 = models.CharField(max_length=30)
@@ -368,8 +368,8 @@ class CEGroupClass (models.Model):
 #    clazz = models.ForeignKey()
 #    student = models.ForeignKey()
 #    type = models.ForeignKey()
- #   order_number = models.IntegerField()
- #   status  = models.CharField(max_length=100)
+#    order_number = models.IntegerField()
+#    status  = models.CharField(max_length=100)
     
 class CERoomStudent(models.Model):
     room = models.ForeignKey(CERoom)
