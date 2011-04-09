@@ -8,14 +8,6 @@ class School(models.Model):
 	phone = models.CharField(max_length = 15, null = True)
 	web_site = models.URLField(null = True)
 
-class Class(models.Model):
-	class_code = models.CharField(max_length = 20, unique = True)
-	name = models.CharField(max_length = 20)
-	school_id = models.ForeignKey(School)
-	#teacher_id = models.ForeignKey(Teacher) class does not have teacher, a course + class => teacher?
-   #class => teacher : giáo viên chủ nhiệm => function: sms to the whole class...? 
-   #teacher_id = models.ForeignKey(Teacher)
-
 class BasicPersonInfo(models.Model):
 	first_name = models.CharField(max_length = 45)
 	last_name = models.CharField(max_length = 45) # tach ra first_name and last_name de sort va import from excel file
@@ -29,6 +21,13 @@ class BasicPersonInfo(models.Model):
 		abstract = True
 		
 class Teacher(BasicPersonInfo): pass
+
+class Class(models.Model):
+	class_code = models.CharField(max_length = 20, unique = True)
+	name = models.CharField(max_length = 20)
+	school_id = models.ForeignKey(School)
+	teacher_id = models.ForeignKey(Teacher) 
+
 	
 class Pupil(BasicPersonInfo):
 	year = models.IntegerField()

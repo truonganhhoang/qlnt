@@ -65,7 +65,7 @@ def mark_by_period_add(request):
     c = RequestContext(request, {'form' : form})
     return HttpResponse(t.render(c))
 #------------------------------------------------------------------------------ 
- #-------------------------------------------- def sys_value_mark_type(request):
+#-------------------------------------------- def sys_value_mark_type(request):
     #---------------------------------------------- if request.method == 'POST':
         #----------------------------- form = SysValueMarkTypeForm(request.POST)
         #--------------------------------------------------- if form.is_valid():
