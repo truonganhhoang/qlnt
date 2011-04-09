@@ -13,6 +13,8 @@ class Class(models.Model):
 	name = models.CharField(max_length = 20)
 	school_id = models.ForeignKey(School)
 	#teacher_id = models.ForeignKey(Teacher) class does not have teacher, a course + class => teacher?
+   #class => teacher : giáo viên chủ nhiệm => function: sms to the whole class...? 
+   #teacher_id = models.ForeignKey(Teacher)
 
 class BasicPersonInfo(models.Model):
 	first_name = models.CharField(max_length = 45)
