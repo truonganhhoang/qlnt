@@ -513,3 +513,69 @@ class SystemPartition (models.Model):
     system_name = models.CharField(max_length=100)
     system_index = models.CharField(max_length=10)
 
+# T_DM_Tinh - codai2810
+class Province(models.Model):
+    name = models.CharField(max_length=30)
+    invalid = models.BooleanField()
+    zip_code = models.CharField(max_length=10)
+    def __unicode__(self):
+        return self.name
+
+# T_DM_Huyen - codai2810
+class District(models.Model):
+    name = models.CharField(max_length=30)
+    province = models.ForeignKey(Province)
+    invalid = models.BooleanField()
+    zip_code = models.CharField(max_length=10)
+    def __unicode__(self):
+        return self.name
+
+#T_DM_Xa - codai2810
+class Village(models.Model):
+    name = models.CharField(max_length=30)
+    district = models.ForeignKey(District)
+    invalid = models.BooleanField()
+    zip_code = models.CharField(max_length=10)
+    def __unicode__(self):
+        return self.name
+
+# T_DM_Ap - codai2810
+class Hamlet(models.Model):
+    name = models.CharField(max_length=30)
+    village = models.ForeignKey(Village)
+    invalid = models.BooleanField()
+    zip_code = models.CharField(max_length=10)
+    def __unicode__(self):
+        return self.name
+    
+# T_DM_NhomViPham - codai2810
+class InfractionCategories(models.Model):
+    name = models.CharField(max_length=250)
+    invalid = models.BooleanField()
+    def __unicode__(self):
+        return self.name
+
+# T_DM_ViPham - codai2810
+class InfractionMenu(models.Model):
+    infraction_name = models.CharField(max_length=250)
+    #DiemTru -- FIXME
+    #KhongCheHocKy -- FIXME
+    infraction_categories = models.ForeignKey(InfractionCategories)
+    times_per_day = models.IntegerField()
+    invalid = models.BooleanField()
+    initials = models.CharField(max_length=10)
+    permitted = models.BooleanField()    # co phep
+    unpermitted = models.BooleanField() # khong phep
+    late = models.BooleanField()
+    def __unicode__(self):
+        return self.infraction_name
+       
+# T_ViPham - codai2810
+class Infraction(models.Model):
+    student_class = models.ForeignKey(StudentClass)
+    infraction = models.ForeignKey(InfractionMenu)
+    infraction_date = models.DateField()
+    user = models.ForeignKey(User)
+    section = models.IntegerField()
+    subject = models.ForeignKey(Subject)
+
