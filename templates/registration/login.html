@@ -1,6 +1,14 @@
 {% extends "base.html" %}
 {% load url from future %}
 
+{% block title %}
+	Login
+{% endblock %}
+
+{% block navi %}
+	<a href ="/">Index</a> - <a href="/help">help</a> - <a href="/login">login</a>
+{% endblock %}
+
 {% block content %}
 
 {% if form.errors %}

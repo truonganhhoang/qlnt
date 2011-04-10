@@ -13,7 +13,7 @@ class SchoolYear (models.Model):
 # School year form
 class SchoolYearForm(ModelForm):
     class Meta:
-        mode = SchoolYear
+        model = SchoolYear
 
 # Student model
 class Student (models.Model):

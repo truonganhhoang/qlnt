@@ -5,7 +5,7 @@ Homepage
 {% endblock %}
   
 {% block navi %}
-	<a href="/help">help</a> - 
+	<a href ="/">Index</a> - <a href="/help">help</a> - 
 	{% if user.is_authenticated %}
 		Welcome {{user.username}}! <a href="/logout">logout</a> 
 	{% else %} 
@@ -14,12 +14,16 @@ Homepage
 {% endblock %}
 
 {% block content %}
-    <h1> Temporary menu </h1> 
-    <a href="/admin/">Admin</a> <br> 
-    <a href="/school">Trường</a><br>
-    <a href="/app/timetable">Timetable</a><br>
-    <a href="/app/systemdatatype">System - Data Type</a><br>
-    <a href="/app/markbyperiod">Mark table</a><br>
+	{% if user.is_authenticated %}
+	    <h1> Temporary menu </h1> 
+	    <a href="/admin/">Admin</a> <br> 
+	    <a href="/school">Trường</a><br>
+	    <a href="/app/timetable">Timetable</a><br>
+	    <a href="/app/systemdatatype">System - Data Type</a><br>
+	    <a href="/app/markbyperiod">Mark table</a><br>
+	{% else %}
+		You need login to use system.
+	{% endif %}
 {% endblock %}
 
 {% block footer %}
