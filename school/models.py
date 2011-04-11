@@ -8,6 +8,10 @@ class School(models.Model):
 	phone = models.CharField(max_length = 15, null = True)
 	web_site = models.URLField(null = True)
 
+	def __unicode__(self):
+		return self.name
+		
+
 class BasicPersonInfo(models.Model):
 	first_name = models.CharField(max_length = 45)
 	last_name = models.CharField(max_length = 45) # tach ra first_name and last_name de sort va import from excel file
@@ -20,6 +24,9 @@ class BasicPersonInfo(models.Model):
 	class Meta:
 		abstract = True
 		
+	def __unicode__(self):
+		return self.first_name + self.last_name 
+
 class Teacher(BasicPersonInfo): pass
 
 class Class(models.Model):
@@ -27,7 +34,8 @@ class Class(models.Model):
 	name = models.CharField(max_length = 20)
 	school_id = models.ForeignKey(School)
 	teacher_id = models.ForeignKey(Teacher) 
-
+	def __unicode__(self):
+		return self.name
 	
 class Pupil(BasicPersonInfo):
 	year = models.IntegerField()
