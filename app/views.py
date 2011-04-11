@@ -1,7 +1,7 @@
 from django.http import HttpResponse, HttpResponseRedirect
-from app.models import TimeTableForm
-from app.models import SystemDataTypeForm
-from app.models import MarkByPeriodForm
+from qlnt.app.models import TimeTableForm
+from qlnt.app.models import SystemDataTypeForm
+from qlnt.app.models import MarkByPeriodForm
 from django.shortcuts import render_to_response
 from django.template import RequestContext, loader
 from django.template import Context

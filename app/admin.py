@@ -1,5 +1,5 @@
 from django.contrib import admin
-from app.models import MarkByPeriod, UserTypeDataType, TimeTable, SystemDataType
+from qlnt.app.models import MarkByPeriod, UserTypeDataType, TimeTable, SystemDataType
 
 #admin.site.register(School)
 admin.site.register(TimeTable)
