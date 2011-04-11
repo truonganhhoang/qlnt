@@ -11,9 +11,6 @@ class School(models.Model):
 	def __unicode__(self):
 		return self.name
 
-	def __unicode__(self):
-		return self.name
-		
 
 class BasicPersonInfo(models.Model):
 	first_name = models.CharField(max_length = 45)
@@ -28,9 +25,6 @@ class BasicPersonInfo(models.Model):
 		abstract = True
 	def __unicode__(self):
 		return self.first_name + self.last_name
-		
-	def __unicode__(self):
-		return self.first_name + self.last_name 
 
 class Teacher(BasicPersonInfo): pass
 
@@ -39,8 +33,6 @@ class Class(models.Model):
 	name = models.CharField(max_length = 20)
 	school_id = models.ForeignKey(School)
 	teacher_id = models.ForeignKey(Teacher) 
-	def __unicode__(self):
-		return self.name
 	def __unicode__(self):
 		return self.name
 class Pupil(BasicPersonInfo):
