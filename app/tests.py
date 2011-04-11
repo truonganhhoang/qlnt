@@ -17,17 +17,18 @@ class UserFunctionTest(unittest.TestCase):
         response = self.client.post('/login/', {'username': 'admin', 'password': 'admin'})
         self.assertEqual(response.status_code, 302)
         
+    def test_failed_login(self):
+        # Wrong username and password
+        response = self.client.post('/login/', {'username': 'wrong_username', 'password': ''})
+        self.assertEqual(response.status_code, 200)
     
     def test_logout(self):
-        response = self.client.post('/login/', {'username': 'admin', 'password': 'admin'})
-        self.assertEqual(response.status_code, 302)
-        '''
-        NEED MORE HELP!
-        '''
-        #response = self.client.post('/logout/')
-        #self.assertEqual(response.status_code, 301)
+        response = self.client.login(username='admin', password='admin')
+        self.assertTrue(response)
+        response = self.client.logout()
+        self.assertEqual(response, None)
         
-    def test_user_creation(self):
+    def test_user_addition(self):
         response = self.client.post('/login/', {'username': 'admin', 'password': 'admin'})
         self.assertEqual(response.status_code, 302)
         data = {
@@ -37,6 +38,58 @@ class UserFunctionTest(unittest.TestCase):
         }
         response = self.client.post('/admin/auth/user/add/', data)
         self.assertEqual(response.status_code, 302)
+    
+    def test_user_addition_with_no_data(self):
+        response = self.client.login(username='admin', password='admin')
+        self.assertTrue(response)
+        data = {
+        }
+        response = self.client.post('/admin/auth/user/add', data)
+        self.assertEqual(response.status_code, 301)
+        
+    def test_user_addition_without_password(self):
+        response = self.client.login(username='admin', password='admin')
+        self.assertTrue(response)
+        data = {
+            'username': 'without-password',
+            'password': '',
+            'password': ''
+        }
+        response = self.client.post('/admin/auth/user/add', data)
+        self.assertEqual(response.status_code, 301)
+        
+    def test_user_addition_without_username(self):
+        response = self.client.login(username='admin', password='admin')
+        self.assertTrue(response)
+        data = {
+            'username': '',
+            'password': 'without-username',
+            'password': ''
+        }
+        response = self.client.post('/admin/auth/user/add', data)
+        self.assertEqual(response.status_code, 301)
+        
+    def test_usercreation_with_spaced_username(self):
+        response = self.client.login(username='admin', password='admin')
+        self.assertTrue(response)
+        data = {
+            'username': 'with space',
+            'password': 'password',
+            'password': 'password'
+        }
+        response = self.client.post('/admin/auth/user/add', data)
+        self.assertEqual(response.status_code, 301)
+    
+    def test_user_addition_with_not_matched_password(self):
+        response = self.client.login(username='admin', password='admin')
+        self.assertTrue(response)
+        data = {
+            'username': 'username',
+            'password': 'password',
+            'password': 'pass_word'
+        }
+        response = self.client.post('/admin/auth/user/add', data)
+        self.assertEqual(response.status_code, 301)
     
     def test_user_deletion(self):
         response = self.client.post('/login/', {'username': 'admin', 'password': 'admin'})
@@ -51,12 +104,14 @@ class UserFunctionTest(unittest.TestCase):
         '''NEED HELP!
         which data will be sent when deleting action executed
         '''
-        #data = {
-        #    'action': 'delete_selected',
-        #    '_selected_action': '2'
-        #}
-        #response = self.client.post('/admin/auth/user/', )
-        #self.assertEqual(response.status_code, 302)
+        #=======================================================================
+        # #data = {
+        # #    'action': 'delete_selected',
+        # #    '_selected_action': '2'
+        # #}
+        # #response = self.client.post('/admin/auth/user/', )
+        # #self.assertEqual(response.status_code, 302)
+        #=======================================================================
     
     def test_group_creation(self):
         response = self.client.post('/login/', {'username': 'admin', 'password': 'admin'})
@@ -67,3 +122,10 @@ class UserFunctionTest(unittest.TestCase):
         response = self.client.post('/admin/auth/group/add/', data)
         self.assertEqual(response.status_code, 302)
         
+    def test_group_addition_without_name(self):
+        response = self.client.login(username='admin', password='admin')
+        self.assertTrue(response)
+        data = {
+        }
+        response = self.client.post('/admin/auth/group/add', data)
+        self.assertEqual(response.status_code, 301)
