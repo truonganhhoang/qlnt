@@ -1,6 +1,9 @@
 from django.db import models
 GENDER_CHOICES = ((u'M', u'Nam'),(u'F', u'Nu'),)
-TERM_CHOICES = (('1', '1'), ('2','2'),('3','3'))
+ONE = 1
+TWO = 2
+THREE = 3
+TERM_CHOICES = ((ONE, u'1'), (TWO, u'2'),(THREE, u'3'),)
 class School(models.Model):
 	school_code = models.CharField(max_length = 20, unique = True)
 	name = models.CharField(max_length = 200, unique = True)
@@ -9,22 +12,27 @@ class School(models.Model):
 	web_site = models.URLField(null = True)
 	
 	def __unicode__(self):
-		return self.name
-
+		return self.name	
+    
+	class Admin: pass
 
 class BasicPersonInfo(models.Model):
 	first_name = models.CharField(max_length = 45)
 	last_name = models.CharField(max_length = 45) # tach ra first_name and last_name de sort va import from excel file
-	birthday = models.DateField()
-	birth_place = models.CharField(max_length = 200)
+	birthday = models.DateField(null = True)
+	birth_place = models.CharField(max_length = 200, null = True)
 	sex = models.CharField(max_length = 2, choices = GENDER_CHOICES)
 	phone = models.CharField(max_length = 15, null = True)
-	current_address = models.CharField(max_length = 200)
+	current_address = models.CharField(max_length = 200, null = True)
 	email = models.EmailField(null = True)
+	
 	class Meta:
 		abstract = True
+		
 	def __unicode__(self):
 		return self.first_name + self.last_name
+		
+	class Admin: pass
 
 class Teacher(BasicPersonInfo): pass
 
@@ -33,8 +41,11 @@ class Class(models.Model):
 	name = models.CharField(max_length = 20)
 	school_id = models.ForeignKey(School)
 	teacher_id = models.ForeignKey(Teacher) 
+	
 	def __unicode__(self):
 		return self.name
+	class Admin: pass
+	    
 class Pupil(BasicPersonInfo):
 	year = models.IntegerField()
 	pupil_code = models.CharField(max_length = 20, unique = True)
@@ -53,12 +64,13 @@ class Pupil(BasicPersonInfo):
 	class_id = models.ForeignKey(Class)
 
 class Term(models.Model):
-	number = models.IntegerField(choices = TERM_CHOICES)
-	time = models.DateField(auto_now = True)
+	number = models.IntegerField()
+	time = models.DateField()
 
 	def __unicode__(self):
 		return self.number
-	
+	class Admin: pass
+	    
 class Subject(models.Model):
 	subject_code = models.CharField(max_length = 15, unique = True) # can't be null
 	class_code = models.CharField(max_length = 15, unique = True) # can't be null
@@ -74,6 +86,8 @@ class Subject(models.Model):
 	def __unicode__(self):
 		return self.name
 	
+	class Admin: pass
+	    
 class Mark(models.Model):
 	student_code = models.CharField(max_length = 15) # will link with pupil table from default db
 	mieng_1 = models.FloatField( null = True)
@@ -95,3 +109,5 @@ class Mark(models.Model):
 	tb = models.FloatField( null = True) # trung binh
 	# all fields can be null
 	subject_id = models.ForeignKey(Subject)
+	
+	class Admin: pass
