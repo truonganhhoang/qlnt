@@ -13,12 +13,12 @@ def validate_mark(value):
 
 #validate the phone format
 def validate_phone(value):
-	if len(value) <= 5:
-		raise ValidationError(u'Phone must have more than 5 digit')
-  try:
-		int(value)
-  except ValueError:
-		raise ValidationError(u'Invalid phone format')
+    if len(value) <= 5:
+        raise ValidationError(u'Phone must have more than 5 digit')
+    try:
+        int(value)
+    except ValueError:
+        raise ValidationError(u'Invalid phone format')
 
 #validate birthday. set range between 1990 and current year
 def validate_birthday(value):
