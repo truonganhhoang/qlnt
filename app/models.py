@@ -1,11 +1,50 @@
 from django.db import models
 from django.forms import ModelForm
 
-# School year model
-class SchoolYear (models.Model):
+class Organization(models.Model):
+    ORGANIZATION_TYPE_CHOICES = (('T', 'Truong'),
+                                 ('P', 'Phong'),
+                                 ('S', 'So'))
     name = models.CharField(max_length=100)
-    start_date = models.DateField ()
-    end_date = models.DateField ()
+    address = models.CharField(max_length=255)
+    phone_number = models.CharField(max_length=40)
+    organization_type = models.CharField(max_length=2, choices=ORGANIZATION_TYPE_CHOICES)
+    upper_organization = models.ForeignKey('self')
+    
+    def __unicode__(self):
+        return self.name
+
+class PositionType(models.Model):
+    name = models.CharField(max_length=100)
+    
+    def __unicode__(self):
+        return self.name
+    
+class User(models.Model):
+    name = models.CharField(max_length=100)
+    birthday = models.DateField()
+    phone_number = models.CharField(max_length=40)
+    email = models.EmailField()
+    position = models.ForeignKey(PositionType)
+    organization = models.ForeignKey(Organization)
+    
+    def __unicode__(self):
+        return self.name
+
+class SchoolYear(models.Model):
+    name = models.CharField(max_length=100)
+    start_date = models.DateField()
+    end_date = models.DateField()
+    active_year = models.BooleanField()
+    
+    def __unicode__(self):
+        return self.name
+
+class Semester(models.Model):
+    name = models.CharField(max_length=100)
+    start_date = models.DateField()
+    end_date = models.DateField()
+    school_year = models.ForeignKey(SchoolYear)
     
     def __unicode__(self):
         return self.name
@@ -116,23 +155,6 @@ class SubjectForm(ModelForm):
     class Meta:
         model = Subject
         
-# User model
-class User(models.Model):
-    name = models.CharField(max_length=50)
-    name_tat = models.CharField(max_length=50) # "tat"?
-    type_id = models.CharField(max_length=30)
-    password = models.CharField(max_length=50)
-    email = models.EmailField()
-    invalid = models.BooleanField()
-    subject1 = models.ForeignKey(Subject) 
-    # subject2 = models.ForeignKey(Subject)
-    # subject3 = models.ForeignKey(Subject)
-    captain = models.CharField(max_length=50)
-    deputy_captain = models.CharField(max_length=50)
-    phone_no1 = models.CharField(max_length=30)
-    phone_no2 = models.CharField(max_length=30)
-    def __unicode__(self):
-        return self.name
 
 # User form
 class UserForm (ModelForm):
