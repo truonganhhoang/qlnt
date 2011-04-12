@@ -17,7 +17,7 @@ def validate_phone(value):
 		raise ValidationError(u'Phone must have more than 5 digit')
   try:
 		int(value)
-   except ValueError:
+  except ValueError:
 		raise ValidationError(u'Invalid phone format')
 
 #validate birthday. set range between 1990 and current year
