@@ -31,8 +31,8 @@ DATABASES = {
         'PORT': '',                      # Set to empty string for default. Not used with sqlite3.      
     } 
 }
-
-DATABASE_ROUTERS = ['school.schoolrouter.SchoolRouter']
+# uncomment following line to use auto multiple db router.
+#DATABASE_ROUTERS = ['school.schoolrouter.SchoolRouter']
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # although not all choices may be available on all operating systems.

@@ -1,9 +1,6 @@
 from django.db import models
 GENDER_CHOICES = ((u'M', u'Nam'),(u'F', u'Nu'),)
-ONE = 1
-TWO = 2
-THREE = 3
-TERM_CHOICES = ((ONE, u'1'), (TWO, u'2'),(THREE, u'3'),)
+TERM_CHOICES = ((1, u'1'), (2, u'2'),(3, u'3'),)
 class School(models.Model):
 	school_code = models.CharField(max_length = 20, unique = True)
 	name = models.CharField(max_length = 200, unique = True)
@@ -14,7 +11,7 @@ class School(models.Model):
 	def __unicode__(self):
 		return self.name	
     
-	class Admin: pass
+	#class Admin: pass
 
 class BasicPersonInfo(models.Model):
 	first_name = models.CharField(max_length = 45)
@@ -32,7 +29,7 @@ class BasicPersonInfo(models.Model):
 	def __unicode__(self):
 		return self.first_name + self.last_name
 		
-	class Admin: pass
+	#class Admin: pass
 
 class Teacher(BasicPersonInfo): pass
 
@@ -44,7 +41,7 @@ class Class(models.Model):
 	
 	def __unicode__(self):
 		return self.name
-	class Admin: pass
+	#class Admin: pass
 	    
 class Pupil(BasicPersonInfo):
 	year = models.IntegerField()
@@ -64,12 +61,12 @@ class Pupil(BasicPersonInfo):
 	class_id = models.ForeignKey(Class)
 
 class Term(models.Model):
-	number = models.IntegerField()
+	number = models.IntegerField(max_length=1)
 	time = models.DateField()
 
 	def __unicode__(self):
-		return self.number
-	class Admin: pass
+		return str(self.number)
+	#class Admin: pass
 	    
 class Subject(models.Model):
 	subject_code = models.CharField(max_length = 15, unique = True) # can't be null
@@ -86,7 +83,7 @@ class Subject(models.Model):
 	def __unicode__(self):
 		return self.name
 	
-	class Admin: pass
+	#class Admin: pass
 	    
 class Mark(models.Model):
 	student_code = models.CharField(max_length = 15) # will link with pupil table from default db
@@ -110,4 +107,4 @@ class Mark(models.Model):
 	# all fields can be null
 	subject_id = models.ForeignKey(Subject)
 	
-	class Admin: pass
+	#class Admin: pass
