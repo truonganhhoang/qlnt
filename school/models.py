@@ -1,11 +1,45 @@
 from django.db import models
+from django.core import validators
+from django.core.exceptions import ValidationError
+from datetime import date
 GENDER_CHOICES = ((u'M', u'Nam'),(u'F', u'Nu'),)
 TERM_CHOICES = ((1, u'1'), (2, u'2'),(3, u'3'),)
+
+#validate mark of pupil
+#mark must be between 0 and 10
+def validate_mark(value):
+    if value < 0 or value > 10:
+        raise ValidationError(u'mark must between 0 and 10')
+
+#validate the phone format
+def validate_phone(value):
+	if len(value) <= 5:
+		raise ValidationError(u'Phone must have more than 5 digit')
+  try:
+		int(value)
+   except ValueError:
+		raise ValidationError(u'Invalid phone format')
+
+#validate birthday. set range between 1990 and current year
+def validate_birthday(value):
+	if value < date(1900,1,1) or value > date.today():
+		raise ValidationError(u'Invalid date range')
+
+#validate the year that pupil go to class 1. Ragne between 1990 and this year
+def validate_year(value):
+    if value < 1990 or value > date.today().year:
+        raise ValidationError(u'Invalid year value')
+
+#validate he so diem cua mon    
+def validate_hs(value):
+	if value <= 0:
+		raise ValidationError(u'hs must be larger than 0')
+	       
 class School(models.Model):
 	school_code = models.CharField(max_length = 20, unique = True)
 	name = models.CharField(max_length = 200, unique = True)
 	address = models.CharField(max_length = 200)
-	phone = models.CharField(max_length = 15, null = True)
+	phone = models.CharField(max_length = 15, null = True, blank = True, validators = [validate_phone])
 	web_site = models.URLField(null = True)
 	
 	def __unicode__(self):
@@ -16,12 +50,12 @@ class School(models.Model):
 class BasicPersonInfo(models.Model):
 	first_name = models.CharField(max_length = 45)
 	last_name = models.CharField(max_length = 45) # tach ra first_name and last_name de sort va import from excel file
-	birthday = models.DateField(null = True)
-	birth_place = models.CharField(max_length = 200, null = True)
+	birthday = models.DateField(null = True, validators = [validate_birthday])
+	birth_place = models.CharField(max_length = 200, null = True, blank = True)
 	sex = models.CharField(max_length = 2, choices = GENDER_CHOICES)
-	phone = models.CharField(max_length = 15, null = True)
-	current_address = models.CharField(max_length = 200, null = True)
-	email = models.EmailField(null = True)
+	phone = models.CharField(max_length = 15, null = True, blank = True, validators = [validate_phone])
+	current_address = models.CharField(max_length = 200, blank = True, null = True)
+	email = models.EmailField(null = True, blank = True)
 	
 	class Meta:
 		abstract = True
@@ -44,19 +78,19 @@ class Class(models.Model):
 	#class Admin: pass
 	    
 class Pupil(BasicPersonInfo):
-	year = models.IntegerField()
+	year = models.IntegerField(validators = [validate_year]) #year that pupil go to class 1
 	pupil_code = models.CharField(max_length = 20, unique = True)
-	current_status = models.CharField(max_length = 200, blank = True)
-	home_town = models.CharField(max_length = 100, blank = True) #nguyen quan
+	current_status = models.CharField(max_length = 200, null = True, blank = True)
+	home_town = models.CharField(max_length = 100, null = True, blank = True) #nguyen quan
 	disable = models.BooleanField(default = False)
 	father_name = models.CharField(max_length = 45)
 	father_birthday = models.DateField( null = True)
-	father_phone = models.CharField(max_length = 15, blank = True)
-	father_job = models.CharField(max_length = 100, blank = True)
+	father_phone = models.CharField(max_length = 15, null = True, blank = True, validators = [validate_phone])
+	father_job = models.CharField(max_length = 100, null = True, blank = True)
 	mother_name = models.CharField(max_length = 45)
 	mother_birthday = models.DateField(null = True)
-	mother_phone = models.CharField(max_length = 15, blank = True)
-	mother_job = models.CharField(max_length = 100, blank = True)
+	mother_phone = models.CharField(max_length = 15, null = True, blank = True, validators = [validate_phone])
+	mother_job = models.CharField(max_length = 100, null = True, blank = True)
 	school_id = models.ForeignKey(School)
 	class_id = models.ForeignKey(Class)
 
@@ -72,10 +106,9 @@ class Subject(models.Model):
 	subject_code = models.CharField(max_length = 15, unique = True) # can't be null
 	class_code = models.CharField(max_length = 15, unique = True) # can't be null
 	name = models.CharField(max_length = 45) # can't be null
-	hs_m = models.FloatField( null = True)
-	hs_15= models.FloatField( null = True)
-	hs_45= models.FloatField( null = True)
-	hs_ck= models.FloatField( null = True)
+	hs_m = models.FloatField( validators = [validate_hs])
+	hs_15= models.FloatField( validators = [validate_hs])
+	hs_45= models.FloatField( validators = [validate_hs])
 	#this field can be omitted at this iteration.
 	teacher_id = models.IntegerField() # field nay de cung cap permission cho giao vien de nhap diem
 	term_id = models.ForeignKey(Term)
@@ -87,23 +120,23 @@ class Subject(models.Model):
 	    
 class Mark(models.Model):
 	student_code = models.CharField(max_length = 15) # will link with pupil table from default db
-	mieng_1 = models.FloatField( null = True)
-	mieng_2 = models.FloatField( null = True)
-	mieng_3 = models.FloatField( null = True)
-	mieng_4 = models.FloatField( null = True)
-	mieng_5 = models.FloatField( null = True)
-	mlam_1 = models.FloatField( null = True)
-	mlam_2 = models.FloatField( null = True)
-	mlam_3 = models.FloatField( null = True)
-	mlam_4 = models.FloatField( null = True)
-	mlam_5 = models.FloatField( null = True)
-	mot_tiet_1 = models.FloatField( null = True)
-	mot_tiet_2 = models.FloatField( null = True)
-	mot_tiet_3 = models.FloatField( null = True)
-	mot_tiet_4 = models.FloatField( null = True)
-	mot_tiet_5 = models.FloatField( null = True)
-	ck = models.FloatField( null = True) # cuoi ky
-	tb = models.FloatField( null = True) # trung binh
+	mieng_1 = models.FloatField( null = True, blank = True, validators = [validate_mark])
+	mieng_2 = models.FloatField( null = True, blank = True, validators = [validate_mark])
+	mieng_3 = models.FloatField( null = True, blank = True, validators = [validate_mark])
+	mieng_4 = models.FloatField( null = True, blank = True, validators = [validate_mark])
+	mieng_5 = models.FloatField( null = True, blank = True, validators = [validate_mark])
+	mlam_1 = models.FloatField( null = True, blank = True, validators = [validate_mark])
+	mlam_2 = models.FloatField( null = True, blank = True, validators = [validate_mark])
+	mlam_3 = models.FloatField( null = True, blank = True, validators = [validate_mark])
+	mlam_4 = models.FloatField( null = True, blank = True, validators = [validate_mark])
+	mlam_5 = models.FloatField( null = True, blank = True, validators = [validate_mark])
+	mot_tiet_1 = models.FloatField( null = True, blank = True, validators = [validate_mark])
+	mot_tiet_2 = models.FloatField( null = True, blank = True, validators = [validate_mark])
+	mot_tiet_3 = models.FloatField( null = True, blank = True, validators = [validate_mark])
+	mot_tiet_4 = models.FloatField( null = True, blank = True, validators = [validate_mark])
+	mot_tiet_5 = models.FloatField( null = True, blank = True, validators = [validate_mark])
+	ck = models.FloatField( null = True, blank = True, validators = [validate_mark])
+	tb = models.FloatField( null = True, blank = True, validators = [validate_mark])
 	# all fields can be null
 	subject_id = models.ForeignKey(Subject)
 	
