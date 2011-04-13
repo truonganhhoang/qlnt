@@ -1,5 +1,5 @@
 from django.http import HttpResponse, HttpResponseRedirect
-from app.models import TimeTableForm
+from app.models import TimeTableForm, SchoolForm, Organization
 from app.models import SystemDataTypeForm
 from app.models import MarkByPeriodForm
 from django.shortcuts import render_to_response
@@ -18,6 +18,30 @@ def help(request):
     #output = template.render(Context({"a":"b",}))
     #return HttpResponse(output)
     return render_to_response("help.html", context_instance=RequestContext(request))
+
+def school_add(request):
+    if request.method == 'POST':
+        form = SchoolForm(request.POST)
+        if form.is_valid():
+            org_name = form.cleaned_data['name']
+            org_address = form.cleaned_data['address']
+            org_phone = form.cleaned_data['phone_number']
+            upper_org_id = form.cleaned_data['upper_organization']
+            org_upper = None if upper_org_id == '-1' \
+                                else Organization.objects.get(pk=upper_org_id)
+            org = Organization.objects.create(name=org_name, address=org_address, \
+                                    phone_number=org_phone, organization_type='T', \
+                                    upper_organization=org_upper)
+            org.save()
+            return HttpResponseRedirect('/admin/app/organization/')
+    else:
+        form = SchoolForm()
+    t = loader.get_template('app/school/add.html')
+    c = RequestContext(request, {'form' : form})
+    return HttpResponse(t.render(c))
+
+def school_edit(request):
+    pass
 
 def timetable(request):
     template = get_template('app/timetable.html')

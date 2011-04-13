@@ -1,5 +1,5 @@
 from django.db import models
-from django.forms import ModelForm
+from django import forms
 
 class Organization(models.Model):
     ORGANIZATION_TYPE_CHOICES = (('T', 'Truong'),
@@ -9,7 +9,7 @@ class Organization(models.Model):
     address = models.CharField(max_length=255)
     phone_number = models.CharField(max_length=40)
     organization_type = models.CharField(max_length=2, choices=ORGANIZATION_TYPE_CHOICES)
-    upper_organization = models.ForeignKey('self')
+    upper_organization = models.ForeignKey('self', blank=True, null=True)
     
     def __unicode__(self):
         return self.name
@@ -49,8 +49,19 @@ class Semester(models.Model):
     def __unicode__(self):
         return self.name
 
+
+class SchoolForm(forms.Form):
+    name = forms.CharField(max_length=100)
+    address = forms.CharField(max_length=255)
+    phone_number = forms.CharField(max_length=40)
+    choices = [(i.id, i.name) for i in Organization.objects.all() \
+               if i.organization_type == 'S' or i.organization_type == 'P']
+    choices.insert(0, (-1, '---------'))
+    upper_organization = forms.ChoiceField(choices=choices)
+    
+
 # School year form
-class SchoolYearForm(ModelForm):
+class SchoolYearForm(forms.ModelForm):
     class Meta:
         model = SchoolYear
 
@@ -62,7 +73,7 @@ class Student (models.Model):
         return self.name
 
 # Student form
-class StudentForm (ModelForm):
+class StudentForm (forms.ModelForm):
     class Meta:
         model = Student
 
@@ -101,7 +112,7 @@ class StudentExtented (models.Model):
         return self.name
 
 # Extend student's information form
-class StudentExtendedForm (ModelForm):
+class StudentExtendedForm (forms.ModelForm):
     class Meta:
         model = StudentExtented
  
@@ -112,7 +123,7 @@ class StandardMajor (models.Model):
         return self.name
 
 # Standard major form
-class StandardMajorForm(ModelForm):
+class StandardMajorForm(forms.ModelForm):
     class Meta:
         model = StandardMajor
                
@@ -125,7 +136,7 @@ class Major(models.Model):
         return self.name
 
 # Major form
-class MajorForm(ModelForm):
+class MajorForm(forms.ModelForm):
     class Meta:
         model = Major
 
@@ -136,7 +147,7 @@ class Grade(models.Model):
         return self.name
 
 # Grade form
-class GradeForm (ModelForm):
+class GradeForm (forms.ModelForm):
     class Meta:
         model = Grade
         
@@ -151,13 +162,13 @@ class Subject(models.Model):
         return self.name
 
 # Subject form    
-class SubjectForm(ModelForm):
+class SubjectForm(forms.ModelForm):
     class Meta:
         model = Subject
         
 
 # User form
-class UserForm (ModelForm):
+class UserForm (forms.ModelForm):
     class Meta:
         model = User
 
@@ -174,7 +185,7 @@ class Class (models.Model):
         unique_together = ('school_year', 'major', 'class_teacher', 'grade')
 
 # Class form
-class ClassForm (ModelForm):
+class ClassForm (forms.ModelForm):
     class Meta:
         model = Class
         
@@ -190,7 +201,7 @@ class ConfficentSubject (models.Model):
         unique_together = ('major', 'subject')
 
 # Coefficent Subject form
-class ConfficentSubjectForm (ModelForm):
+class ConfficentSubjectForm (forms.ModelForm):
     class Meta:
         model = ConfficentSubject
     
@@ -205,7 +216,7 @@ class StudentSubject (models.Model):
         unique_together = ('student', 'subject')
 
 # Student takes subject's award form
-class StudentSubjectForm (ModelForm):
+class StudentSubjectForm (forms.ModelForm):
     class Meta:
         model = StudentSubject
 
@@ -221,7 +232,7 @@ class StudentClass (models.Model):
         unique_together = ('student', 'clazz', 'major')
 
 # Student_Class form
-class StudentClassForm (ModelForm):
+class StudentClassForm (forms.ModelForm):
     class Meta:
         model = StudentClass
     
@@ -232,7 +243,7 @@ class PhaseMarkType (models.Model):
         return self.name
 
 # Phase_Mark_Type form
-class PhaseMarkTypeForm (ModelForm):
+class PhaseMarkTypeForm (forms.ModelForm):
     class Meta:
         model = PhaseMarkType
     
@@ -257,7 +268,7 @@ class PhaseMark (models.Model):
 
 
 # Phase_Mark form
-class PhaseMarkForm (ModelForm):
+class PhaseMarkForm (forms.ModelForm):
     class Meta:
         model = PhaseMark
 
@@ -281,7 +292,7 @@ class StudentClassPhaseMark (models.Model):
         unique_together = ('student_class', 'phase_mark')
 
 # Student_Class_PhaseMark form
-class StudentClassPhaseMarkForm (ModelForm):
+class StudentClassPhaseMarkForm (forms.ModelForm):
     class Meta:
         model = StudentClassPhaseMark
 
@@ -296,7 +307,7 @@ class TimeTable(models.Model):
     def __unicode__(self):
         return self.name
     
-class TimeTableForm(ModelForm):
+class TimeTableForm(forms.ModelForm):
     class Meta:
         model = TimeTable
         
@@ -412,7 +423,7 @@ class SystemDataType(models.Model):
     data_type_name = models.CharField(max_length=100)
     detail_assign = models.CharField(max_length=100)
     
-class SystemDataTypeForm(ModelForm):
+class SystemDataTypeForm(forms.ModelForm):
     class Meta:
         model = SystemDataType
 
@@ -422,7 +433,7 @@ class UserTypeDataType(models.Model):
     user_type_id = models.CharField(max_length=10)
     data_type_id = models.CharField(max_length=10)
 
-class UserTypeDataTypeForm(ModelForm):
+class UserTypeDataTypeForm(forms.ModelForm):
     class Meta:
         model = UserTypeDataType
 
@@ -433,7 +444,7 @@ class UserTypeDataTypeClass(models.Model):
     user_id = models.CharField(max_length=10)
     class_id = models.CharField(max_length=10)
 
-class UserTypeDataTypeClassForm(ModelForm):
+class UserTypeDataTypeClassForm(forms.ModelForm):
     class Meta:
         model = UserTypeDataTypeClass
 
@@ -462,7 +473,7 @@ class UserDataKey(models.Model):
     _45_test_8 = models.CharField(max_length=10)
     exam = models.CharField(max_length=10)
 
-class UserDataKeyForm(ModelForm):
+class UserDataKeyForm(forms.ModelForm):
     class Meta:
         unique_together = ('user_assign_id', 'phase_mark_id')
 
@@ -472,7 +483,7 @@ class UserType(models.Model):
     user_level = models.CharField(max_length=100)
     ineffective = models.BooleanField()
     
-class UserTypeForm(ModelForm):
+class UserTypeForm(forms.ModelForm):
     class Meta:
         model = UserType
 
@@ -484,7 +495,7 @@ class TeachingAssign(models.Model):
     first_term = models.CharField(max_length=10)
     second_term = models.CharField(max_length=10)
 
-class TeachingAssignForm(ModelForm):
+class TeachingAssignForm(forms.ModelForm):
     class Meta:
         model = TeachingAssign
 
@@ -511,7 +522,7 @@ class MarkByPeriod(models.Model):
     speak_mark_2 = models.IntegerField(max_length = 10)
     date_speak_mark_2 = models.DateField()
     
-class MarkByPeriodForm(ModelForm):
+class MarkByPeriodForm(forms.ModelForm):
     class Meta:
         model = MarkByPeriod
         
@@ -520,7 +531,7 @@ class SysValueMarkType(models.Model):
     name_value_mark_type = models.CharField(max_length = 50)
     is_disable = models.BooleanField(False)
 
-class SysValueMarkTypeForm(ModelForm):
+class SysValueMarkTypeForm(forms.ModelForm):
     class Meta:
         model = SysValueMarkType
 

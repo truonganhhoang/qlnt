@@ -25,3 +25,7 @@ html{
  	padding: 5px;
 }
 
+label {
+  float: left;
+  width: 10em;
+}

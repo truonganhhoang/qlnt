@@ -39,6 +39,7 @@ urlpatterns = patterns('',
     url(r'^app/timetable/(?P<pk>\d+)$', DetailView.as_view(model=TimeTable,
                                                         template_name='app/timetable/detail.html')),
     url(r'^app/timetable/add$', 'app.views.time_table_add'),
+    url(r'^app/school/add$', 'app.views.school_add'),
     url(r'^app/systemdatatype/$', ListView.as_view(
             queryset=SystemDataType.objects.all(),
             context_object_name='system_datatype_list',
