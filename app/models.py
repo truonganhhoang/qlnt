@@ -51,13 +51,15 @@ class Semester(models.Model):
 
 
 class SchoolForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        super(SchoolForm, self).__init__(*args, **kwargs)
+        self.fields['upper_organization'].choices = [(-1, '----------')] + [(i.id, i.name) \
+                                            for i in Organization.objects.all()]
+    
     name = forms.CharField(max_length=100)
     address = forms.CharField(max_length=255)
     phone_number = forms.CharField(max_length=40)
-#    choices = [(i.id, i.name) for i in Organization.objects.all() \
-#               if i.organization_type == 'S' or i.organization_type == 'P']
-#    choices.insert(0, (-1, '---------'))
-#    upper_organization = forms.ChoiceField(choices=choices)
+    upper_organization = forms.ChoiceField()
     
 
 # School year form
