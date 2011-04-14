@@ -54,10 +54,10 @@ class SchoolForm(forms.Form):
     name = forms.CharField(max_length=100)
     address = forms.CharField(max_length=255)
     phone_number = forms.CharField(max_length=40)
-    choices = [(i.id, i.name) for i in Organization.objects.all() \
-               if i.organization_type == 'S' or i.organization_type == 'P']
-    choices.insert(0, (-1, '---------'))
-    upper_organization = forms.ChoiceField(choices=choices)
+#    choices = [(i.id, i.name) for i in Organization.objects.all() \
+#               if i.organization_type == 'S' or i.organization_type == 'P']
+#    choices.insert(0, (-1, '---------'))
+#    upper_organization = forms.ChoiceField(choices=choices)
     
 
 # School year form
