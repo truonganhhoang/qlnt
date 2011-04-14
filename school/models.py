@@ -95,7 +95,7 @@ class Pupil(BasicPersonInfo):
 	class_id = models.ForeignKey(Class)
 
 class Term(models.Model):
-	number = models.IntegerField(max_length=1)
+	number = models.IntegerField(max_length=1, choices = TERM_CHOICES)
 	time = models.DateField()
 
 	def __unicode__(self):
@@ -106,9 +106,7 @@ class Subject(models.Model):
 	subject_code = models.CharField(max_length = 15, unique = True) # can't be null
 	class_code = models.CharField(max_length = 15, unique = True) # can't be null
 	name = models.CharField(max_length = 45) # can't be null
-	hs_m = models.FloatField( validators = [validate_hs])
-	hs_15= models.FloatField( validators = [validate_hs])
-	hs_45= models.FloatField( validators = [validate_hs])
+	hs = models.FloatField( validators = [validate_hs])
 	#this field can be omitted at this iteration.
 	teacher_id = models.IntegerField() # field nay de cung cap permission cho giao vien de nhap diem
 	term_id = models.ForeignKey(Term)

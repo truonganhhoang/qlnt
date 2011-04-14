@@ -71,4 +71,8 @@ urlpatterns = patterns('',
     # url(r'^app/sysvaluemarktype/(?P<pk>\d+)$', DetailView.as_view(model=SysValueMarkType,
                                                         # template_name='app/sysvaluemarktype/detail.html')),
     #--- url(r'^app/sysvaluemarktype/add$', 'app.views.sys_value_mark_type_add')
+    
+    # url for school app
+    
+    url(r'^school/(?P<school_code>\w+)/index$','school.views.school'), 
 )
