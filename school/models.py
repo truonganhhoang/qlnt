@@ -1,4 +1,5 @@
 from django.db import models
+from django import forms
 from django.core import validators
 from django.core.exceptions import ValidationError
 from datetime import date
@@ -47,6 +48,10 @@ class School(models.Model):
     
 	#class Admin: pass
 
+class SchoolForm(forms.ModelForm):
+    class Meta:
+        model = School
+
 class BasicPersonInfo(models.Model):
 	first_name = models.CharField(max_length = 45)
 	last_name = models.CharField(max_length = 45) # tach ra first_name and last_name de sort va import from excel file
@@ -67,6 +72,10 @@ class BasicPersonInfo(models.Model):
 
 class Teacher(BasicPersonInfo): pass
 
+class TeacherForm(forms.ModelForm):
+    class Meta:
+        model = Teacher
+
 class Class(models.Model):
 	class_code = models.CharField(max_length = 20, unique = True)
 	name = models.CharField(max_length = 20)
@@ -76,6 +85,10 @@ class Class(models.Model):
 	def __unicode__(self):
 		return self.name
 	#class Admin: pass
+    
+class ClassForm(forms.ModelForm):
+    class Meta:
+        model = Class
 	    
 class Pupil(BasicPersonInfo):
 	year = models.IntegerField(validators = [validate_year]) #year that pupil go to class 1
@@ -94,6 +107,10 @@ class Pupil(BasicPersonInfo):
 	school_id = models.ForeignKey(School)
 	class_id = models.ForeignKey(Class)
 
+class PupilForm(forms.ModelForm):
+    class Meta:
+        model = Pupil
+
 class Term(models.Model):
 	number = models.IntegerField(max_length=1, choices = TERM_CHOICES)
 	time = models.DateField()
@@ -101,7 +118,11 @@ class Term(models.Model):
 	def __unicode__(self):
 		return str(self.number)
 	#class Admin: pass
-	    
+
+class TermForm(forms.ModelForm):
+    class Meta:
+        model = Term
+
 class Subject(models.Model):
 	subject_code = models.CharField(max_length = 15, unique = True) # can't be null
 	class_code = models.CharField(max_length = 15, unique = True) # can't be null
@@ -115,7 +136,11 @@ class Subject(models.Model):
 		return self.name
 	
 	#class Admin: pass
-	    
+
+class SubjectForm(forms.ModelForm):
+    class Meta:
+        model = Subject
+        	    
 class Mark(models.Model):
 	student_code = models.CharField(max_length = 15) # will link with pupil table from default db
 	mieng_1 = models.FloatField( null = True, blank = True, validators = [validate_mark])
@@ -139,3 +164,7 @@ class Mark(models.Model):
 	subject_id = models.ForeignKey(Subject)
 	
 	#class Admin: pass
+
+class MarkForm(forms.ModelForm):
+    class Meta:
+        model = Mark
