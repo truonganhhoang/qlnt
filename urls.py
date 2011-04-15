@@ -74,5 +74,6 @@ urlpatterns = patterns('',
     
     # url for school app
     
-    url(r'^school/(?P<school_code>\w+)/index$','school.views.school'), 
+    url(r'^school/$','school.views.school'), 
+    url(r'^school/', include('batchimport.urls')),
 )
