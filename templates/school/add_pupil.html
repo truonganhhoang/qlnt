@@ -1,0 +1,152 @@
+{% extends "school/base_school.html" %}
+
+{% block content %}
+{% if message != None %}
+{{message}}
+{% endif %}
+
+<form action="/school/{{school_code}}/index/students/add" method="post">{% csrf_token %}
+<div class="form_settings">
+    {{ form.non_field_errors }}
+    <div class="fieldWrapper">
+        {{form.first_name.errors }}
+        <p><span><label for="id_first_name">Tên:</label></span>
+            {{ form.first_name }}</p>
+    </div>
+
+    <div class="fieldWrapper">
+        {{ form.last_name.errors }}
+        <p><span><label for="id_last_name">Họ:</label></span>
+            {{ form.last_name }}</p>
+    </div>
+
+    <div class="fieldWrapper">
+        {{ form.birthday.errors }}
+        <p><span><label for="id_brithday">Ngày Sinh:</label></span>
+            {{ form.birthday }}</p>
+    </div>
+
+    <div class="fieldWrapper">
+        {{ form.birth_place.errors }}
+        <p><span><label for="id_birth_place">Nơi sinh</label></span>
+            {{ form.birth_place }}</p>
+    </div>
+
+    <div class="fieldWrapper">
+        {{form.sex.errors }}
+        <p><span><label for="id_sex">Giới tính:</label></span>
+            {{ form.sex }}</p>
+    </div>
+
+    <div class="fieldWrapper">
+        {{ form.phone.errors }}
+        <p><span><label for="id_phone">Điện thoại liên lạc:</label></span>
+            {{ form.phone }}</p>
+    </div>
+
+    <div class="fieldWrapper">
+        {{ form.current_address.errors }}
+        <p><span><label for="id_current_address">Địa chỉ hiện tại:</label></span>
+            {{ form.current_address }}</p>
+    </div>
+
+    <div class="fieldWrapper">
+        {{ form.email.errors }}
+        <p><span><label for="id_email">Email</label></span>
+            {{ form.email }}</p>
+    </div>
+
+    <div class="fieldWrapper">
+        {{form.year.errors }}
+        <p><span><label for="id_year">Năm vào lớp 1</label></span>
+        {{ form.year }}</p>
+    </div>
+
+    <div class="fieldWrapper">
+        {{ form.pupil_code.errors }}
+        <p><span><label for="id_pupil_code">Mã học sinh</label></span>
+            {{ form.pupil_code }}</p>
+    </div>
+
+    <div class="fieldWrapper">
+        {{ form.current_status.errors }}
+        <p><span><label for="current_status">Tình trạng hiện tại</label></span>
+            {{ form.current_status }}</p>
+    </div>
+
+    <div class="fieldWrapper">
+        {{ form.home_town.errors }}
+        <p><span><label for="id_home_town">Quê quán</label></span>
+            {{ form.home_town }}</p>
+    </div>
+
+    <div class="fieldWrapper">
+        {{form.disable.errors }}
+        <p><span><label for="id_disable">Không còn</label></span>
+            {{ form.disable }}</p>
+    </div>
+
+    <div class="fieldWrapper">
+        {{ form.father_name.errors }}
+        <p><span><label for="id_father_name">Họ tên bố</label></span>
+            {{ form.father_name }}</p>
+    </div>
+
+    <div class="fieldWrapper">
+        {{ form.father_birthday.errors }}
+        <p><span><label for="id_father_birthday">Ngày sinh của bố</label></span>
+            {{ form.father_birthday }}</p>
+    </div>
+
+     <div class="fieldWrapper">
+        {{form.father_phone.errors }}
+        <p><span><label for="id_father_phone">Điện thoại của bố</label></span>
+        {{ form.father_phone }}</p>
+    </div>
+
+    <div class="fieldWrapper">
+        {{ form.father_job.errors }}
+        <p><span><label for="id_father_job">Nghề nghiệp bố</label></span>
+            {{ form.father_job }}</p>
+    </div>
+
+    <div class="fieldWrapper">
+        {{ form.mother_name.errors }}
+        <p><span><label for="id_mother_name">Họ Tên mẹ</label></span>
+            {{ form.mother_name }}</p>
+    </div>
+
+    <div class="fieldWrapper">
+        {{ form.mother_birthday.errors }}
+        <p><span><label for="id_mother_birthday">Ngày sinh của mẹ</label></span>
+            {{ form.mother_birthday }}</p>
+    </div>
+
+     <div class="fieldWrapper">
+        {{form.mother_phone.errors }}
+        <p><span><label for="id_mother_phone">Điện thoại của mẹ</label></span>
+            {{ form.mother_phone }}</p>
+    </div>
+
+    <div class="fieldWrapper">
+        {{ form.mother_job.errors }}
+        <p><span><label for="id_mother_job">Nghề nghiệp mẹ</label></span>
+            {{ form.mother_job }}</p>
+    </div>
+
+    <div class="fieldWrapper">
+        {{form.school_id.errors }}
+        <p><span><label for="id_school_id">Trường</label></span>
+            {{ form.school_id }}</p>
+    </div>
+
+    <div class="fieldWrapper">
+        {{ form.class_id.errors }}
+        <p><span><label for="id_class_id">Lớp</label></span>
+            {{ form.class_id }}</p>
+    </div>
+
+<input type ="submit" value="submit"/>
+</div>
+</form>
+{% endblock %}
