@@ -75,8 +75,8 @@ urlpatterns = patterns('',
     
     url(r'^school/$','school.views.school'), 
     url(r'^school/', include('batchimport.urls')),
-    url(r'^school/(?P<school_code>\w+)/index$','school.views.school'),
-    url(r'^school/(?P<school_code>\w+)/index/classes/add$', 'school.views.add_class'),
-    url(r'^school/(?P<school_code>\w+)/index/teachers/add$', 'school.views.add_teacher'),
-    url(r'^school/(?P<school_code>\w+)/index/subjects/add$', 'school.views.add_subject'),
-    url(r'^school/(?P<school_code>\w+)/index/students/add$', 'school.views.add_pupil'))
+    url(r'^school/classes/add$', 'school.views.add_class'),
+    url(r'^school/teachers/add$', 'school.views.add_teacher'),
+    url(r'^school/subjects/add$', 'school.views.add_subject'),
+    url(r'^school/students/add$', 'school.views.add_pupil'),
+)

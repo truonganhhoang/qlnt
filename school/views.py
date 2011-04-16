@@ -9,10 +9,10 @@ from school.models import *
 
 def school(request, school_code = None):
 	class_list = Class.objects.all()
-	context = RequestContext(request, {'class_list':class_list , 'school_code':school_code})
-	return render_to_response(r'school/school.html',context_instance = context)
-
-def add_class(request, school_code = None):
+	context = RequestContext(request)
+	return render_to_response(r'school/school.html', context_instance = context)
+	
+def add_class(request):
     message = None
     form = ClassForm()
     if request.method == 'POST':
@@ -22,17 +22,18 @@ def add_class(request, school_code = None):
             name = form.cleaned_data['name']
             school_id = form.cleaned_data['school_id']
             teacher_id = form.cleaned_data['teacher_id']
-            new_class = Class.objects.create(class_code  = class_code, name = name, school_id = school_id, teacher_id = teacher_id)
+            new_class = Class.objects.create(class_code  = class_code, \
+             								name = name, school_id = school_id, teacher_id = teacher_id)
             new_class.save()
             message = 'You have added new class'
         else:
             message = 'Please check your information, something is wrong'
 
     t = loader.get_template('school/add_class.html')
-    c = RequestContext(request, {'form' : form, 'school_code' : school_code, 'message' : message})
+    c = RequestContext(request, {'form' : form, 'message' : message})
     return HttpResponse(t.render(c))
     
-def add_teacher(request, school_code = None):
+def add_teacher(request):
     message = None
     form = TeacherForm()
     if request.method == 'POST':
@@ -46,17 +47,19 @@ def add_teacher(request, school_code = None):
             p = form.cleaned_data['phone']
             ca = form.cleaned_data['current_address']
             e = form.cleaned_data['email']
-            new_teacher = Teacher.objects.create(first_name = fn, last_name=ls, birthday = bd, birth_place = bl, sex = s, phone = p, current_address = ca, email = e)
+            new_teacher = Teacher.objects.create(first_name = fn, last_name=ls,\
+            									 birthday = bd, birth_place = bl,\
+            									 sex = s, phone = p, current_address = ca, email = e)
             new_teacher.save()
             message = 'You have added new teacher'
         else:
             message = 'Please check your information, something is wrong'
 
     t = loader.get_template('school/add_teacher.html')
-    c = RequestContext(request, {'form' : form, 'school_code' : school_code, 'message' : message})
+    c = RequestContext(request, {'form' : form, 'message' : message})
     return HttpResponse(t.render(c))
 
-def add_subject(request, school_code = None):
+def add_subject(request ):
     message = None
     form = SubjectForm()
     if request.method == 'POST':
@@ -68,17 +71,19 @@ def add_subject(request, school_code = None):
             hs = form.cleaned_data['hs']
             teacher_id = form.cleaned_data['teacher_id']
             term_id = form.cleaned_data['term_id']
-            new_subject = Subject.objects.create(subject_code = subject_code, class_code  = class_code, name = name, hs = hs, teacher_id = teacher_id, term_id = term_id)
+            new_subject = Subject.objects.create(subject_code = subject_code, \
+            									class_code  = class_code, name = name, \
+            									hs = hs, teacher_id = teacher_id, term_id = term_id)
             new_subject.save()
             message = 'You have added new subject'
         else:
             message = 'Please check your information, something is wrong'
 
     t = loader.get_template('school/add_subject.html')
-    c = RequestContext(request, {'form' : form, 'school_code' : school_code, 'message' : message})
+    c = RequestContext(request, {'form' : form, 'message' : message})
     return HttpResponse(t.render(c))
 
-def add_pupil(request, school_code = None):
+def add_pupil(request):
     message = None
     form = PupilForm()
     if request.method == 'POST':
@@ -90,5 +95,6 @@ def add_pupil(request, school_code = None):
             message = 'Please check your information, something is wrong'
 
     t = loader.get_template('school/add_pupil.html')
-    c = RequestContext(request, {'form' : form, 'school_code' : school_code, 'message' : message})
+    c = RequestContext(request, {'form' : form, 'message' : message})
     return HttpResponse(t.render(c))
+
