@@ -23,13 +23,20 @@ class OrganizationForm(forms.Form):
     #                             ('P', 'Phong'),
     #                             ('S', 'So'))
     #===========================================================================
-    name = forms.CharField(max_length = 100)
-    adress = forms.CharField(max_length=255)
-    phone_number = forms.CharField(max_length=40)
+    #===========================================================================
+    # def __init__(self, *args, **kwargs):
+    #    super(SchoolForm, self).__init__(*args, **kwargs)
+    #    self.fields['upper_organization'].choices = [(-1, '----------')] + [(i.id, i.name) for i in Organization.objects.all() \
+    #                                                                        if i.organization_type == 'S' or i.organization_type == 'P']
+    # 
+    #===========================================================================
+    name = forms.CharField(max_length = 100, min_length=1)
+    adress = forms.CharField(max_length=255, min_length=1)
+    phone_number = forms.CharField(max_length=40,min_length=9)
     email_adress = forms.EmailField()
-#    organization_type = forms.CharField(max_length=2, choices=ORGANIZATION_TYPE_CHOICES)
+#    organization_type = forms.ChoiceField()
 #    upper_organization = forms.
-    manager_name = forms.CharField(max_length = 100)
+    manager_name = forms.CharField(max_length = 100, min_length=1)
 
 class PositionType(models.Model):
     name = models.CharField(max_length=100)
@@ -39,7 +46,7 @@ class PositionType(models.Model):
 
 # form validate for PositionType
 class PositionTypeFrom(forms.Form):
-    name = forms.CharField(max_length=100)
+    name = forms.CharField(max_length=100, min_length=1)
 
 class User(models.Model):
     name = models.CharField(max_length=100)
@@ -53,9 +60,9 @@ class User(models.Model):
         return self.name
 
 class UserFrom(forms.Form):
-    name = forms.CharField(max_length=100)
+    name = forms.CharField(max_length=100, min_length=1)
     birthday = forms.DateField()
-    phone_number = forms.CharField(max_length=40)
+    phone_number = forms.CharField(max_length=40, min_length=9)
     email = forms.EmailField()
 
 class SchoolYear(models.Model):
@@ -68,7 +75,7 @@ class SchoolYear(models.Model):
         return self.name
 
 class SchoolYearForm(forms.Form):
-    name = forms.CharField(max_length=100)
+    name = forms.CharField(max_length=100 , min_length=1)
     start_date = forms.DateField()
     end_date = forms.DateField()
     active_year = forms.BooleanField()
@@ -89,14 +96,14 @@ class Semester(models.Model):
         return self.name
 
 class SemesterForm(forms.Form):
-    name = forms.CharField(max_length=100)
+    name = forms.CharField(max_length=100, min_length=1)
     start_date = forms.DateField()
     end_date = forms.DateField()
     post_start_date = forms.DateField()
     post_end_date = forms.DateField()
-    does_grades = forms.CharField(max_length = 300)
-    does_exam = forms.CharField(max_length = 100)
-    does_comments = forms.CharField(max_length = 500)
+    does_grades = forms.CharField(max_length = 300, min_length=1)
+    does_exam = forms.CharField(max_length = 100, min_length=1)
+    does_comments = forms.CharField(max_length = 500, min_length=1)
 
 class SchoolForm(forms.Form):
     def __init__(self, *args, **kwargs):
@@ -104,9 +111,9 @@ class SchoolForm(forms.Form):
         self.fields['upper_organization'].choices = [(-1, '----------')] + [(i.id, i.name) for i in Organization.objects.all() \
                                                                             if i.organization_type == 'S' or i.organization_type == 'P']
     
-    name = forms.CharField(max_length=100)
-    address = forms.CharField(max_length=255)
-    phone_number = forms.CharField(max_length=40)
+    name = forms.CharField(max_length=100, min_length=1)
+    address = forms.CharField(max_length=255, min_length=1)
+    phone_number = forms.CharField(max_length=40, min_length=9)
     upper_organization = forms.ChoiceField()
     
 # Student model
