@@ -5,4 +5,5 @@ from school.models import *
 
 def school(request):
 	class_list = Class.objects.all()
-	return render_to_response(r'school/school.html')
+	context = RequestContext(request)
+	return render_to_response(r'school/school.html', context_instance = context)
