@@ -3,7 +3,6 @@ from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from app.models import TimeTable, SystemDataType 
 from app.models import MarkByPeriod
-from app.models import User
 import settings 
 
 # Uncomment the next two lines to enable the admin:
@@ -49,13 +48,6 @@ urlpatterns = patterns('',
                                                         template_name='app/systemdatatype/detail.html')),
     url(r'^app/systemdatatype/add$', 'app.views.system_datatype_add'),
     
-    url(r'^app/schoolstaff/$', ListView.as_view(
-    		queryset=User.objects.all(),
-    		context_object_name='user_list',
-    		template_name='app/schoolstaff/index.html')),
-    url(r'app/schoolstaff/(?P<pk>\d+)$', DetailView.as_view(model=User,
-    													template_name='app/schoolstaff/detail.html')),
-    url(r'^app/schoolstaff/add$', 'app.views.user_add'),
     
      #==========================================================================
      # (r'app/markbyperiod/$', 'app/markbyperiod/index.html'),
@@ -70,9 +62,21 @@ urlpatterns = patterns('',
      url(r'^app/markbyperiod/(?P<pk>\d+)$', DetailView.as_view(model=MarkByPeriod,
                                                          template_name='app/markbyperiod/detail.html')),
      url(r'^app/markbyperiod/add$', 'app.views.mark_by_period_add'),
+
+    
+    #------------------------- url(r'^app/sysvaluemarktype/$', ListView.as_view(
+            #-------------------------- queryset=SysValueMarkType.objects.all(),
+            #------------------- context_object_name='sys_value_mark_type_list',
+            #---------------- template_name='app/sysvaluemarktype/index.html')),
+    # url(r'^app/sysvaluemarktype/(?P<pk>\d+)$', DetailView.as_view(model=SysValueMarkType,
+                                                        # template_name='app/sysvaluemarktype/detail.html')),
+    #--- url(r'^app/sysvaluemarktype/add$', 'app.views.sys_value_mark_type_add')
     
     # url for school app
     
-    url(r'^school/$','school.views.school'), 
-    url(r'^school/', include('batchimport.urls')),
+    url(r'^school/(?P<school_code>\w+)/index$','school.views.school'),
+    url(r'^school/(?P<school_code>\w+)/index/classes/add$', 'school.views.add_class'),
+    url(r'^school/(?P<school_code>\w+)/index/teachers/add$', 'school.views.add_teacher'),
+    url(r'^school/(?P<school_code>\w+)/index/subjects/add$', 'school.views.add_subject'),
+    url(r'^school/(?P<school_code>\w+)/index/students/add$', 'school.views.add_pupil')
 )
