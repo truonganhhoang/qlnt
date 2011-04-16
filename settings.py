@@ -135,7 +135,6 @@ INSTALLED_APPS = (
     # 'django.contrib.admindocs',
     'app',
     'school',
-    'batchimport',
 )
 
 # A sample logging configuration. The only tangible logging
