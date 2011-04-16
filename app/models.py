@@ -8,18 +8,23 @@ class Organization(models.Model):
     name = models.CharField(max_length=100)
     address = models.CharField(max_length=255)
     phone_number = models.CharField(max_length=40)
+    email_adress = models.CharField(max_length = 50)
     organization_type = models.CharField(max_length=2, choices=ORGANIZATION_TYPE_CHOICES)
     upper_organization = models.ForeignKey('self', blank=True, null=True)
+    manager_name = models.CharField(max_length = 100)
+    
     
     def __unicode__(self):
         return self.name
 
+class OrganizationForm():
+    
 class PositionType(models.Model):
     name = models.CharField(max_length=100)
     
     def __unicode__(self):
         return self.name
-    
+
 class User(models.Model):
     name = models.CharField(max_length=100)
     birthday = models.DateField()
@@ -42,9 +47,15 @@ class SchoolYear(models.Model):
 
 class Semester(models.Model):
     name = models.CharField(max_length=100)
+    school_year = models.ForeignKey(SchoolYear)
+#    school_id = models.ForeingKey(School)
     start_date = models.DateField()
     end_date = models.DateField()
-    school_year = models.ForeignKey(SchoolYear)
+    post_start_date = models.DateField()
+    post_end_date = models.DateField()
+    does_grades = models.CharField(max_length = 300)
+    does_exam = models.CharField(max_length = 100)
+    does_comments = models.CharField(max_length = 500)
     
     def __unicode__(self):
         return self.name
