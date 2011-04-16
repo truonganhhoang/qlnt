@@ -2,30 +2,30 @@
 {% block content %}
 <table>
 	<tr>
-		<th><a href="{%url school.views.school school_code %}/classes">Danh sách lớp</a></th>
+		<th><a href="{%url school.views.school %}classes">Danh sách lớp</a></th>
 		<th>
-			<ul><a href="{%url school.views.school school_code %}/classes/add">Thêm lớp</a></ul>
+			<ul><a href="{%url school.views.school  %}classes/add">Thêm lớp</a></ul>
 		</th>
 	</tr>
 	<tr>
-		<th><a href="{%url school.views.school school_code %}/teachers">Danh sách giáo viên</a></th>
+		<th><a href="{%url school.views.school  %}teachers">Danh sách giáo viên</a></th>
 		<th>
-			<ul><a href="{%url school.views.school school_code %}/teachers/add">Thêm giáo viên</a></ul>
-		</th>
-	</tr>
-	
-	<tr>
-		<th><a href="{%url school.views.school school_code %}/subjects">Danh sách môn học</a></th>
-		<th>
-			<ul><a href="{%url school.views.school school_code %}/subjects/add">Thêm môn học</a></ul>
+			<ul><a href="{%url school.views.school  %}teachers/add">Thêm giáo viên</a></ul>
 		</th>
 	</tr>
 	
 	<tr>
-		<th><a href="{%url school.views.school school_code %}/students">Danh sách học sinh theo tên</a></th>
+		<th><a href="{%url school.views.school  %}subjects">Danh sách môn học</a></th>
 		<th>
-			<ul><a href="{%url school.views.school school_code %}/students/add">Thêm học sinh</a></ul>
-			<ul><a href="{%url school.views.school school_code %}/students/batchimport/import_start">Thêm học sinh từ file Excel</a></ul>
+			<ul><a href="{%url school.views.school  %}subjects/add">Thêm môn học</a></ul>
+		</th>
+	</tr>
+	
+	<tr>
+		<th><a href="{%url school.views.school  %}students">Danh sách học sinh theo tên</a></th>
+		<th>
+			<ul><a href="{%url school.views.school  %}students/add">Thêm học sinh</a></ul>
+			<ul><a href="{%url school.views.school  %}students/batchimport/import_start">Thêm học sinh từ file Excel</a></ul>
 		</th>
 	</tr>
 	

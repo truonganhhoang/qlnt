@@ -5,7 +5,7 @@
 {{message}}
 {% endif %}
 
-<form action="/school/{{school_code}}/index/teachers/add" method="post">{% csrf_token %}
+<form action="/school/teachers/add" method="post">{% csrf_token %}
     <div class="form_settings">
     {{ form.non_field_errors }}
     <div class="fieldWrapper">
