@@ -17,13 +17,29 @@ class Organization(models.Model):
     def __unicode__(self):
         return self.name
 
-class OrganizationForm():
-    
+class OrganizationForm(forms.Form):
+    #===========================================================================
+    # ORGANIZATION_TYPE_CHOICES = (('T', 'Truong'),
+    #                             ('P', 'Phong'),
+    #                             ('S', 'So'))
+    #===========================================================================
+    name = forms.CharField(max_length = 100)
+    adress = forms.CharField(max_length=255)
+    phone_number = forms.CharField(max_length=40)
+    email_adress = forms.EmailField()
+#    organization_type = forms.CharField(max_length=2, choices=ORGANIZATION_TYPE_CHOICES)
+#    upper_organization = forms.
+    manager_name = forms.CharField(max_length = 100)
+
 class PositionType(models.Model):
     name = models.CharField(max_length=100)
     
     def __unicode__(self):
         return self.name
+
+# form validate for PositionType
+class PositionTypeFrom(forms.Form):
+    name = forms.CharField(max_length=100)
 
 class User(models.Model):
     name = models.CharField(max_length=100)
@@ -36,6 +52,12 @@ class User(models.Model):
     def __unicode__(self):
         return self.name
 
+class UserFrom(forms.Form):
+    name = forms.CharField(max_length=100)
+    birthday = forms.DateField()
+    phone_number = forms.CharField(max_length=40)
+    email = forms.EmailField()
+
 class SchoolYear(models.Model):
     name = models.CharField(max_length=100)
     start_date = models.DateField()
@@ -44,6 +66,12 @@ class SchoolYear(models.Model):
     
     def __unicode__(self):
         return self.name
+
+class SchoolYearForm(forms.Form):
+    name = forms.CharField(max_length=100)
+    start_date = forms.DateField()
+    end_date = forms.DateField()
+    active_year = forms.BooleanField()
 
 class Semester(models.Model):
     name = models.CharField(max_length=100)
@@ -60,6 +88,15 @@ class Semester(models.Model):
     def __unicode__(self):
         return self.name
 
+class SemesterForm(forms.Form):
+    name = forms.CharField(max_length=100)
+    start_date = forms.DateField()
+    end_date = forms.DateField()
+    post_start_date = forms.DateField()
+    post_end_date = forms.DateField()
+    does_grades = forms.CharField(max_length = 300)
+    does_exam = forms.CharField(max_length = 100)
+    does_comments = forms.CharField(max_length = 500)
 
 class SchoolForm(forms.Form):
     def __init__(self, *args, **kwargs):
@@ -72,12 +109,6 @@ class SchoolForm(forms.Form):
     phone_number = forms.CharField(max_length=40)
     upper_organization = forms.ChoiceField()
     
-
-# School year form
-class SchoolYearForm(forms.ModelForm):
-    class Meta:
-        model = SchoolYear
-
 # Student model
 class Student (models.Model):
     first_name = models.CharField(max_length=50)
