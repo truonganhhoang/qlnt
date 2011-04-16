@@ -7,7 +7,7 @@ from django.template.loader import get_template
 from school.models import *
 
 
-def school(request, school_code = None):
+def school(request):
 	class_list = Class.objects.all()
 	context = RequestContext(request)
 	return render_to_response(r'school/school.html', context_instance = context)
