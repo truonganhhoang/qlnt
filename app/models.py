@@ -45,13 +45,14 @@ class PositionType(models.Model):
         return self.name
 
 # form validate for PositionType
-class PositionTypeFrom(forms.Form):
+class PositionTypeForm(forms.Form):
     name = forms.CharField(max_length=100, min_length=1)
 
 class User(models.Model):
     name = models.CharField(max_length=100)
     birthday = models.DateField()
     phone_number = models.CharField(max_length=40)
+    fax_number = models.CharField(max_length=50)
     email = models.EmailField()
     position = models.ForeignKey(PositionType)
     organization = models.ForeignKey(Organization)
@@ -59,11 +60,18 @@ class User(models.Model):
     def __unicode__(self):
         return self.name
 
-class UserFrom(forms.Form):
-    name = forms.CharField(max_length=100, min_length=1)
-    birthday = forms.DateField()
-    phone_number = forms.CharField(max_length=40, min_length=9)
-    email = forms.EmailField()
+#===============================================================================
+# class UserForm(forms.Form):
+#    name = forms.CharField(max_length=100, min_length=1)
+#    birthday = forms.DateField()
+#    phone_number = forms.CharField(max_length=40, min_length=9)
+#    fax_number = forms.CharField(max_length=50, min_length=9)
+#    email = forms.EmailField()
+#===============================================================================
+
+class UserForm(forms.ModelForm):
+    class Meta:
+        model = User
 
 class SchoolYear(models.Model):
     name = models.CharField(max_length=100)
@@ -218,10 +226,12 @@ class SubjectForm(forms.ModelForm):
         model = Subject
         
 
-# User form
-class UserForm (forms.ModelForm):
-    class Meta:
-        model = User
+#===============================================================================
+# # User form
+# class UserForm (forms.ModelForm):
+#    class Meta:
+#        model = User
+#===============================================================================
 
 # Class model
 class Class (models.Model):

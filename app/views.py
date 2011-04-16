@@ -2,6 +2,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from app.models import TimeTableForm, SchoolForm, Organization
 from app.models import SystemDataTypeForm
 from app.models import MarkByPeriodForm
+from app.models import UserForm
 from django.shortcuts import render_to_response
 from django.template import RequestContext, loader
 from django.template import Context
@@ -88,6 +89,19 @@ def mark_by_period_add(request):
     t = loader.get_template('app/markbyperiod/add.html')
     c = RequestContext(request, {'form' : form})
     return HttpResponse(t.render(c))
+
+def user_add(request):
+    if request.method == 'POST':
+        form = UserForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/app/schoolstaff/')
+    else:
+        form = UserForm()
+    t = loader.get_template('app/schoolstaff/add.html')
+    c = RequestContext(request, {'form' : form})
+    return HttpResponse(t.render(c))
+
 #------------------------------------------------------------------------------ 
 #-------------------------------------------- def sys_value_mark_type(request):
     #---------------------------------------------- if request.method == 'POST':
