@@ -110,7 +110,7 @@ class Pupil(BasicPersonInfo):
     mother_name = models.CharField(max_length = 45)
     mother_birthday = models.DateField(null = True)
     mother_job = models.CharField(max_length = 100, null = True, blank = True)    
-
+    mother_phone = models.CharField(max_length = 15, null = True, blank = True, validators = [validate_phone])
     #cay nay sau cung bo di dc
     school_id = models.ForeignKey(School)
     class_id = models.ForeignKey(Class)
@@ -134,7 +134,7 @@ class TermForm(forms.ModelForm):
 class Subject(models.Model):    
     name = models.CharField(max_length = 45) # can't be null
     hs = models.FloatField( validators = [validate_hs])
-
+    subject_code = models.CharField(max_length = 15, unique = True) # can't be null
     class_id = models.ForeignKey(Class)    
     teacher_id = models.ForeignKey(Teacher) # field nay de cung cap permission cho giao vien de nhap diem
     term_id = models.ForeignKey(Term)    
