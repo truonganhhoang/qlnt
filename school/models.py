@@ -1,3 +1,5 @@
+#sua mot chut model de lam tren 1 database
+
 from django.db import models
 from django import forms
 from django.core import validators
@@ -37,6 +39,7 @@ def validate_hs(value):
 		raise ValidationError(u'hs must be larger than 0')
 	       
 class School(models.Model):
+    
 	school_code = models.CharField(max_length = 20, unique = True)
 	name = models.CharField(max_length = 200, unique = True)
 	address = models.CharField(max_length = 200)
@@ -77,10 +80,12 @@ class TeacherForm(forms.ModelForm):
         model = Teacher
 
 class Class(models.Model):
-	class_code = models.CharField(max_length = 20, unique = True)
+    
+    #cai nay sau cung bo di    
+	class_code = models.CharField(max_length = 20, unique = True)    
 	name = models.CharField(max_length = 20)
 	school_id = models.ForeignKey(School)
-	teacher_id = models.ForeignKey(Teacher) 
+	teacher_id = models.ForeignKey(Teacher) #lien ket den giao vien chu nhiem
 	
 	def __unicode__(self):
 		return self.name
@@ -91,21 +96,24 @@ class ClassForm(forms.ModelForm):
         model = Class
 	    
 class Pupil(BasicPersonInfo):
-	year = models.IntegerField(validators = [validate_year]) #year that pupil go to class 1
-	pupil_code = models.CharField(max_length = 20, unique = True)
-	current_status = models.CharField(max_length = 200, null = True, blank = True)
-	home_town = models.CharField(max_length = 100, null = True, blank = True) #nguyen quan
-	disable = models.BooleanField(default = False)
-	father_name = models.CharField(max_length = 45)
-	father_birthday = models.DateField( null = True)
-	father_phone = models.CharField(max_length = 15, null = True, blank = True, validators = [validate_phone])
-	father_job = models.CharField(max_length = 100, null = True, blank = True)
-	mother_name = models.CharField(max_length = 45)
-	mother_birthday = models.DateField(null = True)
-	mother_phone = models.CharField(max_length = 15, null = True, blank = True, validators = [validate_phone])
-	mother_job = models.CharField(max_length = 100, null = True, blank = True)
-	school_id = models.ForeignKey(School)
-	class_id = models.ForeignKey(Class)
+    	
+    year = models.IntegerField(validators = [validate_year]) #year that pupil go to class 1    
+    #cai nay t nghi co the bo di
+    pupil_code = models.CharField(max_length = 20, unique = True)
+    current_status = models.CharField(max_length = 200, null = True, blank = True)	
+    home_town = models.CharField(max_length = 100, null = True, blank = True) #nguyen quan
+    disable = models.BooleanField(default = False)
+    father_name = models.CharField(max_length = 45)
+    father_birthday = models.DateField( null = True)
+    father_phone = models.CharField(max_length = 15, null = True, blank = True, validators = [validate_phone])
+    father_job = models.CharField(max_length = 100, null = True, blank = True)
+    mother_name = models.CharField(max_length = 45)
+    mother_birthday = models.DateField(null = True)
+    mother_job = models.CharField(max_length = 100, null = True, blank = True)    
+
+    #cay nay sau cung bo di dc
+    school_id = models.ForeignKey(School)
+    class_id = models.ForeignKey(Class)
 
 class PupilForm(forms.ModelForm):
     class Meta:
@@ -123,16 +131,15 @@ class TermForm(forms.ModelForm):
     class Meta:
         model = Term
 
-class Subject(models.Model):
-	subject_code = models.CharField(max_length = 15, unique = True) # can't be null
-	class_code = models.CharField(max_length = 15, unique = True) # can't be null
-	name = models.CharField(max_length = 45) # can't be null
-	hs = models.FloatField( validators = [validate_hs])
-	#this field can be omitted at this iteration.
-	teacher_id = models.IntegerField() # field nay de cung cap permission cho giao vien de nhap diem
-	term_id = models.ForeignKey(Term)
+class Subject(models.Model):    
+    name = models.CharField(max_length = 45) # can't be null
+    hs = models.FloatField( validators = [validate_hs])
+
+    class_id = models.ForeignKey(Class)    
+    teacher_id = models.ForeignKey(Teacher) # field nay de cung cap permission cho giao vien de nhap diem
+    term_id = models.ForeignKey(Term)    
 	
-	def __unicode__(self):
+    def __unicode__(self):
 		return self.name
 	
 	#class Admin: pass
@@ -140,29 +147,35 @@ class Subject(models.Model):
 class SubjectForm(forms.ModelForm):
     class Meta:
         model = Subject
+
+class SubjectForm1(forms.ModelForm):
+    class Meta:
+        model = Subject
         	    
 class Mark(models.Model):
-	student_code = models.CharField(max_length = 15) # will link with pupil table from default db
-	mieng_1 = models.FloatField( null = True, blank = True, validators = [validate_mark])
-	mieng_2 = models.FloatField( null = True, blank = True, validators = [validate_mark])
-	mieng_3 = models.FloatField( null = True, blank = True, validators = [validate_mark])
-	mieng_4 = models.FloatField( null = True, blank = True, validators = [validate_mark])
-	mieng_5 = models.FloatField( null = True, blank = True, validators = [validate_mark])
-	mlam_1 = models.FloatField( null = True, blank = True, validators = [validate_mark])
-	mlam_2 = models.FloatField( null = True, blank = True, validators = [validate_mark])
-	mlam_3 = models.FloatField( null = True, blank = True, validators = [validate_mark])
-	mlam_4 = models.FloatField( null = True, blank = True, validators = [validate_mark])
-	mlam_5 = models.FloatField( null = True, blank = True, validators = [validate_mark])
-	mot_tiet_1 = models.FloatField( null = True, blank = True, validators = [validate_mark])
-	mot_tiet_2 = models.FloatField( null = True, blank = True, validators = [validate_mark])
-	mot_tiet_3 = models.FloatField( null = True, blank = True, validators = [validate_mark])
-	mot_tiet_4 = models.FloatField( null = True, blank = True, validators = [validate_mark])
-	mot_tiet_5 = models.FloatField( null = True, blank = True, validators = [validate_mark])
-	ck = models.FloatField( null = True, blank = True, validators = [validate_mark])
-	tb = models.FloatField( null = True, blank = True, validators = [validate_mark])
+    
+    mieng_1 = models.FloatField( null = True, blank = True, validators = [validate_mark])
+    mieng_2 = models.FloatField( null = True, blank = True, validators = [validate_mark])
+    mieng_3 = models.FloatField( null = True, blank = True, validators = [validate_mark])
+    mieng_4 = models.FloatField( null = True, blank = True, validators = [validate_mark])
+    mieng_5 = models.FloatField( null = True, blank = True, validators = [validate_mark])
+    mlam_1 = models.FloatField( null = True, blank = True, validators = [validate_mark])
+    mlam_2 = models.FloatField( null = True, blank = True, validators = [validate_mark])
+    mlam_3 = models.FloatField( null = True, blank = True, validators = [validate_mark])
+    mlam_4 = models.FloatField( null = True, blank = True, validators = [validate_mark])
+    mlam_5 = models.FloatField( null = True, blank = True, validators = [validate_mark])
+    mot_tiet_1 = models.FloatField( null = True, blank = True, validators = [validate_mark])
+    mot_tiet_2 = models.FloatField( null = True, blank = True, validators = [validate_mark])
+    mot_tiet_3 = models.FloatField( null = True, blank = True, validators = [validate_mark])
+    mot_tiet_4 = models.FloatField( null = True, blank = True, validators = [validate_mark])
+    mot_tiet_5 = models.FloatField( null = True, blank = True, validators = [validate_mark])
+    ck = models.FloatField( null = True, blank = True, validators = [validate_mark])
+    tb = models.FloatField( null = True, blank = True, validators = [validate_mark])
 	# all fields can be null
-	subject_id = models.ForeignKey(Subject)
-	
+    
+    subject_id = models.ForeignKey(Subject)
+    #sua cho nay
+    student_code = models.ForeignKey(Pupil)    	
 	#class Admin: pass
 
 class MarkForm(forms.ModelForm):
