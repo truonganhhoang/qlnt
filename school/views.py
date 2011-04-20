@@ -83,13 +83,13 @@ def add_subject(request ):
         form = SubjectForm(request.POST)
         if form.is_valid():
             subject_code = form.cleaned_data['subject_code']
-            class_code = form.cleaned_data['class_code']
+            class_id = form.cleaned_data['class_id']
             name = form.cleaned_data['name']
             hs = form.cleaned_data['hs']
             teacher_id = form.cleaned_data['teacher_id']
             term_id = form.cleaned_data['term_id']
             new_subject = Subject.objects.create(subject_code = subject_code, \
-            									class_code  = class_code, name = name, \
+            									class_id  = class_id, name = name, \
             									hs = hs, teacher_id = teacher_id, term_id = term_id)
             new_subject.save()
             message = 'You have added new subject'
