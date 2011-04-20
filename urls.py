@@ -74,13 +74,13 @@ urlpatterns = patterns('',
     # url for school app
     
     url(r'^school/$','school.views.school'), 
-    #url(r'^school/', include('batchimport.urls')),
+    url(r'^school/', include('batchimport.urls')),
     url(r'^school/classes/add$', 'school.views.add_class'),
     url(r'^school/teachers/add$', 'school.views.add_teacher'),
     url(r'^school/subjects/add$', 'school.views.add_subject'),
     url(r'^school/students/add$', 'school.views.add_pupil'),
     url(r'^school/mark_table$','school.views.mark_table'), 
 
-    url(r'^school/test$','school.views.test'), 
+    #url(r'^school/test$','school.views.test'), 
     
 )
