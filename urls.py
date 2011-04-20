@@ -71,16 +71,13 @@ urlpatterns = patterns('',
                                                          template_name='app/markbyperiod/detail.html')),
      url(r'^app/markbyperiod/add$', 'app.views.mark_by_period_add'),
     
-    # url for school app
+    # urls for app app
     
-    url(r'^school/$','school.views.school'), 
+    url(r'^app/', include('app.urls')),
+    # urls for batchimport app
     url(r'^school/', include('batchimport.urls')),
-    url(r'^school/classes/add$', 'school.views.add_class'),
-    url(r'^school/teachers/add$', 'school.views.add_teacher'),
-    url(r'^school/subjects/add$', 'school.views.add_subject'),
-    url(r'^school/students/add$', 'school.views.add_pupil'),
-    url(r'^school/mark_table$','school.views.mark_table'), 
-
-    #url(r'^school/test$','school.views.test'), 
+    # url for school app
+    url(r'^school/', include('school.urls')),
+    
     
 )
