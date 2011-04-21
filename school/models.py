@@ -106,7 +106,7 @@ class Class(models.Model):
 	name = models.CharField(max_length = 20)
 	year_id = models.ForeignKey(Year)
 	khoi = models.IntegerField(max_length = 2)
-	teacher = models.IntegerField() #lien ket den giao vien chu nhiem
+	teacher = models.CharField(max_length = 100, blank = True) #lien ket den giao vien chu nhiem
 	
 	def __unicode__(self):
 		return self.name

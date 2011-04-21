@@ -63,12 +63,6 @@
     </div>
 
     <div class="fieldWrapper">
-        {{ form.pupil_code.errors }}
-        <p><span><label for="id_pupil_code">Mã học sinh</label></span>
-            {{ form.pupil_code }}</p>
-    </div>
-
-    <div class="fieldWrapper">
         {{ form.current_status.errors }}
         <p><span><label for="current_status">Tình trạng hiện tại</label></span>
             {{ form.current_status }}</p>
@@ -82,7 +76,7 @@
 
     <div class="fieldWrapper">
         {{form.disable.errors }}
-        <p><span><label for="id_disable">Không còn</label></span>
+        <p><span><label for="id_disable">Đã ngừng học</label></span>
             {{ form.disable }}</p>
     </div>
 
@@ -135,15 +129,15 @@
     </div>
 
     <div class="fieldWrapper">
-        {{form.school_id.errors }}
-        <p><span><label for="id_school_id">Trường</label></span>
-            {{ form.school_id }}</p>
-    </div>
-
-    <div class="fieldWrapper">
         {{ form.class_id.errors }}
         <p><span><label for="id_class_id">Lớp</label></span>
             {{ form.class_id }}</p>
+    </div>
+
+    <div class="fieldWrapper">
+        {{form.start_year_id.errors }}
+        <p><span><label for="id_start_year_id">Năm vào trường:</label></span>
+            {{ form.start_year_id }}</p>
     </div>
 
 <input type ="submit" value="submit"/>

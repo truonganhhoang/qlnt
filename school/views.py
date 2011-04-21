@@ -35,12 +35,12 @@ def add_class(request):
     if request.method == 'POST':
         form = ClassForm(request.POST)
         if form.is_valid():
-            class_code = form.cleaned_data['class_code']
             name = form.cleaned_data['name']
-            school_id = form.cleaned_data['school_id']
-            teacher_id = form.cleaned_data['teacher_id']
-            new_class = Class.objects.create(class_code  = class_code, \
-             								name = name, school_id = school_id, teacher_id = teacher_id)
+            year_id = form.cleaned_data['year_id']
+            teacher = form.cleaned_data['teacher']
+            khoi = form.cleaned_data['khoi']
+            new_class = Class.objects.create(khoi = khoi, \
+             								name = name, teacher = teacher, year_id = year_id)
             new_class.save()
             message = 'You have added new class'
         else:
@@ -82,13 +82,13 @@ def add_subject(request ):
     if request.method == 'POST':
         form = SubjectForm(request.POST)
         if form.is_valid():
-            subject_code = form.cleaned_data['subject_code']
-            class_id = form.cleaned_data['class_id']
             name = form.cleaned_data['name']
             hs = form.cleaned_data['hs']
+            loai = form.cleaned_data['loai']
+            class_id = form.cleaned_data['class_id']
             teacher_id = form.cleaned_data['teacher_id']
             term_id = form.cleaned_data['term_id']
-            new_subject = Subject.objects.create(subject_code = subject_code, \
+            new_subject = Subject.objects.create(loai = loai, \
             									class_id  = class_id, name = name, \
             									hs = hs, teacher_id = teacher_id, term_id = term_id)
             new_subject.save()

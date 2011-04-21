@@ -11,17 +11,6 @@
     {{ form.non_field_errors }}
 
     <div class="fieldWrapper">
-        {{form.subject_code.errors }}
-        <p><span><label for="id_subject_code">Mã Môn:</label></span>
-            {{ form.subject_code }}</p>
-    </div>
-    
-    <div class="fieldWrapper">
-        {{form.class_id.errors }}
-        <p><span><label for="id_class_id">Lớp:</label></span>
-        {{ form.class_id }}</p>
-    </div>
-    <div class="fieldWrapper">
         {{ form.name.errors }}
         <p><span><label for="id_name">Môn:</label></span>
             {{ form.name }}</p>
@@ -33,6 +22,18 @@
             {{ form.hs }}</p>
     </div>
 
+    <div class="fieldWrapper">
+        {{ form.loai.errors }}
+        <p><span><label for="id_loai">code(không đổi theo kì):</label></span>
+            {{ form.loai }}</p>
+    </div>
+
+    <div class="fieldWrapper">
+        {{form.class_id.errors }}
+        <p><span><label for="id_class_id">Lớp:</label></span>
+        {{ form.class_id }}</p>
+    </div>
+    
     <div class="fieldWrapper">
         {{ form.teacher_id.errors }}
         <p><span><label for="id_teacher_id">Tên Giáo Viên</label></span>
