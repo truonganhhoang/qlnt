@@ -8,6 +8,8 @@ from datetime import date
 GENDER_CHOICES = ((u'M', u'Nam'),(u'F', u'Nu'),)
 TERM_CHOICES = ((1, u'1'), (2, u'2'),(3, u'3'),)
 HK_CHOICES = ((u'T', u'Tot'), (u'K', u'Kha'),(u'TB',u'Trung Binh'),(u'Y', u'Yeu'),)
+SCHOOL_LEVEL_CHOICE = ((1, u'1'), (2, u'2'), (3, u'3'),)
+DIEM_DANH_TYPE = ((u'C', u'Co phep'),(u'K', u'Khong phep'),(u'BT', u'Bo tiet'))
 #validate mark of pupil
 #mark must be between 0 and 10
 def validate_mark(value):
@@ -37,6 +39,11 @@ def validate_year(value):
 def validate_hs(value):
 	if value <= 0:
 		raise ValidationError(u'hs must be larger than 0')
+		
+#validator for class->khoi
+def validate_khoi(value):
+    if not ( 1<= value <= 12 ):
+        raise ValidationError(u'khoi must be between 1 and 12')
 	       
 class School(models.Model):
     
@@ -45,6 +52,7 @@ class School(models.Model):
 	address = models.CharField(max_length = 200, blank = True)
 	phone = models.CharField(max_length = 15, null = True, blank = True, validators = [validate_phone])
 	web_site = models.URLField(null = True, blank = True)
+	school_level = models.IntegerField( choices = SCHOOL_LEVEL_CHOICE )
 	
 	def __unicode__(self):
 		return self.name	
@@ -73,7 +81,8 @@ class BasicPersonInfo(models.Model):
 		
 	#class Admin: pass
 
-class Teacher(BasicPersonInfo): pass
+class Teacher(BasicPersonInfo): 
+    school_id = models.ForeignKey(School)
 
 class TeacherForm(forms.ModelForm):
     class Meta:
@@ -105,8 +114,9 @@ class Class(models.Model):
 	#class_code = models.CharField(max_length = 20, unique = True)    
 	name = models.CharField(max_length = 20)
 	year_id = models.ForeignKey(Year)
-	khoi = models.IntegerField(max_length = 2)
-	teacher = models.CharField(max_length = 100, blank = True) #lien ket den giao vien chu nhiem
+	khoi = models.IntegerField(max_length = 2, validators = [validate_khoi])
+	teacher = models.CharField(max_length = 100, blank = True) #field nay chi dung de phan quyen, vi vay chi gan 1 gia tri nhan dang
+	                                                           #vi se co truong hop nha truong tao lop nhung chua phan giao vien CN dc.
 	
 	def __unicode__(self):
 		return self.name
@@ -212,5 +222,11 @@ class HanhKiem(models.Model):
 
 class TBNam(models.Model):
     student_id = models.ForeignKey(Pupil)
-    term_id = models.ForeignKey(Term)
+    year_id = models.ForeignKey(Year)
     tb_nam = models.FloatField( validators = [validate_mark])
+   
+class DiemDanh(models.Model):
+    student_id = models.ForeignKey(Pupil)
+    time = models.DateField()
+    loai = models.CharField( max_length = 2, choices = DIEM_DANH_TYPE, default = 'K') 
+

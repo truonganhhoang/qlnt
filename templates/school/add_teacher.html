@@ -55,7 +55,13 @@
         <p><span><label for="id_email">Email</label></span>
             {{ form.email }}</p>
     </div>
+    <div class="fieldWrapper">
+        {{ form.school_id.errors }}
+        <p><span><label for="id_school_id">Thuộc trường:</label></span>
+            {{ form.school_id }}</p>
+    </div>
 
+    
     <input type ="submit" value="submit"/>
     </div>
 </form>

@@ -64,9 +64,11 @@ def add_teacher(request):
             p = form.cleaned_data['phone']
             ca = form.cleaned_data['current_address']
             e = form.cleaned_data['email']
+            school_id = form.cleaned_data['school_id']
             new_teacher = Teacher.objects.create(first_name = fn, last_name=ls,\
             									 birthday = bd, birth_place = bl,\
-            									 sex = s, phone = p, current_address = ca, email = e)
+            									 sex = s, phone = p, current_address = ca, \
+            									 school_id = school_id, email = e)
             new_teacher.save()
             message = 'You have added new teacher'
         else:
