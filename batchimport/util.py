@@ -57,7 +57,7 @@ def get_model_list():
             model_list.append((model, model.split('.')[len(model.split('.'))-1]))
     else:
         for app in settings.INSTALLED_APPS:
-            if not app == 'batchimport':
+            if app == 'school':
                 try:
                     mod = __import__(app+'.models')
                     if 'models' in dir(mod):

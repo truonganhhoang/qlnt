@@ -9,7 +9,7 @@ of cheating and using them as variables to initialize them here.
 """
 
 import settings
-
+import os.path
 def get_setting(setting_name, default):
 	"""
 	A simple setting retrieval function to pull settings from the 
@@ -41,7 +41,7 @@ BATCH_IMPORT_IMPORTABLE_MODELS = get_setting('BATCH_IMPORT_IMPORTABLE_MODELS', [
 # system.
 # NOTE: This must be a absolute path.
 # NOTE: Django must have read/write access to this location.
-BATCH_IMPORT_TEMPFILE_LOCATION = get_setting('BATCH_IMPORT_TEMPFILE_LOCATION', '/tmp/')
+BATCH_IMPORT_TEMPFILE_LOCATION = get_setting('BATCH_IMPORT_TEMPFILE_LOCATION', os.path.dirname(__file__))
 
 # By default, the system does not allow you to import data for fields 
 # that are not EDITABLE (i.e. in their model field declarations, you've
