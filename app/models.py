@@ -52,7 +52,7 @@ class User(models.Model):
     name = models.CharField(max_length=100)
     birthday = models.DateField()
     phone_number = models.CharField(max_length=40)
-    fax_number = models.CharField(max_length=50)
+    #------------------------------ fax_number = models.CharField(max_length=50)
     email = models.EmailField()
     position = models.ForeignKey(PositionType)
     organization = models.ForeignKey(Organization)
