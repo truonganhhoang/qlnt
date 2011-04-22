@@ -1,9 +1,6 @@
 from django.conf.urls.defaults import patterns, include, url
 from django.views.generic.list import ListView
-from django.views.generic.detail import DetailView
-from app.models import TimeTable, SystemDataType 
-from app.models import MarkByPeriod
-from app.models import User
+from persistent_messages.models import Message
 import settings 
 
 # Uncomment the next two lines to enable the admin:
@@ -11,16 +8,17 @@ from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns('',
+    (r'^messages/', include('persistent_messages.urls')),
     (r'^$', 'app.views.index'),
     (r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
     (r'^help/$', 'app.views.help'),
     #(r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'login.html'}),
     #(r'^logout/$', 'django.contrib.auth.views.logout', {'template_name': 'login.html'}),
     # the built-in sign-in/out module 
-    (r'^login/$', 'django.contrib.auth.views.login'), 
-    (r'^logout/$', 'django.contrib.auth.views.logout'), 
-    (r'^accounts/$', 'django.views.generic.simple.redirect_to', {'url': '/'}), 
-    (r'^accounts/profile/$', 'django.views.generic.simple.redirect_to', {'url': '/'}), 
+    (r'^login/$', 'django.contrib.auth.views.login'),
+    (r'^logout/$', 'django.contrib.auth.views.logout'),
+    (r'^accounts/$', 'django.views.generic.simple.redirect_to', {'url': '/'}),
+    (r'^accounts/profile/$', 'django.views.generic.simple.redirect_to', {'url': '/'}),
  
     # Examples:
     # url(r'^$', 'qlnt.views.home', name='home'),

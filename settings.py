@@ -15,20 +15,20 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': os.path.join(os.path.dirname(__file__), 'sqlite3.db'),                      # Or path to database file if using sqlite3.
-        'USER': '',                      # Not used with sqlite3.
-        'PASSWORD': '',                  # Not used with sqlite3.
-        'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
-        'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
+        'NAME': os.path.join(os.path.dirname(__file__), 'sqlite3.db'), # Or path to database file if using sqlite3.
+        'USER': '', # Not used with sqlite3.
+        'PASSWORD': '', # Not used with sqlite3.
+        'HOST': '', # Set to empty string for localhost. Not used with sqlite3.
+        'PORT': '', # Set to empty string for default. Not used with sqlite3.
     },
     # added by: vu.tran54 - K54CA - school app
     'Mark_1':{
         'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': os.path.join(os.path.dirname(__file__), 'Mark_1.db'),                      # Or path to database file if using sqlite3.
-        'USER': '',                      # Not used with sqlite3.
-        'PASSWORD': '',                  # Not used with sqlite3.
-        'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
-        'PORT': '',                      # Set to empty string for default. Not used with sqlite3.      
+        'NAME': os.path.join(os.path.dirname(__file__), 'Mark_1.db'), # Or path to database file if using sqlite3.
+        'USER': '', # Not used with sqlite3.
+        'PASSWORD': '', # Not used with sqlite3.
+        'HOST': '', # Set to empty string for localhost. Not used with sqlite3.
+        'PORT': '', # Set to empty string for default. Not used with sqlite3.      
     } 
 }
 # uncomment following line to use auto multiple db router.
@@ -117,6 +117,7 @@ ROOT_URLCONF = 'qlnt.urls'
 
 TEMPLATE_DIRS = (
     os.path.join(os.path.dirname(__file__), 'templates'),
+    os.path.join(os.path.dirname(__file__), 'persistent_messages/templates'),
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
@@ -135,6 +136,7 @@ INSTALLED_APPS = (
     # 'django.contrib.admindocs',
     'app',
     'school',
+    'persistent_messages',
 )
 
 # A sample logging configuration. The only tangible logging
@@ -161,3 +163,6 @@ LOGGING = {
 }
 
 LOGIN_REDIRECT_URL = '/' 
+
+# Set the message storage backend
+MESSAGE_STORAGE = 'persistent_messages.storage.PersistentMessageStorage'

@@ -8,10 +8,10 @@ class Organization(models.Model):
     name = models.CharField(max_length=100)
     address = models.CharField(max_length=255)
     phone_number = models.CharField(max_length=40)
-    email_adress = models.CharField(max_length = 50)
+    email_adress = models.CharField(max_length=50)
     organization_type = models.CharField(max_length=2, choices=ORGANIZATION_TYPE_CHOICES)
     upper_organization = models.ForeignKey('self', blank=True, null=True)
-    manager_name = models.CharField(max_length = 100)
+    manager_name = models.CharField(max_length=100)
     
     
     def __unicode__(self):
@@ -30,13 +30,13 @@ class OrganizationForm(forms.Form):
     #                                                                        if i.organization_type == 'S' or i.organization_type == 'P']
     # 
     #===========================================================================
-    name = forms.CharField(max_length = 100, min_length=1)
+    name = forms.CharField(max_length=100, min_length=1)
     adress = forms.CharField(max_length=255, min_length=1)
-    phone_number = forms.CharField(max_length=40,min_length=9)
+    phone_number = forms.CharField(max_length=40, min_length=9)
     email_adress = forms.EmailField()
 #    organization_type = forms.ChoiceField()
 #    upper_organization = forms.
-    manager_name = forms.CharField(max_length = 100, min_length=1)
+    manager_name = forms.CharField(max_length=100, min_length=1)
 
 class PositionType(models.Model):
     name = models.CharField(max_length=100)
@@ -96,9 +96,9 @@ class Semester(models.Model):
     end_date = models.DateField()
     post_start_date = models.DateField()
     post_end_date = models.DateField()
-    does_grades = models.CharField(max_length = 300)
-    does_exam = models.CharField(max_length = 100)
-    does_comments = models.CharField(max_length = 500)
+    does_grades = models.CharField(max_length=300)
+    does_exam = models.CharField(max_length=100)
+    does_comments = models.CharField(max_length=500)
     
     def __unicode__(self):
         return self.name
@@ -109,9 +109,9 @@ class SemesterForm(forms.Form):
     end_date = forms.DateField()
     post_start_date = forms.DateField()
     post_end_date = forms.DateField()
-    does_grades = forms.CharField(max_length = 300, min_length=1)
-    does_exam = forms.CharField(max_length = 100, min_length=1)
-    does_comments = forms.CharField(max_length = 500, min_length=1)
+    does_grades = forms.CharField(max_length=300, min_length=1)
+    does_exam = forms.CharField(max_length=100, min_length=1)
+    does_comments = forms.CharField(max_length=500, min_length=1)
 
 class SchoolForm(forms.Form):
     def __init__(self, *args, **kwargs):
@@ -157,7 +157,7 @@ class StudentExtented (models.Model):
     identity_card = models.CharField(max_length=30)
     gender = models.CharField (max_length=30)
     sick_soldier_child = models.CharField(max_length=30) # Con thuong binh
-    partiotic_martyr_child  = models.CharField (max_length=30) # Con liet sy
+    partiotic_martyr_child = models.CharField (max_length=30) # Con liet sy
     difficult = models.CharField (max_length=255) # "hoan canh kho khan"
     certificate_type = models.CharField (max_length=30)
     email = models.EmailField ()
@@ -201,7 +201,7 @@ class MajorForm(forms.ModelForm):
 
 # Grade model ("khoi")
 class Grade(models.Model):
-    name = models.CharField(max_length= 50)
+    name = models.CharField(max_length=50)
     def __unicode__(self):
         return self.name
 
@@ -311,7 +311,7 @@ class PhaseMarkTypeForm (forms.ModelForm):
 # Phase to check mark of student
 class PhaseMark (models.Model):
     name = models.CharField (max_length=50)
-    phase_mark_type  = models.ForeignKey(PhaseMarkType)
+    phase_mark_type = models.ForeignKey(PhaseMarkType)
     school_year_id = models.ForeignKey(SchoolYear)
     start_date = models.DateField()
     end_date = models.DateField()
@@ -429,7 +429,7 @@ class TeacherPeriodRules(models.Model):
 # Exam Model
 class ConcentratedExam(models.Model):
     name = models.CharField(max_length=100)
-    create_date = models.DateField(auto_now_add = True)
+    create_date = models.DateField(auto_now_add=True)
     exam_date = models.DateField()
 #    mark_flow = models.ForeignKey()
     mark_column = models.CharField(max_length=20) 
@@ -565,12 +565,12 @@ class MarkByPeriod(models.Model):
     #studentclass = models.ForeignKey(StudentClass)# primary key
     #subject_id = models.ForeignKey(Subject)
     #markbyperiod = models.CharField(max_length=10, primary_key=True)
-    k15_1 = models.IntegerField(max_length = 10)
-    k15_2 = models.IntegerField(max_length = 10)
-    k1t_1 = models.IntegerField(max_length = 10)
-    k1t_2 = models.IntegerField(max_length = 10)
-    average_mark = models.IntegerField(max_length = 10)
-    user_id = models.CharField(max_length = 10)
+    k15_1 = models.IntegerField(max_length=10)
+    k15_2 = models.IntegerField(max_length=10)
+    k1t_1 = models.IntegerField(max_length=10)
+    k1t_2 = models.IntegerField(max_length=10)
+    average_mark = models.IntegerField(max_length=10)
+    user_id = models.CharField(max_length=10)
     date_k15_1 = models.DateField()
     date_k15_2 = models.DateField()
     date_k1t_1 = models.DateField()
@@ -578,9 +578,9 @@ class MarkByPeriod(models.Model):
     miss_mark_15 = models.BooleanField()
     miss_mark_1t = models.BooleanField()
     miss_mark_prac = models.BooleanField()
-    speak_mark_1 = models.IntegerField(max_length = 10)
+    speak_mark_1 = models.IntegerField(max_length=10)
     date_speak_mark_1 = models.DateField()
-    speak_mark_2 = models.IntegerField(max_length = 10)
+    speak_mark_2 = models.IntegerField(max_length=10)
     date_speak_mark_2 = models.DateField()
     
 class MarkByPeriodForm(forms.ModelForm):
@@ -588,8 +588,8 @@ class MarkByPeriodForm(forms.ModelForm):
         model = MarkByPeriod
         
 class SysValueMarkType(models.Model):
-    value_mark_type_id = models.CharField(max_length = 10, primary_key = True)
-    name_value_mark_type = models.CharField(max_length = 50)
+    value_mark_type_id = models.CharField(max_length=10, primary_key=True)
+    name_value_mark_type = models.CharField(max_length=50)
     is_disable = models.BooleanField(False)
 
 class SysValueMarkTypeForm(forms.ModelForm):

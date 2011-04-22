@@ -4,7 +4,6 @@ from django.views.generic.detail import DetailView
 from app.models import TimeTable, SystemDataType 
 from app.models import MarkByPeriod
 from app.models import User
-import settings 
 
 
 urlpatterns = patterns('',
@@ -12,9 +11,9 @@ urlpatterns = patterns('',
     url(r'user/$', ListView.as_view(
 			queryset=User.objects.all(),
 			context_object_name='user_list',
-			template_name = 'app/user/index.html')),
+			template_name='app/user/index.html')),
     url(r'user/(?P<pk>\d+)$', DetailView.as_view(model=TimeTable,
-														template_name = 'app/user/detail.html')),
+														template_name='app/user/detail.html')),
     url('user/add$', 'app.views.user_add'),
     
 	url(r'timetable/$', ListView.as_view(

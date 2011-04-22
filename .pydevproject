@@ -7,6 +7,7 @@
 <pydev_pathproperty name="org.python.pydev.PROJECT_SOURCE_PATH">
 <path>/qlnt</path>
 <path>/qlnt</path>
+<path>/qlnt/persistent_messages</path>
 </pydev_pathproperty>
 <pydev_variables_property name="org.python.pydev.PROJECT_VARIABLE_SUBSTITUTION">
 <key>DJANGO_MANAGE_LOCATION</key>
