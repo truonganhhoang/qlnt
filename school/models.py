@@ -8,12 +8,16 @@ from datetime import date
 GENDER_CHOICES = ((u'M', u'Nam'),(u'F', u'Nu'),)
 TERM_CHOICES = ((1, u'1'), (2, u'2'),(3, u'3'),)
 HK_CHOICES = ((u'T', u'Tot'), (u'K', u'Kha'),(u'TB',u'Trung Binh'),(u'Y', u'Yeu'),)
-HL_CHOICES = ((u'G', u'Gioi'), (u'K', u'Kha'),(u'TB',u'Trung Binh'),(u'Y', u'Yeu'),(u'kem', u'kem'))
+HL_CHOICES = ((u'G', u'Gioi'), (u'K', u'Kha'),(u'TB',u'Trung Binh'),(u'Y', u'Yeu'),(u'Kem', u'Kem'))
 #k co nghia la khong duoc danh hieu gi
-DH_CHOICES = ((u'xx', u'hoc sinh xuat xac'),(u'G', u'hoc sinh gioi'), (u'tt', u'hoc sinh tien tien'),(u'k',u''))
+DH_CHOICES = ((u'xx', u'hoc sinh xuat sac'),(u'G', u'hoc sinh gioi'), (u'tt', u'hoc sinh tien tien'),(u'k',u''))
 
 SCHOOL_LEVEL_CHOICE = ((1, u'1'), (2, u'2'), (3, u'3'),)
 DIEM_DANH_TYPE = ((u'C', u'Co phep'),(u'K', u'Khong phep'),(u'BT', u'Bo tiet'))
+BAN_CHOICE = ((u'KHTN',u'Ban KHTN'),(u'KHXH',u'Ban KHXH-NV'),(u'CBA',u'Ban Co ban A'),
+              (u'CBB',u'Ban Co ban B'),(u'CBB',u'Ban Co ban C'),(u'CBB',u'Ban Co ban C'),
+              (u'CBD',u'Ban Co ban D'),(u'CB',u'Ban Co ban'))
+KV_CHOICE =((u'1',u'KV1'),(u'2A','KV2'),(u'2B','KV2-NT'),(u'3',u'KV3'))
 #validate mark of pupil
 #mark must be between 0 and 10
 def validate_mark(value):
@@ -72,6 +76,7 @@ class BasicPersonInfo(models.Model):
 	last_name = models.CharField(max_length = 45, blank = True) # tach ra first_name and last_name de sort va import from excel file
 	birthday = models.DateField(null = True, validators = [validate_birthday])
 	birth_place = models.CharField(max_length = 200, null = True, blank = True)
+	home_town = models.CharField(max_length = 100, null = True, blank = True) #nguyen quan
 	sex = models.CharField(max_length = 2, choices = GENDER_CHOICES, blank = True, default = 'M')
 	phone = models.CharField(max_length = 15, null = True, blank = True, validators = [validate_phone])
 	current_address = models.CharField(max_length = 200, blank = True, null = True)
@@ -89,8 +94,8 @@ class Teacher(BasicPersonInfo):
     school_id = models.ForeignKey(School)
 
 class TeacherForm(forms.ModelForm):
-    class Meta:
-        model = Teacher
+	class Meta:
+		model = Teacher
 
 class Year(models.Model):
     time = models.DateField() # date field but just use Year
@@ -108,8 +113,8 @@ class Term(models.Model):
 	#class Admin: pass
 
 class TermForm(forms.ModelForm):
-    class Meta:
-        model = Term
+	class Meta:
+		model = Term
  
 
 class Class(models.Model):
@@ -132,23 +137,36 @@ class ClassForm(forms.ModelForm):
 	    
 class Pupil(BasicPersonInfo):
     	
-    year = models.IntegerField(validators = [validate_year]) #year that pupil go to class 1    
-    #cai nay t nghi co the bo di
-    #pupil_code = models.CharField(max_length = 20, unique = True)
-    current_status = models.CharField(max_length = 200, null = True, default = 'OK')	
-    home_town = models.CharField(max_length = 100, null = True, blank = True) #nguyen quan
-    disable = models.BooleanField(default = False)
-    father_name = models.CharField(max_length = 45, blank = True)
-    father_birthday = models.DateField( null = True, blank = True)
-    father_phone = models.CharField(max_length = 15, null = True, blank = True, validators = [validate_phone])
-    father_job = models.CharField(max_length = 100, null = True, blank = True)
-    mother_name = models.CharField(max_length = 45, blank = True)
-    mother_birthday = models.DateField(null = True, blank = True)
-    mother_job = models.CharField(max_length = 100, null = True, blank = True)    
-    mother_phone = models.CharField(max_length = 15, null = True, blank = True, validators = [validate_phone])
-    #cay nay sau cung bo di dc
-    start_year_id = models.ForeignKey(StartYear)
-    class_id = models.ForeignKey(Class)
+	year = models.IntegerField(validators = [validate_year]) #year that pupil go to class 1
+	school_join_date = models.DateField()
+	ban_dk = models.CharField(max_length = 5, choices = BAN_CHOICE)
+	school_join_mark = models.IntegerField(null = True, blank = True)
+	#thong tin ca nhan
+	dan_toc = models.CharField(max_length = 20, blank = True, null = True)
+	ton_giao = models.CharField(max_length = 20, blank = True, null = True)
+	khu_vuc = models.CharField(max_length = 3, choices = KV_CHOICE, blank = True, null = True)
+	quoc_tich = models.CharField(max_length = 20, blank = True, null = True, default = 'Viet Nam')
+	doan = models.BooleanField(blank = True, default = False)
+	ngay_vao_doan = models.DateField(blank = True, null = True)
+	doi = models.BooleanField(blank = True, default = False)
+	ngay_vao_doi = models.DateField(blank = True, null = True)
+	dang = models.BooleanField(blank = True, default = False)
+	ngay_vao_dang = models.DateField(blank = True, null = True)
+		
+	#thong tin gia dinh
+	father_name = models.CharField(max_length = 45, blank = True, null = True)
+	father_birthday = models.DateField( null = True, blank = True)
+	father_phone = models.CharField(max_length = 15, null = True, blank = True, validators = [validate_phone])
+	father_job = models.CharField(max_length = 100, null = True, blank = True)
+	mother_name = models.CharField(max_length = 45, blank = True, null = True)
+	mother_birthday = models.DateField(null = True, blank = True)
+	mother_job = models.CharField(max_length = 100, null = True, blank = True)    
+	mother_phone = models.CharField(max_length = 15, null = True, blank = True, validators = [validate_phone])
+	current_status = models.CharField(max_length = 200, null = True, default = 'OK')
+	disable = models.BooleanField(default = False)
+
+	start_year_id = models.ForeignKey(StartYear)
+	class_id = models.ForeignKey(Class)
 
 class PupilForm(forms.ModelForm):
     class Meta:
@@ -246,3 +264,7 @@ class DiemDanh(models.Model):
     time = models.DateField()
     loai = models.CharField( max_length = 2, choices = DIEM_DANH_TYPE, default = 'K') 
 
+class TKDiemDanh(models.Model):
+	student_id = models.ForeignKey(Pupil)
+	tong_so = models.IntegerField()
+	co_phep = models.IntegerField()
