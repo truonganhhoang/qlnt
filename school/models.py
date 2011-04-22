@@ -10,7 +10,8 @@ TERM_CHOICES = ((1, u'1'), (2, u'2'),(3, u'3'),)
 HK_CHOICES = ((u'T', u'Tot'), (u'K', u'Kha'),(u'TB',u'Trung Binh'),(u'Y', u'Yeu'),)
 HL_CHOICES = ((u'G', u'Gioi'), (u'K', u'Kha'),(u'TB',u'Trung Binh'),(u'Y', u'Yeu'),(u'Kem', u'Kem'))
 #k co nghia la khong duoc danh hieu gi
-DH_CHOICES = ((u'xx', u'hoc sinh xuat sac'),(u'G', u'hoc sinh gioi'), (u'tt', u'hoc sinh tien tien'),(u'k',u''))
+DH_CHOICES = ((u'xs', u'Hoc sinh xuat sac'),(u'G', u'Hoc sinh gioi'), (u'tt', u'Hoc sinh tien tien'),(u'k',u''))
+
 
 SCHOOL_LEVEL_CHOICE = ((1, u'1'), (2, u'2'), (3, u'3'),)
 DIEM_DANH_TYPE = ((u'C', u'Co phep'),(u'K', u'Khong phep'),(u'BT', u'Bo tiet'))

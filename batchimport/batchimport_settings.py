@@ -35,7 +35,7 @@ BATCH_IMPORT_RESULTS_TEMPLATE = get_setting('BATCH_IMPORT_RESULTS_TEMPLATE', 'ba
 # Specify the list of models in your application which are importable
 # in batch. If you do not provide a list, the system will use introspection 
 # to get a list of ALL models in your application (via INSTALLED_APPS).
-BATCH_IMPORT_IMPORTABLE_MODELS = get_setting('BATCH_IMPORT_IMPORTABLE_MODELS', [])
+BATCH_IMPORT_IMPORTABLE_MODELS = get_setting('BATCH_IMPORT_IMPORTABLE_MODELS', ['school.Teacher','school.Pupil'])
 
 # Specify where the uploaded Microsoft Excel file will be saved to the
 # system.

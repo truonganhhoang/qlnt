@@ -54,7 +54,11 @@ def get_model_list():
     settings_model_list = batchimport_settings.BATCH_IMPORT_IMPORTABLE_MODELS
     if settings_model_list:
         for model in settings_model_list:
-            model_list.append((model, model.split('.')[len(model.split('.'))-1]))
+            app = model.split('.')[0]
+            model_name = model.split('.')[1]
+            model_ob = get_model(app, model_name)
+            if model_ob:
+                model_list.append(('.'.join([model_ob.__module__, model_ob.__name__]), model_name))
     else:
         for app in settings.INSTALLED_APPS:
             if app == 'school':
@@ -67,12 +71,14 @@ def get_model_list():
                                     # You have to try to instantiate it to rule out any models
                                     # you might find in the app that were simply imported (i.e. not
                                     # REALLY part of that app).
+                                    print 'item', item
                                     model = get_model(app, item)
                                     if model:
                                         model_list.append(('.'.join([model.__module__, model.__name__]), item))
                                         relationship_list = _get_relation_list(model)
                                         for relationship in relationship_list:
                                             relation_list.append(relationship)
+                    print model_list
                 except ImportError:
                     pass
     model_list.sort()

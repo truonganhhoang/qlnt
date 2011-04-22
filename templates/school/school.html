@@ -1,36 +1,16 @@
 {% extends "school/base_school.html" %}
 {% block content %}
-<table>
+<table cellpadding="3" cellspacing="2" border="1" valign="middle">
 	<tr>
-		<th><a href="{%url school.views.school %}classes">Danh sách lớp</a></th>
-		<th>
-			<ul><a href="{%url school.views.school  %}classes/add">Thêm lớp</a></ul>
-		</th>
-	</tr>
-	<tr>
-		<th><a href="{%url school.views.school  %}teachers">Danh sách giáo viên</a></th>
-		<th>
-			<ul><a href="{%url school.views.school  %}teachers/add">Thêm giáo viên</a></ul>
-		</th>
+		<th><a href="{%url school.views.school  %}teachers">Quản lý giáo viên</a></th>
 	</tr>
 	
 	<tr>
-		<th><a href="{%url school.views.school  %}subjects">Danh sách môn học</a></th>
-		<th>
-			<ul><a href="{%url school.views.school  %}subjects/add">Thêm môn học</a></ul>
-		</th>
+		<th><a href="{%url school.views.school %}classes">Quản lý lớp</a></th>
 	</tr>
 	
 	<tr>
-		<th><a href="{%url school.views.school  %}students">Danh sách học sinh theo tên</a></th>
-		<th>
-			<ul><a href="{%url school.views.school  %}students/add">Thêm học sinh</a></ul>
-			<ul><a href="{%url school.views.school  %}students/batchimport/import_start">Thêm học sinh từ file Excel</a></ul>
-		</th>
-	</tr>
-	
-	<tr>
-		<th>Điểm</a></th>
+		<th><a href="{%url school.views.school  %}students">Học sinh toàn trường</a></th>
 	</tr>
 	
 </table>
