@@ -146,15 +146,16 @@ def mark_table(request, school_code = None):
 		termChoice   =request.POST['term']
 		
 		pupilList = Pupil.objects.filter(class_id=classChoice)
-				
+		
+		i=1;				
 		for p in pupilList:
 			m = p.mark_set.get(subject_id=subjectChoice)
 			markList.append(m)
 			
-			t=p.id*10
-			k=t*10
-			id=MarkID(t+1,t+2,t+3,t+4,t+5,t+6,t+7,t+8,t+9,k+10,k+11,k+12,k+13,k+14,k+15,k+16)
+			k=i*100
+			id=MarkID(k+1,k+2,k+3,k+4,k+5,k+6,k+7,k+8,k+9,k+10,k+11,k+12,k+13,k+14,k+15,k+16)
 			idList.append(id)
+			i=i+1
 			
 		list=zip(pupilList,markList,idList)
 		if request.POST['submitChoice']=="luulai":
