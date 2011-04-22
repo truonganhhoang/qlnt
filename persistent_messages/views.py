@@ -1,9 +1,21 @@
-from persistent_messages.models import Message
+from persistent_messages.models import Message, MessageForm
 from persistent_messages.storage import get_user
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render_to_response
-from django.template import RequestContext
+from django.template import RequestContext, loader
 from django.core.exceptions import PermissionDenied
+
+def add_message(request):
+    if request.method == 'POST':
+        form = MessageForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('messages/')
+    else:
+        form = MessageForm()    
+    t = loader.get_template('persistent_messages/message/add_message.html')
+    c = RequestContext(request, {'form': form})
+    return HttpResponse(t.render(c))
 
 def message_detail(request, message_id):
     user = get_user(request)
@@ -12,7 +24,7 @@ def message_detail(request, message_id):
     message = get_object_or_404(Message, user=user, pk=message_id)
     message.read = True
     message.save()
-    return render_to_response('persistent_messages/message/detail.html', {'message': message}, 
+    return render_to_response('persistent_messages/message/detail.html', {'message': message},
         context_instance=RequestContext(request))
 
 def message_mark_read(request, message_id):

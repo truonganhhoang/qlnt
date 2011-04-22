@@ -1,6 +1,7 @@
 import persistent_messages
 from persistent_messages.constants import PERSISTENT_MESSAGE_LEVELS
 from django.db import models
+from django import forms
 from django.contrib.auth.models import User 
 from django.utils.encoding import force_unicode
 from django.contrib import messages
@@ -84,3 +85,6 @@ class Message(models.Model):
         return read_tag
     tags = property(_get_tags)
     
+class MessageForm(forms.ModelForm):
+    class Meta:
+        model = Message

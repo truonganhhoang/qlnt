@@ -8,7 +8,6 @@ from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    (r'^messages/', include('persistent_messages.urls')),
     (r'^$', 'app.views.index'),
     (r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
     (r'^help/$', 'app.views.help'),
@@ -39,5 +38,6 @@ urlpatterns = patterns('',
     # url for school app
     url(r'^school/', include('school.urls')),
     
+    url(r'^messages/', include('persistent_messages.urls')),
     
 )
