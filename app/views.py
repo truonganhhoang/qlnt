@@ -3,6 +3,7 @@ from app.models import TimeTableForm, SchoolForm, Organization
 from app.models import SystemDataTypeForm
 from app.models import MarkByPeriodForm
 from app.models import UserForm
+from app.models import PositionTypeForm
 from django.shortcuts import render_to_response
 from django.template import RequestContext, loader
 from django.template import Context
@@ -102,6 +103,18 @@ def user_add(request):
     c = RequestContext(request, {'form' : form})
     return HttpResponse(t.render(c))
 
+def positiontype_add(request):
+    if request.method == 'POST':
+        form = PositionTypeForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/app/positiontype/')
+        else:
+            form = PositionTypeForm()
+        t = loader.get_template('app/positiontype/add.html')
+        c = RequestContext(request, {'form' : form})
+        return HttpResponse(t.render(c))
+    
 #------------------------------------------------------------------------------ 
 #-------------------------------------------- def sys_value_mark_type(request):
     #---------------------------------------------- if request.method == 'POST':
