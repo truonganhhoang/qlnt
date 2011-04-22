@@ -8,6 +8,10 @@ from datetime import date
 GENDER_CHOICES = ((u'M', u'Nam'),(u'F', u'Nu'),)
 TERM_CHOICES = ((1, u'1'), (2, u'2'),(3, u'3'),)
 HK_CHOICES = ((u'T', u'Tot'), (u'K', u'Kha'),(u'TB',u'Trung Binh'),(u'Y', u'Yeu'),)
+HL_CHOICES = ((u'G', u'Gioi'), (u'K', u'Kha'),(u'TB',u'Trung Binh'),(u'Y', u'Yeu'),(u'kem', u'kem'))
+#k co nghia la khong duoc danh hieu gi
+DH_CHOICES = ((u'xx', u'hoc sinh xuat xac'),(u'G', u'hoc sinh gioi'), (u'tt', u'hoc sinh tien tien'),(u'k',u''))
+
 SCHOOL_LEVEL_CHOICE = ((1, u'1'), (2, u'2'), (3, u'3'),)
 DIEM_DANH_TYPE = ((u'C', u'Co phep'),(u'K', u'Khong phep'),(u'BT', u'Bo tiet'))
 #validate mark of pupil
@@ -220,11 +224,23 @@ class HanhKiem(models.Model):
     term_id = models.ForeignKey(Term)
     loai = models.CharField( max_length = 2, choices = HK_CHOICES, default = 'K')    
 
+class TBHocKy(models.Model):
+    student_id = models.ForeignKey(Pupil)
+    term_id = models.ForeignKey(Term)
+    tb_hk=models.FloatField( validators = [validate_mark])        
+    hl_hk=models.CharField( max_length = 3, choices = HL_CHOICES)
+    danh_hieu_hk=models.CharField( max_length = 2, choices = DH_CHOICES)
+        
 class TBNam(models.Model):
     student_id = models.ForeignKey(Pupil)
     year_id = models.ForeignKey(Year)
     tb_nam = models.FloatField( validators = [validate_mark])
-   
+    hl_nam=models.CharField( max_length = 3, choices = HL_CHOICES)
+    #hanh kiem nam
+    hk_nam=models.CharField( max_length = 2, choices = HK_CHOICES,)
+    #ghi danh hieu ma hoc sinh dat dc trong hoc ky    
+    danh_hieu_nam=models.CharField( max_length = 2, choices = DH_CHOICES)
+    
 class DiemDanh(models.Model):
     student_id = models.ForeignKey(Pupil)
     time = models.DateField()
