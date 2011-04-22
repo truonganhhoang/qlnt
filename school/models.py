@@ -17,6 +17,8 @@ DIEM_DANH_TYPE = ((u'C', u'Có phép'),(u'K', u'Không phép'),(u'BT', u'Bỏ ti
 BAN_CHOICE = ((u'KHTN',u'Ban KHTN'),(u'KHXH',u'Ban KHXH-NV'),(u'CBA',u'Ban Cơ bản A'),
               (u'CBB',u'Ban Cơ bản B'),(u'CBB',u'Ban Cơ bản C'),
               (u'CBD',u'Ban Cơ bản D'),(u'CB',u'Ban Cơ bản'))
+KHOI_CHOICE=((1,u'Khối 1'),(2,u'Khối 2'),(3,u'Khối 3'),(4,u'Khối 4'),(5,u'Khối 5'),(6,u'Khối 6'),(7,u'Khối 7'),             
+            (8,u'Khối 8'),(9,u'Khối 9'),(10,u'Khối 10'),(11,u'Khối 11'),(12,u'Khối 12'))            
 KV_CHOICE =((u'1',u'KV1'),(u'2A','KV2'),(u'2B','KV2-NT'),(u'3',u'KV3'))
 DT_CHOICE = ((1,u'Kinh (Việt)'),(2,u'Tày'),(3,u'Nùng'),(4,u'Hmông (Mèo)'),(5,u'Mường'),(6,u'Dao'),(7,u'Khmer'),
 			(8,u'Êđê'),(9,u'CaoLan'),(10,u'Thái'),(11,u'Gia rai'),(12,u'La chư'),(13,u'Hà nhì'),(14,u'Giáy'),
@@ -147,7 +149,7 @@ class Class(models.Model):
 	#class_code = models.CharField(max_length = 20, unique = True)    
 	name = models.CharField(max_length = 20)
 	year_id = models.ForeignKey(Year)
-	khoi = models.IntegerField(max_length = 2, validators = [validate_khoi])
+	khoi = models.IntegerField(max_length = 2, choices=KHOI_CHOICE)
 	teacher = models.CharField(max_length = 100, blank = True) #field nay chi dung de phan quyen, vi vay chi gan 1 gia tri nhan dang
 	                                                           #vi se co truong hop nha truong tao lop nhung chua phan giao vien CN dc.
 	
