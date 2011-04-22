@@ -96,10 +96,10 @@ def user_add(request):
         form = UserForm(request.POST)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect('/app/schoolstaff/')
+            return HttpResponseRedirect('/app/user/')
     else:
         form = UserForm()
-    t = loader.get_template('app/schoolstaff/add.html')
+    t = loader.get_template('app/user/add.html')
     c = RequestContext(request, {'form' : form})
     return HttpResponse(t.render(c))
 
