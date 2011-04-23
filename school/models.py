@@ -125,10 +125,10 @@ class Year(models.Model):
 		return str(self.time.year)
     
 class StartYear(models.Model):
-	time = models.DateField() # date field but use Year only
-	school_id = models.ForeignKey(School)
-
-	def __unicode__(self):
+    time = models.DateField() # date field but use Year only   
+    current_term=models.IntegerField(max_length=1, choices = TERM_CHOICES)
+    school_id = models.ForeignKey(School)
+    def __unicode__(self):
 		return str(self.time.year)
     
 class Term(models.Model):
