@@ -107,7 +107,7 @@ class BasicPersonInfo(models.Model):
 		abstract = True
 		
 	def __unicode__(self):
-		return self.first_name + " " + self.last_name
+		return self.last_name + " " + self.first_name
 		
 	#class Admin: pass
 
