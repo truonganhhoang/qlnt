@@ -19,7 +19,7 @@ Homepage
 	    {% if message_list %}
 		    <ul>
 		    {% for ml in message_list %}
-		        <li><!--<a href="/app/timetable/{{ tt.id }}">-->{{ ml.subject }}<!--</a>--></li>
+		        <li><a href="/messages/detail/{{ ml.id }}">{{ ml.subject }}</a></li>
 		    {% endfor %}
 		    </ul>
 		{% else %}
