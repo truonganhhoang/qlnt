@@ -12,7 +12,7 @@ HL_CHOICES = ((u'G', u'Giỏi'), (u'K', u'Khá'),(u'TB',u'Trung Bình'),(u'Y', u
 #k co nghia la khong duoc danh hieu gi
 DH_CHOICES = ((u'XS', u'học sinh xuất sắc'),(u'G', u'hoc sinh giỏi'), (u'TT', u'hoc sinh tiên tiến'),(u'k',u''))
 
-SCHOOL_LEVEL_CHOICE = ((1, u'1'), (2, u'2'), (3, u'3'),)
+SCHOOL_LEVEL_CHOICE = ((1, u'1'), (2, u'2'), (3, u'3'))
 DIEM_DANH_TYPE = ((u'C', u'Có phép'),(u'K', u'Không phép'),(u'BT', u'Bỏ tiết'))
 BAN_CHOICE = ((u'KHTN',u'Ban KHTN'),(u'KHXH',u'Ban KHXH-NV'),(u'CBA',u'Ban Cơ bản A'),
               (u'CBB',u'Ban Cơ bản B'),(u'CBB',u'Ban Cơ bản C'),
@@ -30,6 +30,7 @@ DT_CHOICE = ((1,u'Kinh (Việt)'),(2,u'Tày'),(3,u'Nùng'),(4,u'Hmông (Mèo)'),
 			(54,u'Raglay'),(55,u'HMông'),(56,u'Pacô'),(57,u'Pahy'),(60,u'Jơ lơng'),(61,u'Rơ ngao'),(62,u'Ra dong'),
 			(63,u'Sơ rá'),(64,u'Jẻ'),(65,u'Mơ nâm'),(66,u'Hơ lăng'),(67,u'Hoa (Hán)'),(68,u'Sán chay (Cao Lan, Sán Chỉ)'),
 			(69,u'CaDong'),(70,u'Chơ ro'))
+LENLOP_CHOICES=((True,u'Được lên lớp'),(False,u'Không được lên lớp'))
 #validate mark of pupil
 #mark must be between 0 and 10
 def validate_mark(value):
@@ -126,6 +127,7 @@ class Year(models.Model):
     
 class StartYear(models.Model):
     time = models.DateField() # date field but use Year only   
+    current_term=models.IntegerField(max_length=1, choices = TERM_CHOICES)
     school_id = models.ForeignKey(School)
     def __unicode__(self):
 		return str(self.time.year)
@@ -233,6 +235,9 @@ class Mark(models.Model):
     ck = models.FloatField( null = True, blank = True, validators = [validate_mark])
     tb = models.FloatField( null = True, blank = True, validators = [validate_mark])
     tb_nam = models.FloatField( null = True, blank = True, validators = [validate_mark])
+    #danh dau xem mon nay co dc phep thi lai hay ko
+    thi_lai = models.BooleanField(blank = True, default = False)
+    diem_thi_lai=models.FloatField( null = True, blank = True, validators = [validate_mark])
 	# all fields can be null
     
     subject_id = models.ForeignKey(Subject)
@@ -289,9 +294,21 @@ class TBNam(models.Model):
     tb_nam = models.FloatField( validators = [validate_mark])
     hl_nam=models.CharField( max_length = 3, choices = HL_CHOICES)
     #hanh kiem nam
-    hk_nam=models.CharField( max_length = 2, choices = HK_CHOICES,)
+    hk_nam=models.CharField( max_length = 2, choices = HK_CHOICES)
     #ghi danh hieu ma hoc sinh dat dc trong hoc ky    
     danh_hieu_nam=models.CharField( max_length = 2, choices = DH_CHOICES)
+    len_lop=models.BooleanField(choices=LENLOP_CHOICES,default=True)
+    #danh dau thi lai
+    
+    thi_lai = models.BooleanField(blank = True, default = False)
+    tb_thi_lai=models.FloatField( null = True, blank = True, validators = [validate_mark])
+    hl_thi_lai=models.CharField( blank=True,max_length = 3, choices = HL_CHOICES)
+    #danh dau ren luyen lai trong giai doan he
+    ren_luyen_lai=models.BooleanField(blank = True, default = False)
+    hk_ren_luyen_lai=models.CharField(blank=True,max_length = 2, choices = HK_CHOICES)
+    #danh dau len lop hay ko
+    len_lop_sau_he=models.NullBooleanField(null=True,blank = True,choices =LENLOP_CHOICES)
+    
     
     def __unicode__(self):
         return ".2f" % self.tb_nam
