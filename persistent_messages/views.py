@@ -11,14 +11,33 @@ def add_message(request):
     if request.method == 'POST':
         form = MessageForm(request.POST)
         if form.is_valid():
-            admin = User.objects.get(username='admin')
-            persistent_messages.add_message(request, persistent_messages.SUCCESS, 'Hi Admin, here is a message to you.', subject='Success message', user=admin)
+            from_user = get_user(request)
+            username = form.cleaned_data.get('user')
+            user = User.objects.get(username=username)
+            subject = form.cleaned_data.get('subject')
+            message = form.cleaned_data.get('message')
+            level = form.cleaned_data.get('level')
+            
+            persistent_messages.add_message(
+                                request,
+                                level,
+                                message,
+                                subject=subject,
+                                user=user,
+                                from_user=from_user
+                                )
             return HttpResponseRedirect('/messages/')
     else:
         form = MessageForm()    
     t = loader.get_template('persistent_messages/message/add_message.html')
     c = RequestContext(request, {'form': form})
     return HttpResponse(t.render(c))
+
+def all_messages(request):
+    ListView.as_view(
+            queryset=Message.objects.all(),
+            context_object_name='message_list',
+            template_name='persistent_messages/message/index.html')
 
 def message_detail(request, message_id):
     user = get_user(request)

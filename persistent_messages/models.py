@@ -87,7 +87,6 @@ class Message(models.Model):
     
 class MessageForm(forms.Form):
     user = forms.CharField(max_length=100)
-    from_user = forms.CharField(max_length=100)
     subject = forms.CharField(max_length=255)
     message = forms.CharField(max_length=1000)
     LEVEL_CHOICES = (
@@ -103,15 +102,13 @@ class MessageForm(forms.Form):
         (persistent_messages.ERROR, 'PERSISTENT ERROR'),
     )
     level = forms.ChoiceField(choices=LEVEL_CHOICES)
-    extra_tags = forms.CharField(max_length=128)
     
-    def save(self):
-        _user = self.cleaned_data.get('user')
-        _from_user = self.cleaned_data.get('from_user')
-        _subject = self.cleaned_data.get('subject')
-        _message = self.cleaned_data.get('message')
-        _level = self.cleaned_data.get('level')
-        _extra_tags = self.cleaned_data.get('extra_tags')
+#    def save(self):
+#        _user = self.cleaned_data.get('user')
+#        _subject = self.cleaned_data.get('subject')
+#        _message = self.cleaned_data.get('message')
+#        _level = self.cleaned_data.get('level')
+#        _extra_tags = self.cleaned_data.get('extra_tags')
         
        
         

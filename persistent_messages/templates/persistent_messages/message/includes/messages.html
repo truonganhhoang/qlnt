@@ -1,13 +1,45 @@
-{% load i18n %}
-{% if messages %}
-<ul class="messages">
-    {% for message in messages %}
-    {% if not hide_persistent or not message.is_persistent %}
-    {% include "persistent_messages/message/includes/message_li.html" %}
-    {% endif %}
-    {% endfor %}
-</ul>
-{% if close_all and messages|length > 1 %}
-<a class="message-close-all icon" href="{% url message_mark_all_read %}"><span>{% trans "close all" %}</span></a>
-{% endif %}
-{% endif %}
+{% extends "base.html" %}
+
+{% block title %}
+Homepage
+{% endblock %}
+  
+{% block navi %}
+	<a href ="/">Index</a> - <a href="/help">help</a> - 
+	{% if user.is_authenticated %}
+		Welcome {{user.username}}! <a href="/logout">logout</a> 
+	{% else %} 
+	 	<a href="/login">login</a>
+	{% endif %}
+{% endblock %}
+
+{% block content %}
+	{% if user.is_authenticated %}
+
+		{% load i18n %}
+		{% if messages %}
+			<ul class="messages">
+			    {% for message in messages %}
+			    {% if not hide_persistent or not message.is_persistent %}
+			    {% include "persistent_messages/message/includes/message_li.html" %}
+			    {% endif %}
+			    {% endfor %}
+			</ul>
+			{% if close_all and messages|length > 1 %}
+				<a class="message-close-all icon" href="{% url message_mark_all_read %}"><span>{% trans "close all" %}</span></a>
+			{% endif %}
+		{% else %}
+			No new message.
+		{% endif %}
+		
+		<br /><a href="add_message/">Send a message</a>
+		<br /><a href="all_messages/">Views all messages</a>
+		
+	{% else %}
+		You need login to use system.
+	{% endif %}
+{% endblock %}
+
+{% block footer %}
+&copy 2011 - VNU Hanoi & Viettel
+{% endblock %}

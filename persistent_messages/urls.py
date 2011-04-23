@@ -1,13 +1,14 @@
 from django.conf.urls.defaults import *
 from django.views.generic.list import ListView
 from persistent_messages.models import Message
+from django.contrib.auth.models import User
 
 urlpatterns = patterns('',
     url(r'^$', ListView.as_view(
             queryset=Message.objects.all(),
             context_object_name='messages',
             template_name='persistent_messages/message/includes/messages.html')),
-    url(r'^all_messages$', ListView.as_view(
+    url(r'^all_messages/$', ListView.as_view(
             queryset=Message.objects.all(),
             context_object_name='message_list',
             template_name='persistent_messages/message/index.html')),

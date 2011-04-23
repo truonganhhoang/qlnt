@@ -19,12 +19,16 @@ Homepage
 	    {% if message_list %}
 		    <ul>
 		    {% for ml in message_list %}
-		        <li><a href="/messages/detail/{{ ml.id }}">{{ ml.subject }}</a></li>
+		    	{% if ml.user == user %}
+		        	<li><a href="/messages/detail/{{ ml.id }}">{{ ml.subject }}</a></li>
+		        {% endif %}
 		    {% endfor %}
 		    </ul>
 		{% else %}
 		    <p>No message are available.</p>
 		{% endif %}
+		
+		<a href="/messages/add_message/">Send new message</a>
 		
 	{% else %}
 		You need login to use system.
