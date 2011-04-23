@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}
+Homepage
+{% endblock %}
+  
+{% block navi %}
+	<a href ="/">Index</a> - <a href="/help">help</a> - 
+	{% if user.is_authenticated %}
+		Welcome {{user.username}}! <a href="/logout">logout</a> 
+	{% else %} 
+	 	<a href="/login">login</a>
+	{% endif %}
+{% endblock %}
+
+{% block content %}
+	{% if user.is_authenticated %}
+	
+	    {% if message_list %}
+		    <ul>
+		    {% for ml in message_list %}
+		        <li><!--<a href="/app/timetable/{{ tt.id }}">-->{{ ml.subject }}<!--</a>--></li>
+		    {% endfor %}
+		    </ul>
+		{% else %}
+		    <p>No message are available.</p>
+		{% endif %}
+		
+	{% else %}
+		You need login to use system.
+	{% endif %}
+{% endblock %}
+
+{% block footer %}
+&copy 2011 - VNU Hanoi & Viettel
+{% endblock %}

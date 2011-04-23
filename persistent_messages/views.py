@@ -1,16 +1,19 @@
+import persistent_messages
 from persistent_messages.models import Message, MessageForm
 from persistent_messages.storage import get_user
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render_to_response
 from django.template import RequestContext, loader
 from django.core.exceptions import PermissionDenied
+from django.contrib.auth.models import User 
 
 def add_message(request):
     if request.method == 'POST':
         form = MessageForm(request.POST)
         if form.is_valid():
-            form.save()
-            return HttpResponseRedirect('messages/')
+            admin = User.objects.get(username='admin')
+            persistent_messages.add_message(request, persistent_messages.SUCCESS, 'Hi Admin, here is a message to you.', subject='Success message', user=admin)
+            return HttpResponseRedirect('/messages/')
     else:
         form = MessageForm()    
     t = loader.get_template('persistent_messages/message/add_message.html')

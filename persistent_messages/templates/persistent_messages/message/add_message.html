@@ -1,0 +1,9 @@
+<html>
+<body>
+<h3>Add new message</h3>
+<form action="" method="post">{% csrf_token %}
+{{ form.as_ul }}
+<input type="submit" value="Submit" />
+</form>
+</body>
+</html>
