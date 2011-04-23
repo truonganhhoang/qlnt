@@ -123,8 +123,7 @@ class Year(models.Model):
 	school_id = models.ForeignKey(School)
 	
 	def __unicode__(self):
-		return str(self.time.year)
-    
+		return str(self.time.year)+"-"+str(self.time.year+1)
 class StartYear(models.Model):
     time = models.DateField() # date field but use Year only   
     school_id = models.ForeignKey(School)
@@ -151,7 +150,6 @@ class Class(models.Model):
 	year_id = models.ForeignKey(Year)
 	khoi = models.IntegerField(max_length = 2, choices=KHOI_CHOICE)
 	teacher = models.CharField(max_length = 100, blank = True) #field nay chi dung de phan quyen, vi vay chi gan 1 gia tri nhan dang
-	                                                           #vi se co truong hop nha truong tao lop nhung chua phan giao vien CN dc.
 	
 	def __unicode__(self):
 		return self.name
