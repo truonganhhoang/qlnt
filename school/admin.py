@@ -1,5 +1,5 @@
 from django.contrib import admin
-from school.models import School, Class, Teacher, Pupil, Mark, Subject, Term,Year,StartYear,KhenThuong,KiLuat,HanhKiem,TBHocKy,TBNam,DiemDanh,TKDiemDanh
+from school.models import School, Class, Teacher, Pupil, Mark, Subject, Term,Year,StartYear,KhenThuong,KiLuat,HanhKiem,TBHocKy,TBNam,DiemDanh,TKDiemDanh,Block
 
 class MultiDBModelAdmin(admin.ModelAdmin):
     # A handy constant for the name of the alternate database.
@@ -28,6 +28,7 @@ class MultiDBModelAdmin(admin.ModelAdmin):
         return super(MultiDBModelAdmin, self).formfield_for_manytomany(db_field, request=request, using=self.using, **kwargs)
 
 admin.site.register(School)
+admin.site.register(Block)
 admin.site.register(Class)
 admin.site.register(Teacher)
 admin.site.register(Pupil)

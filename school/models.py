@@ -88,7 +88,17 @@ class School(models.Model):
 class SchoolForm(forms.ModelForm):
     class Meta:
         model = School
-
+    #cac khoi trong 1 truong    
+class Block(models.Model):
+    number=models.SmallIntegerField(max_length = 2, choices=KHOI_CHOICE)
+    school_id = models.ForeignKey(School)
+    
+    def __unicode__(self):
+        return str(self.number)    
+    
+class BlockForm(forms.ModelForm):
+    class Meta:
+        model = Block
 class BasicPersonInfo(models.Model):
 	first_name = models.CharField(max_length = 45)
 	last_name = models.CharField(max_length = 45, blank = True) # tach ra first_name and last_name de sort va import from excel file
@@ -107,12 +117,12 @@ class BasicPersonInfo(models.Model):
 		abstract = True
 		
 	def __unicode__(self):
-		return self.last_name + " " + self.first_name
+		return self.first_name + " " + self.last_name
 		
 	#class Admin: pass
 
 class Teacher(BasicPersonInfo): 
-    school_id = models.ForeignKey(School)
+    school_id = models.ForeignKey(School,null=True,blank=True)
 
 class TeacherForm(forms.ModelForm):
 	class Meta:
@@ -148,8 +158,9 @@ class Class(models.Model):
 	#class_code = models.CharField(max_length = 20, unique = True)    
 	name = models.CharField(max_length = 20)
 	year_id = models.ForeignKey(Year)
-	khoi = models.IntegerField(max_length = 2, choices=KHOI_CHOICE)
-	teacher = models.CharField(max_length = 100, blank = True) #field nay chi dung de phan quyen, vi vay chi gan 1 gia tri nhan dang
+    #lop nay thuoc khoi nao
+	block_id = models.ForeignKey(Block)
+	teacher_id = models.ForeignKey(Teacher,null=True,blank=True) #field nay chi dung de phan quyen, vi vay chi gan 1 gia tri nhan dang
 	
 	def __unicode__(self):
 		return self.name
