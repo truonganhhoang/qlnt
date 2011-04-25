@@ -1,0 +1,45 @@
+{%extends "school/base_school.html" %}
+
+{% block content %}
+{% if form.errors %}
+<p>{{ form.errors }}</p>
+{% endif %}
+    <table border=1 >
+        <tr>
+			<td rowspan=1 align="center" width="4%">
+				Stt
+			</td>	
+			<td rowspan=1 align="center" width="16%">
+				Mã học sinh
+			</td>	
+			<td rowspan=1 align="center" width="30%">			
+				Mã trường
+			</td>	
+			<td rowspan=1 align="center" width="30%" >
+				Nguyện vọng
+			</td>	
+
+			<td rowspan=1 align="center" width="20%">
+				Điểm
+			</td>	
+		</tr>
+		{% for student in student_list %}
+		<tr>
+		    <td align="center" width="4%">
+		        {{ forloop.counter }}   
+		    </td>
+		    <td align="center" width="16%">
+		        {{ student.ma_hoc_sinh }}
+		    </td>
+		    <td align="center" width="30%">
+		        {{ student.ma_truong }}
+		    </td>
+		    <td align="center" width="30%">
+		        {{ student.nguyen_vong }}
+		    </td>
+		    <td align="center" width="20%">
+		        {{ student.diem }}
+		    </td>
+		</tr>
+        {% endfor %}
+{% endblock %}
