@@ -1,0 +1,70 @@
+{% extends "school/base_school.html" %}
+
+{% block content %}
+{% if message != None %}
+{{message}}
+{% endif %}
+
+<table border=1 width = "100%" >
+	<tr>
+		<td align="center" width="10%"> STT </td>
+		<td align="center" width="20%"> Tên Lớp </td>
+		<td align="center" width="20%"> Khối </td>
+		<td align="center" width="30%"> Tên Giáo Viên </td>
+		<td align="center" width="20%"> Năm </td>
+	</tr>
+	
+	{% for class in classList %}
+	<tr>
+		<td align="center" width="10%"> <a href="{%url school.views.classes  %}/viewClassDetail/{{class.id}}" >{{class.id}} </td>
+		<td align="center" width="20%"> {{class.name}} </td>
+		<td align="center" width="20%"> {{class.block_id}} </td>
+		<td align="center" width="30%"> {{class.teacher_id}} </td>
+		<td align="center" width="20%"> {{class.year_id}} </td>
+	</tr>
+	{% endfor %}
+</table>
+
+<table border = 0 width = "100%">
+	<form action="/school/classes" method="post">{% csrf_token %}
+	<tr>
+  		{{ form.non_field_errors }}
+  		<td width = "10%"> </td>
+  		<td align="center" width="20%">
+  		<div class="fieldWrapper">
+    		{{ form.name.errors }}
+    		<label for="id_name">
+    		<p>{{ form.name }}</p>
+  		</div>
+			</td>
+		
+		<td align="center" width="20%">
+  	<div class="fieldWrapper">
+    {{ form.block_id.errors }}
+    <label for="id_block_id">
+    <p>{{ form.block_id }}</p>
+  	</div>
+  	</td>
+  	
+  	<td align="center" width="30%">
+  	<div class="fieldWrapper">
+    {{ form.teacher_id.errors }}
+    <label for="id_teacher_id">
+    <p>{{ form.teacher_id }}</p>
+  	</div>
+		</td>
+		
+		<td align="center" width="20%">
+  	<div class="fieldWrapper">
+    {{ form.year_id.errors }}
+    <label for="id_year_id">
+    <p>{{ form.year_id }}</p>
+  	</div>
+  	</td>
+	</tr>
+	<tr>
+  <td><p><input type="submit" value="Thêm" /></p> </td>
+  </tr>
+  </form>
+</table>
+{% endblock %}

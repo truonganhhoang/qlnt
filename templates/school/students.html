@@ -1,0 +1,86 @@
+{% extends "school/base_school.html" %}
+
+{% block content %}
+<table border=1 width = "100%" >
+    <tr>
+        <td align="center" width="5%"> STT </td>
+        <td align="center" width="20%"> Họ & Tên Đệm </td>
+        <td align="center" width="10%"> Tên </td>
+        <td align="center" width="15%"> Ngày sinh</td>
+        <td align="center" width="10%">  Giới tính</td>
+        <td align="center" width="7%"> Ban Đăng kí </td>
+		<td align="center" width="8%"> Lớp </td>        
+        <td align="center" width="15%"> Ngày vào trường </td>
+        <td align="center" width="10%"> Năm bắt đầu </td>
+    </tr>
+
+    {% if message != None %}
+    {{message}}
+    {% endif %}
+
+    {% for ss in studentList %}
+    <tr>
+        <td align="center" width="5%"> <a href="{%url school.views.students %}/viewStudentDetail/{{ss.id}}"> {{ss.id}} </td>
+        <td align="center" width="20%"> {{ss.last_name}} </td>
+        <td align="center" width="10%"> {{ss.first_name}} </td>
+        <td align="center" width="15%"> {{ss.birthday}}</td>
+        <td align="center" width="10%"> {{ss.sex}}</td>
+        <td align="center" width="7%"> {{ss.ban_dk}} </td>
+        <td align="center" width="8%"> {{ss.class_id}} </td>        
+        <td align="center" width="15%"> {{ss.school_join_date}} </td>
+        <td align="center" width="10%"> {{ss.start_year_id}} </td>
+    </tr>
+    {% endfor %}
+    
+    <form action="/school/students" method="post">{% csrf_token %}
+        <tr>
+            {{ form.non_field_errors }}
+            <td align="center" width="5%"></td>
+
+            <td align="center" width="20%">
+                    {{ form.last_name.errors }}
+                    <p>{{ form.last_name }}</p>              
+            </td>
+
+            <td align="center" width="10%">
+                    {{form.first_name.errors }}
+                    <p>{{ form.first_name }}</p>
+            </td>
+
+            <td align="center" width="15%">
+                    {{ form.birthday.errors }}
+                    <p>{{ form.birthday }}</p>
+            </td>
+
+            <td align="center" width="10%">
+                    {{ form.sex.errors }}
+                    <p>{{ form.sex }}</p>
+            </td>
+
+            <td align="center" width="7%">
+                    {{form.ban_dk.errors }}
+                    <p>{{ form.ban_dk }}</p>
+            </td>
+            
+            <td align="center" width="8%">
+                    {{form.class_id.errors }}
+                    <p>{{ form.class_id }}</p>
+            </td>
+
+            <td align="center" width="15%">
+                    {{ form.school_join_date.errors }}
+                    <p>{{ form.school_join_date }}</p>                   
+            </td>
+
+            <td align="center" width="10%">
+                    {{ form.start_year_id.errors }}
+                    <p>{{ form.start_year_id }}</p>                   
+            </td>         
+        </tr>
+        
+        <tr>
+        <td><input type ="submit" value="Thêm"/></td>
+        </tr>
+        </form>
+</table>
+{% endblock %}

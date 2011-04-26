@@ -1,0 +1,9 @@
+{% extends "school/base_school.html" %}
+
+{% block content %}
+<h1>Lớp {{class_view.name}} năm học {{class_view.year_id}}</h1>
+<ul>
+<li><a href = "{%url school.views.viewClassDetail class_view.id  %}/studentPerClass/{{class_view.id}}">Quản lý học sinh</a></li>
+<li><a href = "{%url school.views.viewClassDetail class_view.id  %}/subjectPerClass/{{class_view.id}}">Quản lý môn học</a></li>
+</ul> 
+{% endblock %}
