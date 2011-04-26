@@ -40,83 +40,101 @@ def school(request):
 	context = RequestContext(request)
 	return render_to_response(r'school/school.html', context_instance = context)
 	
-def add_class(request):
+def classes(request):
     message = None
     form = ClassForm()
+    classList = Class.objects.all()
     if request.method == 'POST':
         form = ClassForm(request.POST)
         if form.is_valid():
-            name = form.cleaned_data['name']
-            year_id = form.cleaned_data['year_id']
-            teacher = form.cleaned_data['teacher']
-            khoi = form.cleaned_data['khoi']
-            new_class = Class.objects.create(khoi = khoi, \
-             								name = name, teacher = teacher, year_id = year_id)
-            new_class.save()
+            form.save()
             message = 'You have added new class'
         else:
             message = 'Please check your information, something is wrong'
 
-    t = loader.get_template('school/add_class.html')
-    c = RequestContext(request, {'form' : form, 'message' : message})
+    t = loader.get_template('school/classes.html')
+    c = RequestContext(request, {'form' : form, 'message' : message, 'classList' : classList})
     return HttpResponse(t.render(c))
-    
-def add_teacher(request):
+
+def viewClassDetail(request, class_id):
+    class_view = Class.objects.get(id = class_id)
+    t = loader.get_template('school/classDetail.html')
+    c = RequestContext(request, {'class_view' : class_view})
+    return HttpResponse(t.render(c))
+
+def teachers(request):
     message = None
     form = TeacherForm()
+    teacherList = Teacher.objects.all()
     if request.method == 'POST':
         form = TeacherForm(request.POST)
         if form.is_valid():
-            fn = form.cleaned_data['first_name']
-            ls = form.cleaned_data['last_name']
-            bd = form.cleaned_data['birthday']
-            bl = form.cleaned_data['birth_place']
-            s = form.cleaned_data['sex']
-            p = form.cleaned_data['phone']
-            ca = form.cleaned_data['current_address']
-            e = form.cleaned_data['email']
-            school_id = form.cleaned_data['school_id']
-            new_teacher = Teacher.objects.create(first_name = fn, last_name=ls,\
-            									 birthday = bd, birth_place = bl,\
-            									 sex = s, phone = p, current_address = ca, \
-            									 school_id = school_id, email = e)
-            new_teacher.save()
+            form.save()
             message = 'You have added new teacher'
         else:
             message = 'Please check your information, something is wrong'
 
-    t = loader.get_template('school/add_teacher.html')
-    c = RequestContext(request, {'form' : form, 'message' : message})
+    t = loader.get_template('school/teachers.html')
+    c = RequestContext(request, {'form' : form, 'message' : message, 'teacherList' : teacherList})
     return HttpResponse(t.render(c))
 
-def add_subject(request ):
+def viewTeacherDetail(request, teacher_id):
     message = None
+    teacher = Teacher.objects.get(id = teacher_id);
+    form = TeacherForm (instance = teacher)
+    if request.method == 'POST':
+        form = TeacherForm(request.POST, instance = teacher)
+        if form.is_valid():
+            form.save()
+            message = 'You have updated successfully'
+        else:
+            message = 'Please check again'
+    
+    t = loader.get_template('school/teacher_detail.html')
+    c = RequestContext(request, {'form' : form, 'message' : message, 'id' : teacher_id})
+    return HttpResponse(t.render(c))
+
+def subjectPerClass(request, class_id):
+    message = None
+    subjectList = Subject.objects.filter(class_id = class_id)
     form = SubjectForm()
     if request.method == 'POST':
-        form = SubjectForm(request.POST)
+        data = {'name':request.POST['name'], 'hs':request.POST['hs'], 'loai':request.POST['loai'], 'class_id':class_id, 'teacher_id':request.POST['teacher_id'], 'term_id':request.POST['term_id']}
+        form = SubjectForm(data)
         if form.is_valid():
-            name = form.cleaned_data['name']
-            hs = form.cleaned_data['hs']
-            loai = form.cleaned_data['loai']
-            class_id = form.cleaned_data['class_id']
-            teacher_id = form.cleaned_data['teacher_id']
-            term_id = form.cleaned_data['term_id']
-            new_subject = Subject.objects.create(loai = loai, \
-            									class_id  = class_id, name = name, \
-            									hs = hs, teacher_id = teacher_id, term_id = term_id)
-            new_subject.save()
+            form.save()
             message = 'You have added new subject'
         else:
             message = 'Please check your information, something is wrong'
 
-    t = loader.get_template('school/add_subject.html')
-    c = RequestContext(request, {'form' : form, 'message' : message})
+    t = loader.get_template('school/subject_per_class.html')
+    c = RequestContext(request, {'form' : form, 'message' : message,  'subjectList' : subjectList, 'class_id' : class_id})
     return HttpResponse(t.render(c))
 
-def add_pupil(request):
+def studentPerClass(request, class_id):
     message = None
     form = PupilForm()
+    studentList = Pupil.objects.filter(class_id = class_id)
     if request.method == 'POST':
+        data = {'first_name':request.POST['first_name'], 'last_name':request.POST['last_name'],
+        'birthday':request.POST['birthday'], 'class_id':class_id, 'sex':request.POST['sex'], 'ban_dk':request.POST['ban_dk'], 'school_join_date':request.POST['school_join_date'], 'start_year_id':request.POST['start_year_id']}
+        form = PupilForm(data)
+        if form.is_valid():
+            form.save()
+            message = 'You have added new student'
+        else:
+            message = 'Please check your information, something is wrong'
+
+    t = loader.get_template('school/student_per_class.html')
+    c = RequestContext(request, {'form' : form, 'message' : message, 'studentList' : studentList, 'class_id' : class_id})
+    return HttpResponse(t.render(c))
+
+def students(request):
+    message = None
+    form = PupilForm()
+    studentList = Pupil.objects.all()
+    if request.method == 'POST':
+        #data = {'first_name':request.POST['first_name'], 'last_name':request.POST['last_name'], 'birthday':request.POST['birthday'], 'sex':request.POST['sex'],'ban_dk':request.POST['ban_dk'], 'school_join_date':request.POST['school_join_date'], 'start_year_id':request.POST['start_year_id'], 'class_id' : request.POST['class_id']}
         form = PupilForm(request.POST)
         if form.is_valid():
             form.save()
@@ -124,10 +142,26 @@ def add_pupil(request):
         else:
             message = 'Please check your information, something is wrong'
 
-    t = loader.get_template('school/add_pupil.html')
-    c = RequestContext(request, {'form' : form, 'message' : message})
+    t = loader.get_template('school/students.html')
+    c = RequestContext(request, {'form' : form, 'message' : message, 'studentList' : studentList})
     return HttpResponse(t.render(c))
 
+def viewStudentDetail(request, student_id):
+    message = None
+    pupil = Pupil.objects.get(id = student_id);
+    form = PupilForm (instance = pupil)
+    if request.method == 'POST':
+        form = PupilForm(request.POST, instance = pupil)
+        if form.is_valid():
+            form.save()
+            message = 'You have updated successfully'
+        else:
+            message = 'Please check again'
+
+    t = loader.get_template('school/student_detail.html')
+    c = RequestContext(request, {'form' : form, 'message' : message, 'id' : student_id})
+    return HttpResponse(t.render(c))
+    
 #cac chuc nang:
 #hien thu bang diem cua mot lop, cho edit roi save lai
 def mark_table(request, school_code = None):
