@@ -1,0 +1,79 @@
+{% extends "school/base_school.html" %}
+
+{% block content %}
+<table border=1 width = "100%" >
+    <tr>
+        <td align="center" width="5%"> STT </td>
+        <td align="center" width="20%"> Họ & Tên Đệm </td>
+        <td align="center" width="50%"> Tên </td>
+        <td align="center" width="15%"> Ngày sinh</td>
+        <td align="center" width="25%"> Nơi sinh</td>
+        <td align="center" width="15%"> Dân tộc </td>
+        <td align="center" width="7%"> Giới tính </td>
+        <td align="center" width="8%"> Trường </td>
+    </tr>
+
+    {% if message != None %}
+    {{message}}
+    {% endif %}
+
+    {% for ss in teacherList %}
+    <tr>
+        <td align="center" width="5%"> <a href="{%url school.views.teachers  %}/viewTeacherDetail/{{ss.id}}"> {{ss.id}} </td>
+        <td align="center" width="20%"> {{ss.last_name}} </td>
+        <td align="center" width="5%"> {{ss.first_name}} </td>
+        <td align="center" width="15%"> {{ss.birthday}}</td>
+        <td align="center" width="25%"> {{ss.birth_place}}</td>
+        <td align="center" width="15%"> {{ss.dan_toc}} </td>
+        <td align="center" width="7%"> {{ss.sex}} </td>
+        <td align="center" width="8%"> {{ss.school_id}} </td>
+    </tr>
+    {% endfor %}
+    
+    <form action="/school/teachers" method="post">{% csrf_token %}
+        <tr>
+            {{ form.non_field_errors }}
+            <td align="center" width="5%"></td>
+
+            <td align="center" width="20%">
+                    {{ form.last_name.errors }}
+                    <p>{{ form.last_name }}</p>
+            </td>
+
+            <td align="center" width="5%">
+                    {{form.first_name.errors }}
+                    <p>{{ form.first_name }}</p>
+            </td>
+
+            <td align="center" width="15%">
+                    {{ form.birthday.errors }}
+                    <p>{{ form.birthday }}</p>
+            </td>
+
+            <td align="center" width="25%">
+                    {{ form.birth_place.errors }}
+                    <p>{{ form.birth_place }}</p>
+            </td>
+
+            <td align="center" width="15%">
+                    {{ form.dan_toc.errors }}
+                    <p>{{ form.dan_toc }}</p>
+            </td>
+
+            <td align="center" width="7%">
+                    {{form.sex.errors }}
+                    <p>{{ form.sex }}</p>
+            </td>
+
+            <td align="center" width="8%">
+                    {{ form.school_id.errors }}
+                    <p>{{ form.school_id }}</p>
+            </td>
+        </tr>
+        
+        <tr>
+        <td><input type ="submit" value="Thêm"/></td>
+			</form>
+        </tr>
+</table>
+{% endblock %}
