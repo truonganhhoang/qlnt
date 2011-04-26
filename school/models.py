@@ -104,11 +104,11 @@ class BasicPersonInfo(models.Model):
 	last_name = models.CharField(max_length = 45, blank = True) # tach ra first_name and last_name de sort va import from excel file
 	birthday = models.DateField(null = True, validators = [validate_birthday])
 	birth_place = models.CharField(max_length = 200, null = True, blank = True)
-	dan_toc = models.IntegerField(choices = DT_CHOICE, blank = True, default = 1)
+	dan_toc = models.IntegerField(choices = DT_CHOICE, blank = True, null = True, default = 1)
 	ton_giao = models.CharField(max_length = 20, blank = True, null = True)
 	quoc_tich = models.CharField(max_length = 20, blank = True, null = True, default = 'Viet Nam')
 	home_town = models.CharField(max_length = 100, null = True, blank = True) #nguyen quan
-	sex = models.CharField(max_length = 2, choices = GENDER_CHOICES, blank = True, default = 'M')
+	sex = models.CharField(max_length = 2, choices = GENDER_CHOICES, blank = True, null = True, default = 'M')
 	phone = models.CharField(max_length = 15, null = True, blank = True, validators = [validate_phone])
 	current_address = models.CharField(max_length = 200, blank = True, null = True)
 	email = models.EmailField(null = True, blank = True)
@@ -172,7 +172,7 @@ class ClassForm(forms.ModelForm):
 	    
 class Pupil(BasicPersonInfo):
     	
-	year = models.IntegerField(validators = [validate_year]) #year that pupil go to class 1
+	year = models.IntegerField(validators = [validate_year], blank = True, null = True) #year that pupil go to class 1
 	school_join_date = models.DateField(default = date.today(),validators=[validate_join_date])
 	ban_dk = models.CharField(max_length = 5, choices = BAN_CHOICE)
 	school_join_mark = models.IntegerField(null = True, blank = True)
@@ -180,9 +180,9 @@ class Pupil(BasicPersonInfo):
 	khu_vuc = models.CharField(max_length = 3, choices = KV_CHOICE, blank = True, null = True)
 	doan = models.BooleanField(blank = True, default = False)
 	ngay_vao_doan = models.DateField(blank = True, null = True)
-	doi = models.BooleanField(blank = True, default = False)
+	doi = models.BooleanField(blank = True, null = True, default = False)
 	ngay_vao_doi = models.DateField(blank = True, null = True)
-	dang = models.BooleanField(blank = True, default = False)
+	dang = models.BooleanField(blank = True, null = True, default = False)
 	ngay_vao_dang = models.DateField(blank = True, null = True)
 		
 	#thong tin gia dinh
@@ -196,7 +196,7 @@ class Pupil(BasicPersonInfo):
 	mother_phone = models.CharField(max_length = 15, null = True, blank = True, validators = [validate_phone])
 	
 	current_status = models.CharField(max_length = 200, null = True, default = 'OK')
-	disable = models.BooleanField(default = False)
+	disable = models.BooleanField(default = False, null = True)
 	start_year_id = models.ForeignKey(StartYear)
 	class_id = models.ForeignKey(Class)
 
