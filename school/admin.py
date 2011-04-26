@@ -1,5 +1,5 @@
 from django.contrib import admin
-from school.models import School, Class, Teacher, Pupil, Mark, Subject, Term,Year,StartYear,KhenThuong,KiLuat,HanhKiem,TBHocKy,TBNam,DiemDanh,TKDiemDanh,Block
+from school.models import School, Class, Teacher, Pupil, Mark, Subject, Term,Year,StartYear,KhenThuong,KiLuat,HanhKiem,TBHocKy,TBNam,DiemDanh,TKDiemDanh,Block,TKMon
 
 class MultiDBModelAdmin(admin.ModelAdmin):
     # A handy constant for the name of the alternate database.
@@ -44,4 +44,5 @@ admin.site.register(TBHocKy)
 admin.site.register(TBNam)
 admin.site.register(DiemDanh)
 admin.site.register(TKDiemDanh)
+admin.site.register(TKMon)
 

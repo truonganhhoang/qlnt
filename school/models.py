@@ -144,8 +144,8 @@ class Term(models.Model):
     number = models.IntegerField(max_length=1, choices = TERM_CHOICES)
     year_id= models.ForeignKey(Year)
     def __unicode__(self):
-		return str(self.number)
-	#class Admin: pass
+		return str(self.number)+" "+str(self.year_id.time.year)         
+    #class Admin: pass
 
 class TermForm(forms.ModelForm):
 	class Meta:
@@ -208,11 +208,9 @@ class PupilForm(forms.ModelForm):
 class Subject(models.Model):    
     name = models.CharField(max_length = 45) # can't be null
     hs = models.FloatField( validators = [validate_hs])
-    loai = models.IntegerField(max_length = 3)
-    #subject_code = models.CharField(max_length = 15, unique = True) # can't be null
+
     class_id = models.ForeignKey(Class)    
     teacher_id = models.ForeignKey(Teacher) # field nay de cung cap permission cho giao vien de nhap diem
-    term_id = models.ForeignKey(Term)    
 	
     def __unicode__(self):
 		return self.name
@@ -242,6 +240,11 @@ class Mark(models.Model):
     mot_tiet_5 = models.FloatField( null = True, blank = True, validators = [validate_mark])
     ck = models.FloatField( null = True, blank = True, validators = [validate_mark])
     tb = models.FloatField( null = True, blank = True, validators = [validate_mark])
+    
+    subject_id = models.ForeignKey(Subject)
+    student_id = models.ForeignKey(Pupil)        
+    term_id    = models.ForeignKey(Term)
+class TKMon(models.Model):    
     tb_nam = models.FloatField( null = True, blank = True, validators = [validate_mark])
     #danh dau xem mon nay co dc phep thi lai hay ko
     thi_lai = models.BooleanField(blank = True, default = False)
@@ -249,10 +252,11 @@ class Mark(models.Model):
 	# all fields can be null
     
     subject_id = models.ForeignKey(Subject)
-    #sua cho nay
     student_id = models.ForeignKey(Pupil)    	
 	#class Admin: pass
-
+    def __unicode__(self):
+        return str(self.tb_nam)
+    
 class MarkForm(forms.ModelForm):
     class Meta:
         model = Mark
