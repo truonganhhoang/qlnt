@@ -180,9 +180,9 @@ class Pupil(BasicPersonInfo):
 	khu_vuc = models.CharField(max_length = 3, choices = KV_CHOICE, blank = True, null = True)
 	doan = models.BooleanField(blank = True, default = False)
 	ngay_vao_doan = models.DateField(blank = True, null = True)
-	doi = models.BooleanField(blank = True, null = True, default = False)
+	doi = models.BooleanField(blank = True, default = False)
 	ngay_vao_doi = models.DateField(blank = True, null = True)
-	dang = models.BooleanField(blank = True, null = True, default = False)
+	dang = models.BooleanField(blank = True, default = False)
 	ngay_vao_dang = models.DateField(blank = True, null = True)
 		
 	#thong tin gia dinh
@@ -195,8 +195,8 @@ class Pupil(BasicPersonInfo):
 	mother_job = models.CharField(max_length = 100, null = True, blank = True)    
 	mother_phone = models.CharField(max_length = 15, null = True, blank = True, validators = [validate_phone])
 	
-	current_status = models.CharField(max_length = 200, null = True, default = 'OK')
-	disable = models.BooleanField(default = False, null = True)
+	current_status = models.CharField(max_length = 200, blank = True, null = True, default = 'OK')
+	disable = models.BooleanField(default = False)
 	start_year_id = models.ForeignKey(StartYear)
 	class_id = models.ForeignKey(Class)
 
