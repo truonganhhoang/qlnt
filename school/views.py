@@ -10,8 +10,8 @@ from django.template import Context
 from django.template.loader import get_template
 from school.models import *
 
-#import xlrd
-#import xlwt
+import xlrd
+import xlwt
 
 NHAP_DANH_SACH_TRUNG_TUYEN = r'school/import/nhap_danh_sach_trung_tuyen.html'
 DANH_SACH_TRUNG_TUYEN = r'school/import/danh_sach_trung_tuyen.html'
