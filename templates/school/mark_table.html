@@ -123,7 +123,7 @@ window.onload = function() { document.onkeypress = catchEnter; };
 </script>
 
 <table border="1" width=100% >
-<form action="/school/mark_table"  name="info" method="post" id='myform' 
+<form action="/school/mark_table/{{class_id}}"  name="info" method="post" id='myform' 
 	onsubmit="return false" >{% csrf_token %}
 	<input type="hidden" name="submitChoice" value="">	
 
