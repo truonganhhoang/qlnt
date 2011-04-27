@@ -10,7 +10,7 @@ from django.template import RequestContext, loader
 from django.core.exceptions import *
 from school.models import *
 import xlrd
-#import xlwt
+import xlwt
 
 NHAP_DANH_SACH_TRUNG_TUYEN = r'school/import/nhap_danh_sach_trung_tuyen.html'
 DANH_SACH_TRUNG_TUYEN = r'school/import/danh_sach_trung_tuyen.html'
@@ -219,56 +219,41 @@ def viewStudentDetail(request, student_id):
 	
 #cac chuc nang:
 #hien thu bang diem cua mot lop, cho edit roi save lai
-def mark_table(request, school_id = 1):
+def mark_table(request,classChoice=7):
 	message = None
 	
-	classChoice=-1
+	selectedClass=Class.objects.get(id=classChoice)
+	yearChoice=selectedClass.year_id.id
+	
+	school_id=selectedClass.year_id.school_id.id
+	
 	subjectChoice=-1
 	selectedTerm=None
-	schoolChoice = School.objects.get(id=school_id)
-	yearList	 = schoolChoice.year_set.all().order_by('-time')
-	blockList	= schoolChoice.block_set.all().order_by('number');	
+
 
 	#find currentTerm
-	currentTerm=None	
+	currentTerm=None
+		
 	termList=Term.objects.filter(year_id__school_id=school_id).order_by('-year_id__time','number')
 	if termList.__len__()>0:
 		currentTerm=termList[0]		
 		for term in termList:
-			if term.year_id.time.year==currentTerm.year_id.time.year:
+			if term.year_id.time==currentTerm.year_id.time:
 				currentTerm=term
 			else:
 				break
-	yearChoice=currentTerm.year_id.id
-	termChoice=currentTerm.id
-	if blockList.__len__():
-		blockChoice=blockList[0].id
-	termList= Term.objects.filter(year_id__school_id=school_id,year_id=yearChoice).order_by('-year_id__time','number')			
-	classList=Class.objects.filter(year_id=yearChoice,block_id=blockChoice)
-	subjectList=None
+			
+	if (yearChoice==currentTerm.year_id.id):
+		termChoice=currentTerm.id
+	else:
+		termChoice=-1		
+	termList= Term.objects.filter(year_id=yearChoice).order_by('number')
+	subjectList=Subject.objects.filter(class_id=classChoice)
 	if request.method == 'POST':
-		yearChoice =int(request.POST['year'])
 		termChoice =int(request.POST['term'])
-		blockChoice=int(request.POST['block'])		
-		classChoice=int(request.POST['class1'])
 		subjectChoice=int(request.POST['subject'])
-		if (termChoice!=-1):
-			selectedTerm=Term.objects.get(id=termChoice)
-		termList= Term.objects.filter(year_id=yearChoice).order_by('number')
-					
-		classList=Class.objects.filter(year_id=yearChoice,block_id=blockChoice)
-		if classChoice!=-1:
-			subjectList=Subject.objects.filter(class_id=classChoice)
 		
-	
-	#subjectForm = SubjectForm()
-	#termForm	= TermForm()
-	#classForm   =ClassForm()
-
-	#termList	 = Term.objects.filter(year_id__school_id=school_id).order_by('-year_id__time','number')			
-	
-	
-	
+		selectedTerm=Term.objects.get(id=termChoice)		
 	#currentYear  =yearList.latest()
 	#currentTerm=selectedTerm		 
 	pupilList=None	
@@ -577,22 +562,19 @@ def mark_table(request, school_id = 1):
 	
 	c = RequestContext(request, { 
 								'message' : message,
-								'yearList':yearList,
+
 								'termList':termList,
-								'blockList':blockList,
-								'classList' :classList,
 								'subjectList':subjectList,
 								'markList':markList,
 								'list':list,
 								
-								'yearChoice':yearChoice,
 								'termChoice':termChoice,								
-								'blockChoice':blockChoice,
-								'classChoice':classChoice,
 								'subjectChoice':subjectChoice,
+
 								'currentTerm':currentTerm,
 								'selectedTerm':selectedTerm,
 								'beforeTerm':beforeTerm,
+								'selectedClass':selectedClass,
 								'ttt':ttt,
 								'ttt1':ttt1
 								}
@@ -600,6 +582,7 @@ def mark_table(request, school_id = 1):
 	
 
 	return HttpResponse(t.render(c))
+
 #----------- Exporting and Importing form Excel -------------------------------------
 
 class UploadImportFileForm(forms.Form):

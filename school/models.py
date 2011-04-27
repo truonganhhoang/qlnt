@@ -143,18 +143,18 @@ class Year(models.Model):
 	school_id = models.ForeignKey(School)
 	
 	def __unicode__(self):
-		return str(self.time.year)+"-"+str(self.time.year+1)
+		return str(self.time)+"-"+str(self.time+1)
 class StartYear(models.Model):
     time = models.IntegerField(max_length = 4, validators = [validate_year]) # date field but just use Year
     school_id = models.ForeignKey(School)
     def __unicode__(self):
-        return str(self.time.year)
+        return str(self.time)
 	
 class Term(models.Model):
 	number = models.IntegerField(max_length=1, choices = TERM_CHOICES)
 	year_id= models.ForeignKey(Year)
 	def __unicode__(self):
-		return str(self.number)+" "+str(self.year_id.time.year)		 
+		return str(self.number)+" "+str(self.year_id.time)		 
 	#class Admin: pass
 
 class TermForm(forms.ModelForm):
@@ -257,6 +257,9 @@ class Mark(models.Model):
 	subject_id = models.ForeignKey(Subject)
 	student_id = models.ForeignKey(Pupil)		
 	term_id	= models.ForeignKey(Term)
+	def __unicode__(self):
+		return self.subject_id.name +" "+str(self.term_id.number)+self.student_id.first_name
+
 class TKMon(models.Model):	
 	tb_nam = models.FloatField( null = True, blank = True, validators = [validate_mark])
 	#danh dau xem mon nay co dc phep thi lai hay ko
@@ -268,7 +271,7 @@ class TKMon(models.Model):
 	student_id = models.ForeignKey(Pupil)		
 	#class Admin: pass
 	def __unicode__(self):
-		return str(self.tb_nam)
+		return self.subject_id.name +" "+self.student_id.first_name
 	
 class MarkForm(forms.ModelForm):
 	class Meta:
