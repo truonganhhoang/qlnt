@@ -10,8 +10,8 @@ from django.template import Context
 from django.template.loader import get_template
 from school.models import *
 
-import xlrd
-import xlwt
+#import xlrd
+#import xlwt
 
 NHAP_DANH_SACH_TRUNG_TUYEN = r'school/import/nhap_danh_sach_trung_tuyen.html'
 DANH_SACH_TRUNG_TUYEN = r'school/import/danh_sach_trung_tuyen.html'
@@ -164,45 +164,107 @@ def viewStudentDetail(request, student_id):
     
 #cac chuc nang:
 #hien thu bang diem cua mot lop, cho edit roi save lai
-def mark_table(request, school_code = None):
+def mark_table(request, school_id = 1):
 	message = None
+	
+	classChoice=-1
+	subjectChoice=-1
+	selectedTerm=None
+	schoolChoice = School.objects.get(id=school_id)
+	yearList     = schoolChoice.year_set.all().order_by('-time')
+	blockList    = schoolChoice.block_set.all().order_by('number');    
+
+	#find currentTerm
+	currentTerm=None	
+	termList=Term.objects.filter(year_id__school_id=school_id).order_by('-year_id__time','number')
+	if termList.__len__()>0:
+		currentTerm=termList[0]		
+		for term in termList:
+			if term.year_id.time.year==currentTerm.year_id.time.year:
+				currentTerm=term
+			else:
+				break
+	yearChoice=currentTerm.year_id.id
+	termChoice=currentTerm.id
+	if blockList.__len__():
+		blockChoice=blockList[0].id
+	termList= Term.objects.filter(year_id__school_id=school_id,year_id=yearChoice).order_by('-year_id__time','number')	        
+	classList=Class.objects.filter(year_id=yearChoice,block_id=blockChoice)
+	subjectList=None
+	if request.method == 'POST':
+		yearChoice =int(request.POST['year'])
+		termChoice =int(request.POST['term'])
+		blockChoice=int(request.POST['block'])		
+		classChoice=int(request.POST['class1'])
+		subjectChoice=int(request.POST['subject'])
+		if (termChoice!=-1):
+			selectedTerm=Term.objects.get(id=termChoice)
+		termList= Term.objects.filter(year_id=yearChoice).order_by('number')
+			        
+		classList=Class.objects.filter(year_id=yearChoice,block_id=blockChoice)
+		if classChoice!=-1:
+			subjectList=Subject.objects.filter(class_id=classChoice)
+		
 	
 	#subjectForm = SubjectForm()
 	#termForm    = TermForm()
 	#classForm   =ClassForm()
+
+	#termList     = Term.objects.filter(year_id__school_id=school_id).order_by('-year_id__time','number')	        
 	
-	subjectList =Subject.objects.all()
-	classList   =Class.objects.all()
 	
-	pupilList=None
-	termChoice =-1
-	classChoice=-1
-	subjectChoice=-1
-	
+    
+	#currentYear  =yearList.latest()
+	#currentTerm=selectedTerm		 
+	pupilList=None	
 	markList=[]
+	tbnamList=[]
+	tbhk1List=[]
+	tbhk1ListObjects=[]
+	tbnamListObjects=[]
 	list=None
 	idList=[]	
-	ttt="abc "	
-	ttt1="def "
-	tttt="kkk "
-	if request.method == 'POST':
-		classChoice=request.POST['class1']
-		subjectChoice=request.POST['subject']
-		termChoice   =request.POST['term']
-		
+	
+	ttt=2
+	beforeTerm=None
+	#subjectChoice=-1
+	ttt1=subjectChoice
+	if ( subjectChoice!=-1) & ( termChoice!=-1) :
+		ttt=3;
+	
 		pupilList = Pupil.objects.filter(class_id=classChoice)
 		
-		i=1;				
-		for p in pupilList:
-			m = p.mark_set.get(subject_id=subjectChoice)
-			markList.append(m)
+		if currentTerm.number==1:			
+			i=1	
+			for p in pupilList:
+				m = p.mark_set.get(subject_id=subjectChoice,term_id=termChoice)
+				markList.append(m)
 			
-			k=i*100
-			id=MarkID(k+1,k+2,k+3,k+4,k+5,k+6,k+7,k+8,k+9,k+10,k+11,k+12,k+13,k+14,k+15,k+16)
-			idList.append(id)
-			i=i+1
+				k=i*100
+				id=MarkID(k+1,k+2,k+3,k+4,k+5,k+6,k+7,k+8,k+9,k+10,k+11,k+12,k+13,k+14,k+15,k+16)
+				idList.append(id)
+				i=i+1
 			
-		list=zip(pupilList,markList,idList)
+		else:
+			beforeTerm=Term.objects.get(year_id=yearChoice,number=1).id			
+			i=1
+			for p in pupilList:
+				m = p.mark_set.get(subject_id=subjectChoice,term_id=termChoice)				
+				markList.append(m)
+				
+				hk1=p.mark_set.get(subject_id=subjectChoice,term_id=beforeTerm)
+				
+				tbhk1ListObjects.append(hk1)										
+				k=i*100
+				id=MarkID(k+1,k+2,k+3,k+4,k+5,k+6,k+7,k+8,k+9,k+10,k+11,k+12,k+13,k+14,k+15,k+16)
+				idList.append(id)
+				i=i+1
+
+				tbnam=p.tkmon_set.get(subject_id=subjectChoice)
+				
+				tbnamListObjects.append(tbnam)
+
+				
 		if request.POST['submitChoice']=="luulai":
 			#for m in markList:
 			i=0;			
@@ -424,26 +486,60 @@ def mark_table(request, school_code = None):
 					m.ck=tt
 					sum=sum+tt*3
 					foctorSum+=3
-				if foctorSum==0:
-					m.tb=0
-				else:						
-					m.tb=sum/foctorSum	
+				
+				e=0.00000000001	
+				if m.ck!=None:
+					if foctorSum==0:
+						m.tb=0
+					else:						
+						m.tb=round(sum/foctorSum+e,1)
+				else:
+					m.tb=None			
+				if (currentTerm.number==2):
+					if (tbhk1ListObjects[i].tb!=None) & (m.tb!=None):
+						tbnamListObjects[i].tb_nam=round(tbhk1ListObjects[i].tb+m.tb*2+e,1)/3
+						tbnamListObjects[i].save()
+					else:
+						tbnamListObjects[i].tb_nam=None
+						tbnamListObjects[i].save()		
 				m.save()
 				i=i+1							
+	
 
+		if currentTerm.number==1:			
+			list=zip(pupilList,markList,idList)
+		else:
+			length=pupilList.__len__()
+			for i in range(length):
+				
+				tbhk1List.append(tbhk1ListObjects[i].tb)				
+				tbnamList.append(tbnamListObjects[i].tb_nam)
+
+			list=zip(pupilList,markList,tbhk1List,tbnamList,idList)
+
+		
 	t = loader.get_template('school/mark_table.html')
 	
 	c = RequestContext(request, { 
 								'message' : message,
-								'subjectList':subjectList,
+								'yearList':yearList,
+								'termList':termList,
+								'blockList':blockList,
 								'classList' :classList,
+								'subjectList':subjectList,
+								'markList':markList,
+								'list':list,
+								
+								'yearChoice':yearChoice,
+								'termChoice':termChoice,								
+								'blockChoice':blockChoice,
 								'classChoice':classChoice,
 								'subjectChoice':subjectChoice,
-								'termChoice':termChoice,								
-								'list':list,
+								'currentTerm':currentTerm,
+								'selectedTerm':selectedTerm,
+								'beforeTerm':beforeTerm,
 								'ttt':ttt,
-								'ttt1':ttt1,
-								'tttt':tttt,
+								'ttt1':ttt1
 								}
 					   )
 	
