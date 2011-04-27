@@ -37,6 +37,7 @@ urlpatterns = patterns('',
     url(r'^school/', include('school.urls')),
     
     url(r'^messages/', include('persistent_messages.urls')),
-    url(r'^grappelli/', include('grappelli.urls')),
+    
+    #url(r'^grappelli/', include('grappelli.urls')),
    
 )
