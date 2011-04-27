@@ -30,6 +30,8 @@ DT_CHOICE = ((1,u'Kinh (Việt)'),(2,u'Tày'),(3,u'Nùng'),(4,u'Hmông (Mèo)'),
 			(63,u'Sơ rá'),(64,u'Jẻ'),(65,u'Mơ nâm'),(66,u'Hơ lăng'),(67,u'Hoa (Hán)'),(68,u'Sán chay (Cao Lan, Sán Chỉ)'),
 			(69,u'CaDong'),(70,u'Chơ ro'))
 LENLOP_CHOICES=((True,u'Được lên lớp'),(False,u'Không được lên lớp'))
+SCHOOL_ACTION_STATUS=((0, u'Trường mới'),(1, u'Đang học kì 1'), (2, u'Đang học kì 2'), (3, u'Đang nghỉ hè'))
+CLASS_ACTION_STATUS=((1, u'Đang học kì 1'), (2, u'Đang học kì 2'), (3, u'Đang nghỉ hè'))
 #validate mark of pupil
 #mark must be between 0 and 10
 def validate_mark(value):
@@ -67,22 +69,31 @@ def validate_hs(value):
 		
 #validator for class->khoi
 def validate_khoi(value):
-	if not ( 1<= value <= 12 ):
-		raise ValidationError(u'khoi must be between 1 and 12')
-
+    if not ( 1<= value <= 12 ):
+        raise ValidationError(u'khoi must be between 1 and 12')
+def validate_year(value):
+    if not ( 1990 <= value <= 9999):
+        raise ValidationError(u'Year must be between 1990 and 9999')
+	       
 class School(models.Model):
 	
-	#school_code = models.CharField(max_length = 20, unique = True)
+	school_code = models.CharField(max_length = 20, unique = True)
 	name = models.CharField(max_length = 200, unique = True)
 	address = models.CharField(max_length = 200, blank = True)
 	phone = models.CharField(max_length = 15, null = True, blank = True, validators = [validate_phone])
 	web_site = models.URLField(null = True, blank = True)
 	school_level = models.IntegerField( choices = SCHOOL_LEVEL_CHOICE )
-	
+	status = models.SmallIntegerField( max_length = 3, choices = SCHOOL_ACTION_STATUS)
 	def __unicode__(self):
 		return self.name	
 	
 	#class Admin: pass
+
+class DanhSachLoaiLop(models.Model):
+    loai = models.CharField(max_length = 15, unique = True)
+    school_id = models.ForeignKey(School)
+    def __unicode__(self):
+        return self.loai
 
 class SchoolForm(forms.ModelForm):
 	class Meta:
@@ -128,16 +139,16 @@ class TeacherForm(forms.ModelForm):
 		model = Teacher
 
 class Year(models.Model):
-	time = models.DateField() # date field but just use Year
+	time = models.IntegerField(max_length = 4, validators = [validate_year]) # date field but just use Year
 	school_id = models.ForeignKey(School)
 	
 	def __unicode__(self):
 		return str(self.time.year)+"-"+str(self.time.year+1)
 class StartYear(models.Model):
-	time = models.DateField() # date field but use Year only   
-	school_id = models.ForeignKey(School)
-	def __unicode__(self):
-		return str(self.time.year)
+    time = models.IntegerField(max_length = 4, validators = [validate_year]) # date field but just use Year
+    school_id = models.ForeignKey(School)
+    def __unicode__(self):
+        return str(self.time.year)
 	
 class Term(models.Model):
 	number = models.IntegerField(max_length=1, choices = TERM_CHOICES)
@@ -155,6 +166,7 @@ class Class(models.Model):
 	#cai nay sau cung bo di	
 	#class_code = models.CharField(max_length = 20, unique = True)	
 	name = models.CharField(max_length = 20)
+	status = models.SmallIntegerField(max_length = 3, null = True, blank= True, choices = CLASS_ACTION_STATUS)
 	year_id = models.ForeignKey(Year)
 	#lop nay thuoc khoi nao
 	block_id = models.ForeignKey(Block)
@@ -169,7 +181,8 @@ class ClassForm(forms.ModelForm):
 		model = Class
 		
 class Pupil(BasicPersonInfo):
-		
+    
+	pupil_code = models.CharField(max_length = 10, unique = True) #ma hoc sinh	
 	year = models.IntegerField(validators = [validate_year], blank = True, null = True) #year that pupil go to class 1
 	school_join_date = models.DateField(default = date.today(),validators=[validate_join_date])
 	ban_dk = models.CharField(max_length = 5, choices = BAN_CHOICE)
@@ -195,6 +208,8 @@ class Pupil(BasicPersonInfo):
 	
 	current_status = models.CharField(max_length = 200, blank = True, null = True, default = 'OK')
 	disable = models.BooleanField(default = False)
+	
+	
 	start_year_id = models.ForeignKey(StartYear)
 	class_id = models.ForeignKey(Class)
 

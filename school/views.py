@@ -2,11 +2,13 @@
 
 # Create your views here.
 import os.path
-from django.http import HttpResponse
+import datetime
+from django.http import HttpResponse, HttpResponseRedirect
+from django.core.urlresolvers import reverse
 from django.shortcuts import render_to_response
 from django.template import RequestContext, loader
+from django.core.exceptions import *
 from school.models import *
-
 import xlrd
 #import xlwt
 
@@ -32,10 +34,66 @@ class MarkID:
 		self.d14=d14
 		self.d15=d15
 		self.d16=d16
-def school(request):
-#	class_list = Class.objects.all()
-	context = RequestContext(request)
-	return render_to_response(r'school/school.html', context_instance = context)
+def school_index(request):
+    school = School.objects.get( school_code = 'NT') # it's for testing, actually, it should be: school = School.objects.get(id = request['school_id'])
+    if request.method == "POST":
+        if request.POST['clickedButton'] == "start_year":
+            request.session['school'] = school       
+            return HttpResponseRedirect(reverse('start_year'))
+        elif request.POST['clickedButton'] == "start_second_term":
+            context = RequestContext(request, {'school':school})
+            return render_to_response(r'school/start_second_term.html', context_instance = context)
+        elif request.POST['clickedButton'] == "finish_year":
+            context = RequestContext(request, {'school':school})
+            return render_to_response(r'school/finish_year.html', context_instance = context)    
+    context = RequestContext(request, {'school':school})
+    return render_to_response(r'school/school.html', context_instance = context)
+    
+def b1(request):
+    # tao moi cac khoi neu truong moi thanh lap
+    school = request.session['school']
+    if school.school_level == 1:
+        lower_bound = 1
+        upper_bound = 5
+    elif school.school_level == 2:
+        lower_bound = 6
+        upper_bound = 9
+    else:
+        lower_bound = 10
+        upper_bound = 12
+        
+    if school.status == 0:
+        for khoi in range(lower_bound, upper_bound+1):
+            block = Block()
+            block.number = khoi
+            block.school_id = school
+            block.save()
+        school.status == 1
+        school.save()
+    # tao nam hoc moi
+    current_year = datetime.now().Year
+    year = school.year_set.get( time = current_year)
+    if not year:
+        year = Year()
+        year.time = current_year
+        year.school = school
+        year.save
+        # create new class.
+        # -- tao cac lop ---
+        for khoi in range(lower_bound, upper_bound+1):
+            block = school.block_set.get( number = khoi)
+            loai_lop = school.danhsachloailop_set.all()
+            for class_name in loai_lop:
+                _class = Class()
+                _class = ' '.join(str(block.number), loai_lop.loai)
+                _class.status = 1
+                _class.block = block
+                _class.year = year
+                _class.save()
+    else: 
+        raise Error(u'Start_year: đã bắt đầu năm học rồi ?')    
+    # -- day cac hoc sinh len lop        
+             
 	
 def classes(request):
 	message = None
@@ -607,29 +665,30 @@ def process_file( file_name, task):
 	return None
 
 def nhap_danh_sach_trung_tuyen(request):
-	school = School.objects.all()[0] # it's for testing, actually, it should be: school = School.objects.get(id = request['school_id'])
-	if request.method == 'POST':
-		form = UploadImportFileForm(request.POST, request.FILES)
-		if form.is_valid():
-			save_file_name = save_file(form.cleaned_data['import_file'], request.session)
-			print save_file_name
-			request.session['save_file_name'] = save_file_name
-			
-			student_list = process_file(file_name = save_file_name, \
-										task = "Nhap danh sach trung tuyen")
-			print student_list
-			context = RequestContext(request, {'school':school,})
-			return render_to_response(DANH_SACH_TRUNG_TUYEN,\
-									{'student_list':student_list,}, \
-									context_instance = context)
-	else:
-		form = UploadImportFileForm()
-	context = RequestContext(request, {'form':form, 'school':school})
-	return render_to_response(NHAP_DANH_SACH_TRUNG_TUYEN, context_instance = context)
-		
+    if request.method == 'POST':
+        form = UploadImportFileForm(request.POST, request.FILES)
+        if form.is_valid():
+            save_file_name = save_file(form.cleaned_data['import_file'], request.session)
+            print save_file_name
+            request.session['save_file_name'] = save_file_name
+            
+            student_list = process_file(file_name = save_file_name, \
+                                        task = "Nhap danh sach trung tuyen")
+            print student_list
+            context = RequestContext(request, {'school':school,})
+            return render_to_response(DANH_SACH_TRUNG_TUYEN,\
+                                    {'student_list':student_list,}, \
+                                    context_instance = context)
+    else:
+        form = UploadImportFileForm()
+    context = RequestContext(request, {'form':form, 'school':school})
+    return render_to_response(NHAP_DANH_SACH_TRUNG_TUYEN, context_instance = context)
+        
 def danh_sach_trung_tuyen(request):
-	context = RequestContext(request)
-	return render_to_response(DANH_SACH_TRUNG_TUYEN, context_instance = context)
+    student_objects = []
+    
+    context = RequestContext(request)
+    return render_to_response(DANH_SACH_TRUNG_TUYEN, context_instance = context)
 #------------------------------------------------------------------------------------
 
 

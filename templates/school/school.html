@@ -1,18 +1,72 @@
 {% extends "school/base_school.html" %}
+{% block js %}
+<script type="text/javascript" >
+
+	function startYear()
+	{
+		var schoolStatus = {{school.status}}
+		if (schoolStatus != 0 && schoolStatus!= 3){
+			alert("Bạn không thể bắt đầu năm học mới khi năm học cũ chưa kết thúc!");
+			return false;		
+		}
+		document.theForm.clickedButton.value="start_year";
+		document.theForm.submit();
+	}
+
+	function startSecondTerm()
+	{
+		var schoolStatus = {{school.status}}
+		if (schoolStatus ==0 || schoolStatus== 3){
+			alert("Bạn không thể bắt đầu học kì II khi kì I chưa bắt đầu!");			
+			return false;		
+		}
+		document.theForm.clickedButton.value="start_second_term";
+		document.theForm.submit();
+	}
+	
+	function finishYear()
+	{
+		var schoolStatus = {{school.status}}
+		if (schoolStatus !=2){
+			alert("Bạn không thể kết thúc năm học khi kì II chưa bắt đầu!");			
+			return false;		
+		}
+		
+		document.theForm.clickedButton.value="finish_year";
+		document.theForm.submit();
+	}
+
+</script>
+
+{% endblock %}
 {% block content %}
+<form action="" name="theForm" method="post" > {% csrf_token %}
+
+<input type="hidden" name="clickedButton" value="notClicked" />
 <table cellpadding="3" cellspacing="2" border="1" valign="middle">
 	<tr>
-		<th><a href="{%url school.views.school  %}teachers">Quản lý giáo viên</a></th>
+		<th><a href="{%url school.views.school_index  %}teachers">Quản lý giáo viên</a></th>
 	</tr>
 	
 	<tr>
-		<th><a href="{%url school.views.school %}classes">Quản lý lớp</a></th>
+		<th><a href="{%url school.views.school_index %}classes">Quản lý lớp</a></th>
 	</tr>
 	
 	<tr>
-		<th><a href="{%url school.views.school  %}students">Học sinh toàn trường</a></th>
+		<th><a href="{%url school.views.school_index  %}students">Thống kê học sinh toàn trường</a></th>
 	</tr>
-	
 </table>
+
+<table>
+	<tr>
+		<th><input name="start_year" value="Bắt đầu năm học" type="submit"
+					  onclick="startYear()"></th>
+		<th><input name="start_second_term" value="Bắt đầu học kỳ II" type="submit"
+					  onclick="startSecondTerm()"></th>
+		<th><input name="finish_year" value="Kết thúc năm học" type="submit"
+					  onclick="finishYear()"></th>
+	</tr>
+</table>
+</form>
 {% endblock %}
 
