@@ -4,7 +4,6 @@
 {% if message != None %}
 {{message}}
 {% endif %}
-
 <script type="text/javascript" >
 //lock enter
 function catchEnter(e)
@@ -151,9 +150,9 @@ window.onload = function() { document.onkeypress = catchEnter; };
 		
 		<td width ="50%"> Học kỳ &nbsp&nbsp:  
 		<select name="term" onclick="submitTerm();" >				
-			<option value=-1 > Chọn kỳ </option>
+			<option value=-1 selected > Chọn kỳ </option>
 			{% for term in termList %}
-				{% ifequal term.year_id.time.year currentTerm.year_id.time.year %}				
+				{% ifequal term.year_id.time currentTerm.year_id.time %}				
 					<option   value={{ term.id }} selected> {{ term}} </option>	
 				{% else %}	
 					<option   value={{ term.id }}> {{ term}}</option>		
