@@ -211,7 +211,7 @@ class Pupil(BasicPersonInfo):
 	
 	
 	start_year_id = models.ForeignKey(StartYear)
-	class_id = models.ForeignKey(Class)
+	class_id = models.ForeignKey(Class, null = True, blank = True)
 
 class PupilForm(forms.ModelForm):
 	class Meta:

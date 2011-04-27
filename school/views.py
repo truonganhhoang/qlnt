@@ -14,6 +14,7 @@ import xlwt
 
 NHAP_DANH_SACH_TRUNG_TUYEN = r'school/import/nhap_danh_sach_trung_tuyen.html'
 DANH_SACH_TRUNG_TUYEN = r'school/import/danh_sach_trung_tuyen.html'
+START_YEAR = r'school/start_year.html'
 TEMP_FILE_LOCATION = os.path.dirname(__file__)
 
 class MarkID:
@@ -68,33 +69,72 @@ def b1(request):
             block.number = khoi
             block.school_id = school
             block.save()
-        school.status == 1
+        school.status = 1
         school.save()
     # tao nam hoc moi
-    current_year = datetime.now().Year
-    year = school.year_set.get( time = current_year)
+    current_year = datetime.datetime.now().year
+    year = school.year_set.filter( time__exact = current_year)
     if not year:
         year = Year()
         year.time = current_year
-        year.school = school
-        year.save
+        year.school_id = school
+        year.save()
         # create new class.
         # -- tao cac lop ---
         for khoi in range(lower_bound, upper_bound+1):
-            block = school.block_set.get( number = khoi)
+            block = school.block_set.filter( number__exact = khoi)
+            if block:
+                block = block[0]
+            else:
+                raise Exception(u'Khối' + str(khoi) + u'chưa đc tạo')
+                
+            print block
             loai_lop = school.danhsachloailop_set.all()
             for class_name in loai_lop:
                 _class = Class()
-                _class = ' '.join(str(block.number), loai_lop.loai)
+                _class.name = str(block.number) + ' ' + class_name.loai
                 _class.status = 1
-                _class.block = block
-                _class.year = year
+                _class.block_id = block
+                _class.year_id = year
                 _class.save()
+        # -- day cac hoc sinh len lop        
+        last_year = school.year_set.filter( time__exact = current_year -1)
+        if last_year:
+            blocks = school.block_set.all()
+            for block in blocks:
+                if block.number == upper_bound:
+                    classes = block.class_set.all()
+                    for _class in classes:
+                        students = _class.pupil_set.all()
+                        for student in students:
+                            if (student.tbnam_set.get( year_id = last_year).len_lop):
+                                student.disable = False
+                                student.class_id = None
+                                student.save()
+                            else: # TRUONG HOP LUU BAN
+                                pass
+                else:
+                    classes = block.class_set.all()
+                    for _class in classes:
+                        students = _class.pupil_set.all()
+                        for student in students:
+                            if (student.tbnam_set.get( year_id = last_year).len_lop):
+                                new_block = year.block_set.get( number = block.number+1)
+                                new_class_name = str(new_block.number) + ' ' + student.class_id.name.split()[1]
+                                print new_class_name
+                                new_class = new_block.class_set.get( name = new_class_name)
+                                student.class_id = new_class
+                                student.save()
+                            else:
+                                pass
+        else: # truong ko co nam cu
+            pass
+        # render HTML
     else: 
-        raise Error(u'Start_year: đã bắt đầu năm học rồi ?')    
-    # -- day cac hoc sinh len lop        
-             
-	
+        #raise Exception(u'Start_year: đã bắt đầu năm học rồi ?')    
+        pass
+    context = RequestContext(request, {'school':school})
+    return render_to_response(START_YEAR, context_instance = context)                                            
 def classes(request):
 	message = None
 	form = ClassForm()
@@ -657,13 +697,14 @@ def nhap_danh_sach_trung_tuyen(request):
             student_list = process_file(file_name = save_file_name, \
                                         task = "Nhap danh sach trung tuyen")
             print student_list
-            context = RequestContext(request, {'school':school,})
+            context = RequestContext(request)
             return render_to_response(DANH_SACH_TRUNG_TUYEN,\
                                     {'student_list':student_list,}, \
                                     context_instance = context)
     else:
         form = UploadImportFileForm()
-    context = RequestContext(request, {'form':form, 'school':school})
+    print request.session['school']
+    context = RequestContext(request, {'form':form,})
     return render_to_response(NHAP_DANH_SACH_TRUNG_TUYEN, context_instance = context)
         
 def danh_sach_trung_tuyen(request):

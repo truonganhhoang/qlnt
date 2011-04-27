@@ -14,8 +14,8 @@ urlpatterns = patterns('',
     url(r'subjectPerClass/(?P<class_id>\w+)', 'school.views.subjectPerClass'),
     url(r'start_year$','school.views.b1', name = "start_year"),
     
-    url(r'students/import$', 'school.views.nhap_danh_sach_trung_tuyen'),
-    url(r'students/import/list$', 'school.views.danh_sach_trung_tuyen'),
+    url(r'start_year/import$', 'school.views.nhap_danh_sach_trung_tuyen'),
+    url(r'start_year/import/list$', 'school.views.danh_sach_trung_tuyen'),
     #url(r'^school/test$','school.views.test'), 
                            
 	
