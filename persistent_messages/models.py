@@ -7,7 +7,6 @@ from django.utils.encoding import force_unicode
 from django.contrib import messages
 from django.contrib.messages import utils
 from django.utils.translation import ugettext_lazy as _
-from django.utils.encoding import force_unicode
 
 LEVEL_TAGS = utils.get_level_tags()
 

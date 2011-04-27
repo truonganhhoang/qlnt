@@ -1,17 +1,14 @@
 # -*- coding: utf-8 -*-
 
 # Create your views here.
-
 import os.path
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.template import RequestContext, loader
-from django.template import Context
-from django.template.loader import get_template
 from school.models import *
 
 import xlrd
-import xlwt
+#import xlwt
 
 NHAP_DANH_SACH_TRUNG_TUYEN = r'school/import/nhap_danh_sach_trung_tuyen.html'
 DANH_SACH_TRUNG_TUYEN = r'school/import/danh_sach_trung_tuyen.html'
@@ -36,132 +33,132 @@ class MarkID:
 		self.d15=d15
 		self.d16=d16
 def school(request):
-	class_list = Class.objects.all()
+#	class_list = Class.objects.all()
 	context = RequestContext(request)
 	return render_to_response(r'school/school.html', context_instance = context)
 	
 def classes(request):
-    message = None
-    form = ClassForm()
-    classList = Class.objects.all()
-    if request.method == 'POST':
-        form = ClassForm(request.POST)
-        if form.is_valid():
-            form.save()
-            message = 'You have added new class'
-        else:
-            message = 'Please check your information, something is wrong'
+	message = None
+	form = ClassForm()
+	classList = Class.objects.all()
+	if request.method == 'POST':
+		form = ClassForm(request.POST)
+		if form.is_valid():
+			form.save()
+			message = 'You have added new class'
+		else:
+			message = 'Please check your information, something is wrong'
 
-    t = loader.get_template('school/classes.html')
-    c = RequestContext(request, {'form' : form, 'message' : message, 'classList' : classList})
-    return HttpResponse(t.render(c))
+	t = loader.get_template('school/classes.html')
+	c = RequestContext(request, {'form' : form, 'message' : message, 'classList' : classList})
+	return HttpResponse(t.render(c))
 
 def viewClassDetail(request, class_id):
-    class_view = Class.objects.get(id = class_id)
-    t = loader.get_template('school/classDetail.html')
-    c = RequestContext(request, {'class_view' : class_view})
-    return HttpResponse(t.render(c))
+	class_view = Class.objects.get(id = class_id)
+	t = loader.get_template('school/classDetail.html')
+	c = RequestContext(request, {'class_view' : class_view})
+	return HttpResponse(t.render(c))
 
 def teachers(request):
-    message = None
-    form = TeacherForm()
-    teacherList = Teacher.objects.all()
-    if request.method == 'POST':
-        form = TeacherForm(request.POST)
-        if form.is_valid():
-            form.save()
-            message = 'You have added new teacher'
-        else:
-            message = 'Please check your information, something is wrong'
+	message = None
+	form = TeacherForm()
+	teacherList = Teacher.objects.all()
+	if request.method == 'POST':
+		form = TeacherForm(request.POST)
+		if form.is_valid():
+			form.save()
+			message = 'You have added new teacher'
+		else:
+			message = 'Please check your information, something is wrong'
 
-    t = loader.get_template('school/teachers.html')
-    c = RequestContext(request, {'form' : form, 'message' : message, 'teacherList' : teacherList})
-    return HttpResponse(t.render(c))
+	t = loader.get_template('school/teachers.html')
+	c = RequestContext(request, {'form' : form, 'message' : message, 'teacherList' : teacherList})
+	return HttpResponse(t.render(c))
 
 def viewTeacherDetail(request, teacher_id):
-    message = None
-    teacher = Teacher.objects.get(id = teacher_id);
-    form = TeacherForm (instance = teacher)
-    if request.method == 'POST':
-        form = TeacherForm(request.POST, instance = teacher)
-        if form.is_valid():
-            form.save()
-            message = 'You have updated successfully'
-        else:
-            message = 'Please check again'
-    
-    t = loader.get_template('school/teacher_detail.html')
-    c = RequestContext(request, {'form' : form, 'message' : message, 'id' : teacher_id})
-    return HttpResponse(t.render(c))
+	message = None
+	teacher = Teacher.objects.get(id = teacher_id);
+	form = TeacherForm (instance = teacher)
+	if request.method == 'POST':
+		form = TeacherForm(request.POST, instance = teacher)
+		if form.is_valid():
+			form.save()
+			message = 'You have updated successfully'
+		else:
+			message = 'Please check again'
+	
+	t = loader.get_template('school/teacher_detail.html')
+	c = RequestContext(request, {'form' : form, 'message' : message, 'id' : teacher_id})
+	return HttpResponse(t.render(c))
 
 def subjectPerClass(request, class_id):
-    message = None
-    subjectList = Subject.objects.filter(class_id = class_id)
-    form = SubjectForm()
-    if request.method == 'POST':
-        data = {'name':request.POST['name'], 'hs':request.POST['hs'], 'loai':request.POST['loai'], 'class_id':class_id, 'teacher_id':request.POST['teacher_id'], 'term_id':request.POST['term_id']}
-        form = SubjectForm(data)
-        if form.is_valid():
-            form.save()
-            message = 'You have added new subject'
-        else:
-            message = 'Please check your information, something is wrong'
+	message = None
+	subjectList = Subject.objects.filter(class_id = class_id)
+	form = SubjectForm()
+	if request.method == 'POST':
+		data = {'name':request.POST['name'], 'hs':request.POST['hs'], 'loai':request.POST['loai'], 'class_id':class_id, 'teacher_id':request.POST['teacher_id'], 'term_id':request.POST['term_id']}
+		form = SubjectForm(data)
+		if form.is_valid():
+			form.save()
+			message = 'You have added new subject'
+		else:
+			message = 'Please check your information, something is wrong'
 
-    t = loader.get_template('school/subject_per_class.html')
-    c = RequestContext(request, {'form' : form, 'message' : message,  'subjectList' : subjectList, 'class_id' : class_id})
-    return HttpResponse(t.render(c))
+	t = loader.get_template('school/subject_per_class.html')
+	c = RequestContext(request, {'form' : form, 'message' : message,  'subjectList' : subjectList, 'class_id' : class_id})
+	return HttpResponse(t.render(c))
 
 def studentPerClass(request, class_id):
-    message = None
-    form = PupilForm()
-    studentList = Pupil.objects.filter(class_id = class_id)
-    if request.method == 'POST':
-        data = {'first_name':request.POST['first_name'], 'last_name':request.POST['last_name'],
-        'birthday':request.POST['birthday'], 'class_id':class_id, 'sex':request.POST['sex'], 'ban_dk':request.POST['ban_dk'], 'school_join_date':request.POST['school_join_date'], 'start_year_id':request.POST['start_year_id']}
-        form = PupilForm(data)
-        if form.is_valid():
-            form.save()
-            message = 'You have added new student'
-        else:
-            message = 'Please check your information, something is wrong'
+	message = None
+	form = PupilForm()
+	studentList = Pupil.objects.filter(class_id = class_id)
+	if request.method == 'POST':
+		data = {'first_name':request.POST['first_name'], 'last_name':request.POST['last_name'],
+		'birthday':request.POST['birthday'], 'class_id':class_id, 'sex':request.POST['sex'], 'ban_dk':request.POST['ban_dk'], 'school_join_date':request.POST['school_join_date'], 'start_year_id':request.POST['start_year_id']}
+		form = PupilForm(data)
+		if form.is_valid():
+			form.save()
+			message = 'You have added new student'
+		else:
+			message = 'Please check your information, something is wrong'
 
-    t = loader.get_template('school/student_per_class.html')
-    c = RequestContext(request, {'form' : form, 'message' : message, 'studentList' : studentList, 'class_id' : class_id})
-    return HttpResponse(t.render(c))
+	t = loader.get_template('school/student_per_class.html')
+	c = RequestContext(request, {'form' : form, 'message' : message, 'studentList' : studentList, 'class_id' : class_id})
+	return HttpResponse(t.render(c))
 
 def students(request):
-    message = None
-    form = PupilForm()
-    studentList = Pupil.objects.all()
-    if request.method == 'POST':
-        #data = {'first_name':request.POST['first_name'], 'last_name':request.POST['last_name'], 'birthday':request.POST['birthday'], 'sex':request.POST['sex'],'ban_dk':request.POST['ban_dk'], 'school_join_date':request.POST['school_join_date'], 'start_year_id':request.POST['start_year_id'], 'class_id' : request.POST['class_id']}
-        form = PupilForm(request.POST)
-        if form.is_valid():
-            form.save()
-            message = 'You have added new student'
-        else:
-            message = 'Please check your information, something is wrong'
+	message = None
+	form = PupilForm()
+	studentList = Pupil.objects.all()
+	if request.method == 'POST':
+		#data = {'first_name':request.POST['first_name'], 'last_name':request.POST['last_name'], 'birthday':request.POST['birthday'], 'sex':request.POST['sex'],'ban_dk':request.POST['ban_dk'], 'school_join_date':request.POST['school_join_date'], 'start_year_id':request.POST['start_year_id'], 'class_id' : request.POST['class_id']}
+		form = PupilForm(request.POST)
+		if form.is_valid():
+			form.save()
+			message = 'You have added new student'
+		else:
+			message = 'Please check your information, something is wrong'
 
-    t = loader.get_template('school/students.html')
-    c = RequestContext(request, {'form' : form, 'message' : message, 'studentList' : studentList})
-    return HttpResponse(t.render(c))
+	t = loader.get_template('school/students.html')
+	c = RequestContext(request, {'form' : form, 'message' : message, 'studentList' : studentList})
+	return HttpResponse(t.render(c))
 
 def viewStudentDetail(request, student_id):
-    message = None
-    pupil = Pupil.objects.get(id = student_id);
-    form = PupilForm (instance = pupil)
-    if request.method == 'POST':
-        form = PupilForm(request.POST, instance = pupil)
-        if form.is_valid():
-            form.save()
-            message = 'You have updated successfully'
-        else:
-            message = 'Please check again'
+	message = None
+	pupil = Pupil.objects.get(id = student_id);
+	form = PupilForm (instance = pupil)
+	if request.method == 'POST':
+		form = PupilForm(request.POST, instance = pupil)
+		if form.is_valid():
+			form.save()
+			message = 'You have updated successfully'
+		else:
+			message = 'Please check again'
 
-    t = loader.get_template('school/student_detail.html')
-    c = RequestContext(request, {'form' : form, 'message' : message, 'id' : student_id})
-    return HttpResponse(t.render(c))
-    
+	t = loader.get_template('school/student_detail.html')
+	c = RequestContext(request, {'form' : form, 'message' : message, 'id' : student_id})
+	return HttpResponse(t.render(c))
+	
 #cac chuc nang:
 #hien thu bang diem cua mot lop, cho edit roi save lai
 def mark_table(request, school_id = 1):
@@ -171,8 +168,8 @@ def mark_table(request, school_id = 1):
 	subjectChoice=-1
 	selectedTerm=None
 	schoolChoice = School.objects.get(id=school_id)
-	yearList     = schoolChoice.year_set.all().order_by('-time')
-	blockList    = schoolChoice.block_set.all().order_by('number');    
+	yearList	 = schoolChoice.year_set.all().order_by('-time')
+	blockList	= schoolChoice.block_set.all().order_by('number');	
 
 	#find currentTerm
 	currentTerm=None	
@@ -188,7 +185,7 @@ def mark_table(request, school_id = 1):
 	termChoice=currentTerm.id
 	if blockList.__len__():
 		blockChoice=blockList[0].id
-	termList= Term.objects.filter(year_id__school_id=school_id,year_id=yearChoice).order_by('-year_id__time','number')	        
+	termList= Term.objects.filter(year_id__school_id=school_id,year_id=yearChoice).order_by('-year_id__time','number')			
 	classList=Class.objects.filter(year_id=yearChoice,block_id=blockChoice)
 	subjectList=None
 	if request.method == 'POST':
@@ -200,20 +197,20 @@ def mark_table(request, school_id = 1):
 		if (termChoice!=-1):
 			selectedTerm=Term.objects.get(id=termChoice)
 		termList= Term.objects.filter(year_id=yearChoice).order_by('number')
-			        
+					
 		classList=Class.objects.filter(year_id=yearChoice,block_id=blockChoice)
 		if classChoice!=-1:
 			subjectList=Subject.objects.filter(class_id=classChoice)
 		
 	
 	#subjectForm = SubjectForm()
-	#termForm    = TermForm()
+	#termForm	= TermForm()
 	#classForm   =ClassForm()
 
-	#termList     = Term.objects.filter(year_id__school_id=school_id).order_by('-year_id__time','number')	        
+	#termList	 = Term.objects.filter(year_id__school_id=school_id).order_by('-year_id__time','number')			
 	
 	
-    
+	
 	#currentYear  =yearList.latest()
 	#currentTerm=selectedTerm		 
 	pupilList=None	
@@ -548,91 +545,91 @@ def mark_table(request, school_id = 1):
 #----------- Exporting and Importing form Excel -------------------------------------
 
 class UploadImportFileForm(forms.Form):
-    import_file = forms.FileField(label=u'Chọn file excel:')
-    
+	import_file = forms.FileField(label=u'Chọn file excel:')
+	
 def save_file( import_file, session):
-    import_file_name = import_file.name
-    session_key = session.session_key
-    save_file_name = session_key + import_file_name
-    saved_file = open(os.path.join(TEMP_FILE_LOCATION, save_file_name), 'wb+')
-    for chunk in import_file.chunks():
-        saved_file.write(chunk)
-    saved_file.close()
-    return save_file_name
+	import_file_name = import_file.name
+	session_key = session.session_key
+	save_file_name = session_key + import_file_name
+	saved_file = open(os.path.join(TEMP_FILE_LOCATION, save_file_name), 'wb+')
+	for chunk in import_file.chunks():
+		saved_file.write(chunk)
+	saved_file.close()
+	return save_file_name
 
 def process_file( file_name, task):
-    if task == "Nhap danh sach trung tuyen":
-        student_list=[]
-        filepath = os.path.join(TEMP_FILE_LOCATION, file_name)
-        if not os.path.isfile(filepath):
-            raise NameError, "%s is not a valid filename" % file_name
-        book = xlrd.open_workbook(filepath)
-        sheet = book.sheet_by_index(0)
-        
-        start_row = -1;
-        for c in range(0, sheet.ncols):
-            flag = False
-            for r in range(0, sheet.nrows):
-                if ( sheet.cell_value(r, c) == u'Mã học sinh'):
-                    start_row = r
-                    flag = True
-                    break
-            if flag: break
-        #                                                             CHUA BIEN LUAN TRUONG HOP: start_row = -1, ko co cot ten: Mã học sinh
-        # start_row != 0
-        c_code =-1
-        c_school_code =-1
-        c_nguyen_vong =-1
-        c_diem =-1
-        for c in range(0, sheet.ncols):
-            value = sheet.cell_value(start_row, c)
-            if ( value == u'Mã học sinh'):
-                c_code = c
-            elif ( value == u'Mã trường'):
-                c_school_code = c
-            elif ( value == u'Nguyện vọng'):
-                c_nguyen_vong = c
-            elif ( value == u'Điểm'):
-                c_diem = c
-        column_index = 0
-        for r in range(start_row + 1, sheet.nrows):
-            code = sheet.cell_value( r, c_code)
-            school_code = sheet.cell_value( r, c_school_code)
-            nv = sheet.cell_value( r, c_nguyen_vong)
-            diem = sheet.cell_value( r, c_diem)
-            student_list.append( { 'ma_hoc_sinh': code,\
-                                   'ma_truong': school_code,\
-                                   'nguyen_vong': nv, \
-                                   'diem': diem, }) 
-        return student_list
-    else: task == ""
-    
-    return None
+	if task == "Nhap danh sach trung tuyen":
+		student_list=[]
+		filepath = os.path.join(TEMP_FILE_LOCATION, file_name)
+		if not os.path.isfile(filepath):
+			raise NameError, "%s is not a valid filename" % file_name
+		book = xlrd.open_workbook(filepath)
+		sheet = book.sheet_by_index(0)
+		
+		start_row = -1;
+		for c in range(0, sheet.ncols):
+			flag = False
+			for r in range(0, sheet.nrows):
+				if ( sheet.cell_value(r, c) == u'Mã học sinh'):
+					start_row = r
+					flag = True
+					break
+			if flag: break
+		#															 CHUA BIEN LUAN TRUONG HOP: start_row = -1, ko co cot ten: Mã học sinh
+		# start_row != 0
+		c_code =-1
+		c_school_code =-1
+		c_nguyen_vong =-1
+		c_diem =-1
+		for c in range(0, sheet.ncols):
+			value = sheet.cell_value(start_row, c)
+			if ( value == u'Mã học sinh'):
+				c_code = c
+			elif ( value == u'Mã trường'):
+				c_school_code = c
+			elif ( value == u'Nguyện vọng'):
+				c_nguyen_vong = c
+			elif ( value == u'Điểm'):
+				c_diem = c
+
+		for r in range(start_row + 1, sheet.nrows):
+			code = sheet.cell_value( r, c_code)
+			school_code = sheet.cell_value( r, c_school_code)
+			nv = sheet.cell_value( r, c_nguyen_vong)
+			diem = sheet.cell_value( r, c_diem)
+			student_list.append( { 'ma_hoc_sinh': code,\
+								   'ma_truong': school_code,\
+								   'nguyen_vong': nv, \
+								   'diem': diem, }) 
+		return student_list
+	else: task == ""
+	
+	return None
 
 def nhap_danh_sach_trung_tuyen(request):
-    school = School.objects.all()[0] # it's for testing, actually, it should be: school = School.objects.get(id = request['school_id'])
-    if request.method == 'POST':
-        form = UploadImportFileForm(request.POST, request.FILES)
-        if form.is_valid():
-            save_file_name = save_file(form.cleaned_data['import_file'], request.session)
-            print save_file_name
-            request.session['save_file_name'] = save_file_name
-            
-            student_list = process_file(file_name = save_file_name, \
-                                        task = "Nhap danh sach trung tuyen")
-            print student_list
-            context = RequestContext(request, {'school':school,})
-            return render_to_response(DANH_SACH_TRUNG_TUYEN,\
-                                    {'student_list':student_list,}, \
-                                    context_instance = context)
-    else:
-        form = UploadImportFileForm()
-    context = RequestContext(request, {'form':form, 'school':school})
-    return render_to_response(NHAP_DANH_SACH_TRUNG_TUYEN, context_instance = context)
-        
+	school = School.objects.all()[0] # it's for testing, actually, it should be: school = School.objects.get(id = request['school_id'])
+	if request.method == 'POST':
+		form = UploadImportFileForm(request.POST, request.FILES)
+		if form.is_valid():
+			save_file_name = save_file(form.cleaned_data['import_file'], request.session)
+			print save_file_name
+			request.session['save_file_name'] = save_file_name
+			
+			student_list = process_file(file_name = save_file_name, \
+										task = "Nhap danh sach trung tuyen")
+			print student_list
+			context = RequestContext(request, {'school':school,})
+			return render_to_response(DANH_SACH_TRUNG_TUYEN,\
+									{'student_list':student_list,}, \
+									context_instance = context)
+	else:
+		form = UploadImportFileForm()
+	context = RequestContext(request, {'form':form, 'school':school})
+	return render_to_response(NHAP_DANH_SACH_TRUNG_TUYEN, context_instance = context)
+		
 def danh_sach_trung_tuyen(request):
-    context = RequestContext(request)
-    return render_to_response(DANH_SACH_TRUNG_TUYEN, context_instance = context)
+	context = RequestContext(request)
+	return render_to_response(DANH_SACH_TRUNG_TUYEN, context_instance = context)
 #------------------------------------------------------------------------------------
 
 

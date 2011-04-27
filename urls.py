@@ -1,6 +1,4 @@
 from django.conf.urls.defaults import patterns, include, url
-from django.views.generic.list import ListView
-from persistent_messages.models import Message
 import settings 
 
 # Uncomment the next two lines to enable the admin:
@@ -39,5 +37,6 @@ urlpatterns = patterns('',
     url(r'^school/', include('school.urls')),
     
     url(r'^messages/', include('persistent_messages.urls')),
-    
+    url(r'^grappelli/', include('grappelli.urls')),
+   
 )

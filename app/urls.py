@@ -1,4 +1,4 @@
-from django.conf.urls.defaults import *
+from django.conf.urls.defaults import patterns, url
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from app.models import TimeTable, SystemDataType 

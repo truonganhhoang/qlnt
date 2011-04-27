@@ -1,5 +1,4 @@
 from os.path import join, isfile
-
 from django.conf import settings
 from django.db import models
 from django.db.models import get_model, related
@@ -391,7 +390,7 @@ class ModelImportInfo(object):
 
 
     def get_field_value(self, request, base_field_name, model_name, start_value=None):
-        field_value = None
+#        field_value = None
         if self.import_mode == ModelImportInfo.OBJECT_IMPORT:
             default_value = self.default_by_field_name_dict[model_name][base_field_name]
         else:

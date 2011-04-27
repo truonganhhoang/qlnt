@@ -1,7 +1,5 @@
 from persistent_messages.models import Message
 from persistent_messages.constants import PERSISTENT_MESSAGE_LEVELS
-from django.contrib import messages 
-from django.contrib.messages.storage.base import BaseStorage
 from django.contrib.auth.models import AnonymousUser
 from django.contrib.messages.storage.fallback import FallbackStorage
 from django.db.models import Q

@@ -4,7 +4,6 @@ a model is present.
 
 """
 import sys
-import os
 from os.path import join, isfile
 
 from django.http import HttpResponseRedirect

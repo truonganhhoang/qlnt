@@ -1,3 +1,4 @@
+from django.views.generic.list import ListView
 import persistent_messages
 from persistent_messages.models import Message, MessageForm
 from persistent_messages.storage import get_user

@@ -14,22 +14,22 @@ up your own URL patterns for these views instead.
 """
 
 
-from django.conf.urls.defaults import *
+from django.conf.urls.defaults import patterns, url
 
 from batchimport.views import import_start, import_options, import_execute
 
 urlpatterns = patterns('',
-                       # Activation keys get matched by \w+ instead of the more specific
-                       # [a-fA-F0-9]{40} because a bad activation key should still get to the view;
-                       # that way it can return a sensible "invalid key" message instead of a
-                       # confusing 404.
-						url(r'import_start/$',
-							import_start,
-							name='batchimport_import_start'),
-						url(r'import_options/$',
-                           import_options,
-                           name='batchimport_import_options'),
-                       url(r'import_execute/$',
-                           import_execute,
-                           name='batchimport_import_execute'),
-                       )
+    # Activation keys get matched by \w+ instead of the more specific
+    # [a-fA-F0-9]{40} because a bad activation key should still get to the view;
+    # that way it can return a sensible "invalid key" message instead of a
+    # confusing 404.
+    url(r'import_start/$',
+    	import_start,
+    	name='batchimport_import_start'),
+    url(r'import_options/$',
+        import_options,
+        name='batchimport_import_options'),
+    url(r'import_execute/$',
+        import_execute,
+        name='batchimport_import_execute'),
+    )

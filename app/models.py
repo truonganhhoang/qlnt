@@ -18,24 +18,10 @@ class Organization(models.Model):
         return self.name
 
 class OrganizationForm(forms.Form):
-    #===========================================================================
-    # ORGANIZATION_TYPE_CHOICES = (('T', 'Truong'),
-    #                             ('P', 'Phong'),
-    #                             ('S', 'So'))
-    #===========================================================================
-    #===========================================================================
-    # def __init__(self, *args, **kwargs):
-    #    super(SchoolForm, self).__init__(*args, **kwargs)
-    #    self.fields['upper_organization'].choices = [(-1, '----------')] + [(i.id, i.name) for i in Organization.objects.all() \
-    #                                                                        if i.organization_type == 'S' or i.organization_type == 'P']
-    # 
-    #===========================================================================
     name = forms.CharField(max_length=100, min_length=1)
     adress = forms.CharField(max_length=255, min_length=1)
     phone_number = forms.CharField(max_length=40, min_length=9)
     email_adress = forms.EmailField()
-#    organization_type = forms.ChoiceField()
-#    upper_organization = forms.
     manager_name = forms.CharField(max_length=100, min_length=1)
 
 class PositionType(models.Model):
@@ -59,15 +45,6 @@ class User(models.Model):
     
     def __unicode__(self):
         return self.name
-
-#===============================================================================
-# class UserForm(forms.Form):
-#    name = forms.CharField(max_length=100, min_length=1)
-#    birthday = forms.DateField()
-#    phone_number = forms.CharField(max_length=40, min_length=9)
-#    fax_number = forms.CharField(max_length=50, min_length=9)
-#    email = forms.EmailField()
-#===============================================================================
 
 class UserForm(forms.ModelForm):
     class Meta:
