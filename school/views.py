@@ -219,10 +219,10 @@ def viewStudentDetail(request, student_id):
 	
 #cac chuc nang:
 #hien thu bang diem cua mot lop, cho edit roi save lai
-def mark_table(request,classChoice=7):
+def mark_table(request,class_id=6):
 	message = None
 	
-	selectedClass=Class.objects.get(id=classChoice)
+	selectedClass=Class.objects.get(id=class_id)
 	yearChoice=selectedClass.year_id.id
 	
 	school_id=selectedClass.year_id.school_id.id
@@ -248,7 +248,7 @@ def mark_table(request,classChoice=7):
 	else:
 		termChoice=-1		
 	termList= Term.objects.filter(year_id=yearChoice).order_by('number')
-	subjectList=Subject.objects.filter(class_id=classChoice)
+	subjectList=Subject.objects.filter(class_id=class_id)
 	if request.method == 'POST':
 		termChoice =int(request.POST['term'])
 		subjectChoice=int(request.POST['subject'])
@@ -272,7 +272,7 @@ def mark_table(request,classChoice=7):
 	if ( subjectChoice!=-1) & ( termChoice!=-1) :
 		ttt=3;
 	
-		pupilList = Pupil.objects.filter(class_id=classChoice)
+		pupilList = Pupil.objects.filter(class_id=class_id)
 		
 		if currentTerm.number==1:			
 			i=1	
@@ -573,8 +573,7 @@ def mark_table(request,classChoice=7):
 
 								'currentTerm':currentTerm,
 								'selectedTerm':selectedTerm,
-								'beforeTerm':beforeTerm,
-								'selectedClass':selectedClass,
+								'class_id':class_id,
 								'ttt':ttt,
 								'ttt1':ttt1
 								}
