@@ -13,10 +13,9 @@ class Organization(models.Model):
     upper_organization = models.ForeignKey('self', blank=True, null=True)
     manager_name = models.CharField(max_length=100)
     
-    
     def __unicode__(self):
         return self.name
-
+    
 class OrganizationForm(forms.Form):
     name = forms.CharField(max_length=100, min_length=1)
     adress = forms.CharField(max_length=255, min_length=1)
