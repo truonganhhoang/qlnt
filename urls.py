@@ -32,7 +32,7 @@ urlpatterns = patterns('',
     
     url(r'^app/', include('app.urls')),
     # urls for batchimport app
-    url(r'^school/', include('batchimport.urls')),
+    #url(r'^school/', include('batchimport.urls')),
     # url for school app
     url(r'^school/', include('school.urls')),
     
