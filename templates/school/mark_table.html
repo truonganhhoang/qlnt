@@ -93,47 +93,22 @@ window.onload = function() { document.onkeypress = catchEnter; };
 				}
 		}					
 	}
-	function submitYear()
-	{
-		if (document.info.year.value!={{yearChoice}})
-		{
-			document.info.block.value=1;
-			document.info.class1.value=-1;
-			document.info.subject.value=-1;
-			document.info.term.value=-1;
-			document.info.submit();
-		}	
-	}
 	function submitTerm()
 	{
 		if (document.info.term.value!=-1)
 			if (document.info.term.value!={{termChoice}})
+			if (document.info.subject.value!=-1)
 			{
 				document.info.submitChoice.value="hienthi";
 				document.info.submit();
 			}	
 	}
-	function submitBlock()
-	{
-		if (document.info.block.value!={{blockChoice}})
-		{	
-			document.info.class1.value=-1;
-			document.info.subject.value=-1;
-			document.info.submit();
-		}	
-	}
-	function submitClass()
-	{
-		if (document.info.class1.value!={{classChoice}})
-		{
-			document.info.subject.value=-1;
-			document.info.submit();
-		}	
-	}
+
 	function submitSubject()
 	{
 		if (document.info.subject.value!=-1)
 			if (document.info.subject.value!={{subjectChoice}})
+			if (document.info.term.value!=-1)
 			{	
 				document.info.submitChoice.value="hienthi";
 				document.info.submit();
@@ -148,7 +123,7 @@ window.onload = function() { document.onkeypress = catchEnter; };
 	
 </script>
 
-<table border="0" width=100% >
+<table border="1" width=100% >
 <form action="/school/mark_table"  name="info" method="post" id='myform' 
 	onsubmit="return false" >{% csrf_token %}
 	<input type="hidden" name="submitChoice" value="">	
@@ -163,46 +138,18 @@ window.onload = function() { document.onkeypress = catchEnter; };
 	</tr>
 	
 	
-	<tr>
-		<td width ="25%">Năm học:
-		<select name="year"  onclick="submitYear();">
-			{% for year in yearList %}
-					<option value={{year.id }}> {{ year}}</option>				
-			{% endfor %}
-		</select>		
-		</td>
+	<tr>								
+		<td width ="50%"> Môn học:
 		
-		<td width ="25%">Khối:
-		<select name="block" width="20%" onclick="submitBlock();" >
-			{% for block in blockList %}
-				<option value={{block.id }}> {{ block}}</option>
-			{% endfor %}
-		</select>		
-		</td>
-		
-		<td width ="25%">Lớp:
-		<select name="class1" width="20%" onclick="submitClass();">
-	       	<option value=-1 selected>chọn lớp</option>
-			{% for class in classList %}
-				<option  value={{class.id }}> {{ class.name}}</option>
-			{% endfor %}
-		</select>		
-		</td>
-		
-		
-		<td width ="25%"> Môn học:
-		
-		<select name="subject" width="20%" onclick="submitSubject();">
+		<select name="subject"  onclick="submitSubject();">
 	       	<option value=-1 selected >chọn môn</option>		
 			{% for subject in subjectList %}
 				<option  value={{subject.id }}> {{ subject.name}}</option>		
 			{% endfor %}		
 		</select>
 		</td >
-				
-	</tr>
-	<tr colspan=4>
-		<td width ="25%"> Học kỳ &nbsp&nbsp:  {{	currentTerm.time.year}}	
+		
+		<td width ="50%"> Học kỳ &nbsp&nbsp:  
 		<select name="term" onclick="submitTerm();" >				
 			<option value=-1 > Chọn kỳ </option>
 			{% for term in termList %}
@@ -214,15 +161,11 @@ window.onload = function() { document.onkeypress = catchEnter; };
 			{% endfor %}	
 			
 		</select>
-		</td>
-	
+		</td>					
 	</tr>
 	
 <script type="text/javascript" >
-	document.info.year.value={{yearChoice}}
 	document.info.term.value={{termChoice}}
-	document.info.block.value={{blockChoice}}		
-	document.info.class1.value={{classChoice}};
 	document.info.subject.value={{subjectChoice}};
 	
 </script>		
@@ -517,7 +460,7 @@ window.onload = function() { document.onkeypress = catchEnter; };
 			<td> &nbsp </td>
 			</tr>
 			<tr>
-			<td colspan=4 align="right">
+			<td colspan=2 align="right">
 			<div id="saveMark" >
 			<input type="submit" name="luulai" value="Lưu lại" onclick="javascript:saveMark()" >
 			</div>
@@ -750,7 +693,7 @@ window.onload = function() { document.onkeypress = catchEnter; };
 		<td> &nbsp </td>
 		</tr>
 		<tr>
-		<td colspan=4 align="right">
+		<td colspan=2 align="right">
 		<div id="saveMark" >
 		<input type="submit" name="luulai" value="Lưu lại" onclick="javascript:saveMark()" >
 		</div>
