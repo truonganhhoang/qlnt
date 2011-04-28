@@ -1,47 +1,83 @@
 {%extends "school/base_school.html" %}
 
+{% block js %}
+<script type="text/javascript" >
+
+	function add_student()
+	{
+		document.theForm.clickedButton = "save"
+		document.theForm.submit()
+	}
+</script>
+{% endblock %}
+
 {% block content %}
 {% if form.errors %}
 <p>{{ form.errors }}</p>
 {% endif %}
-    <div width = "100%">
-    <table border=1 >
+    <form action="" name="theForm" method="post" > {% csrf_token %}
+    	<input type="hidden" name="clickedButton" value="notClicked" />
+		<table border=1 >
         <tr>
-			<td rowspan=1 align="center" width="4%">
-				Stt
+			<td rowspan=1 align="center">
+				STT
 			</td>	
-			<td rowspan=1 align="center" width="16%">
-				Mã học sinh
+			<td rowspan=1 align="center">
+				Tên học sinh
 			</td>	
-			<td rowspan=1 align="center" width="30%">			
-				Mã trường
+			<td rowspan=1 align="center">			
+				Ngày sinh
 			</td>	
-			<td rowspan=1 align="center" width="30%" >
+			<td rowspan=1 align="center">
 				Nguyện vọng
 			</td>	
 
-			<td rowspan=1 align="center" width="20%">
+			<td rowspan=1 align="center">
 				Điểm
 			</td>	
 		</tr>
 		{% for student in student_list %}
 		<tr>
-		    <td align="center" width="4%">
+		    <td align="center">
 		        {{ forloop.counter }}   
 		    </td>
-		    <td align="center" width="16%">
-		        {{ student.ma_hoc_sinh }}
+		    <td align="center">
+		    		{{student.ten}}
 		    </td>
-		    <td align="center" width="30%">
-		        {{ student.ma_truong }}
+		    <td align="center">
+		        <input type="text" value={{ student.ngay_sinh|date:"SHORT_DATE_FORMAT" }} style="width:70px; border:0px;" align="center" />
 		    </td>
-		    <td align="center" width="30%">
-		        {{ student.nguyen_vong }}
+		    <td align="center">
+		        <input type="text" value={{ student.nguyen_vong }} style="border:0px;" align="center"/>
 		    </td>
-		    <td align="center" width="20%">
-		        {{ student.diem }}
+		    <td align="center">
+		        <input type="text" value={{ student.tong_diem }} style="border:0px; width:40px;" align="center"/>
+		    </td>
+		    
+		</tr>
+      {% endfor %}
+      <tr>
+		    <td align="center">
+		        --   
+		    </td>
+		    <td align="center">
+		    	  <input type="text" value="" name="hs_trung_tuyen" style="border:0px;" align="center"/>
+		    </td>
+		    <td align="center">
+		        <input type="text" value="" style="width:70px; border:0px;" align="center" />
+		    </td>
+		    <td align="center">
+		        <input type="text" value="" style="border:0px;" align="center"/>
+		    </td>
+		    <td align="center">
+		        <input type="text" value="" style="border:0px; width:40px;" align="center"/>
+		    </td>
+		    <td align="center">
+		    	  <input type="submit" name="add" value="Thêm" onclick="add_student()" />
 		    </td>
 		</tr>
-        {% endfor %}
-    </div>
+	 </table>
+			 
+	 <input type="submit" name="save" value="Lưu lại" onclick="save_student()" />
+	</form>
 {% endblock %}

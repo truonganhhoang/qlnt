@@ -182,7 +182,7 @@ class ClassForm(forms.ModelForm):
 		
 class Pupil(BasicPersonInfo):
     
-	pupil_code = models.CharField(max_length = 10, unique = True) #ma hoc sinh	
+	pupil_code = models.CharField(max_length = 10, null= True, blank= True, unique = True) #ma hoc sinh	
 	year = models.IntegerField(validators = [validate_year], blank = True, null = True) #year that pupil go to class 1
 	school_join_date = models.DateField(default = date.today(),validators=[validate_join_date])
 	ban_dk = models.CharField(max_length = 5, choices = BAN_CHOICE)

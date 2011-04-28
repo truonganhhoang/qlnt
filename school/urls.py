@@ -17,7 +17,7 @@ urlpatterns = patterns('',
     url(r'start_year$','school.views.b1', name = "start_year"),
     
     url(r'start_year/import$', 'school.views.nhap_danh_sach_trung_tuyen'),
-    url(r'start_year/import/list$', 'school.views.danh_sach_trung_tuyen'),
+    url(r'start_year/import/list$', 'school.views.danh_sach_trung_tuyen', name = "imported_list"),
     #url(r'^school/test$','school.views.test'), 
                            
 	
