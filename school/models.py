@@ -64,7 +64,8 @@ def validate_join_date(value):
 		
 #validate he so diem cua mon	
 def validate_hs(value):
-	if value <= 0:
+	#he so bang 0 la cho nhung mon cham diem bang nhan xet
+	if value < 0:
 		raise ValidationError(u'hs must be larger than 0')
 		
 #validator for class->khoi

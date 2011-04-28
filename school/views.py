@@ -263,9 +263,8 @@ def viewStudentDetail(request, student_id):
     
 #cac chuc nang:
 #hien thu bang diem cua mot lop, cho edit roi save lai
-def mark_table(request,class_id=6):
-    message = None
-    
+def mark_table(request,class_id=4):
+    message = None    
     selectedClass=Class.objects.get(id=class_id)
     yearChoice=selectedClass.year_id.id
     
@@ -290,14 +289,17 @@ def mark_table(request,class_id=6):
     if (yearChoice==currentTerm.year_id.id):
         termChoice=currentTerm.id
     else:
-        termChoice=-1        
+        termChoice=-1
+    hsSubject=-1
     termList= Term.objects.filter(year_id=yearChoice).order_by('number')
     subjectList=Subject.objects.filter(class_id=class_id)
+
     if request.method == 'POST':
         termChoice =int(request.POST['term'])
-        subjectChoice=int(request.POST['subject'])
-        
-        selectedTerm=Term.objects.get(id=termChoice)        
+        subjectChoice=int(request.POST['subject'])                
+        selectedTerm=Term.objects.get(id=termChoice)
+        if subjectChoice !=-1:    
+            hsSubject=int(Subject.objects.get(id=subjectChoice).hs)    
     #currentYear  =yearList.latest()
     #currentTerm=selectedTerm         
     pupilList=None    
@@ -314,7 +316,7 @@ def mark_table(request,class_id=6):
     #subjectChoice=-1
     ttt1=subjectChoice
     if ( subjectChoice!=-1) & ( termChoice!=-1) :
-        ttt=3;
+        ttt=322;
     
         pupilList = Pupil.objects.filter(class_id=class_id)
         
@@ -345,11 +347,79 @@ def mark_table(request,class_id=6):
                 i=i+1
 
                 tbnam=p.tkmon_set.get(subject_id=subjectChoice)
-                
+                    
                 tbnamListObjects.append(tbnam)
+    ttt=1    
+    ttt1=None
+    ttt2=None        
+    if request.method == 'POST':
+        ttt=233            
+        if (request.POST['submitChoice']=="luulai") & (hsSubject==0):
+            i=0
+            for m in markList:
+                id=idList[i]
 
+                t1=str(id.d1)    
+                t3=request.POST[t1]
+
+                if t3.isspace() or (len(t3)==0) :                
+                    m.mieng_1=None
+                else:
+                    tt=float(t3)
+                    m.mieng_1=tt
+                    
+                t1=str(id.d2)    
+                t3=request.POST[t1]
+
+                if t3.isspace() or (len(t3)==0) :                
+                    m.mot_tiet_1=None
+                else:
+                    tt=float(t3)
+                    m.mot_tiet_1=tt
+
+                t1=str(id.d3)    
+                t3=request.POST[t1]
+
+                if t3.isspace() or (len(t3)==0) :                
+                    m.ck=None
+                else:
+                    tt=float(t3)
+                    m.ck=tt
+
+                t1=str(id.d4)    
+                t3=request.POST[t1]
+
+                if t3.isspace() or (len(t3)==0) :                
+                    m.tb=None
+                else:
+                    tt=float(t3)
+                    m.tb=tt
+
+                if (currentTerm.number==2):
+                    
+                    t1=str(id.d5)    
+                    t3=request.POST[t1]
+                    ttt1=t1
+                    ttt2=t3
+                    ttt=45
+                    if t3.isspace() or (len(t3)==0) :
+                        ttt=3333                
+                        tbnamListObjects[i].tb_nam=None
+                        tbnamListObjects[i].save()
+                    else:
+                        ttt=555
+                        tt=float(t3)
+                        tbnamListObjects[i].tb_nam=tt
+                        tbnamListObjects[i].save()
                 
-        if request.POST['submitChoice']=="luulai":
+                
+                    
+                m.save()
+                i=i+1    
+                #diem mieng 2
+                
+                
+        if (request.POST['submitChoice']=="luulai") & (hsSubject>0):
             #for m in markList:
             i=0;            
             for m in markList:
@@ -600,8 +670,9 @@ def mark_table(request,class_id=6):
                 tbnamList.append(tbnamListObjects[i].tb_nam)
 
             list=zip(pupilList,markList,tbhk1List,tbnamList,idList)
-
-        
+    lengthList=0        
+    if pupilList!=None:        
+        lengthList=pupilList.__len__()    
     t = loader.get_template('school/mark_table.html')
     
     c = RequestContext(request, { 
@@ -618,13 +689,17 @@ def mark_table(request,class_id=6):
                                 'currentTerm':currentTerm,
                                 'selectedTerm':selectedTerm,
                                 'class_id':class_id,
+                                'hsSubject':hsSubject,
+                                'lengthList':lengthList,
                                 'ttt':ttt,
-                                'ttt1':ttt1
+                                'ttt1':ttt1,
+                                'ttt2':ttt2
                                 }
                        )
     
 
     return HttpResponse(t.render(c))
+
 # diem cho mot hoc sinh tai 1 lop nao do
 def markForAStudent(request,class_id=7,student_id=1):
     message = None
