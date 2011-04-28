@@ -1,0 +1,272 @@
+﻿<!DOCTYPE HTML>
+{% extends "school/base_school.html"%}
+{% block content %}
+{% if message != None %}
+{{message}}
+{% endif %}
+<script type="text/javascript" >
+	function submitTerm()
+	{
+		if (document.info.term.value!=-1)
+			if (document.info.term.value!={{termChoice}})
+				document.info.submit();
+	}
+	
+</script>
+
+<table border="0" width=100% >
+<form action="/school/markForAStudent/{{class_id}}/{{student_id}}"  name="info" method="post" id='myform' > {% csrf_token %}
+
+	<tr>
+		<td align="center" colspan =4 style="font-size:25px" >
+			<b>Bảng điểm của một học sinh</b>
+		</td>
+	</tr>
+	<tr>
+	<td>&nbsp</td>
+	</tr>
+	
+	<tr>
+	<td width="50%">
+	Họ và tên: {{studentName}}
+	</td>
+
+	<td width="50%">
+	Lớp: {{selectedClass}}
+	</td>
+	</tr>
+	<tr>								
+		
+		<td> Học kỳ &nbsp&nbsp:  
+		<select name="term" onclick="submitTerm();" >				
+			<option value=-1 selected > Chọn kỳ </option>
+			{% for term in termList %}
+					<option   value={{ term.id }} selected> {{ term}} </option>	
+			{% endfor %}	
+			
+		</select>
+		</td>					
+	</tr>
+	
+<script type="text/javascript" >
+	document.info.term.value={{termChoice}}
+	
+</script>		
+		
+	<tr><td>&nbsp </td>	</tr>
+	<tr >
+	<td colspan=2>
+	
+	<table border =1 width = "100%" >
+		<tr>
+			<td rowspan=2 align="center" width="4%">
+				Stt
+			</td>	
+			<td rowspan=2 align="center" width="18%">
+			   Môn
+			</td>	
+			<td colspan=5 align="center" width="20%" >
+				Miệng
+			</td>	
+
+			<td colspan=5 align="center" width="20%">
+				15 phút
+			</td>	
+			<td colspan=5 align="center" width="20%">
+				45 phút
+			</td>
+			<td rowspan=2 align="center" width="5%">
+				Thi cuối kì
+			</td>	
+		{% ifequal selectedTerm.number 1 %}
+			<td rowspan=2 width="5%" >
+				TB
+			</td>	
+		{% else %}
+			<td colspan=3 align="center"  >
+				<b>ĐIỂM TRUNG BÌNH </b>
+			</td>
+		{% endifequal %}
+			
+			
+		</tr>
+		<tr>
+		<td width ="4%" align="center" > 1</td>
+		<td width ="4%" align="center"> 2</td>
+		<td width ="4%" align="center"> 3</td>
+		<td width ="4%" align="center"> 4</td>
+		<td width ="4%" align="center"> 5</td>
+		<td width ="4%" align="center" > 1</td>
+		<td width ="4%" align="center"> 2</td>
+		<td width ="4%" align="center"> 3</td>
+		<td width ="4%" align="center"> 4</td>
+		<td width ="4%" align="center"> 5</td>
+		<td width ="4%" align="center" > 1</td>
+		<td width ="4%" align="center"> 2</td>
+		<td width ="4%" align="center"> 3</td>
+		<td width ="4%" align="center"> 4</td>
+		<td width ="4%" align="center"> 5</td>
+		{% ifequal selectedTerm.number 2 %}
+			<td align="center" >HK I  </td>
+			<td align="center" >HK II </td>
+			<td align="center" > CK </td>
+			
+		{% endifequal %}
+		
+		</tr>
+		
+		
+	{% ifequal selectedTerm.number 1 %} 
+		{% for s,m in list %}		
+		<tr>
+			<td align="center">
+			 {{forloop.counter}}	
+			</td>
+			<td>
+				{{s}}
+			</td>
+
+			<td align="center">
+				{{m.mieng_1|floatformat:"-1"}}  
+			</td>
+			<td align="center">
+				{{m.mieng_2|floatformat:"-1"}}  
+			</td>
+			<td align="center">
+				{{m.mieng_3|floatformat:"-1"}}  
+			</td>
+			<td align="center">
+				{{m.mieng_4|floatformat:"-1"}}  
+			</td>
+			<td align="center">
+				{{m.mieng_5|floatformat:"-1"}}  
+			</td>
+
+			<td align="center">
+				{{m.mlam_1|floatformat:"-1"}}  
+			</td>
+			<td align="center">
+				{{m.mlam_2|floatformat:"-1"}}  
+			</td>
+			<td align="center">
+				{{m.mlam_3|floatformat:"-1"}}  
+			</td>
+			<td align="center">
+				{{m.mlam_4|floatformat:"-1"}}  
+			</td>
+			<td align="center">
+				{{m.mlam_5|floatformat:"-1"}}  
+			</td>
+			<td align="center">
+				{{m.mot_tiet_1|floatformat:"-1"}}  
+			</td>
+			<td align="center">
+				{{m.mot_tiet_2|floatformat:"-1"}}  
+			</td>
+			<td align="center">
+				{{m.mot_tiet_3|floatformat:"-1"}}  
+			</td>
+			<td align="center">
+				{{m.mot_tiet_4|floatformat:"-1"}}  
+			</td>
+			<td align="center">
+				{{m.mot_tiet_5|floatformat:"-1"}}  
+			</td>
+
+			<td align="center">
+				{{m.ck|floatformat:"-1"}}  
+			</td>
+
+			<td align="center">
+				{{m.tb|floatformat:"-1"}}  
+			</td>
+		</tr>		
+			
+		{% endfor %}
+		</table>	
+		</div>
+		</td>
+		</tr>
+		{%else %}
+		{% for s,m,hk1,tbnam in list %}		
+		<tr>
+			<td align="center">
+			 {{forloop.counter}}	
+			</td>
+			<td>
+				{{s}}
+			</td>
+
+			<td align="center">
+				{{m.mieng_1|floatformat:"-1"}}  
+			</td>
+			<td align="center">
+				{{m.mieng_2|floatformat:"-1"}}  
+			</td>
+			<td align="center">
+				{{m.mieng_3|floatformat:"-1"}}  
+			</td>
+			<td align="center">
+				{{m.mieng_4|floatformat:"-1"}}  
+			</td>
+			<td align="center">
+				{{m.mieng_5|floatformat:"-1"}}  
+			</td>
+
+			<td align="center">
+				{{m.mlam_1|floatformat:"-1"}}  
+			</td>
+			<td align="center">
+				{{m.mlam_2|floatformat:"-1"}}  
+			</td>
+			<td align="center">
+				{{m.mlam_3|floatformat:"-1"}}  
+			</td>
+			<td align="center">
+				{{m.mlam_4|floatformat:"-1"}}  
+			</td>
+			<td align="center">
+				{{m.mlam_5|floatformat:"-1"}}  
+			</td>
+			<td align="center">
+				{{m.mot_tiet_1|floatformat:"-1"}}  
+			</td>
+			<td align="center">
+				{{m.mot_tiet_2|floatformat:"-1"}}  
+			</td>
+			<td align="center">
+				{{m.mot_tiet_3|floatformat:"-1"}}  
+			</td>
+			<td align="center">
+				{{m.mot_tiet_4|floatformat:"-1"}}  
+			</td>
+			<td align="center">
+				{{m.mot_tiet_5|floatformat:"-1"}}  
+			</td>
+
+			<td align="center">
+				{{m.ck|floatformat:"-1"}}  
+			</td>
+
+			<td align="center">
+				{{hk1|floatformat:"-1"}}  
+			</td>			
+			<td align="center">
+				{{m.tb|floatformat:"-1"}}  
+			</td>			
+			<td align="center">
+				{{tbnam|floatformat:"-1"}}  
+			</td>			
+		</tr>	
+			
+		 {%endfor %}
+		</table>	
+		</div>
+		</td>
+		</tr>
+	{% endifequal %}
+		
+</form>	
+</table>
+{% endblock %}
+
