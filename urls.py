@@ -39,5 +39,7 @@ urlpatterns = patterns('',
     url(r'^messages/', include('persistent_messages.urls')),
     
     #url(r'^grappelli/', include('grappelli.urls')),
+    
+    url(r'^rosetta/', include('rosetta.urls')),
    
 )
