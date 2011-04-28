@@ -16,16 +16,8 @@ class Message(models.Model):
     subject = models.CharField(max_length=255, blank=True, default='')
     message = models.TextField()
     LEVEL_CHOICES = (
-        (messages.DEBUG, 'DEBUG'),
-        (messages.INFO, 'INFO'),
-        (messages.SUCCESS, 'SUCCESS'),
-        (messages.WARNING, 'WARNING'),
-        (messages.ERROR, 'ERROR'),
-        (persistent_messages.DEBUG, 'PERSISTENT DEBUG'),
-        (persistent_messages.INFO, 'PERSISTENT INFO'),
-        (persistent_messages.SUCCESS, 'PERSISTENT SUCCESS'),
-        (persistent_messages.WARNING, 'PERSISTENT WARNING'),
-        (persistent_messages.ERROR, 'PERSISTENT ERROR'),
+        ('internal', 'INTERNAL'),
+        ('sms', 'SMS')
     )
     level = models.IntegerField(choices=LEVEL_CHOICES)
     extra_tags = models.CharField(max_length=128)
@@ -89,32 +81,7 @@ class MessageForm(forms.Form):
     subject = forms.CharField(max_length=255)
     message = forms.CharField(max_length=1000)
     LEVEL_CHOICES = (
-        (messages.DEBUG, 'DEBUG'),
-        (messages.INFO, 'INFO'),
-        (messages.SUCCESS, 'SUCCESS'),
-        (messages.WARNING, 'WARNING'),
-        (messages.ERROR, 'ERROR'),
-        (persistent_messages.DEBUG, 'PERSISTENT DEBUG'),
-        (persistent_messages.INFO, 'PERSISTENT INFO'),
-        (persistent_messages.SUCCESS, 'PERSISTENT SUCCESS'),
-        (persistent_messages.WARNING, 'PERSISTENT WARNING'),
-        (persistent_messages.ERROR, 'PERSISTENT ERROR'),
+        ('internal', 'INTERNAL'),
+        ('sms', 'SMS')
     )
     level = forms.ChoiceField(choices=LEVEL_CHOICES)
-    
-#    def save(self):
-#        _user = self.cleaned_data.get('user')
-#        _subject = self.cleaned_data.get('subject')
-#        _message = self.cleaned_data.get('message')
-#        _level = self.cleaned_data.get('level')
-#        _extra_tags = self.cleaned_data.get('extra_tags')
-        
-       
-        
-#        persistent_messages.add_message(
-#                            level=_level,
-#                            message=_message,
-#                            subject=_subject,
-#                            user=_user,
-#                            from_user=_from_user,
-#                            extra_tags=_extra_tags)

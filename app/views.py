@@ -1,7 +1,5 @@
 from django.http import HttpResponse, HttpResponseRedirect
-from app.models import TimeTableForm, SchoolForm, Organization
-from app.models import SystemDataTypeForm
-from app.models import MarkByPeriodForm
+from app.models import SchoolForm, Organization
 from app.models import UserForm
 from app.models import PositionTypeForm
 from django.shortcuts import render_to_response
