@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block title %}
-Send message
+All messages
 {% endblock %}
   
 {% block navi %}
@@ -16,13 +16,21 @@ Send message
 {% block content %}
 	{% if user.is_authenticated %}
 	
-		<h3>Send message</h3>
-		<form action="" method="post">{% csrf_token %}
-		{{ form.as_p }}
-		<input type="submit" value="Send" />
-		</form>
-
+	    {% if message_list %}
+		    <ul>
+		    {% for ml in message_list %}
+		    	{% if ml.user == user %}
+		        	<li><a href="/messages/detail/{{ ml.id }}">{{ ml.subject }}</a></li>
+		        {% endif %}
+		    {% endfor %}
+		    </ul>
 		{% else %}
+		    <p>No message are available.</p>
+		{% endif %}
+		
+		<a href="/messages/add_message/">Send new message</a>
+		
+	{% else %}
 		You need login to use system.
 	{% endif %}
 {% endblock %}

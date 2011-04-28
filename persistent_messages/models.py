@@ -16,8 +16,8 @@ class Message(models.Model):
     subject = models.CharField(max_length=255, blank=True, default='')
     message = models.TextField()
     LEVEL_CHOICES = (
-        ('internal', 'INTERNAL'),
-        ('sms', 'SMS')
+        (persistent_messages.INTERNAL, 'Internal'),
+        (persistent_messages.SMS, 'SMS')
     )
     level = models.IntegerField(choices=LEVEL_CHOICES)
     extra_tags = models.CharField(max_length=128)
@@ -77,11 +77,15 @@ class Message(models.Model):
     tags = property(_get_tags)
     
 class MessageForm(forms.Form):
-    user = forms.CharField(max_length=100)
-    subject = forms.CharField(max_length=255)
-    message = forms.CharField(max_length=1000)
+#    for u in User.objects.all():
+#        USER_CHOICES.update(u.username, u.username)
+        
+#    user = forms.ChoiceField(choices=USER_CHOICES)
+    user = forms.CharField();
+    subject = forms.CharField()
+    message = forms.CharField(widget=forms.widgets.Textarea())
     LEVEL_CHOICES = (
-        ('internal', 'INTERNAL'),
-        ('sms', 'SMS')
+        (persistent_messages.INTERNAL, 'Internal'),
+        (persistent_messages.SMS, 'SMS')
     )
-    level = forms.ChoiceField(choices=LEVEL_CHOICES)
+    type = forms.ChoiceField(choices=LEVEL_CHOICES)

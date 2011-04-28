@@ -17,7 +17,7 @@ def add_message(request):
             user = User.objects.get(username=username)
             subject = form.cleaned_data.get('subject')
             message = form.cleaned_data.get('message')
-            level = form.cleaned_data.get('level')
+            level = form.cleaned_data.get('type')
             
             persistent_messages.add_message(
                                 request,
