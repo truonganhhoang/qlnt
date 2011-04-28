@@ -81,7 +81,11 @@ class MessageForm(forms.Form):
 #        USER_CHOICES.update(u.username, u.username)
         
 #    user = forms.ChoiceField(choices=USER_CHOICES)
-    user = forms.CharField();
+    def __init__(self, *args, **kwargs):
+        super(MessageForm, self).__init__(*args, **kwargs)
+        self.fields['user'].choices = [(i.id, i.username) for i in User.objects.all()]
+
+    user = forms.ChoiceField(widget=forms.CheckboxSelectMultiple)
     subject = forms.CharField()
     message = forms.CharField(widget=forms.widgets.Textarea())
     LEVEL_CHOICES = (
