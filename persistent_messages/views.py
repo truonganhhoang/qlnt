@@ -12,14 +12,15 @@ def add_message(request):
     if request.method == 'POST':
         form = MessageForm(request.POST)
         if form.is_valid():
-            from_user = get_user(request)
-            username = form.cleaned_data.get('user')
-            user = User.objects.get(username=username)
+            from_user = get_user(request)            
             subject = form.cleaned_data.get('subject')
             message = form.cleaned_data.get('message')
             level = form.cleaned_data.get('type')
             
-            persistent_messages.add_message(
+            username = form.cleaned_data.get('user')
+            for u in username:
+                user = User.objects.get(username=u)
+                persistent_messages.add_message(
                                 request,
                                 level,
                                 message,
@@ -27,7 +28,9 @@ def add_message(request):
                                 user=user,
                                 from_user=from_user
                                 )
+            
             return HttpResponseRedirect('/messages/')
+#            return HttpResponse(u)
     else:
         form = MessageForm()    
     t = loader.get_template('persistent_messages/message/add_message.html')
