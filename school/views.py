@@ -621,6 +621,68 @@ def mark_table(request,class_id=6):
 	
 
 	return HttpResponse(t.render(c))
+# diem cho mot hoc sinh tai 1 lop nao do
+def markForAStudent(request,class_id=7,student_id=1):
+	message = None
+	student=Pupil.objects.get(id=student_id)
+	studentName=student.last_name+" "+student.first_name
+	
+	selectedClass=Class.objects.get(id=class_id)	
+	yearChoice=selectedClass.year_id.id
+	termList= Term.objects.filter(year_id=yearChoice).order_by('number')
+	termChoice=termList[0].id
+	selectedTerm=termList[0]
+	
+	if request.method == 'POST':
+		termChoice =int(request.POST['term'])
+		selectedTerm=Term.objects.get(id=termChoice)
+		
+	subjectList=selectedClass.subject_set.all()
+	
+	
+	markList=[]
+	tbnamList=[]
+	tbhk1List=[]
+	list=[]
+	if selectedTerm.number==2:	
+		for s in subjectList:
+			m=s.mark_set.get(student_id=student_id,term_id__number=2)			
+			markList.append(m)
+			
+			tbnam=s.tkmon_set.get(student_id=student_id).tb_nam
+			tbnamList.append(tbnam)
+				
+			tbhk1=s.mark_set.get(student_id=student_id,term_id__number=1).tb
+			tbhk1List.append(tbhk1)
+		list=zip(subjectList,markList,tbhk1List,tbnamList)	
+	else:
+		if 	selectedTerm.number==1:	
+			for s in subjectList:
+				m=s.mark_set.get(student_id=student_id,term_id=termChoice)
+				markList.append(m)
+				
+			list=zip(subjectList,markList)		
+									
+		
+	t = loader.get_template('school/mark_for_a_student.html')
+	
+	c = RequestContext(request, { 
+								'message' : message,
+								'class_id':class_id,
+								'student_id':student_id,
+								'list':list,
+								'termList':termList,
+								'selectedTerm':selectedTerm,
+								'termChoice':termChoice,
+								'subjectList':subjectList,
+								'markList':markList,
+								'studentName':studentName,
+								'selectedClass':selectedClass
+								}
+					   )
+	
+
+	return HttpResponse(t.render(c))
 
 #----------- Exporting and Importing form Excel -------------------------------------
 

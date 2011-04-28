@@ -3,7 +3,9 @@ from django.conf.urls.defaults import patterns, url
 
 urlpatterns = patterns('',
 	url(r'^$', 'school.views.school_index'),
-    url(r'mark_table/(?P<class_id>\w+)','school.views.mark_table'),
+	url(r'mark_table/(?P<class_id>\w+)','school.views.mark_table'),
+	url(r'markForAStudent/(?P<class_id>\w+)','school.views.markForAStudent'),
+
     url(r'classes$', 'school.views.classes'),
     url(r'teachers$', 'school.views.teachers'),
     url(r'students$', 'school.views.students'),
