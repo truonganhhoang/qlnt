@@ -784,24 +784,41 @@ def nhap_danh_sach_trung_tuyen(request):
 def danh_sach_trung_tuyen(request):
     student_list = request.session['student_list']
     school = request.session['school']
-    year = school.startyear_set.get( time = datetime.date.today().year)
+    if school.school_level == 1:
+        lower_bound = 1
+        upper_bound = 5
+    elif school.school_level == 2:
+        lower_bound = 6
+        upper_bound = 9
+    else:
+        lower_bound = 10
+        upper_bound = 12
+        
+    
     if request.method == 'POST':
+        year = school.startyear_set.get( time = datetime.date.today().year)
+        today = datetime.date.today()   
         for student in student_list:
-            st = Pupil()
             name = student['ten'].split()
             last_name = ' '.join(name[:len(name)-1])
             first_name= name[len(name)-1]
-            st.first_name = first_name
-            st.last_name = last_name
-            st.birthday = student['ngay_sinh']
-            st.school_join_date = datetime.date.today()
-            st.ban_dk = student['nguyen_vong']
-            st.start_year_id = year
-            st.save()
+            try:
+                find = year.pupil_set.get( first_name = first_name, last_name = last_name, birthday = student['ngay_sinh'])
+                print find
+            except Exception as e:
+                st = Pupil()
+                st.first_name = first_name
+                st.last_name = last_name
+                st.birthday = student['ngay_sinh']
+                st.school_join_date = today
+                st.ban_dk = student['nguyen_vong']
+                st.start_year_id = year
+                st.save()
+        message = u'Bạn vừa nhập thành công danh sách học sinh trúng tuyển.'
         student_list=[]
             
     context = RequestContext(request)
-    return render_to_response(DANH_SACH_TRUNG_TUYEN, {'student_list':student_list}, context_instance = context)
+    return render_to_response(DANH_SACH_TRUNG_TUYEN, {'student_list':student_list, 'message':message}, context_instance = context)
 #------------------------------------------------------------------------------------
 
 

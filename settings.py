@@ -138,7 +138,7 @@ INSTALLED_APPS = (
     'app',
     'school',
     'persistent_messages',
-    'rosetta',
+    #'rosetta',
 )
 
 # A sample logging configuration. The only tangible logging

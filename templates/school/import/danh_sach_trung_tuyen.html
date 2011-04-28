@@ -12,6 +12,9 @@
 {% endblock %}
 
 {% block content %}
+{% ifnotequal message None %}
+{{message}}
+{% endifnotequal %}
 {% if form.errors %}
 <p>{{ form.errors }}</p>
 {% endif %}
