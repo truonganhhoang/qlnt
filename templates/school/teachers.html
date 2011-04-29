@@ -1,16 +1,30 @@
+<!DOCTYPE HTML>
+
+
+
 {% extends "school/base_school.html" %}
 
 {% block content %}
+
+
+<script>
+function confirmDelete()
+{
+    return confirm("Are you sure you wish to delete this teacher?");
+}
+</script>
+
+
 <table border=1 width = "100%" >
     <tr>
         <td align="center" width="5%"> STT </td>
         <td align="center" width="20%"> Họ & Tên Đệm </td>
-        <td align="center" width="50%"> Tên </td>
+        <td align="center" width="5%"> Tên </td>
         <td align="center" width="15%"> Ngày sinh</td>
         <td align="center" width="25%"> Nơi sinh</td>
-        <td align="center" width="15%"> Dân tộc </td>
-        <td align="center" width="7%"> Giới tính </td>
-        <td align="center" width="8%"> Trường </td>
+        <td align="center" width="10%"> Giới tính </td>
+        <td align="center" width="10%"> Trường </td>
+        <td width = "10%"></td>
     </tr>
 
     {% if message != None %}
@@ -24,9 +38,9 @@
         <td align="center" width="5%"> {{ss.first_name}} </td>
         <td align="center" width="15%"> {{ss.birthday}}</td>
         <td align="center" width="25%"> {{ss.birth_place}}</td>
-        <td align="center" width="15%"> {{ss.dan_toc}} </td>
-        <td align="center" width="7%"> {{ss.sex}} </td>
-        <td align="center" width="8%"> {{ss.school_id}} </td>
+        <td align="center" width="10%"> {{ss.sex}} </td>
+        <td align="center" width="10%"> {{ss.school_id}} </td>
+        <td align=center" width = 10%"> <a href="{%url school.views.teachers  %}/deleteTeacher/{{ss.id}}" onclick="return confirmDelete();"> xóa </a></td>
     </tr>
     {% endfor %}
     
@@ -55,25 +69,23 @@
                     <p>{{ form.birth_place }}</p>
             </td>
 
-            <td align="center" width="15%">
-                    {{ form.dan_toc.errors }}
-                    <p>{{ form.dan_toc }}</p>
-            </td>
 
-            <td align="center" width="7%">
+            <td align="center" width="10%">
                     {{form.sex.errors }}
                     <p>{{ form.sex }}</p>
             </td>
 
-            <td align="center" width="8%">
+            <td align="center" width="10%">
                     {{ form.school_id.errors }}
                     <p>{{ form.school_id }}</p>
             </td>
         </tr>
-        
+</table>
+<table border = "0" width = "100%">
         <tr>
-        <td><input type ="submit" value="Thêm"/></td>
+        		<td width = "5%" align = "left"><input type ="submit" value="Thêm"/></td>
+        		<td align = "right"> <a href = ""> Xuất ra excel </a> </td>
 			</form>
         </tr>
-</table>
+</table
 {% endblock %}

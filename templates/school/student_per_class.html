@@ -1,16 +1,25 @@
 {% extends "school/base_school.html" %}
-
 {% block content %}
+
+<script>
+function confirmDelete()
+{
+    return confirm("Are you sure you wish to delete this student?");
+}
+</script>
+
+
 <table border=1 width = "100%" >
     <tr>
         <td align="center" width="5%"> STT </td>
-        <td align="center" width="25%"> Họ & Tên Đệm </td>
+        <td align="center" width="20%"> Họ & Tên Đệm </td>
         <td align="center" width="10%"> Tên </td>
         <td align="center" width="15%"> Ngày sinh</td>
         <td align="center" width="10%">  Giới tính</td>
         <td align="center" width="10%"> Ban Đăng kí </td>
         <td align="center" width="15%"> Ngày vào trường </td>
         <td align="center" width="10%"> Năm bắt đầu </td>
+        <td width = "5%"></td>
     </tr>
 
     {% if message != None %}
@@ -27,6 +36,7 @@
         <td align="center" width="10%"> {{ss.ban_dk}} </td>
         <td align="center" width="15%"> {{ss.school_join_date}} </td>
         <td align="center" width="10%"> {{ss.start_year_id}} </td>
+        <td width="5%"><a href = "{%url school.views.studentPerClass class_id  %}/deleteStudentInClass/{{ss.id}}" onclick="return confirmDelete();"> xóa</a></td>
     </tr>
     {% endfor %}
     
@@ -35,11 +45,12 @@
             {{ form.non_field_errors }}
             <td align="center" width="5%"></td>
 
-            <td align="center" width="25%">
-                    {{ form.last_name.errors }}
-                    <p>{{ form.last_name }}</p>              
+				
+				<td align="center" width="20%">
+                    {{form.last_name.errors }}
+                    <p>{{ form.last_name }}</p>
             </td>
-
+            
             <td align="center" width="10%">
                     {{form.first_name.errors }}
                     <p>{{ form.first_name }}</p>
@@ -70,10 +81,12 @@
                     <p>{{ form.start_year_id }}</p>                   
             </td>         
         </tr>
-        
+</table>
+<table border = "0" width = "100%">
         <tr>
-        <td><input type ="submit" value="Thêm"/></td>
+        		<td width = "5%" align = "left"><input type ="submit" value="Thêm"/></td>
+        		<td align = "right"> <a href = ""> Xuất ra excel </a> </td>
 			</form>
         </tr>
-</table>
+</table
 {% endblock %}

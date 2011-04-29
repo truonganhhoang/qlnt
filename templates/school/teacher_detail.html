@@ -75,6 +75,13 @@
             {{ form.email }}</p>
     </div>
     
+    <div class="fieldWrapper">
+        {{ form.school_id.errors }}
+        <p><label for="id_school_id">Trường</label>
+            {{ form.school_id}}</p>
+    </div>
+    
+    
    {% if message != None %}
 	{{message}} <br>
 	{% endif %}
