@@ -259,7 +259,7 @@ def viewStudentDetail(request, student_id):
     t = loader.get_template('school/student_detail.html')
     c = RequestContext(request, {'form' : form, 'message' : message, 'id' : student_id})
     return HttpResponse(t.render(c))
-    
+
 #cac chuc nang:
 #hien thu bang diem cua mot lop, cho edit roi save lai
 def mark_table(request,class_id=4):
