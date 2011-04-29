@@ -5,11 +5,11 @@ Homepage
 {% endblock %}
   
 {% block navi %}
-	<a href ="/">Index</a> - <a href="/help">help</a> - 
+	<a href ="/">Home</a> - <a href="/help">Help</a> - 
 	{% if user.is_authenticated %}
-		Welcome {{user.username}}! <a href="/logout">logout</a> 
+		<a href="/logout">Logout <b>{{user.username}}</b></a> 
 	{% else %} 
-	 	<a href="/login">login</a>
+	 	<a href="/login">Login</a>
 	{% endif %}
 {% endblock %}
 
@@ -26,10 +26,6 @@ Homepage
 		{% endif %}
 			<a href="/messages">Message</a><br>
 	{% else %}
-		You need login to use system.
+		<br>You need to login to use system.
 	{% endif %}
-{% endblock %}
-
-{% block footer %}
-&copy 2011 - VNU Hanoi & Viettel
 {% endblock %}

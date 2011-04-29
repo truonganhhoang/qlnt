@@ -4,17 +4,17 @@ html{
 }
 
 #top{
-	font-size:3em;
-	padding: 15px;
+	font-size:2em;
+	padding: 5px;
 }
 
 #navi {
-	float: right;
+	float: left;
 	padding: 5px;
 } 
 
 #content {
-	border-top: 2px solid #000;
+	border-top: 1px solid #000;
 	background-color:#eee;
 	padding: 10px;
 }

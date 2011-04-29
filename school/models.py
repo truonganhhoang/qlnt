@@ -68,14 +68,6 @@ def validate_hs(value):
 	if value < 0:
 		raise ValidationError(u'hs must be larger than 0')
 		
-#validator for class->khoi
-def validate_khoi(value):
-    if not ( 1<= value <= 12 ):
-        raise ValidationError(u'khoi must be between 1 and 12')
-def validate_year(value):
-    if not ( 1990 <= value <= 9999):
-        raise ValidationError(u'Year must be between 1990 and 9999')
-	       
 class School(models.Model):
 	
 	school_code = models.CharField(max_length = 20, unique = True)
@@ -91,10 +83,10 @@ class School(models.Model):
 	#class Admin: pass
 
 class DanhSachLoaiLop(models.Model):
-    loai = models.CharField(max_length = 15, unique = True)
-    school_id = models.ForeignKey(School)
-    def __unicode__(self):
-        return self.loai
+	loai = models.CharField(max_length = 15, unique = True)
+	school_id = models.ForeignKey(School)
+	def __unicode__(self):
+		return self.loai
 
 class SchoolForm(forms.ModelForm):
 	class Meta:
@@ -146,10 +138,10 @@ class Year(models.Model):
 	def __unicode__(self):
 		return str(self.time)+"-"+str(self.time+1)
 class StartYear(models.Model):
-    time = models.IntegerField(max_length = 4, validators = [validate_year]) # date field but just use Year
-    school_id = models.ForeignKey(School)
-    def __unicode__(self):
-        return str(self.time)
+	time = models.IntegerField(max_length = 4, validators = [validate_year]) # date field but just use Year
+	school_id = models.ForeignKey(School)
+	def __unicode__(self):
+		return str(self.time)
 	
 class Term(models.Model):
 	number = models.IntegerField(max_length=1, choices = TERM_CHOICES)
@@ -182,7 +174,7 @@ class ClassForm(forms.ModelForm):
 		model = Class
 		
 class Pupil(BasicPersonInfo):
-    
+	
 	pupil_code = models.CharField(max_length = 10, null= True, blank= True, unique = True) #ma hoc sinh	
 	year = models.IntegerField(validators = [validate_year], blank = True, null = True) #year that pupil go to class 1
 	school_join_date = models.DateField(default = date.today(),validators=[validate_join_date])

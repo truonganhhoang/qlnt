@@ -1,20 +1,25 @@
-{% extends "base.html" %}
+{% extends "index.html" %}
 
 {% block title %}
 Help
 {% endblock %}
 
-{% block navi %}
-	<a href ="/">Index</a> - <a href="/help">help</a> - 
-	{% if user.is_authenticated %}
-		Welcome {{user.username}}! <a href="/logout">logout</a> 
-	{% else %} 
-	 	<a href="/login">login</a>
-	{% endif %}
-{% endblock %}
 
 {% block content %}
-    <h1> Help </h1> 
-    TODO..  
+    <h2> Đăng nhập </h2>
+    Quy trình nghiệp vụ, sơ đồ hoạt động.
+    
+    <h2> Đăng nhập </h2> 
+    Người sử dụng cần đăng nhập hệ thống để có thể sử dụng được các chức năng. 
+    Nếu không đăng nhập được hệ thống, liên hệ: qlnt@viettel.com.vn.
+    <h2> Lập danh sách lớp học </h2> 
+    TODO
+    
+    <h2> Nhập thông tin học sinh </h2> 
+    TODO
+    
+    <h2> Nhập điểm </h2> 
+    TODO 
+      
 {% endblock %}
 

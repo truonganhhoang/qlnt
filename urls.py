@@ -6,9 +6,8 @@ from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    (r'^$', 'app.views.index'),
-    (r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
-    (r'^help/$', 'app.views.help'),
+    (r'^$', 'views.index'),
+    (r'^help/$', 'views.help'),
     #(r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'login.html'}),
     #(r'^logout/$', 'django.contrib.auth.views.logout', {'template_name': 'login.html'}),
     # the built-in sign-in/out module 
@@ -41,5 +40,11 @@ urlpatterns = patterns('',
     #url(r'^grappelli/', include('grappelli.urls')),
     
     url(r'^rosetta/', include('rosetta.urls')),
-   
+    
+    (r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
 )
+
+if 'rosetta' in settings.INSTALLED_APPS:
+    urlpatterns += patterns('',
+        url(r'^rosetta/', include('rosetta.urls')),
+    )

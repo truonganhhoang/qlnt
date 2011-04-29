@@ -21,15 +21,15 @@ DATABASES = {
         'HOST': '', # Set to empty string for localhost. Not used with sqlite3.
         'PORT': '', # Set to empty string for default. Not used with sqlite3.
     },
-    # added by: vu.tran54 - K54CA - school app
-    'Mark_1':{
-        'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': os.path.join(os.path.dirname(__file__), 'Mark_1.db'), # Or path to database file if using sqlite3.
-        'USER': '', # Not used with sqlite3.
-        'PASSWORD': '', # Not used with sqlite3.
-        'HOST': '', # Set to empty string for localhost. Not used with sqlite3.
-        'PORT': '', # Set to empty string for default. Not used with sqlite3.      
-    } 
+#    # added by: vu.tran54 - K54CA - school app
+#    'Mark_1':{
+#        'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
+#        'NAME': os.path.join(os.path.dirname(__file__), 'Mark_1.db'), # Or path to database file if using sqlite3.
+#        'USER': '', # Not used with sqlite3.
+#        'PASSWORD': '', # Not used with sqlite3.
+#        'HOST': '', # Set to empty string for localhost. Not used with sqlite3.
+#        'PORT': '', # Set to empty string for default. Not used with sqlite3.      
+#    } 
 }
 # uncomment following line to use auto multiple db router.
 #DATABASE_ROUTERS = ['school.schoolrouter.SchoolRouter']
@@ -135,6 +135,8 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
+    'rosetta',
+    
     'app',
     'school',
     'persistent_messages',

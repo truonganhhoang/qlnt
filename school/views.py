@@ -10,7 +10,6 @@ from django.template import RequestContext, loader
 from django.core.exceptions import *
 from school.models import *
 import xlrd
-import xlwt
 
 NHAP_DANH_SACH_TRUNG_TUYEN = r'school/import/nhap_danh_sach_trung_tuyen.html'
 DANH_SACH_TRUNG_TUYEN = r'school/import/danh_sach_trung_tuyen.html'

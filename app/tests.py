@@ -1,10 +1,7 @@
 #! /usr/bin/env python
 #encoding:UTF-8
 """
-This file demonstrates writing tests using the unittest module. These will pass
-when you run "manage.py test".
-
-Replace this with more appropriate tests for your application.
+Kiểm thử các chức năng 
 """
 
 from django.test import TestCase
@@ -213,3 +210,7 @@ class UserFunctionTest(TestCase):
         # after deleting, database has no group with name "teachers02"
         response = self.client.post('/admin/auth/group/')
         self.assertContains(response, "teachers02", 0, status_code=200)
+
+class OrganizationTest(TestCase):
+    def setUp(self):
+        self.client = Client()
