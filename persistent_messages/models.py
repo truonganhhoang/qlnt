@@ -76,15 +76,12 @@ class Message(models.Model):
         return read_tag
     tags = property(_get_tags)
     
-class MessageForm(forms.Form):
-#    USER_CHOICES = [(i.username, i.username) for i in User.objects.all()] 
-#    user = forms.MultipleChoiceField(USER_CHOICES)
-
-#    def __init__(self, *args, **kwargs):
-#        super(MessageForm, self).__init__(*args, **kwargs)
-#        self.fields['user'].choices = [(i.username, i.username) for i in User.objects.all()]
-#
-#    user = forms.ChoiceField(widget=forms.CheckboxSelectMultiple)
+class MessageForm(forms.Form):    
+    def __init__(self, *args, **kwargs):
+        super(MessageForm, self).__init__(*args, **kwargs)
+        self.fields['user'].choices = [(i.username, i.username) for i in User.objects.all()]
+        
+    user = forms.MultipleChoiceField()
     subject = forms.CharField()
     message = forms.CharField(widget=forms.widgets.Textarea())
     LEVEL_CHOICES = (
