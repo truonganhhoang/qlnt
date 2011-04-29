@@ -1011,3 +1011,52 @@ def test(request, school_code = None):
     c = RequestContext(request)
 
     return HttpResponse(t.render(c))
+def deleteSubject(request, subject_id):
+    message = "You have deleted succesfully"
+    sub = Subject.objects.filter(id = subject_id)
+    class_id = sub.class_id
+    sub.delete()
+    subjectList = Subject.objects.filter(class_id = class_id)
+    form = SubjectForm()
+    t = loader.get_template('school/subject_per_class.html')
+    c = RequestContext(request, {'form' : form, 'message' : message,  'subjectList' : subjectList, 'class_id' : class_id})
+    return HttpResponse(t.render(c))
+
+def deleteTeacher(request, teacher_id):
+    message = "You have deleted succesfully"
+    s = Teacher.objects.filter(id = teacher_id)
+    s.delete()
+    teacherList = Teacher.objects.all()
+    form = TeacherForm()
+    t = loader.get_template('school/teachers.html')
+    c = RequestContext(request, {'form' : form, 'message' : message,  'teacherList' : teacherList})
+    return HttpResponse(t.render(c))
+
+def deleteClass(request, class_id):
+    message = "You have deleted succesfully"
+    s = Class.objects.filter(id = class_id)
+    s.delete()
+    classList = Class.objects.all()
+    form = ClassForm()
+    t = loader.get_template('school/classes.html')
+    c = RequestContext(request, {'form' : form, 'message' : message,  'classList' : classList})
+    return HttpResponse(t.render(c))
+
+def deleteStudentInClass(request, student_id):
+    message = "You have deleted succesfully"
+    sub = Pupil.objects.filter(id = student_id)
+    class_id = sub.class_id
+    sub.delete()
+    studentList = Pupil.objects.filter(class_id = class_id)
+    form = PupilForm()
+    t = loader.get_template('school/student_per_class.html')
+    c = RequestContext(request, {'form' : form, 'message' : message,  'studentList' : studentList, 'class_id' : class_id})
+
+def deleteStudentInSchool(request, student_id):
+    message = "You have deleted succesfully"
+    sub = Pupil.objects.filter(id = student_id)
+    sub.delete()
+    studentList = Pupil.objects.all()
+    form = PupilForm()
+    t = loader.get_template('school/students.html')
+    c = RequestContext(request, {'form' : form, 'message' : message,  'studentList' : studentList})

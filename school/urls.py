@@ -21,6 +21,11 @@ urlpatterns = patterns('',
     url(r'diemdanhhs/(?P<student_id>\w+)', 'school.views.diem_danh_hs'),    
     url(r'start_year/import$', 'school.views.nhap_danh_sach_trung_tuyen'),
     url(r'start_year/import/list$', 'school.views.danh_sach_trung_tuyen', name = "imported_list"),
+    url(r'deleteTeacher/(?P<teacher_id>\w+)', 'school.views.deleteTeacher'),
+    url(r'deleteSubject/(?P<subject_id>\w+)', 'school.views.deleteSubject'),
+    url(r'deleteStudentInSchool/(?P<student_id>\w+)', 'school.views.deleteStudentInSchool'),
+    url(r'deleteStudentInClass/(?P<student_id>\w+)', 'school.views.deleteStudentInClass'),
+    url(r'deleteClass/(?P<class_id>\w+)', 'school.views.deleteClass'),
     #url(r'^school/test$','school.views.test'), 
 	
 	)
