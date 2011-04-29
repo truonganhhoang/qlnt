@@ -1,0 +1,57 @@
+{% extends "school/base_school.html" %}
+
+{% block content %}
+<br>
+<form action="/school/diemdanh/{{class_id}}/{{day}}/{{month}}/{{year}}" method="post">{% csrf_token %}
+        <tr>
+        
+        </tr>
+<table border=1 width = "100%" >
+
+    <tr>
+        <td align="center" width="5%"> STT </td>
+        <td align="center" width="20%"> Họ & Tên Đệm </td>
+        <td align="center" width="5%"> Tên </td>
+        <td align="center" width="15%"> Ngày sinh</td>
+        <td align="center" width="7%"> Giới tính </td>
+        <td align="center" width="8%"> Điểm danh </td>
+    </tr>
+    {% if message != None %}
+    {{message}}
+    {% endif %}
+    
+
+        {% for p,f in list %}
+            <tr>
+                <td align="center" width="5%">
+                    <p>{{ p.id }}</p>
+                </td>
+            
+                <td align="center" width="20%">
+                    <p>{{ p.last_name }}</p
+                </td>
+
+                <td align="center" width="5%">
+                    <p>{{ p.first_name }}</p>
+                </td>
+
+                <td align="center" width="15%">
+                    <p>{{ p.birthday }}</p>
+                </td>
+
+                <td align="center" width="7%">
+                    <p>{{ p.sex }}</p>
+                </td>
+
+                <td align="center" width="8%">
+                    {{ f.loai.errors }}
+                    <p>{{ f.loai }}</p>
+                </td>
+            </tr>
+        {% endfor %}
+        <tr>
+        <td><input type ="submit" value="Cập nhật"/></td>
+	</form>
+        </tr>
+</table>
+{% endblock %}
