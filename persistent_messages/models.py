@@ -77,8 +77,8 @@ class Message(models.Model):
     tags = property(_get_tags)
     
 class MessageForm(forms.Form):
-    USER_CHOICES = [(i.username, i.username) for i in User.objects.all()] 
-    user = forms.MultipleChoiceField(USER_CHOICES)
+#    USER_CHOICES = [(i.username, i.username) for i in User.objects.all()] 
+#    user = forms.MultipleChoiceField(USER_CHOICES)
 
 #    def __init__(self, *args, **kwargs):
 #        super(MessageForm, self).__init__(*args, **kwargs)

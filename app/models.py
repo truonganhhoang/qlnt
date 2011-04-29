@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from django.db import models
 from django import forms
+#from django.contrib.auth.models import User as Django_User
+from django_dynamic_fixture import new, get, DynamicFixture as F, print_field_values
 
 '''
 Các mô hình dữ liệu dùng chung giữa các đơn vị trong hệ thống và 
@@ -77,6 +79,10 @@ class UserForm(forms.ModelForm):
     class Meta:
         model = User
 
+# Django dynamic fixture data
+#user01 = new(Django_User)
+#assert user01.username != 'user01'
+#assert user01.password != '01'
 
 #class SchoolYear(models.Model):
 #    name = models.CharField(max_length=100)
