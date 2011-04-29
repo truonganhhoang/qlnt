@@ -12,7 +12,7 @@ HL_CHOICES = ((u'G', u'Giỏi'), (u'K', u'Khá'),(u'TB',u'Trung Bình'),(u'Y', u
 DH_CHOICES = ((u'XS', u'học sinh xuất sắc'),(u'G', u'hoc sinh giỏi'), (u'TT', u'hoc sinh tiên tiến'),(u'k',u''))
 
 SCHOOL_LEVEL_CHOICE = ((1, u'1'), (2, u'2'), (3, u'3'))
-DIEM_DANH_TYPE = ((u'C', u'Có phép'),(u'K', u'Không phép'),(u'BT', u'Bỏ tiết'))
+DIEM_DANH_TYPE = ((u'Có phép', u'Có phép'),(u'Không phép', u'Không phép'),(u'k','Đi học'))
 BAN_CHOICE = ((u'KHTN',u'Ban KHTN'),(u'KHXH',u'Ban KHXH-NV'),(u'CBA',u'Ban Cơ bản A'),
 			  (u'CBB',u'Ban Cơ bản B'),(u'CBB',u'Ban Cơ bản C'),
 			  (u'CBD',u'Ban Cơ bản D'),(u'CB',u'Ban Cơ bản'))
@@ -335,19 +335,22 @@ class TBNam(models.Model):
 		return ".2f" % self.tb_nam
 	
 class DiemDanh(models.Model):
-	student_id = models.ForeignKey(Pupil)
-	time = models.DateField()
-	loai = models.CharField( max_length = 2, choices = DIEM_DANH_TYPE, default = 'K') 
-	
-	def __unicode__(self):
-		return self.student_id + " " + str(self.time)
-	
-
+    student_id = models.ForeignKey(Pupil)
+    time = models.DateField()
+    loai = models.CharField( max_length = 10, choices = DIEM_DANH_TYPE, default = 'k') 
+    
+    def __unicode__(self):
+        return str(self.student_id) + " " + str(self.time)
+    
+class DiemDanhForm(forms.ModelForm):
+    class Meta:
+        model = DiemDanh
+        
 class TKDiemDanh(models.Model):
-	student_id = models.ForeignKey(Pupil)
-	tong_so = models.IntegerField()
-	co_phep = models.IntegerField()
-	khong_phep = models.IntegerField()
-	
-	def __unicode__(self):
-		return self.stundent_id + " " + str(self.tong_so)
+    student_id = models.ForeignKey(Pupil)
+    tong_so = models.IntegerField()
+    co_phep = models.IntegerField()
+    khong_phep = models.IntegerField()
+    
+    def __unicode__(self):
+        return str(self.stundent_id) + " " + str(self.tong_so)
