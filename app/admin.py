@@ -5,6 +5,6 @@ from app.models import Organization, User, PositionType
 admin.site.register(Organization)
 admin.site.register(PositionType)
 admin.site.register(User)
-admin.site.register(School)
+#admin.site.register(School)
 #admin.site.register(SchoolYear)
 #admin.site.register(Semester)
