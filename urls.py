@@ -40,6 +40,6 @@ urlpatterns = patterns('',
     
     #url(r'^grappelli/', include('grappelli.urls')),
     
-    #url(r'^rosetta/', include('rosetta.urls')),
+    url(r'^rosetta/', include('rosetta.urls')),
    
 )

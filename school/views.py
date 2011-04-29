@@ -859,6 +859,7 @@ def nhap_danh_sach_trung_tuyen(request):
 def danh_sach_trung_tuyen(request):
     student_list = request.session['student_list']
     school = request.session['school']
+    message = None
     if school.school_level == 1:
         lower_bound = 1
         upper_bound = 5
@@ -877,10 +878,10 @@ def danh_sach_trung_tuyen(request):
             name = student['ten'].split()
             last_name = ' '.join(name[:len(name)-1])
             first_name= name[len(name)-1]
-            try:
-                find = year.pupil_set.get( first_name = first_name, last_name = last_name, birthday = student['ngay_sinh'])
-                print find
-            except Exception as e:
+            find = year.pupil_set.filter( first_name__exact = first_name)\
+                                 .filter(last_name__exact = last_name)\
+                                 .filter(birthday__exact = student['ngay_sinh'])
+            if not find:
                 st = Pupil()
                 st.first_name = first_name
                 st.last_name = last_name
@@ -889,6 +890,8 @@ def danh_sach_trung_tuyen(request):
                 st.ban_dk = student['nguyen_vong']
                 st.start_year_id = year
                 st.save()
+            else:
+                print ">>", find
         message = u'Bạn vừa nhập thành công danh sách học sinh trúng tuyển.'
         student_list=[]
             

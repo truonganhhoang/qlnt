@@ -6,7 +6,7 @@ urlpatterns = patterns('',
 	url(r'mark_table/(?P<class_id>\w+)','school.views.mark_table'),
 	url(r'markForAStudent/(?P<class_id>\w+)/(?P<student_id>\w+)','school.views.markForAStudent'),
 
-	url(r'xepLoaiHkTheoLop/(?P<class_id>\w+)','school.views.xepLoaiHkTheoLop'),
+	#url(r'xepLoaiHkTheoLop/(?P<class_id>\w+)','school.views.xepLoaiHkTheoLop'),
 
     url(r'classes$', 'school.views.classes'),
     url(r'teachers$', 'school.views.teachers'),
