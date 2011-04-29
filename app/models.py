@@ -2,7 +2,6 @@
 from django.db import models
 from django import forms
 #from django.contrib.auth.models import User as Django_User
-from django_dynamic_fixture import new, get, DynamicFixture as F, print_field_values
 
 '''
 Các mô hình dữ liệu dùng chung giữa các đơn vị trong hệ thống và 
@@ -10,7 +9,7 @@ các mô hình dữ liệu cấp Phòng, Sở (ngoài trường phổ thông)
 '''
 
 class Organization(models.Model):
-    ''' Thông tin về sơ đồ tổ chức của các sở, phòng và các tr
+    ''' Thông tin về sơ đồ tổ chức của các sở, phòng và các trường
     '''
     ORGANIZATION_LEVEL_CHOICES = (('T', 'Trường'),
                                  ('P', 'Phòng'),
@@ -20,7 +19,7 @@ class Organization(models.Model):
     phone_number = models.CharField("Điện thoại", max_length=20, null=True)
     email = models.CharField(max_length=50)
     level = models.CharField("cấp", max_length=2, choices=ORGANIZATION_LEVEL_CHOICES) #Cấp
-    upper_organization = models.ForeignKey('self', blank=True, null=True)
+    upper_organization = models.ForeignKey('self', blank=True, null=True, verbose_name='Trực thuộc')
     manager_name = models.CharField("Tên thủ trưởng", max_length=100)
     
     def __unicode__(self):

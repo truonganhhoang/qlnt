@@ -2,10 +2,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from app.models import SchoolForm, Organization
 from app.models import UserForm
 #from app.models import PositionTypeForm
-from django.shortcuts import render_to_response
 from django.template import RequestContext, loader
-from django.template import Context
-from django.template.loader import get_template
 
 def school_add(request):
     if request.method == 'POST':
