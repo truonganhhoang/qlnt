@@ -897,7 +897,57 @@ def danh_sach_trung_tuyen(request):
     context = RequestContext(request)
     return render_to_response(DANH_SACH_TRUNG_TUYEN, {'student_list':student_list, 'message':message}, context_instance = context)
 #------------------------------------------------------------------------------------
+def diem_danh(request, class_id, day, month, year):
+    message = None
+    listdh = None
+    pupilList = Pupil.objects.filter(class_id = class_id)
+    time = date(int(year),int(month),int(day))
+    form = []
+    i = 0
+    for p in pupilList:
+        form.append(DiemDanhForm())
+        try:
+            dd = DiemDanh.objects.get(time__exact=time, student_id__exact = p.id)
+            form[i] = DiemDanhForm(instance = dd)
+            i = i+1
+        except ObjectDoesNotExist:
+            i = i+1
+    listdh = zip(pupilList,form)
+    if request.method == 'POST':
+        message = 'Cập nhật thành công danh sách điểm danh lớp ' + str(Class.objects.get(id = class_id)) +'. Ngày ' + str(time)
+        list = request.POST.getlist('loai')
+        i = 0
+        for p in pupilList:
+            try:
+                dd = DiemDanh.objects.get(time__exact=time, student_id__exact = p.id)
+                if list[i] != 'k':
+                    data = {'student_id':p.id,'time':time,'loai':list[i],}
+                    form[i] = DiemDanhForm(data, instance = dd)
+                    if form[i].is_valid():
+                        form[i].save()
+                else:
+                    form[i] = DiemDanhForm()
+                    dd.delete()
+                i = i + 1
+            except ObjectDoesNotExist:
+                if list[i] != 'k':
+                    data = {'student_id':p.id,'time':time,'loai':list[i],}
+                    form[i] = DiemDanhForm(data)
+                    if form[i].is_valid():
+                        form[i].save()
+                i = i + 1
+    listdh = zip(pupilList,form)                
+    t = loader.get_template('school/diem_danh.html')
+    c = RequestContext(request, {'form':form, 'pupilList' : pupilList, 'time': time , 'message':message, 'class_id':class_id,'time':time,'list':listdh,
+                                    'day':day, 'month':month, 'year':year})
+    return HttpResponse(t.render(c))
 
+def tk_diem_danh(student_id):
+    ts = DiemDanh.objects.filter(student_id = student_id).count()
+    cp = DiemDanh.objects.filter(student_id = student_id, loai = u'C').count()
+    kp = ts - cp
+    tk = TKDiemDanh({'student_id':student_id,'tong_so':ts,'co_phep':cp,'khong_phep':kp,})
+    tk.save()
 
 def test(request, school_code = None):
     t = loader.get_template('school/test.html')
