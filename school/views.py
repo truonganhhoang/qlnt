@@ -964,6 +964,39 @@ def diem_danh(request, class_id, day, month, year):
     c = RequestContext(request, {'form':form, 'pupilList' : pupilList, 'time': time , 'message':message, 'class_id':class_id,'time':time,'list':listdh,
                                     'day':day, 'month':month, 'year':year})
     return HttpResponse(t.render(c))
+    
+def diem_danh_hs(request, student_id):
+    ddl = DiemDanh.objects.filter(student_id = student_id)
+    form = []
+    iform = DiemDanhForm()
+    for dd in ddl:
+        form.append(DiemDanhForm(instance = dd))
+    pupil = Pupil.objects.get(id = student_id)
+    if request.method == 'POST':
+        list = request.POST.getlist('loai')
+        time = request.POST.getlist('time')
+        i = 0
+        for dd in ddl:
+            if list[i] != 'k':
+                data = {'student_id':student_id,'time':time[i],'loai':list[i],}
+                form[i] = DiemDanhForm(data, instance = dd)
+                if form[i].is_valid():
+                    form[i].save()
+                i = i + 1
+            else:
+                time.remove(time[i])
+                form.remove(form[i])
+                list.remove(list[i])
+                dd.delete()
+        if list[i] != 'k':
+            data = {'student_id':student_id,'time':time[i],'loai':list[i],}
+            iform = DiemDanhForm(data)
+            if iform.is_valid():
+                iform.save()
+        
+    t = loader.get_template('school/diem_danh_hs.html')
+    c = RequestContext(request, {'form' : form,'iform' : iform,'pupil':pupil,'student_id':student_id})
+    return HttpResponse(t.render(c))
 
 def tk_diem_danh(student_id):
     ts = DiemDanh.objects.filter(student_id = student_id).count()
