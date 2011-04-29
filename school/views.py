@@ -210,12 +210,14 @@ def subjectPerClass(request, class_id):
     return HttpResponse(t.render(c))
 
 def studentPerClass(request, class_id):
+    print ">>", class_id
     message = None
     form = PupilForm()
     studentList = Pupil.objects.filter(class_id = class_id)
     if request.method == 'POST':
         data = {'first_name':request.POST['first_name'], 'last_name':request.POST['last_name'],
         'birthday':request.POST['birthday'], 'class_id':class_id, 'sex':request.POST['sex'], 'ban_dk':request.POST['ban_dk'], 'school_join_date':request.POST['school_join_date'], 'start_year_id':request.POST['start_year_id']}
+        print ">>", data
         form = PupilForm(data)
         if form.is_valid():
             form.save()
@@ -766,7 +768,11 @@ def markForAStudent(request,class_id=7,student_id=1):
 
 class UploadImportFileForm(forms.Form):
     import_file = forms.FileField(label=u'Chọn file excel:')
-    
+   
+def to_date(value ):
+    v=value.split('-')
+    return date( int(v[2]), int(v[1]), int(v[0]))
+
 def save_file( import_file, session):
     import_file_name = import_file.name
     session_key = session.session_key
@@ -871,31 +877,48 @@ def danh_sach_trung_tuyen(request):
         
     
     if request.method == 'POST':
-        year = school.startyear_set.get( time = datetime.date.today().year)
-        today = datetime.date.today()   
-        for student in student_list:
-            name = student['ten'].split()
-            last_name = ' '.join(name[:len(name)-1])
-            first_name= name[len(name)-1]
-            find = year.pupil_set.filter( first_name__exact = first_name)\
-                                 .filter(last_name__exact = last_name)\
-                                 .filter(birthday__exact = student['ngay_sinh'])
-            if not find:
-                st = Pupil()
-                st.first_name = first_name
-                st.last_name = last_name
-                st.birthday = student['ngay_sinh']
-                st.school_join_date = today
-                st.ban_dk = student['nguyen_vong']
-                st.start_year_id = year
-                st.save()
-            else:
-                print ">>", find
-        message = u'Bạn vừa nhập thành công danh sách học sinh trúng tuyển.'
-        student_list=[]
+        print ">>>", request.POST['clickedButton']
+        if request.POST['clickedButton'] == 'save':
+            print "button save has been clicked "
+            year = school.startyear_set.get( time = datetime.date.today().year)
+            today = datetime.date.today()   
+            for student in student_list:
+                name = student['ten'].split()
+                last_name = ' '.join(name[:len(name)-1])
+                first_name= name[len(name)-1]
+                find = year.pupil_set.filter( first_name__exact = first_name)\
+                                     .filter(last_name__exact = last_name)\
+                                     .filter(birthday__exact = student['ngay_sinh'])
+                if not find:
+                    st = Pupil()
+                    st.first_name = first_name
+                    st.last_name = last_name
+                    st.birthday = student['ngay_sinh']
+                    st.school_join_date = today
+                    st.ban_dk = student['nguyen_vong']
+                    st.start_year_id = year
+                    st.save()
+                else:
+                    print ">>", find
+            message = u'Bạn vừa nhập thành công danh sách học sinh trúng tuyển.'
+            student_list=[]
+            request.session['student_list'] = student_list
+        elif request.POST['clickedButton'] == 'add':
+            print "button add has been clicked"
             
-    context = RequestContext(request)
-    return render_to_response(DANH_SACH_TRUNG_TUYEN, {'student_list':student_list, 'message':message}, context_instance = context)
+            diem = float(request.POST['diem_hs_trung_tuyen'])
+            print "diem: ", diem
+            ns = to_date(request.POST['ns_hs_trung_tuyen'])
+            print "ngay sinh: ", ns
+            element = { 'ten': request.POST['name_hs_trung_tuyen'],
+                        'ngay_sinh': ns,
+                        'nguyen_vong': request.POST['nv_hs_trung_tuyen'],
+                        'tong_diem': diem,
+                       }
+            student_list.append(element)
+            request.session['student_list'] = student_list
+    context = RequestContext(request, {'student_list': student_list})
+    return render_to_response(DANH_SACH_TRUNG_TUYEN, {'message':message}, context_instance = context)
 #------------------------------------------------------------------------------------
 def diem_danh(request, class_id, day, month, year):
     message = None

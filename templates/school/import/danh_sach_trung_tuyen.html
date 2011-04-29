@@ -3,10 +3,33 @@
 {% block js %}
 <script type="text/javascript" >
 
-	function add_student()
+	function save_student()
 	{
-		document.theForm.clickedButton = "save"
-		document.theForm.submit()
+		document.theForm.clickedButton.value = "save";
+		document.theForm.submit();
+	}
+	function check_key(tb){
+		var exp = /[^((\d).)]/g;
+		tb.value = tb.value.replace(exp,'');
+		var value=tb.value;
+		var countDot=0;
+		for(i=0;i<value.length;i++)
+			if (value.charAt(i)==".") 
+				countDot++;
+				
+		if (countDot>1)
+		{		
+			tb.value="";
+			return;
+		}			
+		var number=parseFloat(value);
+		//alert(number);		
+		if (number>55 )
+			tb.value="";	
+	}	
+	function add_student(){
+		document.theForm.clickedButton.value = "add";
+		document.theForm.submit();	
 	}
 </script>
 {% endblock %}
@@ -64,16 +87,17 @@
 		        --   
 		    </td>
 		    <td align="center">
-		    	  <input type="text" value="" name="hs_trung_tuyen" style="border:0px;" align="center"/>
+		    	  <input type="text" value="" name="name_hs_trung_tuyen" style="border:0px;" align="center"/>
 		    </td>
 		    <td align="center">
-		        <input type="text" value="" style="width:70px; border:0px;" align="center" />
+		        <input type="text" value="" name="ns_hs_trung_tuyen"style="width:70px; border:0px;" align="center" />
 		    </td>
 		    <td align="center">
-		        <input type="text" value="" style="border:0px;" align="center"/>
+		        <input type="text" value="" name="nv_hs_trung_tuyen"style="border:0px;" align="center"/>
 		    </td>
 		    <td align="center">
-		        <input type="text" value="" style="border:0px; width:40px;" align="center"/>
+		        <input type="text" value="" name="diem_hs_trung_tuyen"style="border:0px; width:40px;" align="center"
+		        			onkeyup="check_key(this)"/>
 		    </td>
 		    <td align="center">
 		    	  <input type="submit" name="add" value="Thêm" onclick="add_student()" />
