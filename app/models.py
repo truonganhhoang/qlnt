@@ -17,10 +17,10 @@ class Organization(models.Model):
     name = models.CharField('Tên tổ chức', max_length=100) #tên đơn vị. tổ chức 
     address = models.CharField("Địa chỉ", max_length=255, null=True) #
     phone_number = models.CharField("Điện thoại", max_length=20, null=True)
-    email = models.CharField(max_length=50)
+    email = models.CharField(max_length=50, null=True)
     level = models.CharField("cấp", max_length=2, choices=ORGANIZATION_LEVEL_CHOICES) #Cấp
     upper_organization = models.ForeignKey('self', blank=True, null=True, verbose_name='Trực thuộc')
-    manager_name = models.CharField("Tên thủ trưởng", max_length=100)
+    manager_name = models.CharField("Tên thủ trưởng", max_length=100, null=True)
     
     def __unicode__(self):
         return self.name
