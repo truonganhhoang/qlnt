@@ -1,6 +1,6 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from app.models import SchoolForm, Organization
-from app.models import UserForm
+from app.models import UserForm, OrganizationForm
 #from app.models import PositionTypeForm
 from django.template import RequestContext, loader
 
@@ -86,6 +86,17 @@ def user_add(request):
     c = RequestContext(request, {'form' : form})
     return HttpResponse(t.render(c))
 
+def organization_add (request):
+    if request.method == 'POST':
+        form = OrganizationForm (request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect ('/app/organization/add/')
+    else:
+        form = OrganizationForm()
+    t = loader.get_template('app/organization/add.html')
+    c = RequestContext (request, {'form': form})
+    return HttpResponse (t.render(c))
 #def positiontype_add(request):
 #    if request.method == 'POST':
 #        form = PositionTypeForm(request.POST)

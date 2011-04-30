@@ -7,24 +7,32 @@ from django_dynamic_fixture import new, get, DynamicFixture as F, print_field_va
 Các mô hình dữ liệu dùng chung giữa các đơn vị trong hệ thống và 
 các mô hình dữ liệu cấp Phòng, Sở (ngoài trường phổ thông)
 '''
-
+ORGANIZATION_LEVEL_CHOICES = (('T', 'Trường'),
+                             ('P', 'Phòng'),
+                             ('S', 'Sở')) 
 class Organization(models.Model):
     ''' Thông tin về sơ đồ tổ chức của các sở, phòng và các trường
-    '''
-    ORGANIZATION_LEVEL_CHOICES = (('T', 'Trường'),
-                                 ('P', 'Phòng'),
-                                 ('S', 'Sở'))
+    ''' 
     name = models.CharField('Tên tổ chức', max_length=100) #tên đơn vị. tổ chức 
     address = models.CharField("Địa chỉ", max_length=255, null=True) #
     phone_number = models.CharField("Điện thoại", max_length=20, null=True)
-    email = models.CharField(max_length=50, null=True)
+    email = models.EmailField(max_length=50, null=True)
     level = models.CharField("cấp", max_length=2, choices=ORGANIZATION_LEVEL_CHOICES) #Cấp
     upper_organization = models.ForeignKey('self', blank=True, null=True, verbose_name='Trực thuộc')
     manager_name = models.CharField("Tên thủ trưởng", max_length=100, null=True)
     
     def __unicode__(self):
         return self.name
-
+    
+class OrganizationForm (forms.Form):
+    name = forms.CharField(max_length=100, min_length=1) #tên đơn vị. tổ chức 
+    address = forms.CharField(max_length=255, min_length=1) #
+    phone_number = forms.CharField(max_length=20, min_length=1)
+    email = forms.EmailField(max_length=50, min_length=1)
+    level = forms.CharField(max_length=2, widget=forms.Select(choices=ORGANIZATION_LEVEL_CHOICES)) #Cấp
+    upper_organization = forms.ModelMultipleChoiceField(queryset=Organization.objects.all())    
+    manager_name = forms.CharField(max_length=100, min_length=1)
+  
 class SchoolForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super(SchoolForm, self).__init__(*args, **kwargs)

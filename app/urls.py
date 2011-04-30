@@ -20,5 +20,9 @@ urlpatterns = patterns('',
     		template_name='app/schoolstaff/index.html')),
     url(r'schoolstaff/(?P<pk>\d+)$', DetailView.as_view(model=User,
     													template_name='app/schoolstaff/detail.html')),
-    url(r'schoolstaff/add$', 'app.views.user_add')
+    url(r'schoolstaff/add$', 'app.views.user_add'),
+    
+    # Them truong hoc, phong giao duc hoac so giao duc cung admin cua to chuc do
+    #url(r'organization/$', )
+    url('organization/add$', 'app.views.organization_add')
 )
