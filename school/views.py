@@ -993,6 +993,8 @@ def diem_danh_hs(request, student_id):
             iform = DiemDanhForm(data)
             if iform.is_valid():
                 iform.save()
+                form.append(iform)
+                iform = DiemDanhForm
         
     t = loader.get_template('school/diem_danh_hs.html')
     c = RequestContext(request, {'form' : form,'iform' : iform,'pupil':pupil,'student_id':student_id})
