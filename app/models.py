@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.db import models
 from django import forms
-#from django.contrib.auth.models import User as Django_User
+from django_dynamic_fixture import new, get, DynamicFixture as F, print_field_values
 
 '''
 Các mô hình dữ liệu dùng chung giữa các đơn vị trong hệ thống và 
@@ -77,12 +77,16 @@ class User(models.Model):
 class UserForm(forms.ModelForm):
     class Meta:
         model = User
-
-# Django dynamic fixture data
-#user01 = new(Django_User)
-#assert user01.username != 'user01'
-#assert user01.password != '01'
-
+'''
+soGD = get(Organization,
+           name = 'Sở Giáo dục và Đào tạo Hà Nội',
+           address = '23 Quang Trung, 81 Thợ Nhuộm, Hoàn Kiếm, Hà Nội',
+           phone_number = '0439426821',
+           email = 'sogiaoduc@hanoiedu.vn',
+           level = 'S',
+           upper_organization = None,
+           manager_name = 'Nguyễn Hữu Độ')
+'''
 #class SchoolYear(models.Model):
 #    name = models.CharField(max_length=100)
 #    start_date = models.DateField()
