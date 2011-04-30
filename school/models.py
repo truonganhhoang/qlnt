@@ -302,23 +302,24 @@ class HanhKiem(models.Model):
 class TBHocKy(models.Model):
 	student_id = models.ForeignKey(Pupil)
 	term_id = models.ForeignKey(Term)
-	tb_hk=models.FloatField( validators = [validate_mark])		
-	hl_hk=models.CharField( max_length = 3, choices = HL_CHOICES)
-	danh_hieu_hk=models.CharField( max_length = 2, choices = DH_CHOICES)
+	
+	tb_hk=models.FloatField( validators = [validate_mark],null=True,blank=True)		
+	hl_hk=models.CharField( max_length = 3, choices = HL_CHOICES,null=True,blank=True)
+	danh_hieu_hk=models.CharField( max_length = 2, choices = DH_CHOICES,null=True,blank=True)
 	
 	def __unicode__(self):
-		return "%.2f" % self.tb_hk
+		return  str(self.tb_hk)+" "+str(self.term_id.__unicode__())+str(self.student_id.__unicode__())
 		
 class TBNam(models.Model):
 	student_id = models.ForeignKey(Pupil)
 	year_id = models.ForeignKey(Year)
-	tb_nam = models.FloatField( validators = [validate_mark])
-	hl_nam=models.CharField( max_length = 3, choices = HL_CHOICES)
+	tb_nam = models.FloatField( validators = [validate_mark],null=True,blank=True)
+	hl_nam=models.CharField( max_length = 3, choices = HL_CHOICES,null=True,blank=True)
 	#hanh kiem nam
-	hk_nam=models.CharField( max_length = 2, choices = HK_CHOICES)
+	hk_nam=models.CharField( max_length = 2, choices = HK_CHOICES,null=True,blank=True)
 	#ghi danh hieu ma hoc sinh dat dc trong hoc ky	
-	danh_hieu_nam=models.CharField( max_length = 2, choices = DH_CHOICES)
-	len_lop=models.BooleanField(choices=LENLOP_CHOICES,default=True)
+	danh_hieu_nam=models.CharField( max_length = 2, choices = DH_CHOICES,null=True,blank=True)
+	len_lop=models.NullBooleanField(choices=LENLOP_CHOICES,default=True,null=True,blank=True)
 	#danh dau thi lai
 	
 	thi_lai = models.BooleanField(blank = True, default = False)
@@ -332,7 +333,7 @@ class TBNam(models.Model):
 	
 	
 	def __unicode__(self):
-		return ".2f" % self.tb_nam
+		return self.student_id.__unicode__()+" "+str(self.year_id.__unicode__())+" "+ str(self.tb_nam) 
 	
 class DiemDanh(models.Model):
     student_id = models.ForeignKey(Pupil)
