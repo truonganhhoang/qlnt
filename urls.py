@@ -8,27 +8,18 @@ admin.autodiscover()
 urlpatterns = patterns('',
     (r'^$', 'views.index'),
     (r'^help/$', 'views.help'),
-    #(r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'login.html'}),
-    #(r'^logout/$', 'django.contrib.auth.views.logout', {'template_name': 'login.html'}),
     # the built-in sign-in/out module 
     (r'^login/$', 'django.contrib.auth.views.login'),
     (r'^logout/$', 'django.contrib.auth.views.logout'),
-    (r'^accounts/$', 'django.views.generic.simple.redirect_to', {'url': '/'}),
-    (r'^accounts/profile/$', 'django.views.generic.simple.redirect_to', {'url': '/'}),
+    #(r'^accounts/$', 'django.views.generic.simple.redirect_to', {'url': '/'}),
+    #(r'^accounts/profile/$', 'django.views.generic.simple.redirect_to', {'url': '/'}),
  
-    # Examples:
-    # url(r'^$', 'qlnt.views.home', name='home'),
-    # url(r'^qlnt/', include('qlnt.foo.urls')),
-
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
     
-    url(r'^org/', 'views.org_admin'),
-    
-                      
     # urls for app app
     
     url(r'^app/', include('app.urls')),

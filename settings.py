@@ -135,12 +135,9 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
-    'rosetta',
-    
     'app',
     'school',
     'persistent_messages',
-    'rosetta',
 )
 
 # A sample logging configuration. The only tangible logging

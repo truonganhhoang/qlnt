@@ -4,7 +4,7 @@
 	{% if user.is_authenticated %}
 		<h3>Gửi thông báo</h3>
 		<form action="" method="post">{% csrf_token %}
-		{{ form.as_p }}
+			{{ form.as_p }}
 		<input type="submit" value="Send" />
 		</form>
 	{% endif %}
