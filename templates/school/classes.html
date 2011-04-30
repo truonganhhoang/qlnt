@@ -21,15 +21,14 @@ function confirmDelete()
 		<td align="center" width="20%"> Năm </td>
 		<td align="center" width="5%"></td>
 	</tr>
-	
 	{% for class in classList %}
 	<tr>
-		<td align="center" width="10%"> <a href="{%url school.views.classes  %}/viewClassDetail/{{class.id}}" >{{class.id}} </td>
+		<td align="center" width="10%"> <a href="{%url school.views.school_index  %}viewClassDetail/{{class.id}}" >{{ss.id}} </td>
 		<td align="center" width="20%"> {{class.name}} </td>
 		<td align="center" width="20%"> {{class.block_id}} </td>
 		<td align="center" width="25%"> {{class.teacher_id}} </td>
 		<td align="center" width="20%"> {{class.year_id}} </td>
-		<td align="center" width="5%"> <a href="{%url school.views.classes  %}/deleteClass/{{class.id}}" onclick="return confirmDelete();"> xóa </a></td>
+		<td align="center" width="5%"> <a href="{%url school.views.school_index  %}deleteClass/{{class.id}}" onclick="return confirmDelete();"> xóa </a></td>
 	</tr>
 	{% endfor %}
 </table>

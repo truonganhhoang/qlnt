@@ -29,7 +29,7 @@ function confirmDelete()
 
     {% for ss in studentList %}
     <tr>
-        <td align="center" width="5%"> <a href="{%url school.views.students %}/viewStudentDetail/{{ss.id}}"> {{ss.id}} </td>
+        <td align="center" width="5%"> <a href="{%url school.views.school_index  %}/viewStudentDetail/{{ss.id}}"> {{ss.id}} </td>
         <td align="center" width="15%"> {{ss.last_name}} </td>
         <td align="center" width="10%"> {{ss.first_name}} </td>
         <td align="center" width="15%"> {{ss.birthday}}</td>
@@ -38,7 +38,7 @@ function confirmDelete()
         <td align="center" width="8%"> {{ss.class_id}} </td>        
         <td align="center" width="15%"> {{ss.school_join_date}} </td>
         <td align="center" width="10%"> {{ss.start_year_id}} </td>
-        <td width = "5%"> <a href = "{%url school.views.students  %}/deleteStudentInSchool/{{ss.id}}" onclick="return confirmDelete();"> xóa</a></td>
+        <td width = "5%"> <a href = "{%url school.views.school_index  %}/deleteStudentInSchool/{{ss.id}}" onclick="return confirmDelete();"> xóa</a></td>
     </tr>
     {% endfor %}
     

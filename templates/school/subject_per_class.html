@@ -24,12 +24,12 @@ function confirmDelete()
 
     {% for ss in subjectList %}
     <tr>
-        <td align="center" width="5%"> <a href="{%url school.views.subjectPerClass class_id  %}/viewSubjectDetail/{{ss.id}}"> {{ss.id}} </td>
+        <td align="center" width="5%"> <a href="{%url school.views.school_index  %}viewSubjectDetail/{{ss.id}}"> {{ss.id}} </td>
         <td align="center" width="20%"> {{ss.name}} </td>
         <td align="center" width="10%"> {{ss.hs}} </td>
 
         <td align="center" width="20%"> {{ss.teacher_id}}</td>
-        <td width = "5%"> <a href = "{%url school.views.subjectPerClass class_id  %}/deleteSubject/{{ss.id}}" onclick="return confirmDelete();">xóa</a></td>
+        <td width = "5%"> <a href = "{%url school.views.school_index  %}deleteSubject/{{ss.id}}" onclick="return confirmDelete();">xóa</a></td>
     </tr>
     {% endfor %}
     

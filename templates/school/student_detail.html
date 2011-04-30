@@ -1,6 +1,8 @@
 {% extends "school/base_school.html" %}
 
 {% block content %}
+<a href="{%url school.views.school_index  %}MarkForAStudent/{{pupil.class_id.id}}/{{pupil.id}}">Điểm</a>
+<br>
 <form action="/school/viewStudentDetail/{{id}}" method="post">{% csrf_token %}
     {{ form.non_field_errors }}
     <div class="fieldWrapper">
