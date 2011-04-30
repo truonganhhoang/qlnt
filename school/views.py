@@ -197,7 +197,7 @@ def subjectPerClass(request, class_id):
     subjectList = Subject.objects.filter(class_id = class_id)
     form = SubjectForm()
     if request.method == 'POST':
-        data = {'name':request.POST['name'], 'hs':request.POST['hs'], 'loai':request.POST['loai'], 'class_id':class_id, 'teacher_id':request.POST['teacher_id'], 'term_id':request.POST['term_id']}
+        data = {'name':request.POST['name'], 'hs':request.POST['hs'], 'class_id':class_id, 'teacher_id':request.POST['teacher_id']}
         form = SubjectForm(data)
         if form.is_valid():
             form.save()
@@ -1013,9 +1013,10 @@ def test(request, school_code = None):
     c = RequestContext(request)
 
     return HttpResponse(t.render(c))
+
 def deleteSubject(request, subject_id):
     message = "You have deleted succesfully"
-    sub = Subject.objects.filter(id = subject_id)
+    sub = Subject.objects.get(id = subject_id)
     class_id = sub.class_id
     sub.delete()
     subjectList = Subject.objects.filter(class_id = class_id)
@@ -1026,7 +1027,7 @@ def deleteSubject(request, subject_id):
 
 def deleteTeacher(request, teacher_id):
     message = "You have deleted succesfully"
-    s = Teacher.objects.filter(id = teacher_id)
+    s = Teacher.objects.get(id = teacher_id)
     s.delete()
     teacherList = Teacher.objects.all()
     form = TeacherForm()
@@ -1036,14 +1037,14 @@ def deleteTeacher(request, teacher_id):
 
 def deleteClass(request, class_id):
     message = "You have deleted succesfully"
-    s = Class.objects.filter(id = class_id)
+    s = Class.objects.get(id = class_id)
     s.delete()
     classList = Class.objects.all()
     form = ClassForm()
     t = loader.get_template('school/classes.html')
     c = RequestContext(request, {'form' : form, 'message' : message,  'classList' : classList})
     return HttpResponse(t.render(c))
-    
+
 def deleteStudentInClass(request, student_id):
     message = "You have deleted succesfully"
     student = Pupil.objects.get(id = student_id)
@@ -1055,7 +1056,6 @@ def deleteStudentInClass(request, student_id):
     c = RequestContext(request, {'form' : form, 'message' : message,  'studentList' : studentList, 'class_id' : class_id.id})
     return HttpResponse(t.render(c))
 
-
 def deleteStudentInSchool(request, student_id):
     message = "You have deleted succesfully"
     sub = Pupil.objects.filter(id = student_id)
@@ -1064,3 +1064,4 @@ def deleteStudentInSchool(request, student_id):
     form = PupilForm()
     t = loader.get_template('school/students.html')
     c = RequestContext(request, {'form' : form, 'message' : message,  'studentList' : studentList})
+    return HttpResponse(t.render(c))
