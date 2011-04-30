@@ -1,32 +1,13 @@
 {% extends "base.html" %}
 
-{% block title %}
-Send message
-{% endblock %}
-  
-{% block navi %}
-	<a href ="/">Index</a> - <a href="/help">help</a> - 
-	{% if user.is_authenticated %}
-		Welcome {{user.username}}! <a href="/logout">logout</a> 
-	{% else %} 
-	 	<a href="/login">login</a>
-	{% endif %}
-{% endblock %}
-
 {% block content %}
 	{% if user.is_authenticated %}
-	
-		<h3>Send message</h3>
+		<h3>Gửi thông báo</h3>
 		<form action="" method="post">{% csrf_token %}
 		{{ form.as_p }}
 		<input type="submit" value="Send" />
 		</form>
-
-		{% else %}
-		You need login to use system.
 	{% endif %}
 {% endblock %}
 
-{% block footer %}
-&copy 2011 - VNU Hanoi & Viettel
-{% endblock %}
+

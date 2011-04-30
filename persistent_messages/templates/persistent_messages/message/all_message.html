@@ -1,21 +1,11 @@
 {% extends "base.html" %}
 
 {% block title %}
-All messages
+Xem thông báo 
 {% endblock %}
   
-{% block navi %}
-	<a href ="/">Index</a> - <a href="/help">help</a> - 
-	{% if user.is_authenticated %}
-		Welcome {{user.username}}! <a href="/logout">logout</a> 
-	{% else %} 
-	 	<a href="/login">login</a>
-	{% endif %}
-{% endblock %}
-
 {% block content %}
 	{% if user.is_authenticated %}
-	
 	    {% if message_list %}
 		    <ul>
 		    {% for ml in message_list %}
@@ -25,16 +15,11 @@ All messages
 		    {% endfor %}
 		    </ul>
 		{% else %}
-		    <p>No message are available.</p>
+		    <p>Không có thông báo nào.</p>
 		{% endif %}
 		
-		<a href="/messages/add_message/">Send new message</a>
-		
-	{% else %}
-		You need login to use system.
+		<a href="/messages/add_message/">Gửi thông báo mới</a>
 	{% endif %}
 {% endblock %}
 
-{% block footer %}
-&copy 2011 - VNU Hanoi & Viettel
-{% endblock %}
+

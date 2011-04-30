@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import persistent_messages
 from persistent_messages.constants import PERSISTENT_MESSAGE_LEVELS
 from django.db import models
@@ -9,23 +10,24 @@ from django.contrib.messages import utils
 from django.utils.translation import ugettext_lazy as _
 
 LEVEL_TAGS = utils.get_level_tags()
+LEVEL_CHOICES = (
+    (persistent_messages.INTERNAL, 'Trong hệ thống'),
+    (persistent_messages.SMS, 'Điện thoại (SMS)')
+)
 
 class Message(models.Model):
-    user = models.ForeignKey(User, blank=True, null=True)
-    from_user = models.ForeignKey(User, blank=True, null=True, related_name="from_user")
-    subject = models.CharField(max_length=255, blank=True, default='')
-    message = models.TextField()
-    LEVEL_CHOICES = (
-        (persistent_messages.INTERNAL, 'Internal'),
-        (persistent_messages.SMS, 'SMS')
-    )
+    user = models.ForeignKey(User, blank=True, null=True, verbose_name='Người nhận')
+    from_user = models.ForeignKey(User, blank=True, null=True, related_name="from_user", verbose_name='Người gửi')
+    subject = models.CharField('Tiêu đề', max_length=255, blank=True, default='')
+    message = models.TextField('Nội dung')
+
     level = models.IntegerField(choices=LEVEL_CHOICES)
     extra_tags = models.CharField(max_length=128)
-    created = models.DateTimeField(auto_now_add=True)    
+    created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
     read = models.BooleanField(default=False)
-    expires = models.DateTimeField(null=True, blank=True)
-    close_timeout = models.IntegerField(null=True, blank=True)
+    #expires = models.DateTimeField(null=True, blank=True)
+    #close_timeout = models.IntegerField(null=True, blank=True)
 
     def is_persistent(self):
         return self.level in PERSISTENT_MESSAGE_LEVELS
@@ -84,8 +86,4 @@ class MessageForm(forms.Form):
     user = forms.MultipleChoiceField()
     subject = forms.CharField()
     message = forms.CharField(widget=forms.widgets.Textarea())
-    LEVEL_CHOICES = (
-        (persistent_messages.INTERNAL, 'Internal'),
-        (persistent_messages.SMS, 'SMS')
-    )
     type = forms.ChoiceField(choices=LEVEL_CHOICES)

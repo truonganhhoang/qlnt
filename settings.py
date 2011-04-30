@@ -170,3 +170,7 @@ LOGIN_REDIRECT_URL = '/'
 
 # Set the message storage backend
 MESSAGE_STORAGE = 'persistent_messages.storage.PersistentMessageStorage'
+
+LOCALE_PATHS = (
+    os.path.join(os.path.dirname(__file__), 'locale')
+)

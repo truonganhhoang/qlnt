@@ -1,21 +1,19 @@
 {% extends "base.html" %}
 
 {% block title %}
-Homepage
+Trang chủ 
 {% endblock %}
   
 {% block content %}
 	{% if user.is_authenticated %}
 		{% if user.is_superuser %}
-			<a href="/admin">Admin</a> <br> 
+			<a href="/admin">Quản trị hệ thống</a> <br> 
+			<a href="/admin/org">Sơ đồ tổ chức</a> <br>
 		{% else %}
-			<h1>School administrator menu</h1> 
-			<a href="/classes">Classes</a> <br>
-			<a href="/mark_table">Mark table</a> <br>
-			<a href="/students/import/">Mark table</a> <br>
+			<a href="/school">Trường</a> <br>
 		{% endif %}
-		<a href="/messages">Message</a><br>
+		<a href="/messages">Thông báo</a><br>
 	{% else %}
-		<br>You need to login to use system.
+		<br>Bạn cần đăng nhập để sử dụng hệ thống.
 	{% endif %}
 {% endblock %}

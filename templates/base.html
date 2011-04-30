@@ -3,7 +3,7 @@
 <head>
 	<title>
 	{% block title %}
-		<a href="/">School Administration</a>
+		<a href="/">Quản lý nhà trường</a>
 	{% endblock %}
 	</title>
 	{% block js %}{% endblock %}
@@ -11,19 +11,19 @@
 </head>
 
 <body>
-	<div id="top"><a href="/">School Administration</a></div>
+	<div id="top"><a href="/">Quản lý nhà trường</a></div>
 	
 	<div id="navi">{% block navi %} 
-		<a href ="/">Home</a> - <a href="/help">Help</a> - 
+		<a href ="/">Trang nhất</a> - <a href="/help">Trợ giúp</a> - 
 		{% if user.is_authenticated %}
-			<a href="/logout">Logout <b>{{user.username}}</b></a> 
+			<a href="/logout">Đăng xuất <b>{{user.username}}</b></a> 
 		{% else %} 
-		 	<a href="/login">Login</a>
+		 	<a href="/login">Đăng nhập</a>
 		{% endif %}
 	{% endblock %}</div>
 	
 	<div id="content">{% block content %}{% endblock %} </div>
 	
-	<div id="footer">{% block footer %}&copy 2011 by UET-VNU & Viettel{% endblock %} </div>
+	<div id="footer">{% block footer %}&copy 2011 UET-VNU & Viettel{% endblock %} </div>
 </body>
 </html>

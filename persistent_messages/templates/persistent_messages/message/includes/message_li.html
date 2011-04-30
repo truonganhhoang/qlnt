@@ -1,6 +1,6 @@
 {% load i18n %}
-    <li id="message-{{ message.pk }}" {% if message.tags %} class="{{ message.tags }}"{% endif %}>
-        {% if message.subject %}<strong>{{ message.subject }}</strong>{% endif %}
+	<li id="message-{{ message.pk }}" {% if message.tags %} class="{{ message.tags }}"{% endif %}>
+		{% if message.subject %}<strong>{{ message.subject }}</strong>{% endif %}
         	{% if message.from_user %}<h4>From: {{ message.from_user }}</h4><br />{% endif %}
         {% if message.is_persistent or jquery %}
             {% with 32 as max_words %}

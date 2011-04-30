@@ -1,38 +1,17 @@
 {% extends "base.html" %}
 
-{% block title %}
-Homepage
-{% endblock %}
-  
-{% block navi %}
-	<a href ="/">Index</a> - <a href="/help">help</a> - 
-	{% if user.is_authenticated %}
-		Welcome {{user.username}}! <a href="/logout">logout</a> 
-	{% else %} 
-	 	<a href="/login">login</a>
-	{% endif %}
-{% endblock %}
-
 {% block content %}
 	{% if user.is_authenticated %}
-
-		{# Example message detail template #}
 		<div class="message{% if message.tags %} {{ message.tags }}{% endif %}>">
-		    {% if message.subject %}<h1>{{ message.subject }}</h1>{% endif %}
-        	{% if message.from_user %}<h4>From: {{ message.from_user }}</h4><br />{% endif %}
-		    <p>{{ message.created|date }}</p>
-		    {% if message.from_user %}<p>From: {{ message.from_user }}</p>{% endif %}
-		    <p>{{ message.message }}</p>
+		{% if message.subject %}<h1>{{ message.subject }}</h1>{% endif %}
+		{% if message.from_user %}<h4>Người gửi: {{ message.from_user }}</h4><br/>{% endif %}
+		<p>{{ message.created|date }}</p>
+		{% if message.from_user %}<p>Người gửi: {{ message.from_user }}</p>{% endif %}
+		<p>{{ message.message }}</p>
 		</ul>
 
-		<a href="/messages/all_messages/">Back to view all messages</a>
-		
-		{% else %}
-		You need login to use system.
+		<a href="/messages/all_messages/">Danh sách thông báo</a>
 	{% endif %}
 {% endblock %}
 
-{% block footer %}
-&copy 2011 - VNU Hanoi & Viettel
-{% endblock %}
-		
+

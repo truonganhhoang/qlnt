@@ -4,7 +4,6 @@ from app.models import Organization, User, PositionType
 
 class OrganizationAdmin(admin.ModelAdmin):
     list_display = ('name', 'address', 'email', 'upper_organization', 'manager_name')
-    description = "asfasd "
 
 admin.site.register(Organization, OrganizationAdmin)
 
