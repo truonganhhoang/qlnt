@@ -113,6 +113,11 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
 )
 
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'objectpermission.backends.ObjectPermissionBackend',
+)
+
 ROOT_URLCONF = 'qlnt.urls'
 
 TEMPLATE_DIRS = (
@@ -138,6 +143,7 @@ INSTALLED_APPS = (
     'app',
     'school',
     'persistent_messages',
+    'objectpermission',
 )
 
 # A sample logging configuration. The only tangible logging

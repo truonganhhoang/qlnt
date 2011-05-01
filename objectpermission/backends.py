@@ -11,20 +11,26 @@ class ObjectPermissionBackend(object):
     def authenticate(self, username, password):
         return None
 
-    def has_perm(self, user_obj, perm, perm_info=None):
+    def has_perm(self, user_obj, perm, value=None):
+        """ perm parameter must has value like:
+        table_name.field_name_permission
+        Eg: Organization.name_view
+        """
         if not user_obj.is_authenticated():
             user_obj = User.objects.get(pk=settings.ANONYMOUS_USER_ID)
 
-        if obj is None:
+        if value is None:
             return False
 
         try:
-            perm = perm.split('.')[-1].split('_')[0]
-            print perm
+            table_name = perm.split('.')[0]
+            field_name = perm.split('.')[1].split('_')[0]
+            permission = perm.split('.')[1].split('_')[-1]
         except IndexError:
             return False
 
-        p = ObjectPermission.objects.filter(content_type=ct,
-                                            object_id=obj.id,
-                                            user=user_obj)
-        return p.filter(**{'can_%s' % perm: True}).exists()
+        p = ObjectPermission.objects.filter(user=user_obj,
+                                            table_name=table_name,
+                                            field_name=field_name,
+                                            value=value)
+        return p.filter(**{'can_%s' % permission: True}).exists()
