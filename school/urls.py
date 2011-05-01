@@ -6,8 +6,14 @@ urlpatterns = patterns('',
 	url(r'mark_table/(?P<class_id>\w+)','school.views.mark_table'),
 	url(r'markForAStudent/(?P<class_id>\w+)/(?P<student_id>\w+)','school.views.markForAStudent'),
 	# xep loai hoc luc theo lop, gom co xep loai k1, k2 va ca nam
-	url(r'xepLoaiHlTheoLop/(?P<class_id>\w+)','school.views.xepLoaiHlTheoLop'),
+	url(r'xepLoaiHlTheoLop/(?P<class_id>\w+)','school.views.xepLoaiHlTheoLop'),	
 
+	# tinh diem tong ket cua hoc ky va tinh hoc luc cua tat ca hoc sinh trong toan truong theo hoc ky
+	url(r'finishTerm/(?P<term_id>\w+)','school.views.finishTerm'),
+
+	# tinh diem tong ket cua hoc ky va tinh hoc luc cuoi nam 
+	url(r'finishYear/(?P<year_id>\w+)','school.views.finishYear'),
+	
     url(r'classes$', 'school.views.classes'),
     url(r'teachers$', 'school.views.teachers'),
     url(r'students$', 'school.views.students'),
