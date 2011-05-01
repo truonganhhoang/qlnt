@@ -7,7 +7,7 @@ DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
-    # ('Your Name', 'your_email@example.com'),
+    ('admin', 'qlnt@googlegroups.com'),
 )
 
 MANAGERS = ADMINS
@@ -78,7 +78,7 @@ STATIC_URL = '/static/'
 # URL prefix for admin static files -- CSS, JavaScript and images.
 # Make sure to use a trailing slash.
 # Examples: "http://foo.com/static/admin/", "/static/admin/".
-ADMIN_MEDIA_PREFIX = '/static/admin/'
+#ADMIN_MEDIA_PREFIX = '/static/admin/'
 
 # Additional locations of static files
 STATICFILES_DIRS = (
@@ -123,6 +123,7 @@ ROOT_URLCONF = 'qlnt.urls'
 TEMPLATE_DIRS = (
     os.path.join(os.path.dirname(__file__), 'templates'),
     os.path.join(os.path.dirname(__file__), 'persistent_messages/templates'),
+    #os.path.join(os.path.dirname(__file__), 'rosetta/templates'),
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
@@ -177,3 +178,5 @@ MESSAGE_STORAGE = 'persistent_messages.storage.PersistentMessageStorage'
 LOCALE_PATHS = (
     os.path.join(os.path.dirname(__file__), 'locale')
 )
+
+AUTH_PROFILE_MODULE = 'app.UserProfile'

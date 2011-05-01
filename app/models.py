@@ -1,58 +1,39 @@
 # -*- coding: utf-8 -*-
 from django.db import models
 from django import forms
+from django.contrib.auth.models import User
 
 '''
 Các mô hình dữ liệu dùng chung giữa các đơn vị trong hệ thống và 
 các mô hình dữ liệu cấp Phòng, Sở (ngoài trường phổ thông)
 '''
+
 ORGANIZATION_LEVEL_CHOICES = (('T', 'Trường'),
                              ('P', 'Phòng'),
                              ('S', 'Sở')) 
+
 class Organization(models.Model):
-    ''' Thông tin về sơ đồ tổ chức của các sở, phòng và các trường
-    ''' 
+    ''' Thông tin về sơ đồ tổ chức của các sở, phòng và các trường ''' 
     name = models.CharField('Tên tổ chức', max_length=100) #tên đơn vị. tổ chức 
-    address = models.CharField("Địa chỉ", max_length=255, null=True) #
-    phone_number = models.CharField("Điện thoại", max_length=20, null=True)
-    email = models.EmailField(max_length=50, null=True)
     level = models.CharField("cấp", max_length=2, choices=ORGANIZATION_LEVEL_CHOICES) #Cấp
     upper_organization = models.ForeignKey('self', blank=True, null=True, verbose_name='Trực thuộc')
-    manager_name = models.CharField("Tên thủ trưởng", max_length=100, null=True)
+    manager_name = models.CharField("Tên thủ trưởng", max_length=100, blank=True, null=True)
+    address = models.CharField("Địa chỉ", max_length=255, blank=True, null=True) #
+    phone = models.CharField("Điện thoại", max_length=20, blank=True, null=True)
+    email = models.EmailField(max_length=50, blank=True, null=True)
     
     def __unicode__(self):
         return self.name
-    
-class OrganizationForm (forms.Form):
-    name = forms.CharField(max_length=100, min_length=1) #tên đơn vị. tổ chức 
-    address = forms.CharField(max_length=255, min_length=1) #
-    phone_number = forms.CharField(max_length=20, min_length=1)
-    email = forms.EmailField(max_length=50, min_length=1)
-    level = forms.CharField(max_length=2, widget=forms.Select(choices=ORGANIZATION_LEVEL_CHOICES)) #Cấp
+
+class OrganizationForm(forms.Form):
+    name = forms.CharField(max_length=100) #tên đơn vị. tổ chức 
+    level = forms.CharField(max_length=2, widget=forms.RadioSelect(choices=ORGANIZATION_LEVEL_CHOICES)) #Cấp
     upper_organization = forms.ModelMultipleChoiceField(queryset=Organization.objects.all())    
-    manager_name = forms.CharField(max_length=100, min_length=1)
-  
-class SchoolForm(forms.Form):
-    def __init__(self, *args, **kwargs):
-        super(SchoolForm, self).__init__(*args, **kwargs)
-        self.fields['upper_organization'].choices = [(-1, '-------')] + \
-                [Organization.objects.filter("organization_type == 'P' or organization_type == 'S'")]
-    
-    name = forms.CharField(max_length=100, min_length=1)
-    address = forms.CharField(max_length=255, min_length=1)
-    phone_number = forms.CharField(max_length=40, min_length=9)
-    upper_organization = forms.ChoiceField()
+    address = forms.CharField(max_length=255) #
+    phone = forms.CharField(max_length=20)
+    email = forms.EmailField(max_length=50)
 
-
-#class OrganizationForm(forms.Form):
-#    name = forms.CharField(max_length=100, min_length=1)
-#    adress = forms.CharField(max_length=255, min_length=1)
-#    phone_number = forms.CharField(max_length=40, min_length=9)
-#    email_adress = forms.EmailField()
-#    manager_name = forms.CharField(max_length=100, min_length=1)
-
-
-class PositionType(models.Model):
+class Position(models.Model):
     '''
     Chức vụ công tác
     '''
@@ -61,29 +42,22 @@ class PositionType(models.Model):
     def __unicode__(self):
         return self.name
 
-## form validate for PositionType
-#class PositionTypeForm(forms.Form):
-#    name = forms.CharField(max_length=100, min_length=1)
-
-
-class User(models.Model):
+class UserProfile(User):
     '''
-    Thông tin về người sủ dụng
+    Thông tin về người sủ dụng hệ thống, mở rộng User của Django.
     '''
-    name = models.CharField(max_length=100)
-    birthday = models.DateField()
-    phone_number = models.CharField(max_length=40)
-    #------------------------------ fax_number = models.CharField(max_length=50)
-    email = models.EmailField()
-    position = models.ForeignKey(PositionType)
-    organization = models.ForeignKey(Organization)
+    organization = models.ForeignKey(Organization, verbose_name='Đơn vị')
+    position = models.ForeignKey(Position, verbose_name='Chức vụ', blank=True, null=True)
+    phone = models.CharField('Điện thoại di động', max_length=20, blank=True, null=True) #để gửi tin nhắn.
+    notes = models.CharField('Ghi chú', max_length=255, blank=True, null=True)
+    #TODO permission
     
     def __unicode__(self):
         return self.name
 
 class UserForm(forms.ModelForm):
     class Meta:
-        model = User
+        model = UserProfile
 
 #class SchoolYear(models.Model):
 #    name = models.CharField(max_length=100)

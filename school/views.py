@@ -312,12 +312,9 @@ def mark_table(request,class_id=4):
     list=None
     idList=[]    
     
-    ttt=2
     beforeTerm=None
     #subjectChoice=-1
-    ttt1=subjectChoice
     if ( subjectChoice!=-1) & ( termChoice!=-1) :
-        ttt=322;
     
         pupilList = Pupil.objects.filter(class_id=class_id)
         
@@ -1188,15 +1185,15 @@ def danh_sach_trung_tuyen(request):
     student_list = request.session['student_list']
     school = request.session['school']
     message = None
-    if school.school_level == 1:
-        lower_bound = 1
-        upper_bound = 5
-    elif school.school_level == 2:
-        lower_bound = 6
-        upper_bound = 9
-    else:
-        lower_bound = 10
-        upper_bound = 12
+#    if school.school_level == 1:
+#        lower_bound = 1
+#        upper_bound = 5
+#    elif school.school_level == 2:
+#        lower_bound = 6
+#        upper_bound = 9
+#    else:
+#        lower_bound = 10
+#        upper_bound = 12
         
     
     if request.method == 'POST':
@@ -1245,7 +1242,7 @@ def danh_sach_trung_tuyen(request):
 #------------------------------------------------------------------------------------
 def diem_danh(request, class_id, day, month, year):
     message = None
-    listdh = None
+#    listdh = None
     pupilList = Pupil.objects.filter(class_id = class_id)
     time = date(int(year),int(month),int(day))
     form = []
@@ -1258,7 +1255,7 @@ def diem_danh(request, class_id, day, month, year):
             i = i+1
         except ObjectDoesNotExist:
             i = i+1
-    listdh = zip(pupilList,form)
+#    listdh = zip(pupilList,form)
     if request.method == 'POST':
         message = 'Cập nhật thành công danh sách điểm danh lớp ' + str(Class.objects.get(id = class_id)) +'. Ngày ' + str(time)
         list = request.POST.getlist('loai')

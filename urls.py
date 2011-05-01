@@ -21,7 +21,6 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
     
     # urls for app app
-    
     url(r'^app/', include('app.urls')),
     # urls for batchimport app
     url(r'^school/', include('batchimport.urls')),
@@ -29,10 +28,6 @@ urlpatterns = patterns('',
     url(r'^school/', include('school.urls')),
     
     url(r'^messages/', include('persistent_messages.urls')),
-    
-    #url(r'^grappelli/', include('grappelli.urls')),
-    
-    url(r'^rosetta/', include('rosetta.urls')),
     
     (r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
 )
