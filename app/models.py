@@ -53,7 +53,7 @@ class UserProfile(User):
     #TODO permission
     
     def __unicode__(self):
-        return self.name
+        return self.first_name + self.last_name  
 
 class UserForm(forms.ModelForm):
     class Meta:

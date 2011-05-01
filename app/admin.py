@@ -14,9 +14,10 @@ admin.site.register(Organization, OrganizationAdmin)
 admin.site.register(Position)
 
 class UserProfileAdmin(admin.ModelAdmin):
-    list_display = ('name', 'position', 'birthday', 'email', 'phone', 'organization')
+    list_display = ('username', 'first_name', 'last_name', 'organization', 'position', 'email', 'phone')
+    list_editable = ['first_name', 'last_name', 'organization', 'position', 'email', 'phone']
     list_filter = ('organization')
-    search_fields = ['name', 'email']
+    search_fields = ['first_name', 'last_name', 'organization',  'email', 'phone', 'notes']
 admin.site.register(UserProfile)
 
 
