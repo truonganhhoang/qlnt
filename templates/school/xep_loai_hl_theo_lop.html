@@ -83,7 +83,11 @@
 				</td>
 				{% for s in m %}
 					<td align="center">
+					{% ifequal s "" %}
+						&nbsp
+					{% else %}						
 						{{ s }}
+					{% endifequal %}	
 					</td>
 				{% endfor %}
 				
