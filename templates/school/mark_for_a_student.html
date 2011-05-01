@@ -35,11 +35,12 @@
 	Lớp: {{selectedClass}}
 	</td>
 	</tr>
+	
 	<tr>								
 		
 		<td> Học kỳ &nbsp&nbsp:  
 		<select name="term" onclick="submitTerm();" >				
-			<option value=-1 selected > Chọn kỳ </option>
+			<option value=-1 > Chọn kỳ </option>
 			{% for term in termList %}
 					<option   value={{ term.id }} selected> {{ term}} </option>	
 			{% endfor %}	
@@ -47,6 +48,153 @@
 		</select>
 		</td>					
 	</tr>
+	<tr>
+	<td> &nbsp</td>
+	</tr>
+	<tr>
+		<table border=1 width="50%">
+			<tr>
+				<td rowspan =2 align="center" width= "10%">
+					Học kỳ
+				</td>
+				<td colspan =2 align="center" width= "20%" >
+					Kết quả xết loại
+				</td>
+				{% ifequal selectedTerm.number 2 %}
+				<td colspan =2 align="center" width= "20%">
+					Xếp loại lại sau KT lại môn học hoặc rèn luyện thêm về học lực
+				</td>
+				{% endifequal %}
+				
+			</tr>
+			<tr>
+				<td align="center" width= "10%">
+					TB
+				</td>
+				<td align="center" width= "10%">
+					HL
+				</td>
+
+				{% ifequal selectedTerm.number 2 %}
+				<td align="center" width= "10%">
+					TB
+				</td>
+				<td align="center" width= "10%">
+					HL
+				</td>
+				{% endifequal %}						
+			</tr>
+			<tr>
+				<td align="center" >
+				 Học Kỳ I
+				</td>
+				<td align="center">
+					{{tbhk1.tb_hk}}
+				</td>
+				<td align="center">
+				{% ifequal tbhk1.hl_hk "G" %}					
+					Giỏi
+				{% else %}	
+				{% ifequal tbhk1.hl_hk "K" %}					
+					Khá
+				{% else %}	
+				{% ifequal tbhk1.hl_hk "TB" %}					
+					Trung bình
+				{% else %}	
+				{% ifequal tbhk1.hl_hk "Y" %}					
+					Yếu
+				{% else %}	
+				{% ifequal tbhk1.hl_hk "Kem" %}					
+					Kém
+				{% endifequal %}	
+				{% endifequal %}	
+				{% endifequal %}	
+				{% endifequal %}	
+				{% endifequal %}	
+			
+			</td>
+			{% ifequal selectedTerm.number 2  %}
+				<td>
+				</td>
+				<td>
+				</td>
+			{% endifequal %}	
+			</tr>
+			{% ifequal selectedTerm.number 2  %}
+			<tr>
+				<td align="center" >
+				 Học Kỳ II
+				</td>
+				<td align="center">
+					{{tbhk2.tb_hk}}
+				</td>
+				<td align="center">
+				{% ifequal tbhk2.hl_hk "G" %}					
+					Giỏi
+				{% else %}	
+				{% ifequal tbhk2.hl_hk "K" %}					
+					Khá
+				{% else %}	
+				{% ifequal tbhk2.hl_hk "TB" %}					
+					Trung bình
+				{% else %}	
+				{% ifequal tbhk2.hl_hk "Y" %}					
+					Yếu
+				{% else %}	
+				{% ifequal tbhk2.hl_hk "Kem" %}					
+					Kém
+				{% endifequal %}	
+				{% endifequal %}	
+				{% endifequal %}	
+				{% endifequal %}	
+				{% endifequal %}	
+				</td>
+				<td>
+				</td>
+				<td>
+				</td>
+
+				</tr>	
+			
+			<tr>
+				<td align="center" >
+				 Cả năm
+				</td>
+				<td align="center">
+					{{tbCaNam.tb_nam}}
+				</td>
+				<td align="center">
+				{% ifequal tbCaNam.hl_nam "G" %}					
+					Giỏi
+				{% else %}	
+				{% ifequal tbCaNam.hl_nam "K" %}					
+					Khá
+				{% else %}	
+				{% ifequal tbCaNam.hl_nam "TB" %}					
+					Trung bình
+				{% else %}	
+				{% ifequal tbCaNam.hl_nam "Y" %}					
+					Yếu
+				{% else %}	
+				{% ifequal tbCaNam.hl_nam "Kem" %}					
+					Kém
+				{% endifequal %}	
+				{% endifequal %}	
+				{% endifequal %}	
+				{% endifequal %}	
+				{% endifequal %}	
+				</td>
+				<td>
+				</td>
+				<td>
+				</td>
+
+			</tr>	
+			{% endifequal %}
+		
+		</table>
+	</tr>
+	
 	
 <script type="text/javascript" >
 	document.info.term.value={{termChoice}}
@@ -117,7 +265,7 @@
 		
 		
 	{% ifequal selectedTerm.number 1 %} 
-		{% for s,m in list %}		
+		{% for s,m in list %}	
 		<tr>
 			<td align="center">
 			 {{forloop.counter}}	
@@ -125,6 +273,8 @@
 			<td>
 				{{s}}
 			</td>
+
+			{% ifnotequal s.hs 	0 %}
 
 			<td align="center">
 				{{m.mieng_1|floatformat:"-1"}}  
@@ -181,6 +331,98 @@
 				{{m.tb|floatformat:"-1"}}  
 			</td>
 		</tr>		
+		{% else %}
+			<td colspan=5 align="center">
+			{% ifequal m.mieng_1 9 %}
+				G
+			{% else %}	
+			{% ifequal m.mieng_1 7 %}
+				K
+			{% else %}	
+			{% ifequal m.mieng_1 6 %}
+				TB
+			{% else %}	
+			{% ifequal m.mieng_1 4 %}
+				Y
+			{% else %}	
+			{% ifequal m.mieng_1 1 %}
+				Kém
+			{% endifequal %}	
+			{% endifequal %}	
+			{% endifequal %}	
+			{% endifequal %}	
+			{% endifequal %}	
+			
+			</td>
+			<td colspan=5>
+			</td>
+			<td colspan=5 align="center">
+			{% ifequal m.mot_tiet_1 9 %}
+				G
+			{% else %}	
+			{% ifequal m.mot_tiet_1 7 %}
+				K
+			{% else %}	
+			{% ifequal m.mot_tiet_1 6 %}
+				TB
+			{% else %}	
+			{% ifequal m.mot_tiet_1 4 %}
+				Y
+			{% else %}	
+			{% ifequal m.mot_tiet_1 1 %}
+				Kém
+			{% endifequal %}	
+			{% endifequal %}	
+			{% endifequal %}	
+			{% endifequal %}	
+			{% endifequal %}	
+			</td>
+			<td  align="center">
+			{% ifequal m.ck 9 %}
+				G
+			{% else %}	
+			{% ifequal m.ck 7 %}
+				K
+			{% else %}	
+			{% ifequal m.ck 6 %}
+				TB
+			{% else %}	
+			{% ifequal m.ck 4 %}
+				Y
+			{% else %}	
+			{% ifequal m.ck 1 %}
+				Kém
+			{% endifequal %}	
+			{% endifequal %}	
+			{% endifequal %}	
+			{% endifequal %}	
+			{% endifequal %}	
+			
+			</td>
+			<td align="center">
+			{% ifequal m.tb 9 %}
+				G
+			{% else %}	
+			{% ifequal m.tb 7 %}
+				K
+			{% else %}	
+			{% ifequal m.tb 6 %}
+				TB
+			{% else %}	
+			{% ifequal m.tb 4 %}
+				Y
+			{% else %}	
+			{% ifequal m.tb 1 %}
+				Kém
+			{% endifequal %}	
+			{% endifequal %}	
+			{% endifequal %}	
+			{% endifequal %}	
+			{% endifequal %}	
+			
+			</td>
+
+		{% endifnotequal %}
 			
 		{% endfor %}
 		</table>	
@@ -196,6 +438,8 @@
 			<td>
 				{{s}}
 			</td>
+
+		{% ifnotequal s.hs 	0 %}
 
 			<td align="center">
 				{{m.mieng_1|floatformat:"-1"}}  
@@ -256,7 +500,147 @@
 			</td>			
 			<td align="center">
 				{{tbnam|floatformat:"-1"}}  
-			</td>			
+			</td>	
+		{%else %}
+			<td colspan=5 align="center">
+			{% ifequal m.mieng_1 9 %}
+				G
+			{% else %}	
+			{% ifequal m.mieng_1 7 %}
+				K
+			{% else %}	
+			{% ifequal m.mieng_1 6 %}
+				TB
+			{% else %}	
+			{% ifequal m.mieng_1 4 %}
+				Y
+			{% else %}	
+			{% ifequal m.mieng_1 1 %}
+				Kém
+			{% endifequal %}	
+			{% endifequal %}	
+			{% endifequal %}	
+			{% endifequal %}	
+			{% endifequal %}	
+			
+			</td>
+			<td colspan=5>
+			</td>
+			<td colspan=5 align="center">
+			{% ifequal m.mot_tiet_1 9 %}
+				G
+			{% else %}	
+			{% ifequal m.mot_tiet_1 7 %}
+				K
+			{% else %}	
+			{% ifequal m.mot_tiet_1 6 %}
+				TB
+			{% else %}	
+			{% ifequal m.mot_tiet_1 4 %}
+				Y
+			{% else %}	
+			{% ifequal m.mot_tiet_1 1 %}
+				Kém
+			{% endifequal %}	
+			{% endifequal %}	
+			{% endifequal %}	
+			{% endifequal %}	
+			{% endifequal %}	
+			</td>
+			<td  align="center">
+			{% ifequal m.ck 9 %}
+				G
+			{% else %}	
+			{% ifequal m.ck 7 %}
+				K
+			{% else %}	
+			{% ifequal m.ck 6 %}
+				TB
+			{% else %}	
+			{% ifequal m.ck 4 %}
+				Y
+			{% else %}	
+			{% ifequal m.ck 1 %}
+				Kém
+			{% endifequal %}	
+			{% endifequal %}	
+			{% endifequal %}	
+			{% endifequal %}	
+			{% endifequal %}	
+			
+			</td>
+			<td align="center">
+			{% ifequal hk1 9 %}
+				G
+			{% else %}	
+			{% ifequal hk1 7 %}
+				K
+			{% else %}	
+			{% ifequal hk1 6 %}
+				TB
+			{% else %}	
+			{% ifequal hk1 4 %}
+				Y
+			{% else %}	
+			{% ifequal hk1 1 %}
+				Kém
+			{% endifequal %}	
+			{% endifequal %}	
+			{% endifequal %}	
+			{% endifequal %}	
+			{% endifequal %}	
+			
+			</td>
+
+			<td align="center">
+			{% ifequal m.tb 9 %}
+				G
+			{% else %}	
+			{% ifequal m.tb 7 %}
+				K
+			{% else %}	
+			{% ifequal m.tb 6 %}
+				TB
+			{% else %}	
+			{% ifequal m.tb 4 %}
+				Y
+			{% else %}	
+			{% ifequal m.tb 1 %}
+				Kém
+			{% endifequal %}	
+			{% endifequal %}	
+			{% endifequal %}	
+			{% endifequal %}	
+			{% endifequal %}	
+			
+			</td>
+
+			<td align="center">
+			{% ifequal tbnam 9 %}
+				G
+			{% else %}	
+			{% ifequal tbnam 7 %}
+				K
+			{% else %}	
+			{% ifequal tbnam 6 %}
+				TB
+			{% else %}	
+			{% ifequal tbnam 4 %}
+				Y
+			{% else %}	
+			{% ifequal tbnam 1 %}
+				Kém
+			{% endifequal %}	
+			{% endifequal %}	
+			{% endifequal %}	
+			{% endifequal %}	
+			{% endifequal %}	
+			
+			</td>
+
+		
+		
+		{% endifnotequal %}	
 		</tr>	
 			
 		 {%endfor %}
