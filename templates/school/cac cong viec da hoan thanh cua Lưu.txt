@@ -1,0 +1,29 @@
+
+1.r'mark_table/(?P<class_id>\w+): hien bang diem cua  tat ca cac mon cua mot lop.
+
+ +cho edit va luu lai, co the di chuyen len xuong cac o bang cach dung phim mui ten
+ +khi nhap xong, an enter tu dong nhay xuong dong tiep theo(giong exel,se lam rat nhanh voi 
+ban phim cua may ban)
+
+ +cac hoc ki da qua chi cho xem, khong cho edit
+ + co ca diem cua nhung mon cham bang nhan xet
+	
+
+2.markForAStudent/(?P<class_id>\w+): diem cho 1 hoc sinh(chi cho xem, ko cho edit)
+
+3.markForASubject/(?P<subject_id>\w+):diem cua mot subject (giong 1)
+ 
+
+4.(r'xepLoaiHlTheoLop/(?P<class_id>\w+): xep loai hoc luc theo lop
+
+ 
+5.finishTerm/(?P<term_id>\w+):
+tinh diem tong ket  va hoc luc cua tat ca hoc sinh trong toan truong theo hoc ky
+output+ hien ra nhung lop da tong ket xong
+      + nhung lop chua tong ket xong , dong thoi so luong hoc sinh chua tong ket	
+
+
+6.r'finishYear/(?P<year_id>\w+):
+tinh diem tong ket va tinh hoc luc cuoi nam 
+
+output:tuong tu 5
