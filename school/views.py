@@ -302,7 +302,7 @@ def mark_table(request,class_id=4):
         if subjectChoice !=-1:    
             hsSubject=int(Subject.objects.get(id=subjectChoice).hs)    
     #currentYear  =yearList.latest()
-    currentTerm=selectedTerm         
+   # currentTerm=selectedTerm         
     pupilList=None    
     markList=[]
     tbnamList=[]
@@ -776,6 +776,456 @@ def markForAStudent(request,class_id=7,student_id=1):
     
 
     return HttpResponse(t.render(c))
+# diem cho 1 mon
+def markForASubject(request,subject_id=2):
+
+    message = None       
+    
+    subjectChoice=subject_id
+    selectedSubject=Subject.objects.get(id=subject_id)
+        
+    class_id=selectedSubject.class_id.id    
+        
+     
+    selectedClass=Class.objects.get(id=class_id)
+    yearChoice=selectedClass.year_id.id
+    
+    school_id=selectedClass.year_id.school_id.id
+    
+    selectedTerm=None
+
+
+    #find currentTerm
+    currentTerm=None
+        
+    termList=Term.objects.filter(year_id__school_id=school_id).order_by('-year_id__time','number')
+    if termList.__len__()>0:
+        currentTerm=termList[0]        
+        for term in termList:
+            if term.year_id.time==currentTerm.year_id.time:
+                currentTerm=term
+            else:
+                break
+            
+    if (yearChoice==currentTerm.year_id.id):
+        termChoice=currentTerm.id
+        selectedTerm=currentTerm
+    else:
+        termChoice=-1
+        
+    hsSubject=int(Subject.objects.get(id=subjectChoice).hs)  
+      
+    termList= Term.objects.filter(year_id=yearChoice).order_by('number')
+
+
+    if request.method == 'POST':
+        termChoice =int(request.POST['term'])
+#        subjectChoice=int(request.POST['subject'])                
+        selectedTerm=Term.objects.get(id=termChoice)
+    #currentYear  =yearList.latest()
+#    currentTerm=selectedTerm         
+
+    pupilList=None    
+    markList=[]
+    tbnamList=[]
+    tbhk1List=[]
+    tbhk1ListObjects=[]
+    tbnamListObjects=[]
+    list=None
+    idList=[]    
+    
+    ttt=2
+    beforeTerm=None
+
+    ttt1=subjectChoice
+    if ( subjectChoice!=-1) & ( termChoice!=-1) :
+        ttt=322;
+    
+        pupilList = Pupil.objects.filter(class_id=class_id)
+        
+        if currentTerm.number==1:            
+            i=1    
+            for p in pupilList:
+                m = p.mark_set.get(subject_id=subjectChoice,term_id=termChoice)
+                markList.append(m)
+            
+                k=i*100
+                id=MarkID(k+1,k+2,k+3,k+4,k+5,k+6,k+7,k+8,k+9,k+10,k+11,k+12,k+13,k+14,k+15,k+16)
+                idList.append(id)
+                i=i+1
+            
+        else:
+            beforeTerm=Term.objects.get(year_id=yearChoice,number=1).id            
+            i=1
+            for p in pupilList:
+                m = p.mark_set.get(subject_id=subjectChoice,term_id=termChoice)                
+                markList.append(m)
+                
+                hk1=p.mark_set.get(subject_id=subjectChoice,term_id=beforeTerm)
+                
+                tbhk1ListObjects.append(hk1)                                        
+                k=i*100
+                id=MarkID(k+1,k+2,k+3,k+4,k+5,k+6,k+7,k+8,k+9,k+10,k+11,k+12,k+13,k+14,k+15,k+16)
+                idList.append(id)
+                i=i+1
+
+                tbnam=p.tkmon_set.get(subject_id=subjectChoice)
+                    
+                tbnamListObjects.append(tbnam)
+    ttt=1    
+    ttt1=None
+    ttt2=None        
+    if request.method == 'POST':
+        ttt=233            
+        if (request.POST['submitChoice']=="luulai") & (hsSubject==0):
+            i=0
+            for m in markList:
+                id=idList[i]
+
+                t1=str(id.d1)    
+                t3=request.POST[t1]
+
+                if t3.isspace() or (len(t3)==0) :                
+                    m.mieng_1=None
+                else:
+                    tt=float(t3)
+                    m.mieng_1=tt
+                    
+                t1=str(id.d2)    
+                t3=request.POST[t1]
+
+                if t3.isspace() or (len(t3)==0) :                
+                    m.mot_tiet_1=None
+                else:
+                    tt=float(t3)
+                    m.mot_tiet_1=tt
+
+                t1=str(id.d3)    
+                t3=request.POST[t1]
+
+                if t3.isspace() or (len(t3)==0) :                
+                    m.ck=None
+                else:
+                    tt=float(t3)
+                    m.ck=tt
+
+                t1=str(id.d4)    
+                t3=request.POST[t1]
+
+                if t3.isspace() or (len(t3)==0) :                
+                    m.tb=None
+                else:
+                    tt=float(t3)
+                    m.tb=tt
+
+                if (currentTerm.number==2):
+                    
+                    t1=str(id.d5)    
+                    t3=request.POST[t1]
+                    ttt1=t1
+                    ttt2=t3
+                    ttt=45
+                    if t3.isspace() or (len(t3)==0) :
+                        ttt=3333                
+                        tbnamListObjects[i].tb_nam=None
+                        tbnamListObjects[i].save()
+                    else:
+                        ttt=555
+                        tt=float(t3)
+                        tbnamListObjects[i].tb_nam=tt
+                        tbnamListObjects[i].save()
+                
+                
+                    
+                m.save()
+                i=i+1    
+                #diem mieng 2
+                
+                
+        if (request.POST['submitChoice']=="luulai") & (hsSubject>0):
+            #for m in markList:
+            i=0;            
+            for m in markList:
+                sum=0
+                factorSum=0
+                id=idList[i]
+                
+                #diem mieng 1
+                t1=str(id.d1)    
+                t2=request.POST[t1]
+                t3=t2.replace(',','.',1)
+
+                if t3.isspace() or (len(t3)==0) :                
+                    m.mieng_1=None
+                else:
+                    tt=float(t3)
+                    m.mieng_1=tt
+                    sum=sum+tt
+                    factorSum+=1
+                    
+                #diem mieng 2
+                
+                t1=str(id.d2)    
+                t2=request.POST[t1]
+                t3=t2.replace(',','.',1)
+
+                if t3.isspace() or (len(t3)==0) :                
+                    m.mieng_2=None
+                else:
+                    tt=float(t3)
+                    m.mieng_2=tt
+                    sum=sum+tt
+                    factorSum+=1
+                    
+                #diem mieng 2
+                
+                t1=str(id.d3)    
+                t2=request.POST[t1]
+                t3=t2.replace(',','.',1)
+
+                if t3.isspace() or (len(t3)==0) :                
+                    m.mieng_3=None
+                else:
+                    tt=float(t3)
+                    m.mieng_3=tt
+                    sum=sum+tt
+                    factorSum+=1
+                #diem mieng 2
+
+                t1=str(id.d4)    
+                t2=request.POST[t1]
+                t3=t2.replace(',','.',1)
+
+                if t3.isspace() or (len(t3)==0) :                
+                    m.mieng_4=None
+                else:
+                    tt=float(t3)
+                    m.mieng_4=tt
+                    sum=sum+tt
+                    factorSum+=1
+
+                #diem mieng 2
+                
+                t1=str(id.d5)    
+                t2=request.POST[t1]
+                t3=t2.replace(',','.',1)
+
+                if t3.isspace() or (len(t3)==0) :                
+                    m.mieng_5=None
+                else:
+                    tt=float(t3)
+                    m.mieng_5=tt
+                    sum=sum+tt
+                    factorSum+=1
+
+                #diem mieng 2
+                t1=str(id.d6)    
+                t2=request.POST[t1]
+                t3=t2.replace(',','.',1)
+
+                if t3.isspace() or (len(t3)==0) :                
+                    m.mlam_1=None
+                else:
+                    tt=float(t3)
+                    m.mlam_1=tt
+                    sum=sum+tt
+                    factorSum+=1
+
+                #diem mieng 2
+                
+                t1=str(id.d7)    
+                t2=request.POST[t1]
+                t3=t2.replace(',','.',1)
+
+                if t3.isspace() or (len(t3)==0) :                
+                    m.mlam_2=None
+                else:
+                    tt=float(t3)
+                    m.mlam_2=tt
+                    sum=sum+tt
+                    factorSum+=1
+                    
+                #diem mieng 2
+                
+                t1=str(id.d8)    
+                t2=request.POST[t1]
+                t3=t2.replace(',','.',1)
+
+                if t3.isspace() or (len(t3)==0) :                
+                    m.mlam_3=None
+                else:
+                    tt=float(t3)
+                    m.mlam_3=tt
+                    sum=sum+tt
+                    factorSum+=1
+                #diem mieng 2
+                
+                t1=str(id.d9)    
+                t2=request.POST[t1]
+                t3=t2.replace(',','.',1)
+
+                if t3.isspace() or (len(t3)==0) :                
+                    m.mlam_4=None
+                else:
+                    tt=float(t3)
+                    m.mlam_4=tt
+                    sum=sum+tt
+                    factorSum+=1
+
+                #diem mieng 2
+                
+                t1=str(id.d10)    
+                t2=request.POST[t1]
+                t3=t2.replace(',','.',1)
+
+                if t3.isspace() or (len(t3)==0) :                
+                    m.mlam_5=None
+                else:
+                    tt=float(t3)
+                    m.mlam_5=tt
+                    sum=sum+tt
+                    factorSum+=1
+                #diem mieng 2
+                t1=str(id.d11)    
+                t2=request.POST[t1]
+                t3=t2.replace(',','.',1)
+
+                if t3.isspace() or (len(t3)==0) :                
+                    m.mot_tiet_1=None
+                else:
+                    tt=float(t3)
+                    m.mot_tiet_1=tt
+                    sum=sum+tt*2
+                    factorSum+=2
+                    
+                #diem mieng 2
+                
+                t1=str(id.d12)    
+                t2=request.POST[t1]
+                t3=t2.replace(',','.',1)
+
+                if t3.isspace() or (len(t3)==0) :                
+                    m.mot_tiet_2=None
+                else:
+                    tt=float(t3)
+                    m.mot_tiet_2=tt
+                    sum=sum+tt*2
+                    factorSum+=2
+                #diem mieng 2
+                
+                t1=str(id.d13)    
+                t2=request.POST[t1]
+                t3=t2.replace(',','.',1)
+
+                if t3.isspace() or (len(t3)==0) :                
+                    m.mot_tiet_3=None
+                else:
+                    tt=float(t3)
+                    m.mot_tiet_3=tt
+                    sum=sum+tt*2
+                    factorSum+=2
+                #diem mieng 2
+                
+                t1=str(id.d14)    
+                t2=request.POST[t1]
+                t3=t2.replace(',','.',1)
+
+                if t3.isspace() or (len(t3)==0) :                
+                    m.mot_tiet_4=None
+                else:
+                    tt=float(t3)
+                    m.mot_tiet_4=tt
+                    sum=sum+tt*2
+                    factorSum+=2
+                #diem mieng 2
+                
+                t1=str(id.d15)    
+                t2=request.POST[t1]
+                t3=t2.replace(',','.',1)
+
+                if t3.isspace() or (len(t3)==0) :                
+                    m.mot_tiet_5=None
+                else:
+                    tt=float(t3)
+                    m.mot_tiet_5=tt
+                    sum=sum+tt*2
+                    factorSum+=2
+                #diem mieng 2
+                
+                t1=str(id.d16)    
+                t2=request.POST[t1]
+                t3=t2.replace(',','.',1)
+
+                if t3.isspace() or (len(t3)==0) :                
+                    m.ck=None
+                else:
+                    tt=float(t3)
+                    m.ck=tt
+                    sum=sum+tt*3
+                    factorSum+=3
+                
+                e=0.00000000001    
+                if m.ck!=None:
+                    if factorSum==0:
+                        m.tb=0
+                    else:                        
+                        m.tb=round(sum/factorSum+e,1)
+                else:
+                    m.tb=None            
+                if (currentTerm.number==2):
+                    if (tbhk1ListObjects[i].tb!=None) & (m.tb!=None):
+                        tbnamListObjects[i].tb_nam=round((tbhk1ListObjects[i].tb+m.tb*2)/3+e,1)
+                        tbnamListObjects[i].save()
+                    else:
+                        tbnamListObjects[i].tb_nam=None
+                        tbnamListObjects[i].save()        
+                m.save()
+                i=i+1                            
+    
+
+    if currentTerm.number==1:            
+        list=zip(pupilList,markList,idList)
+    else:
+        length=pupilList.__len__()
+        for i in range(length):
+                
+             tbhk1List.append(tbhk1ListObjects[i].tb)                
+             tbnamList.append(tbnamListObjects[i].tb_nam)
+
+        list=zip(pupilList,markList,tbhk1List,tbnamList,idList)
+        
+    lengthList=0        
+    if pupilList!=None:        
+        lengthList=pupilList.__len__()    
+    t = loader.get_template('school/mark_for_a_subject.html')
+    
+    c = RequestContext(request, { 
+                                'message' : message,
+
+                                'termList':termList,
+
+                                'markList':markList,
+                                'list':list,
+                                
+                                'termChoice':termChoice,                                
+                                'subjectChoice':subjectChoice,
+
+                                'currentTerm':currentTerm,
+                                'selectedTerm':selectedTerm,
+                                'class_id':class_id,
+                                'hsSubject':hsSubject,
+                                'lengthList':lengthList,
+                                'selectedSubject':selectedSubject,
+                                'ttt':ttt,
+                                'ttt1':ttt1,
+                                'ttt2':ttt2
+                                }
+                       )
+    
+
+    return HttpResponse(t.render(c))
+
+
 #convert diem sang hoc luc
         
 # tinh diem tong ket cho 1 lop theo hoc ky
