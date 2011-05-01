@@ -302,7 +302,7 @@ def mark_table(request,class_id=4):
         if subjectChoice !=-1:    
             hsSubject=int(Subject.objects.get(id=subjectChoice).hs)    
     #currentYear  =yearList.latest()
-    #currentTerm=selectedTerm         
+    currentTerm=selectedTerm         
     pupilList=None    
     markList=[]
     tbnamList=[]
@@ -709,21 +709,25 @@ def markForAStudent(request,class_id=7,student_id=1):
     
     selectedClass=Class.objects.get(id=class_id)    
     yearChoice=selectedClass.year_id.id
-    termList= Term.objects.filter(year_id=yearChoice).order_by('number')
+    termList= Term.objects.filter(year_id=yearChoice).order_by('-number')
     termChoice=termList[0].id
     selectedTerm=termList[0]
+    termList= Term.objects.filter(year_id=yearChoice).order_by('number')
     
     if request.method == 'POST':
         termChoice =int(request.POST['term'])
         selectedTerm=Term.objects.get(id=termChoice)
         
-    subjectList=selectedClass.subject_set.all()
+    subjectList=selectedClass.subject_set.all().order_by("-hs")
     
     
     markList=[]
     tbnamList=[]
     tbhk1List=[]
     list=[]
+    tbhk1=None
+    tbhk2=None    
+    tbCaNam=None
     if selectedTerm.number==2:    
         for s in subjectList:
             m=s.mark_set.get(student_id=student_id,term_id__number=2)            
@@ -732,9 +736,14 @@ def markForAStudent(request,class_id=7,student_id=1):
             tbnam=s.tkmon_set.get(student_id=student_id).tb_nam
             tbnamList.append(tbnam)
                 
-            tbhk1=s.mark_set.get(student_id=student_id,term_id__number=1).tb
-            tbhk1List.append(tbhk1)
-        list=zip(subjectList,markList,tbhk1List,tbnamList)    
+            hk1=s.mark_set.get(student_id=student_id,term_id__number=1).tb
+            
+            tbhk1List.append(hk1)
+            
+        list=zip(subjectList,markList,tbhk1List,tbnamList)
+        tbhk1  =student.tbhocky_set.get(term_id__year_id=yearChoice,term_id__number=1)
+        tbhk2  =student.tbhocky_set.get(term_id__year_id=yearChoice,term_id__number=2)
+        tbCaNam=student.tbnam_set.get(year_id=yearChoice)    
     else:
         if     selectedTerm.number==1:    
             for s in subjectList:
@@ -742,6 +751,7 @@ def markForAStudent(request,class_id=7,student_id=1):
                 markList.append(m)
                 
             list=zip(subjectList,markList)        
+            tbhk1=student.tbhocky_set.get(term_id=termChoice)
                                     
         
     t = loader.get_template('school/mark_for_a_student.html')
@@ -757,7 +767,10 @@ def markForAStudent(request,class_id=7,student_id=1):
                                 'subjectList':subjectList,
                                 'markList':markList,
                                 'studentName':studentName,
-                                'selectedClass':selectedClass
+                                'selectedClass':selectedClass,
+                                'tbhk1':tbhk1,
+                                'tbhk2':tbhk2,
+                                'tbCaNam':tbCaNam,
                                 }
                        )
     
