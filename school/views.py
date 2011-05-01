@@ -312,9 +312,12 @@ def mark_table(request,class_id=4):
     list=None
     idList=[]    
     
+    ttt=2
     beforeTerm=None
     #subjectChoice=-1
+    ttt1=subjectChoice
     if ( subjectChoice!=-1) & ( termChoice!=-1) :
+        ttt=322;
     
         pupilList = Pupil.objects.filter(class_id=class_id)
         
@@ -831,7 +834,7 @@ def defineHlNam(tb,monChuyen,monToan,monVan,minMark):
         return 'Y'
     else:
         return 'Kem'
-
+#tinh diem tong ket cua mot lop theo hoc ky
 def calculateOverallMarkTerm(class_id=7,termNumber=1):
     print "chao"
     e=0.0000000001
@@ -870,7 +873,7 @@ def calculateOverallMarkTerm(class_id=7,termNumber=1):
                 break
         if ok:
             if factorSum==0:     
-                tbHocKy.tb=None
+                tbHocKy.tb_hk=None
                 tbHocKy.hl_hk=None
             else:
                 tbHocKy.tb_hk=round(markSum/factorSum+e,1)
@@ -878,6 +881,9 @@ def calculateOverallMarkTerm(class_id=7,termNumber=1):
                 tbHocKy.hl_hk=defineHl(markSum/factorSum+e,monChuyen,monToan,monVan,minMark+e)
             tbHocKy.save()
         else:
+            tbHocKy.tb_hk=None
+            tbHocKy.hl_hk=None
+            tbHocKy.save()
             pupilNoSum+=1
                 
      #hien message thong bao
@@ -927,12 +933,15 @@ def calculateOverallMarkYear(class_id=7):
         if ok:
             if factorSum==0:     
                 tbNam.tb_nam=None
-                tbHocKy.hl_nam=None
+                tbNam.hl_nam=None
             else:
                 tbNam.tb_nam=round(markSum/factorSum+e,1)
                 tbNam.hl_nam=defineHlNam(markSum/factorSum+e,monChuyen,monToan,monVan,minMark+e)
             tbNam.save()
         else:
+            tbNam.tb_nam=None
+            tbNam.hl_nam=None
+            tbNam.save()
             pupilNoSum+=1
      
      #hien message thong bao
@@ -969,7 +978,7 @@ def convertMarkToCharacter(x):
     elif x==1:
         return u'Kém'
     else:
-        return  u'Chưa có điểm'   
+        return  u''   
 def convertHlToVietnamese(x):
     if x=='G':
         return u'Giỏi'
@@ -982,7 +991,7 @@ def convertHlToVietnamese(x):
     elif x=='Kem':
         return u'Kém'
     else:
-        return u'Chưa có điểm'                                                             
+        return u'Chưa đủ điểm'                                                             
 def xepLoaiHlTheoLop(request,class_id=7):
     ttt=None
     message=None
@@ -1020,13 +1029,23 @@ def xepLoaiHlTheoLop(request,class_id=7):
             markOfAPupil=[]    
             for s in subjectList:
                 m=s.mark_set.get(student_id=p.id,term_id__number=termNumber)
+
+
                 if s.hs!=0:                                        
-                    markOfAPupil.append(m.tb)
+                    if m.tb!=None:                                    
+                        markOfAPupil.append(m.tb)
+                    else:    
+                        markOfAPupil.append('')
                 else:
                     markOfAPupil.append(convertMarkToCharacter(m.tb))    
             
             tbHocKy=p.tbhocky_set.get(term_id__number=termNumber)
-            markOfAPupil.append(tbHocKy.tb_hk)    
+
+ 
+            if tbHocKy.tb_hk==None:
+                markOfAPupil.append('')
+            else:    
+                markOfAPupil.append(tbHocKy.tb_hk)    
             markOfAPupil.append(convertHlToVietnamese(tbHocKy.hl_hk))
                             
             markList.append(markOfAPupil)    
@@ -1036,13 +1055,19 @@ def xepLoaiHlTheoLop(request,class_id=7):
             markOfAPupil=[]    
             for s in subjectList:
                 m=s.tkmon_set.get(student_id=p.id)
-                if s.hs!=0:                                        
-                    markOfAPupil.append(m.tb_nam)
+                if s.hs!=0:    
+                    if m.tb_nam!=None:                                    
+                        markOfAPupil.append(m.tb_nam)
+                    else:    
+                        markOfAPupil.append('')
                 else:
                     markOfAPupil.append(convertMarkToCharacter(m.tb_nam))    
             
             tbCaNam=p.tbnam_set.get(year_id=yearChoice)
-            markOfAPupil.append(tbCaNam.tb_nam)    
+            if tbCaNam.tb_nam==None:
+                markOfAPupil.append('')
+            else:        
+                markOfAPupil.append(tbCaNam.tb_nam)    
             markOfAPupil.append(convertHlToVietnamese(tbCaNam.hl_nam))
                             
             markList.append(markOfAPupil)    
@@ -1050,7 +1075,7 @@ def xepLoaiHlTheoLop(request,class_id=7):
     
 
 
-    t = loader.get_template('school/xep_loai_hk_theo_lop.html')
+    t = loader.get_template('school/xep_loai_hl_theo_lop.html')
     
     c = RequestContext(request, {"message":message, 
                                  "termList":termList,
@@ -1066,23 +1091,68 @@ def xepLoaiHlTheoLop(request,class_id=7):
     
 
     return HttpResponse(t.render(c))
+# tinh diem tong ket cua hoc ky va tinh hoc luc cua tat ca hoc sinh trong toan truong theo hoc ky
+def finishTerm(request,term_id=8):
+    
+    message=None
+    finishList=[]
+    notFinishList=[]
+    
+    selectedTerm=Term.objects.get(id=term_id)
+    classList   =Class.objects.filter(year_id=selectedTerm.year_id)
+    
+    for c in classList:
+        tempMessage=calculateOverallMarkTerm(c.id,selectedTerm.number)
+        if tempMessage!=None:
+            notFinishList.append(tempMessage)
+        else:
+            finishList.append(c.name)    
+                         
+        
+    ttt=None    
+    yearString=str(selectedTerm.year_id.time)+'-'+str(selectedTerm.year_id.time+1)
+    t = loader.get_template('school/finish_term.html')
+    c = RequestContext(request, {"message":message, 
+                                 "finishList":finishList,
+                                 "notFinishList":notFinishList,
+                                 "selectedTerm":selectedTerm,
+                                 "yearString":yearString,
+                                }
+                       )
+    
 
+    return HttpResponse(t.render(c))
 
-#----------- Exporting and Importing form Excel -------------------------------------
+# tinh diem tong ket va tinh hoc luc cua tat ca hoc sinh trong toan truong theo nam 
 
+def finishYear(request,year_id=8):
+    
+    message=None
+    finishList=[]
+    notFinishList=[]
+    selectedYear=Year.objects.get(id=year_id)
+    classList   =Class.objects.filter(year_id=year_id)
+    
+    for c in classList:
+        tempMessage=calculateOverallMarkYear(c.id)
+        if tempMessage!=None:
+            notFinishList.append(tempMessage)
+        else:
+            finishList.append(c.name)    
+                         
+        
+    ttt=None    
+    yearString=str(selectedYear.time)+'-'+str(selectedYear.time+1)
+    t = loader.get_template('school/finish_year.html')
+    c = RequestContext(request, {"message":message, 
+                                 "finishList":finishList,
+                                 "notFinishList":notFinishList,
+                                 "yearString":yearString,
+                                }
+                       )
+    
 
-
-
-
-
-
-
-
-
-
-
-
-
+    return HttpResponse(t.render(c))
 
 #----------- Exporting and Importing form Excel -------------------------------------
 
@@ -1185,15 +1255,15 @@ def danh_sach_trung_tuyen(request):
     student_list = request.session['student_list']
     school = request.session['school']
     message = None
-#    if school.school_level == 1:
-#        lower_bound = 1
-#        upper_bound = 5
-#    elif school.school_level == 2:
-#        lower_bound = 6
-#        upper_bound = 9
-#    else:
-#        lower_bound = 10
-#        upper_bound = 12
+    if school.school_level == 1:
+        lower_bound = 1
+        upper_bound = 5
+    elif school.school_level == 2:
+        lower_bound = 6
+        upper_bound = 9
+    else:
+        lower_bound = 10
+        upper_bound = 12
         
     
     if request.method == 'POST':
@@ -1242,7 +1312,7 @@ def danh_sach_trung_tuyen(request):
 #------------------------------------------------------------------------------------
 def diem_danh(request, class_id, day, month, year):
     message = None
-#    listdh = None
+    listdh = None
     pupilList = Pupil.objects.filter(class_id = class_id)
     time = date(int(year),int(month),int(day))
     form = []
@@ -1255,7 +1325,7 @@ def diem_danh(request, class_id, day, month, year):
             i = i+1
         except ObjectDoesNotExist:
             i = i+1
-#    listdh = zip(pupilList,form)
+    listdh = zip(pupilList,form)
     if request.method == 'POST':
         message = 'Cập nhật thành công danh sách điểm danh lớp ' + str(Class.objects.get(id = class_id)) +'. Ngày ' + str(time)
         list = request.POST.getlist('loai')
