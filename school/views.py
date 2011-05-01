@@ -425,7 +425,7 @@ def mark_table(request,class_id=4):
             i=0;            
             for m in markList:
                 sum=0
-                foctorSum=0
+                factorSum=0
                 id=idList[i]
                 
                 #diem mieng 1
@@ -439,7 +439,7 @@ def mark_table(request,class_id=4):
                     tt=float(t3)
                     m.mieng_1=tt
                     sum=sum+tt
-                    foctorSum+=1
+                    factorSum+=1
                     
                 #diem mieng 2
                 
@@ -453,7 +453,7 @@ def mark_table(request,class_id=4):
                     tt=float(t3)
                     m.mieng_2=tt
                     sum=sum+tt
-                    foctorSum+=1
+                    factorSum+=1
                     
                 #diem mieng 2
                 
@@ -467,7 +467,7 @@ def mark_table(request,class_id=4):
                     tt=float(t3)
                     m.mieng_3=tt
                     sum=sum+tt
-                    foctorSum+=1
+                    factorSum+=1
                 #diem mieng 2
 
                 t1=str(id.d4)    
@@ -480,7 +480,7 @@ def mark_table(request,class_id=4):
                     tt=float(t3)
                     m.mieng_4=tt
                     sum=sum+tt
-                    foctorSum+=1
+                    factorSum+=1
 
                 #diem mieng 2
                 
@@ -494,7 +494,7 @@ def mark_table(request,class_id=4):
                     tt=float(t3)
                     m.mieng_5=tt
                     sum=sum+tt
-                    foctorSum+=1
+                    factorSum+=1
 
                 #diem mieng 2
                 t1=str(id.d6)    
@@ -507,7 +507,7 @@ def mark_table(request,class_id=4):
                     tt=float(t3)
                     m.mlam_1=tt
                     sum=sum+tt
-                    foctorSum+=1
+                    factorSum+=1
 
                 #diem mieng 2
                 
@@ -521,7 +521,7 @@ def mark_table(request,class_id=4):
                     tt=float(t3)
                     m.mlam_2=tt
                     sum=sum+tt
-                    foctorSum+=1
+                    factorSum+=1
                     
                 #diem mieng 2
                 
@@ -535,7 +535,7 @@ def mark_table(request,class_id=4):
                     tt=float(t3)
                     m.mlam_3=tt
                     sum=sum+tt
-                    foctorSum+=1
+                    factorSum+=1
                 #diem mieng 2
                 
                 t1=str(id.d9)    
@@ -548,7 +548,7 @@ def mark_table(request,class_id=4):
                     tt=float(t3)
                     m.mlam_4=tt
                     sum=sum+tt
-                    foctorSum+=1
+                    factorSum+=1
 
                 #diem mieng 2
                 
@@ -562,7 +562,7 @@ def mark_table(request,class_id=4):
                     tt=float(t3)
                     m.mlam_5=tt
                     sum=sum+tt
-                    foctorSum+=1
+                    factorSum+=1
                 #diem mieng 2
                 t1=str(id.d11)    
                 t2=request.POST[t1]
@@ -574,7 +574,7 @@ def mark_table(request,class_id=4):
                     tt=float(t3)
                     m.mot_tiet_1=tt
                     sum=sum+tt*2
-                    foctorSum+=2
+                    factorSum+=2
                     
                 #diem mieng 2
                 
@@ -588,7 +588,7 @@ def mark_table(request,class_id=4):
                     tt=float(t3)
                     m.mot_tiet_2=tt
                     sum=sum+tt*2
-                    foctorSum+=2
+                    factorSum+=2
                 #diem mieng 2
                 
                 t1=str(id.d13)    
@@ -601,7 +601,7 @@ def mark_table(request,class_id=4):
                     tt=float(t3)
                     m.mot_tiet_3=tt
                     sum=sum+tt*2
-                    foctorSum+=2
+                    factorSum+=2
                 #diem mieng 2
                 
                 t1=str(id.d14)    
@@ -614,7 +614,7 @@ def mark_table(request,class_id=4):
                     tt=float(t3)
                     m.mot_tiet_4=tt
                     sum=sum+tt*2
-                    foctorSum+=2
+                    factorSum+=2
                 #diem mieng 2
                 
                 t1=str(id.d15)    
@@ -627,7 +627,7 @@ def mark_table(request,class_id=4):
                     tt=float(t3)
                     m.mot_tiet_5=tt
                     sum=sum+tt*2
-                    foctorSum+=2
+                    factorSum+=2
                 #diem mieng 2
                 
                 t1=str(id.d16)    
@@ -640,19 +640,19 @@ def mark_table(request,class_id=4):
                     tt=float(t3)
                     m.ck=tt
                     sum=sum+tt*3
-                    foctorSum+=3
+                    factorSum+=3
                 
                 e=0.00000000001    
                 if m.ck!=None:
-                    if foctorSum==0:
+                    if factorSum==0:
                         m.tb=0
                     else:                        
-                        m.tb=round(sum/foctorSum+e,1)
+                        m.tb=round(sum/factorSum+e,1)
                 else:
                     m.tb=None            
                 if (currentTerm.number==2):
                     if (tbhk1ListObjects[i].tb!=None) & (m.tb!=None):
-                        tbnamListObjects[i].tb_nam=round(tbhk1ListObjects[i].tb+m.tb*2+e,1)/3
+                        tbnamListObjects[i].tb_nam=round((tbhk1ListObjects[i].tb+m.tb*2)/3+e,1)
                         tbnamListObjects[i].save()
                     else:
                         tbnamListObjects[i].tb_nam=None
@@ -763,6 +763,316 @@ def markForAStudent(request,class_id=7,student_id=1):
     
 
     return HttpResponse(t.render(c))
+#convert diem sang hoc luc
+        
+# tinh diem tong ket cho 1 lop theo hoc ky
+def defineHl(tb,monChuyen,monToan,monVan,minMark):
+    e=0.0000001
+    if monChuyen:
+        firstMark=monChuyen.tb+e
+    elif monToan.tb>monVan.tb:
+        firstMark=monVan.tb+e
+    else:
+        firstMark=monToan.tb+e                
+    
+    if (tb>=8.0) & (firstMark>=8.0) & (minMark>=6.5):
+        return 'G'
+    elif (tb>=8.0) & (minMark>=5):
+        return 'K'
+    elif (tb>=8.0):
+        return 'TB'
+    elif (tb>=6.5) & (firstMark>=6.5) & (minMark>=5):
+        return 'K'
+    elif (tb>=6.5) & (minMark>=3.5):
+        return 'TB'
+    elif (tb>=6.5): 
+        return 'Y'
+    elif (tb>=5) & (firstMark>=5) & (minMark>=3.5):
+        return 'TB'
+    elif (tb>=3.5) & (minMark>=2):
+        return 'Y'
+    else:
+        return 'Kem'
+
+def defineHlNam(tb,monChuyen,monToan,monVan,minMark):
+    e=0.0000001
+    if monChuyen:
+        firstMark=monChuyen.tb_nam+e
+    elif monToan.tb>monVan.tb_nam:
+        firstMark=monVan.tb_nam+e
+    else:
+        firstMark=monToan.tb_nam+e                
+    
+    if (tb>=8.0) & (firstMark>=8.0) & (minMark>=6.5):
+        return 'G'
+    elif (tb>=8.0) & (minMark>=5):
+        return 'K'
+    elif (tb>=8.0):
+        return 'TB'
+    elif (tb>=6.5) & (firstMark>=6.5) & (minMark>=5):
+        return 'K'
+    elif (tb>=6.5) & (minMark>=3.5):
+        return 'TB'
+    elif (tb>=6.5): 
+        return 'Y'
+    elif (tb>=5) & (firstMark>=5) & (minMark>=3.5):
+        return 'TB'
+    elif (tb>=3.5) & (minMark>=2):
+        return 'Y'
+    else:
+        return 'Kem'
+
+def calculateOverallMarkTerm(class_id=7,termNumber=1):
+    print "chao"
+    e=0.0000000001
+    pupilNoSum=0
+    
+    subjectList=Subject.objects.filter(class_id=class_id)
+    pupilList=Pupil.objects.filter(class_id=class_id)
+    for p in pupilList:
+        tbHocKy=p.tbhocky_set.get(term_id__number=termNumber)
+            
+        markSum=0
+        factorSum=0
+        ok=True
+        monChuyen=None
+        monToan  =None
+        monVan   =None
+        minMark  =10
+        for s in subjectList:
+            
+            m=s.mark_set.get(student_id=p.id,term_id__number=termNumber)
+            if s.hs==3:
+                monChuyen=m
+            if    s.name.lower().__contains__(u'toán'):
+                monToan=m
+            elif  s.name.lower().__contains__(u'văn'):
+                monVan=m    
+                    
+                
+            if m.tb !=None:
+                markSum += m.tb*s.hs;
+                factorSum += s.hs
+                if m.tb<minMark:
+                    minMark=m.tb
+            else:
+                ok=False
+                break
+        if ok:
+            if factorSum==0:     
+                tbHocKy.tb=None
+                tbHocKy.hl_hk=None
+            else:
+                tbHocKy.tb_hk=round(markSum/factorSum+e,1)
+                                
+                tbHocKy.hl_hk=defineHl(markSum/factorSum+e,monChuyen,monToan,monVan,minMark+e)
+            tbHocKy.save()
+        else:
+            pupilNoSum+=1
+                
+     #hien message thong bao
+    selectedClass=Class.objects.get(id=class_id)
+    if pupilNoSum==0:
+        message=None
+    else:      
+        message=u'lớp '+selectedClass.__unicode__()+u' có ' +str(pupilNoSum)+ u' học sinh chưa được tổng kết học kỳ '+str(termNumber)
+    return message    
+# tinh diem tong ket cho ca nam hoc
+def calculateOverallMarkYear(class_id=7):
+    e=0.0000000001
+    pupilNoSum=0
+    selectedClass=Class.objects.get(id=class_id)
+    subjectList=Subject.objects.filter(class_id=class_id)
+    pupilList=Pupil.objects.filter(class_id=class_id)
+    
+    for p in pupilList:
+        tbNam=p.tbnam_set.get(year_id=selectedClass.year_id)
+            
+        markSum=0
+        factorSum=0
+        ok=True
+        monChuyen=None
+        monToan  =None
+        monVan   =None
+        minMark  =10
+        for s in subjectList:
+            
+            m=s.tkmon_set.get(student_id=p.id)
+            if s.hs==3:
+                monChuyen=m
+            if    s.name.lower().__contains__(u'toán'):
+                monToan=m
+            elif  s.name.lower().__contains__(u'văn'):
+                monVan=m    
+                    
+                
+            if m.tb_nam !=None:
+                markSum += m.tb_nam*s.hs;
+                factorSum += s.hs
+                if m.tb_nam<minMark:
+                    minMark=m.tb_nam
+            else:
+                ok=False
+                break
+        if ok:
+            if factorSum==0:     
+                tbNam.tb_nam=None
+                tbHocKy.hl_nam=None
+            else:
+                tbNam.tb_nam=round(markSum/factorSum+e,1)
+                tbNam.hl_nam=defineHlNam(markSum/factorSum+e,monChuyen,monToan,monVan,minMark+e)
+            tbNam.save()
+        else:
+            pupilNoSum+=1
+     
+     #hien message thong bao
+    if pupilNoSum==0:
+        message=None
+    else:      
+        message=u'lớp '+selectedClass.__unicode__()+u' có ' +str(pupilNoSum)+ u' học sinh chưa được tổng kết cuối năm' 
+    return message    
+    
+# xep loai hoc ky cua mot lop
+def getCurrentTerm(class_id):
+
+    selectedClass=Class.objects.get(id=class_id)    
+    school_id=selectedClass.year_id.school_id.id
+    currentTerm=None
+    termChoice=-1
+    
+    termList=Term.objects.filter(year_id__school_id=school_id).order_by('-year_id__time','-number')
+    if termList.__len__()>0:
+        currentTerm=termList[0]        
+        termChoice =currentTerm.id
+
+    #neu la nam hien hien thi chon ky la ki hien tai        
+    return termChoice,currentTerm
+def convertMarkToCharacter(x):
+    if x==9:
+        return u'Giỏi'
+    elif x==7:
+        return u'Khá'
+    elif x==6:
+        return u'TB'
+    elif x==4:
+        return u'Yếu'
+    elif x==1:
+        return u'Kém'
+    else:
+        return  u'Chưa có điểm'   
+def convertHlToVietnamese(x):
+    if x=='G':
+        return u'Giỏi'
+    elif x=='K':
+        return u'Khá'
+    elif x=='TB':
+        return u'TB'
+    elif x=='Y':
+        return u'Yếu'
+    elif x=='Kem':
+        return u'Kém'
+    else:
+        return u'Chưa có điểm'                                                             
+def xepLoaiHlTheoLop(request,class_id=7):
+    ttt=None
+    message=None
+    selectedClass=Class.objects.get(id=class_id)  
+    yearChoice  =selectedClass.year_id.id      
+    termChoice,currentTerm=getCurrentTerm(class_id)
+    
+        
+    termList= Term.objects.filter(year_id=selectedClass.year_id).order_by('number')    
+    subjectList=selectedClass.subject_set.all().order_by("-hs")
+    pupilList  =Pupil.objects.filter(class_id=class_id)
+    
+    selectedTerm=currentTerm
+    selectedYear=None
+    if request.method == 'POST':
+        termChoice =int(request.POST['term'])
+        if termChoice>0:
+            termNumber=Term.objects.get(id=termChoice).number
+            message = calculateOverallMarkTerm(class_id,termNumber)
+        else: 
+            message = calculateOverallMarkYear(class_id)
+                  
+        if termChoice>0:
+            selectedTerm=Term.objects.get(id=termChoice)
+        else:   
+            ttt=termChoice         
+            selectedTerm=None
+                
+    markList=[]
+
+    list=[]
+    if selectedTerm!=None:
+        termNumber=term_id__number=selectedTerm.number
+        for p in pupilList:
+            markOfAPupil=[]    
+            for s in subjectList:
+                m=s.mark_set.get(student_id=p.id,term_id__number=termNumber)
+                if s.hs!=0:                                        
+                    markOfAPupil.append(m.tb)
+                else:
+                    markOfAPupil.append(convertMarkToCharacter(m.tb))    
+            
+            tbHocKy=p.tbhocky_set.get(term_id__number=termNumber)
+            markOfAPupil.append(tbHocKy.tb_hk)    
+            markOfAPupil.append(convertHlToVietnamese(tbHocKy.hl_hk))
+                            
+            markList.append(markOfAPupil)    
+        list=zip(pupilList,markList)    
+    else:
+        for p in pupilList:
+            markOfAPupil=[]    
+            for s in subjectList:
+                m=s.tkmon_set.get(student_id=p.id)
+                if s.hs!=0:                                        
+                    markOfAPupil.append(m.tb_nam)
+                else:
+                    markOfAPupil.append(convertMarkToCharacter(m.tb_nam))    
+            
+            tbCaNam=p.tbnam_set.get(year_id=yearChoice)
+            markOfAPupil.append(tbCaNam.tb_nam)    
+            markOfAPupil.append(convertHlToVietnamese(tbCaNam.hl_nam))
+                            
+            markList.append(markOfAPupil)    
+        list=zip(pupilList,markList)    
+    
+
+
+    t = loader.get_template('school/xep_loai_hk_theo_lop.html')
+    
+    c = RequestContext(request, {"message":message, 
+                                 "termList":termList,
+                                 "subjectList":subjectList,
+                                 "list":list,
+                                 "selectedClass":selectedClass,
+                                 "termChoice":termChoice,
+                                 "selectedTerm":selectedTerm,
+                                 "class_id":class_id,
+                                 "ttt":ttt
+                                }
+                       )
+    
+
+    return HttpResponse(t.render(c))
+
+
+#----------- Exporting and Importing form Excel -------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 #----------- Exporting and Importing form Excel -------------------------------------
 
