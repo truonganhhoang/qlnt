@@ -216,7 +216,7 @@ class Subject(models.Model):
 	hs = models.FloatField( validators = [validate_hs])
 
 	class_id = models.ForeignKey(Class)	
-	teacher_id = models.ForeignKey(Teacher) # field nay de cung cap permission cho giao vien de nhap diem
+	teacher_id = models.ForeignKey(Teacher, null= True, blank = True) # field nay de cung cap permission cho giao vien de nhap diem
 	
 	def __unicode__(self):
 		return self.name

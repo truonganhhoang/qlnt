@@ -2,7 +2,7 @@
 
 # open path for template folder
 import os.path
-
+import django
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 

@@ -9,6 +9,7 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext, loader
 from django.core.exceptions import *
 from school.models import *
+from school.school_settings import *
 import xlrd
 
 NHAP_DANH_SACH_TRUNG_TUYEN = r'school/import/nhap_danh_sach_trung_tuyen.html'
@@ -55,12 +56,15 @@ def b1(request):
     if school.school_level == 1:
         lower_bound = 1
         upper_bound = 5
+        ds_mon_hoc = CAP1_DS_MON
     elif school.school_level == 2:
         lower_bound = 6
         upper_bound = 9
+        ds_mon_hoc = CAP2_DS_MON
     else:
         lower_bound = 10
         upper_bound = 12
+        ds_mon_hoc = CAP3_DS_MON
         
     if school.status == 0:
         for khoi in range(lower_bound, upper_bound+1):
@@ -74,14 +78,21 @@ def b1(request):
     current_year = datetime.datetime.now().year
     year = school.year_set.filter( time__exact = current_year)
     if not year:
+        # create new year
         year = Year()
         year.time = current_year
         year.school_id = school
         year.save()
+        # create new StartYear
         start_year = StartYear()
         start_year.time = current_year
         start_year.school_id = school
         start_year.save()
+        # create new term
+        term = Term()
+        term.number = 1
+        term.year_id = year
+        term.save()
         # create new class.
         # -- tao cac lop ---
         for khoi in range(lower_bound, upper_bound+1):
@@ -100,6 +111,12 @@ def b1(request):
                 _class.block_id = block
                 _class.year_id = year
                 _class.save()
+                for mon in ds_mon_hoc:
+                    subject = Subject()
+                    subject.name = mon
+                    subject.hs = 1
+                    subject.class_id = _class
+                    subject.save()
         # -- day cac hoc sinh len lop        
         last_year = school.year_set.filter( time__exact = current_year -1)
         if last_year:
@@ -1607,8 +1624,14 @@ def finishYear(request,year_id=8):
 #----------- Exporting and Importing form Excel -------------------------------------
 
 class UploadImportFileForm(forms.Form):
-    import_file = forms.FileField(label=u'Chọn file excel:')
-   
+    def __init__(self, *args, **kwargs):
+        print "Access __init___" 
+        class_list = kwargs.pop('class_list')
+        print "in form: ", class_list
+        super(UploadImportFileForm, self).__init__(*args, **kwargs)
+        self.fields['the_class'] = forms.ChoiceField(label=u'Chọn lớp:', choices = class_list, required = False)
+        self.fields['import_file'] = forms.FileField(label=u'Chọn file excel:')
+        
 def to_date(value ):
     v=value.split('-')
     return date( int(v[2]), int(v[1]), int(v[0]))
@@ -1683,20 +1706,32 @@ def process_file( file_name, task):
     return None
 
 def nhap_danh_sach_trung_tuyen(request):
+    school = request.session['school']
+    _class_list = [(u'0',u'---')]
+    try:
+        this_year = school.year_set.latest('time')
+        temp = this_year.class_set.all()
+        for _class in temp:
+            _class_list.append((_class.id, _class.name))
+    except Exception as e:
+        print e
+        _class_list = None
+    print _class_list
     if request.method == 'POST':
-        form = UploadImportFileForm(request.POST, request.FILES)
+        form = UploadImportFileForm(request.POST, request.FILES, class_list = _class_list)
         if form.is_valid():
             save_file_name = save_file(form.cleaned_data['import_file'], request.session)
+            chosen_class = form.cleaned_data['the_class']
             print save_file_name
             request.session['save_file_name'] = save_file_name
-            
+            request.session['chosen_class'] = chosen_class
             student_list = process_file(file_name = save_file_name, \
                                         task = "Nhap danh sach trung tuyen")
             #print student_list
             request.session['student_list'] = student_list
             return HttpResponseRedirect(reverse('imported_list'))
     else:
-        form = UploadImportFileForm()
+        form = UploadImportFileForm(class_list = _class_list)
     print request.session['school']
     context = RequestContext(request, {'form':form,})
     return render_to_response(NHAP_DANH_SACH_TRUNG_TUYEN, context_instance = context)
@@ -1704,19 +1739,14 @@ def nhap_danh_sach_trung_tuyen(request):
 def danh_sach_trung_tuyen(request):
     student_list = request.session['student_list']
     school = request.session['school']
-    message = None
-    """
-    if school.school_level == 1:
-        lower_bound = 1
-        upper_bound = 5
-    elif school.school_level == 2:
-        lower_bound = 6
-        upper_bound = 9
+    chosen_class = request.session['chosen_class']
+    print "chosen_class: ", chosen_class
+    if chosen_class != u'0':
+        chosen_class = school.year_set.latest('time').class_set.get(id = chosen_class)
     else:
-        lower_bound = 10
-        upper_bound = 12
-        
-    """
+        chosen_class = None
+    message = None
+   
     if request.method == 'POST':
         print ">>>", request.POST['clickedButton']
         if request.POST['clickedButton'] == 'save':
@@ -1738,9 +1768,13 @@ def danh_sach_trung_tuyen(request):
                     st.school_join_date = today
                     st.ban_dk = student['nguyen_vong']
                     st.start_year_id = year
+                    st.class_id = chosen_class
                     st.save()
                 else:
-                    print ">>", find
+                    find = find[0]
+                    if  find.class_id != chosen_class:
+                        find.class_id = chosen_class
+                        find.save()
             message = u'Bạn vừa nhập thành công danh sách học sinh trúng tuyển.'
             student_list=[]
             request.session['student_list'] = student_list
