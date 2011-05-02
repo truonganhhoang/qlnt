@@ -28,7 +28,7 @@ class Organization(models.Model):
 class OrganizationForm(forms.Form):
     name = forms.CharField(max_length=100) #tên đơn vị. tổ chức 
     level = forms.CharField(max_length=2, widget=forms.RadioSelect(choices=ORGANIZATION_LEVEL_CHOICES)) #Cấp
-    upper_organization = forms.ModelMultipleChoiceField(queryset=Organization.objects.all())    
+    upper_organization = forms.ModelChoiceField(queryset=Organization.objects.all())    
     address = forms.CharField(max_length=255) #
     phone = forms.CharField(max_length=20)
     email = forms.EmailField(max_length=50)
