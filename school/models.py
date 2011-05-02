@@ -355,3 +355,21 @@ class TKDiemDanh(models.Model):
 	
 	def __unicode__(self):
 		return str(self.stundent_id) + " " + str(self.tong_so)
+      
+class DateForm(forms.Form):
+    day = forms.IntegerField(required = True, label = 'Ngày', help_text = '\n')
+    month = forms.IntegerField(required = True, label = 'Tháng', help_text = '\n')
+    year = forms.IntegerField(required = True, label = 'Năm', help_text = '\n', validators = [validate_year])
+    
+    def clean(self):
+        cleaned_data = self.cleaned_data
+        d = cleaned_data.get('day')
+        m = cleaned_data.get('month')
+        y = cleaned_data.get('year')
+        if d and m and y:
+            try:
+                a = date(y,m,d)
+            except ValueError:
+                raise ValidationError("Ngày này không tồn tại")
+            
+        return cleaned_data
