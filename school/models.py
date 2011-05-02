@@ -336,25 +336,27 @@ class TBNam(models.Model):
 		return self.student_id.__unicode__()+" "+str(self.year_id.__unicode__())+" "+ str(self.tb_nam) 
 	
 class DiemDanh(models.Model):
-	student_id = models.ForeignKey(Pupil)
-	time = models.DateField()
-	loai = models.CharField( max_length = 10, choices = DIEM_DANH_TYPE, default = 'k') 
+    student_id = models.ForeignKey(Pupil)
+    time = models.DateField()
+    loai = models.CharField( max_length = 10, choices = DIEM_DANH_TYPE, default = 'k') 
+    term = models.ForeignKey(Term)
 	
-	def __unicode__(self):
-		return str(self.student_id) + " " + str(self.time)
+    def __unicode__(self):
+        return str(self.student_id) + " " + str(self.time)
 	
 class DiemDanhForm(forms.ModelForm):
 	class Meta:
 		model = DiemDanh
 		
 class TKDiemDanh(models.Model):
-	student_id = models.ForeignKey(Pupil)
-	tong_so = models.IntegerField()
-	co_phep = models.IntegerField()
-	khong_phep = models.IntegerField()
+    student_id = models.ForeignKey(Pupil)
+    tong_so = models.IntegerField()
+    co_phep = models.IntegerField()
+    khong_phep = models.IntegerField()
+    term = models.ForeignKey(Term)
 	
-	def __unicode__(self):
-		return str(self.stundent_id) + " " + str(self.tong_so)
+    def __unicode__(self):
+        return str(self.stundent_id) + " " + str(self.tong_so)
       
 class DateForm(forms.Form):
     day = forms.IntegerField(required = True, label = 'Ngày', help_text = '\n')
