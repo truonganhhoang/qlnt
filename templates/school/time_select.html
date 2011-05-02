@@ -1,0 +1,10 @@
+{% extends "school/base_school.html" %}
+
+{% block content %}
+<br>
+    {{message}}
+<form action="" method="post">{% csrf_token %}
+    {{form.as_table}}
+    <td><input type ="submit" value="Chọn"/></td>
+	</form>
+{% endblock %}
