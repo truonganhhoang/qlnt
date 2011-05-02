@@ -1763,7 +1763,7 @@ def danh_sach_trung_tuyen(request):
 #------------------------------------------------------------------------------------
 def diem_danh(request, class_id, day, month, year):
     message = None
-   # listdh = None
+    listdh = None
     pupilList = Pupil.objects.filter(class_id = class_id)
     time = date(int(year),int(month),int(day))
     form = []
@@ -1776,7 +1776,7 @@ def diem_danh(request, class_id, day, month, year):
             i = i+1
         except ObjectDoesNotExist:
             i = i+1
-  #  listdh = zip(pupilList,form)
+    listdh = zip(pupilList,form)
     if request.method == 'POST':
         message = 'Cập nhật thành công danh sách điểm danh lớp ' + str(Class.objects.get(id = class_id)) +'. Ngày ' + str(time)
         list = request.POST.getlist('loai')
@@ -1806,6 +1806,21 @@ def diem_danh(request, class_id, day, month, year):
                                     'day':day, 'month':month, 'year':year})
     return HttpResponse(t.render(c))
     
+def time_select(request, class_id):
+    form = DateForm()
+    message = 'Hãy chọn 1 ngày'
+    if request.method == 'POST':
+        form = DateForm(request.POST)
+        if form.is_valid():
+            day = int(request.POST['day'])
+            month = int(request.POST['month'])
+            year = int(request.POST['year'])
+            url = '/school/diemdanh/' + str(class_id) + '/' + str(day) + '/' + str(month) + '/' + str(year) + '/'
+            return HttpResponseRedirect(url)
+    t = loader.get_template('school/time_select.html')
+    c = RequestContext(request, {'form':form, 'class_id':class_id, 'message':message})
+    return HttpResponse(t.render(c))
+   
 def diem_danh_hs(request, student_id):
     ddl = DiemDanh.objects.filter(student_id = student_id)
     form = []
