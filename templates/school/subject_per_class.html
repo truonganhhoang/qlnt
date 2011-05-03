@@ -11,10 +11,9 @@ function confirmDelete()
 
 <table border=1 width = "60%" align = "center">
     <tr>
-        <td align="center" width="5%"> STT </td>
         <td align="center" width="20%"> Tên Môn Học</td>
         <td align="center" width="10%"> Hệ số </td>
-        <td align="center" width="20%"> Giáo viên</td>
+        <td align="center" width="25%"> Giáo viên</td>
         <td width = "5%"> <a href = ""></a></td>
     </tr>
 
@@ -24,11 +23,10 @@ function confirmDelete()
 
     {% for ss in subjectList %}
     <tr>
-        <td align="center" width="5%"> <a href="{%url school.views.school_index  %}viewSubjectDetail/{{ss.id}}"> {{ss.id}} </td>
-        <td align="center" width="20%"> {{ss.name}} </td>
+        <td align="center" width="20%"> <a href="{%url school.views.school_index  %}viewSubjectDetail/{{ss.id}}"> {{ss.name}}</a> </td>
         <td align="center" width="10%"> {{ss.hs}} </td>
 
-        <td align="center" width="20%"> {{ss.teacher_id}}</td>
+        <td align="center" width="25%"> <a href="{%url school.views.school_index  %}viewTeacherDetail/{{ss.teacher_id.id}}">{{ss.teacher_id}}</td>
         <td width = "5%"> <a href = "{%url school.views.school_index  %}deleteSubject/{{ss.id}}" onclick="return confirmDelete();">xóa</a></td>
     </tr>
     {% endfor %}
@@ -36,8 +34,6 @@ function confirmDelete()
     <form action="/school/subjectPerClass/{{class_id}}" method="post">{% csrf_token %}
         <tr>
             {{ form.non_field_errors }}
-            <td align="center" width="5%"></td>
-
             <td align="center" width="20%">
                     {{ form.name.errors }}
                     <p>{{ form.name }}</p>
@@ -48,7 +44,7 @@ function confirmDelete()
                     <p>{{ form.hs }}</p>
             </td>
 
-            <td align="center" width="15%">
+            <td align="center" width="25%">
                     {{ form.teacher_id.errors }}
                     <p>{{ form.teacher_id }}</p>
             </td>

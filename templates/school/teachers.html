@@ -15,11 +15,9 @@ function confirmDelete()
 </script>
 
 
-<table border=1 width = "100%" >
+<table border=1 width = "90%" >
     <tr>
-        <td align="center" width="5%"> STT </td>
-        <td align="center" width="20%"> Họ & Tên Đệm </td>
-        <td align="center" width="5%"> Tên </td>
+        <td align="center" width="30%"> Họ & Tên </td>
         <td align="center" width="15%"> Ngày sinh</td>
         <td align="center" width="25%"> Nơi sinh</td>
         <td align="center" width="10%"> Giới tính </td>
@@ -32,10 +30,8 @@ function confirmDelete()
     {% endif %}
 
     {% for ss in teacherList %}
-    <tr>
-        <td align="center" width="5%"> <a href="{%url school.views.school_index  %}viewTeacherDetail/{{ss.id}}"> {{ss.id}} </td>
-        <td align="center" width="20%"> {{ss.last_name}} </td>
-        <td align="center" width="5%"> {{ss.first_name}} </td>
+    <tr>        
+        <td align="center" width="30%"><a href="{%url school.views.school_index  %}viewTeacherDetail/{{ss.id}}"> {{ss.last_name}} {{ss.first_name}} </a></td>
         <td align="center" width="15%"> {{ss.birthday}}</td>
         <td align="center" width="25%"> {{ss.birth_place}}</td>
         <td align="center" width="10%"> {{ss.sex}} </td>
@@ -47,15 +43,10 @@ function confirmDelete()
     <form action="/school/teachers" method="post">{% csrf_token %}
         <tr>
             {{ form.non_field_errors }}
-            <td align="center" width="5%"></td>
+            
 
-            <td align="center" width="20%">
-                    {{ form.last_name.errors }}
-                    <p>{{ form.last_name }}</p>
-            </td>
-
-            <td align="center" width="5%">
-                    {{form.first_name.errors }}
+            <td align="center" width="30%">
+                    {{ form.first_name.errors }}
                     <p>{{ form.first_name }}</p>
             </td>
 

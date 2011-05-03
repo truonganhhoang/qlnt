@@ -183,7 +183,11 @@ def teachers(request):
     form = TeacherForm()
     teacherList = Teacher.objects.all()
     if request.method == 'POST':
-        form = TeacherForm(request.POST)
+        name = request.POST['first_name'].split()
+        last_name = ' '.join(name[:len(name)-1])
+        first_name = name[len(name)-1]
+        data = {'first_name':first_name, 'last_name':last_name, 'birthday':request.POST['birthday'], 'sex':request.POST['sex'], 'school_id':request.POST['school_id'], 'birth_place':request.POST['birth_place']}
+        form = TeacherForm(data)
         if form.is_valid():
             form.save()
             message = 'You have added new teacher'
@@ -191,7 +195,7 @@ def teachers(request):
             message = 'Please check your information, something is wrong'
 
     t = loader.get_template('school/teachers.html')
-    c = RequestContext(request, {'form' : form, 'message' : message, 'teacherList' : teacherList})
+    c = RequestContext(request, {'form': form, 'message': message, 'teacherList': teacherList})
     return HttpResponse(t.render(c))
 
 def viewTeacherDetail(request, teacher_id):
@@ -210,21 +214,25 @@ def viewTeacherDetail(request, teacher_id):
     c = RequestContext(request, {'form' : form, 'message' : message, 'id' : teacher_id})
     return HttpResponse(t.render(c))
 
-def subjectPerClass(request, class_id):
+def studentPerClass(request, class_id):
+    print ">>", class_id
     message = None
-    subjectList = Subject.objects.filter(class_id = class_id)
-    form = SubjectForm()
+    form = PupilForm()
+    studentList = Pupil.objects.filter(class_id=class_id)
     if request.method == 'POST':
-        data = {'name':request.POST['name'], 'hs':request.POST['hs'], 'class_id':class_id, 'teacher_id':request.POST['teacher_id']}
-        form = SubjectForm(data)
+        name = request.POST['first_name'].split()
+        last_name = ' '.join(name[:len(name)-1])
+        first_name = name[len(name)-1]
+        data = {'first_name':first_name, 'last_name':last_name,'birthday':request.POST['birthday'], 'class_id':class_id, 'sex':request.POST['sex'], 'ban_dk':request.POST['ban_dk'], 'school_join_date':request.POST['school_join_date'], 'start_year_id':request.POST['start_year_id']}
+        form = PupilForm(data)
         if form.is_valid():
             form.save()
-            message = 'You have added new subject'
+            message = 'You have added new student'
         else:
             message = 'Please check your information, something is wrong'
 
-    t = loader.get_template('school/subject_per_class.html')
-    c = RequestContext(request, {'form' : form, 'message' : message,  'subjectList' : subjectList, 'class_id' : class_id})
+    t = loader.get_template('school/student_per_class.html')
+    c = RequestContext(request, {'form': form, 'message': message, 'studentList': studentList, 'class_id': class_id})
     return HttpResponse(t.render(c))
 
 def studentPerClass(request, class_id):
@@ -249,19 +257,23 @@ def studentPerClass(request, class_id):
 
 def students(request):
     message = None
-    form = PupilForm()
+   
     studentList = Pupil.objects.all()
     if request.method == 'POST':
-        #data = {'first_name':request.POST['first_name'], 'last_name':request.POST['last_name'], 'birthday':request.POST['birthday'], 'sex':request.POST['sex'],'ban_dk':request.POST['ban_dk'], 'school_join_date':request.POST['school_join_date'], 'start_year_id':request.POST['start_year_id'], 'class_id' : request.POST['class_id']}
-        form = PupilForm(request.POST)
+        name = request.POST['first_name'].split()
+        last_name = ' '.join(name[:len(name)-1])
+        first_name = name[len(name)-1]
+        data = {'first_name':first_name, 'last_name':last_name, 'birthday':request.POST['birthday'], 'sex':request.POST['sex'],'ban_dk':request.POST['ban_dk'], 'school_join_date':request.POST['school_join_date'], 'start_year_id':request.POST['start_year_id'], 'class_id' : request.POST['class_id']}
+        form = PupilForm(data)
         if form.is_valid():
             form.save()
             message = 'You have added new student'
+            form = PupilForm()
         else:
             message = 'Please check your information, something is wrong'
 
     t = loader.get_template('school/students.html')
-    c = RequestContext(request, {'form' : form, 'message' : message, 'studentList' : studentList})
+    c = RequestContext(request, {'form': form, 'message': message, 'studentList': studentList})
     return HttpResponse(t.render(c))
 
 def viewStudentDetail(request, student_id):

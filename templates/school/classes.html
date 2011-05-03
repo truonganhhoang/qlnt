@@ -12,9 +12,8 @@ function confirmDelete()
 }
 </script>
 
-<table border=1 width = "100%" >
+<table border=1 width = "90%" align = "center">
 	<tr>
-		<td align="center" width="10%"> STT </td>
 		<td align="center" width="20%"> Tên Lớp </td>
 		<td align="center" width="20%"> Khối </td>
 		<td align="center" width="25%"> Tên Giáo Viên </td>
@@ -23,8 +22,7 @@ function confirmDelete()
 	</tr>
 	{% for class in classList %}
 	<tr>
-		<td align="center" width="10%"> <a href="{%url school.views.school_index  %}viewClassDetail/{{class.id}}" >{{ss.id}} </td>
-		<td align="center" width="20%"> {{class.name}} </td>
+		<td align="center" width="20%"> <a href="{%url school.views.school_index  %}viewClassDetail/{{class.id}}" >{{class.name}} </a></td>
 		<td align="center" width="20%"> {{class.block_id}} </td>
 		<td align="center" width="25%"> {{class.teacher_id}} </td>
 		<td align="center" width="20%"> {{class.year_id}} </td>
@@ -33,11 +31,10 @@ function confirmDelete()
 	{% endfor %}
 </table>
 
-<table border = 0 width = "100%">
+<table border = 0 width = "90%" align = "center">
 	<form action="/school/classes" method="post">{% csrf_token %}
 	<tr>
   		{{ form.non_field_errors }}
-  		<td width = "10%"> </td>
   		<td align="center" width="20%">
   		<div class="fieldWrapper">
     		{{ form.name.errors }}
