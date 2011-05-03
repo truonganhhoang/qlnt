@@ -53,7 +53,7 @@ def school_index(request):
             return render_to_response(r'school/finish_year.html', context_instance = context)    
     context = RequestContext(request, {'school':school})
     return render_to_response(r'school/school.html', context_instance = context)
-    
+@transaction.commit_manually    
 def b1(request):
     # tao moi cac khoi neu truong moi thanh lap
     school = request.session['school']
@@ -121,6 +121,7 @@ def b1(request):
                     subject.hs = 1
                     subject.class_id = _class
                     subject.save()
+        transaction.commit()
         # -- day cac hoc sinh len lop        
         last_year = school.year_set.filter( time__exact = current_year -1)
         if last_year:
@@ -151,12 +152,14 @@ def b1(request):
                                 student.save()
                             else:
                                 pass
+            transaction.commit()
         else: # truong ko co nam cu
             pass
         # render HTML
     else: 
         #raise Exception(u'Start_year: đã bắt đầu năm học rồi ?')    
         pass
+    transaction.commit()
     context = RequestContext(request, {'school':school})
     return render_to_response(START_YEAR, context_instance = context)                                            
 def classes(request):
@@ -1754,7 +1757,8 @@ def nhap_danh_sach_trung_tuyen(request):
     print request.session['school']
     context = RequestContext(request, {'form':form,})
     return render_to_response(NHAP_DANH_SACH_TRUNG_TUYEN, context_instance = context)
-   
+
+@transaction.commit_manually   
 def manual_adding(request):
     school = request.session['school']
     _class_list = [(u'0',u'---')]
@@ -1802,6 +1806,7 @@ def manual_adding(request):
                         if  find.class_id != chosen_class:
                             find.class_id = chosen_class
                             find.save()
+                transaction.commit()
                 message = u'Bạn vừa nhập thành công danh sách học sinh trúng tuyển.'
                 student_list=[]
                 request.session['student_list'] = student_list
@@ -1823,6 +1828,7 @@ def manual_adding(request):
         student_list = []
         request.session['student_list'] = student_list
         form = ManualAddingForm( class_list = _class_list)
+    transaction.commit()
     context = RequestContext( request, {'student_list': student_list})    
     return render_to_response(NHAP_BANG_TAY, {'form':form}, context_instance = context)   
 
@@ -1830,6 +1836,7 @@ def manual_adding(request):
 def danh_sach_trung_tuyen(request):
     student_list = request.session['student_list']
     school = request.session['school']
+    term = school.year_set.latest('time').term_set.latest('number')
     chosen_class = request.session['chosen_class']
     print "chosen_class: ", chosen_class
     if chosen_class != u'0':
@@ -1861,11 +1868,40 @@ def danh_sach_trung_tuyen(request):
                     st.start_year_id = year
                     st.class_id = chosen_class
                     st.save()
+                    
+                    if chosen_class:
+                        subject_list = chosen_class.subject_set.all()
+                        for subject in subject_list:
+                            mark = Mark()
+                            mark.subject_id = subject
+                            mark.student_id = st
+                            mark.term_id = term
+                            mark.save()
                 else:
                     find = find[0]
                     if  find.class_id != chosen_class:
-                        find.class_id = chosen_class
-                        find.save()
+                        if find.class_id.block_id.number == chosen_class.block_id.number:
+                            marks = find.mark_set.all()
+                            # disassociated 
+                            for mark in marks:
+                                mark.student_id = None
+                                mark.save()    
+                            #
+                            # transfer mark
+                                
+                            #----------------
+                            find.class_id = chosen_class
+                            find.save()
+                            
+                            if chosen_class:
+                                subject_list = chosen_class.subject_set.all()
+                                for subject in subject_list:
+                                    mark = Mark()
+                                    mark.subject_id = subject
+                                    mark.student_id = st
+                                    mark.term_id = term
+                                    mark.save()
+                    transaction.commit()
             transaction.commit()
             message = u'Bạn vừa nhập thành công danh sách học sinh trúng tuyển.'
             student_list=[]
