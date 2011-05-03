@@ -3,6 +3,8 @@
 # open path for template folder
 import os.path
 import django
+from django.conf import settings
+
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
@@ -181,3 +183,8 @@ LOCALE_PATHS = (
 )
 
 AUTH_PROFILE_MODULE = 'app.UserProfile'
+
+# coverage report directory
+COVERAGE_REPORT_HTML_OUTPUT_DIR = (
+    os.path.join(os.path.dirname(__file__), 'coverage_report')
+)
