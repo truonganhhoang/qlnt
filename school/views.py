@@ -15,6 +15,7 @@ import xlrd
 NHAP_DANH_SACH_TRUNG_TUYEN = r'school/import/nhap_danh_sach_trung_tuyen.html'
 DANH_SACH_TRUNG_TUYEN = r'school/import/danh_sach_trung_tuyen.html'
 START_YEAR = r'school/start_year.html'
+NHAP_BANG_TAY = r'school/import/manual_adding.html'
 TEMP_FILE_LOCATION = os.path.dirname(__file__)
 
 class MarkID:
@@ -1632,6 +1633,12 @@ class UploadImportFileForm(forms.Form):
         self.fields['the_class'] = forms.ChoiceField(label=u'Chọn lớp:', choices = class_list, required = False)
         self.fields['import_file'] = forms.FileField(label=u'Chọn file excel:')
         
+class ManualAddingForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        class_list = kwargs.pop('class_list')
+        super(ManualAddingForm, self).__init__(*args, **kwargs)
+        self.fields['the_class'] = forms.ChoiceField(label=u'Chọn lớp:', choices = class_list, required = False)
+        
 def to_date(value ):
     v=value.split('-')
     return date( int(v[2]), int(v[1]), int(v[0]))
@@ -1735,7 +1742,78 @@ def nhap_danh_sach_trung_tuyen(request):
     print request.session['school']
     context = RequestContext(request, {'form':form,})
     return render_to_response(NHAP_DANH_SACH_TRUNG_TUYEN, context_instance = context)
-        
+   
+def manual_adding(request):
+    school = request.session['school']
+    _class_list = [(u'0',u'---')]
+    message = None
+    try:
+        this_year = school.year_set.latest('time')
+        temp = this_year.class_set.all()
+        for _class in temp:
+            _class_list.append((_class.id, _class.name))
+    except Exception as e:
+        print e
+        _class_list = None
+    if request.method == 'POST':
+        form = ManualAddingForm(request.POST, class_list = _class_list)
+        student_list = request.session['student_list']
+        if form.is_valid():
+            chosen_class = form.cleaned_data['the_class']
+            if chosen_class != u'0':
+                chosen_class = school.year_set.latest('time').class_set.get(id = chosen_class)
+            else:
+                chosen_class = None
+            if request.POST['clickedButton'] == 'save':
+                year = school.startyear_set.get( time = datetime.date.today().year)
+                today = datetime.date.today()   
+                for student in student_list:
+                    name = student['ten'].split()
+                    last_name = ' '.join(name[:len(name)-1])
+                    first_name= name[len(name)-1]
+                    find = year.pupil_set.filter( first_name__exact = first_name)\
+                                         .filter(last_name__exact = last_name)\
+                                         .filter(birthday__exact = student['ngay_sinh'])
+                    if not find:
+                        st = Pupil()
+                        st.first_name = first_name
+                        st.last_name = last_name
+    
+                        st.birthday = student['ngay_sinh']
+                        st.school_join_date = today
+                        st.ban_dk = student['nguyen_vong']
+                        st.start_year_id = year
+                        st.class_id = chosen_class
+                        st.save()
+                    else:
+                        find = find[0]
+                        if  find.class_id != chosen_class:
+                            find.class_id = chosen_class
+                            find.save()
+                message = u'Bạn vừa nhập thành công danh sách học sinh trúng tuyển.'
+                student_list=[]
+                request.session['student_list'] = student_list
+            elif request.POST['clickedButton'] == 'add':
+                print "button add has been clicked"
+            
+                diem = float(request.POST['diem_hs_trung_tuyen'])
+                print "diem: ", diem
+                ns = to_date(request.POST['ns_hs_trung_tuyen'])
+                print "ngay sinh: ", ns
+                element = { 'ten': request.POST['name_hs_trung_tuyen'],
+                            'ngay_sinh': ns,
+                            'nguyen_vong': request.POST['nv_hs_trung_tuyen'],
+                            'tong_diem': diem,
+                           }
+                student_list.append(element)
+                request.session['student_list'] = student_list                            
+    else:
+        student_list = []
+        request.session['student_list'] = student_list
+        form = ManualAddingForm( class_list = _class_list)
+    context = RequestContext( request, {'student_list': student_list})    
+    return render_to_response(NHAP_BANG_TAY, {'form':form}, context_instance = context)   
+     
 def danh_sach_trung_tuyen(request):
     student_list = request.session['student_list']
     school = request.session['school']
