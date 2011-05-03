@@ -8,6 +8,9 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import render_to_response
 from django.template import RequestContext, loader
 from django.core.exceptions import *
+from django.db import transaction
+
+
 from school.models import *
 from school.school_settings import *
 import xlrd
@@ -1822,7 +1825,8 @@ def manual_adding(request):
         form = ManualAddingForm( class_list = _class_list)
     context = RequestContext( request, {'student_list': student_list})    
     return render_to_response(NHAP_BANG_TAY, {'form':form}, context_instance = context)   
-     
+
+@transaction.commit_manually     
 def danh_sach_trung_tuyen(request):
     student_list = request.session['student_list']
     school = request.session['school']
@@ -1862,6 +1866,7 @@ def danh_sach_trung_tuyen(request):
                     if  find.class_id != chosen_class:
                         find.class_id = chosen_class
                         find.save()
+            transaction.commit()
             message = u'Bạn vừa nhập thành công danh sách học sinh trúng tuyển.'
             student_list=[]
             request.session['student_list'] = student_list
@@ -1879,7 +1884,9 @@ def danh_sach_trung_tuyen(request):
                        }
             student_list.append(element)
             request.session['student_list'] = student_list
+            
     context = RequestContext(request, {'student_list': student_list})
+    transaction.commit()
     return render_to_response(DANH_SACH_TRUNG_TUYEN, {'message':message}, context_instance = context)
 #------------------------------------------------------------------------------------
 def diem_danh(request, class_id, day, month, year):
