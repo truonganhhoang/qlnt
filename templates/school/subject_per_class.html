@@ -9,12 +9,13 @@ function confirmDelete()
 }
 </script>
 
-<table border=1 width = "60%" align = "center">
+<table border=1 width = "70%" align = "center">
     <tr>
         <td align="center" width="20%"> Tên Môn Học</td>
         <td align="center" width="10%"> Hệ số </td>
         <td align="center" width="25%"> Giáo viên</td>
-        <td width = "5%"> <a href = ""></a></td>
+		<td align="center" width="10%"></td>
+        <td width = "5%"> </td>
     </tr>
 
     {% if message != None %}
@@ -23,10 +24,10 @@ function confirmDelete()
 
     {% for ss in subjectList %}
     <tr>
-        <td align="center" width="20%"> <a href="{%url school.views.school_index  %}markForASubject/{{ss.id}}"> {{ss.name}}</a> </td>
+        <td align="center" width="20%"> <a href="{%url school.views.school_index  %}viewSubjectDetail/{{ss.id}}"> {{ss.name}}</a> </td>
         <td align="center" width="10%"> {{ss.hs}} </td>
-
         <td align="center" width="25%"> <a href="{%url school.views.school_index  %}viewTeacherDetail/{{ss.teacher_id.id}}">{{ss.teacher_id}}</td>
+		<td align="center" width="10%"> <a href="{%url school.views.school_index  %}markForASubject/{{class_id}}/{{ss.id}}"> Điểm </a></td>
         <td width = "5%"> <a href = "{%url school.views.school_index  %}deleteSubject/{{ss.id}}" onclick="return confirmDelete();">xóa</a></td>
     </tr>
     {% endfor %}
