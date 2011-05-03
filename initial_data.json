@@ -1,0 +1,149 @@
+[
+  {
+    "model": "school.School",
+    "pk": 1,
+    "fields": {
+        "school_code": "NT",
+        "name": "THPT NT",
+        "address": "Hai Duong",
+        "school_level": 3,
+        "status" : 0
+    }
+  },
+  {
+    "model": "school.DanhSachLoaiLop",
+    "pk": 1,
+    "fields": {
+        "loai": "A",
+        "school_id": 1
+    }
+  },
+  {
+    "model": "school.DanhSachLoaiLop",
+    "pk": 2,
+    "fields": {
+        "loai": "B",
+        "school_id": 1
+    }
+  },
+  {
+    "model": "school.DanhSachLoaiLop",
+    "pk": 3,
+    "fields": {
+        "loai": "C",
+        "school_id": 1
+    }
+  },
+  {
+    "model": "school.DanhSachLoaiLop",
+    "pk": 4,
+    "fields": {
+        "loai": "D",
+        "school_id": 1
+    }
+  },
+  {
+    "model": "school.DanhSachLoaiLop",
+    "pk": 5,
+    "fields": {
+        "loai": "E",
+        "school_id": 1
+    }
+  },
+  {
+    "model": "school.DanhSachLoaiLop",
+    "pk": 6,
+    "fields": {
+        "loai": "F",
+        "school_id": 1
+    }
+  },
+  {
+    "model": "school.DanhSachLoaiLop",
+    "pk": 7,
+    "fields": {
+        "loai": "G",
+        "school_id": 1
+    }
+  },
+  {
+    "model": "school.DanhSachLoaiLop",
+    "pk": 8,
+    "fields": {
+        "loai": "H",
+        "school_id": 1
+    }
+  },
+  {
+    "model": "school.DanhSachLoaiLop",
+    "pk": 9,
+    "fields": {
+        "loai": "I",
+        "school_id": 1
+    }
+  },
+  {
+    "model": "school.DanhSachLoaiLop",
+    "pk": 10,
+    "fields": {
+        "loai": "J",
+        "school_id": 1
+    }
+  },
+  {
+    "model": "school.DanhSachLoaiLop",
+    "pk": 11,
+    "fields": {
+        "loai": "K",
+        "school_id": 1
+    }
+  },
+  {
+    "model": "school.DanhSachLoaiLop",
+    "pk": 12,
+    "fields": {
+        "loai": "L",
+        "school_id": 1
+    }
+  },
+  {
+    "model": "school.DanhSachLoaiLop",
+    "pk": 13,
+    "fields": {
+        "loai": "M",
+        "school_id": 1
+    }
+  },
+  {
+    "model": "school.DanhSachLoaiLop",
+    "pk": 14,
+    "fields": {
+        "loai": "N",
+        "school_id": 1
+    }
+  },
+  {
+    "model": "school.DanhSachLoaiLop",
+    "pk": 15,
+    "fields": {
+        "loai": "O",
+        "school_id": 1
+    }
+  },
+  {
+    "model": "school.DanhSachLoaiLop",
+    "pk": 16,
+    "fields": {
+        "loai": "P",
+        "school_id": 1
+    }
+  },
+  {
+    "model": "school.DanhSachLoaiLop",
+    "pk": 18,
+    "fields": {
+        "loai": "Q",
+        "school_id": 1
+    }
+  }
+]
