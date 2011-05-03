@@ -145,6 +145,7 @@ INSTALLED_APPS = (
     'school',
     'persistent_messages',
     'objectpermission',
+    'django_coverage',
 )
 
 # A sample logging configuration. The only tangible logging
