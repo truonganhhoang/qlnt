@@ -214,6 +214,23 @@ def viewTeacherDetail(request, teacher_id):
     c = RequestContext(request, {'form' : form, 'message' : message, 'id' : teacher_id})
     return HttpResponse(t.render(c))
 
+def subjectPerClass(request, class_id):
+    message = None
+    subjectList = Subject.objects.filter(class_id = class_id)
+    form = SubjectForm()
+    if request.method == 'POST':
+        data = {'name':request.POST['name'], 'hs':request.POST['hs'], 'class_id':class_id, 'teacher_id':request.POST['teacher_id']}
+        form = SubjectForm(data)
+        if form.is_valid():
+            form.save()
+            message = 'You have added new subject'
+        else:
+            message = 'Please check your information, something is wrong'
+
+    t = loader.get_template('school/subject_per_class.html')
+    c = RequestContext(request, {'form' : form, 'message' : message,  'subjectList' : subjectList, 'class_id' : class_id})
+    return HttpResponse(t.render(c))
+
 def studentPerClass(request, class_id):
     print ">>", class_id
     message = None
@@ -233,26 +250,6 @@ def studentPerClass(request, class_id):
 
     t = loader.get_template('school/student_per_class.html')
     c = RequestContext(request, {'form': form, 'message': message, 'studentList': studentList, 'class_id': class_id})
-    return HttpResponse(t.render(c))
-
-def studentPerClass(request, class_id):
-    print ">>", class_id
-    message = None
-    form = PupilForm()
-    studentList = Pupil.objects.filter(class_id = class_id)
-    if request.method == 'POST':
-        data = {'first_name':request.POST['first_name'], 'last_name':request.POST['last_name'],
-        'birthday':request.POST['birthday'], 'class_id':class_id, 'sex':request.POST['sex'], 'ban_dk':request.POST['ban_dk'], 'school_join_date':request.POST['school_join_date'], 'start_year_id':request.POST['start_year_id']}
-        print ">>", data
-        form = PupilForm(data)
-        if form.is_valid():
-            form.save()
-            message = 'You have added new student'
-        else:
-            message = 'Please check your information, something is wrong'
-
-    t = loader.get_template('school/student_per_class.html')
-    c = RequestContext(request, {'form' : form, 'message' : message, 'studentList' : studentList, 'class_id' : class_id})
     return HttpResponse(t.render(c))
 
 def students(request):
