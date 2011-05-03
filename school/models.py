@@ -9,7 +9,7 @@ TERM_CHOICES = ((1, u'1'), (2, u'2'),(3, u'3'),)
 HK_CHOICES = ((u'T', u'Tốt'), (u'K', u'Khá'),(u'TB',u'Trung Bình'),(u'Y', u'Yếu'),)
 HL_CHOICES = ((u'G', u'Giỏi'), (u'K', u'Khá'),(u'TB',u'Trung Bình'),(u'Y', u'Yếu'),(u'Kem', u'Kém'))
 #k co nghia la khong duoc danh hieu gi
-DH_CHOICES = ((u'XS', u'học sinh xuất sắc'),(u'G', u'hoc sinh giỏi'), (u'TT', u'hoc sinh tiên tiến'),(u'k',u''))
+DH_CHOICES = ((u'XS', u'học sinh xuất sắc'),(u'G', u'hoc sinh giỏi'), (u'TT', u'hoc sinh tiên tiến'),(u'K',u'Không được gì'))
 
 SCHOOL_LEVEL_CHOICE = ((1, u'1'), (2, u'2'), (3, u'3'))
 DIEM_DANH_TYPE = ((u'Có phép', u'Có phép'),(u'Không phép', u'Không phép'),(u'k','Đi học'))
@@ -145,6 +145,8 @@ class StartYear(models.Model):
 	
 class Term(models.Model):
 	number = models.IntegerField(max_length=1, choices = TERM_CHOICES)
+	# neu active =false thi khong cho phep sua diem nua
+	#active = models.BooleanField(default=True)
 	year_id= models.ForeignKey(Year)
 	def __unicode__(self):
 		return str(self.number)+" "+str(self.year_id.time)		 
@@ -174,7 +176,7 @@ class ClassForm(forms.ModelForm):
 		model = Class
 		
 class Pupil(BasicPersonInfo):
-	
+	pupil_code =models.IntegerField()
 	year = models.IntegerField(validators = [validate_year], blank = True, null = True) #year that pupil go to class 1
 
 	school_join_date = models.DateField(default = date.today(),validators=[validate_join_date])
@@ -248,7 +250,7 @@ class Mark(models.Model):
 	tb = models.FloatField( null = True, blank = True, validators = [validate_mark])
 	
 	subject_id = models.ForeignKey(Subject)
-	student_id = models.ForeignKey(Pupil, null = True, blank = True) # can be null because of disassociating mark from student when he/she is transferred to another class 		
+	student_id = models.ForeignKey(Pupil)		
 	term_id	= models.ForeignKey(Term)
 	def __unicode__(self):
 		return self.subject_id.name +" "+str(self.term_id.number)+self.student_id.first_name
@@ -317,24 +319,24 @@ class TBNam(models.Model):
 	hl_nam=models.CharField( max_length = 3, choices = HL_CHOICES,null=True,blank=True)
 	#hanh kiem nam
 	hk_nam=models.CharField( max_length = 2, choices = HK_CHOICES,null=True,blank=True)
+	tong_so_ngay_nghi=models.SmallIntegerField(null = True, blank= True)
 	#ghi danh hieu ma hoc sinh dat dc trong hoc ky	
 	danh_hieu_nam=models.CharField( max_length = 2, choices = DH_CHOICES,null=True,blank=True)
-	len_lop=models.NullBooleanField(choices=LENLOP_CHOICES,default=True,null=True,blank=True)
+	len_lop=models.NullBooleanField(choices=LENLOP_CHOICES,null=True,blank=True)
 	#danh dau thi lai
 	
-	thi_lai = models.BooleanField(blank = True, default = False)
+	thi_lai = models.NullBooleanField( null=True,blank=True)
 	tb_thi_lai=models.FloatField( null = True, blank = True, validators = [validate_mark])
 	hl_thi_lai=models.CharField( blank=True,max_length = 3, choices = HL_CHOICES)
 	#danh dau ren luyen lai trong giai doan he
-	ren_luyen_lai=models.BooleanField(blank = True, default = False)
+	ren_luyen_lai=models.NullBooleanField(blank = True,null=True)
 	hk_ren_luyen_lai=models.CharField(blank=True,max_length = 2, choices = HK_CHOICES)
-	#danh dau len lop hay ko
-	len_lop_sau_he=models.NullBooleanField(null=True,blank = True,choices =LENLOP_CHOICES)
+	#len_lop_sau_he=models.NullBooleanField(null=True,blank = True,choices =LENLOP_CHOICES)
 	
 	
 	def __unicode__(self):
 		return self.student_id.__unicode__()+" "+str(self.year_id.__unicode__())+" "+ str(self.tb_nam) 
-	
+
 class DiemDanh(models.Model):
     student_id = models.ForeignKey(Pupil)
     time = models.DateField()
@@ -350,13 +352,13 @@ class DiemDanhForm(forms.ModelForm):
         
 class TKDiemDanh(models.Model):
     student_id = models.ForeignKey(Pupil)
-    tong_so = models.IntegerField()
-    co_phep = models.IntegerField()
-    khong_phep = models.IntegerField()
+    tong_so = models.IntegerField(blank=True)
+    co_phep = models.IntegerField(blank=True)
+    khong_phep = models.IntegerField(blank=True)
     term_id = models.ForeignKey(Term)
     
     def __unicode__(self):
-        return str(self.stundent_id) + " " + str(self.tong_so)
+        return str(self.student_id) +" "+ self.term_id.__unicode__()+" " + str(self.tong_so)
       
 class DateForm(forms.Form):
     day = forms.IntegerField(required = True, label = 'Ngày', help_text = '\n')
