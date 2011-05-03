@@ -1807,7 +1807,7 @@ def diem_danh(request, class_id, day, month, year):
     for p in pupilList:
         form.append(DiemDanhForm())
         try:
-            dd = DiemDanh.objects.get(time__exact=time, student_id__exact = p.id, term__exact = term.id)
+            dd = DiemDanh.objects.get(time__exact=time, student_id__exact = p.id, term_id__exact = term.id)
             form[i] = DiemDanhForm(instance = dd)
             i = i+1
         except ObjectDoesNotExist:
@@ -1819,9 +1819,9 @@ def diem_danh(request, class_id, day, month, year):
         i = 0
         for p in pupilList:
             try:
-                dd = DiemDanh.objects.get(time__exact=time, student_id__exact = p.id, term__exact = term.id)
+                dd = DiemDanh.objects.get(time__exact=time, student_id__exact = p.id, term_id__exact = term.id)
                 if list[i] != 'k':
-                    data = {'student_id':p.id,'time':time,'loai':list[i],'term':term.id}
+                    data = {'student_id':p.id,'time':time,'loai':list[i],'term_id':term.id}
                     form[i] = DiemDanhForm(data, instance = dd)
                     if form[i].is_valid():
                         form[i].save()
@@ -1831,7 +1831,7 @@ def diem_danh(request, class_id, day, month, year):
                 i = i + 1
             except ObjectDoesNotExist:
                 if list[i] != 'k':
-                    data = {'student_id':p.id,'time':time,'loai':list[i],'term':term.id}
+                    data = {'student_id':p.id,'time':time,'loai':list[i],'term_id':term.id}
                     form[i] = DiemDanhForm(data)
                     if form[i].is_valid():
                         form[i].save()
@@ -1861,7 +1861,7 @@ def diem_danh_hs(request, student_id):
     pupil = Pupil.objects.get(id = student_id)
     c = Class.objects.get(id__exact = pupil.class_id.id)
     term = Term.objects.filter(year_id = c.year_id).latest('id')
-    ddl = DiemDanh.objects.filter(student_id = student_id, term = term.id)
+    ddl = DiemDanh.objects.filter(student_id = student_id, term_id = term.id)
     form = []
     iform = DiemDanhForm()
     for dd in ddl:
@@ -1872,7 +1872,7 @@ def diem_danh_hs(request, student_id):
         i = 0
         for dd in ddl:
             if list[i] != 'k':
-                data = {'student_id':student_id,'time':time[i],'loai':list[i],'term':term.id}
+                data = {'student_id':student_id,'time':time[i],'loai':list[i],'term_id':term.id}
                 form[i] = DiemDanhForm(data, instance = dd)
                 if form[i].is_valid():
                     form[i].save()
@@ -1883,7 +1883,7 @@ def diem_danh_hs(request, student_id):
                 list.remove(list[i])
                 dd.delete()
         if list[i] != 'k':
-            data = {'student_id':student_id,'time':time[i],'loai':list[i],'term':term.id}
+            data = {'student_id':student_id,'time':time[i],'loai':list[i],'term_id':term.id}
             iform = DiemDanhForm(data)
             if iform.is_valid():
                 iform.save()
@@ -1901,10 +1901,9 @@ def tk_diem_danh(student_id):
     ts = DiemDanh.objects.filter(student_id = student_id).count()
     cp = DiemDanh.objects.filter(student_id = student_id, loai = u'C').count()
     kp = ts - cp
-    tk = TKDiemDanh({'student_id':student_id,'tong_so':ts,'co_phep':cp,'khong_phep':kp,'term':term.id})
+    tk = TKDiemDanh({'student_id':student_id,'tong_so':ts,'co_phep':cp,'khong_phep':kp,'term_id':term.id})
     tk.save()
-
-
+    
 def test(request, school_code = None):
     t = loader.get_template('school/test.html')
     
