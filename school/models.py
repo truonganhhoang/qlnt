@@ -250,7 +250,7 @@ class Mark(models.Model):
 	tb = models.FloatField( null = True, blank = True, validators = [validate_mark])
 	
 	subject_id = models.ForeignKey(Subject)
-	student_id = models.ForeignKey(Pupil)		
+	student_id = models.ForeignKey(Pupil,null=True,blank=True)		
 	term_id	= models.ForeignKey(Term)
 	def __unicode__(self):
 		return self.subject_id.name +" "+str(self.term_id.number)+self.student_id.first_name
