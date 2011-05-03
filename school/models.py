@@ -339,22 +339,22 @@ class DiemDanh(models.Model):
     student_id = models.ForeignKey(Pupil)
     time = models.DateField()
     loai = models.CharField( max_length = 10, choices = DIEM_DANH_TYPE, default = 'k') 
-    term = models.ForeignKey(Term)
-	
+    term_id = models.ForeignKey(Term)
+    
     def __unicode__(self):
         return str(self.student_id) + " " + str(self.time)
-	
+    
 class DiemDanhForm(forms.ModelForm):
-	class Meta:
-		model = DiemDanh
-		
+    class Meta:
+        model = DiemDanh
+        
 class TKDiemDanh(models.Model):
     student_id = models.ForeignKey(Pupil)
     tong_so = models.IntegerField()
     co_phep = models.IntegerField()
     khong_phep = models.IntegerField()
-    term = models.ForeignKey(Term)
-	
+    term_id = models.ForeignKey(Term)
+    
     def __unicode__(self):
         return str(self.stundent_id) + " " + str(self.tong_so)
       
