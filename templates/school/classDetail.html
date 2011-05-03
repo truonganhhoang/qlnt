@@ -1,6 +1,13 @@
 {% extends "school/base_school.html" %}
 
 {% block content %}
+<table border=0 align = "center" width="75%">
+	<tr>
+		<td width="25%" align = "center"><a href="{%url school.views.school_index  %}diemdanh/{{class_view.id}}">Điểm danh</a></td>
+		<td width="25%" align = "center"><a href="">Khen thưởng</a></td>
+		<td width="25%" align = "center"><a href="">Kỉ luật</a></td>
+	</tr>
+</table>
 <h1>Lớp {{class_view.name}} năm học {{class_view.year_id}}</h1>
 <ul>
 <li><a href = "{%url school.views.school_index  %}studentPerClass/{{class_view.id}}">Quản lý học sinh</a></li>
