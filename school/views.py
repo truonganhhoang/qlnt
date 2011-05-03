@@ -254,7 +254,7 @@ def studentPerClass(request, class_id):
 
 def students(request):
     message = None
-   
+    form = PupilForm()   
     studentList = Pupil.objects.all()
     if request.method == 'POST':
         name = request.POST['first_name'].split()
