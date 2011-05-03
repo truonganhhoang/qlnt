@@ -23,7 +23,7 @@ function confirmDelete()
 
     {% for ss in subjectList %}
     <tr>
-        <td align="center" width="20%"> <a href="{%url school.views.school_index  %}viewSubjectDetail/{{ss.id}}"> {{ss.name}}</a> </td>
+        <td align="center" width="20%"> <a href="{%url school.views.school_index  %}markForASubject/{{ss.id}}"> {{ss.name}}</a> </td>
         <td align="center" width="10%"> {{ss.hs}} </td>
 
         <td align="center" width="25%"> <a href="{%url school.views.school_index  %}viewTeacherDetail/{{ss.teacher_id.id}}">{{ss.teacher_id}}</td>
