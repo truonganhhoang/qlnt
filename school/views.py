@@ -477,17 +477,17 @@ def manual_adding(request):
     context = RequestContext( request, {'student_list': student_list})    
     return render_to_response(NHAP_BANG_TAY, {'form':form}, context_instance = context)   
 
-@transaction.commit_manually     
+@transaction.commit_on_success    
 def danh_sach_trung_tuyen(request):
     student_list = request.session['student_list']
     school = request.session['school']
     term = school.year_set.latest('time').term_set.latest('number')
     chosen_class = request.session['chosen_class']
-    print "chosen_class: ", chosen_class
     if chosen_class != u'0':
         chosen_class = school.year_set.latest('time').class_set.get(id = chosen_class)
     else:
         chosen_class = None
+    print "chosen_class: ", chosen_class
     message = None
    
     if request.method == 'POST':
@@ -503,7 +503,9 @@ def danh_sach_trung_tuyen(request):
                 find = year.pupil_set.filter( first_name__exact = first_name)\
                                      .filter(last_name__exact = last_name)\
                                      .filter(birthday__exact = student['ngay_sinh'])
+                print "tag 1"
                 if not find:
+                    print "tag 1.1"
                     st = Pupil()
                     st.first_name = first_name
                     st.last_name = last_name
@@ -512,8 +514,8 @@ def danh_sach_trung_tuyen(request):
                     st.ban_dk = student['nguyen_vong']
                     st.start_year_id = year
                     st.class_id = chosen_class
+                    print st, chosen_class
                     st.save()
-                    
                     if chosen_class:
                         subject_list = chosen_class.subject_set.all()
                         for subject in subject_list:
@@ -523,6 +525,7 @@ def danh_sach_trung_tuyen(request):
                             mark.term_id = term
                             mark.save()
                 else:
+                    print "tag 1.2"
                     find = find[0]
                     if  find.class_id != chosen_class:
                         if find.class_id.block_id.number == chosen_class.block_id.number:
@@ -546,8 +549,7 @@ def danh_sach_trung_tuyen(request):
                                     mark.student_id = st
                                     mark.term_id = term
                                     mark.save()
-                    transaction.commit()
-            transaction.commit()
+                    
             message = u'Bạn vừa nhập thành công danh sách học sinh trúng tuyển.'
             student_list=[]
             request.session['student_list'] = student_list
@@ -565,9 +567,8 @@ def danh_sach_trung_tuyen(request):
                        }
             student_list.append(element)
             request.session['student_list'] = student_list
-            
+    
     context = RequestContext(request, {'student_list': student_list})
-    transaction.commit()
     return render_to_response(DANH_SACH_TRUNG_TUYEN, {'message':message}, context_instance = context)
 #------------------------------------------------------------------------------------
 def diem_danh(request, class_id, day, month, year):

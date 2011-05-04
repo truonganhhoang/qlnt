@@ -177,7 +177,6 @@ class ClassForm(forms.ModelForm):
 		model = Class
 		
 class Pupil(BasicPersonInfo):
-	pupil_code =models.IntegerField()
 	year = models.IntegerField(validators = [validate_year], blank = True, null = True) #year that pupil go to class 1
 
 	school_join_date = models.DateField(default = date.today(),validators=[validate_join_date])
