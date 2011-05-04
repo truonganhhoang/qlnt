@@ -355,9 +355,9 @@ class DiemDanhForm(forms.ModelForm):
         
 class TKDiemDanh(models.Model):
     student_id = models.ForeignKey(Pupil)
-    tong_so = models.IntegerField(blank=True)
-    co_phep = models.IntegerField(blank=True)
-    khong_phep = models.IntegerField(blank=True)
+    tong_so = models.IntegerField(blank=True,null=True)
+    co_phep = models.IntegerField(blank=True,null=True)
+    khong_phep = models.IntegerField(blank=True,null=True)
     term_id = models.ForeignKey(Term)
     
     def __unicode__(self):
