@@ -273,26 +273,29 @@ class MarkForm(forms.ModelForm):
 		model = Mark
 		
 class KhenThuong(models.Model):
-	student_id = models.ForeignKey(Pupil)
-	term_id = models.ForeignKey(Term)
-	time = models.DateField(blank = True)
-	danh_hieu = models.CharField(max_length = 100)
-	place= models.CharField(max_length = 100, blank = True)
-	des = models.CharField(max_length = 400, blank = True) # description
+    student_id = models.ForeignKey(Pupil)
+    term_id = models.ForeignKey(Term)
+    time = models.DateField(blank = True)
+    hinh_thuc = models.CharField(max_length = 100)
+    dia_diem= models.CharField(max_length = 100, blank = True, null = True)
+    noi_dung = models.CharField(max_length = 400, blank = True, null = True) # description
+    save = models.BooleanField()
 	
-	def __unicode__(self):
-		return self.danh_hieu
+    def __unicode__(self):
+        return self.danh_hieu
 	
 class KiLuat(models.Model):
-	student_id = models.ForeignKey(Pupil)
-	term_id = models.ForeignKey(Term)
-	time = models.DateField(blank = True)
-	hinh_thuc = models.CharField(max_length = 100)
-	des = models.CharField(max_length = 400, blank = True) # description
+    student_id = models.ForeignKey(Pupil)
+    term_id = models.ForeignKey(Term)
+    time = models.DateField(blank = True)
+    hinh_thuc = models.CharField(max_length = 100)
+    dia_diem= models.CharField(max_length = 100, blank = True, null = True)
+    noi_dung = models.CharField(max_length = 400, blank = True, null = True) # description
+    save = models.BooleanField()
 	
-	def __unicode__(self):
-		return self.hinh_thuc
-
+    def __unicode__(self):
+        return self.danh_hieu
+        
 class HanhKiem(models.Model):
 	student_id = models.ForeignKey(Pupil)
 	term_id = models.ForeignKey(Term)

@@ -9,5 +9,7 @@
             <td><input type ="submit" value="Chọn"/></td>
         </form>
     {% endif %}
-    {{"Hiện không có kì học nào đang diễn ra"}}
+    {%if message == None %}
+        {{"Hiện không có kì học nào đang diễn ra"}}
+    {% endif %}
 {% endblock %}
