@@ -27,7 +27,7 @@ function confirmDelete()
         <td align="center" width="20%"> <a href="{%url school.views.school_index  %}viewSubjectDetail/{{ss.id}}"> {{ss.name}}</a> </td>
         <td align="center" width="10%"> {{ss.hs}} </td>
         <td align="center" width="25%"> <a href="{%url school.views.school_index  %}viewTeacherDetail/{{ss.teacher_id.id}}">{{ss.teacher_id}}</td>
-		<td align="center" width="10%"> <a href="{%url school.views.school_index  %}markForASubject/{{class_id}}/{{ss.id}}"> Điểm </a></td>
+		<td align="center" width="10%"> <a href="{%url school.views.school_index  %}markForASubject/{{ss.id}}"> Điểm </a></td>
         <td width = "5%"> <a href = "{%url school.views.school_index  %}deleteSubject/{{ss.id}}" onclick="return confirmDelete();">xóa</a></td>
     </tr>
     {% endfor %}
