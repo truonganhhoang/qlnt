@@ -359,7 +359,11 @@ class TKDiemDanh(models.Model):
     
     def __unicode__(self):
         return str(self.student_id) +" "+ self.term_id.__unicode__()+" " + str(self.tong_so)
-      
+
+class TKDiemDanhForm(forms.ModelForm)        :
+    class Meta:
+        model = TKDiemDanh
+        
 class DateForm(forms.Form):
     day = forms.IntegerField(required = True, label = 'Ngày', help_text = '\n')
     month = forms.IntegerField(required = True, label = 'Tháng', help_text = '\n')

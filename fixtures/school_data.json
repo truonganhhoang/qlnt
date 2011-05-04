@@ -187,7 +187,17 @@
     "pk": 1,
     "fields": {
         "number": 1,
-        "year_id" : 1
+        "year_id" : 1,
+        "active": true
+    }
+  },
+  {
+    "model": "school.Term",
+    "pk": 2,
+    "fields": {
+        "number": 1,
+        "year_id" : 1,
+        "active": false
     }
   },
   {
