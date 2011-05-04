@@ -310,7 +310,7 @@ class TBHocKy(models.Model):
 	danh_hieu_hk=models.CharField( max_length = 2, choices = DH_CHOICES,null=True,blank=True)
 	
 	def __unicode__(self):
-		return  str(self.tb_hk)+" "+str(self.term_id.__unicode__())+str(self.student_id.__unicode__())
+		return  str(self.tb_hk)+" "+ self.term_id.__unicode__() + self.student_id.__unicode__()
 		
 class TBNam(models.Model):
 	student_id = models.ForeignKey(Pupil)
@@ -322,15 +322,15 @@ class TBNam(models.Model):
 	tong_so_ngay_nghi=models.SmallIntegerField(null = True, blank= True)
 	#ghi danh hieu ma hoc sinh dat dc trong hoc ky	
 	danh_hieu_nam=models.CharField( max_length = 2, choices = DH_CHOICES,null=True,blank=True)
-	len_lop=models.NullBooleanField(choices=LENLOP_CHOICES,null=True,blank=True)
+	len_lop=models.NullBooleanField(choices=LENLOP_CHOICES, null=True, blank=True)
 	#danh dau thi lai
 	
 	thi_lai = models.NullBooleanField( null=True,blank=True)
 	tb_thi_lai=models.FloatField( null = True, blank = True, validators = [validate_mark])
-	hl_thi_lai=models.CharField( blank=True,max_length = 3, choices = HL_CHOICES)
+	hl_thi_lai=models.CharField( null = True, blank=True, max_length = 3, choices = HL_CHOICES)
 	#danh dau ren luyen lai trong giai doan he
 	ren_luyen_lai=models.NullBooleanField(blank = True,null=True)
-	hk_ren_luyen_lai=models.CharField(blank=True,max_length = 2, choices = HK_CHOICES)
+	hk_ren_luyen_lai=models.CharField(null=True, blank=True, max_length = 2, choices = HK_CHOICES)
 	#len_lop_sau_he=models.NullBooleanField(null=True,blank = True,choices =LENLOP_CHOICES)
 	
 	

@@ -254,7 +254,7 @@ window.onload = function() { document.onkeypress = catchEnter; };
 	{# day la phan tinh diem cho nhung mon thuoc nhan xet #}
 	{#<----------------------------------------------------------------------------------> #}
 	{%ifequal hsSubject 0 %}
-		{% include  "school\mark_has_comment.html" %}
+		{% include  "school/mark_has_comment.html" %}
 			
 	{% endifequal %}
 
@@ -264,7 +264,7 @@ window.onload = function() { document.onkeypress = catchEnter; };
 
 	
 	{%ifnotequal hsSubject 0 %}
-		{% include  "school\mark_no_comment.html" %}
+		{% include  "school/mark_no_comment.html" %}
 	{% endifnotequal %}
 </form>	
 </table>

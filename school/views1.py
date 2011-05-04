@@ -5,6 +5,8 @@ from django.http import HttpResponse, HttpResponseRedirect
 from school.models import *
 from django.shortcuts import render_to_response
 from django.template import RequestContext, loader
+import os.path 
+
 
 class MarkID:
     def __init__(self,d1,d2,d3,d4,d5,d6,d7,d8,d9,d10,d11,d12,d13,d14,d15,d16):
@@ -437,7 +439,7 @@ def mark_table(request,class_id=4):
     lengthList=0        
     if pupilList!=None:        
         lengthList=pupilList.__len__()    
-    t = loader.get_template('school/mark_table.html')
+    t = loader.get_template(os.path.join('school','mark_table.html'))
     
     c = RequestContext(request, { 
                                 'message' : message,
@@ -517,7 +519,7 @@ def markForAStudent(request,class_id=7,student_id=1):
             tbhk1=student.tbhocky_set.get(term_id=termChoice)
                                     
         
-    t = loader.get_template('school/mark_for_a_student.html')
+    t = loader.get_template(os.path.join('school','mark_for_a_student.html'))
     
     c = RequestContext(request, { 
                                 'message' : message,
@@ -960,7 +962,7 @@ def markForASubject(request,subject_id=2):
     lengthList=0        
     if pupilList!=None:        
         lengthList=pupilList.__len__()    
-    t = loader.get_template('school/mark_for_a_subject.html')
+    t = loader.get_template(os.path.join('school','mark_for_a_subject.html'))
     
     c = RequestContext(request, { 
                                 'message' : message,
@@ -1288,7 +1290,7 @@ def xepLoaiHlTheoLop(request,class_id=7):
     
 
 
-    t = loader.get_template('school/xep_loai_hl_theo_lop.html')
+    t = loader.get_template(os.path.join('school','xep_loai_hl_theo_lop.html'))
     
     c = RequestContext(request, {"message":message, 
                                  "termList":termList,
@@ -1324,7 +1326,7 @@ def finishTerm(request,term_id=8):
         
     ttt=None    
     yearString=str(selectedTerm.year_id.time)+'-'+str(selectedTerm.year_id.time+1)
-    t = loader.get_template('school/finish_term.html')
+    t = loader.get_template(os.path.join('school','finish_term.html'))
     c = RequestContext(request, {"message":message, 
                                  "finishList":finishList,
                                  "notFinishList":notFinishList,
@@ -1356,7 +1358,7 @@ def finishYear(request,year_id=8):
         
     ttt=None    
     yearString=str(selectedYear.time)+'-'+str(selectedYear.time+1)
-    t = loader.get_template('school/finish_year.html')
+    t = loader.get_template(os.path.join('school','finish_year.html'))
     c = RequestContext(request, {"message":message, 
                                  "finishList":finishList,
                                  "notFinishList":notFinishList,
@@ -1472,7 +1474,7 @@ def xlCaNamTheoLop(request,class_id=7):
             repractisedList.append(aPupil)
         allList.append(aPupil)                
     yearString=str(selectedClass.year_id.time)+"-"+str(selectedClass.year_id.time+1)
-    t = loader.get_template('school/xl_ca_nam_theo_lop.html')
+    t = loader.get_template(os.path.join('school','xl_ca_nam_theo_lop.html'))
     
     c = RequestContext(request, {"message":message,
                                  "selectedClass":selectedClass,

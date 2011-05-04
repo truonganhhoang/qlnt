@@ -15,11 +15,12 @@ from school.models import *
 from school.school_settings import *
 import xlrd
 
-NHAP_DANH_SACH_TRUNG_TUYEN = r'school/import/nhap_danh_sach_trung_tuyen.html'
-DANH_SACH_TRUNG_TUYEN = r'school/import/danh_sach_trung_tuyen.html'
-START_YEAR = r'school/start_year.html'
-NHAP_BANG_TAY = r'school/import/manual_adding.html'
-TEMP_FILE_LOCATION = os.path.dirname(__file__)
+NHAP_DANH_SACH_TRUNG_TUYEN = os.path.join('school','import','nhap_danh_sach_trung_tuyen.html')
+DANH_SACH_TRUNG_TUYEN = os.path.join('school','import','danh_sach_trung_tuyen.html')
+START_YEAR = os.path.join('school','start_year.html')
+NHAP_BANG_TAY = os.path.join('school','import','manual_adding.html')
+TEMP_FILE_LOCATION = os.path.join(os.path.dirname(__file__), 'uploaded')
+SCHOOL = os.path.join('school','school.html')
 
 def school_index(request):
     school = School.objects.get( school_code = 'NT') # it's for testing, actually, it should be: school = School.objects.get(id = request['school_id'])
@@ -34,7 +35,7 @@ def school_index(request):
             context = RequestContext(request, {'school':school})
             return render_to_response(r'school/finish_year.html', context_instance = context)    
     context = RequestContext(request, {'school':school})
-    return render_to_response(r'school/school.html', context_instance = context)
+    return render_to_response(SCHOOL, context_instance = context)
 @transaction.commit_manually    
 def b1(request):
     # tao moi cac khoi neu truong moi thanh lap
@@ -77,6 +78,7 @@ def b1(request):
         # create new term
         term = Term()
         term.number = 1
+        term.active = True
         term.year_id = year
         term.save()
         # create new class.
@@ -156,13 +158,13 @@ def classes(request):
         else:
             message = 'Please check your information, something is wrong'
 
-    t = loader.get_template('school/classes.html')
+    t = loader.get_template(os.path.join('school','classes.html'))
     c = RequestContext(request, {'form' : form, 'message' : message, 'classList' : classList})
     return HttpResponse(t.render(c))
 
 def viewClassDetail(request, class_id):
     class_view = Class.objects.get(id = class_id)
-    t = loader.get_template('school/classDetail.html')
+    t = loader.get_template(os.path.join('school','classDetail.html'))
     c = RequestContext(request, {'class_view' : class_view})
     return HttpResponse(t.render(c))
 
@@ -182,7 +184,7 @@ def teachers(request):
         else:
             message = 'Please check your information, something is wrong'
 
-    t = loader.get_template('school/teachers.html')
+    t = loader.get_template(os.path.join('school','teachers.html'))
     c = RequestContext(request, {'form': form, 'message': message, 'teacherList': teacherList})
     return HttpResponse(t.render(c))
 
@@ -198,7 +200,7 @@ def viewTeacherDetail(request, teacher_id):
         else:
             message = 'Please check again'
     
-    t = loader.get_template('school/teacher_detail.html')
+    t = loader.get_template(os.path.join('school','teacher_detail.html'))
     c = RequestContext(request, {'form' : form, 'message' : message, 'id' : teacher_id})
     return HttpResponse(t.render(c))
 
@@ -215,7 +217,7 @@ def subjectPerClass(request, class_id):
         else:
             message = 'Please check your information, something is wrong'
 
-    t = loader.get_template('school/subject_per_class.html')
+    t = loader.get_template(os.path.join('school','subject_per_class.html'))
     c = RequestContext(request, {'form' : form, 'message' : message,  'subjectList' : subjectList, 'class_id' : class_id})
     return HttpResponse(t.render(c))
 
@@ -236,7 +238,7 @@ def studentPerClass(request, class_id):
         else:
             message = 'Please check your information, something is wrong'
 
-    t = loader.get_template('school/student_per_class.html')
+    t = loader.get_template(os.path.join('school','student_per_class.html'))
     c = RequestContext(request, {'form': form, 'message': message, 'studentList': studentList, 'class_id': class_id})
     return HttpResponse(t.render(c))
 
@@ -257,7 +259,7 @@ def students(request):
         else:
             message = 'Please check your information, something is wrong'
 
-    t = loader.get_template('school/students.html')
+    t = loader.get_template(os.path.join('school','students.html'))
     c = RequestContext(request, {'form': form, 'message': message, 'studentList': studentList})
     return HttpResponse(t.render(c))
 
@@ -273,7 +275,7 @@ def viewStudentDetail(request, student_id):
         else:
             message = 'Please check again'
 
-    t = loader.get_template('school/student_detail.html')
+    t = loader.get_template(os.path.join('school','student_detail.html'))
     c = RequestContext(request, {'form' : form, 'message' : message, 
                                  'id' : student_id,
                                  'class_id':pupil.class_id.id
@@ -483,6 +485,7 @@ def danh_sach_trung_tuyen(request):
     school = request.session['school']
     term = school.year_set.latest('time').term_set.latest('number')
     chosen_class = request.session['chosen_class']
+    current_year = school.year_set.latest('time')
     if chosen_class != u'0':
         chosen_class = school.year_set.latest('time').class_set.get(id = chosen_class)
     else:
@@ -503,9 +506,7 @@ def danh_sach_trung_tuyen(request):
                 find = year.pupil_set.filter( first_name__exact = first_name)\
                                      .filter(last_name__exact = last_name)\
                                      .filter(birthday__exact = student['ngay_sinh'])
-                print "tag 1"
                 if not find:
-                    print "tag 1.1"
                     st = Pupil()
                     st.first_name = first_name
                     st.last_name = last_name
@@ -514,8 +515,18 @@ def danh_sach_trung_tuyen(request):
                     st.ban_dk = student['nguyen_vong']
                     st.start_year_id = year
                     st.class_id = chosen_class
-                    print st, chosen_class
                     st.save()
+                    
+                    tbnam = TBNam()
+                    tbnam.year_id = current_year
+                    tbnam.student_id = st
+                    tbnam.save()
+                    
+                    tbhk = TBHocKy()
+                    tbhk.student_id = st
+                    tbhk.term_id = term
+                    tbhk.save()
+                    
                     if chosen_class:
                         subject_list = chosen_class.subject_set.all()
                         for subject in subject_list:
@@ -524,8 +535,14 @@ def danh_sach_trung_tuyen(request):
                             mark.student_id = st
                             mark.term_id = term
                             mark.save()
+                            
+                            tkmon = TKMon()
+                            tkmon.subject_id = subject
+                            tkmon.student_id = st
+                            tkmon.thi_lai = False
+                            tkmon.save()
+                            
                 else:
-                    print "tag 1.2"
                     find = find[0]
                     if  find.class_id != chosen_class:
                         if find.class_id.block_id.number == chosen_class.block_id.number:
@@ -546,9 +563,17 @@ def danh_sach_trung_tuyen(request):
                                 for subject in subject_list:
                                     mark = Mark()
                                     mark.subject_id = subject
-                                    mark.student_id = st
+                                    mark.student_id = find
                                     mark.term_id = term
                                     mark.save()
+                                    
+                                    tkmon = TKMon()
+                                    tkmon.subject_id = subject
+                                    tkmon.student_id = find
+                                    tkmon.thi_lai = False
+                                    tkmon.save()
+                            
+                            
                     
             message = u'Bạn vừa nhập thành công danh sách học sinh trúng tuyển.'
             student_list=[]
@@ -615,7 +640,7 @@ def diem_danh(request, class_id, day, month, year):
                         form[i].save()
                 i = i + 1
     listdh = zip(pupilList,form,stt)                
-    t = loader.get_template('school/diem_danh.html')
+    t = loader.get_template(os.path.join('school','diem_danh.html'))
     c = RequestContext(request, {'form':form, 'pupilList' : pupilList, 'time': time , 'message':message, 'class_id':class_id,'time':time,'list':listdh,
                                     'day':day, 'month':month, 'year':year})
     return HttpResponse(t.render(c))
@@ -629,9 +654,10 @@ def time_select(request, class_id):
             day = int(request.POST['day'])
             month = int(request.POST['month'])
             year = int(request.POST['year'])
-            url = '/school/diemdanh/' + str(class_id) + '/' + str(day) + '/' + str(month) + '/' + str(year) + '/'
+            url = os.path.join('','school','diemdanh', str(class_id), str(day), str(month), str(year),'')
+            #url = '/school/diemdanh/' + str(class_id) + '/' + str(day) + '/' + str(month) + '/' + str(year) + '/'
             return HttpResponseRedirect(url)
-    t = loader.get_template('school/time_select.html')
+    t = loader.get_template(os.path.join('school','time_select.html'))
     c = RequestContext(request, {'form':form, 'class_id':class_id, 'message':message})
     return HttpResponse(t.render(c))
    
@@ -673,7 +699,7 @@ def diem_danh_hs(request, student_id):
                 form.append(iform)
                 iform = DiemDanhForm
     ll = zip(form,stt)    
-    t = loader.get_template('school/diem_danh_hs.html')
+    t = loader.get_template(os.path.join('school','diem_danh_hs.html'))
     c = RequestContext(request, {'form' : form,'iform' : iform,'pupil':pupil,'student_id':student_id, 'list':ll})
     return HttpResponse(t.render(c))
 
@@ -688,7 +714,7 @@ def tk_diem_danh(student_id):
     tk.save()
     
 def test(request, school_code = None):
-    t = loader.get_template('school/test.html')
+    t = loader.get_template(os.path.join('school','test.html'))
     
     c = RequestContext(request)
 
@@ -701,7 +727,7 @@ def deleteSubject(request, subject_id):
     sub.delete()
     subjectList = Subject.objects.filter(class_id = class_id)
     form = SubjectForm()
-    t = loader.get_template('school/subject_per_class.html')
+    t = loader.get_template(os.path.join('school','subject_per_class.html'))
     c = RequestContext(request, {'form' : form, 'message' : message,  'subjectList' : subjectList, 'class_id' : class_id.id})
     return HttpResponse(t.render(c))
 
@@ -711,7 +737,7 @@ def deleteTeacher(request, teacher_id):
     s.delete()
     teacherList = Teacher.objects.all()
     form = TeacherForm()
-    t = loader.get_template('school/teachers.html')
+    t = loader.get_template(os.path.join('school','teachers.html'))
     c = RequestContext(request, {'form' : form, 'message' : message,  'teacherList' : teacherList})
     return HttpResponse(t.render(c))
 
@@ -721,7 +747,7 @@ def deleteClass(request, class_id):
     s.delete()
     classList = Class.objects.all()
     form = ClassForm()
-    t = loader.get_template('school/classes.html')
+    t = loader.get_template(os.path.join('school','classes.html'))
     c = RequestContext(request, {'form' : form, 'message' : message,  'classList' : classList})
     return HttpResponse(t.render(c))
 
@@ -732,7 +758,7 @@ def deleteStudentInClass(request, student_id):
     student.delete()
     studentList = Pupil.objects.filter(class_id = class_id)
     form = PupilForm()
-    t = loader.get_template('school/student_per_class.html')
+    t = loader.get_template(os.path.join('school','student_per_class.html'))
     c = RequestContext(request, {'form' : form, 'message' : message,  'studentList' : studentList, 'class_id' : class_id.id})
     return HttpResponse(t.render(c))
 
@@ -742,6 +768,6 @@ def deleteStudentInSchool(request, student_id):
     sub.delete()
     studentList = Pupil.objects.all()
     form = PupilForm()
-    t = loader.get_template('school/students.html')
+    t = loader.get_template(os.path.join('school','students.html'))
     c = RequestContext(request, {'form' : form, 'message' : message,  'studentList' : studentList})
     return HttpResponse(t.render(c))
