@@ -147,8 +147,12 @@ INSTALLED_APPS = (
     'school',
     'persistent_messages',
     'objectpermission',
-    'django_coverage',
+    'dilla',
+#    'django_coverage',
 )
+
+DILLA_USE_LOREM_IPSUM = True
+DILLA_APPS = ['app']
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
