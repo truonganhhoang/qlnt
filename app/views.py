@@ -16,17 +16,17 @@ def user_add(request):
     c = RequestContext(request, {'form' : form})
     return HttpResponse(t.render(c))
 
-def organization_add (request):
-    if request.method == 'POST':
-        form = OrganizationForm (request.POST)
-        if form.is_valid() or form.upper_organization == None :
-            form.save()
-            return HttpResponseRedirect ('/app/organization/add/')
-    else:
-        form = OrganizationForm()
-    t = loader.get_template('app/organization/add.html')
-    c = RequestContext (request, {'form': form})
-    return HttpResponse (t.render(c))
+#def organization_add (request):
+#    if request.method == 'POST':
+#        form = OrganizationForm (request.POST)
+#        if form.is_valid() or form.upper_organization == None :
+#            form.save()
+#            return HttpResponseRedirect ('/app/organization/add/')
+#    else:
+#        form = OrganizationForm()
+#    t = loader.get_template('app/organization/add.html')
+#    c = RequestContext (request, {'form': form})
+#    return HttpResponse (t.render(c))
 
 @permission_required('Organization.level_delete', 'T')
 def organization_delete(request, id):

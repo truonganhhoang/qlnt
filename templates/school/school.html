@@ -43,19 +43,9 @@
 <form action="" name="theForm" method="post" > {% csrf_token %}
 
 <input type="hidden" name="clickedButton" value="notClicked" />
-<table cellpadding="3" cellspacing="2" border="1" valign="middle">
-	<tr>
-		<th><a href="{%url school.views.school_index  %}teachers">Quản lý giáo viên</a></th>
-	</tr>
-	
-	<tr>
-		<th><a href="{%url school.views.school_index %}classes">Quản lý lớp</a></th>
-	</tr>
-	
-	<tr>
-		<th><a href="{%url school.views.school_index  %}students">Thống kê học sinh toàn trường</a></th>
-	</tr>
-</table>
+	<a href="{%url school.views.school_index  %}teachers">Quản lý giáo viên</a> <br>
+	<a href="{%url school.views.school_index %}classes">Quản lý lớp</a><br>
+	<a href="{%url school.views.school_index  %}students">Thống kê học sinh toàn trường</a><br>
 
 <table>
 	<tr>

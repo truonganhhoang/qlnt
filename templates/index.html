@@ -1,19 +1,5 @@
 {% extends "base.html" %}
 
-{% block title %}
-Trang chủ 
-{% endblock %}
-  
 {% block content %}
-	{% if user.is_authenticated %}
-		{% if user.is_superuser %}
-			<a href="/admin">Quản trị hệ thống</a> <br> 
-			<a href="/test">Test</a> <br>
-		{% else %}
-			<a href="/school">Trường</a> <br>
-		{% endif %}
-		<a href="/messages">Thông báo</a><br>
-	{% else %}
-		<br>Bạn cần đăng nhập để sử dụng hệ thống.
-	{% endif %}
+	<a href="/test">Test</a> <br>
 {% endblock %}

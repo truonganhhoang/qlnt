@@ -1,15 +1,5 @@
 {% extends "base.html" %}
 
-{% block navi %}
-	<a href ="/">Index</a> - <a href="/help">help</a> - 
-	{% if user.is_authenticated %}
-		Welcome {{user.username}}! <a href="/logout">logout</a> 
-	{% else %} 
-	 	<a href="/login">login</a>
-	{% endif %}
-{% endblock %}
-
-
 {% block content %}
-	
+{% include "school/school.html" %}
 {% endblock %}

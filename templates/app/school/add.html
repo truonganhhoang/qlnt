@@ -2,15 +2,6 @@
 
 {% block title %}Add school{% endblock %}
   
-{% block navi %}
-	<a href ="/">Index</a> - <a href="/help">help</a> - 
-	{% if user.is_authenticated %}
-		Welcome {{user.username}}! <a href="/logout">logout</a> 
-	{% else %} 
-	 	<a href="/login">login</a>
-	{% endif %}
-{% endblock %}
-
 {% block content %}
 	{% if user.is_authenticated %}
 		<h1>Add a school</h1>
