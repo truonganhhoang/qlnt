@@ -485,6 +485,7 @@ def danh_sach_trung_tuyen(request):
     school = request.session['school']
     term = school.year_set.latest('time').term_set.latest('number')
     chosen_class = request.session['chosen_class']
+    current_year = school.year_set.latest('time')
     if chosen_class != u'0':
         chosen_class = school.year_set.latest('time').class_set.get(id = chosen_class)
     else:
@@ -505,9 +506,7 @@ def danh_sach_trung_tuyen(request):
                 find = year.pupil_set.filter( first_name__exact = first_name)\
                                      .filter(last_name__exact = last_name)\
                                      .filter(birthday__exact = student['ngay_sinh'])
-                print "tag 1"
                 if not find:
-                    print "tag 1.1"
                     st = Pupil()
                     st.first_name = first_name
                     st.last_name = last_name
@@ -515,9 +514,19 @@ def danh_sach_trung_tuyen(request):
                     st.school_join_date = today
                     st.ban_dk = student['nguyen_vong']
                     st.start_year_id = year
-                    st.class_id = chosen_class
-                    print st, chosen_class
+                    st.class_id = chosen_class    
                     st.save()
+                    
+                    tbnam = TBNam()
+                    tbnam.year_id = current_year
+                    tbnam.student_id = st
+                    tbnam.save()
+                    
+                    tbhk = TBHocKy()
+                    tbhk.student_id = st
+                    tbhk.term_id = term
+                    tbhk.save()
+                    
                     if chosen_class:
                         subject_list = chosen_class.subject_set.all()
                         for subject in subject_list:
@@ -526,8 +535,13 @@ def danh_sach_trung_tuyen(request):
                             mark.student_id = st
                             mark.term_id = term
                             mark.save()
+                            
+                            tkmon = TKMon()
+                            tkmon.subject_id = subject
+                            tkmon.student_id = st
+                            tkmon.thi_lai = False
+                            tkmon.save()
                 else:
-                    print "tag 1.2"
                     find = find[0]
                     if  find.class_id != chosen_class:
                         if find.class_id.block_id.number == chosen_class.block_id.number:
@@ -548,9 +562,15 @@ def danh_sach_trung_tuyen(request):
                                 for subject in subject_list:
                                     mark = Mark()
                                     mark.subject_id = subject
-                                    mark.student_id = st
+                                    mark.student_id = find
                                     mark.term_id = term
                                     mark.save()
+                                    
+                                    tkmon = TKMon()
+                                    tkmon.subject_id = subject
+                                    tkmon.student_id = find
+                                    tkmon.thi_lai = False
+                                    tkmon.save()
                     
             message = u'Bạn vừa nhập thành công danh sách học sinh trúng tuyển.'
             student_list=[]
@@ -637,7 +657,7 @@ def time_select(request, class_id):
             day = int(request.POST['day'])
             month = int(request.POST['month'])
             year = int(request.POST['year'])
-            url = '/school/diemdanh/' + str(class_id) + '/' + str(day) + '/' + str(month) + '/' + str(year) + '/'
+            url = os.path.join('','school','diemdanh', str(class_id), str(day), str(month), str(year),'')
             return HttpResponseRedirect(url)
     t = loader.get_template(os.path.join('school','time_select.html'))
     c = RequestContext(request, {'form':form, 'class_id':class_id, 'message':message})
