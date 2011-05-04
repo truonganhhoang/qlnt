@@ -37,7 +37,7 @@ function confirmDelete()
     <tr>
         
         <td align="center" width="25%">  <a href="{%url school.views.school_index  %}viewStudentDetail/{{ss.id}}">{{ss.last_name}} {{ss.first_name}} </a></td>
-        <td align="center" width="20%"> {{ss.birthday}}</td>
+        <td align="center" width="20%"> {{ss.birthday|date:"SHORT_DATE_FORMAT"}}</td>
         <td align="center" width="10%"> {{ss.sex}}</td>
         <td align="center" width="10%"> {{ss.ban_dk}} </td>
         <td align="center" width="15%"> {{ss.school_join_date}} </td>
