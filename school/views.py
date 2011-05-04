@@ -597,6 +597,7 @@ def diem_danh(request, class_id, day, month, year):
     message = None
     listdh = None
     term = None
+    print class_id
     pupilList = Pupil.objects.filter(class_id = class_id)
     time = date(int(year),int(month),int(day))
     c = Class.objects.get(id__exact = class_id)
@@ -657,7 +658,8 @@ def time_select(request, class_id):
             day = int(request.POST['day'])
             month = int(request.POST['month'])
             year = int(request.POST['year'])
-            url = os.path.join('','school','diemdanh', str(class_id), str(day), str(month), str(year),'')
+            url = '/school/diemdanh/' + str(class_id) + '/' + str(day) + '/' + str(month) + '/' + str(year) + '/'
+            #url = os.path.join('','school','diemdanh', str(class_id), str(day), str(month), str(year),'')
             return HttpResponseRedirect(url)
     t = loader.get_template(os.path.join('school','time_select.html'))
     c = RequestContext(request, {'form':form, 'class_id':class_id, 'message':message})

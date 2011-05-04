@@ -1,11 +1,11 @@
-<!DOCTYPE HTML>
+
 {% extends "school/base_school.html"%}
 {% block content %}
 {% if message != None %}
 {{message}}
 {% endif %}
+<meta http-equiv= "Content-Type" content="text/html; charset=iso-8859-1">
 <script type="text/javascript" >
-//lock enter
 function catchEnter(e)
 
 {
@@ -105,7 +105,8 @@ window.onload = function() { document.onkeypress = catchEnter; };
 
 	function submitSubject()
 	{
-		if (document.info.subject.value!=-1)
+			alert("submitSubject");
+			if (document.info.subject.value!=-1)
 			if (document.info.subject.value!={{subjectChoice}})
 			if (document.info.term.value!=-1)
 			{	
@@ -196,7 +197,6 @@ window.onload = function() { document.onkeypress = catchEnter; };
 			tb.value="";
 		}
 	}
-	
 </script>
 <table border="0" width=100% >
 <form action="/school/mark_table/{{class_id}}"  name="info" method="post" id='myform' 
@@ -216,7 +216,7 @@ window.onload = function() { document.onkeypress = catchEnter; };
 	<tr>								
 		<td width ="50%"> Môn học:
 		
-		<select name="subject"  onclick="submitSubject();">
+		<select name="subject"  onclick="javascript:submitSubject();">
 	       	<option value=-1 selected >chọn môn</option>		
 			{% for subject in subjectList %}
 				<option  value={{subject.id }}> {{ subject.name}}</option>		
