@@ -158,7 +158,7 @@ def classes(request):
         else:
             message = 'Please check your information, something is wrong'
 
-   t = loader.get_template(os.path.join('school','classes.html'))
+    t = loader.get_template(os.path.join('school','classes.html'))
     c = RequestContext(request, {'form' : form, 'message' : message, 'classList' : classList})
     return HttpResponse(t.render(c))
 
