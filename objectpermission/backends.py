@@ -6,7 +6,7 @@ from objectpermission.models import ObjectPermission
 
 class ObjectPermissionBackend(object):
     supports_object_permissions = True
-    supports_anonymous_user = True
+    supports_anonymous_user = False
 
     def authenticate(self, username, password):
         return None
@@ -16,11 +16,11 @@ class ObjectPermissionBackend(object):
         table_name.field_name_permission
         Eg: Organization.name_view
         """
-        if not user_obj.is_authenticated():
-            user_obj = User.objects.get(pk=settings.ANONYMOUS_USER_ID)
-
         if value is None:
             return False
+
+        if user_obj.is_superuser:
+            return True
 
         try:
             table_name = perm.split('.')[0]
@@ -32,5 +32,5 @@ class ObjectPermissionBackend(object):
         p = ObjectPermission.objects.filter(user=user_obj,
                                             table_name=table_name,
                                             field_name=field_name,
-                                            value=value)
+                                            allowed_value=value)
         return p.filter(**{'can_%s' % permission: True}).exists()

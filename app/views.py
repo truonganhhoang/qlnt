@@ -1,7 +1,8 @@
 from django.http import HttpResponse, HttpResponseRedirect
-from app.models import UserForm
+from app.models import UserForm, Organization
 #from app.models import PositionTypeForm
 from django.template import RequestContext, loader
+from objectpermission.decorators import permission_required
 
 def user_add(request):
     if request.method == 'POST':
@@ -26,6 +27,14 @@ def organization_add (request):
     t = loader.get_template('app/organization/add.html')
     c = RequestContext (request, {'form': form})
     return HttpResponse (t.render(c))
+
+@permission_required('Organization.level_delete', 'T')
+def organization_delete(request, id):
+    o = Organization.objects.get(pk=id)
+    o.delete()
+    return HttpResponse('Deleted')
+
+
 #def positiontype_add(request):
 #    if request.method == 'POST':
 #        form = PositionTypeForm(request.POST)
