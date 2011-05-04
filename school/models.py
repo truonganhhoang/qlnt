@@ -32,6 +32,7 @@ DT_CHOICE = ((1,u'Kinh (Việt)'),(2,u'Tày'),(3,u'Nùng'),(4,u'Hmông (Mèo)'),
 LENLOP_CHOICES=((True,u'Được lên lớp'),(False,u'Không được lên lớp'))
 SCHOOL_ACTION_STATUS=((0, u'Trường mới'),(1, u'Đang học kì 1'), (2, u'Đang học kì 2'), (3, u'Đang nghỉ hè'))
 CLASS_ACTION_STATUS=((1, u'Đang học kì 1'), (2, u'Đang học kì 2'), (3, u'Đang nghỉ hè'))
+ACTIVE_CHOICES=((True,u'Đang diễn ra'),(False,u'Đã kết thúc'))
 #validate mark of pupil
 #mark must be between 0 and 10
 def validate_mark(value):
@@ -146,7 +147,7 @@ class StartYear(models.Model):
 class Term(models.Model):
 	number = models.IntegerField(max_length=1, choices = TERM_CHOICES)
 	# neu active =false thi khong cho phep sua diem nua
-	#active = models.BooleanField(default=True)
+	active = models.BooleanField(default=True,choices=ACTIVE_CHOICES)
 	year_id= models.ForeignKey(Year)
 	def __unicode__(self):
 		return str(self.number)+" "+str(self.year_id.time)		 
