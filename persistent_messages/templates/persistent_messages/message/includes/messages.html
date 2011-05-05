@@ -9,11 +9,10 @@
 				    {% if not hide_persistent or not message.is_persistent %}
 				    	
 				    	<li id="message-{{ message.pk }}" {% if message.tags %} class="{{ message.tags }}"{% endif %}>
-        				{% if message.from_user %}From: {{ message.from_user }}<br />{% endif %}
+        				{% if message.from_user %}Người gửi: {{ message.from_user }}<br />{% endif %}
 				    	<a href="/messages/detail/{{ message.id }}">
 				    		{% if message.subject %}<strong>{{ message.subject }}</strong>{% endif %}
 				    	</a>
-				    	
 				    	{% endif %}
 			    {% endfor %}
 			</ul>

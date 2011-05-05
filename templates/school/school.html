@@ -41,11 +41,10 @@
 {% endblock %}
 {% block content %}
 <form action="" name="theForm" method="post" > {% csrf_token %}
-
 <input type="hidden" name="clickedButton" value="notClicked" />
-	<a href="{%url school.views.school_index  %}teachers">Quản lý giáo viên</a> <br>
-	<a href="{%url school.views.school_index %}classes">Quản lý lớp</a><br>
-	<a href="{%url school.views.school_index  %}students">Thống kê học sinh toàn trường</a><br>
+<a href="{% url school.views.school_index  %}teachers">Quản lý giáo viên</a> <br>
+<a href="{% url school.views.school_index %}classes">Quản lý lớp</a><br>
+<a href="{% url school.views.school_index  %}students">Thống kê học sinh toàn trường</a><br>
 
 <table>
 	<tr>

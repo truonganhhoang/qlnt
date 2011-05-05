@@ -2,12 +2,11 @@
 
 {% block content %}
 	{% if user.is_authenticated %}
-		<h3>Gửi thông báo</h3>
+		<h3>Thông báo mới</h3>
 		<form action="" method="post">{% csrf_token %}
 			{{ form.as_p }}
-		<input type="submit" value="Send" />
+		<input type="submit" value="Gửi" />
 		</form>
 	{% endif %}
 {% endblock %}
-
 
