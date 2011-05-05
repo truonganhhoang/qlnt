@@ -149,6 +149,7 @@ INSTALLED_APPS = (
     'objectpermission',
     'dilla',
 #    'django_coverage',
+    'rosetta',
 )
 
 DILLA_USE_LOREM_IPSUM = True
