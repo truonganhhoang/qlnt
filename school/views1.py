@@ -27,6 +27,85 @@ class MarkID:
         self.d15=d15
         self.d16=d16
 
+def createTbNam(request,year_id):
+    classList = Class.objects.filter(year_id=year_id)
+    selectedYear=Year.objects.get(id=year_id)
+    allList=[]
+    for c in classList :
+        studentList=c.pupil_set.all()
+        allList.append(studentList)
+        for stu in studentList:
+            find = stu.tbnam_set.filter(year_id=year_id,student_id=stu.id)
+            if not find:
+                tbNam=TBNam()
+                tbNam.year_id=selectedYear
+                tbNam.student_id=stu                
+                tbNam.save()
+            #pass
+               
+    t = loader.get_template(os.path.join('school','ll.html'))
+    
+    c = RequestContext(request, {
+                                 "allList":allList,
+                                 "classList":classList,
+                                }
+                       )
+    
+
+    return HttpResponse(t.render(c))
+   
+def createAllInfoInTerm(request,term_id):
+    
+    selectedTerm=Term.objects.get(id=term_id)
+    selectedYear=Year.objects.get(id=selectedTerm.year_id.id)
+    
+    classList = Class.objects.filter(year_id=selectedYear.id)
+    for c in classList :
+        studentList=c.pupil_set.all()
+        subjectList=c.subject_set.all()
+        
+        for stu in studentList:
+            #tao cac bang
+            tkDiemDanh=stu.tkdiemdanh_set.filter(term_id=term_id)
+            
+            if not tkDiemDanh:
+                tkDiemDanh=TKDiemDanh(term_id=selectedTerm,student_id=stu)
+                tkDiemDanh.save()
+
+            hanhKiem=stu.hanhkiem_set.filter(term_id=term_id)
+            if not hanhKiem:            
+                hanhKiem  =HanhKiem(term_id=selectedTerm,student_id=stu)
+                hanhKiem.save()
+                
+            
+            tbHocKy =stu.tbhocky_set.filter(term_id=term_id)
+            if not tbHocKy:
+                tbHocKy   =TBHocKy(term_id=selectedTerm,student_id=stu)
+                tbHocKy.save()
+            
+            # tao mark
+            
+            for sub in subjectList:
+                m=sub.mark_set.filter(term_id=selectedTerm,student_id=stu)
+                if not m:
+                    m=Mark(subject_id=sub,term_id=selectedTerm,student_id=stu)
+                    m.save()
+                
+                tkMon=sub.tkmon_set.filter(student_id=stu.id)
+                if not tkMon:
+                    tkMon=TKMon(student_id=stu,subject_id=sub)
+                    tkMon.save()    
+                                    
+    t = loader.get_template(os.path.join('school','ll.html'))
+    
+    c = RequestContext(request, {
+                                }
+                       )
+    
+
+    return HttpResponse(t.render(c))   
+
+
 #cac chuc nang:
 #hien thu bang diem cua mot lop, cho edit roi save lai
 def mark_table(request,class_id=4):
@@ -1103,11 +1182,8 @@ def calculateOverallMarkTerm(class_id=7,termNumber=1):
                 
      #hien message thong bao
     selectedClass=Class.objects.get(id=class_id)
-    if pupilNoSum==0:
-        message=None
-    else:      
-        message=u'lớp '+selectedClass.__unicode__()+u' có ' +str(pupilNoSum)+ u' học sinh chưa được tổng kết học kỳ '+str(termNumber)
-    return message    
+    
+    return pupilNoSum    
 # tinh diem tong ket cho ca nam hoc
 def calculateOverallMarkYear(class_id=7):
     e=0.0000000001
@@ -1307,7 +1383,7 @@ def xepLoaiHlTheoLop(request,class_id=7):
 
     return HttpResponse(t.render(c))
 # tinh diem tong ket cua hoc ky va tinh hoc luc cua tat ca hoc sinh trong toan truong theo hoc ky
-def finishTerm(request,term_id=8):
+def finishTermByLearning1(request,term_id=8):
     
     message=None
     finishList=[]
@@ -1326,7 +1402,7 @@ def finishTerm(request,term_id=8):
         
     ttt=None    
     yearString=str(selectedTerm.year_id.time)+'-'+str(selectedTerm.year_id.time+1)
-    t = loader.get_template(os.path.join('school','finish_term.html'))
+    t = loader.get_template(os.path.join('school','finish_term_by_learning.html'))
     c = RequestContext(request, {"message":message, 
                                  "finishList":finishList,
                                  "notFinishList":notFinishList,
@@ -1338,36 +1414,6 @@ def finishTerm(request,term_id=8):
 
     return HttpResponse(t.render(c))
 
-# tinh diem tong ket va tinh hoc luc cua tat ca hoc sinh trong toan truong theo nam 
-
-def finishYear(request,year_id=8):
-    
-    message=None
-    finishList=[]
-    notFinishList=[]
-    selectedYear=Year.objects.get(id=year_id)
-    classList   =Class.objects.filter(year_id=year_id)
-    
-    for c in classList:
-        tempMessage=calculateOverallMarkYear(c.id)
-        if tempMessage!=None:
-            notFinishList.append(tempMessage)
-        else:
-            finishList.append(c.name)    
-                         
-        
-    ttt=None    
-    yearString=str(selectedYear.time)+'-'+str(selectedYear.time+1)
-    t = loader.get_template(os.path.join('school','finish_year.html'))
-    c = RequestContext(request, {"message":message, 
-                                 "finishList":finishList,
-                                 "notFinishList":notFinishList,
-                                 "yearString":yearString,
-                                }
-                       )
-    
-
-    return HttpResponse(t.render(c))
 
 
 
@@ -1491,3 +1537,149 @@ def xlCaNamTheoLop(request,class_id=7):
 
     return HttpResponse(t.render(c))
 
+
+def finishTermByLearning(term_id=8):
+    
+    finishList=[]
+    notFinishList=[]
+    
+    selectedTerm=Term.objects.get(id=term_id)
+    classList   =Class.objects.filter(year_id=selectedTerm.year_id)
+    
+    for c in classList:
+        numberStudents=calculateOverallMarkTerm(c.id,selectedTerm.number)
+        if numberStudents==0:
+            finishList.append(c.name)
+        else:
+            notFinishList.append((c.name,numberStudents))    
+                         
+    return finishList,notFinishList        
+
+def calculateNumberPractising(class_id,term_id):
+    
+    studentList=Pupil.objects.filter(class_id=class_id)
+    pupilSum=0
+    for stu in studentList:
+        hanhKiem=stu.hanhkiem_set.get(term_id=term_id)
+        if hanhKiem.loai==None:
+            pupilSum+=1
+    return pupilSum
+        
+def finishTermByPractising(term_id=8):
+    
+    finishList=[]
+    notFinishList=[]
+    
+    selectedTerm=Term.objects.get(id=term_id)
+    classList   =Class.objects.filter(year_id=selectedTerm.year_id)
+    
+    for c in classList:
+        numberStudents=calculateNumberPractising(c.id,selectedTerm.id)
+        if numberStudents==0:
+            finishList.append(c.name)
+        else:
+            notFinishList.append((c.name,numberStudents))    
+                         
+    return finishList,notFinishList        
+
+
+# tinh diem tong ket va tinh hoc luc cua tat ca hoc sinh trong toan truong theo nam
+def  calculateNumberAll(class_id,term_id):
+    studentList=Pupil.objects.filter(class_id=class_id)
+    pupilSum=0
+    for stu in studentList:
+        
+        hanhKiem=stu.hanhkiem_set.get(term_id=term_id)
+        tbHocKy =stu.tbhocky_set.get(term_id=term_id)
+        if (hanhKiem.loai==None) |(tbHocKy.hl_hk==None):
+            tbHocKy.danh_hieu_hk==None
+            tbHocKy.save()
+            pupilSum+=1
+        else:            
+            if (tbHocKy.hl_nam=='G') & (hanhKiem.loai=='T'):
+                tbHocKy.danh_hieu_nam='G'
+            elif ((tbHocKy.hl_hk=='G') | (tbHocKy.hl_hk=='K') ) & ((hanhkiem.loai=='T') | (hanhkiem.loai=='K')):
+                tbHocKy.danh_hieu_nam='TT'
+            else:
+                tbHocKy.danh_hieu_nam='K'
+            
+            tbHocKy.save()
+                
+    return pupilSum
+
+def finishTermAll(term_id=1):
+    finishList=[]
+    notFinishList=[]
+    
+    selectedTerm=Term.objects.get(id=term_id)
+    classList   =Class.objects.filter(year_id=selectedTerm.year_id)
+    
+    for c in classList:
+        numberStudents=calculateNumberAll(c.id,selectedTerm.id)
+        if numberStudents==0:
+            finishList.append(c.name)
+        else:
+            notFinishList.append((c.name,numberStudents))    
+                         
+    return finishList,notFinishList
+        
+def finishYear(request,year_id=8):
+    
+    message=None
+    finishList=[]
+    notFinishList=[]
+    selectedYear=Year.objects.get(id=year_id)
+    classList   =Class.objects.filter(year_id=year_id)
+    
+    for c in classList:
+        tempMessage=calculateOverallMarkYear(c.id)
+        if tempMessage!=None:
+            notFinishList.append(tempMessage)
+        else:
+            finishList.append(c.name)    
+                         
+        
+    ttt=None    
+    yearString=str(selectedYear.time)+'-'+str(selectedYear.time+1)
+    t = loader.get_template(os.path.join('school','finish_year.html'))
+    c = RequestContext(request, {"message":message, 
+                                 "finishList":finishList,
+                                 "notFinishList":notFinishList,
+                                 "yearString":yearString,
+                                }
+                       )
+    
+
+    return HttpResponse(t.render(c))
+
+
+def finishTerm(request,term_id=1):
+    message="hello"
+    selectedTerm=Term.objects.get(id=term_id)
+    yearString=str(selectedTerm.year_id.time)+"-"+str(selectedTerm.year_id.time+1)
+    
+    finishLearning,notFinishLearning    =finishTermByLearning(term_id)
+    finishPractising,notFinishPractising=finishTermByPractising(term_id)
+    finishAll,notFinishAll              =finishTermAll(term_id)
+
+    if request.method == 'POST':
+        if request.POST['finishTerm']==u'click vào đây để kết thúc học kỳ':
+            selectedTerm.active=False
+        else:
+            selectedTerm.active=True
+                
+    
+    t = loader.get_template(os.path.join('school','finish_term.html'))    
+    c = RequestContext(request, {"message":message,
+                                 "selectedTerm":selectedTerm,
+                                 "yearString":yearString,
+                                 "finishLearning":finishLearning,
+                                 "notFinishLearning":notFinishLearning,
+                                 "finishPractising":finishPractising,
+                                 "notFinishPractising":notFinishPractising,
+                                 "finishAll":finishAll,
+                                 "notFinishAll":notFinishAll,
+                                 "value":3
+                                }
+                       )
+    return HttpResponse(t.render(c))
