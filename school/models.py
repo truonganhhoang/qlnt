@@ -302,7 +302,7 @@ class HanhKiem(models.Model):
 	loai = models.CharField( max_length = 2, choices = HK_CHOICES, default = 'K',null=True,blank=True)
 	
 	def __unicode__(self):
-		return self.loai
+		return str(self.loai)
 
 class TBHocKy(models.Model):
 	student_id = models.ForeignKey(Pupil)
