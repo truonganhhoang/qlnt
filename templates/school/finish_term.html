@@ -4,32 +4,281 @@
 {% if message != None %}
 	{{message}}
 {% endif %}
-<table width="100%">
+{{notFinishLearning}}
+<table width="100%" border=0>
 	<tr>
-		<td align=center>
-			KẾT QUẢ SAU KHI TỔNG KẾT TOÀN TRƯỜNG 
+		<td align=center style="font-size:25px" >
+		<b> Tổng kết học kỳ {{ selectedTerm.number}} </b>
 		</td>
 	</tr>	
 	<tr>
-		<td align=center>
-			HỌC KỲ : {{ selectedTerm.number}}  NĂM HỌC : {{yearString}}
+		<td align=center style="font-size:25px" >
+		       <b>    Năm học : {{yearString}}  </b>
 		</td>
 	</tr>
 </table>
-<b>Danh sách các lớp đã tổng kết xong</b>
+<table border="0" width="100%">
+<tr>
+<td width="50%">
 <br>
-{% for c in finishList %}
-	{{forloop.counter}}.
-	{{c}}
-	<br>
-{% endfor %}
+{#----------------------------------------------------#}
+<b >TRẠNG THÁI HỌC KỲ:
+    {% if selectedTerm.active %}
+	<span style="color:5197FF">	Đang diễn ra  		</span>
 
-<b>Danh sách các lớp chưa tổng kết xong  </b>
+	{% else %}
+	<span style="color:0043A8">
+		Đã kết thúc 
+	</span >	
+	{% endif %}	
+</b>
+</td>
+<td width="50%">
 <br>
-{% for c in notFinishList %}
-	{{forloop.counter}}.
-	{{c}}
+<form action="/school/finishTerm/{{selectedTerm.id}}"  name="info" method="post" id='myform' 
+	 >{% csrf_token %}    
+	 {% if selectedTerm.active %}	 
+		<input type="submit"  name="finishTerm" value="click vào đây để kết thúc học kỳ" title="click vào đây để kết thúc học kỳ">
+	 {% else %}	
+		<input type="submit"  name="finishTerm" value="click vào đây để khôi phục lại học kỳ" title="nếu chưa muốn kết thúc, bạn có thể khôi phục lại" >
+	 {% endif %}	
+</form>	
+</td>
+</tr>
+</table>
+{#----------------------------------------------------#}
+
+<br>
+<br>
+<br>
+<b>I.TỔNG KẾT HỌC LỰC: </b> <br>
+<b>&nbsp 1. Danh sách các lớp đã tổng kết xong:</b>
+<table border="0" width="100%">
+	{% for l in finishLearning  %}
+	{% if  forloop.counter0|divisibleby:"6" %}
+		<tr> 
+	{% endif %}	
+	
+		<td>
+		{% if forloop.counter < 10 %} 	
+		  &nbsp {{forloop.counter}}. {{l}}	
+		{% else %}
+		   {{forloop.counter}}. {{l}}	
+		{% endif %}   
+		
+		</td>
+	{% if forloop.counter|divisibleby:"6" %}
+		</tr>
+	{% endif %}	
+	
+	{% endfor %} 
+</table>
 	<br>
-{% endfor %}
+<b>&nbsp 2. Danh sách các lớp chưa tổng kết xong:</b>
+<table border="0" width="100%">
+	<tr>
+		<td  width="16.6 %">
+			&nbsp &nbsp Lớp
+		</td >
+		<td width="16.6 %">
+			Số lượng 	
+		</td>
+		<td  width="16.6 %">
+		 	&nbsp Lớp
+		</td >
+		<td  width="16.6 %">
+			Số lượng 	
+		</td>
+		<td  width="16.6 %">
+			&nbsp Lớp
+		</td >
+		<td  width="16.6 %">
+			Số lượng 	
+		</td>
+	</tr>
+	{% for l,s in notFinishLearning  %}
+	{% if  forloop.counter0|divisibleby:"3" %}
+	<tr> 
+	{% endif %}	
+	
+		<td>
+		{% if forloop.counter < 10 %} 	
+		  &nbsp {{forloop.counter}}. {{l}}	
+		{% else %}
+		   {{forloop.counter}}. {{l}}	
+		{% endif %}   
+		
+		</td>
+		<td>
+			{{s}}
+		</td>
+	{% if forloop.counter|divisibleby:"3" %}
+	</tr>
+	{% endif %}	
+	
+	{% endfor %} 
+</table>
+
+
+{#------------------------------------------------------------#}
+
+
+<br>
+<br>
+<br>
+
+<b>II.TỔNG KẾT HẠNH KIỂM: </b> <br>
+<b>&nbsp 1. Danh sách các lớp đã tổng kết xong:</b>
+<table border="0" width="100%">
+	{% for l in finishPractising  %}
+	{% if  forloop.counter0|divisibleby:"6" %}
+		<tr> 
+	{% endif %}	
+	
+		<td>
+		{% if forloop.counter < 10 %} 	
+		  &nbsp {{forloop.counter}}. {{l}}	
+		{% else %}
+		   {{forloop.counter}}. {{l}}	
+		{% endif %}   
+		
+		</td>
+	{% if forloop.counter|divisibleby:"6" %}
+		</tr>
+	{% endif %}	
+	
+	{% endfor %} 
+</table>
+	<br>
+<b>&nbsp 2. Danh sách các lớp chưa tổng kết xong:</b>
+<table border="0" width="100%">
+	<tr>
+		<td  width="16.6 %">
+			&nbsp &nbsp Lớp
+		</td >
+		<td width="16.6 %">
+			Số lượng 	
+		</td>
+		<td  width="16.6 %">
+		 	&nbsp Lớp
+		</td >
+		<td  width="16.6 %">
+			Số lượng 	
+		</td>
+		<td  width="16.6 %">
+			&nbsp Lớp
+		</td >
+		<td  width="16.6 %">
+			Số lượng 	
+		</td>
+	</tr>
+	{% for l,s in notFinishPractising  %}
+	{% if  forloop.counter0|divisibleby:"3" %}
+	<tr> 
+	{% endif %}	
+	
+		<td>
+		{% if forloop.counter < 10 %} 	
+		  &nbsp {{forloop.counter}}. {{l}}	
+		{% else %}
+		   {{forloop.counter}}. {{l}}	
+		{% endif %}   
+		
+		</td>
+		<td>
+			{{s}}
+		</td>
+	{% if forloop.counter|divisibleby:"3" %}
+	</tr>
+	{% endif %}	
+	
+	{% endfor %} 
+</table>
+
+
+{#------------------------------------------------------------#}
+
+
+<br>
+<br>
+<br>
+
+<b>II.TỔNG KẾT CHUNG: </b> <br>
+<b>&nbsp 1. Danh sách các lớp đã tổng kết xong:</b>
+<table border="0" width="100%">
+	{% for l in finishAll  %}
+	{% if  forloop.counter0|divisibleby:"6" %}
+		<tr> 
+	{% endif %}	
+	
+		<td>
+		{% if forloop.counter < 10 %} 	
+		  &nbsp {{forloop.counter}}. {{l}}	
+		{% else %}
+		   {{forloop.counter}}. {{l}}	
+		{% endif %}   
+		
+		</td>
+	{% if forloop.counter|divisibleby:"6" %}
+		</tr>
+	{% endif %}	
+	
+	{% endfor %} 
+</table>
+	<br>
+<b>&nbsp 2. Danh sách các lớp chưa tổng kết xong:</b>
+<table border="0" width="100%">
+	<tr>
+		<td  width="16.6 %">
+			&nbsp &nbsp Lớp
+		</td >
+		<td width="16.6 %">
+			Số lượng 	
+		</td>
+		<td  width="16.6 %">
+		 	&nbsp Lớp
+		</td >
+		<td  width="16.6 %">
+			Số lượng 	
+		</td>
+		<td  width="16.6 %">
+			&nbsp Lớp
+		</td >
+		<td  width="16.6 %">
+			Số lượng 	
+		</td>
+	</tr>
+	{% for l,s in notFinishAll  %}
+	{% if  forloop.counter0|divisibleby:"3" %}
+	<tr> 
+	{% endif %}	
+	
+		<td>
+		{% if forloop.counter < 10 %} 	
+		  &nbsp {{forloop.counter}}. {{l}}	
+		{% else %}
+		   {{forloop.counter}}. {{l}}	
+		{% endif %}   
+		
+		</td>
+		<td>
+			{{s}}
+		</td>
+	{% if forloop.counter|divisibleby:"3" %}
+	</tr>
+	{% endif %}	
+	
+	{% endfor %} 
+</table>
+
+
+
+
+
+
+
+
+
+
 
 {% endblock  %}
