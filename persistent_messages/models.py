@@ -83,7 +83,7 @@ class MessageForm(forms.Form):
         super(MessageForm, self).__init__(*args, **kwargs)
         self.fields['user'].choices = [(i.username, i.username) for i in User.objects.all()]
         
-    user = forms.MultipleChoiceField()
-    subject = forms.CharField()
-    message = forms.CharField(widget=forms.widgets.Textarea())
-    type = forms.ChoiceField(choices=LEVEL_CHOICES)
+    user = forms.MultipleChoiceField(label = 'Người nhận')
+    subject = forms.CharField(label = 'Tiêu đề')
+    message = forms.CharField(widget=forms.widgets.Textarea(), label = 'Nội dung')
+    type = forms.ChoiceField(choices=LEVEL_CHOICES, label = 'Loại tin nhắn')
