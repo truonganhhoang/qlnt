@@ -29,6 +29,8 @@ urlpatterns = patterns('',
     
     url(r'^messages/', include('persistent_messages.urls')),
     
+    url(r'^sms/', include('sms.urls')),
+    
     (r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
 )
 

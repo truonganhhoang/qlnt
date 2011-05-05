@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+	{% if user.is_authenticated %}
+		<h3>Danh sách tin nhắn đã được gửi đi:</h3> <br>
+		{% if sms_list %}
+			<ul>
+			{% for s in sms_list %}
+				<li>{{ s.phone }} - {{ s.content }}</a></li>
+			{% endfor %}
+			</ul>
+		{% else %}
+		    <p>Không có tin nhắn nào đã được gửi đi.</p>
+		{% endif %}
+	{% endif %}
+{% endblock %}
+

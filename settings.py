@@ -150,6 +150,7 @@ INSTALLED_APPS = (
     'dilla',
 #    'django_coverage',
     'rosetta',
+    'sms',
 )
 
 DILLA_USE_LOREM_IPSUM = True
