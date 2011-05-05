@@ -299,7 +299,7 @@ class KiLuat(models.Model):
 class HanhKiem(models.Model):
 	student_id = models.ForeignKey(Pupil)
 	term_id = models.ForeignKey(Term)
-	loai = models.CharField( max_length = 2, choices = HK_CHOICES, default = 'K')
+	loai = models.CharField( max_length = 2, choices = HK_CHOICES, default = 'K',null=True,blank=True)
 	
 	def __unicode__(self):
 		return self.loai
