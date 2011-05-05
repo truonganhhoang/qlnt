@@ -1654,7 +1654,7 @@ def finishYear(request,year_id=8):
 
 
 def finishTerm(request,term_id=1):
-    message="hello"
+    message=None
     selectedTerm=Term.objects.get(id=term_id)
     yearString=str(selectedTerm.year_id.time)+"-"+str(selectedTerm.year_id.time+1)
     
