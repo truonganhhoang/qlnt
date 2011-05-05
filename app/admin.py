@@ -24,10 +24,13 @@ class OrganizationAdmin(admin.ModelAdmin):
     inlines = [UserProfileInline,]
     list_per_page = 20
     
-            
+class PositionAdmin(admin.ModelAdmin):
+    list_display = ('type', 'level')
+    list_filter = ('level', 'type')
+             
 admin.site.register(Organization, OrganizationAdmin)
 
-admin.site.register(Position)
+admin.site.register(Position, PositionAdmin)
 
 
 
