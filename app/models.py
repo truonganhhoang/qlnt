@@ -35,10 +35,18 @@ class OrganizationForm(forms.Form):
     email = forms.EmailField(max_length=50)
 
 class Position(models.Model):
+    LEVEL_CHOICES = (
+        (1, 'Nhân Viên Cấp Sở'),
+        (2, 'Nhân Viên Cấp Phòng'),
+        (3, 'Nhân Viên Cấp Trường'),
+        (4, 'Giáo Viên'),
+        (5, 'Học Sinh')
+    )
     '''
     Chức vụ công tác
     '''
     type = models.CharField(max_length=100)
+    level = models.IntegerField(choices = LEVEL_CHOICES)
     
     def __unicode__(self):
         return self.type
