@@ -319,6 +319,14 @@
     }
 },
 {
+    "pk" : "25eaf803835f6436a58b7c5d583a3451",
+    "model" : "sessions.session",
+    "fields" : {
+        "expire_date" : "2011-05-19 16:19:08",
+        "session_data" : "MWZhNTM1NGEzNjk4NTk3NDdiZjI5NzBkMzQ5ZTViMjYyYWQ0ZGJmMjqAAn1xAS4=\n"
+    }
+},
+{
     "pk" : 1,
     "model" : "sites.site",
     "fields" : {
