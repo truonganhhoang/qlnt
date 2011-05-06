@@ -5,6 +5,7 @@ from sms.models import sms
 urlpatterns = patterns('',
     url(r'^$', 'sms.views.index'),
     url(r'^manual_sms/$', 'sms.views.manual_sms'),
+    url(r'^excel_sms/$', 'sms.views.excel_sms'),
     url(r'^sent_sms/$', ListView.as_view(
             queryset=sms.objects.all(),
             context_object_name='sms_list',

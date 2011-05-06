@@ -17,8 +17,8 @@ def manual_sms(request):
             content = form.cleaned_data.get('content')
             
             phone = phone_list.split(',')
-            open = urllib2.build_opener( urllib2.HTTPCookieProcessor() )
-            urllib2.install_opener( open )
+            open = urllib2.build_opener(urllib2.HTTPCookieProcessor())
+            urllib2.install_opener(open)
             
             para = urllib.urlencode({'u': 'VT_username', 'p': 'VT_password'})
             
@@ -49,4 +49,12 @@ def manual_sms(request):
         form = smsForm()    
     t = loader.get_template('sms/manual_sms.html')
     c = RequestContext(request, {'form': form})
+    return HttpResponse(t.render(c))
+
+def excel_sms(request):
+    if request == 'POST':
+        pass
+    
+    t = loader.get_template('sms/excel_sms.html')
+    c = RequestContext(request)
     return HttpResponse(t.render(c))
