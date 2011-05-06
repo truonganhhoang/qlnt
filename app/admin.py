@@ -13,8 +13,6 @@ admin.site.register(UserProfile)
 class UserProfileInline (admin.StackedInline):
     model = UserProfile
     max_num = 1
-   # fk_name =  "organization"
-   # fk_name = "position"
     
 class OrganizationAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'address', 'email', 'upper_organization', 'manager_name')
