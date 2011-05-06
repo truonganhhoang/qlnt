@@ -1,0 +1,49 @@
+﻿{% extends "school/base_school.html" %}
+
+{% block content %}
+<table border = 0 align = "center" width = "100%">
+</table>
+<br>
+<form action="" method="post">{% csrf_token %}
+    {{ form.non_field_errors }}
+    <div class="fieldWrapper">
+        {{form.time.errors }}
+        <p><label for="id_time">Thời gian:</label>
+            {{ form.time }}</p>
+    </div>
+
+    <div class="fieldWrapper">
+        {{ form.hinh_thuc.errors }}
+        <p><label for="id_hinh_thuc">Hình thức:</label>
+            {{ form.hinh_thuc }}</p>
+    </div>
+
+    <div class="fieldWrapper">
+        {{ form.dia_diem.errors }}
+        <p><label for="id_dia_diem">Địa điểm:</label>
+            {{ form.dia_diem }}</p>
+    </div>
+
+    <div class="fieldWrapper">
+        {{ form.noi_dung.errors }}
+        <p><label for="id_noi_dung">Nội dung:</label>
+            {{ form.noi_dung }}</p>
+    </div>
+    
+    <div class="fieldWrapper">
+        {{ form.luu_hoc_ba.errors }}
+        <p><label for="id_save">Lưu học bạ:</label>
+            {{ form.luu_hoc_ba }}</p>
+    </div>
+            <div>
+                <input name="student_id" value= {{p.id}} type="hidden" id="id_student_id"/>
+            </div>
+            <div>
+                <input name="term_id" value= {{term.id}} type="hidden" id="id_term_id" />
+            </div>
+   {% if message != None %}
+	{{message}} <br>
+	{% endif %}
+	<input type ="submit" value="Cập nhật"/>
+</form>
+{% endblock %}

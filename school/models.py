@@ -9,8 +9,13 @@ TERM_CHOICES = ((1, u'1'), (2, u'2'),(3, u'3'),)
 HK_CHOICES = ((u'T', u'Tốt'), (u'K', u'Khá'),(u'TB',u'Trung Bình'),(u'Y', u'Yếu'),)
 HL_CHOICES = ((u'G', u'Giỏi'), (u'K', u'Khá'),(u'TB',u'Trung Bình'),(u'Y', u'Yếu'),(u'Kem', u'Kém'))
 #k co nghia la khong duoc danh hieu gi
-DH_CHOICES = ((u'XS', u'học sinh xuất sắc'),(u'G', u'hoc sinh giỏi'), (u'TT', u'hoc sinh tiên tiến'),(u'K',u'Không được gì'))
-
+DH_CHOICES = ((u'XS', u'Học sinh xuất sắc'),(u'G', u'Hoc sinh giỏi'), (u'TT', u'Học sinh tiên tiến'),(u'K',u'Không được gì'))
+KT_CHOICES = ((u'Khen trước lớp',u'Khen trước lớp'), (u'Khen trước toàn trường',u'Khen trước toàn trường'),
+              (u'Được tặng danh hiệu học sinh khá',u'Được tặng danh hiệu học sinh khá'), 
+              (u'Được tặng danh hiệu học sinh giỏi',u'Được tặng danh hiệu học sinh giỏi'), (u'Được ghi tên vào bảng danh dự của trường',u'Được ghi tên vào bảng danh dự của trường'), 
+              (u'Được tặng danh hiệu học sinh xuất sắc',u'Được tặng danh hiệu học sinh xuất sắc'), (u'Được khen thưởng đặc biệt',u'Được khen thưởng đặc biệt'))
+KL_CHOICES = ((u'Khiển trách trước lớp',u'Khiển trách trước lớp'), (u'Khiển trách trước hội đồng kỷ luật',u'Khiển trách trước hội đồng kỷ luật'), 
+              (u'Cảnh cáo trước toàn trường',u'Cảnh cáo trước toàn trường'), (u'Đình chỉ học',u'Đình chỉ học'))
 SCHOOL_LEVEL_CHOICE = ((1, u'1'), (2, u'2'), (3, u'3'))
 DIEM_DANH_TYPE = ((u'Có phép', u'Có phép'),(u'Không phép', u'Không phép'),(u'k','Đi học'))
 BAN_CHOICE = ((u'KHTN',u'Ban KHTN'),(u'KHXH',u'Ban KHXH-NV'),(u'CBA',u'Ban Cơ bản A'),
@@ -276,25 +281,33 @@ class KhenThuong(models.Model):
 	student_id = models.ForeignKey(Pupil)
 	term_id = models.ForeignKey(Term)
 	time = models.DateField(blank = True)
-	hinh_thuc = models.CharField(max_length = 100)
+	hinh_thuc = models.CharField(max_length = 100, choices = KT_CHOICES)
 	dia_diem= models.CharField(max_length = 100, blank = True, null = True)
 	noi_dung = models.CharField(max_length = 400, blank = True, null = True) # description
-	save = models.BooleanField()
+	luu_hoc_ba = models.BooleanField(blank = True, default = False)
 		
 	def __unicode__(self):
-		return self.danh_hieu
-	
+		return self.hinh_thuc
+
+class KhenThuongForm(forms.ModelForm)        :
+    class Meta:
+        model = KhenThuong
+
 class KiLuat(models.Model):
 	student_id = models.ForeignKey(Pupil)
 	term_id = models.ForeignKey(Term)
 	time = models.DateField(blank = True)
-	hinh_thuc = models.CharField(max_length = 100)
+	hinh_thuc = models.CharField(max_length = 10, choices = KL_CHOICES)
 	dia_diem= models.CharField(max_length = 100, blank = True, null = True)
 	noi_dung = models.CharField(max_length = 400, blank = True, null = True) # description
-	save = models.BooleanField()
+	luu_hoc_ba = models.BooleanField(blank = True, default = False)
 		
 	def __unicode__(self):
-		return self.danh_hieu
+		return self.hinh_thuc
+        
+class KiLuatForm(forms.ModelForm):        
+    class Meta:
+        model = KiLuat
         
 class HanhKiem(models.Model):
 	student_id = models.ForeignKey(Pupil)

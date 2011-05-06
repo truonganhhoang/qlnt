@@ -668,7 +668,7 @@ def time_select(request, class_id):
 def diem_danh_hs(request, student_id):
     term = None
     pupil = Pupil.objects.get(id = student_id)
-    c = Class.objects.get(id__exact = pupil.class_id.id)
+    c = pupil.class_id
     try:
         term = Term.objects.filter(year_id = c.year_id, active = True).latest('number')
     except ObjectDoesNotExist:
@@ -713,10 +713,16 @@ def diem_danh_hs(request, student_id):
     t = loader.get_template(os.path.join('school','diem_danh_hs.html'))
     c = RequestContext(request, {'form' : form,'iform' : iform,'pupil':pupil,'student_id':student_id, 'list':ll})
     return HttpResponse(t.render(c))
-
+    
+def tk_dd_lop(class_id):
+    c = Class.objects.get(id__exact = class_id)
+    ppl = pupil.objects.filter(class_id = class_id)
+    for p in ppl:
+        tk_diem_danh(p.id)
+    
 def tk_diem_danh(student_id):
     pupil = Pupil.objects.get(id = student_id)
-    c = Class.objects.get(id__exact = pupil.class_id.id)
+    c = pupil.class_id
     term = Term.objects.filter(year_id = c.year_id, active = True).latest('number')
     ts = DiemDanh.objects.filter(student_id = student_id, term_id = term.id).count()
     cp = DiemDanh.objects.filter(student_id = student_id, term_id = term.id, loai = u'C').count()
@@ -788,3 +794,91 @@ def deleteStudentInSchool(request, student_id):
     t = loader.get_template(os.path.join('school','students.html'))
     c = RequestContext(request, {'form' : form, 'message' : message,  'studentList' : studentList})
     return HttpResponse(t.render(c))
+
+def khen_thuong(request, student_id):
+    message = ''
+    ktl = KhenThuong.objects.filter(student_id = student_id)
+    t = loader.get_template(os.path.join('school','khen_thuong.html'))
+    c = RequestContext(request, {'ktl': ktl,'message':message, 'student_id':student_id})
+    return HttpResponse(t.render(c))
+    
+def add_khen_thuong(request,student_id):
+    form = KhenThuongForm()
+    pupil = Pupil.objects.get(id = student_id)
+    cl = Class.objects.get(id__exact = pupil.class_id.id)
+    term = Term.objects.filter(year_id = cl.year_id, active = True).latest('number')
+    if request.method == 'POST':
+        form = KhenThuongForm(request.POST)
+        if form.is_valid():
+            form.save()
+            url = '/school/khenthuong/' + str(student_id)
+            return HttpResponseRedirect(url)
+    t = loader.get_template(os.path.join('school','khen_thuong_detail.html'))
+    c = RequestContext(request, {'form' : form, 'p' : pupil, 'student_id':student_id,'term':term})
+    return HttpResponse(t.render(c))
+
+def delete_khen_thuong(request, kt_id):
+    kt = KhenThuong.objects.get(id = kt_id)
+    student = Pupil.objects.get(id = kt.student_id.id)
+    kt.delete()
+    url = '/school/khenthuong/' + str(student.id)
+    return HttpResponseRedirect(url)
+    
+def edit_khen_thuong(request, kt_id)    :
+    kt = KhenThuong.objects.get(id = kt_id)
+    pupil = kt.student_id
+    term = kt.term_id
+    form = KhenThuongForm(instance = kt)
+    if request.method == 'POST':
+        form = KhenThuongForm(request.POST, instance = kt)
+        if form.is_valid():
+            form.save()
+            url = '/school/khenthuong/' + str(pupil.id)
+            return HttpResponseRedirect(url)
+    t = loader.get_template(os.path.join('school','khen_thuong_detail.html'))
+    c = RequestContext(request, {'form' : form, 'p' : pupil, 'student_id':pupil.id,'term':term})
+    return HttpResponse(t.render(c))
+    
+def ki_luat(request, student_id):
+    message = ''
+    ktl = KiLuat.objects.filter(student_id = student_id)
+    t = loader.get_template(os.path.join('school','ki_luat.html'))
+    c = RequestContext(request, {'ktl': ktl,'message':message, 'student_id':student_id})
+    return HttpResponse(t.render(c))
+    
+def add_ki_luat(request,student_id):
+    form = KiLuatForm()
+    pupil = Pupil.objects.get(id = student_id)
+    cl = Class.objects.get(id__exact = pupil.class_id.id)
+    term = Term.objects.filter(year_id = cl.year_id, active = True).latest('number')
+    if request.method == 'POST':
+        form = KiLuatForm(request.POST)
+        if form.is_valid():
+            form.save()
+            url = '/school/khenthuong/' + str(student_id)
+            return HttpResponseRedirect(url)
+    t = loader.get_template(os.path.join('school','ki_luat_detail.html'))
+    c = RequestContext(request, {'form' : form, 'p' : pupil, 'student_id':student_id,'term':term})
+    return HttpResponse(t.render(c))
+
+def delete_ki_luat(request, kt_id):
+    kt = KiLuat.objects.get(id = kt_id)
+    student = Pupil.objects.get(id = kt.student_id.id)
+    kt.delete()
+    url = '/school/khenthuong/' + str(student.id)
+    return HttpResponseRedirect(url)
+
+def edit_ki_luat(request, kt_id)    :
+    kt = KiLuat.objects.get(id = kt_id)
+    pupil = kt.student_id
+    term = kt.term_id
+    form = KiLuatForm(instance = kt)
+    if request.method == 'POST':
+        form = KiLuatForm(request.POST, instance = kt)
+        if form.is_valid():
+            form.save()
+            url = '/school/khenthuong/' + str(pupil.id)
+            return HttpResponseRedirect(url)
+    t = loader.get_template(os.path.join('school','ki_luat_detail.html'))
+    c = RequestContext(request, {'form' : form, 'p' : pupil, 'student_id':pupil.id,'term':term})
+    return HttpResponse(t.render(c))    

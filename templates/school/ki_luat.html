@@ -1,0 +1,44 @@
+﻿{% extends "school/base_school.html" %}
+{% block content %}
+
+<script>
+function confirmDelete()
+{
+    return confirm("Bạn có muốn xóa kỉ luật này không");
+}
+</script>
+
+<table border=0 width = "100%">
+	
+</table>
+<table border=1 width = "100%" >
+    <tr>
+		<td align="center" width="5%"> STT </td>
+        <td align="center" width="15%"> Thời gian</td>
+        <td align="center" width="25%"> Hình thức</td>
+        <td align="center" width="15%"> Địa điểm </td>
+        <td align="center" width="30%"> Nội dung </td>
+        <td width = "5%"></td>
+        <td width = "5%"></td>
+    </tr>
+
+    {% if message != None %}
+    {{message}}
+    {% endif %}
+
+    {% for kt in ktl %}
+    <tr>
+        <td align="center" width="5%"> {{forloop.counter}} </td>
+        <td align="center" width="15%"> {{kt.time|date:"SHORT_DATE_FORMAT"}}</td>
+        <td align="center" width="25%"> {{kt.hinh_thuc}}</td>
+        <td align="center" width="15%"> {{kt.dia_diem}} </td>
+        <td align="center" width="30%"> {{kt.noi_dung}} </a></td>
+        <td width="5%"><a href = "/school/kiluat/{{kt.id}}/delete" onclick="return confirmDelete();"> xóa</a></td>
+        <td width="5%"><a href = "/school/kiluat/{{kt.id}}/edit" > Sửa</a></td>
+    </tr>
+    {% endfor %}
+    
+    <form action="/school/kiluat/{{student_id}}/add">
+        <td width = "5%" align = "left"><input type ="submit" value="Thêm"/></td>
+	</form>
+{% endblock %}
