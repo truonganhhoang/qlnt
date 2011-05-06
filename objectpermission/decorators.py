@@ -2,7 +2,7 @@ from functools import wraps
 from django.http import HttpResponseForbidden
 from django.utils.decorators import available_attrs
 
-def permission_required(perm, value):
+def object_permission_required(perm, value):
     def decorator(view_func):
         @wraps(view_func, assigned=available_attrs(view_func))
         def _wrapped_view(request, *args, **kwargs):

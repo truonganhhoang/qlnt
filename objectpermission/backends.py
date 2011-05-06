@@ -11,10 +11,10 @@ class ObjectPermissionBackend(object):
     def authenticate(self, username, password):
         return None
 
-    def has_perm(self, user_obj, perm, value=None):
+    def has_perm(self, user_obj, perm, model=None):
         """ perm parameter must has value like:
-        table_name.field_name_permission
-        Eg: Organization.name_view
+        permission_field=value
+        Eg: change_level=S
         """
         if value is None:
             return False
@@ -23,14 +23,31 @@ class ObjectPermissionBackend(object):
             return True
 
         try:
-            table_name = perm.split('.')[0]
-            field_name = perm.split('.')[1].split('_')[0]
-            permission = perm.split('.')[1].split('_')[-1]
+            permission = perm.split('_')[0]
+            field_name = "_".join(perm.split('_')[1:]).split('=')[0]
+            value = "=".join("_".join(s.split('_')[1:]).split('=')[1:])
         except IndexError:
             return False
 
-        p = ObjectPermission.objects.filter(user=user_obj,
-                                            table_name=table_name,
-                                            field_name=field_name,
-                                            allowed_value=value)
-        return p.filter(**{'can_%s' % permission: True}).exists()
+        # check for user permission
+        user_ct = ContentType.get_for_model(user_obj)
+        user_perm = ObjectPermission.objects.filter(owner_id=user_obj.id,
+                                                    owner_ct=user_ct,
+                                                    model=model,
+                                                    field_name=field_name,
+                                                    allowed_value=value)
+        if user_perm.filter(**{'permission': permission}).exists():
+            return True
+
+        # check for group permission
+        for g in user_obj.groups():
+            group_ct = ContentType.get_for_model(g)
+            group_perm = ObjectPermission.objects.filter(owner_id=g.id,
+                                                    owner_ct=group_ct,
+                                                    model=model,
+                                                    field_name=field_name,
+                                                    allowed_value=value)
+            if group_perm.filter(**{'permission': permission}).exists():
+                return True
+
+        return False
