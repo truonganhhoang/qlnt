@@ -14,10 +14,13 @@ def manual_sms(request):
             phone_list = form.cleaned_data.get('phone')
             content = form.cleaned_data.get('content')
             
-            '''Save to db'''
-            s = sms(phone=phone_list, content=content)
-            s.save()
-            '''Send sms via Viettel system'''
+            phone = phone_list.split(',')
+            for p in phone:            
+                '''Save to db'''
+                s = sms(phone=p, content=content)
+                s.save()
+                '''Send sms via Viettel system'''
+                '''Implement Me'''
             
             return HttpResponseRedirect('/sms/sent_sms/')
 #            return HttpResponse(phone_list)
