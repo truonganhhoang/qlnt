@@ -11,13 +11,14 @@ function confirmDelete()
 
 <table border=1 width = "100%" >
     <tr>
+		<td align="center" width="5%"> STT </td>
         <td align="center" width="25%"> Họ & Tên </td>
-        <td align="center" width="20%"> Ngày sinh</td>
+        <td align="center" width="15%"> Ngày sinh</td>
         <td align="center" width="10%">  Giới tính</td>
         <td align="center" width="7%"> Ban Đăng kí </td>
    		<td align="center" width="8%"> Lớp </td>        
         <td align="center" width="15%"> Ngày vào trường </td>
-        <td align="center" width="10%"> Năm bắt đầu </td>
+        <td align="center" width="10%"> Năm BD </td>
          <td width = "5%"> <a href = ""></a></td>
     </tr>
 
@@ -27,13 +28,13 @@ function confirmDelete()
 
     {% for ss in studentList %}
     <tr>
-        
+        <td align="center" width="5%">{{forloop.counter}}</td>
         <td align="center" width="25%"> <a href="{%url school.views.school_index  %}/viewStudentDetail/{{ss.id}}">{{ss.last_name}} {{ss.first_name}}</td>
-        <td align="center" width="20%"> {{ss.birthday|date:"SHORT_DATE_FORMAT"}}</td>
+        <td align="center" width="15%"> {{ss.birthday|date:"SHORT_DATE_FORMAT"}}</td>
         <td align="center" width="10%"> {{ss.sex}}</td>
         <td align="center" width="7%"> {{ss.ban_dk}} </td>
         <td align="center" width="8%"> {{ss.class_id}} </td>        
-        <td align="center" width="15%"> {{ss.school_join_date}} </td>
+        <td align="center" width="15%"> {{ss.school_join_date|date:"SHORT_DATE_FORMAT"}} </td>
         <td align="center" width="10%"> {{ss.start_year_id}} </td>
         <td width = "5%"> <a href = "{%url school.views.school_index  %}/deleteStudentInSchool/{{ss.id}}" onclick="return confirmDelete();"> xóa</a></td>
     </tr>
@@ -42,13 +43,13 @@ function confirmDelete()
     <form action="/school/students" method="post">{% csrf_token %}
         <tr>
             {{ form.non_field_errors }}
-           
+            <td align="center" width="5%"></td>
             <td align="center" width="25%">
                     {{form.first_name.errors }}
                     <p>{{ form.first_name }}</p>
             </td>
 
-            <td align="center" width="20%">
+            <td align="center" width="15%">
                     {{ form.birthday.errors }}
                     <p>{{ form.birthday }}</p>
             </td>

@@ -9,8 +9,9 @@ function confirmDelete()
 }
 </script>
 
-<table border=1 width = "70%" align = "center">
+<table border=1 width = "75%" align = "center">
     <tr>
+		<td width="5%"> STT </td>
         <td align="center" width="20%"> Tên Môn Học</td>
         <td align="center" width="10%"> Hệ số </td>
         <td align="center" width="25%"> Giáo viên</td>
@@ -24,7 +25,8 @@ function confirmDelete()
 
     {% for ss in subjectList %}
     <tr>
-        <td align="center" width="20%"> <a href="{%url school.views.school_index  %}viewSubjectDetail/{{ss.id}}"> {{ss.name}}</a> </td>
+		<td width="5%">{{forloop.counter}} </td>
+        <td align="center" width="20%"> {{ss.name}}</td>
         <td align="center" width="10%"> {{ss.hs}} </td>
         <td align="center" width="25%"> <a href="{%url school.views.school_index  %}viewTeacherDetail/{{ss.teacher_id.id}}">{{ss.teacher_id}}</td>
 		<td align="center" width="10%"> <a href="{%url school.views.school_index  %}markForASubject/{{ss.id}}"> Điểm </a></td>
@@ -35,6 +37,7 @@ function confirmDelete()
     <form action="/school/subjectPerClass/{{class_id}}" method="post">{% csrf_token %}
         <tr>
             {{ form.non_field_errors }}
+			<td width="5%"> </td>
             <td align="center" width="20%">
                     {{ form.name.errors }}
                     <p>{{ form.name }}</p>
@@ -52,7 +55,7 @@ function confirmDelete()
 
         </tr>
 </table>
-<table border = "0" width = "60%" align = "center">
+<table border = "0" width = "75%" align = "center">
         <tr>
         		<td width = "5%" align = "left"><input type ="submit" value="Thêm"/></td>
         		<td align = "right"> <a href = ""> Xuất ra excel </a> </td>

@@ -17,7 +17,8 @@ function confirmDelete()
 
 <table border=1 width = "90%" >
     <tr>
-        <td align="center" width="30%"> Họ & Tên </td>
+		<td align="center" width="5%"> STT </td>
+        <td align="center" width="25%"> Họ & Tên </td>
         <td align="center" width="15%"> Ngày sinh</td>
         <td align="center" width="25%"> Nơi sinh</td>
         <td align="center" width="10%"> Giới tính </td>
@@ -31,7 +32,8 @@ function confirmDelete()
 
     {% for ss in teacherList %}
     <tr>        
-        <td align="center" width="30%"><a href="{%url school.views.school_index  %}viewTeacherDetail/{{ss.id}}"> {{ss.last_name}} {{ss.first_name}} </a></td>
+		<td align="center" width="5%">{{forloop.counter}}</td>
+        <td align="center" width="25%"><a href="{%url school.views.school_index  %}viewTeacherDetail/{{ss.id}}"> {{ss.last_name}} {{ss.first_name}} </a></td>
         <td align="center" width="15%"> {{ss.birthday|date:"SHORT_DATE_FORMAT"}}</td>
         <td align="center" width="25%"> {{ss.birth_place}}</td>
         <td align="center" width="10%"> {{ss.sex}} </td>
@@ -43,9 +45,9 @@ function confirmDelete()
     <form action="/school/teachers" method="post">{% csrf_token %}
         <tr>
             {{ form.non_field_errors }}
-            
-
-            <td align="center" width="30%">
+			
+			<td width="5%"></td>
+            <td align="center" width="25%">
                     {{ form.first_name.errors }}
                     <p>{{ form.first_name }}</p>
             </td>
