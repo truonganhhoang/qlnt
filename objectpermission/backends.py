@@ -31,9 +31,10 @@ class ObjectPermissionBackend(object):
 
         # check for user permission
         user_ct = ContentType.get_for_model(user_obj)
+        model_ct = ContentType.get_for_model(model_ct)
         user_perm = ObjectPermission.objects.filter(owner_id=user_obj.id,
                                                     owner_ct=user_ct,
-                                                    model=model,
+                                                    model_ct=model_ct,
                                                     field_name=field_name,
                                                     allowed_value=value)
         if user_perm.filter(**{'permission': permission}).exists():
@@ -44,7 +45,7 @@ class ObjectPermissionBackend(object):
             group_ct = ContentType.get_for_model(g)
             group_perm = ObjectPermission.objects.filter(owner_id=g.id,
                                                     owner_ct=group_ct,
-                                                    model=model,
+                                                    model_ct=model_ct,
                                                     field_name=field_name,
                                                     allowed_value=value)
             if group_perm.filter(**{'permission': permission}).exists():
