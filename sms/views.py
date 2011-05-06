@@ -1,5 +1,5 @@
 from django.views.generic.list import ListView
-from sms.models import sms, smsForm
+from sms.models import sms, smsForm, smsFromExcelForm
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext, loader
@@ -52,9 +52,14 @@ def manual_sms(request):
     return HttpResponse(t.render(c))
 
 def excel_sms(request):
-    if request == 'POST':
-        pass
-    
+    if request.method == 'POST':
+        form = smsFromExcelForm(request.POST, request.FILES)
+        if form.is_valid():
+            if(request.FILES['file']):
+                return HttpResponseRedirect('/success/')
+    else:
+        form = smsFromExcelForm()
+                
     t = loader.get_template('sms/excel_sms.html')
-    c = RequestContext(request)
+    c = RequestContext(request, {'form': form})
     return HttpResponse(t.render(c))

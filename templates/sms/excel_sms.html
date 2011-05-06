@@ -3,9 +3,10 @@
 {% block content %}
 	{% if user.is_authenticated %}
 		<h3>Gửi tin nhắn mới</h3>
-		<form action="" method="post">{% csrf_token %}
-			Chọn file excel. (Hoặc tải file excel mẫu <a href="abc...xyz">tại đây</a>)
-		<input type="submit" value="Gửi" />
+		<form enctype="multipart/form-data" action="" method="post">{% csrf_token %}
+			Chọn file excel. (Hoặc tải file excel mẫu <a href="{{ MEDIA_URL }}template_files/sms_template.xls">tại đây</a>)
+			{{ form.as_p }}
+		<br /><input type="submit" value="Gửi" />
 		</form>
 	{% endif %}
 {% endblock %}

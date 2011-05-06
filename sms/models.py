@@ -12,3 +12,6 @@ class sms(models.Model):
 class smsForm(forms.Form):
     phone = forms.CharField(label = 'Số điện thoại người nhận', widget=forms.widgets.Textarea())
     content = forms.CharField(label = 'Nội dung', widget=forms.widgets.Textarea())
+    
+class smsFromExcelForm(forms.Form):
+    file = forms.FileField()

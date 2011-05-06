@@ -3,6 +3,7 @@ from django.db import models
 from django import forms
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 '''
 Các mô hình dữ liệu dùng chung giữa các đơn vị trong hệ thống và 
@@ -55,7 +56,7 @@ class UserProfile(User):
     '''
     Thông tin về người sủ dụng hệ thống, mở rộng User của Django.
     '''
-#    user = models.OneToOneField(User)
+    user = models.OneToOneField(User)
     organization = models.ForeignKey(Organization, verbose_name='Đơn vị', null=True)
     position = models.ForeignKey(Position, verbose_name='Chức vụ', blank=True, null=True)
     phone = models.CharField('Điện thoại di động', max_length=20, blank=True, null=True) #để gửi tin nhắn.
@@ -65,14 +66,10 @@ class UserProfile(User):
     def __str__(self):
         return "%s's profile" % self.user
     
-#    def create_user_profile(sender, instance, created, **kwargs):
-#        if created:
-#            profile, created = UserProfile.objects.get_or_create(user=instance)  
-#
-#    post_save.connect(create_user_profile, sender=User)
-    
-#    def __unicode__(self):
-#        return self.first_name + self.last_name  
+    @receiver(post_save, sender=User)
+    def create_profile(sender, instance, created, **kwargs):
+        if created: 
+            profile, new = UserProfile.objects.get_or_create(user=instance)
 
 class UserForm(forms.ModelForm):
     class Meta:
