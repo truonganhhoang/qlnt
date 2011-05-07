@@ -4,9 +4,16 @@
 	{% if user.is_authenticated %}
 		<h3>Gửi tin nhắn mới</h3>
 		<form enctype="multipart/form-data" action="" method="post">{% csrf_token %}
-            Chọn file excel. (Hoặc tải file excel mẫu <a href="{{ MEDIA_URL }}template_files/sms_template.xls">tại đây</a>)
-			{{ form.as_p }}
-			<input type="submit" name="choice" value="Gửi file lên" />
+			<input type="submit" name="choice" value="Gửi" /><br />
+			
+			<table border="1">
+			{% for d in data %}
+				<tr>
+				<td>{{ d.number }}</td>
+				<td>{{ d.content }}</td>
+				</tr>
+			{% endfor %}
+			</table>			
 		</form>
 	{% endif %}
 {% endblock %}
