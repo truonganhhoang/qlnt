@@ -46,13 +46,13 @@ class Position(models.Model):
     '''
     Chức vụ công tác
     '''
-    type = models.CharField(max_length=100)
+    position_type = models.CharField(max_length=100)
     level = models.IntegerField(choices = LEVEL_CHOICES)
     
     def __unicode__(self):
-        return self.type
+        return self.position_type
 
-class UserProfile(User):
+class UserProfile(models.Model):
     '''
     Thông tin về người sủ dụng hệ thống, mở rộng User của Django.
     '''
@@ -66,10 +66,10 @@ class UserProfile(User):
     def __str__(self):
         return "%s's profile" % self.user
     
-    @receiver(post_save, sender=User)
-    def create_profile(sender, instance, created, **kwargs):
-        if created: 
-            profile, new = UserProfile.objects.get_or_create(user=instance)
+    # @receiver(post_save, sender=User)
+    # def create_profile(sender, instance, created, **kwargs):
+    #     if created: 
+    #         profile, new = UserProfile.objects.get_or_create(user=instance)
 
 class UserForm(forms.ModelForm):
     class Meta:

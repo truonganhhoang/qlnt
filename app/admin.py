@@ -1,4 +1,6 @@
 from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin
+from django.contrib.auth.models import User
 from django.forms.formsets import formset_factory
 from app.models import Organization, UserProfile, Position
 #, SchoolYear, Semester
@@ -12,8 +14,13 @@ admin.site.register(UserProfile)
 
 class UserProfileInline (admin.StackedInline):
     model = UserProfile
-    max_num = 1
     
+class CustomizedUserAdmin(UserAdmin):
+    inlines = [UserProfileInline]
+
+admin.site.unregister(User)
+admin.site.register(User, CustomizedUserAdmin)
+
 class OrganizationAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'address', 'email', 'upper_organization', 'manager_name')
     list_filter = ('level', 'upper_organization', 'name')
@@ -23,8 +30,8 @@ class OrganizationAdmin(admin.ModelAdmin):
     list_per_page = 20
     
 class PositionAdmin(admin.ModelAdmin):
-    list_display = ('type', 'level')
-    list_filter = ('level', 'type')
+    list_display = ('position_type', 'level')
+    list_filter = ('level', 'position_type')
              
 admin.site.register(Organization, OrganizationAdmin)
 
