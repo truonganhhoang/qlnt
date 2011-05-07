@@ -31,9 +31,14 @@ urlpatterns = patterns('',
     
     url(r'^sms/', include('sms.urls')),
     
+#    url(r'^report', include('report.url')),
+
+    (r'^topdf/$', 'views.topdf'),
+    
     (r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
 )
 
+# remove after finish project
 if 'rosetta' in settings.INSTALLED_APPS:
     urlpatterns += patterns('',
         url(r'^rosetta/', include('rosetta.urls')),

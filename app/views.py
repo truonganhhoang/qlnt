@@ -3,6 +3,7 @@ from app.models import UserForm, Organization
 #from app.models import PositionTypeForm
 from django.template import RequestContext, loader
 from objectpermission.decorators import object_permission_required
+from reportlab.pdfgen import canvas
 
 def user_add(request):
     if request.method == 'POST':
