@@ -168,6 +168,7 @@ class Class(models.Model):
 	#class_code = models.CharField(max_length = 20, unique = True)	
 	name = models.CharField(max_length = 20)
 	status = models.SmallIntegerField(max_length = 3, null = True, blank= True, choices = CLASS_ACTION_STATUS)
+	
 	year_id = models.ForeignKey(Year)
 	#lop nay thuoc khoi nao
 	block_id = models.ForeignKey(Block)
@@ -280,6 +281,7 @@ class MarkForm(forms.ModelForm):
 class KhenThuong(models.Model):
 	student_id = models.ForeignKey(Pupil)
 	term_id = models.ForeignKey(Term)
+	
 	time = models.DateField(blank = True)
 	hinh_thuc = models.CharField(max_length = 100, choices = KT_CHOICES)
 	dia_diem= models.CharField(max_length = 100, blank = True, null = True)
@@ -296,6 +298,7 @@ class KhenThuongForm(forms.ModelForm)        :
 class KiLuat(models.Model):
 	student_id = models.ForeignKey(Pupil)
 	term_id = models.ForeignKey(Term)
+	
 	time = models.DateField(blank = True)
 	hinh_thuc = models.CharField(max_length = 10, choices = KL_CHOICES)
 	dia_diem= models.CharField(max_length = 100, blank = True, null = True)
@@ -335,6 +338,7 @@ class TBHocKy(models.Model):
 class TBNam(models.Model):
 	student_id = models.ForeignKey(Pupil)
 	year_id = models.ForeignKey(Year)
+	
 	tb_nam = models.FloatField( validators = [validate_mark],null=True,blank=True)
 	hl_nam=models.CharField( max_length = 3, choices = HL_CHOICES,null=True,blank=True)
 	#hanh kiem nam
@@ -359,9 +363,10 @@ class TBNam(models.Model):
 
 class DiemDanh(models.Model):
     student_id = models.ForeignKey(Pupil)
+    term_id = models.ForeignKey(Term)
+    
     time = models.DateField()
     loai = models.CharField( max_length = 10, choices = DIEM_DANH_TYPE, default = 'k') 
-    term_id = models.ForeignKey(Term)
     
     def __unicode__(self):
         return str(self.student_id) + " " + str(self.time)
@@ -372,10 +377,11 @@ class DiemDanhForm(forms.ModelForm):
         
 class TKDiemDanh(models.Model):
     student_id = models.ForeignKey(Pupil)
+    term_id = models.ForeignKey(Term)
+    
     tong_so = models.IntegerField(blank=True,null=True)
     co_phep = models.IntegerField(blank=True,null=True)
     khong_phep = models.IntegerField(blank=True,null=True)
-    term_id = models.ForeignKey(Term)
     
     def __unicode__(self):
         return str(self.student_id) +" "+ self.term_id.__unicode__()+" " + str(self.tong_so)

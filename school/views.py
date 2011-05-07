@@ -10,7 +10,7 @@ from django.template import RequestContext, loader
 from django.core.exceptions import *
 from django.db import transaction
 
-
+from school.utils import *
 from school.models import *
 from school.school_settings import *
 import xlrd
@@ -24,21 +24,6 @@ SCHOOL = os.path.join('school','school.html')
 
 def school_index(request):
     school = School.objects.get( school_code = 'NT') # it's for testing, actually, it should be: school = School.objects.get(id = request['school_id'])
-    this_year  = school.year_set.latest('time')
-    
-    firstTermList  = this_year.term_set.filter(number=1)
-    secondTermList = this_year.term_set.filter(number=2)
-    
-    if firstTermList:
-        firstTerm=firstTermList[0]
-    else:
-        firstTerm=None
-            
-    if secondTermList:
-        secondTerm=secondTermList[0]
-    else:
-        secondTerm=None
-         
     
     if request.method == "POST":
         if request.POST['clickedButton'] == "start_year":
@@ -51,8 +36,6 @@ def school_index(request):
             context = RequestContext(request, {'school':school})
             return render_to_response(r'school/finish_year.html', context_instance = context)    
     context = RequestContext(request, {'school':school,
-                                       'firstTerm':firstTerm,
-                                       'secondTerm':secondTerm,                                       
                                        }
                              )
     
@@ -433,6 +416,7 @@ def manual_adding(request):
     message = None
     try:
         this_year = school.year_set.latest('time')
+        term = this_year.term_set.get(number__exact = school.status)
         temp = this_year.class_set.all()
         for _class in temp:
             _class_list.append((_class.id, _class.name))
@@ -452,6 +436,19 @@ def manual_adding(request):
                 year = school.startyear_set.get( time = datetime.date.today().year)
                 today = datetime.date.today()   
                 for student in student_list:
+                    data = {'full_name': student['ten'], 'birthday':student['ngay_sinh'],
+                        'ban':student['nguyen_vong'],}
+                    
+                    print "data", data
+                    print "_class", _class
+                    print "start_year", year
+                    print "year", this_year
+                    print "term", term
+                    print "school", school
+                    add_student( student = data, _class = chosen_class,
+                             start_year = year, year = this_year,
+                             term = term, school = school)
+                    '''
                     name = student['ten'].split()
                     last_name = ' '.join(name[:len(name)-1])
                     first_name= name[len(name)-1]
@@ -474,6 +471,7 @@ def manual_adding(request):
                         if  find.class_id != chosen_class:
                             find.class_id = chosen_class
                             find.save()
+                    '''
                 transaction.commit()
                 message = u'Bạn vừa nhập thành công danh sách học sinh trúng tuyển.'
                 student_list=[]
@@ -521,6 +519,13 @@ def danh_sach_trung_tuyen(request):
             year = school.startyear_set.get( time = datetime.date.today().year)
             today = datetime.date.today()   
             for student in student_list:
+                data = {'full_name': student['ten'], 'birthday':student['ngay_sinh'],
+                        'ban':student['nguyen_vong'],}
+                
+                add_student( student = data, _class = chosen_class,
+                             start_year = year, year = current_year,
+                             term = term, school = school)
+                '''
                 name = student['ten'].split()
                 last_name = ' '.join(name[:len(name)-1])
                 first_name= name[len(name)-1]
@@ -592,7 +597,7 @@ def danh_sach_trung_tuyen(request):
                                     tkmon.student_id = find
                                     tkmon.thi_lai = False
                                     tkmon.save()
-                    
+            '''        
             message = u'Bạn vừa nhập thành công danh sách học sinh trúng tuyển.'
             student_list=[]
             request.session['student_list'] = student_list
