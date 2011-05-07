@@ -34,8 +34,9 @@ urlpatterns = patterns('',
 
 
 
-	
+		
 	url(r'classes$', 'school.views.classes'),
+	url(r'hanhkiem/(?P<class_id>\w+)', 'school.views.hanh_kiem'),
     url(r'teachers$', 'school.views.teachers'),
     url(r'students$', 'school.views.students'),
     url(r'viewClassDetail/(?P<class_id>\w+)', 'school.views.viewClassDetail'),

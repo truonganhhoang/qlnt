@@ -903,3 +903,44 @@ def edit_ki_luat(request, kt_id)    :
     t = loader.get_template(os.path.join('school','ki_luat_detail.html'))
     c = RequestContext(request, {'form' : form, 'p' : pupil, 'student_id':pupil.id,'term':term})
     return HttpResponse(t.render(c))    
+
+def hanh_kiem(request, class_id):
+    message = None
+    listdh = None
+    term = None
+    print class_id
+    pupilList = Pupil.objects.filter(class_id = class_id)
+    c = Class.objects.get(id__exact = class_id)
+    term = Term.objects.filter(year_id = c.year_id,active = True).latest('number')
+    form = []
+    i = 0
+    for p in pupilList:
+        form.append(HanhKiemForm())
+        try:
+			hk= HanhKiem.objects.get(student_id__exact = p.id, term_id__exact = term.id)
+			form[i] = HanhKiemForm(instance = hk)
+        except ObjectDoesNotExist:
+			data={'student_id':p.id,'term_id':term.id}
+			form[i] = HanhKiemForm(data)
+        i=i+1
+    listdh = zip(pupilList,form)
+    if request.method == 'POST':
+        message = 'Cập nhật thành công hạnh kiểm lớp ' + str(Class.objects.get(id = class_id))
+        list = request.POST.getlist('loai')
+        i = 0
+        for p in pupilList:
+			try:
+				hk= HanhKiem.objects.get(student_id__exact = p.id, term_id__exact = term.id)
+				data = {'student_id':p.id,'loai':list[i],'term_id':term.id}
+				form[i] = HanhKiemForm(data, instance = hk)
+				form[i].save()
+			except ObjectDoesNotExist:
+				data = {'student_id':p.id,'loai':list[i],'term_id':term.id}
+				form[i] = HanhKiemForm(data)
+				form[i].save()
+			i=i+1
+			
+    listdh = zip(pupilList,form)                
+    t = loader.get_template(os.path.join('school','hanh_kiem.html'))
+    c = RequestContext(request, {'form':form, 'pupilList' : pupilList, 'message':message, 'class_id':class_id,'list':listdh})
+    return HttpResponse(t.render(c))

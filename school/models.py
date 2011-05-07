@@ -312,11 +312,15 @@ class KiLuatForm(forms.ModelForm):
 class HanhKiem(models.Model):
 	student_id = models.ForeignKey(Pupil)
 	term_id = models.ForeignKey(Term)
-	loai = models.CharField( max_length = 2, choices = HK_CHOICES, default = 'K',null=True,blank=True)
+	loai = models.CharField( max_length = 2, choices = HK_CHOICES, default = 'T',null=True,blank=True)
 	
 	def __unicode__(self):
 		return str(self.loai)
 
+class HanhKiemForm(forms.ModelForm):
+    class Meta:
+        model = HanhKiem
+		
 class TBHocKy(models.Model):
 	student_id = models.ForeignKey(Pupil)
 	term_id = models.ForeignKey(Term)
