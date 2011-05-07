@@ -11,4 +11,5 @@ urlpatterns = patterns('',
             queryset=sms.objects.all(),
             context_object_name='sms_list',
             template_name='sms/sent_sms.html')),
+    url(r'^export_excel/$', 'sms.views.export_excel')
 )

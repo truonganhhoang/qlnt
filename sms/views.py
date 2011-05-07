@@ -5,10 +5,11 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext, loader
 import urllib, urllib2
-import xlrd
+import xlrd, xlwt
 import os.path
 
 TEMP_FILE_LOCATION = os.path.join(os.path.dirname(__file__), 'uploaded')
+EXPORTED_FILE_LOCATION = os.path.join(os.path.dirname(__file__), 'exported')
 
 def index(request):
     return render_to_response("sms/index.html", context_instance=RequestContext(request))
@@ -21,10 +22,12 @@ def manual_sms(request):
             content = form.cleaned_data.get('content')
             
             phone = []
-            for pl in phone_list.split(','):
-                pl = pl.split(';')
-                for p in pl:
-                    phone.append(p)
+            for p1 in phone_list.split(','):
+                p1 = p1.split(';')
+                for p2 in p1:
+                    p2 = p2.split()
+                    for p3 in p2:
+                        phone.append(p3)
                     
             open = urllib2.build_opener(urllib2.HTTPCookieProcessor())
             urllib2.install_opener(open)
@@ -110,6 +113,7 @@ def preview_sms(request):
                         })
 #            f = open.open('http://viettelvas.vn:7777/fromcp.asmx', data)
             
+        os.remove(filepath)
         return HttpResponseRedirect('/sms/sent_sms/')
     else:                
         filepath = os.path.join(TEMP_FILE_LOCATION, 'sms_input.xls')
@@ -124,3 +128,23 @@ def preview_sms(request):
         t = loader.get_template('sms/preview_sms.html')
         c = RequestContext(request, {'data' : data})
         return HttpResponse(t.render(c))
+
+def export_excel(request):
+    response = HttpResponse(mimetype="application/ms-excel")
+    response['Content-Disposition'] = 'attachment; filename=Thống kê tin nhắn.xls'
+    
+    wb = xlwt.Workbook(encoding='utf-8')
+    ws = wb.add_sheet('Thống kê tin nhắn')
+    
+    queryset=sms.objects.all()
+    
+    ws.write(0, 0, 'Số điện thoại người nhận')
+    ws.write(0, 1, 'Nội dung tin nhắn')
+    begin = 1;
+    for q in queryset:
+        ws.write(begin, 0, q.phone)
+        ws.write(begin, 1, q.content)
+        begin = begin+1
+    
+    wb.save(response)
+    return response
