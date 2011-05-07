@@ -491,15 +491,27 @@
 			{% endifnotequal %}
 
 			<td align="center">
-				{{hk1|floatformat:"-1"}} 
+				{% if hk1 != None %}
+					{{hk1|floatformat:"-1"}} 
+				{% else %}
+					&nbsp
+				{% endif %}	
 			</td>
 
 			<td align="center"> 
-			{{ m.tb|floatformat:"-1"}}
+				{% if m.tb != None %}
+					{{ m.tb|floatformat:"-1"}}
+				{% else %}
+					&nbsp
+				{% endif %}	
 			</td>	
 
 			<td align="center">
-				{{tbnam|floatformat:"-1"}} 
+				{% if tbnam != None %}
+					{{tbnam|floatformat:"-1"}} 
+				{% else %}
+					&nbsp
+				{% endif %}	
 			</td>
 
 			

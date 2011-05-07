@@ -89,7 +89,12 @@
 				 Học Kỳ I
 				</td>
 				<td align="center">
-					{{tbhk1.tb_hk}}
+					{% if tbhk1.tb_hk != None %}
+						{{tbhk1.tb_hk}}
+					{% else %}
+						&nbsp
+					{% endif %}	
+					
 				</td>
 				<td align="center">
 				{% ifequal tbhk1.hl_hk "G" %}					
@@ -106,6 +111,8 @@
 				{% else %}	
 				{% ifequal tbhk1.hl_hk "Kem" %}					
 					Kém
+				{% else %}
+					&nbsp
 				{% endifequal %}	
 				{% endifequal %}	
 				{% endifequal %}	
@@ -126,7 +133,12 @@
 				 Học Kỳ II
 				</td>
 				<td align="center">
-					{{tbhk2.tb_hk}}
+
+					{% if tbhk2.tb_hk != None %}
+						{{tbhk2.tb_hk}}
+					{% else %}
+						&nbsp
+					{% endif %}	
 				</td>
 				<td align="center">
 				{% ifequal tbhk2.hl_hk "G" %}					
@@ -143,6 +155,8 @@
 				{% else %}	
 				{% ifequal tbhk2.hl_hk "Kem" %}					
 					Kém
+				{% else %}
+					&nbsp
 				{% endifequal %}	
 				{% endifequal %}	
 				{% endifequal %}	
@@ -161,7 +175,12 @@
 				 Cả năm
 				</td>
 				<td align="center">
-					{{tbCaNam.tb_nam}}
+					
+					{% if tbCaNam.tb_nam != None %}
+						{{tbCaNam.tb_nam}}
+					{% else %}
+						&nbsp
+					{% endif %}	
 				</td>
 				<td align="center">
 				{% ifequal tbCaNam.hl_nam "G" %}					
@@ -178,6 +197,8 @@
 				{% else %}	
 				{% ifequal tbCaNam.hl_nam "Kem" %}					
 					Kém
+				{% else %}
+					&nbsp
 				{% endifequal %}	
 				{% endifequal %}	
 				{% endifequal %}	
@@ -270,7 +291,7 @@
 			<td align="center">
 			 {{forloop.counter}}	
 			</td>
-			<td>
+			<td align="center">
 				{{s}}
 			</td>
 
@@ -435,7 +456,7 @@
 			<td align="center">
 			 {{forloop.counter}}	
 			</td>
-			<td>
+			<td align="center">
 				{{s}}
 			</td>
 

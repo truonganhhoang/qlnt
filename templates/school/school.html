@@ -12,6 +12,14 @@
 		document.theForm.clickedButton.value="start_year";
 		document.theForm.submit();
 	}
+	function finishFirstTerm()
+	{
+		document.theForm.clickedButton.value="finish_first_term";
+		document.theForm.action="/school/finishTerm/"+{{firstTerm.id}}
+		document.theForm.submit();
+	
+	}
+	
 
 	function startSecondTerm()
 	{
@@ -30,9 +38,11 @@
 		if (schoolStatus !=2){
 			alert("Bạn không thể kết thúc năm học khi kì II chưa bắt đầu!");			
 			return false;		
+		
 		}
 		
 		document.theForm.clickedButton.value="finish_year";
+		document.theForm.action="/school/finishYear/"+{{firstTerm.year_id.id}}
 		document.theForm.submit();
 	}
 
@@ -50,6 +60,9 @@
 	<tr>
 		<th><input name="start_year" value="Bắt đầu năm học" type="submit"
 					  onclick="startYear()"></th>
+		<th><input name="finish_first_term" value="Kết thúc học kỳ I" type="submit"
+					  onclick="finishFirstTerm()"></th>
+					  
 		<th><input name="start_second_term" value="Bắt đầu học kỳ II" type="submit"
 					  onclick="startSecondTerm()"></th>
 		<th><input name="finish_year" value="Kết thúc năm học" type="submit"

@@ -21,12 +21,12 @@
 <td width="50%">
 <br>
 {#----------------------------------------------------#}
-<b >TRẠNG THÁI HỌC KỲ:
+    Trạng thái học kỳ:
     {% if selectedTerm.active %}
-	<span style="color:5197FF">	Đang diễn ra  		</span>
+	<span style="color:0043A8 ; font-size:23px">	Đang diễn ra  		</span>
 
 	{% else %}
-	<span style="color:0043A8">
+	<span style="color:5197FF ; font-size:23px">
 		Đã kết thúc 
 	</span >	
 	{% endif %}	
@@ -45,10 +45,165 @@
 </td>
 </tr>
 </table>
-{#----------------------------------------------------#}
+{#-------------------------------------------------------------------------------#}
+							{# thong ke chung  #}
+{#-------------------------------------------------------------------------------#}
 
 <br>
 <br>
+<br>
+<span style="font-size:18px" > <b> <u>A.THỐNG KÊ TOÀN TRƯỜNG: </u> </b> </span><br>
+<br>
+&nbsp &nbsp<b>I.HỌC LỰC: </b> <br>
+<br>
+<table border=1 width="100%">
+	<tr> 
+		<td width="14%">
+		</td>
+		<td width="14%" align="center">
+			Giỏi
+		</td>
+		<td width="14%" align="center">
+			Khá
+		</td>
+		<td width="14%" align="center">
+			Trung bình
+		</td>
+		<td width="14%" align="center">
+			Yếu
+		</td>
+		<td width="14%" align="center">
+			Kém
+		</td>
+		<td width="14%" align="center">
+			Chưa xếp loại
+		</td>		
+	</tr>
+	<tr>
+		<td align="center">
+			Số lượng
+		</td>
+		{% for h in hlList %}
+		<td align="center">
+			{{h}}
+		</td>
+		{% endfor %}
+	</tr>
+	<tr>
+		<td align="center">
+			Phần trăm
+		</td>
+		{% for h in pthlList %}
+		<td align="center">
+			{{h|floatformat:"2"}}
+		</td>
+		{% endfor %}
+	</tr>
+</table>
+
+
+{#--------------------------------------------------------------------------#}
+<br>
+<br>
+&nbsp &nbsp<b>II.HẠNH KIỂM: </b> <br>
+<br>
+<table border=1 width="100%">
+	<tr> 
+		<td width="14%">
+		</td>
+		<td width="14%" align="center">
+			Tốt
+		</td>
+		<td width="14%" align="center">
+			Khá
+		</td>
+		<td width="14%" align="center">
+			Trung bình
+		</td>
+		<td width="28%" align="center">
+			Yếu
+		</td>
+		<td width="14%" align="center">
+			Chưa xếp loại
+		</td>		
+	</tr>
+	<tr>
+		<td align="center">
+			Số lượng
+		</td>
+		{% for h in hkList %}
+		<td align="center">
+			{{h}}
+		</td>
+		{% endfor %}
+	</tr>
+	<tr>
+		<td align="center">
+			Phần trăm
+		</td>
+		{% for h in pthkList %}
+		<td align="center">
+			{{h|floatformat:"2"}}
+		</td>
+		{% endfor %}
+	</tr>
+</table>
+
+
+
+{#--------------------------------------------------------------------------#}
+<br>
+<br>
+&nbsp &nbsp<b>III.DANH HIỆU: </b> <br>
+<br>
+<table border=1 width="100%">
+	<tr> 
+		<td width="14%">
+		</td>
+		<td width="14%" align="center">
+			Học sinh giỏi
+		</td>
+		<td width="15%" align="center">
+			Học sinh tiên tiến
+		</td>
+		<td width="42%" align="center">
+			Không có
+		</td>
+		<td width="14%" align="center">
+			Chưa xếp loại
+		</td>		
+	</tr>
+	<tr>
+		<td align="center">
+			Số lượng
+		</td>
+		{% for h in ddList %}
+		<td align="center">
+			{{h}}
+		</td>
+		{% endfor %}
+	</tr>
+	<tr>
+		<td align="center">
+			Phần trăm
+		</td>
+		{% for h in ptddList %}
+		<td align="center">
+			{{h|floatformat:"2"}}
+		</td>
+		{% endfor %}
+	</tr>
+</table>
+<br>
+<br>
+
+
+
+
+{#-------------------------------------------------------------------------------#}
+							{# chi tiet tung lop  #}
+{#-------------------------------------------------------------------------------#}
+<span style="font-size:18px" > <b> <u>B.CHI TIẾT TỪNG LỚP: </u> </b> </span><br>
 <br>
 <b>I.TỔNG KẾT HỌC LỰC: </b> <br>
 <b>&nbsp 1. Danh sách các lớp đã tổng kết xong:</b>

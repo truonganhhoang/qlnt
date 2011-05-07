@@ -3,25 +3,37 @@ from django.conf.urls.defaults import patterns, url
 
 urlpatterns = patterns('',
 	url(r'^$', 'school.views.school_index'),
-	url(r'mark_table/(?P<class_id>\w+)','school.views1.mark_table'),
-	url(r'markForAStudent/(?P<class_id>\w+)/(?P<student_id>\w+)','school.views1.markForAStudent'),
-	# diem cho 1 mon
-	url(r'markForASubject/(?P<subject_id>\w+)','school.views1.markForASubject'),
-	# xep loai hoc luc theo lop, gom co xep loai k1, k2 va ca nam
-	url(r'xepLoaiHlTheoLop/(?P<class_id>\w+)','school.views1.xepLoaiHlTheoLop'),	
-	url(r'xlCaNamTheoLop/(?P<class_id>\w+)','school.views1.xlCaNamTheoLop'),	
-	
+
 	# 2 ham nay dung de test, tao tat ca cac thong tin con thieu cho sinh vien
 	# sau nay hoan thien, co the bo di
-	url(r'createTbNam/(?P<year_id>\w+)','school.views1.createTbNam'),
-	url(r'createAllInfoInTerm/(?P<term_id>\w+)','school.views1.createAllInfoInTerm'),
+	url(r'createTbNam/(?P<year_id>\w+)','school.viewMark.createTbNam'),
+	url(r'createAllInfoInTerm/(?P<term_id>\w+)','school.viewMark.createAllInfoInTerm'),
 
+	url(r'mark_table/(?P<class_id>\w+)','school.viewMark.mark_table'),
+	url(r'markForAStudent/(?P<class_id>\w+)/(?P<student_id>\w+)','school.viewMark.markForAStudent'),
+	# diem cho 1 mon
+	url(r'markForASubject/(?P<subject_id>\w+)','school.viewMark.markForASubject'),
+	
+	# xep loai hoc luc theo lop, gom co xep loai k1, k2 va ca nam
+	url(r'xepLoaiHlTheoLop/(?P<class_id>\w+)','school.viewFinish.xepLoaiHlTheoLop'),	
+	url(r'xlCaNamTheoLop/(?P<class_id>\w+)','school.viewFinish.xlCaNamTheoLop'),	
+	
 	# tinh diem tong ket hoc luc toan truong
 	
-	url(r'finishTermByLearning/(?P<term_id>\w+)','school.views1.finishTermByLearning'),
-	url(r'finishYear/(?P<year_id>\w+)','school.views1.finishYear'),
+	# tong ket hoc ky, tinh lai toan bo hoc luc cua hoc sinh trong toan truong
+	# xem xet lop nao da tinh xong, lop nao chua xong de hieu truong co the chi dao
+	# co chuc nang ket thuc hoc ky
+	
+	url(r'finishYear/(?P<year_id>\w+)','school.viewFinish.finishYear'),
+	url(r'finishTerm/(?P<term_id>\w+)','school.viewFinish.finishTerm'),
 
-	url(r'finishTerm/(?P<term_id>\w+)','school.views1.finishTerm'),
+
+
+
+
+
+
+
 	
 	url(r'classes$', 'school.views.classes'),
     url(r'teachers$', 'school.views.teachers'),

@@ -24,6 +24,22 @@ SCHOOL = os.path.join('school','school.html')
 
 def school_index(request):
     school = School.objects.get( school_code = 'NT') # it's for testing, actually, it should be: school = School.objects.get(id = request['school_id'])
+    this_year  = school.year_set.latest('time')
+    
+    firstTermList  = this_year.term_set.filter(number=1)
+    secondTermList = this_year.term_set.filter(number=2)
+    
+    if firstTermList:
+        firstTerm=firstTermList[0]
+    else:
+        firstTerm=None
+            
+    if secondTermList:
+        secondTerm=secondTermList[0]
+    else:
+        secondTerm=None
+         
+    
     if request.method == "POST":
         if request.POST['clickedButton'] == "start_year":
             request.session['school'] = school       
@@ -34,7 +50,12 @@ def school_index(request):
         elif request.POST['clickedButton'] == "finish_year":
             context = RequestContext(request, {'school':school})
             return render_to_response(r'school/finish_year.html', context_instance = context)    
-    context = RequestContext(request, {'school':school})
+    context = RequestContext(request, {'school':school,
+                                       'firstTerm':firstTerm,
+                                       'secondTerm':secondTerm,                                       
+                                       }
+                             )
+    
     return render_to_response(SCHOOL, context_instance = context)
 @transaction.commit_manually    
 def b1(request):
