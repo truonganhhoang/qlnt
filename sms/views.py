@@ -20,8 +20,12 @@ def manual_sms(request):
             phone_list = form.cleaned_data.get('phone')
             content = form.cleaned_data.get('content')
             
-            phone = phone_list.split(',')
-            
+            phone = []
+            for pl in phone_list.split(','):
+                pl = pl.split(';')
+                for p in pl:
+                    phone.append(p)
+                    
             open = urllib2.build_opener(urllib2.HTTPCookieProcessor())
             urllib2.install_opener(open)
             

@@ -5,6 +5,8 @@ from django import forms
 class sms(models.Model):
     phone = models.CharField("Số điện thoại", max_length=20, blank=True, null=True)
     content = models.CharField("Nội dung", max_length=300, blank=True, null=True)
+    created = models.DateTimeField("Thời gian tạo", auto_now_add=True)
+    modified = models.DateTimeField("Thời gian sửa", auto_now=True)
     
     def __unicode__(self):
         return self.phone

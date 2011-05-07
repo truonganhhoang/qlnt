@@ -4,8 +4,8 @@
 	{% if user.is_authenticated %}
 		<h3>Gửi tin nhắn mới</h3>
 		<form action="" method="post">{% csrf_token %}
+			<small>Lưu ý: số điện thoại người nhận phân cách bằng dấu ";" hoặc ","</small><br />
 			{{ form.as_p }}
-		<small>Lưu ý: số điện thoại người nhận phân cách bằng dấu ";" hoặc ","</small><br />
 		<input type="submit" value="Gửi" />
 		</form>
 	{% endif %}
