@@ -20,12 +20,11 @@ function confirmDelete()
 <table border=1 width = "100%" >
     <tr>
 		<td align="center" width="5%"> STT </td>
-        <td align="center" width="25%"> Họ & Tên </td>
-        
-        <td align="center" width="15%"> Ngày sinh</td>
-        <td align="center" width="10%">  Giới tính</td>
-        <td align="center" width="10%"> Ban Đăng kí </td>
-        <td align="center" width="15%"> Ngày vào trường </td>
+        <td align="center" width="25%"> <a href="{%url school.views.school_index  %}studentPerClass/{{class_id}}/1/{{next_status}}">Họ & Tên </a></td>
+        <td align="center" width="15%"> <a href="{%url school.views.school_index  %}studentPerClass/{{class_id}}/2/{{next_status}}">Ngày sinh</a></td>
+        <td align="center" width="10%"><a href="{%url school.views.school_index  %}studentPerClass/{{class_id}}/3/{{next_status}}">Giới tính</td>
+        <td align="center" width="10%"><a href="{%url school.views.school_index  %}studentPerClass/{{class_id}}/4/{{next_status}}"> Ban Đăng kí </td>
+        <td align="center" width="15%"><a href="{%url school.views.school_index  %}studentPerClass/{{class_id}}/5/{{next_status}}">Ngày vào trường </td>
         <td align="center" width="10%"> Năm bắt đầu </td>
         <td width = "5%"></td>
     </tr>
@@ -47,7 +46,7 @@ function confirmDelete()
     </tr>
     {% endfor %}
     
-    <form action="/school/studentPerClass/{{class_id}}" method="post">{% csrf_token %}
+    <form action="/school/studentPerClass/{{class_id}}/{{sort_type}}/{{sort_status}}" method="post">{% csrf_token %}
         <tr>
             {{ form.non_field_errors }}
 			<td align="center" width="5%">
