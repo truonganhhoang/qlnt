@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %} Thêm người quản trị trường {% endblock %}
+
+{% block content %}
+	{% if user.is_authenticated %}
+		<h1>Thêm người quản trị trường</h1>
+		<form action="/app/schooladmin/add/" method="post">{% csrf_token %}
+        <div class="fieldWrapper">
+          {{ form.username.errors }}
+          <label for="id_username">Tên đăng nhập:</label>
+          {{ form.username }}
+          <a href="/admin/auth/user/add/">Thêm</a>
+        </div>
+        <div class="fieldWrapper">
+          {{ form.school.errors }}
+          <label for="id_school">Trường:</label>
+          {{ form.school }}
+          <a href="/admin/app/organization/add/">Thêm</a>
+        </div>
+		<input type="submit" value="Submit" />
+		</form>
+	{% else %}
+		You need login to use this.
+	{% endif %}
+{% endblock %}

@@ -24,5 +24,6 @@ urlpatterns = patterns('',
 #     Them truong hoc, phong giao duc hoac so giao duc cung admin cua to chuc do
 #    url(r'organization/$', )
 #    url('organization/add$', 'app.views.organization_add')
-     url('organization/delete/(\d+)$', 'app.views.organization_delete')
+     url('organization/delete/(\d+)$', 'app.views.organization_delete'),
+     url('schooladmin/add/$', 'app.views.school_admin_add'),
 )
