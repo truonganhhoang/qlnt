@@ -697,7 +697,7 @@ def diem_danh(request, class_id, day, month, year):
     listdh = None
     term = None
     print class_id
-    pupilList = Pupil.objects.filter(class_id = class_id)
+    pupilList = Pupil.objects.filter(class_id = class_id).order_by('first_name','last_name')
     time = date(int(year),int(month),int(day))
     c = Class.objects.get(id__exact = class_id)
     term = Term.objects.filter(year_id = c.year_id,active = True).latest('number')
@@ -754,9 +754,9 @@ def time_select(request, class_id):
     if request.method == 'POST':
         form = DateForm(request.POST)
         if form.is_valid():
-            day = int(request.POST['day'])
-            month = int(request.POST['month'])
-            year = int(request.POST['year'])
+            day = int(request.POST['date_day'])
+            month = int(request.POST['date_month'])
+            year = int(request.POST['date_year'])
             url = '/school/diemdanh/' + str(class_id) + '/' + str(day) + '/' + str(month) + '/' + str(year) + '/'
             #url = os.path.join('','school','diemdanh', str(class_id), str(day), str(month), str(year),'')
             return HttpResponseRedirect(url)
@@ -775,7 +775,7 @@ def diem_danh_hs(request, student_id):
         t = loader.get_template(os.path.join('school','time_select.html'))
         ct = RequestContext(request, {'class_id':c.id, 'message':message})
         return HttpResponse(t.render(ct))
-    ddl = DiemDanh.objects.filter(student_id = student_id, term_id = term.id)
+    ddl = DiemDanh.objects.filter(student_id = student_id, term_id = term.id).order_by('time')
     form = []
     stt = []
     ll = None
@@ -896,7 +896,7 @@ def deleteStudentInSchool(request, student_id):
 
 def khen_thuong(request, student_id):
     message = ''
-    ktl = KhenThuong.objects.filter(student_id = student_id)
+    ktl = KhenThuong.objects.filter(student_id = student_id).order_by('time')
     t = loader.get_template(os.path.join('school','khen_thuong.html'))
     c = RequestContext(request, {'ktl': ktl,'message':message, 'student_id':student_id})
     return HttpResponse(t.render(c))
@@ -940,7 +940,7 @@ def edit_khen_thuong(request, kt_id)    :
     
 def ki_luat(request, student_id):
     message = ''
-    ktl = KiLuat.objects.filter(student_id = student_id)
+    ktl = KiLuat.objects.filter(student_id = student_id).order_by('time')
     t = loader.get_template(os.path.join('school','ki_luat.html'))
     c = RequestContext(request, {'ktl': ktl,'message':message, 'student_id':student_id})
     return HttpResponse(t.render(c))

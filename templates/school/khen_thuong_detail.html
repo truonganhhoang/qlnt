@@ -9,7 +9,7 @@
     <div class="fieldWrapper">
         {{form.time.errors }}
         <p><label for="id_time">Thời gian:</label>
-            {{ form.time }}</p>
+            {{ form.time|date:"SHORT_DATE_FORMAT" }}</p>
     </div>
 
     <div class="fieldWrapper">

@@ -29,7 +29,7 @@
 
                 <td align="center" width="15%">
                     {{f.time.errors}}
-                    <p>{{ f.time }}</p>
+                    <p>{{ f.time|date:"SHORT_DATE_FORMAT" }}</p>
                 </td>
                 
                 <td align="center" width="8%">

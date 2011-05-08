@@ -3,11 +3,14 @@ from django.db import models
 from django import forms
 from django.core.exceptions import ValidationError
 from datetime import date
+from django.forms.extras.widgets import SelectDateWidget
 
+THIS_YEAR = int(date.today().year)
 GENDER_CHOICES = ((u'M', u'Nam'),(u'F', u'Nữ'),)
 TERM_CHOICES = ((1, u'1'), (2, u'2'),(3, u'3'),)
 HK_CHOICES = ((u'T', u'Tốt'), (u'K', u'Khá'),(u'TB',u'Trung Bình'),(u'Y', u'Yếu'),)
 HL_CHOICES = ((u'G', u'Giỏi'), (u'K', u'Khá'),(u'TB',u'Trung Bình'),(u'Y', u'Yếu'),(u'Kem', u'Kém'))
+DAY_CHOICES = (('01','1'),('02','2'),('03','3'),('04','4'),('05','5'),('06','6'),('07','7'),('08','8'),('09','9'),('10','10'))
 #k co nghia la khong duoc danh hieu gi
 DH_CHOICES = ((u'XS', u'Học sinh xuất sắc'),(u'G', u'Hoc sinh giỏi'), (u'TT', u'Học sinh tiên tiến'),(u'K',u'Không được gì'))
 KT_CHOICES = ((u'Khen trước lớp',u'Khen trước lớp'), (u'Khen trước toàn trường',u'Khen trước toàn trường'),
@@ -391,19 +394,4 @@ class TKDiemDanhForm(forms.ModelForm)        :
         model = TKDiemDanh
         
 class DateForm(forms.Form):
-    day = forms.IntegerField(required = True, label = 'Ngày', help_text = '\n')
-    month = forms.IntegerField(required = True, label = 'Tháng', help_text = '\n')
-    year = forms.IntegerField(required = True, label = 'Năm', help_text = '\n', validators = [validate_year])
-    
-    def clean(self):
-        cleaned_data = self.cleaned_data
-        d = cleaned_data.get('day')
-        m = cleaned_data.get('month')
-        y = cleaned_data.get('year')
-        if d and m and y:
-            try:
-                a = date(y,m,d)
-            except ValueError:
-                raise ValidationError("Ngày này không tồn tại")
-            
-        return cleaned_data
+    date = forms.DateField(label = '',widget=SelectDateWidget(years = range( THIS_YEAR, THIS_YEAR-2 , -1)))
