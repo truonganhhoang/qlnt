@@ -16,26 +16,23 @@ LEVEL_CHOICES = (
 )
 
 class Message(models.Model):
-    user = models.ForeignKey(User, blank=True, null=True, verbose_name='Người nhận')
-    from_user = models.ForeignKey(User, blank=True, null=True, related_name="from_user", verbose_name='Người gửi')
-    subject = models.CharField('Tiêu đề', max_length=255, blank=True, default='')
+    user = models.ForeignKey(User, null = False, verbose_name = 'Người nhận', related_name = 'owner')
+    from_user = models.ForeignKey(User, blank = True, null = True, related_name = "from_user", verbose_name = 'Người gửi', related_name = 'sender')
+    subject = models.CharField('Tiêu đề', max_length = 255, blank = True, default = '')
     message = models.TextField('Nội dung')
 
-    level = models.IntegerField(choices=LEVEL_CHOICES)
-    extra_tags = models.CharField(max_length=128)
-    created = models.DateTimeField(auto_now_add=True)
-    modified = models.DateTimeField(auto_now=True)
-    read = models.BooleanField(default=False)
-    expires = models.DateTimeField(null=True, blank=True)
-    close_timeout = models.IntegerField(null=True, blank=True)
+    level = models.IntegerField(choices = LEVEL_CHOICES)
+    extra_tags = models.CharField(max_length = 128)
+    created = models.DateTimeField(auto_now_add = True)
+    modified = models.DateTimeField(auto_now = True)
+    read = models.BooleanField(default = False)
+    expires = models.DateTimeField(null = True, blank = True)
+    close_timeout = models.IntegerField(null = True, blank = True)
 
     def is_persistent(self):
         return self.level in PERSISTENT_MESSAGE_LEVELS
     is_persistent.boolean = True
     
-    def __eq__(self, other):
-        return isinstance(other, Message) and self.level == other.level and \
-                                              self.message == other.message
     def __unicode__(self):
         if self.subject:
             message = _('%(subject)s: %(message)s') % {'subject': self.subject, 'message': self.message}
@@ -43,6 +40,13 @@ class Message(models.Model):
             message = self.message
         return force_unicode(message)
 
+    def save(self, *args, **kwargs):
+        self._prepare_message()
+        super(Message, self).save(*args, **kwargs)
+
+    def __eq__(self, other):
+        return isinstance(other, Message) and self.level == other.level and \
+                                              self.message == other.message
     def _prepare_message(self):
         """
         Prepares the message for saving by forcing the ``message``
@@ -51,18 +55,14 @@ class Message(models.Model):
         Known "safe" types (None, int, etc.) are not converted (see Django's
         ``force_unicode`` implementation for details).
         """
-        self.subject = force_unicode(self.subject, strings_only=True)
-        self.message = force_unicode(self.message, strings_only=True)
-        self.extra_tags = force_unicode(self.extra_tags, strings_only=True)
-
-    def save(self, *args, **kwargs):
-        self._prepare_message()
-        super(Message, self).save(*args, **kwargs)
+        self.subject = force_unicode(self.subject, strings_only = True)
+        self.message = force_unicode(self.message, strings_only = True)
+        self.extra_tags = force_unicode(self.extra_tags, strings_only = True)
 
     def _get_tags(self):
         label_tag = force_unicode(LEVEL_TAGS.get(self.level, ''),
-                                  strings_only=True)
-        extra_tags = force_unicode(self.extra_tags, strings_only=True)
+                                  strings_only = True)
+        extra_tags = force_unicode(self.extra_tags, strings_only = True)
    
         if (self.read):
             read_tag = "read"
@@ -85,5 +85,5 @@ class MessageForm(forms.Form):
         
     user = forms.MultipleChoiceField(label = 'Người nhận')
     subject = forms.CharField(label = 'Tiêu đề')
-    message = forms.CharField(widget=forms.widgets.Textarea(), label = 'Nội dung')
-    type = forms.ChoiceField(choices=LEVEL_CHOICES, label = 'Loại tin nhắn')
+    message = forms.CharField(widget = forms.widgets.Textarea(), label = 'Nội dung')
+    type = forms.ChoiceField(choices = LEVEL_CHOICES, label = 'Loại tin nhắn')
