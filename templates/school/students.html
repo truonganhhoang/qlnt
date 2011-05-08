@@ -12,12 +12,12 @@ function confirmDelete()
 <table border=1 width = "100%" >
     <tr>
 		<td align="center" width="5%"> STT </td>
-        <td align="center" width="25%"> Họ & Tên </td>
-        <td align="center" width="15%"> Ngày sinh</td>
-        <td align="center" width="10%">  Giới tính</td>
-        <td align="center" width="7%"> Ban Đăng kí </td>
-   		<td align="center" width="8%"> Lớp </td>        
-        <td align="center" width="15%"> Ngày vào trường </td>
+        <td align="center" width="25%"><a href="{%url school.views.school_index  %}students/1/{{next_status}}"> Họ & Tên </a></td>
+        <td align="center" width="15%"><a href="{%url school.views.school_index  %}students/2/{{next_status}}">Ngày sinh</a></td>
+        <td align="center" width="10%"><a href="{%url school.views.school_index  %}students/3/{{next_status}}"> Giới tính</a></td>
+        <td align="center" width="7%"><a href="{%url school.views.school_index  %}students/4/{{next_status}}">Ban Đăng kí </a></td>
+   		<td align="center" width="8%"><a href="{%url school.views.school_index  %}students/6/{{next_status}}">Lớp</a></td>        
+        <td align="center" width="15%"><a href="{%url school.views.school_index  %}students/5/{{next_status}}">Ngày vào trường</a></td>
         <td align="center" width="10%"> Năm BD </td>
          <td width = "5%"> <a href = ""></a></td>
     </tr>
@@ -40,7 +40,7 @@ function confirmDelete()
     </tr>
     {% endfor %}
     
-    <form action="/school/students" method="post">{% csrf_token %}
+    <form action="/school/students/{{sort_type}}/{{sort_status}}" method="post">{% csrf_token %}
         <tr>
             {{ form.non_field_errors }}
             <td align="center" width="5%"></td>

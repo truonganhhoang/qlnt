@@ -174,9 +174,11 @@ def viewClassDetail(request, class_id):
 
 #sort_type = '1': fullname, '2': birthday, '3':'sex'
 #sort_status = '0':ac '1':'dec
+
 def teachers(request, sort_type=1, sort_status=0):
     message = None
     form = TeacherForm()
+    #print sort_type +' ' + sort_status
     if int(sort_type)==1:
 		if int(sort_status) == 0:
 			teacherList = Teacher.objects.all().order_by('first_name', 'last_name')
@@ -192,7 +194,6 @@ def teachers(request, sort_type=1, sort_status=0):
 			teacherList = Teacher.objects.all().order_by('sex')
 		else:
 			teacherList = Teacher.objects.all().order_by('-sex')
-			
     if request.method == 'POST':
         name = request.POST['first_name'].split()
         last_name = ' '.join(name[:len(name)-1])
@@ -242,7 +243,7 @@ def subjectPerClass(request, class_id):
     c = RequestContext(request, {'form' : form, 'message' : message,  'subjectList' : subjectList, 'class_id' : class_id})
     return HttpResponse(t.render(c))
 
-def studentPerClass(request, class_id, sort_type=1, sort_status=0):
+def studentPerClass(request, class_id, sort_type=1, sort_status=1):
     message = None
     form = PupilForm()
     if int(sort_type)==1:
@@ -259,17 +260,17 @@ def studentPerClass(request, class_id, sort_type=1, sort_status=0):
 		if int(sort_status) == 0:
 			studentList = Pupil.objects.filter(class_id=class_id).order_by('sex')
 		else:
-			studentList = Pupil.objects.filter(class_id=class_id)('-sex')
+			studentList = Pupil.objects.filter(class_id=class_id).order_by('-sex')
     if int(sort_type) == 4:
 		if int(sort_status) == 0:
 			studentList = Pupil.objects.filter(class_id=class_id).order_by('ban_dk')
 		else:
-			studentList = Pupil.objects.filter(class_id=class_id)('-ban_dk')
+			studentList = Pupil.objects.filter(class_id=class_id).order_by('-ban_dk')
     if int(sort_type) == 5:
 		if int(sort_status) == 0:
 			studentList = Pupil.objects.filter(class_id=class_id).order_by('school_join_date')
 		else:
-			studentList = Pupil.objects.filter(class_id=class_id)('-school_join_date')
+			studentList = Pupil.objects.filter(class_id=class_id).order_by('-school_join_date')
 			
     if request.method == 'POST':
         name = request.POST['first_name'].split()
@@ -284,13 +285,44 @@ def studentPerClass(request, class_id, sort_type=1, sort_status=0):
             message = 'Please check your information, something is wrong'
 
     t = loader.get_template(os.path.join('school','student_per_class.html'))
-    c = RequestContext(request, {'form': form, 'message': message, 'studentList': studentList, 'class_id': class_id, 'sort_type':sort_type, 'sort_status':sort_status, 'next_status':1-int(sort_status)})
+    c = RequestContext(request, {'form': form, 'message': message, 'studentList': studentList, 'class_id': class_id, 'sort_type':int(sort_type), 'sort_status':int(sort_status), 'next_status':1-int(sort_status)})
     return HttpResponse(t.render(c))
 
-def students(request):
+def students(request, sort_type=1, sort_status=1):
     message = None
-    form = PupilForm()   
-    studentList = Pupil.objects.all()
+    form = PupilForm()
+    if int(sort_type)==1:
+		if int(sort_status) == 0:
+			studentList = Pupil.objects.all().order_by('first_name', 'last_name')
+		else:
+			studentList = Pupil.objects.all().order_by('-first_name','-last_name')
+    if int(sort_type) == 2:
+		if int(sort_status) == 0:
+			studentList = Pupil.objects.all().order_by('birthday')
+		else:
+			studentList = Pupil.objects.all().order_by('-birthday')
+    if int(sort_type) == 3:
+		if int(sort_status) == 0:
+			studentList = Pupil.all().order_by('sex')
+		else:
+			studentList = Pupil.objects.all().order_by('-sex')
+    if int(sort_type) == 4:
+		if int(sort_status) == 0:
+			studentList = Pupil.objects.all().order_by('ban_dk')
+		else:
+			studentList = Pupil.objects.all().order_by('-ban_dk')
+    if int(sort_type) == 5:
+		if int(sort_status) == 0:
+			studentList = Pupil.objects.all().order_by('school_join_date')
+		else:
+			studentList = Pupil.objects.all().order_by('-school_join_date')
+	
+    if int(sort_type) == 6:
+		if int(sort_status) == 0:
+			studentList = Pupil.objects.all().order_by('class_id__name')
+		else:
+			studentList = Pupil.objects.all().order_by('-class_id__name')
+			
     if request.method == 'POST':
         name = request.POST['first_name'].split()
         last_name = ' '.join(name[:len(name)-1])
@@ -305,7 +337,7 @@ def students(request):
             message = 'Please check your information, something is wrong'
 
     t = loader.get_template(os.path.join('school','students.html'))
-    c = RequestContext(request, {'form': form, 'message': message, 'studentList': studentList})
+    c = RequestContext(request, {'form': form, 'message': message, 'studentList': studentList, 'sort_type':sort_type, 'sort_status':sort_status, 'next_status':1-int(sort_status)})
     return HttpResponse(t.render(c))
 
 def viewStudentDetail(request, student_id):
