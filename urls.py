@@ -31,7 +31,7 @@ urlpatterns = patterns('',
     
     url(r'^sms/', include('sms.urls')),
     
-#    url(r'^report', include('report.url')),
+    url(r'^report', include('report.urls')),
 
     (r'^topdf/$', 'views.topdf'),
     
