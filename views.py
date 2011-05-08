@@ -10,9 +10,6 @@ from django.template import Context
 def index(request): 
     return render_to_response("index.html", context_instance=RequestContext(request))
 
-def help(request):
-    return render_to_response("help.html", context_instance=RequestContext(request))
-
 def render_to_pdf(template_src, context_dict):
     template = get_template(template_src)
     context = Context(context_dict)
@@ -26,7 +23,13 @@ def render_to_pdf(template_src, context_dict):
         return response
     return HttpResponse('We had some errors<pre>%s</pre>' % escape(html))
 
+def help(request):
+    if request.method == "POST":
+        if request.POST['clickedButton'] == "export_pdf":
+            return render_to_response("base.html", context_instance=RequestContext(request))
+    return render_to_response("help.html", context_instance=RequestContext(request))
+
+
 def topdf(request):
-    return render_to_pdf('base.html',{
-                                        
+    return render_to_pdf('base.html',{        
         'pagesize': 'A4'})
