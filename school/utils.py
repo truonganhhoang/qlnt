@@ -28,7 +28,8 @@ def move_student( student, old_class, new_class):
 
 # This function will handle a change of students in a particular class
 # where: students: is a list of dictionaries those have 'full_name','birthday','ban' keys
-#                                                       'full_name':string, 'birthday': date, 'ban': string, 
+#                                                       'full_name':string, 'birthday': date, 'ban': string,
+#                                                       'first_name', 'last_name', 'school_join_date'     
 #        start_year: StartYear object, 'term': Term object
 #        year: Year object    
 #        _class : is a Class object
@@ -44,10 +45,17 @@ def move_student( student, old_class, new_class):
 #              . lets student belong to _class
 #              . add: marks for each subject, "khenthuong", "kiluat", "diemdanh", "TKDiemDanh", "TBMon"
 #                     "HanhKiem", "TKMon", "TBHocKy", "TBNam"
-def add_student( student = None, start_year = None, year = None, _class = None, term = None, school = None ):
-        names = student['full_name'].split(" ")
-        last_name = ' '.join(names[:len(names)-1])
-        first_name = names[len(names)-1]
+def add_student( student = None, start_year = None, year = None, 
+                _class = None, term = None, school = None, school_join_data = None ):
+        if 'full_name' in student:
+            names = student['full_name'].split(" ")
+            last_name = ' '.join(names[:len(names)-1])
+            first_name = names[len(names)-1]
+        else:
+            last_name = student['last_name']
+            first_name = student['first_name']
+        if not school_join_date:
+            school_join_date = datetime.date.today()
         birthday = student['birthday']
         ban = student['ban']
         find = start_year.pupil_set.filter( first_name__exact = first_name)\
@@ -66,7 +74,7 @@ def add_student( student = None, start_year = None, year = None, _class = None, 
             st.last_name = last_name
             st.birthday = birthday
             st.ban_dk = ban
-            st.school_join_date = datetime.date.today()
+            st.school_join_date = school_join_date
             st.start_year_id = start_year
             st.class_id = _class
             st.save()
@@ -79,11 +87,6 @@ def add_student( student = None, start_year = None, year = None, _class = None, 
                 the_mark.term_id = term
                 the_mark.save()
                 
-                tkmon = TKMon()
-                tkmon.student_id = st
-                tkmon.subject_id = subject
-                tkmon.save()
-                
                 hk = HanhKiem()
                 hk.student_id = st
                 hk.term_id = term
@@ -94,15 +97,45 @@ def add_student( student = None, start_year = None, year = None, _class = None, 
                 tb_hoc_ky.term_id = term
                 tb_hoc_ky.save()
                 
+                tk_diem_danh = TKDiemDanh()
+                tk_diem_danh.student_id = st
+                tk_diem_danh.term_id = term
+                tk_diem_danh.save()                            
+                
+                if term.number == 1:
+                    term = year.term_set.get( number__exact = 2)
+                    the_mark = Mark()
+                    the_mark.student_id = st
+                    the_mark.subject_id = subject
+                    the_mark.term_id = term
+                    the_mark.save()
+                
+                    hk = HanhKiem()
+                    hk.student_id = st
+                    hk.term_id = term
+                    hk.save()
+                
+                    tb_hoc_ky = TBHocKy()
+                    tb_hoc_ky.student_id = st
+                    tb_hoc_ky.term_id = term
+                    tb_hoc_ky.save()
+                    
+                    tk_diem_danh = TKDiemDanh()
+                    tk_diem_danh.student_id = st
+                    tk_diem_danh.term_id = term
+                    tk_diem_danh.save()      
+                    
+                tkmon = TKMon()
+                tkmon.student_id = st
+                tkmon.subject_id = subject
+                tkmon.save()
+                
                 tb_nam = TBNam()
                 tb_nam.student_id = st
                 tb_nam.year_id = year
                 tb_nam.save()
                 
-                tk_diem_danh = TKDiemDanh()
-                tk_diem_danh.student_id = st
-                tk_diem_danh.term_id = term
-                tk_diem_danh.save()                            
+                
         #end for student in students
 
 
@@ -143,3 +176,12 @@ def add_subject( subject_name = None, hs = 1, teacher = None, _class = None, ter
 def completely_del_subject( subject):
     subject.delete()                
             
+def get_school(request):
+    return request.user.userprofile.organization
+    
+def get_current_term(request):
+    school = get_school(request)
+    try:
+        return school.year_set.latest('time').term_set.get(number__exact = school.status)
+    except Exception( 'Term does not exist'):
+        return None    

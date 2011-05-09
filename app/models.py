@@ -28,11 +28,13 @@ SCHOOL_ACTION_STATUS=((0, u'Trường mới'),
 
 class Organization(models.Model):
     ''' Thông tin về sơ đồ tổ chức của các sở, phòng và các trường ''' 
-    name = models.CharField('Tên tổ chức', max_length = 100) #tên đơn vị. tổ chức 
-    level = models.CharField("cấp", max_length = 2, choices = ORGANIZATION_LEVEL_CHOICES) #Cấp
-    khoi = models.CharField("Khối học", max_length = 6, blank = True, null = True, choices = KHOI_CHOICES)
+    name = models.CharField(u'Tên tổ chức', max_length = 100) #tên đơn vị. tổ chức 
+    level = models.CharField(u"cấp", max_length = 2, choices = ORGANIZATION_LEVEL_CHOICES) #Cấp
+    #------- those attributes is used for School only --------------------------------------------------------
+    school_level = models.CharField(u"Khối học", max_length = 6, blank = True, null = True, choices = KHOI_CHOICES)
+    status = models.SmallIntegerField( max_length = 3, blank = True, null = True, choices = SCHOOL_ACTION_STATUS)
+    #---------------------------------------------------------------------------------------------------------
     upper_organization = models.ForeignKey('self', blank = True, null = True, verbose_name = 'Trực thuộc')
-    status = models.SmallIntegerField( max_length = 3, choices = SCHOOL_ACTION_STATUS)
     manager_name = models.CharField("Tên thủ trưởng", max_length = 100, null = True)
     address = models.CharField("Địa chỉ", max_length = 255, blank = True, null = True) #
     phone = models.CharField("Điện thoại", max_length = 20, blank = True, null = True)
@@ -61,7 +63,7 @@ class UserProfile(models.Model):
     #TODO permission
     
     def __unicode__(self):
-        return self.user
+        return self.user.__unicode__()
     
     # @receiver(post_save, sender=User)
     # def create_profile(sender, instance, created, **kwargs):

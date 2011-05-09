@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 {% block title %}
-<title>{{ school.name }}</title>
+<title>{{ user.userprofile.organization.name }}</title>
 {% endblock %}
 <link href="/static/css/style.css" rel="stylesheet" type="text/css" />
 {% block css %}
@@ -13,9 +13,9 @@
 </head>
 <body>
 <div id="topPan">
-	<a href="index.html"><img src="/static/css/images/logo.png" alt="Hệ thống quản lý trường {{ school.name }}" width="1200" height="50" border="0"  class="logo" title="Hệ thống quản lý trường {{ school.name }}"/></a>
+	<a href="index.html"><img src="/static/css/images/logo.png" alt="Hệ thống quản lý trường {{ user.userprofile.organization.name }}" width="1200" height="50" border="0"  class="logo" title="Hệ thống quản lý trường {{ user.userprofile.organization.name }}"/></a>
 		
-  <p>{{school.name}}</p>
+  <p>{{user.userprofile.organization.name}}</p>
 		
   <div id="topContactPan">
   </div>
@@ -36,7 +36,7 @@
 	  </div>
 	  <div id="topMenuRightPan"></div>
 	  <div id="topUser">
-			<p>Xin chào <a href="#" > {{user.username}} </a>, <a href="#">Logout</a></p>	  
+			<p>Xin chào,&nbsp </p> <p><a href="#" > {{user.username}}</a>,&nbsp</p><p><a href="#">Logout</a></p> 	  
 	  </div>
 	</div>
 </div>

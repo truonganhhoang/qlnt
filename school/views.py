@@ -27,13 +27,9 @@ def school_index(request):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect( reverse('login'))
-    school = School.objects.get( school_code = 'NT') # it's for testing, actually, it should be: school = School.objects.get(id = request['school_id'])
-    print "test"
-    
     if request.method == "POST":
         print request.POST['clickedButton']
         if request.POST['clickedButton'] == "start_year":
-            request.session['school'] = school       
             return HttpResponseRedirect(reverse('start_year'))
         elif request.POST['clickedButton'] == "start_second_term":
             context = RequestContext(request, {'school':school})
@@ -41,15 +37,12 @@ def school_index(request):
         elif request.POST['clickedButton'] == "finish_year":
             context = RequestContext(request, {'school':school})
             return render_to_response(r'school/finish_year.html', context_instance = context)    
-    context = RequestContext(request, {'school':school,
-                                       }
-                             )
-    
+    context = RequestContext(request)
     return render_to_response(SCHOOL, context_instance = context)
 @transaction.commit_manually    
 def b1(request):
     # tao moi cac khoi neu truong moi thanh lap
-    school = request.session['school']
+    school = get_school(request)
     if school.school_level == 1:
         lower_bound = 1
         upper_bound = 5
@@ -458,7 +451,7 @@ def process_file( file_name, task):
     return None
 
 def nhap_danh_sach_trung_tuyen(request):
-    school = request.session['school']
+    school = get_school(request)
     _class_list = [(u'0',u'---')]
     try:
         this_year = school.year_set.latest('time')
@@ -490,7 +483,7 @@ def nhap_danh_sach_trung_tuyen(request):
 
 @transaction.commit_manually   
 def manual_adding(request):
-    school = request.session['school']
+    school = get_school(request)
     _class_list = [(u'0',u'---')]
     message = None
     try:
@@ -580,7 +573,7 @@ def manual_adding(request):
 @transaction.commit_on_success    
 def danh_sach_trung_tuyen(request):
     student_list = request.session['student_list']
-    school = request.session['school']
+    school = get_school(request)
     term = school.year_set.latest('time').term_set.latest('number')
     chosen_class = request.session['chosen_class']
     current_year = school.year_set.latest('time')
