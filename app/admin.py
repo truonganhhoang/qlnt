@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
 from django.forms.formsets import formset_factory
-from app.models import Organization, UserProfile, Position
+from app.models import Organization, UserProfile
 #, SchoolYear, Semester
 
 class UserProfileAdmin(admin.ModelAdmin):
@@ -29,14 +29,8 @@ class OrganizationAdmin(admin.ModelAdmin):
     inlines = [UserProfileInline,]
     list_per_page = 20
     
-class PositionAdmin(admin.ModelAdmin):
-    list_display = ('position_type', 'level')
-    list_filter = ('level', 'position_type')
              
 admin.site.register(Organization, OrganizationAdmin)
-
-admin.site.register(Position, PositionAdmin)
-
 
 
 #admin.site.register(School)
