@@ -9,7 +9,7 @@ urlpatterns = patterns('',
 	url(r'createTbNam/(?P<year_id>\w+)','school.viewMark.createTbNam'),
 	url(r'createAllInfoInTerm/(?P<term_id>\w+)','school.viewMark.createAllInfoInTerm'),
 
-	url(r'mark_table/(?P<class_id>\w+)','school.viewMark.mark_table'),
+	url(r'markTable/(?P<class_id>\w+)','school.viewMark.markTable'),
 	url(r'markForAStudent/(?P<class_id>\w+)/(?P<student_id>\w+)','school.viewMark.markForAStudent'),
 	# diem cho 1 mon
 	url(r'markForASubject/(?P<subject_id>\w+)','school.viewMark.markForASubject'),
