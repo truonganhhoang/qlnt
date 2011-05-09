@@ -13,6 +13,9 @@ các mô hình dữ liệu cấp Phòng, Sở (ngoài trường phổ thông)
 ORGANIZATION_LEVEL_CHOICES = (('T', 'Trường'),
                              ('P', 'Phòng'),
                              ('S', 'Sở')) 
+                             
+POSITION_CHOICE = (('HOC_SINH','Học sinh'), ('GIAO_VU', 'Giáo vụ'), ('GIAO_VIEN','Giáo viên'),
+                   ('HIEU_PHO','Hiệu phó'), ('HIEU_TRUONG', 'Hiệu trưởng'))
 
 class Organization(models.Model):
     ''' Thông tin về sơ đồ tổ chức của các sở, phòng và các trường ''' 
@@ -35,30 +38,13 @@ class OrganizationForm(forms.Form):
     phone = forms.CharField(max_length = 20)
     email = forms.EmailField(max_length = 50)
 
-class Position(models.Model):
-    LEVEL_CHOICES = (
-        (1, 'Nhân Viên Cấp Sở'),
-        (2, 'Nhân Viên Cấp Phòng'),
-        (3, 'Nhân Viên Cấp Trường'),
-        (4, 'Giáo Viên'),
-        (5, 'Học Sinh')
-    )
-    '''
-    Chức vụ công tác
-    '''
-    position_type = models.CharField(max_length = 100)
-    level = models.IntegerField(choices = LEVEL_CHOICES)
-    
-    def __unicode__(self):
-        return self.position_type
-
 class UserProfile(models.Model):
     '''
     Thông tin về người sủ dụng hệ thống, mở rộng User của Django.
     '''
     user = models.OneToOneField(User, null=True)
     organization = models.ForeignKey(Organization, verbose_name = 'Đơn vị')
-    position = models.ForeignKey(Position, verbose_name = 'Chức vụ', blank = True, related_name = 'position')
+    position = models.CharField( choices = POSITION_CHOICE, null = True, blank = True, max_length = 15 )
     phone = models.CharField('Điện thoại di động', max_length = 20, blank = True) #để gửi tin nhắn.
     notes = models.CharField('Ghi chú', max_length = 255, blank = True)
     #TODO permission

@@ -23,9 +23,15 @@ TEMP_FILE_LOCATION = os.path.join(os.path.dirname(__file__), 'uploaded')
 SCHOOL = os.path.join('school','school.html')
 
 def school_index(request):
+
+    user = request.user
+    if not user.is_authenticated():
+        return HttpResponseRedirect( reverse('login'))
     school = School.objects.get( school_code = 'NT') # it's for testing, actually, it should be: school = School.objects.get(id = request['school_id'])
+    print "test"
     
     if request.method == "POST":
+        print request.POST['clickedButton']
         if request.POST['clickedButton'] == "start_year":
             request.session['school'] = school       
             return HttpResponseRedirect(reverse('start_year'))

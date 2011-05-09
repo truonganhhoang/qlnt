@@ -9,8 +9,8 @@ urlpatterns = patterns('',
     (r'^$', 'views.index'),
     (r'^help/$', 'views.help'),
     # the built-in sign-in/out module 
-    (r'^login/$', 'django.contrib.auth.views.login'),
-    (r'^logout/$', 'django.contrib.auth.views.logout'),
+    url(r'^login/$', 'django.contrib.auth.views.login', name = "login"),
+    url(r'^logout/$', 'django.contrib.auth.views.logout', name = "logout"),
     #(r'^accounts/$', 'django.views.generic.simple.redirect_to', {'url': '/'}),
     #(r'^accounts/profile/$', 'django.views.generic.simple.redirect_to', {'url': '/'}),
  

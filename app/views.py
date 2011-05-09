@@ -31,7 +31,6 @@ def user_add(request):
 #    t = loader.get_template('app/organization/add.html')
 #    c = RequestContext (request, {'form': form})
 #    return HttpResponse (t.render(c))
-
 @object_permission_required('view_level=T', Organization)
 def organization_delete(request, id):
     o = Organization.objects.get(pk=id)

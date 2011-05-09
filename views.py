@@ -33,3 +33,4 @@ def help(request):
 def topdf(request):
     return render_to_pdf('base.html',{        
         'pagesize': 'A4'})
+
