@@ -17,7 +17,7 @@ LEVEL_CHOICES = (
 
 class Message(models.Model):
     user = models.ForeignKey(User, null = False, verbose_name = 'Người nhận', related_name = 'owner')
-    from_user = models.ForeignKey(User, blank = True, null = True, related_name = "from_user", verbose_name = 'Người gửi', related_name = 'sender')
+    from_user = models.ForeignKey(User, blank = True, null = True, related_name = "sender", verbose_name = 'Người gửi')
     subject = models.CharField('Tiêu đề', max_length = 255, blank = True, default = '')
     message = models.TextField('Nội dung')
 

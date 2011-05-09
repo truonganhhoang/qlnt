@@ -57,7 +57,7 @@ class UserProfile(models.Model):
     Thông tin về người sủ dụng hệ thống, mở rộng User của Django.
     '''
     user = models.OneToOneField(User)
-    organization = models.ForeignKey(Organization, verbose_name = 'Đơn vị', related_name = 'organization')
+    organization = models.ForeignKey(Organization, verbose_name = 'Đơn vị')
     position = models.ForeignKey(Position, verbose_name = 'Chức vụ', blank = True, related_name = 'position')
     phone = models.CharField('Điện thoại di động', max_length = 20, blank = True) #để gửi tin nhắn.
     notes = models.CharField('Ghi chú', max_length = 255, blank = True)
