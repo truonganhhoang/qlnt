@@ -1,6 +1,6 @@
 from django.conf.urls.defaults import patterns, url
 from django.views.generic.list import ListView
-from sms.models import sms
+from sms.models import sms, smsForm
 
 urlpatterns = patterns('',
     url(r'^$', 'sms.views.index'),
