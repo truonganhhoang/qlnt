@@ -841,10 +841,11 @@ def tk_diem_danh(student_id):
         tk = TKDiemDanhForm(data)
     tk.save()
     
-def test(request, school_code = None):
-    t = loader.get_template('school/test.html')
-    
-    c = RequestContext(request)
+def test(request):
+    form = PupilForm()
+    message = 'Hello'
+    t = loader.get_template('school/time_select.html')
+    c = RequestContext(request, {'form':form,'message':message})
 
     return HttpResponse(t.render(c))
 

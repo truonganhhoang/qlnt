@@ -21,10 +21,10 @@
     {% endif %}
     
 
-        {% for p,f,i in list %}
+        {% for p,f in list %}
             <tr>
                 <td align="center" width="5%">
-                    <p>{{ i }}</p>
+                    <p>{{forloop.counter}}</p>
                 </td>
             
                 <td align="center" width="20%">

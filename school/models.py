@@ -5,7 +5,6 @@ from django.core.exceptions import ValidationError
 from datetime import date
 from django.forms.extras.widgets import SelectDateWidget
 
-THIS_YEAR = int(date.today().year)
 GENDER_CHOICES = ((u'M', u'Nam'),(u'F', u'Nữ'),)
 TERM_CHOICES = ((1, u'1'), (2, u'2'),(3, u'3'),)
 HK_CHOICES = ((u'T', u'Tốt'), (u'K', u'Khá'),(u'TB',u'Trung Bình'),(u'Y', u'Yếu'),)
@@ -41,6 +40,10 @@ LENLOP_CHOICES=((True,u'Được lên lớp'),(False,u'Không được lên lớ
 SCHOOL_ACTION_STATUS=((0, u'Trường mới'),(1, u'Đang học kì 1'), (2, u'Đang học kì 2'), (3, u'Đang nghỉ hè'))
 CLASS_ACTION_STATUS=((1, u'Đang học kì 1'), (2, u'Đang học kì 2'), (3, u'Đang nghỉ hè'))
 ACTIVE_CHOICES=((True,u'Đang diễn ra'),(False,u'Đã kết thúc'))
+
+def this_year():
+    return int(date.today().year)
+
 #validate mark of pupil
 #mark must be between 0 and 10
 def validate_mark(value):
@@ -139,6 +142,10 @@ class Teacher(BasicPersonInfo):
 class TeacherForm(forms.ModelForm):
 	class Meta:
 		model = Teacher
+        field = {'birthday'}
+        widgets = {
+            'birthday' : SelectDateWidget(years = range( this_year()-100 ,this_year())),
+        }
 
 class Year(models.Model):
 	time = models.IntegerField(max_length = 4, validators = [validate_year]) # date field but just use Year
@@ -218,8 +225,18 @@ class Pupil(BasicPersonInfo):
 	class_id = models.ForeignKey(Class, null = True, blank = True)
 
 class PupilForm(forms.ModelForm):
-	class Meta:
-		model = Pupil
+    class Meta:
+        model = Pupil
+        field = {'birthday','school_join_date','ngay_vao_doan','ngay_vao_doi','ngay_vao_dang','father_birthday','mother_birthday'}
+        widgets = {
+            'birthday' : SelectDateWidget(years = range( this_year()-100 ,this_year())),
+            'school_join_date' : SelectDateWidget(years = range( this_year()-10 ,this_year())),
+            'ngay_vao_doan': SelectDateWidget(years = range( this_year()-10 ,this_year())),
+            'ngay_vao_doi': SelectDateWidget(years = range( this_year()-15 ,this_year())),
+            'ngay_vao_dang': SelectDateWidget(years = range( this_year()-10 ,this_year())),
+            'father_birthday': SelectDateWidget(years = range( this_year()-100 ,this_year())),
+            'mother_birthday': SelectDateWidget(years = range( this_year()-100 ,this_year())),
+        }
 
 
 class Subject(models.Model):	
@@ -297,6 +314,10 @@ class KhenThuong(models.Model):
 class KhenThuongForm(forms.ModelForm)        :
     class Meta:
         model = KhenThuong
+        field = {'time'}
+        widgets = {
+            'time' : SelectDateWidget(years = range( this_year()-100 ,this_year())),
+        }
 
 class KiLuat(models.Model):
 	student_id = models.ForeignKey(Pupil)
@@ -314,6 +335,10 @@ class KiLuat(models.Model):
 class KiLuatForm(forms.ModelForm):        
     class Meta:
         model = KiLuat
+        field = {'time'}
+        widgets = {
+            'time' : SelectDateWidget(years = range( this_year()-100 ,this_year())),
+        }
         
 class HanhKiem(models.Model):
 	student_id = models.ForeignKey(Pupil)
@@ -377,6 +402,10 @@ class DiemDanh(models.Model):
 class DiemDanhForm(forms.ModelForm):
     class Meta:
         model = DiemDanh
+        field = {'time'}
+        widgets = {
+            'time' : SelectDateWidget(years = range( this_year()-100 ,this_year())),
+        }
         
 class TKDiemDanh(models.Model):
     student_id = models.ForeignKey(Pupil)
@@ -394,4 +423,4 @@ class TKDiemDanhForm(forms.ModelForm)        :
         model = TKDiemDanh
         
 class DateForm(forms.Form):
-    date = forms.DateField(label = '',widget=SelectDateWidget(years = range( THIS_YEAR, THIS_YEAR-2 , -1)))
+    date = forms.DateField(label = '',widget=SelectDateWidget(years = range( this_year(), this_year()-2 , -1)))

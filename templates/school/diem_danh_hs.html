@@ -21,15 +21,15 @@
     {% endif %}
     
 
-        {% for f,i in list %}
+        {% for f in form %}
             <tr>
                 <td align="center" width="5%">
-                    <p>{{ i }}</p>
+                    <p>{{forloop.counter}}</p>
                 </td>
 
                 <td align="center" width="15%">
                     {{f.time.errors}}
-                    <p>{{ f.time|date:"SHORT_DATE_FORMAT" }}</p>
+                    <p>{{ f.time }}</p>
                 </td>
                 
                 <td align="center" width="8%">
