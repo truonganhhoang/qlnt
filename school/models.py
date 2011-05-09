@@ -140,9 +140,9 @@ class Teacher(BasicPersonInfo):
 	school_id = models.ForeignKey(School,null=True,blank=True)
 
 class TeacherForm(forms.ModelForm):
-	class Meta:
-		model = Teacher
-        field = {'birthday'}
+    class Meta:
+        model = Teacher
+        field = {'birthday',}
         widgets = {
             'birthday' : SelectDateWidget(years = range( this_year()-100 ,this_year())),
         }
