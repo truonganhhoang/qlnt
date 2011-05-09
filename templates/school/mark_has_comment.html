@@ -1,5 +1,4 @@
-﻿
-<td colspan=2>
+﻿<br>
 	Hướng dẫn: Nếu loại
 		Giỏi  nhập g ,
 		Khá   nhập k ,
@@ -9,14 +8,11 @@
 		
 		
 		
-				
-</td>
-</tr>
-<tr>
-<td colspan =2>
+<br>
+<br>
 {% ifnotequal subjectChoice -1  %} 	
 {% ifnotequal termChoice -1  %} 	
-
+	<div id="commentTable">
 	<table border =1 width = "100%" >
 		<tr>
 			<td rowspan=2 align="center" width="4%">
@@ -61,7 +57,7 @@
 		
 		</tr>
 		
-{% ifequal selectedTerm currentTerm %}
+{% if enableChangeMark %}
 	{% ifequal selectedTerm.number 1 %} 
 		{% for p,m,id in list %}		
 		<tr>
@@ -162,17 +158,16 @@
 		</script>
 		
 			</table>	
-			</td>
-			</tr>	
+			</div>
 			
-			<tr>
-			<td> &nbsp </td>
-			</tr>
-			<tr>
-			<td colspan=2 align="right">
-			<input type="submit" name="luulai" value="Lưu lại" onclick="javascript:saveMarkHasComment()" >
-			</td>
-			</tr>
+			<br>	
+			<table width="100%">	
+				<tr>
+				<td align="right">
+					<input type="submit" name="luulai" value="Lưu lại" onclick="javascript:saveMarkHasComment()" >
+				</td>
+				</tr>
+			</table>
 	{% else%}
 		{% for p,m,hk1,tbnam,id in list %}		
 		<tr>
@@ -307,19 +302,17 @@
 		</script>
 		
 			</table>	
-			</td>
-			</tr>	
-			<tr>
-			<td> &nbsp </td>
-			</tr>
-			<tr>
-			<td colspan=2 align="right">
-			<div id="saveMark" >
-			<input type="submit" name="luulai" value="Lưu lại" onclick="javascript:saveMarkHasComment1()" >
 			</div>
-			</td>
-			</tr>
-		
+
+			<br>	
+			<table width="100%">	
+				<tr>
+				<td align="right">
+					<input type="submit" name="luulai" value="Lưu lại" onclick="javascript:saveMarkHasComment()" >
+				</td>
+				</tr>
+			</table>
+			
 		
 	{% endifequal %}
 		
@@ -433,8 +426,6 @@
 		{% endfor %}
 		</table>	
 		</div>
-		</td>
-		</tr>
 	{%else %}
 		{% for p,m,hk1,tbnam,id in list %}		
 		<tr>
@@ -590,10 +581,8 @@
 		 {%endfor %}
 		</table>	
 		</div>
-		</td>
-		</tr>
 	{% endifequal %}	
-	{% endifequal %}
+	{% endif %}
 		
 {% endifnotequal %}
 {% endifnotequal %}

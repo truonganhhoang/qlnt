@@ -1,6 +1,4 @@
-﻿<tr>
-<td colspan =4>
-
+﻿
 {% ifnotequal subjectChoice -1  %} 	
 {% ifnotequal termChoice -1  %} 	
 
@@ -29,8 +27,8 @@
 				Thi cuối kì
 			</td>	
 		{% ifequal selectedTerm.number 1 %}
-			<td rowspan=2 width="5%" >
-				TB
+			<td rowspan=2  >
+				TBHK
 			</td>	
 		{% else %}
 			<td colspan=3 align="center" width="15%" >
@@ -65,7 +63,7 @@
 		
 		</tr>
 		
-{% ifequal selectedTerm currentTerm %}
+{% if enableChangeMark %}
 	{% ifequal selectedTerm.number 1 %} 
 		{% for p,m,id in list %}		
 		<tr>
@@ -269,7 +267,11 @@
 			</td>
 			{% endifnotequal %}
 			<td align="center"> 
-			{{ m.tb|floatformat:"-1"}}
+				{% if m.tb %}
+					{{ m.tb|floatformat:"-1"}}
+				{% else %}
+					&nbsp
+				{% endif %}
 			</td>	
 
 		</tr>	
@@ -277,17 +279,16 @@
 		{% endfor %}
 			</table>	
 			</div>
-			</td>
-			</tr>	
-			<tr>
-			<td> &nbsp </td>
-			</tr>
-			<tr>
-			<td colspan=2 align="right">
-			<input type="submit" name="luulai" value="Lưu lại" onclick="javascript:saveMark()" >
-			</td>
-			</tr>
-	{% else%}
+
+			<table width="100%">	
+				<tr>
+				<td align="right">
+					<input type="submit" name="luulai" value="Lưu lại" onclick="javascript:saveMarkHasComment()" >
+				</td>
+				</tr>
+			</table>
+
+			{% else%}
 		{% for p,m,hk1,tbnam,id in list %}		
 		<tr>
 			<td align="center">
@@ -520,17 +521,16 @@
 		{% endfor %}			
 		</table>	
 		</div>
-		</td>
-		</tr>	
-		<tr>
-		<td> &nbsp </td>
-		</tr>
-		<tr>
-		<td colspan=2 align="right">
-		<input type="submit" name="luulai" value="Lưu lại" onclick="javascript:saveMark()" >
-		</td>
-		</tr>
-	{% endifequal %}
+
+		<table width="100%">	
+			<tr>
+			<td align="right">
+				<input type="submit" name="luulai" value="Lưu lại" onclick="javascript:saveMarkHasComment()" >
+			</td>
+			</tr>
+		</table>
+
+		{% endifequal %}
 		
 	{% else %}
 	{% ifequal selectedTerm.number 1 %} 
@@ -605,8 +605,6 @@
 		{% endfor %}
 		</table>	
 		</div>
-		</td>
-		</tr>
 		{%else %}
 		{% for p,m,hk1,tbnam,id in list %}		
 		<tr>
@@ -684,10 +682,8 @@
 			
 		 {%endfor %}
 		</table>	
-		</td>
-		</tr>
 		{% endifequal %}	
-	{% endifequal %}
+	{% endif %}
 		
 {% endifnotequal %}
 {% endifnotequal %}

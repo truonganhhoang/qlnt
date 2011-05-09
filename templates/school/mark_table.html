@@ -4,6 +4,7 @@
 {% if message != None %}
 {{message}}
 {% endif %}
+
 <meta http-equiv= "Content-Type" content="text/html; charset=iso-8859-1">
 <script language="JavaScript" type="text/javascript" >
 function catchEnter(e)
@@ -94,9 +95,8 @@ window.onload = function() { document.onkeypress = catchEnter; };
 	}
 	function submitTerm()
 	{
-		if (document.info.term.value!=-1)
 			if (document.info.term.value!={{termChoice}})
-			if (document.info.subject.value!=-1)
+ 			if (document.info.subject.value!=-1)
 			{
 				document.info.submitChoice.value="hienthi";
 				document.info.submit();
@@ -105,9 +105,8 @@ window.onload = function() { document.onkeypress = catchEnter; };
 
 	function submitSubject()
 	{
-			if (document.info.subject.value!=-1)
 			if (document.info.subject.value!={{subjectChoice}})
-			if (document.info.term.value!=-1)
+			if (document.info.subject.value!=-1)
 			{	
 				document.info.submitChoice.value="hienthi";
 				document.info.submit();
@@ -116,13 +115,13 @@ window.onload = function() { document.onkeypress = catchEnter; };
 	function saveMark()
 	{
 		document.info.submitChoice.value="luulai";
-		if (document.info.term.value!=-1)
 			document.info.submit();
 	}
 	function saveMarkHasComment()
 	{
 		var length={{lengthList}};
 		//alert(length);
+		document.getElementById("commentTable").style.visibility='hidden';
 		for(i=1;i<=length;i++)
 			for(j=1;j<5;j++)
 			{
@@ -155,6 +154,7 @@ window.onload = function() { document.onkeypress = catchEnter; };
 	function saveMarkHasComment1()
 	{
 		var length={{lengthList}};
+		document.getElementById("commentTable").style.visibility='hidden';
 		//alert(length);
 		for(i=1;i<=length;i++)
 			for(j=1;j<6;j++)
@@ -197,9 +197,9 @@ window.onload = function() { document.onkeypress = catchEnter; };
 		}
 	}
 </script>
-<table border="0" width=100% >
-<form action="/school/mark_table/{{class_id}}"  name="info" method="post" id='myform' 
+<form action="/school/markTable/{{class_id}}"  name="info" method="post" id='myform' 
 	onsubmit="return false" >{% csrf_token %}
+<table border="0" width=100% >
 	<input type="hidden" name="submitChoice" value="">	
 
 	<tr>
@@ -221,7 +221,7 @@ window.onload = function() { document.onkeypress = catchEnter; };
 		<td width ="50%"> Môn học:
 		
 		<select name="subject" onchange="submitSubject()">
-	       	<option value=-1 selected >chọn môn</option>		
+			<option value=-1 selected > Chọn Môn </option>
 			{% for subject in subjectList %}
 				<option  value={{subject.id }}> {{ subject.name}}</option>		
 			{% endfor %}		
@@ -229,31 +229,21 @@ window.onload = function() { document.onkeypress = catchEnter; };
 		</td >
 		
 		<td width ="50%"> Học kỳ &nbsp&nbsp:  
-		<select name="term" onclick="submitTerm();" >				
-			<option value=-1 selected > Chọn kỳ </option>
+		<select name="term" onchange="submitTerm();" >				
 			{% for term in termList %}
-				{% ifequal term.year_id.time currentTerm.year_id.time %}				
 					<option   value={{ term.id }} selected> {{ term}} </option>	
-				{% else %}	
-					<option   value={{ term.id }}> {{ term}}</option>		
-				{% endifequal %}	
 			{% endfor %}	
 			
 		</select>
 		</td>					
 	</tr>
-	
+	</table>
 <script type="text/javascript" >
 	document.info.term.value={{termChoice}}
 	document.info.subject.value={{subjectChoice}};
 	
 </script>		
-		
-	<tr><td>&nbsp </td>	</tr>
-	<tr> 
-	<td colspan=2 align="right">    
-	</td>
-	</tr>
+	
 	{#<----------------------------------------------------------------------------------> #}	
 	{# day la phan tinh diem cho nhung mon thuoc nhan xet #}
 	{#<----------------------------------------------------------------------------------> #}
@@ -271,6 +261,4 @@ window.onload = function() { document.onkeypress = catchEnter; };
 		{% include  "school/mark_no_comment.html" %}
 	{% endifnotequal %}
 </form>	
-</table>
 {% endblock %}
-

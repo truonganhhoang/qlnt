@@ -189,9 +189,9 @@ window.onload = function() { document.onkeypress = catchEnter; };
 	}
 	
 </script>
-<table border="0" width=100% >
-<form action="/school/markForASubject/{{subjectChoice}}"  name="info" method="post" id='myform' 
+<form action="/school/markForASubject/{{selectedSubject.id}}"  name="info" method="post" id='myform' 
 	onsubmit="return false" >{% csrf_token %}
+<table border="0" width=100% >
 	<input type="hidden" name="submitChoice" value="">	
 
 	<tr>
@@ -215,30 +215,21 @@ window.onload = function() { document.onkeypress = catchEnter; };
 	<tr>								
 		
 		<td width ="50%"> Học kỳ &nbsp&nbsp:  
-		<select name="term" onclick="submitTerm();" >				
-			<option value=-1 selected > Chọn kỳ </option>
+		<select name="term" onchange="submitTerm();" >				
 			{% for term in termList %}
-				{% ifequal term.year_id.time currentTerm.year_id.time %}				
 					<option   value={{ term.id }} selected> {{ term}} </option>	
-				{% else %}	
-					<option   value={{ term.id }}> {{ term}}</option>		
-				{% endifequal %}	
 			{% endfor %}	
 			
 		</select>
 		</td>					
 	</tr>
+</table>
 	
 <script type="text/javascript" >
 	document.info.term.value={{termChoice}}
 	
 </script>		
-		
-	<tr><td>&nbsp </td>	</tr>
-	<tr> 
-	<td colspan=2 align="right">    
-	</td>
-	</tr>
+
 	{#<----------------------------------------------------------------------------------> #}	
 	{# day la phan tinh diem cho nhung mon thuoc nhan xet #}
 	{#<----------------------------------------------------------------------------------> #}
@@ -256,6 +247,5 @@ window.onload = function() { document.onkeypress = catchEnter; };
 		{% include  "school/mark_no_comment.html" %}
 	{% endifnotequal %}
 </form>	
-</table>
 {% endblock %}
 
