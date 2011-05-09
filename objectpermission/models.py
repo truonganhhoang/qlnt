@@ -15,7 +15,7 @@ class ObjectPermission(models.Model):
     owner_id = models.PositiveIntegerField()
     owner_ct = models.ForeignKey(ContentType, related_name='owner_ct')
     owner = generic.GenericForeignKey('owner_ct', 'owner_id')
-    permission = models.CharField(max_length=255)
+    permission = models.CharField(max_length=255) # vi du: vote, view, change
     model_ct = models.ForeignKey(ContentType, related_name='model_ct')
     field_name = models.CharField(max_length=255)
     allowed_value = models.CharField(max_length=255)

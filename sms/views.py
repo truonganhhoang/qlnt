@@ -21,7 +21,7 @@ def manual_sms(request):
             phone_list = form.cleaned_data.get('phone')
             content = form.cleaned_data.get('content')
             
-            phone = []
+            phone = [] # chua cat space o dau va cuoi so dt 
             for p1 in phone_list.split(','):
                 p1 = p1.split(';')
                 for p2 in p1:

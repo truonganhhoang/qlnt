@@ -12,7 +12,8 @@ class sms(models.Model):
         return self.phone
     
 class smsForm(forms.Form):
-    phone = forms.CharField(label = 'Số điện thoại người nhận', widget = forms.widgets.Textarea())
+    phone = forms.CharField(label = 'Số điện thoại',
+                            widget = forms.widgets.Textarea(attrs={'cols': 40, 'rows': 5}))
     content = forms.CharField(label = 'Nội dung', widget = forms.widgets.Textarea())
     
 class smsFromExcelForm(forms.Form):
