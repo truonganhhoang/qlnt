@@ -10,21 +10,21 @@ Các mô hình dữ liệu dùng chung giữa các đơn vị trong hệ thống
 các mô hình dữ liệu cấp Phòng, Sở (ngoài trường phổ thông)
 '''
 
-ORGANIZATION_LEVEL_CHOICES = (('T', 'Trường'),
-                             ('P', 'Phòng'),
-                             ('S', 'Sở')) 
+ORGANIZATION_LEVEL_CHOICES = (('T', u'Trường'),
+                             ('P', u'Phòng'),
+                             ('S', u'Sở')) 
                              
-POSITION_CHOICE = (('HOC_SINH','Học sinh'), ('GIAO_VU', 'Giáo vụ'), ('GIAO_VIEN','Giáo viên'),
-                   ('HIEU_PHO','Hiệu phó'), ('HIEU_TRUONG', 'Hiệu trưởng'))
+POSITION_CHOICE = (('HOC_SINH',u'Học sinh'), ('GIAO_VU', u'Giáo vụ'), ('GIAO_VIEN',u'Giáo viên'),
+                   ('HIEU_PHO',u'Hiệu phó'), ('HIEU_TRUONG', u'Hiệu trưởng'))
 
-KHOI_CHOICES = (('Cấp 1', 'Cấp 1'),
-                ('Cấp 2', 'Cấp 2'),
-                ('Cấp 3', 'Cấp 3'))
+KHOI_CHOICES = (('1', u'Cấp 1'),
+                ('2', u'Cấp 2'),
+                ('3', u'Cấp 3'))
 
-SCHOOL_ACTION_STATUS=((0, 'Trường mới'),
-                      (1, 'Đang học kì 1'), 
-                      (2, 'Đang học kì 2'), 
-                      (3, 'Đang nghỉ hè'))
+SCHOOL_ACTION_STATUS=((0, u'Trường mới'),
+                      (1, u'Đang học kì 1'), 
+                      (2, u'Đang học kì 2'), 
+                      (3, u'Đang nghỉ hè'))
 
 class Organization(models.Model):
     ''' Thông tin về sơ đồ tổ chức của các sở, phòng và các trường ''' 
