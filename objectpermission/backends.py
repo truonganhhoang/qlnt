@@ -1,6 +1,4 @@
-from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
-from django.contrib.auth.models import User
 
 from objectpermission.models import ObjectPermission
 
@@ -25,13 +23,13 @@ class ObjectPermissionBackend(object):
         try:
             permission = perm.split('_')[0]
             field_name = "_".join(perm.split('_')[1:]).split('=')[0]
-            value = "=".join("_".join(s.split('_')[1:]).split('=')[1:])
+            value = "=".join("_".join(perm.split('_')[1:]).split('=')[1:])
         except IndexError:
             return False
 
         # check for user permission
-        user_ct = ContentType.get_for_model(user_obj)
-        model_ct = ContentType.get_for_model(model_ct)
+        user_ct = ContentType.objects.get_for_model(user_obj)
+        model_ct = ContentType.objects.get_for_model(model)
         user_perm = ObjectPermission.objects.filter(owner_id=user_obj.id,
                                                     owner_ct=user_ct,
                                                     model_ct=model_ct,
@@ -42,7 +40,7 @@ class ObjectPermissionBackend(object):
 
         # check for group permission
         for g in user_obj.groups():
-            group_ct = ContentType.get_for_model(g)
+            group_ct = ContentType.objects.get_for_model(g)
             group_perm = ObjectPermission.objects.filter(owner_id=g.id,
                                                     owner_ct=group_ct,
                                                     model_ct=model_ct,
