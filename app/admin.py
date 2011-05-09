@@ -14,6 +14,7 @@ admin.site.register(UserProfile)
 
 class UserProfileInline (admin.StackedInline):
     model = UserProfile
+    max_num = 1
     
 class CustomizedUserAdmin(UserAdmin):
     inlines = [UserProfileInline]

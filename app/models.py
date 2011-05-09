@@ -17,11 +17,22 @@ ORGANIZATION_LEVEL_CHOICES = (('T', 'Trường'),
 POSITION_CHOICE = (('HOC_SINH','Học sinh'), ('GIAO_VU', 'Giáo vụ'), ('GIAO_VIEN','Giáo viên'),
                    ('HIEU_PHO','Hiệu phó'), ('HIEU_TRUONG', 'Hiệu trưởng'))
 
+KHOI_CHOICES = (('Cấp 1', 'Cấp 1'),
+                ('Cấp 2', 'Cấp 2'),
+                ('Cấp 3', 'Cấp 3'))
+
+SCHOOL_ACTION_STATUS=((0, 'Trường mới'),
+                      (1, 'Đang học kì 1'), 
+                      (2, 'Đang học kì 2'), 
+                      (3, 'Đang nghỉ hè'))
+
 class Organization(models.Model):
     ''' Thông tin về sơ đồ tổ chức của các sở, phòng và các trường ''' 
     name = models.CharField('Tên tổ chức', max_length = 100) #tên đơn vị. tổ chức 
     level = models.CharField("cấp", max_length = 2, choices = ORGANIZATION_LEVEL_CHOICES) #Cấp
+    khoi = models.CharField("Khối học", max_length = 6, blank = True, null = True, choices = KHOI_CHOICES)
     upper_organization = models.ForeignKey('self', blank = True, null = True, verbose_name = 'Trực thuộc')
+    status = models.SmallIntegerField( max_length = 3, choices = SCHOOL_ACTION_STATUS)
     manager_name = models.CharField("Tên thủ trưởng", max_length = 100, null = True)
     address = models.CharField("Địa chỉ", max_length = 255, blank = True, null = True) #
     phone = models.CharField("Điện thoại", max_length = 20, blank = True, null = True)
