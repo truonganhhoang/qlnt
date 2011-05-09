@@ -16,7 +16,7 @@ class ObjectPermissionBackend(object):
         permission_field=value
         Eg: change_level=S
         """
-        if value is None:
+        if model is None:
             return False
 
         if user_obj.is_superuser:
