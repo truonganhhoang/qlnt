@@ -2,25 +2,27 @@
 
 {% block content %}
 	{% if user.is_authenticated %}
-		<h3>Danh sách tin nhắn đã được gửi đi:</h3> <br>
+		<h3>Danh sách tin nhắn đã được gửi đi:</h3>
 		{% if sms_list %}
-			<table border="1">
-				<tr>
-				<td>Số điện thoại người nhận</td>
-				<td>Nội dung tin nhắn</td>
-				<td>Thời gian tạo</td>
-				<td>Thời gian sửa</td>
+			<table class="solid_border">
+				<tr class="solid_border">
+				<td class="solid_border">Số điện thoại</td>
+				<td class="solid_border">Nội dung</td>
+				<td class="solid_border">Thời gian tạo</td>
+				<td class="solid_border">Thời gian sửa</td>
+				<td class="solid_border">Người gửi</td>
 				</tr>
 			{% for s in sms_list %}
-				<tr>
-				<td>{{ s.phone }}</td>
-				<td>{{ s.content }}</td>
-				<td>{{ s.created }}</td>
-				<td>{{ s.modified }}</td>
+				<tr class="solid_border">
+				<td class="solid_border">{{ s.phone }}</td>
+				<td class="solid_border">{{ s.content }}</td>
+				<td class="solid_border">{{ s.created }}</td>
+				<td class="solid_border">{{ s.modified }}</td>
+				<td class="solid_border">{{ s.sender }}</td>
 				</tr>
 			{% endfor %}
 			</table>
-			<a href="/sms/export_excel/">Xuất ra file excel</a>
+			<br /><a href="/sms/export_excel/">Xuất ra file excel</a>
 		{% else %}
 		    <p>Không có tin nhắn nào đã được gửi đi.</p>
 		{% endif %}

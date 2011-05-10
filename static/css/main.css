@@ -34,3 +34,12 @@ label {
   float: left;
   width: 10em;
 }
+
+table.solid_border{
+	border-collapse:collapse;
+}
+
+td.solid_border, th.solid_border{
+	border:1px solid black;
+	padding:5px
+}

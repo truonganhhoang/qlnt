@@ -39,7 +39,7 @@ def manual_sms(request):
             
             for p in phone:    
                 '''Save to db'''
-                s = sms(phone=p, content=content)
+                s = sms(phone=p, content=content, sender=request.user)
                 s.save()
                 
                 '''Send sms via Viettel system'''
@@ -140,10 +140,16 @@ def export_excel(request):
     
     ws.write(0, 0, 'Số điện thoại người nhận')
     ws.write(0, 1, 'Nội dung tin nhắn')
+    ws.write(0, 2, 'Thời gian tạo')
+    ws.write(0, 3, 'Thời gian sửa')
+    ws.write(0, 4, 'Người gửi')
     begin = 1;
     for q in queryset:
         ws.write(begin, 0, q.phone)
         ws.write(begin, 1, q.content)
+        ws.write(begin, 2, q.created)
+        ws.write(begin, 3, q.modified)
+        ws.write(begin, 4, q.sender.username)
         begin = begin+1
     
     wb.save(response)
