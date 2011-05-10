@@ -57,7 +57,7 @@ USE_I18N = True
 USE_L10N = True
 
 DATE_FORMAT = ('D/M/YY', 'DD/MM/YYYY')
-DATE_INPUT_FORMATS = ('D/M/YY', 'DD/MM/YYYY')
+DATE_INPUT_FORMATS = ('%d-%m-%Y', '%d/%m/%Y')
 DECIMAL_SEPARATOR = ','
 
 SITE_ID = 1
