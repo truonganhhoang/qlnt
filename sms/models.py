@@ -17,6 +17,16 @@ class sms(models.Model):
     modified = models.DateField("Thời gian sửa", auto_now = True)
     sender = models.ForeignKey(User)
     
+    def createdFormat(self):
+        return self.created.strftime('%d') + "/"\
+                + self.created.strftime('%m') + "/"\
+                + self.created.strftime('%Y')
+    
+    def modifiedFormat(self):
+        return self.modified.strftime('%d') + "/"\
+                + self.modified.strftime('%m') + "/"\
+                + self.modified.strftime('%Y')
+    
     def __unicode__(self):
         return self.phone
     

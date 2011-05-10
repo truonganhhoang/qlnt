@@ -5,6 +5,11 @@
 		<h3>Danh sách tin nhắn đã được gửi đi:</h3>
 		{% if sms_list %}
 			<table class="solid_border">
+				<col width=150>
+				<col width=250>
+				<col width=120>
+				<col width=120>
+				<col width=160>
 				<tr class="solid_border">
 				<td class="solid_border">Số điện thoại</td>
 				<td class="solid_border">Nội dung</td>
@@ -16,8 +21,8 @@
 				<tr class="solid_border">
 				<td class="solid_border">{{ s.phone }}</td>
 				<td class="solid_border">{{ s.content }}</td>
-				<td class="solid_border">{{ s.created }}</td>
-				<td class="solid_border">{{ s.modified }}</td>
+				<td class="solid_border">{{ s.createdFormat }}</td>
+				<td class="solid_border">{{ s.modifiedFormat }}</td>
 				<td class="solid_border">{{ s.sender }}</td>
 				</tr>
 			{% endfor %}
