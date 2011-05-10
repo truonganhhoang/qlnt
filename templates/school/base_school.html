@@ -44,8 +44,10 @@
 <div id="bodyPan">
 	<div id="bodyRightPan">
 	{% block left_menu %}
+	{% if user.userprofile.position == 'HIEU_TRUONG'  or user.userprofile.position == 'HIEU_PHO' %}
   	<h2><span>Menu</span> chính</h2>
 	<ul>
+		<li><a href="#">Bắt đầu năm học mới</a> </li>
 		<li><a href="#">Danh sách giáo viên</a> </li>
 		<li><a href="#">Phân công giảng dạy</a> </li>
 		<li><a href="#">Danh sách lớp học</a> </li>
@@ -62,6 +64,35 @@
 	</ul>
 		<h3>Những thay đổi gần đây</h3>
 		<p class="more"><a href="#">Xem thêm</a></p>
+  {% else %}
+  		{% if user.userprofile.position == 'GIAO_VIEN'%}
+		<h2><span>Menu</span> chính</h2>
+		<ul>
+			<li><a href="#">Lớp chủ nhiệm</a> </li>
+			<li><a href="#">Các lớp giảng dạy</a> </li>
+			<li><a href="#">Quản lý điểm</a> </li>
+		</ul>
+		<h3>Những thay đổi gần đây</h3>
+		<p class="more"><a href="#">Xem thêm</a></p>
+		{% else %}
+			{% if user.userprofile.position == 'HOC_SINH' %}
+				<h2><span>Menu</span> chính</h2>
+				<ul>
+					<li><a href="#">Lớp học</a> </li>
+					<li><a href="#">Điểm</a> </li>
+					<li><a href="#">Điểm danh</a> </li>
+					<li><a href="#">Khen thưởng</a> </li>
+					<li><a href="#">Kỉ luật</a> </li>
+					
+				</ul>
+				<h3>Những thay đổi gần đây</h3>
+				<p class="more"><a href="#">Xem thêm</a></p>
+				{% else %}
+					{% if user.userprofile.position == 'GIAO_VU'%}
+					{% endif %}	
+			{% endif %}
+  		{% endif %}	 	
+  {% endif %}
   {% endblock %}
   </div>  
   <div id="bodyLeftPan">

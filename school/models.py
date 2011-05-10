@@ -1,9 +1,13 @@
 # -*- coding: utf-8 -*-
 from django.db import models
 from django import forms
+from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from datetime import date
 from django.forms.extras.widgets import SelectDateWidget
+
+from app.models import *
+
 
 GENDER_CHOICES = ((u'M', u'Nam'),(u'F', u'Nữ'),)
 TERM_CHOICES = ((1, u'1'), (2, u'2'),(3, u'3'),)
@@ -137,11 +141,13 @@ class BasicPersonInfo(models.Model):
 	#class Admin: pass
 
 class Teacher(BasicPersonInfo): 
-	school_id = models.ForeignKey(School,null=True,blank=True)
+    user_id = models.OneToOneField(User, null = True, blank = True)
+    school_id = models.ForeignKey(Organization, null=True, blank=True)
 
 class TeacherForm(forms.ModelForm):
     class Meta:
         model = Teacher
+
         field = ('birthday')
         widgets = {
             'birthday' : SelectDateWidget(years = range( this_year()-15 ,this_year()-100,-1)),
@@ -220,7 +226,7 @@ class Pupil(BasicPersonInfo):
 	current_status = models.CharField(max_length = 200, blank = True, null = True, default = 'OK')
 	disable = models.BooleanField(default = False)
 	
-	
+	user_id = models.OneToOneField(User, null = True, blank = True) # nullable is temporary 
 	start_year_id = models.ForeignKey(StartYear)
 	class_id = models.ForeignKey(Class, null = True, blank = True)
 

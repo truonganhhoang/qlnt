@@ -3,6 +3,27 @@ import os.path
 import datetime
 from school.models import *
 
+
+
+def make_user_name( first_name = None, last_name = None, full_name = None, start_year = False):
+    if full_name:
+        names = full_name.split(" ")
+        last_name = ' '.join(names[:len(names)-1])
+        first_name = names[len(names)-1]
+    username = first_name
+    if last_name and last_name != '':
+        for word in last_name.split(" "):
+            username += word[0]
+    if start_year:
+        username += '_' + str(start_year.time)
+    print username
+    return username
+    
+def make_default_password( pw):
+    return pw
+        
+        
+
 # student: Pupil object,
 # old_class: Class object,
 # new_class: Class object,
@@ -45,8 +66,10 @@ def move_student( student, old_class, new_class):
 #              . lets student belong to _class
 #              . add: marks for each subject, "khenthuong", "kiluat", "diemdanh", "TKDiemDanh", "TBMon"
 #                     "HanhKiem", "TKMon", "TBHocKy", "TBNam"
-def add_student( student = None, start_year = None, year = None, 
+def add_student( student = None, start_year = None , year = None, 
                 _class = None, term = None, school = None, school_join_data = None ):
+        if not ( student and start_year and term and school ):
+            raise Exception("Student,Start_Year,Term,School can't not be null")
         if 'full_name' in student:
             names = student['full_name'].split(" ")
             last_name = ' '.join(names[:len(names)-1])
@@ -77,6 +100,17 @@ def add_student( student = None, start_year = None, year = None,
             st.school_join_date = school_join_date
             st.start_year_id = start_year
             st.class_id = _class
+            
+            user = User()
+            user.username = make_username( first_name = first_name, last_name = last_name, start_year = start_year)
+            user.password = make_default_password( user.username )
+            user.save()
+            userprofile = UserProfile()
+            userprofile.user = user
+            userprofile.organization = school
+            userprofile.position = 'HOC_SINH'
+            userprofile.save() 
+            st.user_id = user
             st.save()
             
             subjects = _class.subject_set.all()
@@ -147,6 +181,31 @@ def del_student( student):
 def completely_del_student( student):
     student.delete()
 
+def add_teacher( first_name = None, last_name = None, full_name = None, school = None):
+    if full_name:
+        names = full_name.split(" ")
+        last_name = ' '.join(names[:len(names)-1])
+        first_name = names[len(names)-1]
+    teacher = Teacher()
+    teacher.first_name = first_name
+    teacher.last_name = last_name
+    teacher.school_id = school
+    
+    user = User()
+    user.username = make_username( first_name = first_name, last_name = last_name )
+    user.password = make_default_password( user.username)
+    user.save()
+    userprofile = UserProfile()
+    userprofile.user = user
+    userprofile.organization = school
+    userprofile.position = 'GIAO_VIEN'
+    userprofile.save() 
+    
+    teacher.user_id = user
+    teacher.save()
+
+def del_teacher( teacher):
+    teacher.delete()    
 # subject_name: string, teacher : Teacher object, _class : Class object
 def add_subject( subject_name = None, hs = 1, teacher = None, _class = None, term = None):
     find = _class.subject_set.filter( name__exact = subject_name)
