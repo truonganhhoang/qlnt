@@ -39,10 +39,15 @@ class Organization(models.Model):
     address = models.CharField("Địa chỉ", max_length = 255, blank = True, null = True) #
     phone = models.CharField("Điện thoại", max_length = 20, blank = True, null = True)
     email = models.EmailField(max_length = 50, blank = True, null = True)
+    user_admin = models.ManyToManyField (User, through = 'Membership')
     
     def __unicode__(self):
         return self.name
 
+class Membership (models.Model):
+    user_admin = models.ForeignKey(User)
+    org = models.ForeignKey(Organization)
+    
 class OrganizationForm(forms.Form):
     name = forms.CharField(max_length = 100) #tên đơn vị. tổ chức 
     level = forms.CharField(max_length = 2, widget = forms.RadioSelect(choices = ORGANIZATION_LEVEL_CHOICES)) #Cấp
@@ -50,7 +55,7 @@ class OrganizationForm(forms.Form):
     address = forms.CharField(max_length = 255) #
     phone = forms.CharField(max_length = 20)
     email = forms.EmailField(max_length = 50)
-
+    
 class UserProfile(models.Model):
     '''
     Thông tin về người sủ dụng hệ thống, mở rộng User của Django.
