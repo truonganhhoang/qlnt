@@ -149,10 +149,29 @@ def b1(request):
     transaction.commit()
     context = RequestContext(request, {'school':school})
     return render_to_response(START_YEAR, context_instance = context)                                            
-def classes(request):
+def classes(request, sort_type = 1, sort_status=0):
     message = None
     form = ClassForm()
-    classList = Class.objects.all()
+    if int(sort_type)==1:
+		if int(sort_status) == 0:
+			classList = Class.objects.all().order_by('name')
+		else:
+			classList = Class.objects.all().order_by('-name')
+    if int(sort_type) == 2:
+		if int(sort_status) == 0:
+			classList = Class.objects.all().order_by('block_id__number')
+		else:
+			classList = Class.objects.all().order_by('-block_id__number')
+    if int(sort_type) == 3:
+		if int(sort_status) == 0:
+			classList = Class.objects.all().order_by('teacher_id__first_name')
+		else:
+			classList = Class.objects.all().order_by('-teacher_id__first_name')
+    if int(sort_type)==4:
+		if int(sort_status) == 0:
+			classList = Class.objects.all().order_by('year_id__time')
+		else:
+			classList = Class.objects.all().order_by('-year_id__time')
     if request.method == 'POST':
         form = ClassForm(request.POST)
         if form.is_valid():
@@ -162,7 +181,7 @@ def classes(request):
             message = 'Please check your information, something is wrong'
 
     t = loader.get_template(os.path.join('school','classes.html'))
-    c = RequestContext(request, {'form' : form, 'message' : message, 'classList' : classList})
+    c = RequestContext(request, {'form' : form, 'message' : message, 'classList' : classList, 'sort_type':sort_type, 'sort_status':sort_status, 'next_status':1-int(sort_status)})
     return HttpResponse(t.render(c))
 
 def viewClassDetail(request, class_id):
@@ -227,9 +246,23 @@ def viewTeacherDetail(request, teacher_id):
     c = RequestContext(request, {'form' : form, 'message' : message, 'id' : teacher_id})
     return HttpResponse(t.render(c))
 
-def subjectPerClass(request, class_id):
+def subjectPerClass(request, class_id, sort_type=1, sort_status=0):
     message = None
-    subjectList = Subject.objects.filter(class_id = class_id)
+    if int(sort_type)==1:
+		if int(sort_status) == 0:
+			subjectList = Subject.objects.filter(class_id=class_id).order_by('name')
+		else:
+			subjectList = Subject.objects.filter(class_id=class_id).order_by('-name')
+    if int(sort_type) == 2:
+		if int(sort_status) == 0:
+			subjectList = Subject.objects.filter(class_id=class_id).order_by('hs')
+		else:
+			subjectList = Subject.objects.filter(class_id=class_id).order_by('-hs')
+    if int(sort_type) == 3:
+		if int(sort_status) == 0:
+			subjectList = Subject.objects.filter(class_id=class_id).order_by('teacher_id__first_name')
+		else:
+			subjectList = Subject.objects.filter(class_id=class_id).order_by('-teacher_id__first_name')
     form = SubjectForm()
     if request.method == 'POST':
         data = {'name':request.POST['name'], 'hs':request.POST['hs'], 'class_id':class_id, 'teacher_id':request.POST['teacher_id']}
@@ -241,10 +274,10 @@ def subjectPerClass(request, class_id):
             message = 'Please check your information, something is wrong'
 
     t = loader.get_template(os.path.join('school','subject_per_class.html'))
-    c = RequestContext(request, {'form' : form, 'message' : message,  'subjectList' : subjectList, 'class_id' : class_id})
+    c = RequestContext(request, {'form' : form, 'message' : message,  'subjectList' : subjectList, 'class_id' : class_id, 'sort_type' : sort_type, 'sort_status':sort_status, 'next_status':1-int(sort_status)})
     return HttpResponse(t.render(c))
 
-def studentPerClass(request, class_id, sort_type=1, sort_status=1):
+def studentPerClass(request, class_id, sort_type=1, sort_status=0):
     message = None
     form = PupilForm()
     if int(sort_type)==1:
@@ -306,7 +339,7 @@ def students(request, sort_type=1, sort_status=1):
 			studentList = Pupil.objects.all().order_by('-birthday')
     if int(sort_type) == 3:
 		if int(sort_status) == 0:
-			studentList = Pupil.all().order_by('sex')
+			studentList = Pupil.objects.all().order_by('sex')
 		else:
 			studentList = Pupil.objects.all().order_by('-sex')
     if int(sort_type) == 4:
@@ -327,18 +360,19 @@ def students(request, sort_type=1, sort_status=1):
 			studentList = Pupil.objects.all().order_by('-class_id__name')
 			
     if request.method == 'POST':
-        name = request.POST['first_name'].split()
-        last_name = ' '.join(name[:len(name)-1])
-        first_name = name[len(name)-1]
-        birthday = date(int(request.POST['birthday_year']),int(request.POST['birthday_month']),int(request.POST['birthday_day']))
-        data = {'first_name':first_name, 'last_name':last_name, 'birthday':birthday, 'sex':request.POST['sex'],'ban_dk':request.POST['ban_dk'], 'school_join_date':request.POST['school_join_date'], 'start_year_id':request.POST['start_year_id'], 'class_id' : request.POST['class_id']}
-        form = PupilForm(data)
-        if form.is_valid():
-            form.save()
-            message = 'You have added new student'
-            form = PupilForm()
-        else:
-            message = 'Please check your information, something is wrong'
+		name = request.POST['first_name'].split()
+		last_name = ' '.join(name[:len(name)-1])
+		first_name = name[len(name)-1]
+		birthday = date(int(request.POST['birthday_year']),int(request.POST['birthday_month']),int(request.POST['birthday_day']))
+		school_join_date=date(int(request.POST['school_join_date_year']),int(request.POST['school_join_date_month']),int(request.POST['school_join_date_day']))
+		data = {'first_name':first_name, 'last_name':last_name, 'birthday':birthday, 'sex':request.POST['sex'],'ban_dk':request.POST['ban_dk'], 'school_join_date':school_join_date, 'start_year_id':request.POST['start_year_id'], 'class_id' : request.POST['class_id']}
+		form = PupilForm(data)
+		if form.is_valid():
+			form.save()
+			message = 'You have added new student'
+			form = PupilForm()
+		else:
+			message = 'Please check your information, something is wrong'
 
     t = loader.get_template(os.path.join('school','students.html'))
     c = RequestContext(request, {'form': form, 'message': message, 'studentList': studentList, 'sort_type':sort_type, 'sort_status':sort_status, 'next_status':1-int(sort_status)})

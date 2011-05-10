@@ -2,18 +2,15 @@
 
 {% block content %}
 <br>
-<form action="/school/hanhkiem/{{class_id}}" method="post">{% csrf_token %}
-        <tr>
-        
-        </tr>
-<table border=1 width = "100%" >
+<form action="/school/hanhkiem/{{class_id}}" method="post">{% csrf_token %}       
+<table border=1 width = "85%">
 
     <tr>
         <td align="center" width="5%"> STT </td>
         <td align="center" width="20%"> Họ & Tên </td>
-        <td align="center" width="15%"> Ngày sinh</td>
-        <td align="center" width="7%"> Giới tính </td>
-        <td align="center" width="8%"> Hạnh Kiểm </td>
+        <td align="center" width="20%"> Ngày sinh</td>
+        <td align="center" width="20%"> Giới tính </td>
+        <td align="center" width="20%"> Hạnh Kiểm </td>
     </tr>
     {% if message != None %}
     {{message}}
@@ -27,26 +24,24 @@
                 </td>
             
                 <td align="center" width="20%">
-                    <p>{{ p.last_name }} {{p.first_name}}</p
+                    <p>{{ p.last_name }} {{p.first_name}}</p>
                 </td>
 
-                <td align="center" width="15%">
-                    <p>{{ p.birthday }}</p>
+                <td align="center" width="20%">
+                    <p>{{ p.birthday|date:"SHORT_DATE_FORMAT"}}</p>
                 </td>
 
-                <td align="center" width="7%">
+                <td align="center" width="20%">
                     <p>{{ p.sex }}</p>
                 </td>
 
-                <td align="center" width="8%">
+                <td align="center" width="20%">
                     {{ f.loai.errors }}
                     <p>{{ f.loai }}</p>
                 </td>
             </tr>
-        {% endfor %}
-        <tr>
-        <td><input type ="submit" value="Cập nhật"/></td>
-	</form>
-        </tr>
+        {% endfor %}        
 </table>
+<input type ="submit" value="Cập nhật"/>
+	</form>
 {% endblock %}

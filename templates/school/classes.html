@@ -14,10 +14,10 @@ function confirmDelete()
 
 <table border=1 width = "90%" align = "center">
 	<tr>
-		<td align="center" width="20%"> Tên Lớp </td>
-		<td align="center" width="20%"> Khối </td>
-		<td align="center" width="25%"> Tên Giáo Viên </td>
-		<td align="center" width="20%"> Năm </td>
+		<td align="center" width="20%"><a href="{%url school.views.school_index  %}classes/1/{{next_status}}"> Tên Lớp </a></td>
+		<td align="center" width="20%"><a href="{%url school.views.school_index  %}classes/2/{{next_status}}"> Khối </a></td>
+		<td align="center" width="25%"><a href="{%url school.views.school_index  %}classes/3/{{next_status}}">Tên Giáo Viên </a></td>
+		<td align="center" width="20%"><a href="{%url school.views.school_index  %}classes/4/{{next_status}}"> Năm </a></td>
 		<td align="center" width="5%"></td>
 	</tr>
 	{% for class in classList %}
@@ -29,9 +29,7 @@ function confirmDelete()
 		<td align="center" width="5%"> <a href="{%url school.views.school_index  %}deleteClass/{{class.id}}" onclick="return confirmDelete();"> xóa </a></td>
 	</tr>
 	{% endfor %}
-</table>
 
-<table border = 0 width = "90%" align = "center">
 	<form action="/school/classes" method="post">{% csrf_token %}
 	<tr>
   		{{ form.non_field_errors }}
@@ -67,9 +65,7 @@ function confirmDelete()
   	</div>
   	</td>
 	</tr>
-	<tr>
-  <td><p><input type="submit" value="Thêm" /></p> </td>
-  </tr>
-  </form>
 </table>
+<p><input type="submit" value="Thêm" /></p>
+</form>
 {% endblock %}
