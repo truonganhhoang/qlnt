@@ -143,7 +143,7 @@ class Teacher(BasicPersonInfo):
 class TeacherForm(forms.ModelForm):
     class Meta:
         model = Teacher
-        field = {'birthday',}
+        field = ('birthday')
         widgets = {
             'birthday' : SelectDateWidget(years = range( this_year()-100 ,this_year())),
         }
@@ -228,7 +228,7 @@ class Pupil(BasicPersonInfo):
 class PupilForm(forms.ModelForm):
     class Meta:
         model = Pupil
-        field = {'birthday','school_join_date','ngay_vao_doan','ngay_vao_doi','ngay_vao_dang','father_birthday','mother_birthday'}
+        field = ('birthday','school_join_date','ngay_vao_doan','ngay_vao_doi','ngay_vao_dang','father_birthday','mother_birthday')
         widgets = {
             'birthday' : SelectDateWidget(years = range( this_year()-100 ,this_year())),
             'school_join_date' : SelectDateWidget(years = range( this_year()-10 ,this_year())),
@@ -315,7 +315,7 @@ class KhenThuong(models.Model):
 class KhenThuongForm(forms.ModelForm)        :
     class Meta:
         model = KhenThuong
-        field = {'time'}
+        field = ('time')
         widgets = {
             'time' : SelectDateWidget(years = range( this_year()-100 ,this_year())),
         }
@@ -336,7 +336,7 @@ class KiLuat(models.Model):
 class KiLuatForm(forms.ModelForm):        
     class Meta:
         model = KiLuat
-        field = {'time'}
+        field = ('time')
         widgets = {
             'time' : SelectDateWidget(years = range( this_year()-100 ,this_year())),
         }
@@ -403,7 +403,7 @@ class DiemDanh(models.Model):
 class DiemDanhForm(forms.ModelForm):
     class Meta:
         model = DiemDanh
-        field = {'time'}
+        field = ('time')
         widgets = {
             'time' : SelectDateWidget(years = range( this_year()-100 ,this_year())),
         }
