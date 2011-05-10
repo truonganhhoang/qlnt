@@ -239,7 +239,7 @@ def get_school(request):
     return request.user.userprofile.organization
 
 def get_permission(request):
-    return request.user.userprofile.position    
+    return request.user.userprofile.position
     
 def get_current_term(request):
     school = get_school(request)
