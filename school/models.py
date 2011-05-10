@@ -144,7 +144,7 @@ class TeacherForm(forms.ModelForm):
         model = Teacher
         field = ('birthday')
         widgets = {
-            'birthday' : SelectDateWidget(years = range( this_year()-100 ,this_year())),
+            'birthday' : SelectDateWidget(years = range( this_year()-15 ,this_year()-100,-1)),
         }
 
 class Year(models.Model):
@@ -229,13 +229,13 @@ class PupilForm(forms.ModelForm):
         model = Pupil
         field = ('birthday','school_join_date','ngay_vao_doan','ngay_vao_doi','ngay_vao_dang','father_birthday','mother_birthday')
         widgets = {
-            'birthday' : SelectDateWidget(years = range( this_year()-100 ,this_year())),
-            'school_join_date' : SelectDateWidget(years = range( this_year()-10 ,this_year())),
-            'ngay_vao_doan': SelectDateWidget(years = range( this_year()-10 ,this_year())),
-            'ngay_vao_doi': SelectDateWidget(years = range( this_year()-15 ,this_year())),
-            'ngay_vao_dang': SelectDateWidget(years = range( this_year()-10 ,this_year())),
-            'father_birthday': SelectDateWidget(years = range( this_year()-100 ,this_year())),
-            'mother_birthday': SelectDateWidget(years = range( this_year()-100 ,this_year())),
+            'birthday' : SelectDateWidget(years = range( this_year() ,this_year()-100,-1)),
+            'school_join_date' : SelectDateWidget(years = range( this_year() ,this_year()-100,-1)),
+            'ngay_vao_doan': SelectDateWidget(years = range( this_year() ,this_year()-100,-1)),
+            'ngay_vao_doi': SelectDateWidget(years = range( this_year() ,this_year()-100,-1)),
+            'ngay_vao_dang': SelectDateWidget(years = range( this_year() ,this_year()-100,-1)),
+            'father_birthday': SelectDateWidget(years = range( this_year() ,this_year()-100,-1)),
+            'mother_birthday': SelectDateWidget(years = range( this_year() ,this_year()-100,-1)),
         }
 
 
@@ -316,7 +316,7 @@ class KhenThuongForm(forms.ModelForm)        :
         model = KhenThuong
         field = ('time')
         widgets = {
-            'time' : SelectDateWidget(years = range( this_year()-100 ,this_year())),
+            'time' : SelectDateWidget(years = range( this_year() ,this_year()-100,-1)),
         }
 
 class KiLuat(models.Model):
@@ -337,7 +337,7 @@ class KiLuatForm(forms.ModelForm):
         model = KiLuat
         field = ('time')
         widgets = {
-            'time' : SelectDateWidget(years = range( this_year()-100 ,this_year())),
+            'time' : SelectDateWidget(years = range( this_year() ,this_year()-100,-1)),
         }
         
 class HanhKiem(models.Model):
@@ -404,7 +404,7 @@ class DiemDanhForm(forms.ModelForm):
         model = DiemDanh
         field = ('time')
         widgets = {
-            'time' : SelectDateWidget(years = range( this_year()-100 ,this_year())),
+            'time' : SelectDateWidget(years = range( this_year() ,this_year()-100,-1)),
         }
         
 class TKDiemDanh(models.Model):

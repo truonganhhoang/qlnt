@@ -197,7 +197,9 @@ def teachers(request, sort_type=1, sort_status=0):
         name = request.POST['first_name'].split()
         last_name = ' '.join(name[:len(name)-1])
         first_name = name[len(name)-1]
-        data = {'first_name':first_name, 'last_name':last_name, 'birthday':request.POST['birthday'], 'sex':request.POST['sex'], 'school_id':request.POST['school_id'], 'birth_place':request.POST['birth_place']}
+        birthday = date(int(request.POST['birthday_year']),int(request.POST['birthday_month']),int(request.POST['birthday_day']))
+        data = {'first_name':first_name, 'last_name':last_name, 'birthday':birthday, 'sex':request.POST['sex'], 'school_id':request.POST['school_id'], 'birth_place':request.POST['birth_place']}
+        data = {'first_name':first_name, 'last_name':last_name, 'birthday':birthday, 'sex':request.POST['sex'], 'school_id':request.POST['school_id'], 'birth_place':request.POST['birth_place']}
         form = TeacherForm(data)
         if form.is_valid():
             form.save()
@@ -275,7 +277,9 @@ def studentPerClass(request, class_id, sort_type=1, sort_status=1):
         name = request.POST['first_name'].split()
         last_name = ' '.join(name[:len(name)-1])
         first_name = name[len(name)-1]
-        data = {'first_name':first_name, 'last_name':last_name,'birthday':request.POST['birthday'], 'class_id':class_id, 'sex':request.POST['sex'], 'ban_dk':request.POST['ban_dk'], 'school_join_date':request.POST['school_join_date'], 'start_year_id':request.POST['start_year_id']}
+        birthday = date(int(request.POST['birthday_year']),int(request.POST['birthday_month']),int(request.POST['birthday_day']))
+        school_join_date = date(int(request.POST['school_join_date_year']),int(request.POST['school_join_date_month']),int(request.POST['school_join_date_day']))
+        data = {'first_name':first_name, 'last_name':last_name,'birthday':birthday, 'class_id':class_id, 'sex':request.POST['sex'], 'ban_dk':request.POST['ban_dk'], 'school_join_date':school_join_date, 'start_year_id':request.POST['start_year_id']}
         form = PupilForm(data)
         if form.is_valid():
             form.save()
@@ -326,7 +330,8 @@ def students(request, sort_type=1, sort_status=1):
         name = request.POST['first_name'].split()
         last_name = ' '.join(name[:len(name)-1])
         first_name = name[len(name)-1]
-        data = {'first_name':first_name, 'last_name':last_name, 'birthday':request.POST['birthday'], 'sex':request.POST['sex'],'ban_dk':request.POST['ban_dk'], 'school_join_date':request.POST['school_join_date'], 'start_year_id':request.POST['start_year_id'], 'class_id' : request.POST['class_id']}
+        birthday = date(int(request.POST['birthday_year']),int(request.POST['birthday_month']),int(request.POST['birthday_day']))
+        data = {'first_name':first_name, 'last_name':last_name, 'birthday':birthday, 'sex':request.POST['sex'],'ban_dk':request.POST['ban_dk'], 'school_join_date':request.POST['school_join_date'], 'start_year_id':request.POST['start_year_id'], 'class_id' : request.POST['class_id']}
         form = PupilForm(data)
         if form.is_valid():
             form.save()
@@ -778,23 +783,30 @@ def diem_danh_hs(request, student_id):
     for dd in ddl:
         form.append(DiemDanhForm(instance = dd))
     if request.method == 'POST':
+        print request.POST
         list = request.POST.getlist('loai')
-        time = request.POST.getlist('time')
+        time_day = request.POST.getlist('time_day')
+        time_month = request.POST.getlist('time_month')
+        time_year = request.POST.getlist('time_year')
         i = 0
         for dd in ddl:
             if list[i] != 'k':
-                data = {'student_id':student_id,'time':time[i],'loai':list[i],'term_id':term.id}
+                time = date(int(time_year[i]),int(time_month[i]),int(time_day[i]))
+                data = {'student_id':student_id,'time':time,'loai':list[i],'term_id':term.id}
                 form[i] = DiemDanhForm(data, instance = dd)
                 if form[i].is_valid():
                     form[i].save()  
                     i = i + 1
             else:
-                time.remove(time[i])
+                time_day.remove(time_day[i])
+                time_month.remove(time_month[i])
+                time_year.remove(time_year[i])
                 form.remove(form[i])
                 list.remove(list[i])
                 dd.delete()
         if list[i] != 'k':
-            data = {'student_id':student_id,'time':time[i],'loai':list[i],'term_id':term.id}
+            time = date(int(time_year[i]),int(time_month[i]),int(time_day[i]))
+            data = {'student_id':student_id,'time':time,'loai':list[i],'term_id':term.id}
             iform = DiemDanhForm(data)
             if iform.is_valid():
                 iform.save()

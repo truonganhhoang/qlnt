@@ -35,17 +35,17 @@ urlpatterns = patterns('',
 
 
 		
-	url(r'classes$', 'school.views.classes'),
-	url(r'hanhkiem/(?P<class_id>\w+)', 'school.views.hanh_kiem'),
+    url(r'classes$', 'school.views.classes'),
+    url(r'hanhkiem/(?P<class_id>\w+)', 'school.views.hanh_kiem'),
     url(r'teachers/(?P<sort_type>\w+)/(?P<sort_status>\w+)$', 'school.views.teachers'),
-	url(r'teachers$', 'school.views.teachers'),
+    url(r'teachers$', 'school.views.teachers'),
     url(r'students$', 'school.views.students'),
-	url(r'students/(?P<sort_type>\w+)/(?P<sort_status>\w+)$', 'school.views.students'),
+    url(r'students/(?P<sort_type>\w+)/(?P<sort_status>\w+)$', 'school.views.students'),
     url(r'viewClassDetail/(?P<class_id>\w+)', 'school.views.viewClassDetail'),
     url(r'viewTeacherDetail/(?P<teacher_id>\w+)$', 'school.views.viewTeacherDetail'),
     url(r'viewStudentDetail/(?P<student_id>\w+)', 'school.views.viewStudentDetail'),
     url(r'studentPerClass/(?P<class_id>\w+)', 'school.views.studentPerClass'),
-	url(r'studentPerClass/(?P<class_id>\w+)/(?P<sort_type>\w+)/(?P<sort_status>\w+)', 'school.views.studentPerClass'),
+    url(r'studentPerClass/(?P<class_id>\w+)/(?P<sort_type>\w+)/(?P<sort_status>\w+)', 'school.views.studentPerClass'),
     url(r'subjectPerClass/(?P<class_id>\w+)', 'school.views.subjectPerClass'),
 	#url(r'viewSubjectDetail/(?P<subject_id>\w+)', 'school.views.viewSubjectDetail'),
     url(r'start_year$','school.views.b1', name = "start_year"),
@@ -69,5 +69,5 @@ urlpatterns = patterns('',
     url(r'deleteStudentInClass/(?P<student_id>\w+)', 'school.views.deleteStudentInClass'),
     url(r'deleteClass/(?P<class_id>\w+)', 'school.views.deleteClass'),
     #url(r'^school/test$','school.views.test'), 
-	
+    
 	)
