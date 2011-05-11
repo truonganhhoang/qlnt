@@ -4,8 +4,9 @@ import datetime
 from school.models import *
 
 
-
-def make_user_name( first_name = None, last_name = None, full_name = None, start_year = False):
+# make username: example: input: AA, Nguyen Van, 2006 => output: AAnv_2006
+#                         input: AA, Nguyen Van       => output: AAnv
+def make_user_name( first_name = None, last_name = None, full_name = None, start_year = None):
     if full_name:
         names = full_name.split(" ")
         last_name = ' '.join(names[:len(names)-1])
@@ -44,7 +45,7 @@ def move_student( student, old_class, new_class):
             else:
                 print student, "moved from ", find.class_id, " to ", _class
                 print "but the subject: ", subject, " doesn't exist"
-                raise Exception("Subject does not exist")        
+                #raise Exception("Subject does not exist")        
 
 
 # This function will handle a change of students in a particular class
@@ -113,61 +114,43 @@ def add_student( student = None, start_year = None , year = None,
             st.user_id = user
             st.save()
             
-            subjects = _class.subject_set.all()
-            for subject in subjects:
-                the_mark = Mark()
-                the_mark.student_id = st
-                the_mark.subject_id = subject
-                the_mark.term_id = term
-                the_mark.save()
-                
+            for i in range(1,3):
+                term1 = year.term_set.get( number__exact = i)
                 hk = HanhKiem()
                 hk.student_id = st
-                hk.term_id = term
+                hk.term_id = term1
                 hk.save()
-                
+               
                 tb_hoc_ky = TBHocKy()
                 tb_hoc_ky.student_id = st
-                tb_hoc_ky.term_id = term
+                tb_hoc_ky.term_id = term1
                 tb_hoc_ky.save()
-                
+              
                 tk_diem_danh = TKDiemDanh()
                 tk_diem_danh.student_id = st
-                tk_diem_danh.term_id = term
+                tk_diem_danh.term_id = term1
                 tk_diem_danh.save()                            
-                
-                if term.number == 1:
-                    term = year.term_set.get( number__exact = 2)
+                        
+            tb_nam = TBNam()
+            tb_nam.student_id = st
+            tb_nam.year_id = year
+            tb_nam.save()
+                    
+            subjects = _class.subject_set.all()
+            for subject in subjects:
+                for i in range(1,3):
+                    term1 = year.term_set.get( number__exact = i)
                     the_mark = Mark()
                     the_mark.student_id = st
                     the_mark.subject_id = subject
-                    the_mark.term_id = term
+                    the_mark.term_id = term1
                     the_mark.save()
-                
-                    hk = HanhKiem()
-                    hk.student_id = st
-                    hk.term_id = term
-                    hk.save()
-                
-                    tb_hoc_ky = TBHocKy()
-                    tb_hoc_ky.student_id = st
-                    tb_hoc_ky.term_id = term
-                    tb_hoc_ky.save()
-                    
-                    tk_diem_danh = TKDiemDanh()
-                    tk_diem_danh.student_id = st
-                    tk_diem_danh.term_id = term
-                    tk_diem_danh.save()      
-                    
+                                   
                 tkmon = TKMon()
                 tkmon.student_id = st
                 tkmon.subject_id = subject
                 tkmon.save()
                 
-                tb_nam = TBNam()
-                tb_nam.student_id = st
-                tb_nam.year_id = year
-                tb_nam.save()
                 
                 
         #end for student in students
