@@ -26,6 +26,15 @@ urlpatterns = patterns('',
 	
     url(r'finishYear/(?P<year_id>\w+)','school.viewFinish.finishYear'),
     url(r'finishTerm/(?P<term_id>\w+)','school.viewFinish.finishTerm'),
+    #thong ke toan truong
+    url(r'countInSchool/(?P<year_id>\w+)','school.viewCount.countInSchool'),
+    url(r'countPractisingInTerm/(?P<term_id>\w+)','school.viewCount.countPractisingInTerm'),
+    url(r'countPractisingInYear/(?P<year_id>\w+)','school.viewCount.countPractisingInYear'),
+    url(r'countLearningInTerm/(?P<term_id>\w+)','school.viewCount.countLearningInTerm'),
+    url(r'countLearningInYear/(?P<year_id>\w+)','school.viewCount.countLearningInYear'),
+    url(r'countAllInTerm/(?P<term_id>\w+)','school.viewCount.countAllInTerm'),
+    url(r'countAllInYear/(?P<year_id>\w+)','school.viewCount.countAllInYear'),
+
 
     url(r'classes/(?P<sort_type>\w+)/(?P<sort_status>\w+)$', 'school.views.classes'),
     url(r'classes$', 'school.views.classes'),
