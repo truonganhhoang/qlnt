@@ -1,0 +1,34 @@
+﻿ {# {% extends "school/base_school.html"%}  #}
+{% block content %}
+	{% if message != None %}
+	{{message}}
+	{% endif %}
+
+<p align="center" style="font-size:25px"> <b> Thống kê </b> <br>
+										 <b> Năm học: {{yearString}}</b>
+</p>	
+<p> Học kỳ I : </p>	
+<ul>
+	<li><a href = "{%url school.views.school_index  %}countPractisingInTerm/{{firstTerm.id}}"> Hạnh kiểm</a></li>
+	<li><a href = "{%url school.views.school_index  %}countLearningInTerm/{{firstTerm.id}}"> Học lực</a></li>
+	<li><a href = "{%url school.views.school_index  %}countAllInTerm/{{firstTerm.id}}">Xếp loại chung</a></li>
+
+</ul> 
+<p> Học kỳ II :</p>	
+<ul>
+	<li><a href = "{%url school.views.school_index  %}countPractisingInTerm/{{secondTerm.id}}"> Hạnh kiểm</a></li>
+	<li><a href = "{%url school.views.school_index  %}countLearningInTerm/{{secondTerm.id}}"> Học lực</a></li>
+	<li><a href = "{%url school.views.school_index  %}countAllInTerm/{{secondTerm.id}}">Xếp loại chung</a></li>
+</ul> 
+<p> Cả năm : </p>	
+<ul>
+	<li><a href = "{%url school.views.school_index  %}countPractisingInYear/{{selectedYear.id}}"> Hạnh kiểm</a></li>
+	<li><a href = "{%url school.views.school_index  %}countLearningInYear/{{selectedYear.id}}"> Học lực</a></li>
+	<li><a href = "{%url school.views.school_index  %}countAllInYear/{{selectedYear.id}}">Xếp loại chung</a></li>
+</ul> 
+	
+	
+{% endblock %}	
+	
+	
+	
