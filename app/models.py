@@ -40,6 +40,8 @@ class Organization(models.Model):
     phone = models.CharField("Điện thoại", max_length = 20, blank = True, null = True)
     email = models.EmailField(max_length = 50, blank = True, null = True)
     user_admin = models.ManyToManyField (User, through = 'Membership')
+    class Meta:
+        verbose_name = "Tổ chức"
     
     def __unicode__(self):
         return self.name

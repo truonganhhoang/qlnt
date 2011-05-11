@@ -27,12 +27,7 @@ class MembershipInline (admin.StackedInline):
     
 class UserAdmin (admin.ModelAdmin):
     inlines = [MembershipInline,]
-    
-    
-#class UserInline (admin.StackedInline):
-#    model = User
-#    max_num = 1
-#    
+     
 class OrganizationAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'address', 'email', 'upper_organization', 'manager_name')
     list_filter = ('level', 'upper_organization', 'name')
