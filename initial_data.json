@@ -1,13 +1,14 @@
 [
   {
-    "model": "school.School",
+    "model": "app.Organization",
     "pk": 1,
     "fields": {
-        "school_code": "NT",
         "name": "THPT NT",
-        "address": "Hai Duong",
+        "level": 'T',
         "school_level": 3,
-        "status" : 0
+        "status" : 0,
+        "manager_name": "Phan Tuấn Cộng",
+        "user_admin": 1
     }
   },
   {

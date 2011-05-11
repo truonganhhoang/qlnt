@@ -4,7 +4,7 @@ div, p, ul, h2, h3, img{padding:0px; margin:0px;}
 ul{list-style-type:none;}
 
 /*----TOP PANEL----*/
-#topPan{width:90%; height:158px; position:relative; margin:0 auto; background:url(images/topPan-bg.gif) 0 0 repeat-x #15AEFD; color:#fff; padding:0px;}
+#topPan{ min-width: 1150px ; height:158px; position:relative; margin:0 auto; background:url(images/topPan-bg.gif) 0 0 repeat-x #15AEFD; color:#fff; padding:0px;}
 #topPan img.logo{
 	width:600px;
 	height:58px;
@@ -40,9 +40,9 @@ ul{list-style-type:none;}
 #topMenuRightPan{width:70px; height:16px; float:left; background:url(images/menu-rightbg.gif) 0 0 no-repeat;}
 /*----/TOP PANEL----*/
 /*----BODY PANEL----*/
-#bodyPan{width:auto; position:relative; margin:0 auto; padding:25px 0 0;left: 45px; }
+#bodyPan{width:auto; position:relative; margin:0 auto; padding:25px 0 0;left: 5px; }
 /*----BODY LEFT PANEL----*/
-#bodyLeftPan{width:800px; position: relative; float:left; padding:0 36px 0 36px;}
+#bodyLeftPan{ width: 900px; position: relative; float:left; padding:0 36px 0 36px;}
 #bodyLeftPan h2{width:410px; height:30px; background:url(images/border1.gif) 100% 70% no-repeat #fff; color:#00111A; font:28px/28px Georgia, "Times New Roman", Times, serif;}
 #bodyLeftPan h2 span{background:#fff; color:#046598;}
 

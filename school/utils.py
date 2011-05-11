@@ -12,10 +12,11 @@ def to_en(string):
     uni_i = u'ìĩịỉí'
     uni_u = u'ủùũụúưừứựữử'
     uni_e = u'éèẽẻẹêếềễệể'
+    uni_y = u'ýỳỷỹỵ'
     uni_d = u'đ'
     for char in string:
         c = char.lower()
-        for cc in ['a','o','i','u','e','d']:
+        for cc in ['a','o','i','u','e','d','y']:
             exec("if c in uni_" + cc + ": c = " + "'" + cc + "'" )
         result += c
     return result
@@ -42,7 +43,7 @@ def make_username( first_name = None, last_name = None, full_name = None, start_
     username1 = username
     while User.objects.filter( username__exact = username1):
         i = i+1
-        username1 = username + str(i)
+        username1 = username + '_' + str(i)
     
     return username1
     
@@ -191,7 +192,8 @@ def del_student( student):
 def completely_del_student( student):
     student.delete()
 
-def add_teacher( first_name = None, last_name = None, full_name = None, school = None):
+def add_teacher( first_name = None, last_name = None, full_name = None, school = None,
+                 birthday = None, sex = 'N', birthplace = None):
     if full_name:
         names = full_name.split(" ")
         last_name = ' '.join(names[:len(names)-1])
@@ -200,6 +202,9 @@ def add_teacher( first_name = None, last_name = None, full_name = None, school =
     teacher.first_name = first_name
     teacher.last_name = last_name
     teacher.school_id = school
+    teacher.birthday = birthday
+    teacher.sex = sex
+    teacher.birthplace = birthplace
     
     user = User()
     user.username = make_username( first_name = first_name, last_name = last_name )

@@ -22,6 +22,8 @@ NHAP_BANG_TAY = os.path.join('school','import','manual_adding.html')
 TEMP_FILE_LOCATION = os.path.join(os.path.dirname(__file__), 'uploaded')
 SCHOOL = os.path.join('school','school.html')
 YEARS = os.path.join('school','years.html')
+CLASS_LABEL = os.path.join('school','class_labels.html')
+
 
 def school_index(request):
 
@@ -40,6 +42,33 @@ def school_index(request):
             return render_to_response(r'school/finish_year.html', context_instance = context)    
     context = RequestContext(request)
     return render_to_response(SCHOOL, context_instance = context)
+
+def class_label(request):
+    school = get_school(request)
+    class_labels = []
+    message = None
+    for loai in school.danhsachloailop_set.all():
+        class_labels.append(loai.loai)
+    labels = ' '.join(class_labels)
+    if request.method == 'POST':
+        labels = request.POST['labels']
+        list_labels = labels.split(' ')
+        if len(list_labels) == 0:
+            message = u'Bạn cần nhập ít nhất một tên lớp'
+        else:
+            ds = school.danhsachloailop_set.all()
+            for d in ds:
+                d.delete()
+            for label in list_labels:
+                print label
+                lb = DanhSachLoaiLop()
+                lb.loai = label
+                lb.school_id = school
+                lb.save()
+            message = u'Bạn vừa thiết lập thành công danh sách tên lớp cho trường.'    
+    context = RequestContext(request)
+    return render_to_response(CLASS_LABEL, {'labels' : labels, 'message': message }, context_instance = context) 
+
 @transaction.commit_manually    
 def b1(request):
     # tao moi cac khoi neu truong moi thanh lap
@@ -689,79 +718,6 @@ def danh_sach_trung_tuyen(request):
                 add_student( student = data, _class = chosen_class,
                              start_year = year, year = current_year,
                              term = term, school = school)
-                '''
-                name = student['ten'].split()
-                last_name = ' '.join(name[:len(name)-1])
-                first_name= name[len(name)-1]
-                find = year.pupil_set.filter( first_name__exact = first_name)\
-                                     .filter(last_name__exact = last_name)\
-                                     .filter(birthday__exact = student['ngay_sinh'])
-                if not find:
-                    st = Pupil()
-                    st.first_name = first_name
-                    st.last_name = last_name
-                    st.birthday = student['ngay_sinh']
-                    st.school_join_date = today
-                    st.ban_dk = student['nguyen_vong']
-                    st.start_year_id = year
-                    st.class_id = chosen_class    
-                    st.save()
-                    
-                    tbnam = TBNam()
-                    tbnam.year_id = current_year
-                    tbnam.student_id = st
-                    tbnam.save()
-                    
-                    tbhk = TBHocKy()
-                    tbhk.student_id = st
-                    tbhk.term_id = term
-                    tbhk.save()
-                    
-                    if chosen_class:
-                        subject_list = chosen_class.subject_set.all()
-                        for subject in subject_list:
-                            mark = Mark()
-                            mark.subject_id = subject
-                            mark.student_id = st
-                            mark.term_id = term
-                            mark.save()
-                            
-                            tkmon = TKMon()
-                            tkmon.subject_id = subject
-                            tkmon.student_id = st
-                            tkmon.thi_lai = False
-                            tkmon.save()
-                else:
-                    find = find[0]
-                    if  find.class_id != chosen_class:
-                        if find.class_id.block_id.number == chosen_class.block_id.number:
-                            marks = find.mark_set.all()
-                            # disassociated 
-                            for mark in marks:
-                                mark.student_id = None
-                                mark.save()    
-                            #
-                            # transfer mark
-                                
-                            #----------------
-                            find.class_id = chosen_class
-                            find.save()
-                            
-                            if chosen_class:
-                                subject_list = chosen_class.subject_set.all()
-                                for subject in subject_list:
-                                    mark = Mark()
-                                    mark.subject_id = subject
-                                    mark.student_id = find
-                                    mark.term_id = term
-                                    mark.save()
-                                    
-                                    tkmon = TKMon()
-                                    tkmon.subject_id = subject
-                                    tkmon.student_id = find
-                                    tkmon.thi_lai = False
-                                    tkmon.save()
-            '''        
             message = u'Bạn vừa nhập thành công danh sách học sinh trúng tuyển.'
             student_list=[]
             request.session['student_list'] = student_list

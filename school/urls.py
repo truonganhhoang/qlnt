@@ -73,7 +73,9 @@ urlpatterns = patterns('',
     url(r'deleteClass/(?P<class_id>\w+)', 'school.views.deleteClass'),
     
     #top menu
-    url(r'years/$', 'school.views.years', name = "years")
+    url(r'years/$', 'school.views.years', name = "years"),
+    #side menu
+    url(r'classlabels/$', 'school.views.class_label', name = "class_label")
     #url(r'^school/test$','school.views.test'), 
     
 	)
