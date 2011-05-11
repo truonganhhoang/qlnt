@@ -233,8 +233,8 @@ class Pupil(BasicPersonInfo):
     start_year_id = models.ForeignKey(StartYear)
     class_id = models.ForeignKey(Class, null = True, blank = True)
     
-    class Meta:
-        unique_together = ("class_id", "first_name", "last_name", "birthday",)
+#    class Meta:
+#        unique_together = ("class_id", "first_name", "last_name", "birthday",)
         
 class PupilForm(forms.ModelForm):
     class Meta:

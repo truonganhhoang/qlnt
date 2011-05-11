@@ -75,11 +75,11 @@ def excel_sms(request):
         if 'upload' in request.POST:
             form = smsFromExcelForm(request.POST, request.FILES)
             if form.is_valid():
-                save_file(form.clean_file())
+                form.clean_file()
                 
                 form = smsFromExcelForm()                
                 filepath = os.path.join(TEMP_FILE_LOCATION, 'sms_input.xls')
-                list = xlrd.open_workbook(filepath)            
+                list = xlrd.open_workbook(filepath)
                 sheet = list.sheet_by_index(0)
                 data = []
                 for r in range(0, sheet.nrows):

@@ -3,7 +3,15 @@ from django.db import models
 from django.contrib.auth.models import User
 from django import forms
 from django.core.validators import RegexValidator
-import re
+import re, xlrd, os
+
+TEMP_FILE_LOCATION = os.path.join(os.path.dirname(__file__), 'uploaded')
+def save_file(file):
+    saved_file = open(os.path.join(TEMP_FILE_LOCATION, 'sms_input.xls'), 'wb+')
+    for chunk in file.chunks():
+        saved_file.write(chunk)
+    saved_file.close()
+    return 'sms_input.xls'
 
 class customDateField(forms.DateField):
     def __init__(self, *args, **kwargs):
@@ -73,10 +81,17 @@ class smsFromExcelForm(forms.Form):
     
     def clean_file(self):
         file = self.cleaned_data['file']
-        content_type = file.content_type
-        if content_type in CONTENT_TYPES:
-            return file
+        save_file(file)            
+        filepath = os.path.join(TEMP_FILE_LOCATION, 'sms_input.xls')
+        
+        if not file.content_type in CONTENT_TYPES:
+            os.remove(filepath)
+            raise forms.ValidationError(u'Bạn chỉ được phép tải lên file Excel.')
+        elif os.path.getsize(filepath) == 0:
+            raise forms.ValidationError(u'Hãy tải lên một file Excel đúng. File của bạn hiện đang trống.')
+        elif xlrd.open_workbook(filepath).sheet_by_index(0).nrows == 0:
+            raise forms.ValidationError(u'Hãy tải lên một file Excel đúng. File của bạn hiện đang trống.')
 #        if content._size > settings.MAX_UPLOAD_SIZE:
 #            raise forms.ValidationError(_('Please keep filesize under %s. Current filesize %s') % (filesizeformat(settings.MAX_UPLOAD_SIZE), filesizeformat(content._size)))
         else:
-            raise forms.ValidationError(u'Bạn chỉ được phép tải lên file Excel.')
+            return file
