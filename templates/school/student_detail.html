@@ -3,8 +3,10 @@
 {% block content %}
 <table border = 0 align = "center" width = "100%">
 <tr>
-	<td width = "50%" align = "center"><a href="{%url school.views.school_index  %}markForAStudent/{{class_id}}/{{id}}">Điểm</a></td>
-	<td width = "50%" align = "center"><a href="{%url school.views.school_index  %}diemdanhhs/{{id}}">Điểm danh</a></td>
+	<td width = "25%" align = "center"><a href="{%url school.views.school_index  %}markForAStudent/{{class_id}}/{{id}}">Điểm</a></td>
+	<td width = "25%" align = "center"><a href="{%url school.views.school_index  %}diemdanhhs/{{id}}">Điểm danh</a></td>
+    <td width = "25%" align = "center"><a href="{%url school.views.school_index  %}khenthuong/{{id}}">Khen thưởng</a></td>
+	<td width = "25%" align = "center"><a href="{%url school.views.school_index  %}kiluat/{{id}}">Kỉ luật</a></td>
 </tr>
 </table>
 <br>

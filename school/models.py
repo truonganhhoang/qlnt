@@ -233,8 +233,8 @@ class Pupil(BasicPersonInfo):
     start_year_id = models.ForeignKey(StartYear)
     class_id = models.ForeignKey(Class, null = True, blank = True)
     
-#    class Meta:
-#        unique_together = ("class_id", "first_name", "last_name", "birthday",)
+    class Meta:
+        unique_together = ("class_id", "first_name", "last_name", "birthday",)
         
 class PupilForm(forms.ModelForm):
     class Meta:
@@ -326,9 +326,10 @@ class KhenThuong(models.Model):
 class KhenThuongForm(forms.ModelForm)        :
     class Meta:
         model = KhenThuong
-        field = ('time')
+        field = ('time', 'noi_dung')
         widgets = {
             'time' : SelectDateWidget(years = range( this_year() ,this_year()-100,-1)),
+            'noi_dung': forms.Textarea(attrs={'cols': 50, 'rows': 10}),
         }
 
 class KiLuat(models.Model):
@@ -346,10 +347,11 @@ class KiLuat(models.Model):
         
 class KiLuatForm(forms.ModelForm):        
     class Meta:
-        model = KiLuat
-        field = ('time')
+        model = KhenThuong
+        field = ('time', 'noi_dung')
         widgets = {
             'time' : SelectDateWidget(years = range( this_year() ,this_year()-100,-1)),
+            'noi_dung': forms.Textarea(attrs={'cols': 50, 'rows': 10}),
         }
         
 class HanhKiem(models.Model):
