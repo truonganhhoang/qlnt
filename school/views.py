@@ -413,7 +413,7 @@ def students(request, sort_type=1, sort_status=1):
 		data = {'first_name':first_name, 'last_name':last_name, 'birthday':birthday, 'sex':request.POST['sex'],'ban_dk':request.POST['ban_dk'], 'school_join_date':school_join_date, 'start_year_id':request.POST['start_year_id'], 'class_id' : request.POST['class_id']}
 		form = PupilForm(data)
 		if form.is_valid():
-			form.save()
+			add_student(student = data, start_year = data['start_year_id'], _class = data['class_id'], term = get_current_term(request), school = get_school(request), school_join_date = school_join_date)
 			message = 'You have added new student'
 			form = PupilForm()
 		else:

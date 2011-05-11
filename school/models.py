@@ -82,21 +82,7 @@ def validate_join_date(value):
 def validate_hs(value):
 	#he so bang 0 la cho nhung mon cham diem bang nhan xet
 	if value < 0:
-		raise ValidationError(u'hs must be larger than 0')
-		
-class School(models.Model):
-	
-	school_code = models.CharField(max_length = 20, unique = True)
-	name = models.CharField(max_length = 200, unique = True)
-	address = models.CharField(max_length = 200, blank = True)
-	phone = models.CharField(max_length = 15, null = True, blank = True, validators = [validate_phone])
-	web_site = models.URLField(null = True, blank = True)
-	school_level = models.IntegerField( choices = SCHOOL_LEVEL_CHOICE )
-	status = models.SmallIntegerField( max_length = 3, choices = SCHOOL_ACTION_STATUS)
-	def __unicode__(self):
-		return self.name	
-	
-	#class Admin: pass
+		raise ValidationError(u'hs must be larger than 0')		
 
 class DanhSachLoaiLop(models.Model):
 	loai = models.CharField(max_length = 15, unique = True)
@@ -104,9 +90,6 @@ class DanhSachLoaiLop(models.Model):
 	def __unicode__(self):
 		return self.loai
 
-class SchoolForm(forms.ModelForm):
-	class Meta:
-		model = School
 	#cac khoi trong 1 truong	
 class Block(models.Model):
 	number=models.SmallIntegerField(max_length = 2, choices=KHOI_CHOICE)
@@ -232,6 +215,7 @@ class Pupil(BasicPersonInfo):
     user_id = models.OneToOneField(User, null = True, blank = True) # nullable is temporary 
     start_year_id = models.ForeignKey(StartYear)
     class_id = models.ForeignKey(Class, null = True, blank = True)
+    school_id = models.ForeignKey(Organization, null = True, blank = True)
     
     class Meta:
         unique_together = ("class_id", "first_name", "last_name", "birthday",)

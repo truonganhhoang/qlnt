@@ -27,10 +27,7 @@ class MultiDBModelAdmin(admin.ModelAdmin):
         # on the 'Mark_1' database.
         return super(MultiDBModelAdmin, self).formfield_for_manytomany(db_field, request=request, using=self.using, **kwargs)
 
-class SchoolAdmin(admin.ModelAdmin):
-    list_display = ('school_code', 'name', 'address', 'phone', 'web_site')
 
-admin.site.register(School, SchoolAdmin)
 admin.site.register(Block)
 admin.site.register(Class)
 admin.site.register(Teacher)

@@ -127,6 +127,7 @@ def add_student( student = None, start_year = None , year = None,
             st.school_join_date = school_join_date
             st.start_year_id = start_year
             st.class_id = _class
+            st.school_id = school
             
             user = User()
             user.username = make_username( first_name = first_name, last_name = last_name, start_year = start_year)
