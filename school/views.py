@@ -85,6 +85,11 @@ def b1(request):
         term.number = 1
         term.year_id = year
         term.save()
+        term = Term()
+        term.active = False
+        term.number = 2
+        term.year_id = year
+        term.save()
         # create new class.
         # -- tao cac lop ---
         for khoi in range(lower_bound, upper_bound+1):
@@ -148,7 +153,7 @@ def b1(request):
         #raise Exception(u'Start_year: đã bắt đầu năm học rồi ?')    
         pass
     transaction.commit()
-    context = RequestContext(request, {'school':school})
+    context = RequestContext(request)
     return render_to_response(START_YEAR, context_instance = context)     
 
 def years(request):
@@ -561,7 +566,6 @@ def nhap_danh_sach_trung_tuyen(request):
             return HttpResponseRedirect(reverse('imported_list'))
     else:
         form = UploadImportFileForm(class_list = _class_list)
-    print request.session['school']
     context = RequestContext(request, {'form':form,})
     return render_to_response(NHAP_DANH_SACH_TRUNG_TUYEN, context_instance = context)
 

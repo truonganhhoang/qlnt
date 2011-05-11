@@ -27,8 +27,7 @@
 			<li class="home"><a href="{%url school.views.school_index %}" class="home">Trang chủ</a></li>
 			<li><a href="{%url school.views.years %}">Các năm </a></li>
 			<li><a href="{%url school.views.teachers %} ">Giáo viên</a></li>
-			<li><a href="#">Lớp học</a></li>
-			<li><a href="#">Học sinh</a></li>
+			<li><a href="{%url school.views.classes %}">Lớp học</a></li>
 			<li><a href="#">Thống kê</a></li>
 			<li><a href="#">Liên hệ</a></li>
 			<li class="contact"><a href="#" class="contact">Trợ giúp</a></li>
@@ -36,7 +35,7 @@
 	  </div>
 	  <div id="topMenuRightPan"></div>
 	  <div id="topUser">
-			<p>Xin chào,&nbsp </p> <p><a href="#" > {{user.username}}</a>,&nbsp</p><p><a href="#">Logout</a></p> 	  
+			<p>Xin chào,&nbsp </p> <p><a href="#" > {{user.username}}</a>,&nbsp</p><p><a href="{%url django.contrib.auth.views.logout %}">Logout</a></p> 	  
 	  </div>
 	</div>
 </div>
@@ -47,7 +46,7 @@
 	{% if user.userprofile.position == 'HIEU_TRUONG'  or user.userprofile.position == 'HIEU_PHO' %}
   	<h2><span>Menu</span> chính</h2>
 	<ul>
-		<li><a href="#">Bắt đầu năm học mới</a> </li>
+		<li><a href="{%url school.views.b1 %}">Bắt đầu năm học mới</a> </li>
 		<li><a href="#">Danh sách giáo viên</a> </li>
 		<li><a href="#">Phân công giảng dạy</a> </li>
 		<li><a href="#">Danh sách lớp học</a> </li>

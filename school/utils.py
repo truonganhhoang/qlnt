@@ -2,23 +2,49 @@
 import os.path
 import datetime
 from school.models import *
+from django.contrib.auth.models import User
 
 
+def to_en(string):
+    result = ''
+    uni_a = u'ăắẳẵặằâầấẩẫậàáảãạ'
+    uni_o = u'óòỏõọơớờởỡợôốồỗộổ'
+    uni_i = u'ìĩịỉí'
+    uni_u = u'ủùũụúưừứựữử'
+    uni_e = u'éèẽẻẹêếềễệể'
+    uni_d = u'đ'
+    for char in string:
+        c = char.lower()
+        for cc in ['a','o','i','u','e','d']:
+            exec("if c in uni_" + cc + ": c = " + "'" + cc + "'" )
+        result += c
+    return result
+        
 # make username: example: input: AA, Nguyen Van, 2006 => output: AAnv_2006
 #                         input: AA, Nguyen Van       => output: AAnv
-def make_user_name( first_name = None, last_name = None, full_name = None, start_year = None):
+def make_username( first_name = None, last_name = None, full_name = None, start_year = None):
     if full_name:
         names = full_name.split(" ")
         last_name = ' '.join(names[:len(names)-1])
         first_name = names[len(names)-1]
+    last_name = to_en(last_name)
+    first_name = to_en(first_name)
+    
+    print last_name, " ", first_name
     username = first_name
     if last_name and last_name != '':
         for word in last_name.split(" "):
             username += word[0]
     if start_year:
         username += '_' + str(start_year.time)
-    print username
-    return username
+    
+    i = 0
+    username1 = username
+    while User.objects.filter( username__exact = username1):
+        i = i+1
+        username1 = username + str(i)
+    
+    return username1
     
 def make_default_password( pw):
     return pw
@@ -68,7 +94,7 @@ def move_student( student, old_class, new_class):
 #              . add: marks for each subject, "khenthuong", "kiluat", "diemdanh", "TKDiemDanh", "TBMon"
 #                     "HanhKiem", "TKMon", "TBHocKy", "TBNam"
 def add_student( student = None, start_year = None , year = None, 
-                _class = None, term = None, school = None, school_join_data = None ):
+                _class = None, term = None, school = None, school_join_date = None ):
         if not ( student and start_year and term and school ):
             raise Exception("Student,Start_Year,Term,School can't not be null")
         if 'full_name' in student:
