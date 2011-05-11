@@ -202,36 +202,36 @@ class ClassForm(forms.ModelForm):
 		model = Class
 		
 class Pupil(BasicPersonInfo):
-	year = models.IntegerField(validators = [validate_year], blank = True, null = True) #year that pupil go to class 1
+    year = models.IntegerField(validators = [validate_year], blank = True, null = True) #year that pupil go to class 1
 
-	school_join_date = models.DateField(default = date.today(),validators=[validate_join_date])
-	ban_dk = models.CharField(max_length = 5, choices = BAN_CHOICE)
-	school_join_mark = models.IntegerField(null = True, blank = True)
+    school_join_date = models.DateField(default = date.today(),validators=[validate_join_date])
+    ban_dk = models.CharField(max_length = 5, choices = BAN_CHOICE)
+    school_join_mark = models.IntegerField(null = True, blank = True)
 	#thong tin ca nhan
-	khu_vuc = models.CharField(max_length = 3, choices = KV_CHOICE, blank = True, null = True)
-	doan = models.BooleanField(blank = True, default = False)
-	ngay_vao_doan = models.DateField(blank = True, null = True)
-	doi = models.BooleanField(blank = True, default = False)
-	ngay_vao_doi = models.DateField(blank = True, null = True)
-	dang = models.BooleanField(blank = True, default = False)
-	ngay_vao_dang = models.DateField(blank = True, null = True)
+    khu_vuc = models.CharField(max_length = 3, choices = KV_CHOICE, blank = True, null = True)
+    doan = models.BooleanField(blank = True, default = False)
+    ngay_vao_doan = models.DateField(blank = True, null = True)
+    doi = models.BooleanField(blank = True, default = False)
+    ngay_vao_doi = models.DateField(blank = True, null = True)
+    dang = models.BooleanField(blank = True, default = False)
+    ngay_vao_dang = models.DateField(blank = True, null = True)
 		
 	#thong tin gia dinh
-	father_name = models.CharField(max_length = 45, blank = True, null = True)
-	father_birthday = models.DateField( null = True, blank = True)
-	father_phone = models.CharField(max_length = 15, null = True, blank = True, validators = [validate_phone])
-	father_job = models.CharField(max_length = 100, null = True, blank = True)
-	mother_name = models.CharField(max_length = 45, blank = True, null = True)
-	mother_birthday = models.DateField(null = True, blank = True)
-	mother_job = models.CharField(max_length = 100, null = True, blank = True)	
-	mother_phone = models.CharField(max_length = 15, null = True, blank = True, validators = [validate_phone])
+    father_name = models.CharField(max_length = 45, blank = True, null = True)
+    father_birthday = models.DateField( null = True, blank = True)
+    father_phone = models.CharField(max_length = 15, null = True, blank = True, validators = [validate_phone])
+    father_job = models.CharField(max_length = 100, null = True, blank = True)
+    mother_name = models.CharField(max_length = 45, blank = True, null = True)
+    mother_birthday = models.DateField(null = True, blank = True)
+    mother_job = models.CharField(max_length = 100, null = True, blank = True)	
+    mother_phone = models.CharField(max_length = 15, null = True, blank = True, validators = [validate_phone])
 	
-	current_status = models.CharField(max_length = 200, blank = True, null = True, default = 'OK')
-	disable = models.BooleanField(default = False)
+    current_status = models.CharField(max_length = 200, blank = True, null = True, default = 'OK')
+    disable = models.BooleanField(default = False)
 	
-	user_id = models.OneToOneField(User, null = True, blank = True) # nullable is temporary 
-	start_year_id = models.ForeignKey(StartYear)
-	class_id = models.ForeignKey(Class, null = True, blank = True)
+    user_id = models.OneToOneField(User, null = True, blank = True) # nullable is temporary 
+    start_year_id = models.ForeignKey(StartYear)
+    class_id = models.ForeignKey(Class, null = True, blank = True)
     
     class Meta:
         unique_together = ("class_id", "first_name", "last_name", "birthday",)
