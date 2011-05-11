@@ -205,33 +205,34 @@ def viewClassDetail(request, class_id):
 def teachers(request, sort_type=1, sort_status=0):
     message = None
     form = TeacherForm()
+    school_id = get_school(request).id
     #print sort_type +' ' + sort_status
     if int(sort_type)==1:
 		if int(sort_status) == 0:
-			teacherList = Teacher.objects.all().order_by('first_name', 'last_name')
+			teacherList = Teacher.objects.filter(school_id = school_id).order_by('first_name', 'last_name')
 		else:
-			teacherList = Teacher.objects.all().order_by('-first_name','-last_name')
+			teacherList = Teacher.objects.filter(school_id = school_id).order_by('-first_name','-last_name')
     if int(sort_type) == 2:
 		if int(sort_status) == 0:
-			teacherList = Teacher.objects.all().order_by('birthday')
+			teacherList = Teacher.objects.filter(school_id = school_id).order_by('birthday')
 		else:
-			teacherList = Teacher.objects.all().order_by('-birthday')
+			teacherList = Teacher.objects.filter(school_id = school_id).order_by('-birthday')
     if int(sort_type) == 3:
 		if int(sort_status) == 0:
-			teacherList = Teacher.objects.all().order_by('sex')
+			teacherList = Teacher.objects.filter(school_id = school_id).order_by('sex')
 		else:
-			teacherList = Teacher.objects.all().order_by('-sex')
+			teacherList = Teacher.objects.filter(school_id = school_id).order_by('-sex')
     if request.method == 'POST':
         name = request.POST['first_name'].split()
         last_name = ' '.join(name[:len(name)-1])
         first_name = name[len(name)-1]
         birthday = date(int(request.POST['birthday_year']),int(request.POST['birthday_month']),int(request.POST['birthday_day']))
-        data = {'first_name':first_name, 'last_name':last_name, 'birthday':birthday, 'sex':request.POST['sex'], 'school_id':request.POST['school_id'], 'birth_place':request.POST['birth_place']}
-        data = {'first_name':first_name, 'last_name':last_name, 'birthday':birthday, 'sex':request.POST['sex'], 'school_id':request.POST['school_id'], 'birth_place':request.POST['birth_place']}
+        data = {'first_name':first_name, 'last_name':last_name, 'birthday':birthday, 'sex':request.POST['sex'], 'school_id':school_id, 'birth_place':request.POST['birth_place']}
         form = TeacherForm(data)
         if form.is_valid():
             form.save()
             message = 'You have added new teacher'
+            form = TeacherForm()
         else:
             message = 'Please check your information, something is wrong'
 
@@ -279,6 +280,7 @@ def subjectPerClass(request, class_id, sort_type=1, sort_status=0):
         if form.is_valid():
             form.save()
             message = 'You have added new subject'
+            form = SubjectFrom()
         else:
             message = 'Please check your information, something is wrong'
 
@@ -326,6 +328,7 @@ def studentPerClass(request, class_id, sort_type=1, sort_status=0):
         if form.is_valid():
             form.save()
             message = 'You have added new student'
+            form = PupilForm()
         else:
             message = 'Please check your information, something is wrong'
 
@@ -335,38 +338,39 @@ def studentPerClass(request, class_id, sort_type=1, sort_status=0):
 
 def students(request, sort_type=1, sort_status=1):
     message = None
+    school_id = get_school(request).id
     form = PupilForm()
     if int(sort_type)==1:
 		if int(sort_status) == 0:
-			studentList = Pupil.objects.all().order_by('first_name', 'last_name')
+			studentList = Pupil.objects.filter(school_id = school_id).order_by('first_name', 'last_name')
 		else:
-			studentList = Pupil.objects.all().order_by('-first_name','-last_name')
+			studentList = Pupil.objects.filter(school_id = school_id).order_by('-first_name','-last_name')
     if int(sort_type) == 2:
 		if int(sort_status) == 0:
-			studentList = Pupil.objects.all().order_by('birthday')
+			studentList = Pupil.objects.filter(school_id = school_id).order_by('birthday')
 		else:
-			studentList = Pupil.objects.all().order_by('-birthday')
+			studentList = Pupil.objects.filter(school_id = school_id).order_by('-birthday')
     if int(sort_type) == 3:
 		if int(sort_status) == 0:
-			studentList = Pupil.objects.all().order_by('sex')
+			studentList = Pupil.objects.filter(school_id = school_id).order_by('sex')
 		else:
-			studentList = Pupil.objects.all().order_by('-sex')
+			studentList = Pupil.objects.filter(school_id = school_id).order_by('-sex')
     if int(sort_type) == 4:
 		if int(sort_status) == 0:
-			studentList = Pupil.objects.all().order_by('ban_dk')
+			studentList = Pupil.objects.filter(school_id = school_id).order_by('ban_dk')
 		else:
-			studentList = Pupil.objects.all().order_by('-ban_dk')
+			studentList = Pupil.objects.filter(school_id = school_id).order_by('-ban_dk')
     if int(sort_type) == 5:
 		if int(sort_status) == 0:
-			studentList = Pupil.objects.all().order_by('school_join_date')
+			studentList = Pupil.objects.filter(school_id = school_id).order_by('school_join_date')
 		else:
-			studentList = Pupil.objects.all().order_by('-school_join_date')
+			studentList = Pupil.objects.filter(school_id = school_id).order_by('-school_join_date')
 	
     if int(sort_type) == 6:
 		if int(sort_status) == 0:
-			studentList = Pupil.objects.all().order_by('class_id__name')
+			studentList = Pupil.objects.filter(school_id = school_id).order_by('class_id__name')
 		else:
-			studentList = Pupil.objects.all().order_by('-class_id__name')
+			studentList = Pupil.objects.filter(school_id = school_id).order_by('-class_id__name')
 			
     if request.method == 'POST':
 		name = request.POST['first_name'].split()
@@ -747,7 +751,7 @@ def diem_danh(request, class_id, day, month, year):
     pupilList = Pupil.objects.filter(class_id = class_id).order_by('first_name','last_name')
     time = date(int(year),int(month),int(day))
     c = Class.objects.get(id__exact = class_id)
-    term = Term.objects.filter(year_id = c.year_id,active = True).latest('number')
+    term = get_current_term(request)
     form = []
     i = 0
     for p in pupilList:
@@ -792,7 +796,7 @@ def time_select(request, class_id):
     message = 'Hãy chọn 1 ngày'
     try:
         cl = Class.objects.get(id__exact = class_id)
-        term = Term.objects.filter(year_id = cl.year_id,active = True).latest('number')
+        term = get_current_term(request)
     except ObjectDoesNotExist:
         message = None
     form = DateForm()
@@ -813,9 +817,8 @@ def diem_danh_hs(request, student_id):
     term = None
     pupil = Pupil.objects.get(id = student_id)
     c = pupil.class_id
-    try:
-        term = Term.objects.filter(year_id = c.year_id, active = True).latest('number')
-    except ObjectDoesNotExist:
+    term = get_current_term(request)
+    if term == None:
         message = None
         t = loader.get_template(os.path.join('school','time_select.html'))
         ct = RequestContext(request, {'class_id':c.id, 'message':message})
@@ -859,16 +862,14 @@ def diem_danh_hs(request, student_id):
     c = RequestContext(request, {'form' : form,'iform' : iform,'pupil':pupil,'student_id':student_id})
     return HttpResponse(t.render(c))
     
-def tk_dd_lop(class_id):
-    c = Class.objects.get(id__exact = class_id)
+def tk_dd_lop(class_id,term_id):
     ppl = pupil.objects.filter(class_id = class_id)
     for p in ppl:
-        tk_diem_danh(p.id)
+        tk_diem_danh(p.id,term_id)
     
-def tk_diem_danh(student_id):
+def tk_diem_danh(student_id,term_id):
     pupil = Pupil.objects.get(id = student_id)
     c = pupil.class_id
-    term = Term.objects.filter(year_id = c.year_id, active = True).latest('number')
     ts = DiemDanh.objects.filter(student_id = student_id, term_id = term.id).count()
     cp = DiemDanh.objects.filter(student_id = student_id, term_id = term.id, loai = u'C').count()
     kp = ts - cp

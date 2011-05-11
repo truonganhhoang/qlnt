@@ -143,7 +143,10 @@ class BasicPersonInfo(models.Model):
 class Teacher(BasicPersonInfo): 
     user_id = models.OneToOneField(User, null = True, blank = True)
     school_id = models.ForeignKey(Organization, null=True, blank=True)
-
+    
+    class Meta:
+        unique_together = ("school_id", "first_name", "last_name", "birthday",)
+    
 class TeacherForm(forms.ModelForm):
     class Meta:
         model = Teacher
@@ -229,7 +232,10 @@ class Pupil(BasicPersonInfo):
 	user_id = models.OneToOneField(User, null = True, blank = True) # nullable is temporary 
 	start_year_id = models.ForeignKey(StartYear)
 	class_id = models.ForeignKey(Class, null = True, blank = True)
-
+    
+    class Meta:
+        unique_together = ("class_id", "first_name", "last_name", "birthday",)
+        
 class PupilForm(forms.ModelForm):
     class Meta:
         model = Pupil
