@@ -234,3 +234,13 @@ def get_current_term(request):
         return school.year_set.latest('time').term_set.get(number__exact = school.status)
     except Exception( 'Term does not exist'):
         return None    
+
+def in_school(request,school_id):
+    try:
+        school = get_school(request)
+        if school == school_id:
+            return True
+        else:
+            return False
+    except Exception('UserDoesNotHaveAnySchool'):
+        return False

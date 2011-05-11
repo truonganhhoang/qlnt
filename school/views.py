@@ -152,8 +152,7 @@ def b1(request):
     return render_to_response(START_YEAR, context_instance = context)     
 
 def years(request):
-    school = get_school(request)
-    
+    school = get_school(request)    
     years = school.year_set.all()
     return render_to_response(YEARS, {'years':years}, context_instance = RequestContext(request))        
     
@@ -201,6 +200,8 @@ def viewClassDetail(request, class_id):
     if not user.is_authenticated():
         return HttpResponseRedirect( reverse('login'))
     class_view = Class.objects.get(id = class_id)
+    if in_school(request,class_view.block_id.school_id) == False:
+        return HttpResponseRedirect('/school')
     t = loader.get_template(os.path.join('school','classDetail.html'))
     c = RequestContext(request, {'class_view' : class_view})
     return HttpResponse(t.render(c))
@@ -255,6 +256,8 @@ def viewTeacherDetail(request, teacher_id):
         return HttpResponseRedirect( reverse('login'))
     message = None
     teacher = Teacher.objects.get(id = teacher_id);
+    if in_school(request,teacher.school_id) == False:
+        return HttpResponseRedirect('/school')
     form = TeacherForm (instance = teacher)
     if request.method == 'POST':
         form = TeacherForm(request.POST, instance = teacher)
@@ -307,6 +310,9 @@ def studentPerClass(request, class_id, sort_type=1, sort_status=0):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect( reverse('login'))
+    cl = Class.objects.get(id = class_id)
+    if in_school(request,cl.block_id.school_id) == False:
+        return HttpResponseRedirect('/school')
     message = None
     form = PupilForm()
     if int(sort_type)==1:
@@ -363,35 +369,35 @@ def students(request, sort_type=1, sort_status=1):
     form = PupilForm()
     if int(sort_type)==1:
 		if int(sort_status) == 0:
-			studentList = Pupil.objects.filter(school_id = school_id).order_by('first_name', 'last_name')
+			studentList = Pupil.objects.all().order_by('first_name', 'last_name')
 		else:
-			studentList = Pupil.objects.filter(school_id = school_id).order_by('-first_name','-last_name')
+			studentList = Pupil.objects.all().order_by('-first_name','-last_name')
     if int(sort_type) == 2:
 		if int(sort_status) == 0:
-			studentList = Pupil.objects.filter(school_id = school_id).order_by('birthday')
+			studentList = Pupil.objects.all().order_by('birthday')
 		else:
-			studentList = Pupil.objects.filter(school_id = school_id).order_by('-birthday')
+			studentList = Pupil.objects.all().order_by('-birthday')
     if int(sort_type) == 3:
 		if int(sort_status) == 0:
-			studentList = Pupil.objects.filter(school_id = school_id).order_by('sex')
+			studentList = Pupil.objects.all().order_by('sex')
 		else:
-			studentList = Pupil.objects.filter(school_id = school_id).order_by('-sex')
+			studentList = Pupil.objects.all().order_by('-sex')
     if int(sort_type) == 4:
 		if int(sort_status) == 0:
-			studentList = Pupil.objects.filter(school_id = school_id).order_by('ban_dk')
+			studentList = Pupil.objects.all().order_by('ban_dk')
 		else:
-			studentList = Pupil.objects.filter(school_id = school_id).order_by('-ban_dk')
+			studentList = Pupil.objects.all().order_by('-ban_dk')
     if int(sort_type) == 5:
 		if int(sort_status) == 0:
-			studentList = Pupil.objects.filter(school_id = school_id).order_by('school_join_date')
+			studentList = Pupil.objects.all().order_by('school_join_date')
 		else:
-			studentList = Pupil.objects.filter(school_id = school_id).order_by('-school_join_date')
+			studentList = Pupil.objects.all().order_by('-school_join_date')
 	
     if int(sort_type) == 6:
 		if int(sort_status) == 0:
-			studentList = Pupil.objects.filter(school_id = school_id).order_by('class_id__name')
+			studentList = Pupil.objects.all().order_by('class_id__name')
 		else:
-			studentList = Pupil.objects.filter(school_id = school_id).order_by('-class_id__name')
+			studentList = Pupil.objects.all().order_by('-class_id__name')
 			
     if request.method == 'POST':
 		name = request.POST['first_name'].split()
@@ -418,6 +424,8 @@ def viewStudentDetail(request, student_id):
         return HttpResponseRedirect( reverse('login'))
     message = None
     pupil = Pupil.objects.get(id = student_id);
+    if in_school(request,pupil.class_id.block_id.school_id) == False:
+        return HttpResponseRedirect('/school')
     form = PupilForm (instance = pupil)
     if request.method == 'POST':
         form = PupilForm(request.POST, instance = pupil)
@@ -771,12 +779,14 @@ def diem_danh(request, class_id, day, month, year):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect( reverse('login'))
+    c = Class.objects.get(id__exact = class_id)
+    if in_school(request,c.block_id.school_id) == False:
+        return HttpResponseRedirect('/school')
     message = None
     listdh = None
     term = None
     pupilList = Pupil.objects.filter(class_id = class_id).order_by('first_name','last_name')
     time = date(int(year),int(month),int(day))
-    c = Class.objects.get(id__exact = class_id)
     term = get_current_term(request)
     form = []
     i = 0
@@ -849,6 +859,8 @@ def diem_danh_hs(request, student_id):
     term = None
     pupil = Pupil.objects.get(id = student_id)
     c = pupil.class_id
+    if in_school(request,c.block_id.school_id) == False:
+        return HttpResponseRedirect('/school')
     term = get_current_term(request)
     if term == None:
         message = None
@@ -931,9 +943,11 @@ def deleteSubject(request, subject_id):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect( reverse('login'))
-    message = "You have deleted succesfully"
     sub = Subject.objects.get(id = subject_id)
-    class_id = sub.class_id
+    class_id = sub.class_id    
+    if in_school(request,class_id.block_id.school_id) == False:
+        return HttpResponseRedirect('/school')
+    message = "You have deleted succesfully"
     sub.delete()
     subjectList = Subject.objects.filter(class_id = class_id)
     form = SubjectForm()
@@ -947,6 +961,8 @@ def deleteTeacher(request, teacher_id):
         return HttpResponseRedirect( reverse('login'))
     message = "You have deleted succesfully"
     s = Teacher.objects.get(id = teacher_id)
+    if in_school(request,s.school_id) == False:
+        return HttpResponseRedirect('/school')
     s.delete()
     teacherList = Teacher.objects.all()
     form = TeacherForm()
@@ -960,6 +976,8 @@ def deleteClass(request, class_id):
         return HttpResponseRedirect( reverse('login'))
     message = "You have deleted succesfully"
     s = Class.objects.get(id = class_id)
+    if in_school(request,s.block_id.school_id) == False:
+        return HttpResponseRedirect('/school')
     s.delete()
     classList = Class.objects.all()
     form = ClassForm()
@@ -974,6 +992,8 @@ def deleteStudentInClass(request, student_id):
     message = "You have deleted succesfully"
     student = Pupil.objects.get(id = student_id)
     class_id = student.class_id
+    if in_school(request,class_id.block_id.school_id) == False:
+        return HttpResponseRedirect('/school')
     student.delete()
     studentList = Pupil.objects.filter(class_id = class_id)
     form = PupilForm()
@@ -986,7 +1006,9 @@ def deleteStudentInSchool(request, student_id):
     if not user.is_authenticated():
         return HttpResponseRedirect( reverse('login'))
     message = "You have deleted succesfully"
-    sub = Pupil.objects.filter(id = student_id)
+    sub = Pupil.objects.get(id = student_id)
+    if in_school(request,sub.class_id.block_id.school_id) == False:
+        return HttpResponseRedirect('/school')
     sub.delete()
     studentList = Pupil.objects.all()
     form = PupilForm()
@@ -998,6 +1020,9 @@ def khen_thuong(request, student_id):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect( reverse('login'))
+    sub = Pupil.objects.get(id = student_id)
+    if in_school(request,sub.class_id.block_id.school_id) == False:
+        return HttpResponseRedirect('/school')
     message = ''
     ktl = KhenThuong.objects.filter(student_id = student_id).order_by('time')
     t = loader.get_template(os.path.join('school','khen_thuong.html'))
@@ -1010,6 +1035,8 @@ def add_khen_thuong(request,student_id):
         return HttpResponseRedirect( reverse('login'))
     form = KhenThuongForm()
     pupil = Pupil.objects.get(id = student_id)
+    if in_school(request,pupil.class_id.block_id.school_id) == False:
+        return HttpResponseRedirect('/school')
     cl = Class.objects.get(id__exact = pupil.class_id.id)
     term = Term.objects.filter(year_id = cl.year_id, active = True).latest('number')
     if request.method == 'POST':
@@ -1027,7 +1054,9 @@ def delete_khen_thuong(request, kt_id):
     if not user.is_authenticated():
         return HttpResponseRedirect( reverse('login'))
     kt = KhenThuong.objects.get(id = kt_id)
-    student = Pupil.objects.get(id = kt.student_id.id)
+    student = kt.student_id    
+    if in_school(request,student.class_id.block_id.school_id) == False:
+        return HttpResponseRedirect('/school')
     kt.delete()
     url = '/school/khenthuong/' + str(student.id)
     return HttpResponseRedirect(url)
@@ -1038,6 +1067,8 @@ def edit_khen_thuong(request, kt_id):
         return HttpResponseRedirect( reverse('login'))
     kt = KhenThuong.objects.get(id = kt_id)
     pupil = kt.student_id
+    if in_school(request,pupil.class_id.block_id.school_id) == False:
+        return HttpResponseRedirect('/school')
     term = kt.term_id
     form = KhenThuongForm(instance = kt)
     if request.method == 'POST':
@@ -1054,6 +1085,9 @@ def ki_luat(request, student_id):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect( reverse('login'))
+    student = Pupil.objects.get(student_id = student_id)
+    if in_school(request,student.class_id.block_id.school_id) == False:
+        return HttpResponseRedirect('/school')
     message = ''
     ktl = KiLuat.objects.filter(student_id = student_id).order_by('time')
     t = loader.get_template(os.path.join('school','ki_luat.html'))
@@ -1066,6 +1100,8 @@ def add_ki_luat(request,student_id):
         return HttpResponseRedirect( reverse('login'))
     form = KiLuatForm()
     pupil = Pupil.objects.get(id = student_id)
+    if in_school(request,pupil.class_id.block_id.school_id) == False:
+        return HttpResponseRedirect('/school')
     cl = Class.objects.get(id__exact = pupil.class_id.id)
     term = Term.objects.filter(year_id = cl.year_id, active = True).latest('number')
     if request.method == 'POST':
@@ -1083,7 +1119,9 @@ def delete_ki_luat(request, kt_id):
     if not user.is_authenticated():
         return HttpResponseRedirect( reverse('login'))
     kt = KiLuat.objects.get(id = kt_id)
-    student = Pupil.objects.get(id = kt.student_id.id)
+    student = kt.student_id
+    if in_school(request,student.class_id.block_id.school_id) == False:
+        return HttpResponseRedirect('/school')
     kt.delete()
     url = '/school/khenthuong/' + str(student.id)
     return HttpResponseRedirect(url)
@@ -1094,6 +1132,8 @@ def edit_ki_luat(request, kt_id):
         return HttpResponseRedirect( reverse('login'))
     kt = KiLuat.objects.get(id = kt_id)
     pupil = kt.student_id
+    if in_school(request,pupil.class_id.block_id.school_id) == False:
+        return HttpResponseRedirect('/school')
     term = kt.term_id
     form = KiLuatForm(instance = kt)
     if request.method == 'POST':
@@ -1110,11 +1150,13 @@ def hanh_kiem(request, class_id):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect( reverse('login'))
+    c = Class.objects.get(id__exact = class_id)
+    if in_school(request,c.block_id.school_id) == False:
+        return HttpResponseRedirect('/school')
     message = None
     listdh = None
     term = None
     pupilList = Pupil.objects.filter(class_id = class_id)
-    c = Class.objects.get(id__exact = class_id)
     term = Term.objects.filter(year_id = c.year_id,active = True).latest('number')
     form = []
     i = 0
