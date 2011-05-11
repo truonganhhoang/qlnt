@@ -78,6 +78,9 @@ class Message(models.Model):
         return read_tag
     tags = property(_get_tags)
     
+    class Meta:
+        verbose_name_plural = "Tin nhắn"
+        
 class MessageForm(forms.Form):    
     def __init__(self, *args, **kwargs):
         super(MessageForm, self).__init__(*args, **kwargs)

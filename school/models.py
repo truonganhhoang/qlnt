@@ -192,7 +192,7 @@ class Class(models.Model):
 	#lop nay thuoc khoi nao
 	block_id = models.ForeignKey(Block)
 	teacher_id = models.ForeignKey(Teacher,null=True,blank=True) #field nay chi dung de phan quyen, vi vay chi gan 1 gia tri nhan dang
-	
+    
 	def __unicode__(self):
 		return self.name
 	#class Admin: pass
