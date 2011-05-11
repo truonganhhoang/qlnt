@@ -411,9 +411,13 @@ def students(request, sort_type=1, sort_status=1):
 		birthday = date(int(request.POST['birthday_year']),int(request.POST['birthday_month']),int(request.POST['birthday_day']))
 		school_join_date=date(int(request.POST['school_join_date_year']),int(request.POST['school_join_date_month']),int(request.POST['school_join_date_day']))
 		data = {'first_name':first_name, 'last_name':last_name, 'birthday':birthday, 'sex':request.POST['sex'],'ban_dk':request.POST['ban_dk'], 'school_join_date':school_join_date, 'start_year_id':request.POST['start_year_id'], 'class_id' : request.POST['class_id']}
+		start_year = StartYear.objects.get(id = data['start_year_id'])
+		_class = Class.objects.get(id = data['class_id'])
+		print start_year
 		form = PupilForm(data)
 		if form.is_valid():
-			add_student(student = data, start_year = data['start_year_id'], _class = data['class_id'], term = get_current_term(request), school = get_school(request), school_join_date = school_join_date)
+			data['ban'] = data['ban_dk']
+			add_student(student = data, start_year = start_year, year = get_current_year(request), _class = _class, term = get_current_term(request), school = get_school(request), school_join_date = school_join_date)
 			message = 'You have added new student'
 			form = PupilForm()
 		else:

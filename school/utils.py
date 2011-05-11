@@ -255,6 +255,10 @@ def get_permission(request):
         raise Exception('UserDoesNotHaveAnySchoolPosition')
     return request.user.userprofile.position
     
+def get_current_year(request):
+    school = get_school(request)
+    return school.year_set.latest('time')
+		
 def get_current_term(request):
     school = get_school(request)
     try:
