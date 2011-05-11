@@ -347,7 +347,7 @@ class KiLuat(models.Model):
         
 class KiLuatForm(forms.ModelForm):        
     class Meta:
-        model = KhenThuong
+        model = KiLuat
         field = ('time', 'noi_dung')
         widgets = {
             'time' : SelectDateWidget(years = range( this_year() ,this_year()-100,-1)),
