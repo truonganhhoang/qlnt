@@ -21,6 +21,7 @@ START_YEAR = os.path.join('school','start_year.html')
 NHAP_BANG_TAY = os.path.join('school','import','manual_adding.html')
 TEMP_FILE_LOCATION = os.path.join(os.path.dirname(__file__), 'uploaded')
 SCHOOL = os.path.join('school','school.html')
+YEARS = os.path.join('school','years.html')
 
 def school_index(request):
 
@@ -148,7 +149,15 @@ def b1(request):
         pass
     transaction.commit()
     context = RequestContext(request, {'school':school})
-    return render_to_response(START_YEAR, context_instance = context)                                            
+    return render_to_response(START_YEAR, context_instance = context)     
+
+def years(request):
+    school = get_school(request)
+    
+    years = school.year_set.all()
+    return render_to_response(YEARS, {'years':years}, context_instance = RequestContext(request))        
+    
+#-----------------------------------------------------------------------------------------------------------------                                       
 def classes(request, sort_type = 1, sort_status=0):
     message = None
     form = ClassForm()

@@ -100,7 +100,7 @@ class School(models.Model):
 
 class DanhSachLoaiLop(models.Model):
 	loai = models.CharField(max_length = 15, unique = True)
-	school_id = models.ForeignKey(School)
+	school_id = models.ForeignKey(Organization)
 	def __unicode__(self):
 		return self.loai
 
@@ -110,7 +110,7 @@ class SchoolForm(forms.ModelForm):
 	#cac khoi trong 1 truong	
 class Block(models.Model):
 	number=models.SmallIntegerField(max_length = 2, choices=KHOI_CHOICE)
-	school_id = models.ForeignKey(School)
+	school_id = models.ForeignKey(Organization)
 	
 	def __unicode__(self):
 		return str(self.number)	
@@ -155,13 +155,13 @@ class TeacherForm(forms.ModelForm):
 
 class Year(models.Model):
 	time = models.IntegerField(max_length = 4, validators = [validate_year]) # date field but just use Year
-	school_id = models.ForeignKey(School)
+	school_id = models.ForeignKey(Organization)
 	
 	def __unicode__(self):
 		return str(self.time)+"-"+str(self.time+1)
 class StartYear(models.Model):
 	time = models.IntegerField(max_length = 4, validators = [validate_year]) # date field but just use Year
-	school_id = models.ForeignKey(School)
+	school_id = models.ForeignKey(Organization)
 	def __unicode__(self):
 		return str(self.time)
 	

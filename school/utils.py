@@ -236,9 +236,13 @@ def completely_del_subject( subject):
     subject.delete()                
             
 def get_school(request):
+    if request.user.userprofile.organization.level != 'T':
+        raise Exception('UserDoesNotHaveAnySchool')
     return request.user.userprofile.organization
 
 def get_permission(request):
+    if request.user.userprofile.organization.level != 'T':
+        raise Exception('UserDoesNotHaveAnySchoolPosition')
     return request.user.userprofile.position
     
 def get_current_term(request):
