@@ -67,7 +67,9 @@ def class_label(request):
                 lb.save()
             message = u'Bạn vừa thiết lập thành công danh sách tên lớp cho trường.'    
     context = RequestContext(request)
-    return render_to_response(CLASS_LABEL, {'labels' : labels, 'message': message }, context_instance = context) 
+    t = loader.get_template(CLASS_LABEL)
+    c = RequestContext(request, {'labels' : labels, 'message': message },)
+    return HttpResponse(t.render(c)) 
 
 @transaction.commit_manually    
 def b1(request):
@@ -434,15 +436,16 @@ def students(request, sort_type=1, sort_status=1):
 			studentList = Pupil.objects.all().order_by('-class_id__name')
 			
     if request.method == 'POST':
+		print request.POST
 		name = request.POST['first_name'].split()
 		last_name = ' '.join(name[:len(name)-1])
 		first_name = name[len(name)-1]
 		birthday = date(int(request.POST['birthday_year']),int(request.POST['birthday_month']),int(request.POST['birthday_day']))
 		school_join_date=date(int(request.POST['school_join_date_year']),int(request.POST['school_join_date_month']),int(request.POST['school_join_date_day']))
 		data = {'first_name':first_name, 'last_name':last_name, 'birthday':birthday, 'sex':request.POST['sex'],'ban_dk':request.POST['ban_dk'], 'school_join_date':school_join_date, 'start_year_id':request.POST['start_year_id'], 'class_id' : request.POST['class_id']}
-		start_year = StartYear.objects.get(id = data['start_year_id'])
+		print request.POST['start_year_id']
+		start_year = StartYear.objects.get(id = int(data['start_year_id']))
 		_class = Class.objects.get(id = data['class_id'])
-		print start_year
 		form = PupilForm(data)
 		if form.is_valid():
 			data['ban'] = data['ban_dk']
