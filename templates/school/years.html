@@ -1,0 +1,11 @@
+{% extends "school/base_school.html" %}
+{% block content %}
+	<ul>
+			
+	{% for year in years %}
+			<li>{{ year.time }}</li>
+	{% endfor %}
+	</ul>		
+	
+{% endblock %}
+
