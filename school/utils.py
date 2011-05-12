@@ -204,7 +204,7 @@ def add_teacher( first_name = None, last_name = None, full_name = None, school =
     teacher.school_id = school
     teacher.birthday = birthday
     teacher.sex = sex
-    teacher.birthplace = birthplace
+    teacher.birth_place = birthplace
     
     user = User()
     user.username = make_username( first_name = first_name, last_name = last_name )
@@ -234,7 +234,7 @@ def add_subject( subject_name = None, hs = 1, teacher = None, _class = None, ter
         subject.class_id = _class
         subject.save()
     
-        students = _class.student_set.all()
+        students = _class.pupil_set.all()
         for student in students:
             mark = Mark()
             mark.student_id = student

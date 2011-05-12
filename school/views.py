@@ -199,26 +199,28 @@ def classes(request, sort_type = 1, sort_status=0):
         return HttpResponseRedirect( reverse('login'))
     message = None
     form = ClassForm()
+    print get_current_year(request)
+    cyear = get_current_year(request)
     if int(sort_type)==1:
 		if int(sort_status) == 0:
-			classList = Class.objects.all().order_by('name')
+			classList = cyear.class_set.order_by('name')
 		else:
-			classList = Class.objects.all().order_by('-name')
+			classList = cyear.class_set.order_by('-name')
     if int(sort_type) == 2:
 		if int(sort_status) == 0:
-			classList = Class.objects.all().order_by('block_id__number')
+			classList = cyear.class_set.order_by('block_id__number')
 		else:
-			classList = Class.objects.all().order_by('-block_id__number')
+			classList = cyear.class_set.order_by('-block_id__number')
     if int(sort_type) == 3:
 		if int(sort_status) == 0:
-			classList = Class.objects.all().order_by('teacher_id__first_name')
+			classList = cyear.class_set.order_by('teacher_id__first_name')
 		else:
-			classList = Class.objects.all().order_by('-teacher_id__first_name')
+			classList = cyear.class_set.order_by('-teacher_id__first_name')
     if int(sort_type)==4:
 		if int(sort_status) == 0:
-			classList = Class.objects.all().order_by('year_id__time')
+			classList = cyear.class_set.order_by('year_id__time')
 		else:
-			classList = Class.objects.all().order_by('-year_id__time')
+			classList = cyear.class_set.order_by('-year_id__time')
     if request.method == 'POST':
         form = ClassForm(request.POST)
         if form.is_valid():
@@ -251,32 +253,32 @@ def teachers(request, sort_type=1, sort_status=0):
         return HttpResponseRedirect( reverse('login'))
     message = None
     form = TeacherForm()
-    school_id = get_school(request).id
+    school = get_school(request)
     #print sort_type +' ' + sort_status
     if int(sort_type)==1:
 		if int(sort_status) == 0:
-			teacherList = Teacher.objects.filter(school_id = school_id).order_by('first_name', 'last_name')
+			teacherList = school.teacher_set.order_by('first_name', 'last_name')
 		else:
-			teacherList = Teacher.objects.filter(school_id = school_id).order_by('-first_name','-last_name')
+			teacherList = school.teacher_set.order_by('-first_name','-last_name')
     if int(sort_type) == 2:
 		if int(sort_status) == 0:
-			teacherList = Teacher.objects.filter(school_id = school_id).order_by('birthday')
+			teacherList = school.teacher_set.order_by('birthday')
 		else:
-			teacherList = Teacher.objects.filter(school_id = school_id).order_by('-birthday')
+			teacherList = school.teacher_set.order_by('-birthday')
     if int(sort_type) == 3:
 		if int(sort_status) == 0:
-			teacherList = Teacher.objects.filter(school_id = school_id).order_by('sex')
+			teacherList = school.teacher_set.order_by('sex')
 		else:
-			teacherList = Teacher.objects.filter(school_id = school_id).order_by('-sex')
+			teacherList = school.teacher_set.order_by('-sex')
     if request.method == 'POST':
         name = request.POST['first_name'].split()
         last_name = ' '.join(name[:len(name)-1])
         first_name = name[len(name)-1]
         birthday = date(int(request.POST['birthday_year']),int(request.POST['birthday_month']),int(request.POST['birthday_day']))
-        data = {'first_name':first_name, 'last_name':last_name, 'birthday':birthday, 'sex':request.POST['sex'], 'school_id':school_id, 'birth_place':request.POST['birth_place']}
+        data = {'first_name':first_name, 'last_name':last_name, 'birthday':birthday, 'sex':request.POST['sex'], 'school_id':school.id, 'birth_place':request.POST['birth_place']}
         form = TeacherForm(data)
         if form.is_valid():
-            form.save()
+            add_teacher(first_name = data['first_name'], last_name = data['last_name'], school = get_school(request), birthday = birthday, sex=data['sex'], birthplace = data['birth_place'])
             message = 'You have added new teacher'
             form = TeacherForm()
         else:
@@ -312,29 +314,32 @@ def subjectPerClass(request, class_id, sort_type=1, sort_status=0):
     if not user.is_authenticated():
         return HttpResponseRedirect( reverse('login'))
     message = None
+    cl = Class.objects.get(id = class_id)
     if int(sort_type)==1:
 		if int(sort_status) == 0:
-			subjectList = Subject.objects.filter(class_id=class_id).order_by('name')
+			subjectList = cl.subject_set.order_by('name')
 		else:
-			subjectList = Subject.objects.filter(class_id=class_id).order_by('-name')
+			subjectList = cl.subject_set.order_by('-name')
     if int(sort_type) == 2:
 		if int(sort_status) == 0:
-			subjectList = Subject.objects.filter(class_id=class_id).order_by('hs')
+			subjectList = cl.subject_set.order_by('hs')
 		else:
-			subjectList = Subject.objects.filter(class_id=class_id).order_by('-hs')
+			subjectList = cl.subject_set.order_by('-hs')
     if int(sort_type) == 3:
 		if int(sort_status) == 0:
-			subjectList = Subject.objects.filter(class_id=class_id).order_by('teacher_id__first_name')
+			subjectList = cl.subject_set.order_by('teacher_id__first_name')
 		else:
-			subjectList = Subject.objects.filter(class_id=class_id).order_by('-teacher_id__first_name')
+			subjectList = cl.subject_set.order_by('-teacher_id__first_name')
     form = SubjectForm()
     if request.method == 'POST':
         data = {'name':request.POST['name'], 'hs':request.POST['hs'], 'class_id':class_id, 'teacher_id':request.POST['teacher_id']}
         form = SubjectForm(data)
         if form.is_valid():
-            form.save()
+            teacher = Teacher.objects.get(id = data['teacher_id'])
+            _class = Class.objects.get(id = class_id)
+            add_subject(subject_name = data['name'], hs = int(data['hs']), teacher = teacher, _class = _class, term = get_current_term(request))
             message = 'You have added new subject'
-            form = SubjectFrom()
+            form = SubjectForm()
         else:
             message = 'Please check your information, something is wrong'
 
@@ -353,29 +358,29 @@ def studentPerClass(request, class_id, sort_type=1, sort_status=0):
     form = PupilForm()
     if int(sort_type)==1:
 		if int(sort_status) == 0:
-			studentList = Pupil.objects.filter(class_id=class_id).order_by('first_name', 'last_name')
+			studentList = cl.pupil_set.order_by('first_name', 'last_name')
 		else:
-			studentList = Pupil.objects.filter(class_id=class_id).order_by('-first_name','-last_name')
+			studentList = cl.pupil_set.order_by('-first_name','-last_name')
     if int(sort_type) == 2:
 		if int(sort_status) == 0:
-			studentList = Pupil.objects.filter(class_id=class_id).order_by('birthday')
+			studentList = cl.pupil_set.order_by('birthday')
 		else:
-			studentList = Pupil.objects.filter(class_id=class_id).order_by('-birthday')
+			studentList = cl.pupil_set.order_by('-birthday')
     if int(sort_type) == 3:
 		if int(sort_status) == 0:
-			studentList = Pupil.objects.filter(class_id=class_id).order_by('sex')
+			studentList = cl.pupil_set.order_by('sex')
 		else:
-			studentList = Pupil.objects.filter(class_id=class_id).order_by('-sex')
+			studentList = cl.pupil_set.order_by('-sex')
     if int(sort_type) == 4:
 		if int(sort_status) == 0:
-			studentList = Pupil.objects.filter(class_id=class_id).order_by('ban_dk')
+			studentList = cl.pupil_set.order_by('ban_dk')
 		else:
-			studentList = Pupil.objects.filter(class_id=class_id).order_by('-ban_dk')
+			studentList = cl.pupil_set.order_by('-ban_dk')
     if int(sort_type) == 5:
 		if int(sort_status) == 0:
-			studentList = Pupil.objects.filter(class_id=class_id).order_by('school_join_date')
+			studentList = cl.pupil_set.order_by('school_join_date')
 		else:
-			studentList = Pupil.objects.filter(class_id=class_id).order_by('-school_join_date')
+			studentList = cl.pupil_set.order_by('-school_join_date')
 			
     if request.method == 'POST':
         name = request.POST['first_name'].split()
@@ -384,9 +389,12 @@ def studentPerClass(request, class_id, sort_type=1, sort_status=0):
         birthday = date(int(request.POST['birthday_year']),int(request.POST['birthday_month']),int(request.POST['birthday_day']))
         school_join_date = date(int(request.POST['school_join_date_year']),int(request.POST['school_join_date_month']),int(request.POST['school_join_date_day']))
         data = {'first_name':first_name, 'last_name':last_name,'birthday':birthday, 'class_id':class_id, 'sex':request.POST['sex'], 'ban_dk':request.POST['ban_dk'], 'school_join_date':school_join_date, 'start_year_id':request.POST['start_year_id']}
-        form = PupilForm(data)
+        form = PupilForm(data)		
         if form.is_valid():
-            form.save()
+            data['ban'] = data['ban_dk']
+            _class = Class.objects.get(id = class_id)
+            start_year = StartYear.objects.get(id = int(data['start_year_id']))
+            add_student(student = data, start_year = start_year, year = get_current_year(request), _class = _class, term = get_current_term(request), school = get_school(request), school_join_date = school_join_date)
             message = 'You have added new student'
             form = PupilForm()
         else:
@@ -401,39 +409,39 @@ def students(request, sort_type=1, sort_status=1):
     if not user.is_authenticated():
         return HttpResponseRedirect( reverse('login'))
     message = None
-    school_id = get_school(request).id
+    school = get_school(request)
     form = PupilForm()
     if int(sort_type)==1:
 		if int(sort_status) == 0:
-			studentList = Pupil.objects.all().order_by('first_name', 'last_name')
+			studentList = school.pupil_set.order_by('first_name', 'last_name')
 		else:
-			studentList = Pupil.objects.all().order_by('-first_name','-last_name')
+			studentList = school.pupil_set.order_by('-first_name','-last_name')
     if int(sort_type) == 2:
 		if int(sort_status) == 0:
-			studentList = Pupil.objects.all().order_by('birthday')
+			studentList = school.pupil_set.order_by('birthday')
 		else:
-			studentList = Pupil.objects.all().order_by('-birthday')
+			studentList = school.pupil_set.order_by('-birthday')
     if int(sort_type) == 3:
 		if int(sort_status) == 0:
-			studentList = Pupil.objects.all().order_by('sex')
+			studentList = school.pupil_set.order_by('sex')
 		else:
-			studentList = Pupil.objects.all().order_by('-sex')
+			studentList = school.pupil_set.order_by('-sex')
     if int(sort_type) == 4:
 		if int(sort_status) == 0:
-			studentList = Pupil.objects.all().order_by('ban_dk')
+			studentList = school.pupil_set.order_by('ban_dk')
 		else:
-			studentList = Pupil.objects.all().order_by('-ban_dk')
+			studentList = school.pupil_set.order_by('-ban_dk')
     if int(sort_type) == 5:
 		if int(sort_status) == 0:
-			studentList = Pupil.objects.all().order_by('school_join_date')
+			studentList = school.pupil_set.order_by('school_join_date')
 		else:
-			studentList = Pupil.objects.all().order_by('-school_join_date')
+			studentList = school.pupil_set.order_by('-school_join_date')
 	
     if int(sort_type) == 6:
 		if int(sort_status) == 0:
-			studentList = Pupil.objects.all().order_by('class_id__name')
+			studentList = school.pupil_set.order_by('class_id__name')
 		else:
-			studentList = Pupil.objects.all().order_by('-class_id__name')
+			studentList = school.pupil_set.order_by('-class_id__name')
 			
     if request.method == 'POST':
 		print request.POST
@@ -946,7 +954,7 @@ def deleteClass(request, class_id):
     if in_school(request,s.block_id.school_id) == False:
         return HttpResponseRedirect('/school')
     s.delete()
-    classList = Class.objects.all()
+    classList = school.class_set
     form = ClassForm()
     t = loader.get_template(os.path.join('school','classes.html'))
     c = RequestContext(request, {'form' : form, 'message' : message,  'classList' : classList})
