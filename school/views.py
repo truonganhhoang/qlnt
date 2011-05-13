@@ -225,7 +225,9 @@ def classes(request, sort_type = 1, sort_status=0):
 		else:
 			classList = cyear.class_set.order_by('-year_id__time')
     if request.method == 'POST':
-        form = ClassForm(request.POST)
+        print request.POST
+        data = {'name':request.POST['name'],'year_id':request.POST['year_id'],'block_id':request.POST['block_id'],'teacher_id':request.POST['teacher_id']}
+        form = ClassForm(school_id,data)
         if form.is_valid():
             form.save()
             form = ClassForm(school_id)
