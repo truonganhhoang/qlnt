@@ -259,6 +259,20 @@ def get_permission(request):
     if request.user.userprofile.organization.level != 'T':
         raise Exception('UserDoesNotHaveAnySchoolPosition')
     return request.user.userprofile.position
+
+def get_position(request):
+    if request.user.userprofile.position == 'HOC_SINH':
+        return 1
+    elif request.user.userprofile.position == 'GIAO_VU':
+        return 2
+    elif request.user.userprofile.position == 'GIAO_VIEN':
+        return 3
+    elif request.user.userprofile.position == 'HIEU_PHO':
+        return 4
+    elif request.user.userprofile.position == 'HIEU_TRUONG':
+        return 4
+    else:
+        return 0
     
 def get_current_year(request):
     school = get_school(request)

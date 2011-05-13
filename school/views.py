@@ -197,6 +197,8 @@ def classes(request, sort_type = 1, sort_status=0):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect( reverse('login'))
+    if (get_position(request)<4):
+        return HttpResponseRedirect('/school')
     message = None
     form = ClassForm()
     print get_current_year(request)
@@ -237,6 +239,8 @@ def viewClassDetail(request, class_id):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect( reverse('login'))
+    if (get_position(request)<4):
+        return HttpResponseRedirect('/school')
     class_view = Class.objects.get(id = class_id)
     if in_school(request,class_view.block_id.school_id) == False:
         return HttpResponseRedirect('/school')
@@ -251,6 +255,8 @@ def teachers(request, sort_type=1, sort_status=0):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect( reverse('login'))
+    if (get_position(request)<4):
+        return HttpResponseRedirect('/school')
     message = None
     form = TeacherForm()
     school = get_school(request)
@@ -296,6 +302,8 @@ def viewTeacherDetail(request, teacher_id):
     teacher = Teacher.objects.get(id = teacher_id);
     if in_school(request,teacher.school_id) == False:
         return HttpResponseRedirect('/school')
+    if (get_position(request)<4):
+        return HttpResponseRedirect('/school')
     form = TeacherForm (instance = teacher)
     if request.method == 'POST':
         form = TeacherForm(request.POST, instance = teacher)
@@ -313,6 +321,8 @@ def subjectPerClass(request, class_id, sort_type=1, sort_status=0):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect( reverse('login'))
+    if (get_position(request)<4):
+        return HttpResponseRedirect('/school')
     message = None
     cl = Class.objects.get(id = class_id)
     if int(sort_type)==1:
@@ -353,6 +363,8 @@ def studentPerClass(request, class_id, sort_type=1, sort_status=0):
         return HttpResponseRedirect( reverse('login'))
     cl = Class.objects.get(id = class_id)
     if in_school(request,cl.block_id.school_id) == False:
+        return HttpResponseRedirect('/school')
+    if (get_position(request)<4):
         return HttpResponseRedirect('/school')
     message = None
     form = PupilForm()
@@ -408,6 +420,8 @@ def students(request, sort_type=1, sort_status=1):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect( reverse('login'))
+    if (get_position(request)<4):
+        return HttpResponseRedirect('/school')
     message = None
     school = get_school(request)
     form = PupilForm()
@@ -471,6 +485,8 @@ def viewStudentDetail(request, student_id):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect( reverse('login'))
+    if (get_position(request)<4):
+        return HttpResponseRedirect('/school')
     message = None
     pupil = Pupil.objects.get(id = student_id);
     if in_school(request,pupil.class_id.block_id.school_id) == False:
@@ -757,6 +773,8 @@ def diem_danh(request, class_id, day, month, year):
     c = Class.objects.get(id__exact = class_id)
     if in_school(request,c.block_id.school_id) == False:
         return HttpResponseRedirect('/school')
+    if (get_position(request)<4):
+        return HttpResponseRedirect('/school')
     message = None
     listdh = None
     term = None
@@ -807,6 +825,8 @@ def time_select(request, class_id):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect( reverse('login'))
+    if (get_position(request)<4):
+        return HttpResponseRedirect('/school')
     message = 'Hãy chọn 1 ngày'
     try:
         cl = Class.objects.get(id__exact = class_id)
@@ -831,6 +851,8 @@ def diem_danh_hs(request, student_id):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect( reverse('login'))
+    if (get_position(request)<4):
+        return HttpResponseRedirect('/school')
     term = None
     pupil = Pupil.objects.get(id = student_id)
     c = pupil.class_id
@@ -881,17 +903,11 @@ def diem_danh_hs(request, student_id):
     return HttpResponse(t.render(c))
     
 def tk_dd_lop(class_id,term_id):
-    user = request.user
-    if not user.is_authenticated():
-        return HttpResponseRedirect( reverse('login'))
     ppl = pupil.objects.filter(class_id = class_id)
     for p in ppl:
         tk_diem_danh(p.id,term_id)
     
 def tk_diem_danh(student_id,term_id):
-    user = request.user
-    if not user.is_authenticated():
-        return HttpResponseRedirect( reverse('login'))
     pupil = Pupil.objects.get(id = student_id)
     c = pupil.class_id
     ts = DiemDanh.objects.filter(student_id = student_id, term_id = term.id).count()
@@ -918,6 +934,8 @@ def deleteSubject(request, subject_id):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect( reverse('login'))
+    if (get_position(request)<4):
+        return HttpResponseRedirect('/school')
     sub = Subject.objects.get(id = subject_id)
     class_id = sub.class_id    
     if in_school(request,class_id.block_id.school_id) == False:
@@ -938,6 +956,8 @@ def deleteTeacher(request, teacher_id):
     s = Teacher.objects.get(id = teacher_id)
     if in_school(request,s.school_id) == False:
         return HttpResponseRedirect('/school')
+    if (get_position(request)<4):
+        return HttpResponseRedirect('/school')
     s.delete()
     teacherList = Teacher.objects.all()
     form = TeacherForm()
@@ -952,6 +972,8 @@ def deleteClass(request, class_id):
     message = "You have deleted succesfully"
     s = Class.objects.get(id = class_id)
     if in_school(request,s.block_id.school_id) == False:
+        return HttpResponseRedirect('/school')
+    if (get_position(request)<4):
         return HttpResponseRedirect('/school')
     s.delete()
     classList = school.class_set
@@ -969,6 +991,8 @@ def deleteStudentInClass(request, student_id):
     class_id = student.class_id
     if in_school(request,class_id.block_id.school_id) == False:
         return HttpResponseRedirect('/school')
+    if (get_position(request)<4):
+        return HttpResponseRedirect('/school')
     student.delete()
     studentList = Pupil.objects.filter(class_id = class_id)
     form = PupilForm()
@@ -984,6 +1008,8 @@ def deleteStudentInSchool(request, student_id):
     sub = Pupil.objects.get(id = student_id)
     if in_school(request,sub.class_id.block_id.school_id) == False:
         return HttpResponseRedirect('/school')
+    if (get_position(request)<4):
+        return HttpResponseRedirect('/school')
     sub.delete()
     studentList = Pupil.objects.all()
     form = PupilForm()
@@ -998,6 +1024,8 @@ def khen_thuong(request, student_id):
     sub = Pupil.objects.get(id = student_id)
     if in_school(request,sub.class_id.block_id.school_id) == False:
         return HttpResponseRedirect('/school')
+    if (get_position(request)<4):
+        return HttpResponseRedirect('/school')
     message = ''
     ktl = KhenThuong.objects.filter(student_id = student_id).order_by('time')
     t = loader.get_template(os.path.join('school','khen_thuong.html'))
@@ -1011,6 +1039,8 @@ def add_khen_thuong(request,student_id):
     form = KhenThuongForm()
     pupil = Pupil.objects.get(id = student_id)
     if in_school(request,pupil.class_id.block_id.school_id) == False:
+        return HttpResponseRedirect('/school')
+    if (get_position(request)<4):
         return HttpResponseRedirect('/school')
     cl = Class.objects.get(id__exact = pupil.class_id.id)
     term = Term.objects.filter(year_id = cl.year_id, active = True).latest('number')
@@ -1032,6 +1062,8 @@ def delete_khen_thuong(request, kt_id):
     student = kt.student_id    
     if in_school(request,student.class_id.block_id.school_id) == False:
         return HttpResponseRedirect('/school')
+    if (get_position(request)<4):
+        return HttpResponseRedirect('/school')
     kt.delete()
     url = '/school/khenthuong/' + str(student.id)
     return HttpResponseRedirect(url)
@@ -1043,6 +1075,8 @@ def edit_khen_thuong(request, kt_id):
     kt = KhenThuong.objects.get(id = kt_id)
     pupil = kt.student_id
     if in_school(request,pupil.class_id.block_id.school_id) == False:
+        return HttpResponseRedirect('/school')
+    if (get_position(request)<4):
         return HttpResponseRedirect('/school')
     term = kt.term_id
     form = KhenThuongForm(instance = kt)
@@ -1063,6 +1097,8 @@ def ki_luat(request, student_id):
     student = Pupil.objects.get(student_id = student_id)
     if in_school(request,student.class_id.block_id.school_id) == False:
         return HttpResponseRedirect('/school')
+    if (get_position(request)<4):
+        return HttpResponseRedirect('/school')
     message = ''
     ktl = KiLuat.objects.filter(student_id = student_id).order_by('time')
     t = loader.get_template(os.path.join('school','ki_luat.html'))
@@ -1076,6 +1112,8 @@ def add_ki_luat(request,student_id):
     form = KiLuatForm()
     pupil = Pupil.objects.get(id = student_id)
     if in_school(request,pupil.class_id.block_id.school_id) == False:
+        return HttpResponseRedirect('/school')
+    if (get_position(request)<4):
         return HttpResponseRedirect('/school')
     cl = Class.objects.get(id__exact = pupil.class_id.id)
     term = Term.objects.filter(year_id = cl.year_id, active = True).latest('number')
@@ -1097,6 +1135,8 @@ def delete_ki_luat(request, kt_id):
     student = kt.student_id
     if in_school(request,student.class_id.block_id.school_id) == False:
         return HttpResponseRedirect('/school')
+    if (get_position(request)<4):
+        return HttpResponseRedirect('/school')
     kt.delete()
     url = '/school/khenthuong/' + str(student.id)
     return HttpResponseRedirect(url)
@@ -1108,6 +1148,8 @@ def edit_ki_luat(request, kt_id):
     kt = KiLuat.objects.get(id = kt_id)
     pupil = kt.student_id
     if in_school(request,pupil.class_id.block_id.school_id) == False:
+        return HttpResponseRedirect('/school')
+    if (get_position(request)<4):
         return HttpResponseRedirect('/school')
     term = kt.term_id
     form = KiLuatForm(instance = kt)
@@ -1127,6 +1169,8 @@ def hanh_kiem(request, class_id):
         return HttpResponseRedirect( reverse('login'))
     c = Class.objects.get(id__exact = class_id)
     if in_school(request,c.block_id.school_id) == False:
+        return HttpResponseRedirect('/school')
+    if (get_position(request)<4):
         return HttpResponseRedirect('/school')
     message = None
     listdh = None
