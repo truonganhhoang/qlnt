@@ -23,18 +23,18 @@ function confirmDelete()
     {{message}}
     {% endif %}
 
-    {% for ss in subjectList %}
-    <tr>
-		<td width="5%">{{forloop.counter}} </td>
-        <td align="center" width="20%"> {{ss.name}}</td>
-        <td align="center" width="10%"> {{ss.hs}} </td>
-        <td align="center" width="25%"> <a href="{%url school.views.school_index  %}viewTeacherDetail/{{ss.teacher_id.id}}">{{ss.teacher_id}}</td>
-		<td align="center" width="10%"> <a href="{%url school.views.school_index  %}markForASubject/{{ss.id}}"> Điểm </a></td>
-        <td width = "5%"> <a href = "{%url school.views.school_index  %}deleteSubject/{{ss.id}}" onclick="return confirmDelete();">xóa</a></td>
-    </tr>
-    {% endfor %}
-    
     <form action="/school/subjectPerClass/{{class_id}}" method="post">{% csrf_token %}
+        {% for ss,f in list %}
+        <tr>
+            <td width="5%">{{forloop.counter}} </td>
+            <td align="center" width="20%"> {{ss.name}}</td>
+            <td align="center" width="10%"> {{f.hs}} </td>
+            <td align="center" width="25%"> {{f.teacher_id}}</td>
+            <td align="center" width="10%"> <a href="{%url school.views.school_index  %}markForASubject/{{ss.id}}"> Điểm </a></td>
+            <td width = "5%"> <a href = "{%url school.views.school_index  %}deleteSubject/{{ss.id}}" onclick="return confirmDelete();">xóa</a></td>
+        </tr>
+        {% endfor %}
+    
         <tr>
             {{ form.non_field_errors }}
 			<td width="5%"> </td>

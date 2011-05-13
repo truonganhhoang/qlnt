@@ -248,8 +248,12 @@ class Subject(models.Model):
 	#class Admin: pass
 
 class SubjectForm(forms.ModelForm):
-	class Meta:
-		model = Subject
+    class Meta:
+        model = Subject   
+        
+    def __init__(self, school_id, *args, **kwargs):
+        super(SubjectForm, self).__init__(*args, **kwargs)
+        self.fields['teacher_id'] = forms.ModelChoiceField(required = False, queryset=Teacher.objects.filter(school_id = school_id))
 
 class Mark(models.Model):
 	
