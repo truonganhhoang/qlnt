@@ -26,6 +26,9 @@ class ObjectPermissionBackend(object):
             value = "=".join("_".join(perm.split('_')[1:]).split('=')[1:])
         except IndexError:
             return False
+        
+        if len(permission) == 0 or len(field_name) == 0  or len(value) == 0:
+            return False
 
         # check for user permission
         user_ct = ContentType.objects.get_for_model(user_obj)
