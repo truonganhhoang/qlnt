@@ -224,19 +224,35 @@ def classes(request, sort_type = 1, sort_status=0):
 			classList = cyear.class_set.order_by('year_id__time')
 		else:
 			classList = cyear.class_set.order_by('-year_id__time')
+    cfl = []
+    for c in classList:
+        cfl.append(ClassForm(school_id, instance = c))
+	list = zip(classList,cfl)
     if request.method == 'POST':
-        print request.POST
-        data = {'name':request.POST['name'],'year_id':request.POST['year_id'],'block_id':request.POST['block_id'],'teacher_id':request.POST['teacher_id']}
-        form = ClassForm(school_id,data)
-        if form.is_valid():
-            form.save()
-            form = ClassForm(school_id)
-            message = 'You have added new class'
-        else:
-            message = 'Please check your information, something is wrong'
-
+        teacher_list = request.POST.getlist('teacher_id')
+        print teacher_list
+        i = 0
+        for c in classList:
+            print teacher_list[i]
+            data = {'name':c.name, 'year_id':c.year_id.id, 'block_id':c.block_id.id, 'teacher_id':teacher_list[i]}
+            cfl[i] = ClassForm(school_id, data, instance = c)
+            if cfl[i].is_valid():
+                cfl[i].save()
+                message = 'You have update some classes'
+            i = i+1
+        if teacher_list[i]!=u'':
+			data = {'name':request.POST['name'],'year_id':request.POST['year_id'],'block_id':request.POST['block_id'],'teacher_id':request.POST['teacher_id']}
+			form = ClassForm(school_id,data)
+			if form.is_valid():
+				form.save()
+				form = ClassForm(school_id)
+				message = 'You have added new class'
+			else:
+				message = 'Please check your information, something is wrong'
+				
+    list = zip(classList,cfl)
     t = loader.get_template(os.path.join('school','classes.html'))
-    c = RequestContext(request, {'form' : form, 'message' : message, 'classList' : classList, 'sort_type':sort_type, 'sort_status':sort_status, 'next_status':1-int(sort_status)})
+    c = RequestContext(request, {'list' : list, 'form' : form, 'message' : message, 'classList' : classList, 'sort_type':sort_type, 'sort_status':sort_status, 'next_status':1-int(sort_status)})
     return HttpResponse(t.render(c))
 
 def viewClassDetail(request, class_id):
@@ -960,30 +976,23 @@ def deleteSubject(request, subject_id):
     class_id = sub.class_id    
     if in_school(request,class_id.block_id.school_id) == False:
         return HttpResponseRedirect('/school')
-    message = "You have deleted succesfully"
     sub.delete()
-    subjectList = Subject.objects.filter(class_id = class_id)
-    form = SubjectForm()
-    t = loader.get_template(os.path.join('school','subject_per_class.html'))
-    c = RequestContext(request, {'form' : form, 'message' : message,  'subjectList' : subjectList, 'class_id' : class_id.id})
-    return HttpResponse(t.render(c))
+    url='/school/subjectPerClass/' + str(class_id.id)
+    return HttpResponseRedirect(url)
 
 def deleteTeacher(request, teacher_id):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect( reverse('login'))
     message = "You have deleted succesfully"
-    s = Teacher.objects.get(id = teacher_id)
+    school = get_school(request)
+    s = school.teacher_set.get(id = teacher_id)
     if in_school(request,s.school_id) == False:
         return HttpResponseRedirect('/school')
     if (get_position(request)<4):
         return HttpResponseRedirect('/school')
     s.delete()
-    teacherList = Teacher.objects.all()
-    form = TeacherForm()
-    t = loader.get_template(os.path.join('school','teachers.html'))
-    c = RequestContext(request, {'form' : form, 'message' : message,  'teacherList' : teacherList})
-    return HttpResponse(t.render(c))
+    return HttpResponseRedirect('/school/teachers')
 
 def deleteClass(request, class_id):
     user = request.user
@@ -996,12 +1005,7 @@ def deleteClass(request, class_id):
     if (get_position(request)<4):
         return HttpResponseRedirect('/school')
     s.delete()
-    cyear = get_current_year(request)
-    classList = cyear.class_set.order_by('name')
-    form = ClassForm(s.block_id.school_id.id)
-    t = loader.get_template(os.path.join('school','classes.html'))
-    c = RequestContext(request, {'form' : form, 'message' : message,  'classList' : classList})
-    return HttpResponse(t.render(c))
+    return HttpResponseRedirect('/school/classes')
 
 def deleteStudentInClass(request, student_id):
     user = request.user

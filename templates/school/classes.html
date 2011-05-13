@@ -20,17 +20,18 @@ function confirmDelete()
 		<td align="center" width="20%"><a href="{%url school.views.school_index  %}classes/4/{{next_status}}"> Năm </a></td>
 		<td align="center" width="5%"></td>
 	</tr>
-	{% for class in classList %}
+	<form action="/school/classes" method="post">{% csrf_token %}
+	{% for class, f in list %}
 	<tr>
 		<td align="center" width="20%"> <a href="{%url school.views.school_index  %}viewClassDetail/{{class.id}}" >{{class.name}} </a></td>
 		<td align="center" width="20%"> {{class.block_id}} </td>
-		<td align="center" width="25%"> {{class.teacher_id}} </td>
+		<td align="center" width="25%"> {{f.teacher_id}} </td>
 		<td align="center" width="20%"> {{class.year_id}} </td>
 		<td align="center" width="5%"> <a href="{%url school.views.school_index  %}deleteClass/{{class.id}}" onclick="return confirmDelete();"> xóa </a></td>
 	</tr>
 	{% endfor %}
 
-	<form action="/school/classes" method="post">{% csrf_token %}
+	
 	<tr>
   		{{ form.non_field_errors }}
   		<td align="center" width="20%">
