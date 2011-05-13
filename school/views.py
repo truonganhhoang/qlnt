@@ -200,7 +200,8 @@ def classes(request, sort_type = 1, sort_status=0):
     if (get_position(request)<4):
         return HttpResponseRedirect('/school')
     message = None
-    form = ClassForm()
+    school_id = get_school(request).id
+    form = ClassForm(school_id)
     print get_current_year(request)
     cyear = get_current_year(request)
     if int(sort_type)==1:
@@ -227,6 +228,7 @@ def classes(request, sort_type = 1, sort_status=0):
         form = ClassForm(request.POST)
         if form.is_valid():
             form.save()
+            form = ClassForm(school_id)
             message = 'You have added new class'
         else:
             message = 'Please check your information, something is wrong'
@@ -992,8 +994,9 @@ def deleteClass(request, class_id):
     if (get_position(request)<4):
         return HttpResponseRedirect('/school')
     s.delete()
-    classList = school.class_set
-    form = ClassForm()
+    cyear = get_current_year(request)
+    classList = cyear.class_set.order_by('name')
+    form = ClassForm(s.block_id.school_id.id)
     t = loader.get_template(os.path.join('school','classes.html'))
     c = RequestContext(request, {'form' : form, 'message' : message,  'classList' : classList})
     return HttpResponse(t.render(c))

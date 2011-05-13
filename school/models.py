@@ -181,8 +181,13 @@ class Class(models.Model):
 	#class Admin: pass
 	
 class ClassForm(forms.ModelForm):
-	class Meta:
-		model = Class
+    class Meta:
+        model = Class
+        
+    def __init__(self, school_id, *args, **kwargs):
+        super(ClassForm, self).__init__(*args, **kwargs)
+        self.fields['teacher_id'] = forms.ModelChoiceField(required = False, queryset=Teacher.objects.filter(school_id = school_id))
+        self.fields['year_id'] = forms.ModelChoiceField(queryset=Year.objects.filter(school_id = school_id))
 		
 class Pupil(BasicPersonInfo):
     year = models.IntegerField(validators = [validate_year], blank = True, null = True) #year that pupil go to class 1
