@@ -1,9 +1,11 @@
 {% extends "base.html" %}
+{% load pagination_tags %}
 
 {% block content %}
 	{% if user.is_authenticated %}
 		<h3>Danh sách tin nhắn đã được gửi đi:</h3>
 		{% if sms_list %}
+            {% autopaginate sms_list 30 %}
 			<table class="solid_border">
 				<col width=150>
 				<col width=300>
@@ -24,6 +26,7 @@
 				</tr>
 			{% endfor %}
 			</table>
+            {% paginate %}
 		{% else %}
 		    <p>Không có tin nhắn nào đã được gửi đi.</p>
 		{% endif %}

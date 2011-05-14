@@ -79,7 +79,7 @@ def excel_sms(request):
                 list = xlrd.open_workbook(filepath)
                 sheet = list.sheet_by_index(0)
                 data = []
-                for r in range(0, sheet.nrows):
+                for r in range(1, sheet.nrows):
                     data.append({'number': sheet.cell_value(r,0),
                                  'content': sheet.cell_value(r,1)})
                 t = loader.get_template('sms/excel_sms.html')
@@ -119,10 +119,21 @@ def excel_sms(request):
             return HttpResponseRedirect('/sms/sent_sms/')
     else:
         form = smsFromExcelForm()
-        
-    t = loader.get_template('sms/excel_sms.html')
-    c = RequestContext(request, {'form': form})
-    return HttpResponse(t.render(c))
+        if os.path.lexists(os.path.join(TEMP_FILE_LOCATION, 'sms_input.xls')):
+            filepath = os.path.join(TEMP_FILE_LOCATION, 'sms_input.xls')
+            list = xlrd.open_workbook(filepath)
+            sheet = list.sheet_by_index(0)
+            data = []
+            for r in range(1, sheet.nrows):
+                data.append({'number': sheet.cell_value(r,0),
+                            'content': sheet.cell_value(r,1)})
+            t = loader.get_template('sms/excel_sms.html')
+            c = RequestContext(request, {'data' : data, 'form': form})
+            return HttpResponse(t.render(c))
+        else:
+            t = loader.get_template('sms/excel_sms.html')
+            c = RequestContext(request, {'form': form})
+            return HttpResponse(t.render(c))
 
 def export_excel(request):
     response = HttpResponse(mimetype="application/ms-excel")

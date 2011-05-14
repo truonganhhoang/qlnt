@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load pagination_tags %}
 
 {% block content %}
 	{% if user.is_authenticated %}
@@ -6,9 +7,16 @@
 		<form enctype="multipart/form-data" action="" method="post">{% csrf_token %}
 			{{ form.as_p }}
             <p>Hay tải file Excel mẫu <a href="{{ MEDIA_URL }}template_files/sms_template.xls">tại đây.</a></p>
-			<p><input type="submit" name="upload" value="Gửi file lên" /></p>
+			<p><input type="submit" name="upload" value="Xem trước file Excel" /></p>
             {% if data %}
+            	{% autopaginate data 30 %}
 	            <table class="solid_border">
+					<col width=150>
+					<col width=300>
+	            	<tr class="solid_border">
+					<td class="solid_border">Số điện thoại</td>
+					<td class="solid_border">Nội dung</td>
+					</tr class="solid_border">
 				{% for d in data %}
 					<tr class="solid_border">
 					<td class="solid_border">{{ d.number }}</td>
@@ -16,6 +24,7 @@
 					</tr class="solid_border">
 				{% endfor %}
 				</table>
+            	{% paginate %}
 				<p><input type="submit" name="send" value="Gửi tin nhắn" /></p>
 			{% endif %}
 		</form>
