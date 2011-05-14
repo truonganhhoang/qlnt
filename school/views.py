@@ -1068,7 +1068,7 @@ def add_khen_thuong(request,student_id):
     if (get_position(request)<4):
         return HttpResponseRedirect('/school')
     cl = Class.objects.get(id__exact = pupil.class_id.id)
-    term = Term.objects.filter(year_id = cl.year_id, active = True).latest('number')
+    term = get_current_term(request)
     if request.method == 'POST':
         form = KhenThuongForm(request.POST)
         if form.is_valid():
@@ -1141,7 +1141,7 @@ def add_ki_luat(request,student_id):
     if (get_position(request)<4):
         return HttpResponseRedirect('/school')
     cl = Class.objects.get(id__exact = pupil.class_id.id)
-    term = Term.objects.filter(year_id = cl.year_id, active = True).latest('number')
+    term = get_current_term(request)
     if request.method == 'POST':
         form = KiLuatForm(request.POST)
         if form.is_valid():
@@ -1201,7 +1201,7 @@ def hanh_kiem(request, class_id):
     listdh = None
     term = None
     pupilList = Pupil.objects.filter(class_id = class_id)
-    term = Term.objects.filter(year_id = c.year_id,active = True).latest('number')
+    term = get_current_term(request)
     form = []
     i = 0
     for p in pupilList:
