@@ -230,14 +230,14 @@ def classes(request, sort_type = 1, sort_status=0):
 	list = zip(classList,cfl)
     if request.method == 'POST':
         teacher_list = request.POST.getlist('teacher_id')
-        print teacher_list
         i = 0
         for c in classList:
-            print teacher_list[i]
             data = {'name':c.name, 'year_id':c.year_id.id, 'block_id':c.block_id.id, 'teacher_id':teacher_list[i]}
+            of = cfl[i]
             cfl[i] = ClassForm(school_id, data, instance = c)
-            if cfl[i].is_valid():
-                cfl[i].save()
+            if str(of) != str(cfl[i]): 
+                if cfl[i].is_valid():
+                    cfl[i].save()
                 message = 'You have update some classes'
             i = i+1
         if teacher_list[i]!=u'':
@@ -367,15 +367,16 @@ def subjectPerClass(request, class_id, sort_type=1, sort_status=0):
         sfl.append(SubjectForm(school_id,instance = s))
     list = zip(subjectList,sfl)
     if request.method == 'POST':
-        print request.POST
         hs_list = request.POST.getlist('hs')
         teacher_list = request.POST.getlist('teacher_id')
         i = 0
         for s in subjectList:
             data = {'name':s.name, 'hs':hs_list[i], 'class_id':class_id, 'teacher_id':teacher_list[i]}
+            of = sfl[i]
             sfl[i] = SubjectForm(school_id,data, instance = s)
-            if sfl[i].is_valid():
-                sfl[i].save()
+            if str(of) != str(sfl[i]):
+                if sfl[i].is_valid():
+                    sfl[i].save()
             i = i+1
         if hs_list[i] != u'' and teacher_list[i]!= u'':
             data = {'name':request.POST['name'], 'hs':hs_list[i], 'class_id':class_id, 'teacher_id':teacher_list[i]}
@@ -818,15 +819,12 @@ def diem_danh(request, class_id, day, month, year):
     time = date(int(year),int(month),int(day))
     term = get_current_term(request)
     form = []
-    i = 0
     for p in pupilList:
-        form.append(DiemDanhForm())
         try:
             dd = DiemDanh.objects.get(time__exact=time, student_id__exact = p.id, term_id__exact = term.id)
-            form[i] = DiemDanhForm(instance = dd)
-            i = i+1
+            form.append(DiemDanhForm(instance = dd))
         except ObjectDoesNotExist:
-            i = i+1
+            form.append(DiemDanhForm())
     listdh = zip(pupilList,form)
     if request.method == 'POST':
         message = 'Cập nhật thành công danh sách điểm danh lớp ' + str(Class.objects.get(id = class_id)) +'. Ngày ' + str(time)
@@ -837,9 +835,11 @@ def diem_danh(request, class_id, day, month, year):
                 dd = DiemDanh.objects.get(time__exact=time, student_id__exact = p.id, term_id__exact = term.id)
                 if list[i] != 'k':
                     data = {'student_id':p.id,'time':time,'loai':list[i],'term_id':term.id}
+                    of = form[i]
                     form[i] = DiemDanhForm(data, instance = dd)
-                    if form[i].is_valid():
-                        form[i].save()
+                    if str(of) != str(form[i]):
+                        if form[i].is_valid():
+                            form[i].save()
                 else:
                     form[i] = DiemDanhForm()
                     dd.delete()
