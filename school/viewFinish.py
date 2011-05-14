@@ -5,9 +5,26 @@ from django.http import HttpResponse, HttpResponseRedirect
 from school.models import *
 from django.shortcuts import render_to_response
 from django.template import RequestContext, loader
+from school.viewCount import *
 import os.path 
 ENABLE_CHANGE_MARK=True
 
+def finish(request):
+    message=None
+    currentTerm=get_current_term(request)
+    yearString = str(currentTerm.number)+"-"+str(currentTerm.number+1)
+    firstTerm  =Term.objects.get(year_id=currentTerm.year_id,number=1)
+    secondTerm  =Term.objects.get(year_id=currentTerm.year_id,number=2)
+    
+    
+    t = loader.get_template(os.path.join('school','finish.html'))    
+    c = RequestContext(request, {"message":message,
+                                 'yearString':yearString,
+                                 'firstTerm':firstTerm,
+                                 'secondTerm':secondTerm
+                                }
+                       )
+    return HttpResponse(t.render(c))
         
 # tinh diem tong ket cho 1 lop theo hoc ky
 def defineHl(tb,monChuyen,monToan,monVan,minMark):
@@ -223,7 +240,7 @@ def convertHlToVietnamese(x):
     else:
         return u'Chưa đủ điểm'    
                                                              
-def xepLoaiHlTheoLop(request,class_id=7):
+def xepLoaiHlTheoLop(request,class_id):
     ttt=None
     message=None
     print "chao1"
@@ -328,7 +345,7 @@ def xepLoaiHlTheoLop(request,class_id=7):
 
     return HttpResponse(t.render(c))
 # tinh diem tong ket cua hoc ky va tinh hoc luc cua tat ca hoc sinh trong toan truong theo hoc ky
-def finishTermByLearning1(request,term_id=8):
+def finishTermByLearning1(request,term_id):
     
     message=None
     finishList=[]
@@ -408,7 +425,7 @@ def definePass(tbNam,p):
             tbNam.len_lop=False
               
          
-def xlCaNamTheoLop(request,class_id=7):
+def xlCaNamTheoLop(request,class_id):
     message=None
 
     pupilNoSum=0
@@ -492,7 +509,7 @@ def xlCaNamTheoLop(request,class_id=7):
 
 
 # liet ke danh sach cac lop da tinh xong hoc luc va cac  lop chua xong
-def finishTermByLearning(term_id=8):
+def finishTermByLearning(term_id):
     
     finishList=[]
     notFinishList=[]
@@ -519,7 +536,7 @@ def calculateNumberPractisingInTerm(class_id,term_id):
             pupilSum+=1
     return pupilSum
 # liet ke cac lop da tinh xong hanh kiem va chua xong        
-def finishTermByPractising(term_id=8):
+def finishTermByPractising(term_id):
     
     finishList=[]
     notFinishList=[]
@@ -546,7 +563,7 @@ def  calculateNumberAllInTerm(class_id,term_id):
         hanhKiem=stu.hanhkiem_set.get(term_id=term_id)
         tbHocKy =stu.tbhocky_set.get(term_id=term_id)
         if (hanhKiem.loai==None) |(tbHocKy.hl_hk==None):
-            tbHocKy.danh_hieu_hk==None
+            tbHocKy.danh_hieu_hk=None
             tbHocKy.save()
             pupilSum+=1
         else:            
@@ -562,7 +579,7 @@ def  calculateNumberAllInTerm(class_id,term_id):
     return pupilSum
 
 # liet ke cac lop da tinh xong danh hieu va chua xong danh hieu
-def finishTermAll(term_id=1):
+def finishTermAll(term_id=None):
     finishList=[]
     notFinishList=[]
     
@@ -579,122 +596,34 @@ def finishTermAll(term_id=1):
     return finishList,notFinishList
         
 # thong ke sinh vien ve hoc luc ,hanh kiem, va xep loai chung theo hoc ky
-def countStudentInTerm(term_id):
-    hlgioi=0
-    hlkha =0
-    hltb  =0
-    hlyeu =0
-    hlkem =0
-    hlno  =0
-
-    hktot =0
-    hkkha =0
-    hktb  =0
-    hkyeu =0
-    hkno  =0
-    
-    ddg =0
-    ddtt=0
-    ddk =0
-    ddno=0
-    termSelected=Term.objects.get(id=term_id)
-    classList   =Class.objects.filter(year_id=termSelected.year_id)
-    for c in classList:
-        studentList=c.pupil_set.all()
-        for stu in studentList:
-            tbHocKy=stu.tbhocky_set.get(term_id=term_id)
-            if tbHocKy.hl_hk=='G':
-                hlgioi+=1
-            elif tbHocKy.hl_hk=='K':
-                hlkha+=1
-            elif tbHocKy.hl_hk=='TB':
-                hltb+=1
-            elif tbHocKy.hl_hk=='Y':
-                hlyeu+=1
-            elif tbHocKy.hl_hk=='Kem':
-                hlkem+=1
-            else:
-                hlno+=1
-                
-            hanhKiem=stu.hanhkiem_set.get(term_id=term_id)    
-            if hanhKiem.loai=='T':
-                hktot+=1
-            elif hanhKiem.loai=='K':
-                hkkha+=1    
-            elif hanhKiem.loai=='TB':
-                hktb+=1    
-            elif hanhKiem.loai=='Y':
-                hkyeu+=1
-            else:
-                hkno+=1   
-            
-            if tbHocKy.danh_hieu_hk=='G':
-                ddg+=1
-            elif tbHocKy.danh_hieu_hk=='TT':
-                ddtt+=1
-            elif tbHocKy.danh_hieu_hk=='K':
-                ddk+=1
-            else:
-                ddno+=1            
-                    
-                     
-                
-    e=0.000000001            
-    sum=hlgioi+hlkha+hltb+hlyeu+hlkem+hlno
-    print sum
-    ptg =float(hlgioi)/sum *100
-    ptk =float(hlkha)/sum *100             
-    pttb =float(hltb)/sum *100             
-    ptyeu =float(hlyeu)/sum *100             
-    ptkem =float(hlkem)/sum *100
-    ptno =float(hlno)/sum *100
-    
-    hlList=[hlgioi,hlkha,hltb,hlyeu,hlkem,hlno]
-    pthlList=[ptg,ptk,pttb,ptyeu,ptkem,ptno]
-    
-    
-    pthkt=float(hktot)/sum*100
-    pthkk=float(hkkha)/sum*100
-    pthktb=float(hktb)/sum*100 
-    pthky=float(hkyeu)/sum*100 
-    pthkno=float(hkno)/sum*100 
-
-    hkList  =[hktot,hkkha,hktb,hkyeu,hkno]
-    pthkList=[pthkt,pthkk,pthktb,pthky,pthkno]
-    
-    ptddg=float(ddg)/sum*100
-    ptddtt=float(ddtt)/sum*100
-    ptddk=float(ddk)/sum*100
-    ptddno=float(ddno)/sum*100
- 
-    ddList  =[ddg,ddtt,ddk,ddno]
-    ptddList=[ptddg,ptddtt,ptddk,ptddno]
-    
-    return hlList,pthlList,hkList,pthkList,ddList,ptddList   
-          
-def finishTerm(request,term_id=1):
+def finishTerm(request,term_id=None):
     message=None
-    selectedTerm=Term.objects.get(id=term_id)
+    selectedTerm= Term.objects.get(id=term_id)
     yearString=str(selectedTerm.year_id.time)+"-"+str(selectedTerm.year_id.time+1)
     
     finishLearning,notFinishLearning    = finishTermByLearning(term_id)
     finishPractising,notFinishPractising= finishTermByPractising(term_id)
     finishAll,notFinishAll              = finishTermAll(term_id)
     
-    print "ok"
-    hlList,pthlList,hkList,pthkList,ddList,ptddList = countStudentInTerm(term_id)
-    
+    hkList,pthkList = countTotalPractisingInTerm(term_id)
+    hlList,pthlList = countTotalLearningInTerm(term_id)
+    ddList,ptddList = countDanhHieuInTerm(term_id)
+
     if request.method == 'POST':
         if request.POST.get('finishTerm'):
-            if request.POST['finishTerm']==u'click vào đây để kết thúc học kỳ':
-                selectedTerm.active=False
+            if request.POST['finishTerm']==u'click vào đây để kết thúc học kỳ':                
+                selectedTerm.year_id.school_id.status=selectedTerm.number+1 
             else:
-                selectedTerm.active=True
+                selectedTerm.year_id.school_id.status=selectedTerm.number
                 
-    
+            selectedTerm.year_id.school_id.save()  
+
+    currentTerm=get_current_term(request)            
+
     t = loader.get_template(os.path.join('school','finish_term.html'))    
     c = RequestContext(request, {"message":message,
                                  "selectedTerm":selectedTerm,
+                                 "currentTerm":currentTerm,
                                  "yearString":yearString,
                                  "finishLearning":finishLearning,
                                  "notFinishLearning":notFinishLearning,
@@ -722,7 +651,7 @@ def finishTerm(request,term_id=1):
 
 
 # thong ke hoc sinh trong mot nam hoc
-def finishYearByLearning(year_id=8):
+def finishYearByLearning(year_id):
     
     finishList=[]
     notFinishList=[]
@@ -749,7 +678,7 @@ def calculateNumberPractisingInYear(class_id,year_id):
             pupilSum+=1
     return pupilSum
 # liet ke cac lop da tinh xong hanh kiem va chua xong        
-def finishYearByPractising(year_id=8):
+def finishYearByPractising(year_id):
     
     finishList=[]
     notFinishList=[]
@@ -791,7 +720,7 @@ def  calculateNumberAllInYear(class_id,year_id):
     return pupilSum
 
 # liet ke cac lop da tinh xong danh hieu va chua xong danh hieu
-def finishYearAll(year_id=1):
+def finishYearAll(year_id):
     finishList=[]
     notFinishList=[]
     
@@ -808,102 +737,8 @@ def finishYearAll(year_id=1):
     return finishList,notFinishList
 
 
-def countStudentInYear(year_id):
-    hlgioi=0
-    hlkha =0
-    hltb  =0
-    hlyeu =0
-    hlkem =0
-    hlno  =0
 
-    hktot =0
-    hkkha =0
-    hktb  =0
-    hkyeu =0
-    hkno  =0
-    
-    ddg =0
-    ddtt=0
-    ddk =0
-    ddno=0
-    
-    selectedYear=Year.objects.get(id=year_id)
-    classList   =Class.objects.filter(year_id=selectedYear.id)
-    
-    for c in classList:
-        studentList=c.pupil_set.all()
-        for stu in studentList:
-            tbNam=stu.tbnam_set.get(year_id=year_id)
-            
-            if tbNam.hl_nam=='G':
-                hlgioi+=1
-            elif tbNam.hl_nam=='K':
-                hlkha+=1
-            elif tbNam.hl_nam=='TB':
-                hltb+=1
-            elif tbNam.hl_nam=='Y':
-                hlyeu+=1
-            elif tbNam.hl_nam=='Kem':
-                hlkem+=1
-            else:
-                hlno+=1
-                
-            if tbNam.hk_nam=='T':
-                hktot+=1
-            elif tbNam.hk_nam=='K':
-                hkkha+=1    
-            elif tbNam.hk_nam=='TB':
-                hktb+=1    
-            elif tbNam.hk_nam=='Y':
-                hkyeu+=1
-            else:
-                hkno+=1   
-            
-            if   tbNam.danh_hieu_nam=='G':
-                ddg+=1
-            elif tbNam.danh_hieu_nam=='TT':
-                ddtt+=1
-            elif tbNam.danh_hieu_nam=='K':
-                ddk+=1
-            else:
-                ddno+=1            
-                    
-                     
-                
-    e=0.000000001            
-    sum=hlgioi+hlkha+hltb+hlyeu+hlkem+hlno
-    print sum
-    ptg =float(hlgioi)/sum *100
-    ptk =float(hlkha)/sum *100             
-    pttb =float(hltb)/sum *100             
-    ptyeu =float(hlyeu)/sum *100             
-    ptkem =float(hlkem)/sum *100
-    ptno =float(hlno)/sum *100
-    
-    hlList=[hlgioi,hlkha,hltb,hlyeu,hlkem,hlno]
-    pthlList=[ptg,ptk,pttb,ptyeu,ptkem,ptno]
-    
-    
-    pthkt=float(hktot)/sum*100
-    pthkk=float(hkkha)/sum*100
-    pthktb=float(hktb)/sum*100 
-    pthky=float(hkyeu)/sum*100 
-    pthkno=float(hkno)/sum*100 
-
-    hkList  =[hktot,hkkha,hktb,hkyeu,hkno]
-    pthkList=[pthkt,pthkk,pthktb,pthky,pthkno]
-    
-    ptddg=float(ddg)/sum*100
-    ptddtt=float(ddtt)/sum*100
-    ptddk=float(ddk)/sum*100
-    ptddno=float(ddno)/sum*100
- 
-    ddList  =[ddg,ddtt,ddk,ddno]
-    ptddList=[ptddg,ptddtt,ptddk,ptddno]
-    
-    return hlList,pthlList,hkList,pthkList,ddList,ptddList   
-
-def finishYear(request,year_id=8):
+def finishYear(request,year_id):
     
     message=None
     selectedTerm=Term.objects.get(year_id=year_id,number=2)
@@ -914,13 +749,19 @@ def finishYear(request,year_id=8):
     finishPractising,notFinishPractising= finishYearByPractising(year_id)
     finishAll,notFinishAll              = finishYearAll(year_id)
     
-    hlList,pthlList,hkList,pthkList,ddList,ptddList = countStudentInYear(year_id)
+    hkList,pthkList = countTotalPractisingInYear(year_id)
+    hlList,pthlList = countTotalLearningInYear(year_id)
+    ddList,ptddList = countDanhHieuInYear(year_id)
+    
     if request.method == 'POST':
         if request.POST.get('finishTerm'):
            if request.POST['finishTerm']==u'click vào đây để kết thúc học kỳ':
                 selectedTerm.active=False
+                selectedTerm.year_id.school_id.status=3
            else:
                 selectedTerm.active=True
+                selectedTerm.year_id.school_id.status=2
+           selectedTerm.save()     
                     
     t = loader.get_template(os.path.join('school','finish_year.html'))    
     c = RequestContext(request, {"message":message,

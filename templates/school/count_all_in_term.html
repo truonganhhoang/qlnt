@@ -43,7 +43,7 @@
 	</tr>
 	<tr>
 		<td align="center">
-			Phần trăm
+			Phần trăm (%)
 		</td>
 		{% for h in totalPtList %}
 		<td align="center">
@@ -52,88 +52,94 @@
 		{% endfor %}
 	</tr>
 </table>
-<br>
+
+
 <br>
 <span style="font-size:18px" > <b> <u>B.CHI TIẾT TỪNG LỚP: </u> </b> </span><br>
 <br>
-<b>I.Tính theo số lượng: </b> <br>
 <br>
 <br>
-<table border=1 width="100%">
+
+<table border=1 width="100%"
 	<tr> 
-		<td width="14%" align="center">
+		<td rowspan=2 width="16%" align="center" >
 			Lớp
 		</td>
-		<td width="14%" align="center">
-			Học sinh giỏi
+
+		<td rowspan=2 width="6%" align="center" >
+			Sĩ số
 		</td>
-		<td width="14%" align="center">
-			Học sinh tiến tiến
+		
+		<td colspan=2 width="12%" align="center">
+			Học sinh Giỏi
 		</td>
-		<td width="14%" align="center">
-			Không có danh hiệu
+		
+		<td colspan=2 width="12%" align="center">
+			Học sinh Khá
 		</td>
-		<td width="14%" align="center">
+		
+		<td colspan=2 width="12%" align="center">
+			Không có danh hiệu 
+		</td>
+		
+		<td colspan=2 width="12%" align="center">
 			Chưa xếp loại
-		</td>		
-	</tr>
-
-	
-	{% for c,sl in slList %}
-	<tr>
-		<td  align="center">
-			{{c.name}}
-			
 		</td>
-		{% for s in sl %}
-		<td  align="center">
-			{{s}}
-		</td>		
-		{% endfor %}
 	</tr>
-	{% endfor %}
 
-</table>
-<br>
-<br>	
-<b>II.Tính theo phần trăm: </b> <br>
-<br>
-<br>
-<table border=1 width="100%">
 	<tr> 
-		<td width="14%" align="center">
-			Lớp
+		<td width="6%" align="center">
+			TS
 		</td>
-		<td width="14%" align="center">
-			Học sinh giỏi
+		<td width="6%" align="center">
+			%
 		</td>
-		<td width="14%" align="center">
-			Học sinh tiến tiến
+		<td width="6%" align="center">
+			TS
 		</td>
-		<td width="14%" align="center">
-			Không có danh hiệu
+		<td width="6%" align="center">
+			%
 		</td>
-		<td width="14%" align="center">
-			Chưa xếp loại
-		</td>		
+		<td width="6%" align="center">
+			TS
+		</td>
+		<td width="6%" align="center">
+			%
+		</td>
+		<td width="6%" align="center">
+			TS
+		</td>
+		<td width="6%" align="center">
+			%
+		</td>
+		
 	</tr>
 	
-	{% for c,sl in ptList %}
+	
+	{% for name,ss,l in list %}
 	<tr>
-		<td  align="center">
-			{{c.name}}
-			
+		<td align="center">
+			{{ name}}
+		</td >
+		
+		<td align="center">
+			{{ ss|floatformat:"0" }}
 		</td>
-		{% for s in sl %}
-		<td  align="center">
-			{{s|floatformat:"2"}}
-		</td>		
+		{% for u,v in l %}
+			<td align="center">
+			    {{ u }}
+			</td >
+			
+			<td align="center">
+				{{v|floatformat:"1"}}
+			</td>
 		{% endfor %}
-	</tr>
+	</tr>	
 	{% endfor %}
 
-</table>
+	
 
+</table>
 	
 	
 	

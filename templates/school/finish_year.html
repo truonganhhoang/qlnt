@@ -7,39 +7,31 @@
 <table width="100%" border=0>
 	<tr>
 		<td align=center style="font-size:25px" >
-		<b> Tổng kết năm học : {{yearString}}  </b>
+		<b> Tổng kết cả năm  <br><br>
+				Năm học : {{yearString}}  </b>
 		</td>
 	</tr>	
 </table>
-<table border="0" width="100%">
-<tr>
-<td width="50%">
-<br>
-{#----------------------------------------------------#}
-    Trạng thái năm học:
-    {% if selectedTerm.active %}
-	<span style="color:0043A8 ; font-size:23px">	Đang diễn ra  		</span>
 
-	{% else %}
-	<span style="color:5197FF ; font-size:23px">
-		Đã kết thúc 
-	</span >	
-	{% endif %}	
-</b>
-</td>
-<td width="50%">
+
+
 <br>
-<form action="/school/finishTerm/{{selectedTerm.id}}"  name="info" method="post" id='myform' 
+<form action="/school/finishYear/{{selectedTerm.year_id.id}}"  name="info" method="post" id='myform' 
 	 >{% csrf_token %}    
-	 {% if selectedTerm.active %}	 
-		<input type="submit"  name="finishTerm" value="click vào đây để kết thúc năm học" title="click vào đây để kết thúc học kỳ">
-	 {% else %}	
-		<input type="submit"  name="finishTerm" value="click vào đây để khôi phục học kỳ II" title="nếu chưa muốn kết thúc, bạn có thể khôi phục lại" >
-	 {% endif %}	
-</form>	
-</td>
-</tr>
-</table>
+	 {% ifequal selectedTerm currentTerm %}	 
+		Trạng thái năm học:
+		<span style="color:0043A8 ; font-size:23px">	Đang diễn ra  		</span>	
+		&nbsp&nbsp&nbsp
+		<input type="submit"  name="finishTerm" value="click vào đây để kết thúc học kỳ" title="click vào đây để kết thúc năm học">
+     {% endifequal %}
+
+
+
+
+
+
+
+
 {#-------------------------------------------------------------------------------#}
 							{# thong ke chung  #}
 {#-------------------------------------------------------------------------------#}
@@ -209,12 +201,7 @@
 	{% endif %}	
 	
 		<td>
-		{% if forloop.counter < 10 %} 	
-		  &nbsp {{forloop.counter}}. {{l}}	
-		{% else %}
-		   {{forloop.counter}}. {{l}}	
-		{% endif %}   
-		
+		  {{l}}	
 		</td>
 	{% if forloop.counter|divisibleby:"6" %}
 		</tr>
@@ -251,12 +238,7 @@
 	{% endif %}	
 	
 		<td>
-		{% if forloop.counter < 10 %} 	
-		  &nbsp {{forloop.counter}}. {{l}}	
-		{% else %}
-		   {{forloop.counter}}. {{l}}	
-		{% endif %}   
-		
+		  {{l}}	
 		</td>
 		<td>
 			{{s}}
@@ -285,12 +267,7 @@
 	{% endif %}	
 	
 		<td>
-		{% if forloop.counter < 10 %} 	
-		  &nbsp {{forloop.counter}}. {{l}}	
-		{% else %}
-		   {{forloop.counter}}. {{l}}	
-		{% endif %}   
-		
+		  {{l}}	
 		</td>
 	{% if forloop.counter|divisibleby:"6" %}
 		</tr>
@@ -327,12 +304,7 @@
 	{% endif %}	
 	
 		<td>
-		{% if forloop.counter < 10 %} 	
-		  &nbsp {{forloop.counter}}. {{l}}	
-		{% else %}
-		   {{forloop.counter}}. {{l}}	
-		{% endif %}   
-		
+		  {{l}}	
 		</td>
 		<td>
 			{{s}}
@@ -361,12 +333,7 @@
 	{% endif %}	
 	
 		<td>
-		{% if forloop.counter < 10 %} 	
-		  &nbsp {{forloop.counter}}. {{l}}	
-		{% else %}
-		   {{forloop.counter}}. {{l}}	
-		{% endif %}   
-		
+		  {{l}}	
 		</td>
 	{% if forloop.counter|divisibleby:"6" %}
 		</tr>
@@ -403,12 +370,7 @@
 	{% endif %}	
 	
 		<td>
-		{% if forloop.counter < 10 %} 	
-		  &nbsp {{forloop.counter}}. {{l}}	
-		{% else %}
-		   {{forloop.counter}}. {{l}}	
-		{% endif %}   
-		
+		  {{l}}	
 		</td>
 		<td>
 			{{s}}
@@ -422,12 +384,16 @@
 
 
 
+	 {% ifnotequal selectedTerm currentTerm %}	 
+		Trạng thái năm học:	
+		<span style="color:5197FF ; font-size:23px">
+			Đã kết thúc 
+		</span >		 
+		&nbsp&nbsp&nbsp&nbsp
+		Nếu chưa muốn kết thúc năm học, bạn có thể ấn khôi phục lại học kỳ
+		<input type="submit"  name="finishTerm" value="khôi phục" title="nếu chưa muốn kết thúc, ấn vào đây đkhôi phục lại" >
+	 {% endifnotequal %}	
 
-
-
-
-
-
-
+</form>	
 
 {% endblock  %}

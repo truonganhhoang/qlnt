@@ -1,4 +1,4 @@
-﻿{% extends "school/base_school.html"%}
+﻿ {% extends "school/base_school.html"%} 
 {% block content %}
 
 {% if message != None %}
@@ -16,45 +16,77 @@
 		</td>
 	</tr>
 </table>
-<table border="0" width="100%">
-<tr>
-<td width="50%">
 <br>
 {#----------------------------------------------------#}
-    Trạng thái học kỳ:
-    {% if selectedTerm.active %}
-	<span style="color:0043A8 ; font-size:23px">	Đang diễn ra  		</span>
 
-	{% else %}
-	<span style="color:5197FF ; font-size:23px">
-		Đã kết thúc 
-	</span >	
-	{% endif %}	
-</b>
-</td>
-<td width="50%">
+
+
 <br>
 <form action="/school/finishTerm/{{selectedTerm.id}}"  name="info" method="post" id='myform' 
 	 >{% csrf_token %}    
-	 {% if selectedTerm.active %}	 
+	 {% ifequal selectedTerm currentTerm %}	 
+		Trạng thái học kỳ:
+		<span style="color:0043A8 ; font-size:23px">	Đang diễn ra  		</span>	
+		&nbsp&nbsp&nbsp
 		<input type="submit"  name="finishTerm" value="click vào đây để kết thúc học kỳ" title="click vào đây để kết thúc học kỳ">
-	 {% else %}	
-		<input type="submit"  name="finishTerm" value="click vào đây để khôi phục lại học kỳ" title="nếu chưa muốn kết thúc, bạn có thể khôi phục lại" >
-	 {% endif %}	
-</form>	
-</td>
-</tr>
-</table>
+     {% endifequal %}
+	 
 {#-------------------------------------------------------------------------------#}
 							{# thong ke chung  #}
 {#-------------------------------------------------------------------------------#}
 
 <br>
 <br>
-<br>
 <span style="font-size:18px" > <b> <u>A.THỐNG KÊ TOÀN TRƯỜNG: </u> </b> </span><br>
 <br>
-&nbsp &nbsp<b>I.HỌC LỰC: </b> <br>
+
+{#--------------------------------------------------------------------------#}
+<br>
+&nbsp &nbsp<b>I.HẠNH KIỂM: </b> <br>
+<br>
+<table border=1 width="100%">
+	<tr> 
+		<td width="14%">
+		</td>
+		<td width="14%" align="center">
+			Tốt
+		</td>
+		<td width="14%" align="center">
+			Khá
+		</td>
+		<td width="14%" align="center">
+			Trung bình
+		</td>
+		<td width="28%" align="center">
+			Yếu
+		</td>
+		<td width="14%" align="center">
+			Chưa xếp loại
+		</td>		
+	</tr>
+	<tr>
+		<td align="center">
+			Số lượng
+		</td>
+		{% for h in hkList %}
+		<td align="center">
+			{{h}}
+		</td>
+		{% endfor %}
+	</tr>
+	<tr>
+		<td align="center">
+			Phần trăm (%)
+		</td>
+		{% for h in pthkList %}
+		<td align="center">
+			{{h|floatformat:"1"}}
+		</td>
+		{% endfor %}
+	</tr>
+</table>
+<br>
+&nbsp &nbsp<b>II.HỌC LỰC: </b> <br>
 <br>
 <table border=1 width="100%">
 	<tr> 
@@ -91,59 +123,11 @@
 	</tr>
 	<tr>
 		<td align="center">
-			Phần trăm
+			Phần trăm (%)
 		</td>
 		{% for h in pthlList %}
 		<td align="center">
-			{{h|floatformat:"2"}}
-		</td>
-		{% endfor %}
-	</tr>
-</table>
-
-
-{#--------------------------------------------------------------------------#}
-<br>
-<br>
-&nbsp &nbsp<b>II.HẠNH KIỂM: </b> <br>
-<br>
-<table border=1 width="100%">
-	<tr> 
-		<td width="14%">
-		</td>
-		<td width="14%" align="center">
-			Tốt
-		</td>
-		<td width="14%" align="center">
-			Khá
-		</td>
-		<td width="14%" align="center">
-			Trung bình
-		</td>
-		<td width="28%" align="center">
-			Yếu
-		</td>
-		<td width="14%" align="center">
-			Chưa xếp loại
-		</td>		
-	</tr>
-	<tr>
-		<td align="center">
-			Số lượng
-		</td>
-		{% for h in hkList %}
-		<td align="center">
-			{{h}}
-		</td>
-		{% endfor %}
-	</tr>
-	<tr>
-		<td align="center">
-			Phần trăm
-		</td>
-		{% for h in pthkList %}
-		<td align="center">
-			{{h|floatformat:"2"}}
+			{{h|floatformat:"1"}}
 		</td>
 		{% endfor %}
 	</tr>
@@ -185,11 +169,11 @@
 	</tr>
 	<tr>
 		<td align="center">
-			Phần trăm
+			Phần trăm (%)
 		</td>
 		{% for h in ptddList %}
 		<td align="center">
-			{{h|floatformat:"2"}}
+			{{h|floatformat:"1"}}
 		</td>
 		{% endfor %}
 	</tr>
@@ -214,12 +198,7 @@
 	{% endif %}	
 	
 		<td>
-		{% if forloop.counter < 10 %} 	
-		  &nbsp {{forloop.counter}}. {{l}}	
-		{% else %}
-		   {{forloop.counter}}. {{l}}	
-		{% endif %}   
-		
+		  {{l}}			
 		</td>
 	{% if forloop.counter|divisibleby:"6" %}
 		</tr>
@@ -256,12 +235,7 @@
 	{% endif %}	
 	
 		<td>
-		{% if forloop.counter < 10 %} 	
-		  &nbsp {{forloop.counter}}. {{l}}	
-		{% else %}
-		   {{forloop.counter}}. {{l}}	
-		{% endif %}   
-		
+		  {{l}}			
 		</td>
 		<td>
 			{{s}}
@@ -290,12 +264,7 @@
 	{% endif %}	
 	
 		<td>
-		{% if forloop.counter < 10 %} 	
-		  &nbsp {{forloop.counter}}. {{l}}	
-		{% else %}
-		   {{forloop.counter}}. {{l}}	
-		{% endif %}   
-		
+		  {{l}}			
 		</td>
 	{% if forloop.counter|divisibleby:"6" %}
 		</tr>
@@ -332,12 +301,7 @@
 	{% endif %}	
 	
 		<td>
-		{% if forloop.counter < 10 %} 	
-		  &nbsp {{forloop.counter}}. {{l}}	
-		{% else %}
-		   {{forloop.counter}}. {{l}}	
-		{% endif %}   
-		
+		  {{l}}			
 		</td>
 		<td>
 			{{s}}
@@ -366,12 +330,7 @@
 	{% endif %}	
 	
 		<td>
-		{% if forloop.counter < 10 %} 	
-		  &nbsp {{forloop.counter}}. {{l}}	
-		{% else %}
-		   {{forloop.counter}}. {{l}}	
-		{% endif %}   
-		
+		  {{l}}			
 		</td>
 	{% if forloop.counter|divisibleby:"6" %}
 		</tr>
@@ -408,12 +367,7 @@
 	{% endif %}	
 	
 		<td>
-		{% if forloop.counter < 10 %} 	
-		  &nbsp {{forloop.counter}}. {{l}}	
-		{% else %}
-		   {{forloop.counter}}. {{l}}	
-		{% endif %}   
-		
+		  {{l}}			
 		</td>
 		<td>
 			{{s}}
@@ -424,6 +378,19 @@
 	
 	{% endfor %} 
 </table>
+<br>
+<br>	 
+	 {% ifnotequal selectedTerm currentTerm %}	 
+		Trạng thái học kỳ:	
+		<span style="color:5197FF ; font-size:23px">
+			Đã kết thúc 
+		</span >		 
+		&nbsp&nbsp&nbsp&nbsp
+		Nếu chưa muốn kết thúc học kỳ, bạn có thể ấn khôi phục lại học kỳ
+		<input type="submit"  name="finishTerm" value="khôi phục" title="nếu chưa muốn kết thúc, ấn vào đây đkhôi phục lại" >
+	 {% endifnotequal %}	
+
+</form>	
 
 
 

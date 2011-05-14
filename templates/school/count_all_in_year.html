@@ -35,7 +35,7 @@
 			Thi lại
 		</td>
 		<td width="12%" align="center">
-			Rèn luyện lại
+			Rèn luyện thêm
 		</td>		
 		<td width="12%" align="center">
 			Chưa xếp loại
@@ -53,7 +53,7 @@
 	</tr>
 	<tr>
 		<td align="center">
-			Phần trăm
+			Phần trăm (%)
 		</td>
 		{% for h in totalPtList %}
 		<td align="center">
@@ -64,108 +64,119 @@
 </table>
 <br>
 <br>
+
+<br>
 <span style="font-size:18px" > <b> <u>B.CHI TIẾT TỪNG LỚP: </u> </b> </span><br>
 <br>
-<b>I.Tính theo số lượng: </b> <br>
 <br>
 <br>
-<table border=1 width="100%">
+
+<table border=1 width="100%"
 	<tr> 
-		<td width="15%">
-		   Lớp
-		</td>
-		<td width="12%" align="center">
-			Học sinh giỏi
-		</td>
-		<td width="12%" align="center">
-			Học sinh tiến tiến
-		</td>
-		<td width="12%" align="center">
-			Lên lớp
-		</td>
-		<td width="12%" align="center">
-			Không Lên lớp
+		<td rowspan=2 width="15%" align="center" >
+			Lớp
 		</td>
 
-		<td width="12%" align="center">
+		<td rowspan=2 width="5%" align="center" >
+			Sĩ số
+		</td>
+		
+		<td colspan=2 width="10%" align="center">
+			Học sinh Giỏi
+		</td>
+		
+		<td colspan=2 width="10%" align="center">
+			Học sinh Khá
+		</td>
+		
+		<td colspan=2 width="10%" align="center">
+			Lên Lớp
+		</td>
+		<td colspan=2 width="10%" align="center">
+			Không lên lớp
+		</td>
+		<td colspan=2 width="10%" align="center">
 			Thi lại
 		</td>
-		<td width="12%" align="center">
-			Rèn luyện lại
-		</td>		
-		<td width="12%" align="center">
-			Chưa xếp loại
-		</td>		
-	</tr>
-
-	
-	{% for c,sl in slList %}
-	<tr>
-		<td  align="center">
-			{{c.name}}
-			
+		
+		<td colspan=2 width="10%" align="center">
+			Rèn luyện thêm
 		</td>
-		{% for s in sl %}
-		<td  align="center">
-			{{s}}
-		</td>		
-		{% endfor %}
+		
+		<td colspan=2 width="10%" align="center">
+			Chưa xếp loại
+		</td>
 	</tr>
-	{% endfor %}
 
-</table>
-<br>
-<br>	
-<b>II.Tính theo phần trăm: </b> <br>
-<br>
-<br>
-<table border=1 width="100%">
 	<tr> 
-		<td width="15%">
-		    Lớp
+		<td width="5%" align="center">
+			TS
 		</td>
-		<td width="12%" align="center">
-			Học sinh giỏi
+		<td width="5%" align="center">
+			%
 		</td>
-		<td width="12%" align="center">
-			Học sinh tiến tiến
+		<td width="5%" align="center">
+			TS
 		</td>
-		<td width="12%" align="center">
-			Lên lớp
+		<td width="5%" align="center">
+			%
 		</td>
-		<td width="12%" align="center">
-			Không Lên lớp
+		<td width="5%" align="center">
+			TS
 		</td>
-
-		<td width="12%" align="center">
-			Thi lại
+		<td width="5%" align="center">
+			%
 		</td>
-		<td width="12%" align="center">
-			Rèn luyện lại
-		</td>		
-		<td width="12%" align="center">
-			Chưa xếp loại
-		</td>		
+		<td width="5%" align="center">
+			TS
+		</td>
+		<td width="5%" align="center">
+			%
+		</td>
+		<td width="5%" align="center">
+			TS
+		</td>
+		<td width="5%" align="center">
+			%
+		</td>
+		<td width="5%" align="center">
+			TS
+		</td>
+		<td width="5%" align="center">
+			%
+		</td>
+		<td width="5%" align="center">
+			TS
+		</td>
+		<td width="5%" align="center">
+			%
+		</td>
+		
 	</tr>
 	
-	{% for c,sl in ptList %}
+	
+	{% for name,ss,l in list %}
 	<tr>
-		<td  align="center">
-			{{c.name}}
-			
+		<td align="center">
+			{{ name}}
+		</td >
+		
+		<td align="center">
+			{{ ss|floatformat:"0" }}
 		</td>
-		{% for s in sl %}
-		<td  align="center">
-			{{s|floatformat:"2"}}
-		</td>		
+		{% for u,v in l %}
+			<td align="center">
+			    {{ u }}
+			</td >
+			
+			<td align="center">
+				{{v|floatformat:"1"}}
+			</td>
 		{% endfor %}
-	</tr>
-	{% endfor %}
-
+	</tr>	
+	{% endfor %}	
 </table>
-
-	
-	
+		
 	
 {% endblock %}	
 	

@@ -463,7 +463,7 @@ def markTable(request,class_id=4):
     selectedClass=Class.objects.get(id=class_id)    
     yearChoice=selectedClass.year_id.id
     
-    selectedClass.year_id.school_id.status=2
+    #selectedClass.year_id.school_id.status=2
         
     if selectedClass.year_id.school_id.status==1:
         termList=Term.objects.filter(year_id=yearChoice,number=1).order_by('number')

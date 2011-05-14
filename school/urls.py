@@ -26,8 +26,13 @@ urlpatterns = patterns('',
 	
     url(r'finishYear/(?P<year_id>\w+)','school.viewFinish.finishYear'),
     url(r'finishTerm/(?P<term_id>\w+)','school.viewFinish.finishTerm'),
+    
+    url(r'finish$','school.viewFinish.finish'),
+    
     #thong ke toan truong
-    url(r'countInSchool/(?P<year_id>\w+)','school.viewCount.countInSchool'),
+    url(r'countInSchool/(?P<year_id>\w+)' , 'school.viewCount.countInSchool'),
+    url(r'countInSchool$' , 'school.viewCount.countInSchool'),
+ 
     url(r'countPractisingInTerm/(?P<term_id>\w+)','school.viewCount.countPractisingInTerm'),
     url(r'countPractisingInYear/(?P<year_id>\w+)','school.viewCount.countPractisingInYear'),
     url(r'countLearningInTerm/(?P<term_id>\w+)','school.viewCount.countLearningInTerm'),
