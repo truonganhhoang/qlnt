@@ -23,6 +23,8 @@ class sms(models.Model):
     content = models.CharField("Nội dung", max_length=300, blank=False)
     created = models.DateTimeField("Thời gian tạo", auto_now_add=True)
     sender = models.ForeignKey(User)
+    recent = models.BooleanField()
+    success = models.BooleanField()
     
     def createdFormat(self):
         return self.created.strftime('%d') + "/"\

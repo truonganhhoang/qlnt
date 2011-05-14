@@ -1,19 +1,39 @@
 # -*- coding: utf-8 -*-
-from django.views.generic.list import ListView
-from sms.models import sms, smsForm, smsFromExcelForm
+from django.contrib.auth.models import User
+from django.core.files import File
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext, loader
-from django.core.files import File
-import urllib, urllib2
-import xlrd, xlwt
+from django.views.generic.list import ListView
+from sms.models import sms, smsForm, smsFromExcelForm
 import os.path
+import urllib
+import urllib2
+import xlrd
+import xlwt
 
 TEMP_FILE_LOCATION = os.path.join(os.path.dirname(__file__), 'uploaded')
 EXPORTED_FILE_LOCATION = os.path.join(os.path.dirname(__file__), 'exported')
+        
+def checkValidPhoneNumber(phone):
+    user_list = User.objects.all()
+    user_phone_list = []
+    for u in user_list:
+        user_phone_list.append(u.get_profile().phone)
+        
+    for p in user_phone_list:
+        if p == phone:
+            return True
+    return False
 
 def manual_sms(request):
     if request.method == 'POST':
+        # update all record in sms db: recent = false
+        all_sms = sms.objects.all()
+        for s in all_sms:
+            s.recent = False
+            s.save()
+        
         form = smsForm(request.POST)
         if form.is_valid():
             phone_list = form.cleaned_data.get('phone')
@@ -35,24 +55,29 @@ def manual_sms(request):
 #            f = open.open('http://viettelvas.vn:7777/fromcp.asmx', para)
 #            f.close();
             
-            for p in phone:    
-                '''Save to db'''
-                s = sms(phone=p, content=content, sender=request.user)
-                s.save()
-                
-                '''Send sms via Viettel system'''
-                data = urllib.urlencode({
-                            'RequestID'     : '4',
-                            'CPCode'        : '',
-                            'UserID'        : '',
-                            'ReceiverID'    : p,
-                            'ServiceID'     : '',
-                            'CommandCode'   : '',
-                            'Content'       : content,
-                            'ContentType'   : '',
-                            })
-#                f = open.open('http://viettelvas.vn:7777/fromcp.asmx', data)
-            
+            for p in phone:
+                if checkValidPhoneNumber(p):    
+                    '''Save to db'''
+                    s = sms(phone=p, content=content, sender=request.user, recent=True, success=True)
+                    s.save()
+                    
+                    '''Send sms via Viettel system'''
+                    data = urllib.urlencode({
+                                'RequestID'     : '4',
+                                'CPCode'        : '',
+                                'UserID'        : '',
+                                'ReceiverID'    : p,
+                                'ServiceID'     : '',
+                                'CommandCode'   : '',
+                                'Content'       : content,
+                                'ContentType'   : '',
+                                })
+#                    f = open.open('http://viettelvas.vn:7777/fromcp.asmx', data)
+                else:    
+                    '''Save to db'''
+                    s = sms(phone=p, content=content, sender=request.user, recent=True, success=False)
+                    s.save()
+                                
             return HttpResponseRedirect('/sms/sent_sms/')
     else:
         form = smsForm()    
@@ -99,21 +124,27 @@ def excel_sms(request):
 #            f = open.open('http://viettelvas.vn:7777/fromcp.asmx', para)
 #            f.close();            
             for r in range(1, sheet.nrows):
-                '''Save to db'''
-                s = sms(phone=sheet.cell_value(r,0), content=sheet.cell_value(r,1), sender=request.user)
-                s.save()
-                
-                '''Send sms via Viettel system'''
-                data = urllib.urlencode({
-                        'RequestID'     : '4',
-                        'CPCode'        : '',
-                        'UserID'        : '',
-                        'ReceiverID'    : sheet.cell_value(r,0),
-                        'ServiceID'     : '',
-                        'CommandCode'   : '',
-                        'Content'       : sheet.cell_value(r,1),
-                        'ContentType'   : '',})
-#                f = open.open('http://viettelvas.vn:7777/fromcp.asmx', data)
+                if checkValidPhoneNumber(sheet.cell_value(r,0)):    
+                    '''Save to db'''
+                    s = sms(phone=sheet.cell_value(r,0), content=sheet.cell_value(r,1), sender=request.user, recent=True, success=True)
+                    s.save()
+                    
+                    '''Send sms via Viettel system'''
+                    data = urllib.urlencode({
+                                'RequestID'     : '4',
+                                'CPCode'        : '',
+                                'UserID'        : '',
+                                'ReceiverID'    : sheet.cell_value(r,0),
+                                'ServiceID'     : '',
+                                'CommandCode'   : '',
+                                'Content'       : sheet.cell_value(r,1),
+                                'ContentType'   : '',
+                                })
+#                    f = open.open('http://viettelvas.vn:7777/fromcp.asmx', data)
+                else:    
+                    '''Save to db'''
+                    s = sms(phone=sheet.cell_value(r,0), content=sheet.cell_value(r,1), sender=request.user, recent=True, success=False)
+                    s.save()
             
             os.remove(filepath)
             return HttpResponseRedirect('/sms/sent_sms/')

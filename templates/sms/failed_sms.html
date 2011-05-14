@@ -3,8 +3,9 @@
 
 {% block content %}
 	{% if user.is_authenticated %}
-		<small><a href="/sms/failed_sms/">Những tin nhắn gửi đi thất bại.</a></small>
-		<h3>Danh sách tin nhắn đã được gửi đi:</h3>
+		<small><a href="/sms/sent_sms/">Những tin nhắn gửi đi thành công.</a></small>
+		<h3>Danh sách tin nhắn không được gửi đi:</h3>
+		<small><b>Lý do: </b>Số điện thoại không phù hợp với bất kỳ Người sử dụng nào.</small>
 		{% if sms_list %}
             {% autopaginate sms_list 30 %}
 			<table class="solid_border">
