@@ -6,15 +6,13 @@
 		{% if sms_list %}
 			<table class="solid_border">
 				<col width=150>
-				<col width=250>
-				<col width=120>
-				<col width=120>
+				<col width=300>
+				<col width=180>
 				<col width=160>
 				<tr class="solid_border">
 				<td class="solid_border">Số điện thoại</td>
 				<td class="solid_border">Nội dung</td>
 				<td class="solid_border">Thời gian tạo</td>
-				<td class="solid_border">Thời gian sửa</td>
 				<td class="solid_border">Người gửi</td>
 				</tr>
 			{% for s in sms_list %}
@@ -22,12 +20,10 @@
 				<td class="solid_border">{{ s.phone }}</td>
 				<td class="solid_border">{{ s.content }}</td>
 				<td class="solid_border">{{ s.createdFormat }}</td>
-				<td class="solid_border">{{ s.modifiedFormat }}</td>
 				<td class="solid_border">{{ s.sender }}</td>
 				</tr>
 			{% endfor %}
 			</table>
-			<br /><a href="/sms/export_excel/">Xuất ra file excel</a>
 		{% else %}
 		    <p>Không có tin nhắn nào đã được gửi đi.</p>
 		{% endif %}

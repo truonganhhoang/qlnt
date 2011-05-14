@@ -41,5 +41,9 @@ table.solid_border{
 
 td.solid_border, th.solid_border{
 	border:1px solid black;
-	padding:5px
+	padding:5px;
+}
+
+p.right{
+	text-align:right;
 }

@@ -21,19 +21,14 @@ class customDateField(forms.DateField):
 class sms(models.Model):
     phone = models.CharField("Số điện thoại", max_length=20, blank=False)
     content = models.CharField("Nội dung", max_length=300, blank=False)
-    created = models.DateField("Thời gian tạo", auto_now_add=True)
-    modified = models.DateField("Thời gian sửa", auto_now=True)
+    created = models.DateTimeField("Thời gian tạo", auto_now_add=True)
     sender = models.ForeignKey(User)
     
     def createdFormat(self):
         return self.created.strftime('%d') + "/"\
-                + self.created.strftime('%m') + "/"\
-                + self.created.strftime('%Y')
-    
-    def modifiedFormat(self):
-        return self.modified.strftime('%d') + "/"\
-                + self.modified.strftime('%m') + "/"\
-                + self.modified.strftime('%Y')
+                + self.created.strftime('%m') + " - "\
+                + self.created.strftime('%H')+ ":"\
+                + self.created.strftime('%M')
     
     def __unicode__(self):
         return self.phone

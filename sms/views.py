@@ -12,9 +12,6 @@ import os.path
 TEMP_FILE_LOCATION = os.path.join(os.path.dirname(__file__), 'uploaded')
 EXPORTED_FILE_LOCATION = os.path.join(os.path.dirname(__file__), 'exported')
 
-def index(request):
-    return render_to_response("sms/index.html", context_instance=RequestContext(request))
-
 def manual_sms(request):
     if request.method == 'POST':
         form = smsForm(request.POST)
@@ -139,14 +136,12 @@ def export_excel(request):
     ws.write(0, 0, 'Số điện thoại người nhận')
     ws.write(0, 1, 'Nội dung tin nhắn')
     ws.write(0, 2, 'Thời gian tạo')
-    ws.write(0, 3, 'Thời gian sửa')
     ws.write(0, 4, 'Người gửi')
     begin = 1;
     for q in queryset:
         ws.write(begin, 0, q.phone)
         ws.write(begin, 1, q.content)
         ws.write(begin, 2, q.created)
-        ws.write(begin, 3, q.modified)
         ws.write(begin, 4, q.sender.username)
         begin = begin+1
     

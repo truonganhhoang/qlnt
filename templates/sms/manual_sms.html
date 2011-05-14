@@ -5,7 +5,14 @@
 		<h3>Gửi tin nhắn mới</h3>
 		<form action="" method="post">{% csrf_token %}
 			{{ form.as_p }}
-		<input type="submit" value="Gửi" />
+			<table>
+			<col width="160">
+			<td></td>
+			<td><input type="submit" value="Gửi" /></td>
+			</table>
 		</form>
+		<p class="right">
+		<a href="/sms/excel_sms/">Chuyển sang gửi tin nhắn từ file Excel</a>
+		</p>
 	{% endif %}
 {% endblock %}
