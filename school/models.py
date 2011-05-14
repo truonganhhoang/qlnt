@@ -154,7 +154,6 @@ class StartYear(models.Model):
 class Term(models.Model):
 	number = models.IntegerField(max_length=1, choices = TERM_CHOICES)
 	# neu active =false thi khong cho phep sua diem nua
-	active = models.BooleanField(default=True,choices=ACTIVE_CHOICES)
 	year_id= models.ForeignKey(Year)
 	def __unicode__(self):
 		return str(self.number)+" "+str(self.year_id.time)		 
