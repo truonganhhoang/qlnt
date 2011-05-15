@@ -1,41 +1,94 @@
-<html>
-
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-	<title>
-	{% block title %}
-		Quản lý nhà trường
-	{% endblock %}
-	</title>
-	<script type="text/javascript" src="/static/js/jquery.js"></script>
-   	<script type="text/javascript" src="/static/js/dimensions.js"></script>
-    </script>
-   	{% block js %}	
-	{% endblock %}
-	{% block css %}<link rel="stylesheet" href="/static/css/main.css">{% endblock %}
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+{% block title %}
+<title>{{ user.userprofile.organization.name }}</title>
+{% endblock %}
+<link href="/static/css/style.css" rel="stylesheet" type="text/css" />
+{% block css %}
+{% endblock %}
+{% block js %}
+{% endblock %}
 </head>
-
 <body>
-	<div id="top"><a href="/">Quản lý nhà trường</a></div>
-	
-	<div id="navi">{% block navi %} 
-		{% if user.is_authenticated %}
-			{% if user.is_superuser %}
-				<a href="/admin">Hệ thống</a> - 
-			{% else %}
-				<a href="/school">Trường</a>  - 
-			{% endif %}
-			<!--<a href="/messages">Thông báo</a> - -->
-			<a href="/sms/manual_sms">Gửi tin nhắn</a> - 
-			<a href="/logout">Đăng xuất <b>{{user.username}}</b></a> -  
-		{% else %} 
-		 	<a href="/login">Đăng nhập</a> - 
-		{% endif %}
-	 	<a href="/help">Trợ giúp</a>
+
+
+<div id="topPan">
+	<a href="{%url views.index%}"><img src="/static/css/images/UPlogo.png" alt="Hệ thống quản lý cấp trên trường" width="1200" height="50" border="0"  class="logo" title="Hệ thống quản lý cấp trên trường "/></a>
+
+  <div id="topContactPan"></div>
+	<div id="topMenuPan">
+	  <div id="topMenuLeftPan"></div>
 	 	
-	{% endblock %}</div>
+	  <div id="topMenuMiddlePan">
+	  	<ul>
+			<li class="home"><a href="{%url views.index %}" class="home">Trang chủ</a></li>
+			<li><a href="/admin">Trang Hệ Thống</a></li>
+			<li><a href="/school">Giao Diện Trường</a></li>
+			<li><a href="/messages">Gửi Thông Báo</a></li>
+			<li><a href="/sms/manual_sms">Gửi tin nhắn SMS</a></li>
+			<li><a href="#">Liên hệ</a></li>
+			<li><a href="/help">Trợ giúp</a></li>
+		</ul>
+	  </div>
+	  <div id="topMenuRightPan"></div>
+	  {% if user.is_authenticated %}	
+	  <div id="topUser">
+			<p>Xin chào,&nbsp </p> <p><a href="#" > {{user.username}}</a>,&nbsp</p><p><a href="{%url django.contrib.auth.views.logout %}">Đăng Xuất</a></p> 	  
+	  </div>
+	  {% else %}
+		  	<div id="topUser">
+		  		<ul>
+			 	<a href="/login">Đăng nhập</a>
+			 	</ul>
+			</div>
+	{% endif %}
+	</div>
 	
-	<div id="content">{% block content %}{% endblock %} </div>
 	
-	<div id="footer">{% block footer %}&copy 2011 UET-VNU & Viettel{% endblock %} </div>
+</div>
+
+
+<div id="bodyPan">
+	<div id="bodyRightPan">
+	{% block left_menu %}
+		  	<h2><span>Menu</span> chính</h2>
+		  	<ul>
+				<li><a href="/admin">Trang Hệ Thống</a></li>
+				<li><a href="/school">Giao Diện Trường</a></li>
+				<li><a href="/messages/add_message">Gửi Thông Báo Mới</a></li>
+				<li><a href="/sms/excel_sms">Gửi tin nhắn SMS từ file excel</a></li>
+				<li><a href="#"> Test</a></li>
+				<li><a href="{%url app.views.school_admin_add %}">Thêm Người Quản Lý Cấp Trường</a></li>
+			</ul>
+  	{% endblock %}
+  </div>  
+  <div id="bodyLeftPan">
+  	{% block content %}
+  	{% endblock %}
+  </div>
+  
+  
+</div>
+<div id="footermainPan">
+  <div id="footerPan">
+  	<ul>
+		<li class="home"><a href="{%url views.index %}" class="home">Trang chủ</a></li>
+			<li><a href="/admin">Trang Hệ Thống</a></li>
+			<li><a href="/school">Giao Diện Trường</a></li>
+			<li><a href="#">Liên hệ</a></li>
+			<li><a href="/help">Trợ giúp</a></li>
+	</ul>
+	<p class="copyright">©SchoolTool phát triển bởi Viettel & UET-VNU.</p>	
+	<ul class="templateworld">
+  	<li>design by:</li>
+	<li><a href="http://www.templateworld.com" target="_blank">Template World</a></li>
+	<li>modified by:</li>
+	<li><a href="http://uet.vnu.edu.vn" target="_blank">University of Engineering and Technology.</a></li>
+	
+  </ul>
+  </div>
+</div>
 </body>
 </html>
