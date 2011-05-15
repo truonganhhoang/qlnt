@@ -25,10 +25,6 @@
 				<li class="home"><a href="{%url views.index %}" class="home">Trang chủ</a></li>
 				<li><a href="/admin">Trang Hệ Thống</a></li>
 				<li><a href="/school">Giao Diện Trường</a></li>
-				<li><a href="/messages">Gửi Thông Báo</a></li>
-				<li><a href="/sms/manual_sms">Gửi tin nhắn SMS</a></li>
-				<li><a href="#">Liên hệ</a></li>
-				<li><a href="/help">Trợ giúp</a></li>
 			</ul>
 	  	</div>
 	  	<div id="topMenuRightPan"></div>
@@ -50,6 +46,7 @@
 <div id="bodyPan">
 	<div id="bodyRightPan">
 	{% block left_menu %}
+	{% if user.is_superuser %}
 		<h2><span>Menu</span> chính</h2>
 		  	<ul>
 				<li><a href="/admin">Trang Hệ Thống</a></li>
@@ -59,6 +56,7 @@
 				<li><a href="#"> Test</a></li>
 				<li><a href="{%url app.views.school_admin_add %}">Thêm Người Quản Lý Cấp Trường</a></li>
 			</ul>
+	{% endif %}
   	{% endblock %}
  	</div>  
   	<div id="bodyLeftPan">
