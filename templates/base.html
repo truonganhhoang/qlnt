@@ -16,22 +16,17 @@
 
 <div id="topPan">
 	<a href="{%url views.index%}"><img src="/static/css/images/UPlogo.png" alt="Hệ thống quản lý cấp trên trường" width="1200" height="50" border="0"  class="logo" title="Hệ thống quản lý cấp trên trường "/></a>
-  	<div id="topContactPan"></div>
 	<div id="topMenuPan">
-	  	<div id="topMenuLeftPan"></div>
-	 	
-	  	<div id="topMenuMiddlePan">
-	  		<ul>
-				<li class="home"><a href="{%url views.index %}" class="home">Trang chủ</a></li>
-				<li><a href="/admin">Trang Hệ Thống</a></li>
-				<li><a href="/school">Giao Diện Trường</a></li>
-			</ul>
-	  	</div>
-	  	<div id="topMenuRightPan"></div>
-	  	{% if user.is_authenticated %}	
+	  	{% if user.is_authenticated %}
 	  	<div id="topUser">
 			<p>Xin chào,&nbsp </p> <p><a href="#" > {{user.username}}</a>,&nbsp</p><p><a href="{%url django.contrib.auth.views.logout %}">Đăng Xuất</a></p> 	  
 	  	</div>
+	  		{% if user.is_superuser%}
+	  		{% else%}
+	  			{% if user.userprofile.position == 'GIAO_VIEN' or user.userprofile.position == 'HOC_SINH' or user.userprofile.position == 'HIEU_TRUONG' or user.userprofile.position == 'HIEU_PHO'%}
+	  			<meta HTTP-EQUIV="REFRESH" content="0; url=school">
+	  		{% endif %}
+	  		{% endif %}
 	  	{% else %}
 		  	<div id="topUser">
 		  		<ul>
@@ -46,16 +41,16 @@
 <div id="bodyPan">
 	<div id="bodyRightPan">
 	{% block left_menu %}
-	{% if user.is_superuser %}
+	{% if user.is_superuser%}
+
 		<h2><span>Menu</span> chính</h2>
 		  	<ul>
 				<li><a href="/admin">Trang Hệ Thống</a></li>
-				<li><a href="{% url school.views.school_index%}">Giao Diện Trường</a></li>
-				<li><a href="{%url persistent_messages.views.add_message %}">Gửi Thông Báo Mới</a></li>
+				<li><a href="#">Danh sach Trường</a></li>
 				<li><a href="{%url sms.views.manual_sms %}">Gửi tin nhắn SMS</a></li>
 				<li><a href="{%url sms.views.excel_sms %}">Gửi tin nhắn SMS từ file excel</a></li>
-				<li><a href="#"> Test</a></li>
 				<li><a href="{%url app.views.school_admin_add %}">Thêm Người Quản Lý Cấp Trường</a></li>
+				<li><a href="#"> Test</a></li>
 			</ul>
 	{% endif %}
   	{% endblock %}
@@ -72,7 +67,7 @@
 	  	<ul>
 			<li class="home"><a href="{%url views.index %}" class="home">Trang chủ</a></li>
 				<li><a href="/admin">Trang Hệ Thống</a></li>
-				<li><a href="% url school.views.school_index%">Giao Diện Trường</a></li>
+				<li><a href="#">Danh sách Trường</a></li>
 				<li><a href="#">Liên hệ</a></li>
 				<li><a href="/help">Trợ giúp</a></li>
 		</ul>
