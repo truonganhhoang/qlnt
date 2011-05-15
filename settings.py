@@ -163,7 +163,7 @@ INSTALLED_APPS = (
     'objectpermission',
     'dilla',
 #    'django_coverage',
-    'rosetta',
+#    'rosetta',
     'sms',
     'report',
     'pagination',
