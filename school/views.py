@@ -3,6 +3,7 @@
 # Create your views here.
 import os.path
 import datetime
+from django.core.paginator import *
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.shortcuts import render_to_response
@@ -193,7 +194,7 @@ def years(request):
     return render_to_response(YEARS, {'years':years}, context_instance = RequestContext(request))        
     
 #-----------------------------------------------------------------------------------------------------------------                                       
-def classes(request, sort_type = 1, sort_status=0):
+def classes(request, sort_type = 1, sort_status=0, page = 1):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect( reverse('login'))
@@ -206,32 +207,37 @@ def classes(request, sort_type = 1, sort_status=0):
     cyear = get_current_year(request)
     if int(sort_type)==1:
 		if int(sort_status) == 0:
-			classList = cyear.class_set.order_by('name')
+			class_List = cyear.class_set.order_by('name')
 		else:
 			classList = cyear.class_set.order_by('-name')
     if int(sort_type) == 2:
 		if int(sort_status) == 0:
-			classList = cyear.class_set.order_by('block_id__number')
+			class_List = cyear.class_set.order_by('block_id__number')
 		else:
-			classList = cyear.class_set.order_by('-block_id__number')
+			class_List = cyear.class_set.order_by('-block_id__number')
     if int(sort_type) == 3:
 		if int(sort_status) == 0:
-			classList = cyear.class_set.order_by('teacher_id__first_name')
+			class_List = cyear.class_set.order_by('teacher_id__first_name')
 		else:
-			classList = cyear.class_set.order_by('-teacher_id__first_name')
+			class_List = cyear.class_set.order_by('-teacher_id__first_name')
     if int(sort_type)==4:
 		if int(sort_status) == 0:
-			classList = cyear.class_set.order_by('year_id__time')
+			class_List = cyear.class_set.order_by('year_id__time')
 		else:
-			classList = cyear.class_set.order_by('-year_id__time')
+			class_List = cyear.class_set.order_by('-year_id__time')
+    paginator = Paginator (class_List, 20)
+    try:
+		classList = paginator.page(page)
+    except (EmptyPage, InvalidPage):
+		classList = paginator.page(paginator.num_pages)
     cfl = []
-    for c in classList:
+    for c in classList.object_list:
         cfl.append(ClassForm(school_id, instance = c))
-	list = zip(classList,cfl)
+	list = zip(classList.object_list,cfl)
     if request.method == 'POST':
         teacher_list = request.POST.getlist('teacher_id')
         i = 0
-        for c in classList:
+        for c in classList.object_list:
             data = {'name':c.name, 'year_id':c.year_id.id, 'block_id':c.block_id.id, 'teacher_id':teacher_list[i]}
             of = cfl[i]
             cfl[i] = ClassForm(school_id, data, instance = c)
@@ -250,7 +256,7 @@ def classes(request, sort_type = 1, sort_status=0):
 			else:
 				message = 'Please check your information, something is wrong'
 				
-    list = zip(classList,cfl)
+    list = zip(classList.object_list,cfl)
     t = loader.get_template(os.path.join('school','classes.html'))
     c = RequestContext(request, {'list' : list, 'form' : form, 'message' : message, 'classList' : classList, 'sort_type':sort_type, 'sort_status':sort_status, 'next_status':1-int(sort_status)})
     return HttpResponse(t.render(c))
@@ -281,6 +287,20 @@ def teachers(request, sort_type=1, sort_status=0):
     form = TeacherForm()
     school = get_school(request)
     #print sort_type +' ' + sort_status
+    if request.method == 'POST':
+        name = request.POST['first_name'].split()
+        last_name = ' '.join(name[:len(name)-1])
+        first_name = name[len(name)-1]
+        birthday = date(int(request.POST['birthday_year']),int(request.POST['birthday_month']),int(request.POST['birthday_day']))
+        data = {'first_name':first_name, 'last_name':last_name, 'birthday':birthday, 'sex':request.POST['sex'], 'school_id':school.id, 'birth_place':request.POST['birth_place']}
+        form = TeacherForm(data)
+        if form.is_valid():
+            add_teacher(first_name = data['first_name'], last_name = data['last_name'], school = get_school(request), birthday = birthday, sex=data['sex'], birthplace = data['birth_place'])
+            message = 'You have added new teacher'
+            form = TeacherForm()
+        else:
+            message = 'Please check your information, something is wrong'
+			
     if int(sort_type)==1:
 		if int(sort_status) == 0:
 			teacherList = school.teacher_set.order_by('first_name', 'last_name')
@@ -296,19 +316,6 @@ def teachers(request, sort_type=1, sort_status=0):
 			teacherList = school.teacher_set.order_by('sex')
 		else:
 			teacherList = school.teacher_set.order_by('-sex')
-    if request.method == 'POST':
-        name = request.POST['first_name'].split()
-        last_name = ' '.join(name[:len(name)-1])
-        first_name = name[len(name)-1]
-        birthday = date(int(request.POST['birthday_year']),int(request.POST['birthday_month']),int(request.POST['birthday_day']))
-        data = {'first_name':first_name, 'last_name':last_name, 'birthday':birthday, 'sex':request.POST['sex'], 'school_id':school.id, 'birth_place':request.POST['birth_place']}
-        form = TeacherForm(data)
-        if form.is_valid():
-            add_teacher(first_name = data['first_name'], last_name = data['last_name'], school = get_school(request), birthday = birthday, sex=data['sex'], birthplace = data['birth_place'])
-            message = 'You have added new teacher'
-            form = TeacherForm()
-        else:
-            message = 'Please check your information, something is wrong'
 
     t = loader.get_template(os.path.join('school','teachers.html'))
     c = RequestContext(request, {'form': form, 'message': message, 'teacherList': teacherList, 'sort_type':sort_type, 'sort_status':sort_status, 'next_status':1-int(sort_status)})
@@ -453,7 +460,7 @@ def studentPerClass(request, class_id, sort_type=1, sort_status=0):
     c = RequestContext(request, {'form': form, 'message': message, 'studentList': studentList, 'class_id': class_id, 'sort_type':int(sort_type), 'sort_status':int(sort_status), 'next_status':1-int(sort_status)})
     return HttpResponse(t.render(c))
 
-def students(request, sort_type=1, sort_status=1):
+def students(request, sort_type=1, sort_status=1, page = 1):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect( reverse('login'))
@@ -462,6 +469,27 @@ def students(request, sort_type=1, sort_status=1):
     message = None
     school = get_school(request)
     form = PupilForm()
+    
+    if request.method == 'POST':
+		print request.POST
+		name = request.POST['first_name'].split()
+		last_name = ' '.join(name[:len(name)-1])
+		first_name = name[len(name)-1]
+		birthday = date(int(request.POST['birthday_year']),int(request.POST['birthday_month']),int(request.POST['birthday_day']))
+		school_join_date=date(int(request.POST['school_join_date_year']),int(request.POST['school_join_date_month']),int(request.POST['school_join_date_day']))
+		data = {'first_name':first_name, 'last_name':last_name, 'birthday':birthday, 'sex':request.POST['sex'],'ban_dk':request.POST['ban_dk'], 'school_join_date':school_join_date, 'start_year_id':request.POST['start_year_id'], 'class_id' : request.POST['class_id']}
+		print request.POST['start_year_id']
+		start_year = StartYear.objects.get(id = int(data['start_year_id']))
+		_class = Class.objects.get(id = data['class_id'])
+		form = PupilForm(data)
+		if form.is_valid():
+			data['ban'] = data['ban_dk']
+			add_student(student = data, start_year = start_year, year = get_current_year(request), _class = _class, term = get_current_term(request), school = get_school(request), school_join_date = school_join_date)
+			message = 'You have added new student'
+			form = PupilForm()
+		else:
+			message = 'Please check your information, something is wrong'
+	
     if int(sort_type)==1:
 		if int(sort_status) == 0:
 			studentList = school.pupil_set.order_by('first_name', 'last_name')
@@ -493,29 +521,14 @@ def students(request, sort_type=1, sort_status=1):
 			studentList = school.pupil_set.order_by('class_id__name')
 		else:
 			studentList = school.pupil_set.order_by('-class_id__name')
-			
-    if request.method == 'POST':
-		print request.POST
-		name = request.POST['first_name'].split()
-		last_name = ' '.join(name[:len(name)-1])
-		first_name = name[len(name)-1]
-		birthday = date(int(request.POST['birthday_year']),int(request.POST['birthday_month']),int(request.POST['birthday_day']))
-		school_join_date=date(int(request.POST['school_join_date_year']),int(request.POST['school_join_date_month']),int(request.POST['school_join_date_day']))
-		data = {'first_name':first_name, 'last_name':last_name, 'birthday':birthday, 'sex':request.POST['sex'],'ban_dk':request.POST['ban_dk'], 'school_join_date':school_join_date, 'start_year_id':request.POST['start_year_id'], 'class_id' : request.POST['class_id']}
-		print request.POST['start_year_id']
-		start_year = StartYear.objects.get(id = int(data['start_year_id']))
-		_class = Class.objects.get(id = data['class_id'])
-		form = PupilForm(data)
-		if form.is_valid():
-			data['ban'] = data['ban_dk']
-			add_student(student = data, start_year = start_year, year = get_current_year(request), _class = _class, term = get_current_term(request), school = get_school(request), school_join_date = school_join_date)
-			message = 'You have added new student'
-			form = PupilForm()
-		else:
-			message = 'Please check your information, something is wrong'
-
+    paginator = Paginator (studentList, 20)
+    try:
+		student_list = paginator.page(page)
+    except (EmptyPage, InvalidPage):
+		student_list = paginator.page(paginator.num_pages)
+		
     t = loader.get_template(os.path.join('school','students.html'))
-    c = RequestContext(request, {'form': form, 'message': message, 'studentList': studentList, 'sort_type':sort_type, 'sort_status':sort_status, 'next_status':1-int(sort_status)})
+    c = RequestContext(request, {'form': form, 'message': message, 'studentList': student_list, 'sort_type':sort_type, 'sort_status':sort_status, 'next_status':1-int(sort_status)})
     return HttpResponse(t.render(c))
 
 def viewStudentDetail(request, student_id):
@@ -991,7 +1004,12 @@ def deleteTeacher(request, teacher_id):
         return HttpResponseRedirect('/school')
     if (get_position(request)<4):
         return HttpResponseRedirect('/school')
-    s.delete()
+	cl = Class.objects.filter(teacher_id = s)
+	print cl
+	for sj in cl:
+		sj.teacher_id = Null
+		sj.save()
+    #s.delete()
     return HttpResponseRedirect('/school/teachers')
 
 def deleteClass(request, class_id):
