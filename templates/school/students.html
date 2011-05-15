@@ -28,7 +28,7 @@ function confirmDelete()
 
     {% for ss in studentList.object_list %}
     <tr>
-        <td align="center" width="5%">{{forloop.counter}}</td>
+        <td align="center" width="5%">{{forloop.counter|add: base_order}}</td>
         <td align="center" width="25%"> <a href="{%url school.views.school_index  %}viewStudentDetail/{{ss.id}}">{{ss.last_name}} {{ss.first_name}}</td>
         <td align="center" width="15%"> {{ss.birthday|date:"SHORT_DATE_FORMAT"}}</td>
         <td align="center" width="10%"> {{ss.sex}}</td>
@@ -52,7 +52,7 @@ function confirmDelete()
 			</span>
 			
 			{% if studentList.has_next %}
-				<a href = "{%url school.views.school_index  %}classes/{{sort_type}}/{{sort_status}}/{{studentList.next_page_number}}"> Trang sau </a>
+				<a href = "{%url school.views.school_index  %}students/{{sort_type}}/{{sort_status}}/{{studentList.next_page_number}}"> Trang sau </a>
 			{% endif %}
 		</span>
 		</div>

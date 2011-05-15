@@ -258,7 +258,7 @@ def classes(request, sort_type = 1, sort_status=0, page = 1):
 				
     list = zip(classList.object_list,cfl)
     t = loader.get_template(os.path.join('school','classes.html'))
-    c = RequestContext(request, {'list' : list, 'form' : form, 'message' : message, 'classList' : classList, 'sort_type':sort_type, 'sort_status':sort_status, 'next_status':1-int(sort_status)})
+    c = RequestContext(request, {'list' : list, 'form' : form, 'message' : message, 'classList' : classList, 'sort_type':sort_type, 'sort_status':sort_status, 'next_status':1-int(sort_status), 'base_order' : (int(page)-1)*20})
     return HttpResponse(t.render(c))
 
 def viewClassDetail(request, class_id):
@@ -277,7 +277,7 @@ def viewClassDetail(request, class_id):
 #sort_type = '1': fullname, '2': birthday, '3':'sex'
 #sort_status = '0':ac '1':'dec
 
-def teachers(request, sort_type=1, sort_status=0):
+def teachers(request, sort_type=1, sort_status=0, page = 1):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect( reverse('login'))
@@ -316,9 +316,14 @@ def teachers(request, sort_type=1, sort_status=0):
 			teacherList = school.teacher_set.order_by('sex')
 		else:
 			teacherList = school.teacher_set.order_by('-sex')
+    paginator = Paginator (teacherList, 20)
+    try:
+		teacher_list = paginator.page(page)
+    except (EmptyPage, InvalidPage):
+		teacher_list = paginator.page(paginator.num_pages)
 
     t = loader.get_template(os.path.join('school','teachers.html'))
-    c = RequestContext(request, {'form': form, 'message': message, 'teacherList': teacherList, 'sort_type':sort_type, 'sort_status':sort_status, 'next_status':1-int(sort_status)})
+    c = RequestContext(request, {'form': form, 'message': message, 'teacherList': teacher_list, 'sort_type':sort_type, 'sort_status':sort_status, 'next_status':1-int(sort_status), 'base_order':(int (page)-1)*20})
     return HttpResponse(t.render(c))
 
 def viewTeacherDetail(request, teacher_id):
@@ -401,7 +406,7 @@ def subjectPerClass(request, class_id, sort_type=1, sort_status=0):
     c = RequestContext(request, {'list':list,'form' : form, 'message' : message,  'subjectList' : subjectList, 'class_id' : class_id, 'sort_type' : sort_type, 'sort_status':sort_status, 'next_status':1-int(sort_status)})
     return HttpResponse(t.render(c))
 
-def studentPerClass(request, class_id, sort_type=1, sort_status=0):
+def studentPerClass(request, class_id, sort_type=1, sort_status=0, page = 1):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect( reverse('login'))
@@ -412,6 +417,24 @@ def studentPerClass(request, class_id, sort_type=1, sort_status=0):
         return HttpResponseRedirect('/school')
     message = None
     form = PupilForm()
+			
+    if request.method == 'POST':
+        name = request.POST['first_name'].split()
+        last_name = ' '.join(name[:len(name)-1])
+        first_name = name[len(name)-1]
+        birthday = date(int(request.POST['birthday_year']),int(request.POST['birthday_month']),int(request.POST['birthday_day']))
+        school_join_date = date(int(request.POST['school_join_date_year']),int(request.POST['school_join_date_month']),int(request.POST['school_join_date_day']))
+        data = {'first_name':first_name, 'last_name':last_name,'birthday':birthday, 'class_id':class_id, 'sex':request.POST['sex'], 'ban_dk':request.POST['ban_dk'], 'school_join_date':school_join_date, 'start_year_id':request.POST['start_year_id']}
+        form = PupilForm(data)		
+        if form.is_valid():
+            data['ban'] = data['ban_dk']
+            _class = Class.objects.get(id = class_id)
+            start_year = StartYear.objects.get(id = int(data['start_year_id']))
+            add_student(student = data, start_year = start_year, year = get_current_year(request), _class = _class, term = get_current_term(request), school = get_school(request), school_join_date = school_join_date)
+            message = 'You have added new student'
+            form = PupilForm()
+        else:
+            message = 'Please check your information, something is wrong'
     if int(sort_type)==1:
 		if int(sort_status) == 0:
 			studentList = cl.pupil_set.order_by('first_name', 'last_name')
@@ -437,27 +460,13 @@ def studentPerClass(request, class_id, sort_type=1, sort_status=0):
 			studentList = cl.pupil_set.order_by('school_join_date')
 		else:
 			studentList = cl.pupil_set.order_by('-school_join_date')
-			
-    if request.method == 'POST':
-        name = request.POST['first_name'].split()
-        last_name = ' '.join(name[:len(name)-1])
-        first_name = name[len(name)-1]
-        birthday = date(int(request.POST['birthday_year']),int(request.POST['birthday_month']),int(request.POST['birthday_day']))
-        school_join_date = date(int(request.POST['school_join_date_year']),int(request.POST['school_join_date_month']),int(request.POST['school_join_date_day']))
-        data = {'first_name':first_name, 'last_name':last_name,'birthday':birthday, 'class_id':class_id, 'sex':request.POST['sex'], 'ban_dk':request.POST['ban_dk'], 'school_join_date':school_join_date, 'start_year_id':request.POST['start_year_id']}
-        form = PupilForm(data)		
-        if form.is_valid():
-            data['ban'] = data['ban_dk']
-            _class = Class.objects.get(id = class_id)
-            start_year = StartYear.objects.get(id = int(data['start_year_id']))
-            add_student(student = data, start_year = start_year, year = get_current_year(request), _class = _class, term = get_current_term(request), school = get_school(request), school_join_date = school_join_date)
-            message = 'You have added new student'
-            form = PupilForm()
-        else:
-            message = 'Please check your information, something is wrong'
-
+    paginator = Paginator (studentList, 20)
+    try:
+		student_list = paginator.page(page)
+    except (EmptyPage, InvalidPage):
+		student_list = paginator.page(paginator.num_pages)
     t = loader.get_template(os.path.join('school','student_per_class.html'))
-    c = RequestContext(request, {'form': form, 'message': message, 'studentList': studentList, 'class_id': class_id, 'sort_type':int(sort_type), 'sort_status':int(sort_status), 'next_status':1-int(sort_status)})
+    c = RequestContext(request, {'form': form, 'message': message, 'studentList': student_list, 'class_id': class_id, 'sort_type':int(sort_type), 'sort_status':int(sort_status), 'next_status':1-int(sort_status), 'base_order' : (int(page)-1)*20})
     return HttpResponse(t.render(c))
 
 def students(request, sort_type=1, sort_status=1, page = 1):
@@ -528,7 +537,7 @@ def students(request, sort_type=1, sort_status=1, page = 1):
 		student_list = paginator.page(paginator.num_pages)
 		
     t = loader.get_template(os.path.join('school','students.html'))
-    c = RequestContext(request, {'form': form, 'message': message, 'studentList': student_list, 'sort_type':sort_type, 'sort_status':sort_status, 'next_status':1-int(sort_status)})
+    c = RequestContext(request, {'form': form, 'message': message, 'studentList': student_list, 'sort_type':sort_type, 'sort_status':sort_status, 'next_status':1-int(sort_status), 'base_order' : (int(page)-1)*20})
     return HttpResponse(t.render(c))
 
 def viewStudentDetail(request, student_id):

@@ -24,7 +24,7 @@ function confirmDelete()
 	<form action="/school/classes/{{sort_type}}/{{sort_status}}/{{classList.number}}" method="post">{% csrf_token %}
 	{% for class, f in list %}
 	<tr>
-		<td align="center" width="5%"> {{forloop.counter}}</td>
+		<td align="center" width="5%"> {{forloop.counter|add:base_order}}</td>
 		<td align="center" width="20%"> <a href="{%url school.views.school_index  %}viewClassDetail/{{class.id}}" >{{class.name}} </a></td>
 		<td align="center" width="20%"> {{class.block_id}} </td>
 		<td align="center" width="25%"> {{f.teacher_id}} </td>

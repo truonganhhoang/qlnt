@@ -18,10 +18,10 @@ function confirmDelete()
 <table border=1 width = "100%" >
     <tr>
 		<td align="center" width="5%"> STT </td>
-        <td align="center" width="25%"> <a href="{%url school.views.school_index  %}teachers/1/{{next_status}}">Họ & Tên </a></td>
-        <td align="center" width="25%"> <a href="{%url school.views.school_index  %}teachers/2/{{next_status}}">Ngày sinh</a></td>
+        <td align="center" width="25%"> <a href="{%url school.views.school_index  %}teachers/1/{{next_status}}/1">Họ & Tên </a></td>
+        <td align="center" width="25%"> <a href="{%url school.views.school_index  %}teachers/2/{{next_status}}/1">Ngày sinh</a></td>
         <td align="center" width="25%"> Nơi sinh</td>
-        <td align="center" width="10%"> <a href="{%url school.views.school_index  %}teachers/3/{{next_status}}">Giới tính </a></td>
+        <td align="center" width="10%"> <a href="{%url school.views.school_index  %}teachers/3/{{next_status}}/1">Giới tính </a></td>
         <td width = "10%"></td>
     </tr>
 
@@ -29,9 +29,9 @@ function confirmDelete()
     {{message}}
     {% endif %}
 
-    {% for ss in teacherList %}
+    {% for ss in teacherList.object_list %}
     <tr>        
-		<td align="center" width="5%">{{forloop.counter}}</td>
+		<td align="center" width="5%">{{forloop.counter|add:base_order}}</td>
         <td align="center" width="25%"><a href="{%url school.views.school_index  %}viewTeacherDetail/{{ss.id}}"> {{ss.last_name}} {{ss.first_name}} </a></td>
         <td align="center" width="25%"> {{ss.birthday|date:"SHORT_DATE_FORMAT"}}</td>
         <td align="center" width="25%"> {{ss.birth_place}}</td>
@@ -40,7 +40,7 @@ function confirmDelete()
     </tr>
     {% endfor %}
     
-    <form action="/school/teachers/{{sort_type}}/{{sort_status}}" method="post">{% csrf_token %}
+    <form action="/school/teachers/{{sort_type}}/{{sort_status}}/{{teacherList.number}}" method="post">{% csrf_token %}
         <tr>
             {{ form.non_field_errors }}
 			
@@ -68,6 +68,25 @@ function confirmDelete()
 
 </table>
 <table border = "0" width = "100%">
+	<tr boder = 0>
+		<td width = "100%" colspan = 6 align = "right">
+		<div class = "pagination">
+		<span class = "step-links">
+			{% if teacherList.has_previous %}
+				<a href = "{%url school.views.school_index  %}teachers/{{sort_type}}/{{sort_status}}/{{teacherList.previous_page_number}}"> Trang trước </a>
+			{% endif %}
+			
+			<span class = "current">
+				Trang {{teacherList.number}} trên {{teacherList.paginator.num_pages}}.
+			</span>
+			
+			{% if teacherList.has_next %}
+				<a href = "{%url school.views.school_index  %}teachers/{{sort_type}}/{{sort_status}}/{{teacherList.next_page_number}}"> Trang sau </a>
+			{% endif %}
+		</span>
+		</div>
+		</td>
+	</tr>
         <tr>
         		<td width = "5%" align = "left"><input type ="submit" value="Thêm"/></td>
         		<td align = "right"> <a href = ""> Xuất ra excel </a> </td>

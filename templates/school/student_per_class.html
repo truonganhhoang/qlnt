@@ -20,11 +20,11 @@ function confirmDelete()
 <table border=1 width = "100%" >
     <tr>
 		<td align="center" width="5%"> STT </td>
-        <td align="center" width="25%"> <a href="{%url school.views.school_index  %}studentPerClass/{{class_id}}/1/{{next_status}}">Họ & Tên </a></td>
-        <td align="center" width="15%"> <a href="{%url school.views.school_index  %}studentPerClass/{{class_id}}/2/{{next_status}}">Ngày sinh</a></td>
-        <td align="center" width="10%"><a href="{%url school.views.school_index  %}studentPerClass/{{class_id}}/3/{{next_status}}">Giới tính</a></td>
-        <td align="center" width="10%"><a href="{%url school.views.school_index  %}studentPerClass/{{class_id}}/4/{{next_status}}"> Ban Đăng kí </a></td>
-        <td align="center" width="15%"><a href="{%url school.views.school_index  %}studentPerClass/{{class_id}}/5/{{next_status}}">Ngày vào trường </a></td>
+        <td align="center" width="25%"> <a href="{%url school.views.school_index  %}studentPerClass/{{class_id}}/1/{{next_status}}/1">Họ & Tên </a></td>
+        <td align="center" width="15%"> <a href="{%url school.views.school_index  %}studentPerClass/{{class_id}}/2/{{next_status}}/1">Ngày sinh</a></td>
+        <td align="center" width="10%"><a href="{%url school.views.school_index  %}studentPerClass/{{class_id}}/3/{{next_status}}/1">Giới tính</a></td>
+        <td align="center" width="10%"><a href="{%url school.views.school_index  %}studentPerClass/{{class_id}}/4/{{next_status}}/1"> Ban Đăng kí </a></td>
+        <td align="center" width="15%"><a href="{%url school.views.school_index  %}studentPerClass/{{class_id}}/5/{{next_status}}/1">Ngày vào trường </a></td>
         <td align="center" width="10%"> Năm bắt đầu </td>
         <td width = "5%"></td>
     </tr>
@@ -33,9 +33,9 @@ function confirmDelete()
     {{message}}
     {% endif %}
 
-    {% for ss in studentList %}
+    {% for ss in studentList.object_list %}
     <tr>
-        <td align="center" width="5%"> {{forloop.counter}} </td>
+        <td align="center" width="5%"> {{forloop.counter|add:base_order}} </td>
         <td align="center" width="25%">  <a href="{%url school.views.school_index  %}viewStudentDetail/{{ss.id}}">{{ss.last_name}} {{ss.first_name}} </a></td>
         <td align="center" width="15%"> {{ss.birthday|date:"SHORT_DATE_FORMAT"}}</td>
         <td align="center" width="10%"> {{ss.sex}}</td>
@@ -46,7 +46,7 @@ function confirmDelete()
     </tr>
     {% endfor %}
     
-    <form action="/school/studentPerClass/{{class_id}}/{{sort_type}}/{{sort_status}}" method="post">{% csrf_token %}
+    <form action="/school/studentPerClass/{{class_id}}/{{sort_type}}/{{sort_status}}/{{studentList.number}}" method="post">{% csrf_token %}
         <tr>
             {{ form.non_field_errors }}
 			<td align="center" width="5%">
@@ -82,6 +82,25 @@ function confirmDelete()
         </tr>
 </table>
 <table border = "0" width = "100%">
+	<tr boder = 0>
+		<td width = "100%" colspan = 9 align = "right">
+		<div class = "pagination">
+		<span class = "step-links">
+			{% if studentList.has_previous %}
+				<a href = "{%url school.views.school_index  %}studentPerClass/{{class_id}}/{{sort_type}}/{{sort_status}}/{{studentList.previous_page_number}}"> Trang trước </a>
+			{% endif %}
+			
+			<span class = "current">
+				Trang {{studentList.number}} trên {{studentList.paginator.num_pages}}.
+			</span>
+			
+			{% if studentList.has_next %}
+				<a href = "{%url school.views.school_index  %}studentPerClass/{{class_id}}/{{sort_type}}/{{sort_status}}/{{studentList.next_page_number}}"> Trang sau </a>
+			{% endif %}
+		</span>
+		</div>
+		</td>
+	</tr>
         <tr>
         		<td width = "5%" align = "left"><input type ="submit" value="Thêm"/></td>
         		<td align = "right"> <a href = ""> Xuất ra excel </a> </td>
