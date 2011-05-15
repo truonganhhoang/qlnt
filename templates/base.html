@@ -50,9 +50,10 @@
 		<h2><span>Menu</span> chính</h2>
 		  	<ul>
 				<li><a href="/admin">Trang Hệ Thống</a></li>
-				<li><a href="/school">Giao Diện Trường</a></li>
-				<li><a href="/messages/add_message">Gửi Thông Báo Mới</a></li>
-				<li><a href="/sms/excel_sms">Gửi tin nhắn SMS từ file excel</a></li>
+				<li><a href="{% url school.views.school_index%}">Giao Diện Trường</a></li>
+				<li><a href="{%url persistent_messages.views.add_message %}">Gửi Thông Báo Mới</a></li>
+				<li><a href="{%url sms.views.manual_sms %}">Gửi tin nhắn SMS</a></li>
+				<li><a href="{%url sms.views.excel_sms %}">Gửi tin nhắn SMS từ file excel</a></li>
 				<li><a href="#"> Test</a></li>
 				<li><a href="{%url app.views.school_admin_add %}">Thêm Người Quản Lý Cấp Trường</a></li>
 			</ul>
@@ -71,7 +72,7 @@
 	  	<ul>
 			<li class="home"><a href="{%url views.index %}" class="home">Trang chủ</a></li>
 				<li><a href="/admin">Trang Hệ Thống</a></li>
-				<li><a href="/school">Giao Diện Trường</a></li>
+				<li><a href="% url school.views.school_index%">Giao Diện Trường</a></li>
 				<li><a href="#">Liên hệ</a></li>
 				<li><a href="/help">Trợ giúp</a></li>
 		</ul>
