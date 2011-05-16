@@ -38,27 +38,13 @@ class sms(models.Model):
 class smsForm(forms.Form):
     namespace_regex = re.compile(r'^[0-9\;\,\ ]+$')
     phone = forms.CharField(label='Số điện thoại',
-                            help_text='<br /> <table>\
-                                                <col width=160>\
-                                                <tr>\
-                                                <td></td>\
-                                                <td><small><b>Lưu ý:</b> Các ký tự hỗ trợ: "0-9" "," ";" và dầu cách.</small>\
-                                                <tr>\
-                                                <td></td>\
-                                                <td><small>Số điện thoại người nhận phân cách bằng dấu dấu cách hoặc ";" hoặc ",".</small></td>\
-                                                </tr>\
-                                                </table>',
+                            help_text='Lưu ý: Các ký tự hỗ trợ: "0-9" "," ";" và dầu cách.Số điện thoại người nhận phân cách bằng dấu dấu cách hoặc ";" hoặc ",".',
                             validators=[RegexValidator(regex = namespace_regex)],
                             error_messages={'required': 'Hãy nhập vào số điện thoại.', 'invalid': 'Hãy nhập đúng ký tự cho phép.'},
                             widget=forms.widgets.Textarea(attrs={'cols': 50, 'rows': 5}))
     content = forms.CharField(label = 'Nội dung',
                             max_length=160,
-                            help_text='<br /> <table>\
-                                                <col width=160>\
-                                                <tr>\
-                                                <td></td>\
-                                                <td><small><b>Lưu ý:</b> Số ký tự tối đa: 160 ký tự.</small>\
-                                                </table>',
+                            help_text='Lưu ý: Số ký tự tối đa: 160 ký tự.',
                             error_messages={'required': 'Hãy nhập vào nội dung tin nhắn.', 'max_length': u'Bạn đã nhập %(show_value)d ký tự. Tối đa: 160 ký tự.'},
                             widget=forms.widgets.Textarea(attrs={'cols': 50, 'rows': 5}))
 

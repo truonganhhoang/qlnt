@@ -59,40 +59,43 @@ def checkValidPhoneNumber(phone):
 def manual_sms(request):
     if request.method == 'POST':
         # update all record in sms db: recent = false
-        all_sms = sms.objects.all()
+        all_sms = sms.objects.filter(sender=request.user)
         for s in all_sms:
             s.recent = False
             s.save()
         
-        form = smsForm(request.POST)
-        if form.is_valid():
-            phone_list = form.cleaned_data.get('phone')
-            content = form.cleaned_data.get('content')
-            
-            phone = [] # chua cat space o dau va cuoi so dt 
-            for p1 in phone_list.split(','):
-                p1 = p1.split(';')
-                for p2 in p1:
-                    p2 = p2.split()
-                    for p3 in p2:
-                        phone.append(p3)
+        phone_list = request.POST['phone']
+        content = request.POST['content']
+        
+        if( len(phone_list) == 0 & len(content) == 0):
+            t = loader.get_template('sms/manual_sms.html')
+            c = RequestContext(request)
+            return HttpResponse(t.render(c))
+        
+        phone = []
+        for p1 in phone_list.split(','):
+            p1 = p1.split(';')
+            for p2 in p1:
+                p2 = p2.split()
+                for p3 in p2:
+                    phone.append(p3)
                     
-            open = urllib2.build_opener(urllib2.HTTPCookieProcessor())
-            urllib2.install_opener(open)
+        open = urllib2.build_opener(urllib2.HTTPCookieProcessor())
+        urllib2.install_opener(open)
             
-            para = urllib.urlencode({'u': 'VT_username', 'p': 'VT_password'})
+        para = urllib.urlencode({'u': 'VT_username', 'p': 'VT_password'})
             
-#            f = open.open('http://viettelvas.vn:7777/fromcp.asmx', para)
-#            f.close();
+#        f = open.open('http://viettelvas.vn:7777/fromcp.asmx', para)
+#        f.close();
             
-            for p in phone:
-                if checkValidPhoneNumber(p):    
-                    '''Save to db'''
-                    s = sms(phone=p, content=content, sender=request.user, recent=True, success=True)
-                    s.save()
+        for p in phone:
+            if checkValidPhoneNumber(p):    
+                '''Save to db'''
+                s = sms(phone=p, content=content, sender=request.user, recent=True, success=True)
+                s.save()
                     
-                    '''Send sms via Viettel system'''
-                    data = urllib.urlencode({
+                '''Send sms via Viettel system'''
+                data = urllib.urlencode({
                                 'RequestID'     : '4',
                                 'CPCode'        : '',
                                 'UserID'        : '',
@@ -102,17 +105,18 @@ def manual_sms(request):
                                 'Content'       : content,
                                 'ContentType'   : '',
                                 })
-#                    f = open.open('http://viettelvas.vn:7777/fromcp.asmx', data)
-                else:    
-                    '''Save to db'''
-                    s = sms(phone=p, content=content, sender=request.user, recent=True, success=False)
-                    s.save()
+#                f = open.open('http://viettelvas.vn:7777/fromcp.asmx', data)
+            else:    
+                '''Save to db'''
+                s = sms(phone=p, content=content, sender=request.user, recent=True, success=False)
+                s.save()
                                 
-            return HttpResponseRedirect('/sms/sent_sms/')
+        return HttpResponseRedirect('/sms/sent_sms/')
     else:
-        form = smsForm()    
+        form = smsForm()
+        
     t = loader.get_template('sms/manual_sms.html')
-    c = RequestContext(request, {'form': form})
+    c = RequestContext(request)
     return HttpResponse(t.render(c))
 
 def save_file(file):
@@ -219,3 +223,9 @@ def export_excel(request):
     
     wb.save(response)
     return response
+
+def sent_sms(request):
+    sms_list = sms.objects.filter(sender=request.user,recent=True,success=True)
+    t = loader.get_template('sms/sent_sms.html')
+    c = RequestContext(request, {'sms_list': sms_list})
+    return HttpResponse(t.render(c))

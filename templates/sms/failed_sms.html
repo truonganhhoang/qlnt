@@ -3,9 +3,9 @@
 
 {% block content %}
 	{% if user.is_authenticated %}
-		<small><a href="/sms/sent_sms/">Những tin nhắn gửi đi thành công.</a></small>
-		<h3>Danh sách tin nhắn không được gửi đi:</h3>
-		<small><b>Lý do: </b>Số điện thoại không phù hợp với bất kỳ Người sử dụng nào.</small>
+		<small><a href="/sms/sent_sms/">Những tin nhắn gửi đi thành công</a> - Những tin nhắn gửi đi thất bại</small>
+		<h4>Danh sách tin nhắn không được gửi đi:</h4>
+		<small><b>Ghi chú - x</b>: Số điện thoại không thuộc Người sử dụng nào.</small>
 		{% if sms_list %}
             {% autopaginate sms_list 30 %}
 			<table class="solid_border">
@@ -17,14 +17,14 @@
 				<td class="solid_border">Số điện thoại</td>
 				<td class="solid_border">Nội dung</td>
 				<td class="solid_border">Thời gian tạo</td>
-				<td class="solid_border">Người gửi</td>
+				<td class="solid_border">Lý do</td>
 				</tr>
 			{% for s in sms_list %}
 				<tr class="solid_border">
 				<td class="solid_border">{{ s.phone }}</td>
 				<td class="solid_border">{{ s.content }}</td>
 				<td class="solid_border">{{ s.createdFormat }}</td>
-				<td class="solid_border">{{ s.sender }}</td>
+				<td class="solid_border"><b>x</b></td>
 				</tr>
 			{% endfor %}
 			</table>
