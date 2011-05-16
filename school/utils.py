@@ -34,8 +34,9 @@ def make_username( first_name = None, last_name = None, full_name = None, start_
     print last_name, " ", first_name
     username = first_name
     if last_name and last_name != '':
+        print last_name.split(" ")
         for word in last_name.split(" "):
-            username += word[0]
+             if word: username += word[0]
     if start_year:
         username += '_' + str(start_year.time)
     

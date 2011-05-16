@@ -85,7 +85,7 @@ def validate_hs(value):
 		raise ValidationError(u'hs must be larger than 0')		
 
 class DanhSachLoaiLop(models.Model):
-	loai = models.CharField(max_length = 15, unique = True)
+	loai = models.CharField(max_length = 15)
 	school_id = models.ForeignKey(Organization)
 	def __unicode__(self):
 		return self.loai

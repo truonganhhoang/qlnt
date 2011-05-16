@@ -31,6 +31,8 @@ def school_index(request):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
+<<<<<<< .mine
+=======
     if request.method == "POST":
         print request.POST['clickedButton']
         if request.POST['clickedButton'] == "start_year":
@@ -41,9 +43,10 @@ def school_index(request):
         elif request.POST['clickedButton'] == "finish_year":
             context = RequestContext(request, {'school':school})
             return render_to_response(r'school/finish_year.html', context_instance=context)    
+>>>>>>> .r396
     context = RequestContext(request)
     return render_to_response(SCHOOL, context_instance=context)
-
+@transaction.commit_on_success
 def class_label(request):
     school = get_school(request)
     class_labels = []
@@ -61,11 +64,12 @@ def class_label(request):
             for d in ds:
                 d.delete()
             for label in list_labels:
-                print label
-                lb = DanhSachLoaiLop()
-                lb.loai = label
-                lb.school_id = school
-                lb.save()
+                find = school.danhsachloailop_set.filter( loai__exact = label )
+                if not find:
+                    lb = DanhSachLoaiLop()
+                    lb.loai = label
+                    lb.school_id = school
+                    lb.save()
             message = u'Bạn vừa thiết lập thành công danh sách tên lớp cho trường.'    
     context = RequestContext(request)
     t = loader.get_template(CLASS_LABEL)
@@ -76,11 +80,13 @@ def class_label(request):
 def b1(request):
     # tao moi cac khoi neu truong moi thanh lap
     school = get_school(request)
-    if school.school_level == 1:
+    print school
+    print school.school_level
+    if school.school_level == u'1':
         lower_bound = 1
         upper_bound = 5
         ds_mon_hoc = CAP1_DS_MON
-    elif school.school_level == 2:
+    elif school.school_level == u'2':
         lower_bound = 6
         upper_bound = 9
         ds_mon_hoc = CAP2_DS_MON
@@ -88,9 +94,10 @@ def b1(request):
         lower_bound = 10
         upper_bound = 12
         ds_mon_hoc = CAP3_DS_MON
-        
+    
+    print lower_bound, upper_bound    
     if school.status == 0:
-        for khoi in range(lower_bound, upper_bound + 1):
+        for khoi in range(lower_bound, upper_bound+1):
             block = Block()
             block.number = khoi
             block.school_id = school
@@ -711,9 +718,16 @@ def process_file(file_name, task):
             name = sheet.cell_value(r, c_ten)
             print "->", sheet.cell(r, c_ngay_sinh).value
             birthday = sheet.cell(r, c_ngay_sinh).value
+<<<<<<< .mine
+
+            nv = sheet.cell_value( r, c_nguyen_vong)
+            tong_diem = sheet.cell_value( r, c_tong_diem)
+            if ( name == "" or birthday =="" or nv == "" or tong_diem =="" ):
+=======
             nv = sheet.cell_value(r, c_nguyen_vong)
             tong_diem = sheet.cell_value(r, c_tong_diem)
             if (name == "" or birthday == "" or nv == "" or tong_diem == ""):
+>>>>>>> .r396
                 print "co 1 cell empty or blank"
                 continue
             date_value = xlrd.xldate_as_tuple(sheet.cell(r, c_ngay_sinh).value, book.datemode)
@@ -1085,8 +1099,13 @@ def deleteTeacher(request, teacher_id):
 	cl = Class.objects.filter(teacher_id=s)
 	print cl
 	for sj in cl:
+<<<<<<< .mine
+		sj.teacher_id = None
+		sj.save()
+=======
             sj.teacher_id = Null
             sj.save()
+>>>>>>> .r396
     #s.delete()
     return HttpResponseRedirect('/school/teachers')
 
