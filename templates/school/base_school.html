@@ -25,10 +25,12 @@
 	  <div id="topMenuMiddlePan">
 	  	<ul>
 			<li class="home"><a href="{%url school.views.school_index %}" class="home">Trang chủ</a></li>
+			{% if user.userprofile.organization.status != 0%}
 			<li><a href="{%url school.views.years %}">Các năm </a></li>
 			<li><a href="{%url school.views.teachers %} ">Giáo viên</a></li>
 			<li><a href="{%url school.views.classes %}">Lớp học</a></li>
 			<li><a href="{%url school.viewCount.countInSchool %}">Thống kê</a></li>
+			{% endif %}
 			<li><a href="#">Liên hệ</a></li>
 			<li class="contact"><a href="#" class="contact">Trợ giúp</a></li>
 		</ul>
@@ -46,22 +48,30 @@
 	{% if user.userprofile.position == 'HIEU_TRUONG'  or user.userprofile.position == 'HIEU_PHO' %}
   	<h2><span>Menu</span> chính</h2>
 	<ul>
+		{% if user.userprofile.organization.status == 0 %}
 		<li><a href="{%url school.views.b1 %}">Bắt đầu năm học mới</a> </li>
+		{% endif %}
+		{% if user.userprofile.organization.status != 0 %}
 		<li><a href="{%url school.views.teachers %}">Danh sách giáo viên</a> </li>
 		<li><a href="#">Phân công giảng dạy</a> </li>
 		<li><a href="{%url school.views.classes %}">Danh sách lớp học</a> </li>
 		<li><a href="{%url school.viewFinish.finish %}">Tính điểm tổng kết toàn trường</a> </li>
+		{% endif %}
 	</ul>
 	<h2><span>Tùy chỉnh</span> chính</h2>
 	<ul>
+		{% if user.userprofile.organization.status != 0 %}
 		<li><a href="{%url school.views.b1  %}/import">Nhập học sinh từ file excel</a> </li>
 		<li><a href="{%url school.views.b1 %}/manual">Nhập học sinh bằng tay</a> </li>
 		<li><a href="#">Phân lớp</a></li>
+		{% endif %}
 		<li><a href="{%url school.views.class_label %}">Chỉnh sửa danh sách tên lớp học</a> </li>
 		<li><a href="#">Thông tin trường học</a> </li>
 	</ul>
+		{%if user.userprofile.organization.status != 0 %}		
 		<h3>Những thay đổi gần đây</h3>
 		<p class="more"><a href="#">Xem thêm</a></p>
+		{% endif %}
   {% else %}
   		{% if user.userprofile.position == 'GIAO_VIEN'%}
 		<h2><span>Menu</span> chính</h2>
@@ -113,7 +123,7 @@
 		<li><a href="#">Liên hệ</a> | </li>
 		<li><a href="#">Trợ giúp</a> | </li>
 	</ul>
-	<p class="copyright">©SchoolTool phát triển bởi Viettel & UET-VNU.</p>	
+	<p class="copyright">©SimpleSchool phát triển bởi Viettel & UET-VNU.</p>	
 	<ul class="templateworld">
   	<li>design by:</li>
 	<li><a href="http://www.templateworld.com" target="_blank">Template World</a></li>
