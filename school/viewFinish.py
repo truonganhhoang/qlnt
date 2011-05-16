@@ -1,3 +1,5 @@
+# author: luulethe@gmail.com 
+
 # -*- coding: utf-8 -*-
 #from school.views import *
 
@@ -6,10 +8,18 @@ from school.models import *
 from django.shortcuts import render_to_response
 from django.template import RequestContext, loader
 from school.viewCount import *
+from school.utils import *
+from django.core.urlresolvers import reverse
+
 import os.path 
 ENABLE_CHANGE_MARK=True
 
 def finish(request):
+    user = request.user
+    if not user.is_authenticated():
+        return HttpResponseRedirect( reverse('login'))
+
+    
     message=None
     currentTerm=get_current_term(request)
     yearString = str(currentTerm.number)+"-"+str(currentTerm.number+1)
@@ -86,7 +96,7 @@ def defineHlNam(tb,monChuyen,monToan,monVan,minMark):
     
 #tinh diem tong ket cua mot lop theo hoc ky
 def calculateOverallMarkTerm(class_id=7,termNumber=1):
-    print "chao"
+
     e=0.0000000001
     pupilNoSum =0
     subjectList=Subject.objects.filter(class_id=class_id)
@@ -199,20 +209,6 @@ def calculateOverallMarkYear(class_id=7):
     return pupilNoSum    
     
 # xep loai hoc ky cua mot lop
-def getCurrentTerm(class_id):
-
-    selectedClass=Class.objects.get(id=class_id)    
-    school_id=selectedClass.year_id.school_id.id
-    currentTerm=None
-    termChoice=-1
-    
-    termList=Term.objects.filter(year_id__school_id=school_id).order_by('-year_id__time','-number')
-    if termList.__len__()>0:
-        currentTerm=termList[0]        
-        termChoice =currentTerm.id
-
-    #neu la nam hien hien thi chon ky la ki hien tai        
-    return termChoice,currentTerm
 def convertMarkToCharacter(x):
     if x==9:
         return u'Giỏi'
@@ -241,15 +237,24 @@ def convertHlToVietnamese(x):
         return u'Chưa đủ điểm'    
                                                              
 def xepLoaiHlTheoLop(request,class_id):
-    ttt=None
-    message=None
-    print "chao1"
-    selectedClass=Class.objects.get(id=class_id)  
-    yearChoice  =selectedClass.year_id.id      
-    termChoice,currentTerm=getCurrentTerm(class_id)
+
+    user = request.user
+    if not user.is_authenticated():
+        return HttpResponseRedirect( reverse('login'))
+
+    selectedClass = Class.objects.get(id__exact = class_id)
+    
+    if in_school(request,selectedClass.year_id.school_id) == False:
+        return HttpResponseRedirect('/school')
+    
+    message=None    
+    yearChoice  =selectedClass.year_id.id
+          
+    currentTerm=get_current_term(request)
+    termChoice= currentTerm.id
     
         
-    termList= Term.objects.filter(year_id=selectedClass.year_id).order_by('number')    
+    termList= Term.objects.filter(year_id=selectedClass.year_id,number__lt=3).order_by('number')    
     subjectList=selectedClass.subject_set.all().order_by("-hs")
     pupilList  =Pupil.objects.filter(class_id=class_id)
     
@@ -338,7 +343,6 @@ def xepLoaiHlTheoLop(request,class_id):
                                  "termChoice":termChoice,
                                  "selectedTerm":selectedTerm,
                                  "class_id":class_id,
-                                 "ttt":ttt
                                 }
                        )
     
@@ -380,20 +384,6 @@ def finishTermByLearning1(request,term_id):
 
 
 
-def getCurrentTerm(class_id):
-
-    selectedClass=Class.objects.get(id=class_id)    
-    school_id=selectedClass.year_id.school_id.id
-    currentTerm=None
-    termChoice=-1
-    
-    termList=Term.objects.filter(year_id__school_id=school_id).order_by('-year_id__time','-number')
-    if termList.__len__()>0:
-        currentTerm=termList[0]        
-        termChoice =currentTerm.id
-
-    #neu la nam hien hien thi chon ky la ki hien tai        
-    return termChoice,currentTerm
 def definePass(tbNam,p):
     try:
         hk1_id=Term.objects.get(year_id=tbNam.year_id,number=1).id
@@ -426,11 +416,20 @@ def definePass(tbNam,p):
               
          
 def xlCaNamTheoLop(request,class_id):
+    
+    user = request.user
+    if not user.is_authenticated():
+        return HttpResponseRedirect( reverse('login'))
+
+    selectedClass = Class.objects.get(id__exact = class_id)
+    
+    if in_school(request,selectedClass.year_id.school_id) == False:
+        return HttpResponseRedirect('/school')
+    
     message=None
 
     pupilNoSum=0
     
-    selectedClass=Class.objects.get(id=class_id)
     pupilList=Pupil.objects.filter(class_id=class_id)
     notDefinedList=[]
     passedList=[]
@@ -597,6 +596,17 @@ def finishTermAll(term_id=None):
         
 # thong ke sinh vien ve hoc luc ,hanh kiem, va xep loai chung theo hoc ky
 def finishTerm(request,term_id=None):
+    
+    user = request.user
+    if not user.is_authenticated():
+        return HttpResponseRedirect( reverse('login'))
+
+    selectedTerm = Term.objects.get(id__exact = term_id)
+    
+    if in_school(request,selectedTerm.year_id.school_id) == False:
+        return HttpResponseRedirect('/school')
+    
+    
     message=None
     selectedTerm= Term.objects.get(id=term_id)
     yearString=str(selectedTerm.year_id.time)+"-"+str(selectedTerm.year_id.time+1)
@@ -739,9 +749,17 @@ def finishYearAll(year_id):
 
 
 def finishYear(request,year_id):
+
+    user = request.user
+    if not user.is_authenticated():
+        return HttpResponseRedirect( reverse('login'))
+
+    selectedTerm=Term.objects.get(year_id=year_id,number=2)
+    
+    if in_school(request,selectedTerm.year_id.school_id) == False:
+        return HttpResponseRedirect('/school')
     
     message=None
-    selectedTerm=Term.objects.get(year_id=year_id,number=2)
     
     yearString=str(selectedTerm.year_id.time)+"-"+str(selectedTerm.year_id.time+1)
     
@@ -756,12 +774,10 @@ def finishYear(request,year_id):
     if request.method == 'POST':
         if request.POST.get('finishTerm'):
            if request.POST['finishTerm']==u'click vào đây để kết thúc học kỳ':
-                selectedTerm.active=False
                 selectedTerm.year_id.school_id.status=3
            else:
-                selectedTerm.active=True
-                selectedTerm.year_id.school_id.status=2
-           selectedTerm.save()     
+                selectedTerm.year_id.school_id.status=selectedTerm.number
+           selectedTerm.year_id.school_id.save()     
                     
     t = loader.get_template(os.path.join('school','finish_year.html'))    
     c = RequestContext(request, {"message":message,

@@ -1,9 +1,12 @@
+# author: luulethe@gmail.com 
+
 # -*- coding: utf-8 -*-
 from django.http import HttpResponse, HttpResponseRedirect
 from school.models import *
 from django.shortcuts import render_to_response
 from django.template import RequestContext, loader
 from school.utils import *
+from django.core.urlresolvers import reverse
 import os.path 
 
 def countTotalPractisingInTerm(term_id):
@@ -108,14 +111,26 @@ def countPassInYear(year_id):
     return slList,ptslList    
     
 def countInSchool(request,year_id=None):
+    
+    user = request.user
+    if not user.is_authenticated():
+        return HttpResponseRedirect( reverse('login'))
+
+
+    
     message=None
     
     if year_id==None:
         year_id=get_current_year(request).id
+    
+    selectedYear =Year.objects.get(id=year_id)    
+    if in_school(request,selectedYear.school_id) == False:
+        return HttpResponseRedirect('/school')
+
     #currentTerm.year_id.school_id.status=1    
     #currentTerm.year_id.school_id.save()
-    currentTerm=get_current_term(request)
-
+    
+    currentTerm= get_current_term(request)
     hkList,pthkList = countTotalPractisingInTerm(currentTerm.id)
     hlList,pthlList = countTotalLearningInTerm(currentTerm.id)
     ddList,ptddList = countDanhHieuInTerm(currentTerm.id)
@@ -176,8 +191,18 @@ def countPractisingInClassInTerm(class_id,term_id):
     return slList,ptslList,sum    
                 
 def countPractisingInTerm(request,term_id):
-    message=None
+    
+    user = request.user
+    if not user.is_authenticated():
+        return HttpResponseRedirect( reverse('login'))
+
     selectedTerm=Term.objects.get(id=term_id)    
+    
+    if in_school(request,selectedTerm.year_id.school_id) == False:
+        return HttpResponseRedirect('/school')
+
+    
+    message=None
     yearString = str(selectedTerm.year_id.time)+"-"+str(selectedTerm.year_id.time+1)
     
     selectedYear=Year.objects.get(id=selectedTerm.year_id.id)    
@@ -228,9 +253,16 @@ def countPractisingInClassInYear(class_id,year_id):
 
 
 def countPractisingInYear(request,year_id):
-    message=None
-    
+    user = request.user
+    if not user.is_authenticated():
+        return HttpResponseRedirect( reverse('login'))
+
     selectedYear=Year.objects.get(id=year_id)    
+    
+    if in_school(request,selectedYear.school_id) == False:
+        return HttpResponseRedirect('/school')
+
+    message=None    
     yearString = str(selectedYear.time)+"-"+str(selectedYear.time+1)
     
     classList=selectedYear.class_set.all().order_by("block_id__number")
@@ -281,8 +313,17 @@ def countLearningInClassInTerm(class_id,term_id):
     return slList,ptslList,sum    
                 
 def countLearningInTerm(request,term_id):
-    message=None
+
+    user = request.user
+    if not user.is_authenticated():
+        return HttpResponseRedirect( reverse('login'))
+
     selectedTerm=Term.objects.get(id=term_id)    
+    
+    if in_school(request,selectedTerm.year_id.school_id) == False:
+        return HttpResponseRedirect('/school')
+    
+    message=None
     yearString = str(selectedTerm.year_id.time)+"-"+str(selectedTerm.year_id.time+1)
     
     selectedYear=Year.objects.get(id=selectedTerm.year_id.id)
@@ -333,8 +374,17 @@ def countLearningInClassInYear(class_id,year_id):
     return slList,ptslList,sum    
 
 def countLearningInYear(request,year_id):
-    message=None
     
+    user = request.user
+    if not user.is_authenticated():
+        return HttpResponseRedirect( reverse('login'))
+
+    selectedYear=Year.objects.get(id=year_id)    
+    
+    if in_school(request,selectedYear.school_id) == False:
+        return HttpResponseRedirect('/school')
+    
+    message=None
     selectedYear=Year.objects.get(id=year_id)    
     yearString = str(selectedYear.time)+"-"+str(selectedYear.time+1)
     
@@ -383,6 +433,16 @@ def countAllInClassInTerm(class_id,term_id):
     return slList,ptslList ,sum   
                 
 def countAllInTerm(request,term_id):
+    
+    user = request.user
+    if not user.is_authenticated():
+        return HttpResponseRedirect( reverse('login'))
+
+    selectedTerm=Term.objects.get(id=term_id)    
+    
+    if in_school(request,selectedTerm.year_id.school_id) == False:
+        return HttpResponseRedirect('/school')
+    
     message=None
     selectedTerm=Term.objects.get(id=term_id)    
     yearString = str(selectedTerm.year_id.time)+"-"+str(selectedTerm.year_id.time+1)
@@ -443,6 +503,16 @@ def countAllInClassInYear(class_id,year_id):
     return slList,ptList,sum
                 
 def countAllInYear(request,year_id):
+    
+    user = request.user
+    if not user.is_authenticated():
+        return HttpResponseRedirect( reverse('login'))
+
+    selectedYear=Year.objects.get(id=year_id)    
+    
+    if in_school(request,selectedYear.school_id) == False:
+        return HttpResponseRedirect('/school')
+    
     message=None
     selectedYear=Year.objects.get(id=year_id)
     yearString = str(selectedYear.time)+"-"+str(selectedYear.time+1)

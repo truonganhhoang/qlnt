@@ -1,38 +1,34 @@
+
 from django.conf.urls.defaults import patterns, url 
 
 
 urlpatterns = patterns('',
     url(r'^$', 'school.views.school_index'),
 
-	# 2 ham nay dung de test, tao tat ca cac thong tin con thieu cho sinh vien
-	# sau nay hoan thien, co the bo di
+    
+    # author: luulethe@gmail.com (cac ham den cho gach)
+    
+    #-----------------------------------------------------------------------
+    # 2 ham nay dung de test, tao tat ca cac thong tin con thieu cho sinh vien
+    # sau nay hoan thien, co the bo di    
     url(r'createTbNam/(?P<year_id>\w+)','school.viewMark.createTbNam'),
     url(r'createAllInfoInTerm/(?P<term_id>\w+)','school.viewMark.createAllInfoInTerm'),
-
     url(r'markTable/(?P<class_id>\w+)','school.viewMark.markTable'),
     url(r'markForAStudent/(?P<class_id>\w+)/(?P<student_id>\w+)','school.viewMark.markForAStudent'),
-	# diem cho 1 mon
     url(r'markForASubject/(?P<subject_id>\w+)','school.viewMark.markForASubject'),
-	
 	# xep loai hoc luc theo lop, gom co xep loai k1, k2 va ca nam
     url(r'xepLoaiHlTheoLop/(?P<class_id>\w+)','school.viewFinish.xepLoaiHlTheoLop'),	
-    url(r'xlCaNamTheoLop/(?P<class_id>\w+)','school.viewFinish.xlCaNamTheoLop'),	
-	
-	# tinh diem tong ket hoc luc toan truong
-	
-	# tong ket hoc ky, tinh lai toan bo hoc luc cua hoc sinh trong toan truong
+    url(r'xlCaNamTheoLop/(?P<class_id>\w+)','school.viewFinish.xlCaNamTheoLop'),		
+	# tinh diem tong ket hoc luc toan truong	
+	# tong ket hoc ky, tinh toan bo hoc luc cua hoc sinh trong toan truong
 	# xem xet lop nao da tinh xong, lop nao chua xong de hieu truong co the chi dao
-	# co chuc nang ket thuc hoc ky
-	
+	# co chuc nang ket thuc hoc ky	
     url(r'finishYear/(?P<year_id>\w+)','school.viewFinish.finishYear'),
-    url(r'finishTerm/(?P<term_id>\w+)','school.viewFinish.finishTerm'),
-    
-    url(r'finish$','school.viewFinish.finish'),
-    
+    url(r'finishTerm/(?P<term_id>\w+)','school.viewFinish.finishTerm'),    
+    url(r'finish$','school.viewFinish.finish'),    
     #thong ke toan truong
-    url(r'countInSchool/(?P<year_id>\w+)' , 'school.viewCount.countInSchool'),
-    url(r'countInSchool$' , 'school.viewCount.countInSchool'),
- 
+    #url(r'countInSchool/(?P<year_id>\w+)' , 'school.viewCount.countInSchool'),
+    url(r'countInSchool$' , 'school.viewCount.countInSchool'), 
     url(r'countPractisingInTerm/(?P<term_id>\w+)','school.viewCount.countPractisingInTerm'),
     url(r'countPractisingInYear/(?P<year_id>\w+)','school.viewCount.countPractisingInYear'),
     url(r'countLearningInTerm/(?P<term_id>\w+)','school.viewCount.countLearningInTerm'),
@@ -40,6 +36,7 @@ urlpatterns = patterns('',
     url(r'countAllInTerm/(?P<term_id>\w+)','school.viewCount.countAllInTerm'),
     url(r'countAllInYear/(?P<year_id>\w+)','school.viewCount.countAllInYear'),
 
+    #------------------------------------------------------------------
 
     url(r'classes/(?P<sort_type>\w+)/(?P<sort_status>\w+)/(?P<page>\w+)$', 'school.views.classes'),
     url(r'classes$', 'school.views.classes'),

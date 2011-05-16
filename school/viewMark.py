@@ -1,7 +1,12 @@
+# author: luulethe@gmail.com 
+
 from django.http import HttpResponse, HttpResponseRedirect
 from school.models import *
 from django.shortcuts import render_to_response
 from django.template import RequestContext, loader
+from school.utils import *
+from django.core.urlresolvers import reverse
+
 import os.path 
 
 LOCK_MARK =False
@@ -443,8 +448,19 @@ def getMark(class_id,subjectChoice,selectedTerm):
             tbnam=p.tkmon_set.get(subject_id=subjectChoice)                    
             tbnamListObjects.append(tbnam)
     return   pupilList,markList,tbhk1ListObjects,tbnamListObjects,idList
-      
-def markTable(request,class_id=4):
+
+          
+def markTable(request,class_id):
+    
+    user = request.user
+    if not user.is_authenticated():
+        return HttpResponseRedirect( reverse('login'))
+
+    selectedClass = Class.objects.get(id__exact = class_id)
+    
+    if in_school(request,selectedClass.year_id.school_id) == False:
+        return HttpResponseRedirect('/school')
+    
     
     enableChangeMark=checkChangeMark(class_id)
     message = None            
@@ -468,7 +484,7 @@ def markTable(request,class_id=4):
     if selectedClass.year_id.school_id.status==1:
         termList=Term.objects.filter(year_id=yearChoice,number=1).order_by('number')
     else:    
-        termList=Term.objects.filter(year_id=yearChoice).order_by('number')
+        termList=Term.objects.filter(year_id=yearChoice,number__lt=3).order_by('number')
     
     selectedTerm=termList[termList.__len__()-1]
     termChoice=selectedTerm.id
@@ -526,17 +542,27 @@ def markTable(request,class_id=4):
     return HttpResponse(t.render(c))
 
 # diem cho mot hoc sinh tai 1 lop nao do
-def markForAStudent(request,class_id=7,student_id=1):
+def markForAStudent(request,class_id,student_id):
+
+    user = request.user
+    if not user.is_authenticated():
+        return HttpResponseRedirect( reverse('login'))
+
+    selectedClass = Class.objects.get(id__exact = class_id)
+    
+    if in_school(request,selectedClass.year_id.school_id) == False:
+        return HttpResponseRedirect('/school')
+    
+    
     message = None
     student=Pupil.objects.get(id=student_id)
     studentName=student.last_name+" "+student.first_name
     
-    selectedClass=Class.objects.get(id=class_id)    
     yearChoice=selectedClass.year_id.id
-    termList= Term.objects.filter(year_id=yearChoice).order_by('-number')
+    termList= Term.objects.filter(year_id=yearChoice,number__lt=3).order_by('-number')
     termChoice=termList[0].id
     selectedTerm=termList[0]
-    termList= Term.objects.filter(year_id=yearChoice).order_by('number')
+    termList= Term.objects.filter(year_id=yearChoice,number__lt=3).order_by('number')
     
     if request.method == 'POST':
         termChoice =int(request.POST['term'])
@@ -602,11 +628,22 @@ def markForAStudent(request,class_id=7,student_id=1):
     return HttpResponse(t.render(c))
 
 # diem cho 1 mon
-def markForASubject(request,subject_id=2):
+def markForASubject(request,subject_id):
+    
+    user = request.user
+    if not user.is_authenticated():
+        return HttpResponseRedirect( reverse('login'))
+
+    selectedSubject = Subject.objects.get(id=subject_id)
+    
+    if in_school(request,selectedSubject.class_id.year_id.school_id) == False:
+        return HttpResponseRedirect('/school')
+
+    
     enableChangeMark=checkChangeMark(subject_id)
+    
     message = None            
     
-    selectedSubject = Subject.objects.get(id=subject_id)
     subjectChoice=subject_id
     hsSubject=-1    
     
@@ -627,7 +664,7 @@ def markForASubject(request,subject_id=2):
     if selectedClass.year_id.school_id.status==1:
         termList=Term.objects.filter(year_id=yearChoice,number=1).order_by('number')
     else:    
-        termList=Term.objects.filter(year_id=yearChoice).order_by('number')
+        termList=Term.objects.filter(year_id=yearChoice,number__lt=3).order_by('number')
     
     selectedTerm=termList[termList.__len__()-1]
     termChoice=selectedTerm.id
