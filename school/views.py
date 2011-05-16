@@ -126,6 +126,11 @@ def b1(request):
         term.number = 2
         term.year_id = year
         term.save()
+        term = Term()
+        term.active = False
+        term.number = 3
+        term.year_id = year
+        term.save()
         # create new class.
         # -- tao cac lop ---
         for khoi in range(lower_bound, upper_bound + 1):
@@ -196,7 +201,14 @@ def years(request):
     school = get_school(request)    
     years = school.year_set.all()
     return render_to_response(YEARS, {'years':years}, context_instance=RequestContext(request))        
-    
+  
+def classify(request):
+    school = get_school(request)
+    try:
+        year = get_current_year(request)
+    except Exception as e:
+        print e
+        return HttpResponseRedirect( reverse("school_index")) 
 #-----------------------------------------------------------------------------------------------------------------                                       
 def classes(request, sort_type=1, sort_status=0, page=1):
     user = request.user

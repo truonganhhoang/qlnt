@@ -277,7 +277,10 @@ def get_position(request):
     
 def get_current_year(request):
     school = get_school(request)
-    return school.year_set.latest('time')
+    try:
+        return school.year_set.latest('time')
+    except Exception( 'YearDoesNotExist'):
+        return None
 		
 def get_current_term(request):
     school = get_school(request)

@@ -5,7 +5,9 @@
 <p>{{ form.errors }}</p>
 {% endif %}
 <form enctype="multipart/form-data" action="{% url school.views.nhap_danh_sach_trung_tuyen %}" method="POST">{% csrf_token %}
-{{ form.as_p }}
+<table >
+{{ form.as_table }}
+</table>
 <input type="submit" value="Gửi lên" />
 </form>
 

@@ -48,7 +48,7 @@
 	{% if user.userprofile.position == 'HIEU_TRUONG'  or user.userprofile.position == 'HIEU_PHO' %}
   	<h2><span>Menu</span> chính</h2>
 	<ul>
-		{% if user.userprofile.organization.status == 0 %}
+		{% if user.userprofile.organization.status == 0  or user.userprofile.organization.status == 3 %}
 		<li><a href="{%url school.views.b1 %}">Bắt đầu năm học mới</a> </li>
 		{% endif %}
 		{% if user.userprofile.organization.status != 0 %}

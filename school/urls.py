@@ -3,7 +3,7 @@ from django.conf.urls.defaults import patterns, url
 
 
 urlpatterns = patterns('',
-    url(r'^$', 'school.views.school_index'),
+    url(r'^$', 'school.views.school_index', name = "school_index"),
 
     
     # author: luulethe@gmail.com (cac ham den cho gach)
