@@ -162,5 +162,1084 @@
         "organization": 1,
         "position": "HIEU_TRUONG"
     }
-  }
+  },
+{
+    "pk" : 49,
+    "model" : "admin.logentry",
+    "fields" : {
+        "action_flag" : 1,
+        "action_time" : "2011-05-04 15:16:47",
+        "object_repr" : "Tr\u01b0\u1eddng THPT Nguy\u1ec5n Tr\u00e3i",
+        "object_id" : "34",
+        "change_message" : "",
+        "user" : 1,
+        "content_type" : 9
+    }
+},
+{
+    "pk" : 48,
+    "model" : "admin.logentry",
+    "fields" : {
+        "action_flag" : 1,
+        "action_time" : "2011-05-04 15:14:24",
+        "object_repr" : "Tr\u01b0\u1eddng THPT Li\u1ec5u Giai",
+        "object_id" : "33",
+        "change_message" : "",
+        "user" : 1,
+        "content_type" : 9
+    }
+},
+{
+    "pk" : 47,
+    "model" : "admin.logentry",
+    "fields" : {
+        "action_flag" : 1,
+        "action_time" : "2011-05-04 15:11:23",
+        "object_repr" : "Tr\u01b0\u1eddng THPT H\u00e0 N\u1ed9i AMSTERDAM ",
+        "object_id" : "32",
+        "change_message" : "",
+        "user" : 1,
+        "content_type" : 9
+    }
+},
+{
+    "pk" : 46,
+    "model" : "admin.logentry",
+    "fields" : {
+        "action_flag" : 1,
+        "action_time" : "2011-05-04 15:09:16",
+        "object_repr" : "Tr\u01b0\u1eddng THPT \u0110inh Ti\u00ean Ho\u00e0ng",
+        "object_id" : "31",
+        "change_message" : "",
+        "user" : 1,
+        "content_type" : 9
+    }
+},
+{
+    "pk" : 45,
+    "model" : "admin.logentry",
+    "fields" : {
+        "action_flag" : 2,
+        "action_time" : "2011-05-04 14:52:03",
+        "object_repr" : "Ph\u00f2ng Gi\u00e1o d\u1ee5c Huy\u1ec7n \u0110an Ph\u01b0\u1ee3ng",
+        "object_id" : "24",
+        "change_message" : "manager_name, address, phone v\u00e0 email \u0111\u00e3 \u0111\u01b0\u1ee3c thay \u0111\u1ed5i.",
+        "user" : 1,
+        "content_type" : 9
+    }
+},
+{
+    "pk" : 44,
+    "model" : "admin.logentry",
+    "fields" : {
+        "action_flag" : 2,
+        "action_time" : "2011-05-04 14:50:07",
+        "object_repr" : "Ph\u00f2ng Gi\u00e1o d\u1ee5c Huy\u1ec7n \u0110\u00f4ng Anh",
+        "object_id" : "25",
+        "change_message" : "manager_name, address v\u00e0 email \u0111\u00e3 \u0111\u01b0\u1ee3c thay \u0111\u1ed5i.",
+        "user" : 1,
+        "content_type" : 9
+    }
+},
+{
+    "pk" : 43,
+    "model" : "admin.logentry",
+    "fields" : {
+        "action_flag" : 2,
+        "action_time" : "2011-05-04 14:49:37",
+        "object_repr" : "Ph\u00f2ng Gi\u00e1o d\u1ee5c Qu\u1eadn \u0110\u1ed1ng \u0110a",
+        "object_id" : "26",
+        "change_message" : "manager_name, address, phone v\u00e0 email \u0111\u00e3 \u0111\u01b0\u1ee3c thay \u0111\u1ed5i.",
+        "user" : 1,
+        "content_type" : 9
+    }
+},
+{
+    "pk" : 42,
+    "model" : "admin.logentry",
+    "fields" : {
+        "action_flag" : 2,
+        "action_time" : "2011-05-04 14:49:04",
+        "object_repr" : "Ph\u00f2ng Gi\u00e1o d\u1ee5c Huy\u1ec7n Gia L\u00e2m",
+        "object_id" : "27",
+        "change_message" : "manager_name, address, phone v\u00e0 email \u0111\u00e3 \u0111\u01b0\u1ee3c thay \u0111\u1ed5i.",
+        "user" : 1,
+        "content_type" : 9
+    }
+},
+{
+    "pk" : 41,
+    "model" : "admin.logentry",
+    "fields" : {
+        "action_flag" : 2,
+        "action_time" : "2011-05-04 14:47:37",
+        "object_repr" : "Ph\u00f2ng Gi\u00e1o d\u1ee5c Huy\u1ec7n \u0110\u00f4ng Anh",
+        "object_id" : "25",
+        "change_message" : "upper_organization \u0111\u00e3 \u0111\u01b0\u1ee3c thay \u0111\u1ed5i.",
+        "user" : 1,
+        "content_type" : 9
+    }
+},
+{
+    "pk" : 40,
+    "model" : "admin.logentry",
+    "fields" : {
+        "action_flag" : 2,
+        "action_time" : "2011-05-04 14:47:37",
+        "object_repr" : "Ph\u00f2ng Gi\u00e1o d\u1ee5c Qu\u1eadn \u0110\u1ed1ng \u0110a",
+        "object_id" : "26",
+        "change_message" : "upper_organization \u0111\u00e3 \u0111\u01b0\u1ee3c thay \u0111\u1ed5i.",
+        "user" : 1,
+        "content_type" : 9
+    }
+},
+{
+    "pk" : 39,
+    "model" : "admin.logentry",
+    "fields" : {
+        "action_flag" : 2,
+        "action_time" : "2011-05-04 14:47:37",
+        "object_repr" : "Ph\u00f2ng Gi\u00e1o d\u1ee5c Huy\u1ec7n Gia L\u00e2m",
+        "object_id" : "27",
+        "change_message" : "upper_organization \u0111\u00e3 \u0111\u01b0\u1ee3c thay \u0111\u1ed5i.",
+        "user" : 1,
+        "content_type" : 9
+    }
+},
+{
+    "pk" : 38,
+    "model" : "admin.logentry",
+    "fields" : {
+        "action_flag" : 2,
+        "action_time" : "2011-05-04 14:47:21",
+        "object_repr" : "Ph\u00f2ng Gi\u00e1o d\u1ee5c Qu\u1eadn H\u00e0 \u0110\u00f4ng",
+        "object_id" : "28",
+        "change_message" : "upper_organization, manager_name, address, phone v\u00e0 email \u0111\u00e3 \u0111\u01b0\u1ee3c thay \u0111\u1ed5i.",
+        "user" : 1,
+        "content_type" : 9
+    }
+},
+{
+    "pk" : 37,
+    "model" : "admin.logentry",
+    "fields" : {
+        "action_flag" : 2,
+        "action_time" : "2011-05-04 14:46:37",
+        "object_repr" : "Ph\u00f2ng Gi\u00e1o d\u1ee5c Qu\u1eadn Hai B\u00e0 Tr\u01b0ng",
+        "object_id" : "29",
+        "change_message" : "address v\u00e0 phone \u0111\u00e3 \u0111\u01b0\u1ee3c thay \u0111\u1ed5i.",
+        "user" : 1,
+        "content_type" : 9
+    }
+},
+{
+    "pk" : 36,
+    "model" : "admin.logentry",
+    "fields" : {
+        "action_flag" : 2,
+        "action_time" : "2011-05-04 14:45:07",
+        "object_repr" : "Ph\u00f2ng Gi\u00e1o d\u1ee5c Huy\u1ec7n Ho\u00e0i \u0110\u1ee9c",
+        "object_id" : "30",
+        "change_message" : "address v\u00e0 phone \u0111\u00e3 \u0111\u01b0\u1ee3c thay \u0111\u1ed5i.",
+        "user" : 1,
+        "content_type" : 9
+    }
+},
+{
+    "pk" : 35,
+    "model" : "admin.logentry",
+    "fields" : {
+        "action_flag" : 2,
+        "action_time" : "2011-05-04 14:42:48",
+        "object_repr" : "Ph\u00f2ng Gi\u00e1o d\u1ee5c Qu\u1eadn Hai B\u00e0 Tr\u01b0ng",
+        "object_id" : "29",
+        "change_message" : "email, upper_organization v\u00e0 manager_name \u0111\u00e3 \u0111\u01b0\u1ee3c thay \u0111\u1ed5i.",
+        "user" : 1,
+        "content_type" : 9
+    }
+},
+{
+    "pk" : 34,
+    "model" : "admin.logentry",
+    "fields" : {
+        "action_flag" : 2,
+        "action_time" : "2011-05-04 14:42:48",
+        "object_repr" : "Ph\u00f2ng Gi\u00e1o d\u1ee5c Huy\u1ec7n Ho\u00e0i \u0110\u1ee9c",
+        "object_id" : "30",
+        "change_message" : "email, upper_organization v\u00e0 manager_name \u0111\u00e3 \u0111\u01b0\u1ee3c thay \u0111\u1ed5i.",
+        "user" : 1,
+        "content_type" : 9
+    }
+},
+{
+    "pk" : 33,
+    "model" : "admin.logentry",
+    "fields" : {
+        "action_flag" : 1,
+        "action_time" : "2011-05-04 14:39:46",
+        "object_repr" : "Ph\u00f2ng Gi\u00e1o d\u1ee5c Huy\u1ec7n Ho\u00e0i \u0110\u1ee9c",
+        "object_id" : "30",
+        "change_message" : "",
+        "user" : 1,
+        "content_type" : 9
+    }
+},
+{
+    "pk" : 32,
+    "model" : "admin.logentry",
+    "fields" : {
+        "action_flag" : 1,
+        "action_time" : "2011-05-04 14:39:34",
+        "object_repr" : "Ph\u00f2ng Gi\u00e1o d\u1ee5c Qu\u1eadn Hai B\u00e0 Tr\u01b0ng",
+        "object_id" : "29",
+        "change_message" : "",
+        "user" : 1,
+        "content_type" : 9
+    }
+},
+{
+    "pk" : 31,
+    "model" : "admin.logentry",
+    "fields" : {
+        "action_flag" : 1,
+        "action_time" : "2011-05-04 14:39:17",
+        "object_repr" : "Ph\u00f2ng Gi\u00e1o d\u1ee5c Qu\u1eadn H\u00e0 \u0110\u00f4ng",
+        "object_id" : "28",
+        "change_message" : "",
+        "user" : 1,
+        "content_type" : 9
+    }
+},
+{
+    "pk" : 30,
+    "model" : "admin.logentry",
+    "fields" : {
+        "action_flag" : 1,
+        "action_time" : "2011-05-04 14:39:03",
+        "object_repr" : "Ph\u00f2ng Gi\u00e1o d\u1ee5c Huy\u1ec7n Gia L\u00e2m",
+        "object_id" : "27",
+        "change_message" : "",
+        "user" : 1,
+        "content_type" : 9
+    }
+},
+{
+    "pk" : 29,
+    "model" : "admin.logentry",
+    "fields" : {
+        "action_flag" : 1,
+        "action_time" : "2011-05-04 14:38:36",
+        "object_repr" : "Ph\u00f2ng Gi\u00e1o d\u1ee5c Qu\u1eadn \u0110\u1ed1ng \u0110a",
+        "object_id" : "26",
+        "change_message" : "",
+        "user" : 1,
+        "content_type" : 9
+    }
+},
+{
+    "pk" : 28,
+    "model" : "admin.logentry",
+    "fields" : {
+        "action_flag" : 1,
+        "action_time" : "2011-05-04 14:38:12",
+        "object_repr" : "Ph\u00f2ng Gi\u00e1o d\u1ee5c Huy\u1ec7n \u0110\u00f4ng Anh",
+        "object_id" : "25",
+        "change_message" : "",
+        "user" : 1,
+        "content_type" : 9
+    }
+},
+{
+    "pk" : 27,
+    "model" : "admin.logentry",
+    "fields" : {
+        "action_flag" : 1,
+        "action_time" : "2011-05-04 14:37:48",
+        "object_repr" : "Ph\u00f2ng Gi\u00e1o d\u1ee5c Huy\u1ec7n \u0110an Ph\u01b0\u1ee3ng",
+        "object_id" : "24",
+        "change_message" : "",
+        "user" : 1,
+        "content_type" : 9
+    }
+},
+{
+    "pk" : 26,
+    "model" : "admin.logentry",
+    "fields" : {
+        "action_flag" : 1,
+        "action_time" : "2011-05-04 14:35:36",
+        "object_repr" : "Ph\u00f2ng Gi\u00e1o d\u1ee5c Huy\u1ec7n Ch\u01b0\u01a1ng M\u1ef9",
+        "object_id" : "23",
+        "change_message" : "",
+        "user" : 1,
+        "content_type" : 9
+    }
+},
+{
+    "pk" : 25,
+    "model" : "admin.logentry",
+    "fields" : {
+        "action_flag" : 2,
+        "action_time" : "2011-05-04 14:31:45",
+        "object_repr" : "Ph\u00f2ng Gi\u00e1o d\u1ee5c Qu\u1eadn Ba \u0110\u00ecnh",
+        "object_id" : "20",
+        "change_message" : "name, address v\u00e0 manager_name \u0111\u00e3 \u0111\u01b0\u1ee3c thay \u0111\u1ed5i.",
+        "user" : 1,
+        "content_type" : 9
+    }
+},
+{
+    "pk" : 24,
+    "model" : "admin.logentry",
+    "fields" : {
+        "action_flag" : 2,
+        "action_time" : "2011-05-04 14:31:45",
+        "object_repr" : "Ph\u00f2ng Gi\u00e1o d\u1ee5c Huy\u1ec7n Ba V\u00ec",
+        "object_id" : "21",
+        "change_message" : "name, address v\u00e0 manager_name \u0111\u00e3 \u0111\u01b0\u1ee3c thay \u0111\u1ed5i.",
+        "user" : 1,
+        "content_type" : 9
+    }
+},
+{
+    "pk" : 23,
+    "model" : "admin.logentry",
+    "fields" : {
+        "action_flag" : 2,
+        "action_time" : "2011-05-04 14:31:45",
+        "object_repr" : "Ph\u00f2ng Gi\u00e1o d\u1ee5c Qu\u1eadn C\u1ea5u Gi\u1ea5y",
+        "object_id" : "22",
+        "change_message" : "name, address v\u00e0 manager_name \u0111\u00e3 \u0111\u01b0\u1ee3c thay \u0111\u1ed5i.",
+        "user" : 1,
+        "content_type" : 9
+    }
+},
+{
+    "pk" : 22,
+    "model" : "admin.logentry",
+    "fields" : {
+        "action_flag" : 1,
+        "action_time" : "2011-05-01 09:25:27",
+        "object_repr" : "Ph\u00f2ng Gi\u00e1o d\u1ee5c Huy\u1ec7n \u1ee8ng H\u00f2a",
+        "object_id" : "19",
+        "change_message" : "",
+        "user" : 1,
+        "content_type" : 9
+    }
+},
+{
+    "pk" : 21,
+    "model" : "admin.logentry",
+    "fields" : {
+        "action_flag" : 1,
+        "action_time" : "2011-05-01 09:24:29",
+        "object_repr" : "Ph\u00f2ng Gi\u00e1o d\u1ee5c Huy\u1ec7n T\u1eeb Li\u00eam",
+        "object_id" : "18",
+        "change_message" : "",
+        "user" : 1,
+        "content_type" : 9
+    }
+},
+{
+    "pk" : 20,
+    "model" : "admin.logentry",
+    "fields" : {
+        "action_flag" : 1,
+        "action_time" : "2011-05-01 09:23:44",
+        "object_repr" : "Ph\u00f2ng Gi\u00e1o d\u1ee5c Huy\u1ec7n Th\u01b0\u1eddng T\u00edn",
+        "object_id" : "17",
+        "change_message" : "",
+        "user" : 1,
+        "content_type" : 9
+    }
+},
+{
+    "pk" : 19,
+    "model" : "admin.logentry",
+    "fields" : {
+        "action_flag" : 1,
+        "action_time" : "2011-05-01 09:22:46",
+        "object_repr" : "Ph\u00f2ng Gi\u00e1o d\u1ee5c Qu\u1eadn Thanh Xu\u00e2n",
+        "object_id" : "16",
+        "change_message" : "",
+        "user" : 1,
+        "content_type" : 9
+    }
+},
+{
+    "pk" : 18,
+    "model" : "admin.logentry",
+    "fields" : {
+        "action_flag" : 1,
+        "action_time" : "2011-05-01 09:21:58",
+        "object_repr" : "Ph\u00f2ng Gi\u00e1o d\u1ee5c Huy\u1ec7n Thanh Tr\u00ec",
+        "object_id" : "15",
+        "change_message" : "",
+        "user" : 1,
+        "content_type" : 9
+    }
+},
+{
+    "pk" : 17,
+    "model" : "admin.logentry",
+    "fields" : {
+        "action_flag" : 1,
+        "action_time" : "2011-05-01 09:21:01",
+        "object_repr" : "Ph\u00f2ng Gi\u00e1o d\u1ee5c Huy\u1ec7n Thanh Oai",
+        "object_id" : "14",
+        "change_message" : "",
+        "user" : 1,
+        "content_type" : 9
+    }
+},
+{
+    "pk" : 16,
+    "model" : "admin.logentry",
+    "fields" : {
+        "action_flag" : 1,
+        "action_time" : "2011-05-01 09:19:54",
+        "object_repr" : "Ph\u00f2ng Gi\u00e1o d\u1ee5c Huy\u1ec7n Th\u1ea1ch Th\u1ea5t",
+        "object_id" : "13",
+        "change_message" : "",
+        "user" : 1,
+        "content_type" : 9
+    }
+},
+{
+    "pk" : 15,
+    "model" : "admin.logentry",
+    "fields" : {
+        "action_flag" : 1,
+        "action_time" : "2011-05-01 09:18:58",
+        "object_repr" : "Ph\u00f2ng Gi\u00e1o d\u1ee5c Qu\u1eadn T\u00e2y H\u1ed3",
+        "object_id" : "12",
+        "change_message" : "",
+        "user" : 1,
+        "content_type" : 9
+    }
+},
+{
+    "pk" : 14,
+    "model" : "admin.logentry",
+    "fields" : {
+        "action_flag" : 1,
+        "action_time" : "2011-05-01 09:18:08",
+        "object_repr" : "Ph\u00f2ng Gi\u00e1o d\u1ee5c Th\u1ecb x\u00e3 S\u01a1n T\u00e2y",
+        "object_id" : "11",
+        "change_message" : "",
+        "user" : 1,
+        "content_type" : 9
+    }
+},
+{
+    "pk" : 13,
+    "model" : "admin.logentry",
+    "fields" : {
+        "action_flag" : 1,
+        "action_time" : "2011-05-01 09:16:45",
+        "object_repr" : "Ph\u00f2ng Gi\u00e1o d\u1ee5c Huy\u1ec7n S\u00f3c S\u01a1n",
+        "object_id" : "10",
+        "change_message" : "",
+        "user" : 1,
+        "content_type" : 9
+    }
+},
+{
+    "pk" : 12,
+    "model" : "admin.logentry",
+    "fields" : {
+        "action_flag" : 1,
+        "action_time" : "2011-05-01 09:15:54",
+        "object_repr" : "Ph\u00f2ng Gi\u00e1o d\u1ee5c Huy\u1ec7n Qu\u1ed1c Oai",
+        "object_id" : "9",
+        "change_message" : "",
+        "user" : 1,
+        "content_type" : 9
+    }
+},
+{
+    "pk" : 11,
+    "model" : "admin.logentry",
+    "fields" : {
+        "action_flag" : 1,
+        "action_time" : "2011-05-01 09:14:58",
+        "object_repr" : "Ph\u00f2ng Gi\u00e1o d\u1ee5c Huy\u1ec7n Ph\u00fac Th\u1ecd",
+        "object_id" : "8",
+        "change_message" : "",
+        "user" : 1,
+        "content_type" : 9
+    }
+},
+{
+    "pk" : 10,
+    "model" : "admin.logentry",
+    "fields" : {
+        "action_flag" : 1,
+        "action_time" : "2011-05-01 09:13:50",
+        "object_repr" : "Ph\u00f2ng Gi\u00e1o d\u1ee5c Huy\u1ec7n Ph\u00fa Xuy\u00ean",
+        "object_id" : "7",
+        "change_message" : "",
+        "user" : 1,
+        "content_type" : 9
+    }
+},
+{
+    "pk" : 9,
+    "model" : "admin.logentry",
+    "fields" : {
+        "action_flag" : 1,
+        "action_time" : "2011-05-01 09:12:33",
+        "object_repr" : "Ph\u00f2ng Gi\u00e1o d\u1ee5c Huy\u1ec7n M\u1ef9 \u0110\u1ee9c",
+        "object_id" : "6",
+        "change_message" : "",
+        "user" : 1,
+        "content_type" : 9
+    }
+},
+{
+    "pk" : 8,
+    "model" : "admin.logentry",
+    "fields" : {
+        "action_flag" : 1,
+        "action_time" : "2011-05-01 09:11:21",
+        "object_repr" : "Ph\u00f2ng Gi\u00e1o d\u1ee5c Huy\u1ec7n M\u00ea Linh",
+        "object_id" : "5",
+        "change_message" : "",
+        "user" : 1,
+        "content_type" : 9
+    }
+},
+{
+    "pk" : 7,
+    "model" : "admin.logentry",
+    "fields" : {
+        "action_flag" : 1,
+        "action_time" : "2011-05-01 09:10:18",
+        "object_repr" : "Ph\u00f2ng Gi\u00e1o d\u1ee5c Qu\u1eadn Long Bi\u00ean",
+        "object_id" : "4",
+        "change_message" : "",
+        "user" : 1,
+        "content_type" : 9
+    }
+},
+{
+    "pk" : 6,
+    "model" : "admin.logentry",
+    "fields" : {
+        "action_flag" : 2,
+        "action_time" : "2011-05-01 09:08:33",
+        "object_repr" : "S\u1edf Gi\u00e1o d\u1ee5c v\u00e0 \u0110\u00e0o t\u1ea1o H\u00e0 N\u1ed9i",
+        "object_id" : "1",
+        "change_message" : "address \u0111\u00e3 \u0111\u01b0\u1ee3c thay \u0111\u1ed5i.",
+        "user" : 1,
+        "content_type" : 9
+    }
+},
+{
+    "pk" : 5,
+    "model" : "admin.logentry",
+    "fields" : {
+        "action_flag" : 2,
+        "action_time" : "2011-05-01 09:08:24",
+        "object_repr" : "Ph\u00f2ng Gi\u00e1o d\u1ee5c Qu\u1eadn Ho\u00e0n Ki\u1ebfm",
+        "object_id" : "2",
+        "change_message" : "address \u0111\u00e3 \u0111\u01b0\u1ee3c thay \u0111\u1ed5i.",
+        "user" : 1,
+        "content_type" : 9
+    }
+},
+{
+    "pk" : 4,
+    "model" : "admin.logentry",
+    "fields" : {
+        "action_flag" : 1,
+        "action_time" : "2011-05-01 09:08:13",
+        "object_repr" : "Ph\u00f2ng Gi\u00e1o d\u1ee5c Qu\u1eadn Ho\u00e0ng Mai",
+        "object_id" : "3",
+        "change_message" : "",
+        "user" : 1,
+        "content_type" : 9
+    }
+},
+{
+    "pk" : 3,
+    "model" : "admin.logentry",
+    "fields" : {
+        "action_flag" : 2,
+        "action_time" : "2011-05-01 09:06:42",
+        "object_repr" : "Ph\u00f2ng Gi\u00e1o d\u1ee5c Qu\u1eadn Ho\u00e0n Ki\u1ebfm",
+        "object_id" : "2",
+        "change_message" : "Kh\u00f4ng c\u00f3 tr\u01b0\u1eddng n\u00e0o thay \u0111\u1ed5i",
+        "user" : 1,
+        "content_type" : 9
+    }
+},
+{
+    "pk" : 2,
+    "model" : "admin.logentry",
+    "fields" : {
+        "action_flag" : 1,
+        "action_time" : "2011-05-01 09:06:39",
+        "object_repr" : "Ph\u00f2ng Gi\u00e1o d\u1ee5c Qu\u1eadn Ho\u00e0n Ki\u1ebfm",
+        "object_id" : "2",
+        "change_message" : "",
+        "user" : 1,
+        "content_type" : 9
+    }
+},
+{
+    "pk" : 1,
+    "model" : "admin.logentry",
+    "fields" : {
+        "action_flag" : 1,
+        "action_time" : "2011-05-01 09:04:08",
+        "object_repr" : "S\u1edf Gi\u00e1o d\u1ee5c v\u00e0 \u0110\u00e0o t\u1ea1o H\u00e0 N\u1ed9i",
+        "object_id" : "1",
+        "change_message" : "",
+        "user" : 1,
+        "content_type" : 9
+    }
+},
+{
+    "pk" : 1,
+    "model" : "app.organization",
+    "fields" : {
+        "name" : "S\u1edf Gi\u00e1o d\u1ee5c v\u00e0 \u0110\u00e0o t\u1ea1o H\u00e0 N\u1ed9i",
+        "level" : "S",
+        "manager_name" : "Nguy\u1ec5n H\u1eefu \u0110\u1ed9",
+        "phone" : "0439426821",
+        "address" : "S\u1ed1 23 Quang Trung, 81 Th\u1ee3 Nhu\u1ed9m, Ho\u00e0n Ki\u1ebfm, H\u00e0 N\u1ed9i",
+        "upper_organization" : null,
+        "email" : "sogiaoduc@hanoiedu.vn"
+    }
+},
+{
+    "pk" : 2,
+    "model" : "app.organization",
+    "fields" : {
+        "name" : "Ph\u00f2ng Gi\u00e1o d\u1ee5c Qu\u1eadn Ho\u00e0n Ki\u1ebfm",
+        "level" : "P",
+        "manager_name" : "D\u01b0\u01a1ng Th\u1ecb Thanh Huy\u1ec1n ",
+        "phone" : "0438255110 ",
+        "address" : "S\u1ed1 5 H\u00e0ng B\u00fat ",
+        "upper_organization" : 1,
+        "email" : "pgd-hoankiem@hanoiedu.vn"
+    }
+},
+{
+    "pk" : 3,
+    "model" : "app.organization",
+    "fields" : {
+        "name" : "Ph\u00f2ng Gi\u00e1o d\u1ee5c Qu\u1eadn Ho\u00e0ng Mai",
+        "level" : "P",
+        "manager_name" : "\u0110\u1eb7ng V\u0103n Tr\u01b0\u1eddng",
+        "phone" : "0436332476\u00a0",
+        "address" : "\u00d4 1 l\u00f4 2 khu \u0111\u00f4 th\u1ecb \u0110\u1ec1n L\u1eeb - P.Ho\u00e0ng V\u0103n Th\u1ee5, Ho\u00e0ng Mai",
+        "upper_organization" : 1,
+        "email" : "pgd-hoangmai@hanoiedu.vn"
+    }
+},
+{
+    "pk" : 4,
+    "model" : "app.organization",
+    "fields" : {
+        "name" : "Ph\u00f2ng Gi\u00e1o d\u1ee5c Qu\u1eadn Long Bi\u00ean",
+        "level" : "P",
+        "manager_name" : "\u0110\u1eb7ng Vi\u1ec7t H\u00e0",
+        "phone" : "0438779199\u00a0",
+        "address" : "S\u1ed1 66 ng\u00f5 139 ph\u1ed1 Hoa L\u00e2m, P.Vi\u1ec7t H\u01b0ng, Q.Long Bi\u00ean",
+        "upper_organization" : 1,
+        "email" : "pgd-longbien@hanoiedu.vn"
+    }
+},
+{
+    "pk" : 5,
+    "model" : "app.organization",
+    "fields" : {
+        "name" : "Ph\u00f2ng Gi\u00e1o d\u1ee5c Huy\u1ec7n M\u00ea Linh",
+        "level" : "P",
+        "manager_name" : "B\u00f9i V\u0103n C\u00f4ng",
+        "phone" : "0438169331",
+        "address" : "H\u1ed9i tr\u01b0\u1eddng UBND x\u00e3 Thanh L\u00e2m, M\u00ea Linh",
+        "upper_organization" : 1,
+        "email" : "pgd-melinh@hanoiedu.vn"
+    }
+},
+{
+    "pk" : 6,
+    "model" : "app.organization",
+    "fields" : {
+        "name" : "Ph\u00f2ng Gi\u00e1o d\u1ee5c Huy\u1ec7n M\u1ef9 \u0110\u1ee9c",
+        "level" : "P",
+        "manager_name" : "\u0110\u1eb7ng V\u0103n Vi\u1ec7n",
+        "phone" : "0433847239",
+        "address" : "Th\u1ecb tr\u1ea5n huy\u1ec7n M\u1ef9 \u0110\u1ee9c",
+        "upper_organization" : 1,
+        "email" : "pgd-myduc@hanoiedu.vn"
+    }
+},
+{
+    "pk" : 7,
+    "model" : "app.organization",
+    "fields" : {
+        "name" : "Ph\u00f2ng Gi\u00e1o d\u1ee5c Huy\u1ec7n Ph\u00fa Xuy\u00ean",
+        "level" : "P",
+        "manager_name" : "Tr\u1ea7n C\u00f4ng Th\u00e0nh",
+        "phone" : "0433854287",
+        "address" : "Huy\u1ec7n Ph\u00fa Xuy\u00ean",
+        "upper_organization" : 1,
+        "email" : "pgd-phuxuyen@hanoiedu.vn"
+    }
+},
+{
+    "pk" : 8,
+    "model" : "app.organization",
+    "fields" : {
+        "name" : "Ph\u00f2ng Gi\u00e1o d\u1ee5c Huy\u1ec7n Ph\u00fac Th\u1ecd",
+        "level" : "P",
+        "manager_name" : "Ki\u1ec1u Tu\u1ea5n ",
+        "phone" : "0433640858",
+        "address" : "Th\u1ecb tr\u1ea5n Ph\u00fac Th\u1ecd Huy\u1ec7n Ph\u00fac Th\u1ecd",
+        "upper_organization" : 1,
+        "email" : "pgd-phuctho@hanoiedu.vn"
+    }
+},
+{
+    "pk" : 9,
+    "model" : "app.organization",
+    "fields" : {
+        "name" : "Ph\u00f2ng Gi\u00e1o d\u1ee5c Huy\u1ec7n Qu\u1ed1c Oai",
+        "level" : "P",
+        "manager_name" : "Nguy\u1ec5n V\u0103n Ph\u01b0\u01a1ng",
+        "phone" : "0433843155",
+        "address" : "Th\u00f4n Ng\u00f4 S\u00e0i - Th\u1ecb tr\u1ea5n Qu\u1ed1c Oai - huy\u1ec7n Qu\u1ed1c Oai",
+        "upper_organization" : 1,
+        "email" : "pgd-quocoai@hanoiedu.vn"
+    }
+},
+{
+    "pk" : 10,
+    "model" : "app.organization",
+    "fields" : {
+        "name" : "Ph\u00f2ng Gi\u00e1o d\u1ee5c Huy\u1ec7n S\u00f3c S\u01a1n",
+        "level" : "P",
+        "manager_name" : "Nguy\u1ec5n Trung Th\u00e0nh",
+        "phone" : "0438843526",
+        "address" : "S\u1ed1 33 ng\u00f5 29 \u0111\u01b0\u1eddng N\u00fai \u0110\u00f4i, Th\u1ecb tr\u1ea5n S\u00f3c S\u01a1n, S\u00f3c S\u01a1n",
+        "upper_organization" : 1,
+        "email" : "pgd-socson@hanoiedu.vn"
+    }
+},
+{
+    "pk" : 11,
+    "model" : "app.organization",
+    "fields" : {
+        "name" : "Ph\u00f2ng Gi\u00e1o d\u1ee5c Th\u1ecb x\u00e3 S\u01a1n T\u00e2y",
+        "level" : "P",
+        "manager_name" : "V\u0169 \u0110\u00ecnh Ch\u00ednh",
+        "phone" : "0433832221",
+        "address" : "S\u1ed1 11 ph\u1ed1 Ng\u00f4 Quy\u1ec1n, S\u01a1n T\u00e2y",
+        "upper_organization" : 1,
+        "email" : "pgd-sontay@hanoiedu.vn"
+    }
+},
+{
+    "pk" : 12,
+    "model" : "app.organization",
+    "fields" : {
+        "name" : "Ph\u00f2ng Gi\u00e1o d\u1ee5c Qu\u1eadn T\u00e2y H\u1ed3",
+        "level" : "P",
+        "manager_name" : "Ho\u00e0ng V\u0103n S\u01a1n",
+        "phone" : "0437581042",
+        "address" : "655 \u0110\u01b0\u1eddng L\u1ea1c Long Qu\u00e2n, T\u00e2y H\u1ed3",
+        "upper_organization" : 1,
+        "email" : "pgd-tayho@hanoiedu.vn"
+    }
+},
+{
+    "pk" : 13,
+    "model" : "app.organization",
+    "fields" : {
+        "name" : "Ph\u00f2ng Gi\u00e1o d\u1ee5c Huy\u1ec7n Th\u1ea1ch Th\u1ea5t",
+        "level" : "P",
+        "manager_name" : "C\u1ea5n V\u0103n Qu\u1ea3ng",
+        "phone" : "0433842257",
+        "address" : "Li\u00ean Quan - Th\u1ea1ch Th\u1ea5t - H\u00e0 N\u1ed9i",
+        "upper_organization" : 1,
+        "email" : "pgd-thachthat@hanoiedu.vn"
+    }
+},
+{
+    "pk" : 14,
+    "model" : "app.organization",
+    "fields" : {
+        "name" : "Ph\u00f2ng Gi\u00e1o d\u1ee5c Huy\u1ec7n Thanh Oai",
+        "level" : "P",
+        "manager_name" : "\u0110\u1ed7 Ti\u1ebfn",
+        "phone" : "0433873028",
+        "address" : "Huy\u1ec7n Thanh Oai",
+        "upper_organization" : 1,
+        "email" : "pgd-thanhoai@hanoiedu.vn"
+    }
+},
+{
+    "pk" : 15,
+    "model" : "app.organization",
+    "fields" : {
+        "name" : "Ph\u00f2ng Gi\u00e1o d\u1ee5c Huy\u1ec7n Thanh Tr\u00ec",
+        "level" : "P",
+        "manager_name" : "Nguy\u1ec5n V\u0103n Ho\u00e0n",
+        "phone" : "0438617886",
+        "address" : "Th\u1ecb tr\u1ea5n V\u0103n \u0110i\u1ec3n",
+        "upper_organization" : 1,
+        "email" : "pgd-thanhtri@hanoiedu.vn"
+    }
+},
+{
+    "pk" : 16,
+    "model" : "app.organization",
+    "fields" : {
+        "name" : "Ph\u00f2ng Gi\u00e1o d\u1ee5c Qu\u1eadn Thanh Xu\u00e2n",
+        "level" : "P",
+        "manager_name" : "Nguy\u1ec5n Th\u1ecb Thu\u1ef7",
+        "phone" : "0435585604",
+        "address" : "Ng\u00f5 116 Ph\u1ed1 Nh\u00e2n Ho\u00e0, P.Nh\u00e2n Ch\u00ednh, Thanh Xu\u00e2n",
+        "upper_organization" : 1,
+        "email" : "pgd-thanhxuan@hanoiedu.vn"
+    }
+},
+{
+    "pk" : 17,
+    "model" : "app.organization",
+    "fields" : {
+        "name" : "Ph\u00f2ng Gi\u00e1o d\u1ee5c Huy\u1ec7n Th\u01b0\u1eddng T\u00edn",
+        "level" : "P",
+        "manager_name" : "Nguy\u1ec5n V\u0103n D\u0169ng",
+        "phone" : "0433853235",
+        "address" : "S\u1ed1 37 Nguy\u1ec5n Du, Th\u1ecb tr\u1ea5n Th\u01b0\u1eddng T\u00edn, H. Th\u01b0\u1eddng T\u00edn",
+        "upper_organization" : 1,
+        "email" : "pgd-thuongtin@hanoiedu.vn"
+    }
+},
+{
+    "pk" : 18,
+    "model" : "app.organization",
+    "fields" : {
+        "name" : "Ph\u00f2ng Gi\u00e1o d\u1ee5c Huy\u1ec7n T\u1eeb Li\u00eam",
+        "level" : "P",
+        "manager_name" : "L\u00ea V\u0103n B\u00ecnh ",
+        "phone" : "0437641487",
+        "address" : "T\u1ed5 15 Th\u1ecb tr\u1ea5n C\u1ea7u Di\u1ec5n",
+        "upper_organization" : 1,
+        "email" : "pgd-tuliem@hanoiedu.vn"
+    }
+},
+{
+    "pk" : 19,
+    "model" : "app.organization",
+    "fields" : {
+        "name" : "Ph\u00f2ng Gi\u00e1o d\u1ee5c Huy\u1ec7n \u1ee8ng H\u00f2a",
+        "level" : "P",
+        "manager_name" : "\u0110\u1ed7 Ng\u1ecdc Anh",
+        "phone" : "0433882643",
+        "address" : "Ho\u00e0ng X\u00e1, Th\u1ecb tr\u1ea5n V\u00e2n \u0110\u00ecnh, \u1ee8ng Ho\u00e0",
+        "upper_organization" : 1,
+        "email" : "pgd-unghoa@hanoiedu.vn"
+    }
+},
+{
+    "pk" : 20,
+    "model" : "app.organization",
+    "fields" : {
+        "name" : "Ph\u00f2ng Gi\u00e1o d\u1ee5c Qu\u1eadn Ba \u0110\u00ecnh",
+        "level" : "P",
+        "manager_name" : "Nguy\u1ec5n Th\u1ebf \u0110\u1ea1i ",
+        "phone" : "0437164892",
+        "address" : "S\u1ed1 10 Nguy\u1ec5n Tr\u01b0\u1eddng T\u1ed9",
+        "upper_organization" : 1,
+        "email" : "ppgd-badinh@hanoiedu.vn"
+    }
+},
+{
+    "pk" : 21,
+    "model" : "app.organization",
+    "fields" : {
+        "name" : "Ph\u00f2ng Gi\u00e1o d\u1ee5c Huy\u1ec7n Ba V\u00ec",
+        "level" : "P",
+        "manager_name" : "L\u00ea Ng\u1ecdc T\u00f4n ",
+        "phone" : "0433863001",
+        "address" : "Ph\u1ed1 M\u1edbi - X\u00e3 Chu Minh - Huy\u1ec7n Ba V\u00ec",
+        "upper_organization" : 1,
+        "email" : "ppgd-bavi@hanoiedu.vn"
+    }
+},
+{
+    "pk" : 22,
+    "model" : "app.organization",
+    "fields" : {
+        "name" : "Ph\u00f2ng Gi\u00e1o d\u1ee5c Qu\u1eadn C\u1ea5u Gi\u1ea5y",
+        "level" : "P",
+        "manager_name" : "B\u00f9i Th\u1ecb V\u00e2n Anh ",
+        "phone" : "0438349201",
+        "address" : "485 \u0110\u01b0\u1eddng Nguy\u1ec5n Khang",
+        "upper_organization" : 1,
+        "email" : "ppgd-caugiay@hanoiedu.vn"
+    }
+},
+{
+    "pk" : 23,
+    "model" : "app.organization",
+    "fields" : {
+        "name" : "Ph\u00f2ng Gi\u00e1o d\u1ee5c Huy\u1ec7n Ch\u01b0\u01a1ng M\u1ef9",
+        "level" : "P",
+        "manager_name" : "Nguy\u1ec5n V\u0103n V\u1eefng",
+        "phone" : "0433.866400",
+        "address" : "S\u1ed1 2 Y\u00ean S\u01a1n, Th\u1ecb tr\u1ea5n Ch\u00fac S\u01a1n, Ch\u01b0\u01a1ng M\u1ef9",
+        "upper_organization" : 1,
+        "email" : "pgd-chuongmy@hanoiedu.vn"
+    }
+},
+{
+    "pk" : 24,
+    "model" : "app.organization",
+    "fields" : {
+        "name" : "Ph\u00f2ng Gi\u00e1o d\u1ee5c Huy\u1ec7n \u0110an Ph\u01b0\u1ee3ng",
+        "level" : "P",
+        "manager_name" : "Th\u1ebf Minh Kh\u00f4i\u00a0",
+        "phone" : "043.3886487\u00a0",
+        "address" : "Th\u1ecb tr\u1ea5n Ph\u00f9ng, huy\u1ec7n \u0110an Ph\u01b0\u1ee3ng",
+        "upper_organization" : 1,
+        "email" : "pgd-danphuong@hanoiedu.vn"
+    }
+},
+{
+    "pk" : 25,
+    "model" : "app.organization",
+    "fields" : {
+        "name" : "Ph\u00f2ng Gi\u00e1o d\u1ee5c Huy\u1ec7n \u0110\u00f4ng Anh",
+        "level" : "P",
+        "manager_name" : "D\u01b0\u01a1ng Th\u1ecb S\u00e1u  ",
+        "phone" : "",
+        "address" : "Th\u1ecb tr\u1ea5n \u0110\u00f4ng Anh  ",
+        "upper_organization" : 1,
+        "email" : "pgd-donganh@hanoiedu.vn"
+    }
+},
+{
+    "pk" : 26,
+    "model" : "app.organization",
+    "fields" : {
+        "name" : "Ph\u00f2ng Gi\u00e1o d\u1ee5c Qu\u1eadn \u0110\u1ed1ng \u0110a",
+        "level" : "P",
+        "manager_name" : "Nguy\u1ec5n Duy Long  ",
+        "phone" : "0435112461",
+        "address" : "256 T\u00f4n \u0110\u1ee9c Th\u1eafng ",
+        "upper_organization" : 1,
+        "email" : "pgd-dongda@hanoiedu.vn"
+    }
+},
+{
+    "pk" : 27,
+    "model" : "app.organization",
+    "fields" : {
+        "name" : "Ph\u00f2ng Gi\u00e1o d\u1ee5c Huy\u1ec7n Gia L\u00e2m",
+        "level" : "P",
+        "manager_name" : "guy\u1ec5n V\u0103n Qu\u00fd ",
+        "phone" : "0438276332 ",
+        "address" : "C\u1ed5 Bi, Gia L\u00e2m ",
+        "upper_organization" : 1,
+        "email" : "pgd-gialam@hanoiedu.vn"
+    }
+},
+{
+    "pk" : 28,
+    "model" : "app.organization",
+    "fields" : {
+        "name" : "Ph\u00f2ng Gi\u00e1o d\u1ee5c Qu\u1eadn H\u00e0 \u0110\u00f4ng",
+        "level" : "P",
+        "manager_name" : "\u0110\u01b0\u1eddng Th\u1ecb L\u1ec7 ",
+        "phone" : "043.3824452",
+        "address" : "S\u1ed1 126 \u0111\u01b0\u1eddng T\u00f4 Hi\u1ec7u, P.Nguy\u1ec5n Tr\u00e3i, H\u00e0 \u0110\u00f4ng",
+        "upper_organization" : 1,
+        "email" : "pgd-hadong@hanoiedu.vn"
+    }
+},
+{
+    "pk" : 29,
+    "model" : "app.organization",
+    "fields" : {
+        "name" : "Ph\u00f2ng Gi\u00e1o d\u1ee5c Qu\u1eadn Hai B\u00e0 Tr\u01b0ng",
+        "level" : "P",
+        "manager_name" : "Nguy\u1ec5n Nh\u01b0 Th\u1eafng\u00a0",
+        "phone" : "0439784752",
+        "address" : "349 ph\u1ed1 Hu\u1ebf, Q. Hai B\u00e0 Tr\u01b0ng",
+        "upper_organization" : 1,
+        "email" : "pgd-haibatrung@hanoiedu.vn"
+    }
+},
+{
+    "pk" : 30,
+    "model" : "app.organization",
+    "fields" : {
+        "name" : "Ph\u00f2ng Gi\u00e1o d\u1ee5c Huy\u1ec7n Ho\u00e0i \u0110\u1ee9c",
+        "level" : "P",
+        "manager_name" : "Nguy\u1ec5n Phan Minh\u00a0",
+        "phone" : "0433861220",
+        "address" : "Th\u1ecb tr\u1ea5n Tr\u1ea1m Tr\u00f4i, Ho\u00e0i \u0110\u1ee9c ",
+        "upper_organization" : 1,
+        "email" : "pgd-hoaiduc@hanoiedu.vn"
+    }
+},
+{
+    "pk" : 31,
+    "model" : "app.organization",
+    "fields" : {
+        "name" : "Tr\u01b0\u1eddng THPT \u0110inh Ti\u00ean Ho\u00e0ng",
+        "level" : "T",
+        "manager_name" : "Nguy\u1ec5n T\u00f9ng L\u00e2m ",
+        "phone" : "0437152521 ",
+        "address" : "C\u01a1 S\u1edf 1: 67 Ph\u00f3 \u0110\u1ee9c Ch\u00ednh, Ba \u0110\u00ecnh ; C\u01a1 S\u1edf 2: S\u1ed1 5 Ph\u1ea1m S\u01b0 M\u1ea1nh, Ho\u00e0n Ki\u1ebfm ",
+        "upper_organization" : 2,
+        "email" : "c3dinhTienHoang@hanoiedu.vn"
+    }
+},
+{
+    "pk" : 32,
+    "model" : "app.organization",
+    "fields" : {
+        "name" : "Tr\u01b0\u1eddng THPT H\u00e0 N\u1ed9i AMSTERDAM ",
+        "level" : "T",
+        "manager_name" : "Ph\u1ea1m V\u0103n \u0110\u1ea1i",
+        "phone" : "0438463096",
+        "address" : "\u0110\u01b0\u1eddng Ho\u00e0ng Minh Gi\u00e1m, Qu\u1eadn C\u1ea7u Gi\u1ea5y",
+        "upper_organization" : 22,
+        "email" : "c23hanoi-ams@hanoiedu.vn"
+    }
+},
+{
+    "pk" : 33,
+    "model" : "app.organization",
+    "fields" : {
+        "name" : "Tr\u01b0\u1eddng THPT Li\u1ec5u Giai",
+        "level" : "T",
+        "manager_name" : "L\u00ea V\u0103n H\u1ed3ng ",
+        "phone" : "0437626607",
+        "address" : "50 Li\u1ec5u Giai, Ba \u0110\u00ecnh",
+        "upper_organization" : 20,
+        "email" : "c3bclieugiai@hanoiedu.vn"
+    }
+},
+{
+    "pk" : 34,
+    "model" : "app.organization",
+    "fields" : {
+        "name" : "Tr\u01b0\u1eddng THPT Nguy\u1ec5n Tr\u00e3i",
+        "level" : "T",
+        "manager_name" : "Ph\u1ea1m V\u01b0\u01a1ng T\u1ea5n",
+        "phone" : "0437365650",
+        "address" : "S\u1ed1 50 H\u00e0o Nam, Ba \u0110\u00ecnh",
+        "upper_organization" : 20,
+        "email" : "c3nguyentrai@hanoiedu.vn"
+    }
+}  
 ]
