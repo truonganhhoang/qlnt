@@ -28,7 +28,7 @@ function confirmDelete()
 
     {% for ss in studentList.object_list %}
     <tr>
-        <td align="center" width="5%">{{forloop.counter|add: base_order}}</td>
+        <td align="center" width="5%">{{forloop.counter|add:base_order}}</td>
         <td align="center" width="25%"> <a href="{%url school.views.school_index  %}viewStudentDetail/{{ss.id}}">{{ss.last_name}} {{ss.first_name}}</td>
         <td align="center" width="15%"> {{ss.birthday|date:"SHORT_DATE_FORMAT"}}</td>
         <td align="center" width="10%"> {{ss.sex}}</td>
@@ -58,7 +58,6 @@ function confirmDelete()
 		</div>
 		</td>
 	</tr>
-    
     <form action="/school/students/{{sort_type}}/{{sort_status}}/{{studentList.number}}" method="post">{% csrf_token %}
         <tr>
             {{ form.non_field_errors }}
@@ -98,9 +97,9 @@ function confirmDelete()
                     <p>{{ form.start_year_id }}</p>                   
             </td>         
         </tr>
-        <tr>
-        		<td width = "5%" align = "left"><input type ="submit" value="Thêm"/></td>
-        		<td align = "right"> <a href = ""> Xuất ra excel </a> </td>
+        <tr border = 0>
+        		<td width = "5%" align = "left" border = 0><input type ="submit" value="Thêm"/></td>
+        		<td align = "right" colspan = 8 border = 0> <a href = ""> Xuất ra excel </a> </td>
 			</form>
         </tr>
 </table>

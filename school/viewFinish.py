@@ -1,4 +1,4 @@
-# author: luulethe@gmail.com 
+﻿# author: luulethe@gmail.com 
 
 # -*- coding: utf-8 -*-
 #from school.views import *
