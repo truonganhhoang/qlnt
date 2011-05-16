@@ -6,6 +6,8 @@ from cgi import escape
 import ho.pisa as pisa
 from django.template.loader import get_template
 from django.template import Context
+from django.core.context_processors import csrf
+from django.contrib.auth import authenticate, login
 
 def index(request): 
     return render_to_response("index.html", context_instance=RequestContext(request))
@@ -33,4 +35,3 @@ def help(request):
 def topdf(request):
     return render_to_pdf('base.html',{        
         'pagesize': 'A4'})
-

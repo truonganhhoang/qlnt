@@ -7,6 +7,7 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     (r'^$', 'views.index'),
+#    (r'^$', 'django.contrib.auth.views.login', {'template_name': 'login.html'}),
     (r'^help/$', 'views.help'),
     # the built-in sign-in/out module 
     url(r'^login/$', 'django.contrib.auth.views.login', name = "login"),
