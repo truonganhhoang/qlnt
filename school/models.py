@@ -175,11 +175,12 @@ class Class(models.Model):
     block_id = models.ForeignKey(Block)
     teacher_id = models.ForeignKey(Teacher,null=True,blank=True) #field nay chi dung de phan quyen, vi vay chi gan 1 gia tri nhan dang
     
+    
+    def __unicode__(self):
+		return self.name
+        
     class Meta:
         unique_together = ("year_id", "block_id", "name")
-    
-	def __unicode__(self):
-		return self.name
 	#class Admin: pass
 	
 class ClassForm(forms.ModelForm):
@@ -241,6 +242,12 @@ class PupilForm(forms.ModelForm):
             'father_birthday': SelectDateWidget(years = range( this_year() ,this_year()-100,-1)),
             'mother_birthday': SelectDateWidget(years = range( this_year() ,this_year()-100,-1)),
         }
+    def __init__(self, school_id, *args, **kwargs):
+        super(PupilForm, self).__init__(*args, **kwargs)
+        school = Organization.objects.get(id = school_id)
+        year_id = school.year_set.latest('time').id
+        self.fields['start_year_id'] = forms.ModelChoiceField(queryset=StartYear.objects.filter(school_id = school_id))
+        self.fields['class_id'] = forms.ModelChoiceField(queryset=Class.objects.filter(year_id = year_id))
 
 
 class Subject(models.Model):	
