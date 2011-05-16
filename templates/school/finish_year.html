@@ -18,12 +18,12 @@
 <br>
 <form action="/school/finishYear/{{selectedTerm.year_id.id}}"  name="info" method="post" id='myform' 
 	 >{% csrf_token %}    
-	 {% ifequal selectedTerm currentTerm %}	 
+	 {% ifnotequal selectedTerm.year_id.school_id.status 3   %}	 
 		Trạng thái năm học:
 		<span style="color:0043A8 ; font-size:23px">	Đang diễn ra  		</span>	
 		&nbsp&nbsp&nbsp
 		<input type="submit"  name="finishTerm" value="click vào đây để kết thúc học kỳ" title="click vào đây để kết thúc năm học">
-     {% endifequal %}
+     {% endifnotequal %}
 
 
 
@@ -381,10 +381,12 @@
 	
 	{% endfor %} 
 </table>
+	<br>
+	<br>
 
 
 
-	 {% ifnotequal selectedTerm currentTerm %}	 
+	 {% ifequal selectedTerm.year_id.school_id.status 3   %}	 
 		Trạng thái năm học:	
 		<span style="color:5197FF ; font-size:23px">
 			Đã kết thúc 
@@ -392,7 +394,7 @@
 		&nbsp&nbsp&nbsp&nbsp
 		Nếu chưa muốn kết thúc năm học, bạn có thể ấn khôi phục lại học kỳ
 		<input type="submit"  name="finishTerm" value="khôi phục" title="nếu chưa muốn kết thúc, ấn vào đây đkhôi phục lại" >
-	 {% endifnotequal %}	
+	 {% endifequal %}	
 
 </form>	
 
