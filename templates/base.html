@@ -44,25 +44,22 @@
 
 <div id="bodyPan">
 	<div id="bodyRightPan">
-	{% block left_menu %}
-	{% if user.is_superuser%}
-		  	<ul>
-				<li><a href="/admin">Trang Hệ Thống</a></li>
-				<li><a href="#">Danh sach Trường</a></li>
-				<li><a href="{%url sms.views.manual_sms %}">Gửi tin nhắn SMS</a></li>
-				<li><a href="#">Quản lý tin nhắn</a></li>
-				<li><a href="{%url app.views.school_admin_add %}">Thêm Người Quản Lý Cấp Trường</a></li>
-			</ul>
-	{% else %}
-		{% if user.userprofile.position == 'CAP_SO' or user.userprofile.position == 'CAP_PHONG'%}
-			<ul>
-				<li><a href="#">Danh sach Trường</a></li>
-				<li><a href="{%url sms.views.manual_sms %}">Gửi tin nhắn SMS</a></li>
-				<li><a href="#">Thống kê tin nhắn</a></li>
-				<li><a href="#">Thống kê báo cáo</a></li>
-				<li><a href="{%url app.views.school_admin_add %}">Thêm Người Quản Lý Cấp Trường</a></li>
-			</ul>
-		{% endif %}
+		{% block left_menu %}
+	{% if user.is_superuser %}
+		<ul>
+			<li><a href="/admin">Trang Quản Trị Hệ Thống</a></li>
+			<li><a href="#">Sơ đồ tổ chức</a></li>
+			<li><a href="{% url sms.views.manual_sms %}">Gửi tin nhắn</a></li>
+			<li><a href="{% url app.views.school_admin_add %}">Thêm Người Quản Lý Trường</a></li>
+		</ul>
+	{% endif %}
+	{% if user.userprofile.position == 'GIAM_DOC_SO' or user.userprofile.position == 'GIAM_DOC_PHONG' %}
+		<ul>
+			<li><a href="#">Danh sách các Tổ chức trực thuộc</a></li>
+			<li><a href="{% url sms.views.manual_sms %}">Gửi tin nhắn</a></li>
+			<li><a href="#">Thống kê báo cáo</a></li>
+			<li><a href="{% url app.views.school_admin_add %}">Thêm Người Quản Lý Trường</a></li>
+		</ul>
 	{% endif %}
   	{% endblock %}
  	</div>  
