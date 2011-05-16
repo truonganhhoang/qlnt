@@ -428,17 +428,18 @@ def subjectPerClass(request, class_id, sort_type=1, sort_status=0):
                 if sfl[i].is_valid():
                     sfl[i].save()
             i = i + 1
-        if hs_list[i] != u'' and teacher_list[i] != u'':
-            data = {'name':request.POST['name'], 'hs':hs_list[i], 'class_id':class_id, 'teacher_id':teacher_list[i]}
-            form = SubjectForm(school_id, data)
-            if form.is_valid():
-                teacher = Teacher.objects.get(id=data['teacher_id'])
-                _class = Class.objects.get(id=class_id)
-                add_subject(subject_name=data['name'], hs=int(data['hs']), teacher=teacher, _class=_class, term=get_current_term(request))
-                message = 'You have added new subject'
-                form = SubjectForm(school_id)
+        data = {'name':request.POST['name'], 'hs':hs_list[i], 'class_id':class_id, 'teacher_id':teacher_list[i]}
+        form = SubjectForm(school_id, data)
+        if form.is_valid():
+            _class = Class.objects.get(id=class_id)
+            if teacher_list[i] != u'':
+                teacher = Teacher.objects.get(id=int(data['teacher_id']))
+                add_subject(subject_name=data['name'], hs=float(data['hs']), teacher=teacher, _class=_class, term=get_current_term(request))
             else:
-                message = 'Please check your information, something is wrong'
+                add_subject(subject_name=data['name'], hs=float(data['hs']), teacher=None, _class=_class, term=get_current_term(request))
+            message = 'You have added new subject'
+        else:
+            message = 'Please check your information, something is wrong'
     if int(sort_type) == 1:
         if int(sort_status) == 0:
             subjectList = cl.subject_set.order_by('name')
@@ -454,6 +455,10 @@ def subjectPerClass(request, class_id, sort_type=1, sort_status=0):
             subjectList = cl.subject_set.order_by('teacher_id__first_name')
         else:
             subjectList = cl.subject_set.order_by('-teacher_id__first_name')
+    form = SubjectForm(school_id)
+    sfl = []
+    for s in subjectList:
+        sfl.append(SubjectForm(school_id, instance=s))
     list = zip(subjectList, sfl)
     t = loader.get_template(os.path.join('school', 'subject_per_class.html'))
     c = RequestContext(request, {'list':list, 'form': form, 'message': message, 'subjectList': subjectList, 'class_id': class_id, 'sort_type': sort_type, 'sort_status':sort_status, 'next_status':1-int(sort_status)})
