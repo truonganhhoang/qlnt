@@ -167,13 +167,16 @@ class Class(models.Model):
 	
 	#cai nay sau cung bo di	
 	#class_code = models.CharField(max_length = 20, unique = True)	
-	name = models.CharField(max_length = 20)
-	status = models.SmallIntegerField(max_length = 3, null = True, blank= True, choices = CLASS_ACTION_STATUS)
+    name = models.CharField(max_length = 20)
+    status = models.SmallIntegerField(max_length = 3, null = True, blank= True, choices = CLASS_ACTION_STATUS)
 	
-	year_id = models.ForeignKey(Year)
+    year_id = models.ForeignKey(Year)
 	#lop nay thuoc khoi nao
-	block_id = models.ForeignKey(Block)
-	teacher_id = models.ForeignKey(Teacher,null=True,blank=True) #field nay chi dung de phan quyen, vi vay chi gan 1 gia tri nhan dang
+    block_id = models.ForeignKey(Block)
+    teacher_id = models.ForeignKey(Teacher,null=True,blank=True) #field nay chi dung de phan quyen, vi vay chi gan 1 gia tri nhan dang
+    
+    class Meta:
+        unique_together = ("year_id", "block_id", "name")
     
 	def __unicode__(self):
 		return self.name
@@ -187,6 +190,7 @@ class ClassForm(forms.ModelForm):
         super(ClassForm, self).__init__(*args, **kwargs)
         self.fields['teacher_id'] = forms.ModelChoiceField(required = False, queryset=Teacher.objects.filter(school_id = school_id))
         self.fields['year_id'] = forms.ModelChoiceField(queryset=Year.objects.filter(school_id = school_id))
+        self.fields['block_id'] = forms.ModelChoiceField(queryset=Block.objects.filter(school_id = school_id))
 		
 class Pupil(BasicPersonInfo):
     year = models.IntegerField(validators = [validate_year], blank = True, null = True) #year that pupil go to class 1

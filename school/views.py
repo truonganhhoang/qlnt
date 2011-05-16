@@ -246,16 +246,42 @@ def classes(request, sort_type = 1, sort_status=0, page = 1):
                     cfl[i].save()
                 message = 'You have update some classes'
             i = i+1
-        if teacher_list[i]!=u'':
-			data = {'name':request.POST['name'],'year_id':request.POST['year_id'],'block_id':request.POST['block_id'],'teacher_id':request.POST['teacher_id']}
-			form = ClassForm(school_id,data)
-			if form.is_valid():
-				form.save()
-				form = ClassForm(school_id)
-				message = 'You have added new class'
-			else:
-				message = 'Please check your information, something is wrong'
-				
+        data = {'name':request.POST['name'],'year_id':request.POST['year_id'],'block_id':request.POST['block_id'],'teacher_id':teacher_list[i]}
+        form = ClassForm(school_id,data)
+        if form.is_valid():
+            form.save()
+            form = ClassForm(school_id)
+            message = 'You have added new class'
+        else:
+            message = 'Please check your information, something is wrong'
+            
+    if int(sort_type)==1:
+		if int(sort_status) == 0:
+			class_List = cyear.class_set.order_by('name')
+		else:
+			classList = cyear.class_set.order_by('-name')
+    if int(sort_type) == 2:
+		if int(sort_status) == 0:
+			class_List = cyear.class_set.order_by('block_id__number')
+		else:
+			class_List = cyear.class_set.order_by('-block_id__number')
+    if int(sort_type) == 3:
+		if int(sort_status) == 0:
+			class_List = cyear.class_set.order_by('teacher_id__first_name')
+		else:
+			class_List = cyear.class_set.order_by('-teacher_id__first_name')
+    if int(sort_type)==4:
+		if int(sort_status) == 0:
+			class_List = cyear.class_set.order_by('year_id__time')
+		else:
+			class_List = cyear.class_set.order_by('-year_id__time')
+    paginator = Paginator (class_List, 20)
+    try:
+		classList = paginator.page(page)
+    except (EmptyPage, InvalidPage):
+		classList = paginator.page(paginator.num_pages)		
+    for c in classList.object_list:
+        cfl.append(ClassForm(school_id, instance = c))		
     list = zip(classList.object_list,cfl)
     t = loader.get_template(os.path.join('school','classes.html'))
     c = RequestContext(request, {'list' : list, 'form' : form, 'message' : message, 'classList' : classList, 'sort_type':sort_type, 'sort_status':sort_status, 'next_status':1-int(sort_status), 'base_order' : (int(page)-1)*20})
