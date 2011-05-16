@@ -209,7 +209,7 @@ def classes(request, sort_type=1, sort_status=0, page=1):
         if int(sort_status) == 0:
             class_List = cyear.class_set.order_by('name')
         else:
-            classList = cyear.class_set.order_by('-name')
+            class_List = cyear.class_set.order_by('-name')
     if int(sort_type) == 2:
         if int(sort_status) == 0:
             class_List = cyear.class_set.order_by('block_id__number')
@@ -225,7 +225,7 @@ def classes(request, sort_type=1, sort_status=0, page=1):
             class_List = cyear.class_set.order_by('year_id__time')
         else:
             class_List = cyear.class_set.order_by('-year_id__time')
-    paginator = Paginator (class_List, 20)
+    paginator = Paginator(class_List, 20)
     try:
         classList = paginator.page(page)
     except (EmptyPage, InvalidPage):
