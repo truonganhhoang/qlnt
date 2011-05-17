@@ -1224,7 +1224,7 @@ def ki_luat(request, student_id):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
-    student = Pupil.objects.get(student_id=student_id)
+    student = Pupil.objects.get(id=student_id)
     if in_school(request, student.class_id.block_id.school_id) == False:
         return HttpResponseRedirect('/school')
     if (get_position(request) < 4):
