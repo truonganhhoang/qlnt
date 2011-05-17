@@ -27,6 +27,10 @@ SCHOOL_ACTION_STATUS=((0, u'Trường mới'),
                       (2, u'Đang học kì 2'), 
                       (3, u'Đang nghỉ hè'))
 
+CONTACT_CHOICES = (('GY', u'Góp ý xây dựng'),
+                   ('HT', u'Hỗ trợ'),
+                   ('BL', u'Báo lỗi'),
+                   ('LH', 'Liên hệ hợp tác'))
 class Organization(models.Model):
     ''' Thông tin về sơ đồ tổ chức của các sở, phòng và các trường ''' 
     name = models.CharField(u'Tên tổ chức', max_length = 100) #tên đơn vị. tổ chức 
@@ -82,6 +86,16 @@ class UserForm(forms.ModelForm):
     class Meta:
         model = UserProfile
 
+class ReportContact(models.Model):
+    '''
+    Thông tin về các bản báo cáo lỗi hay liên hệ từ khách hàng
+    '''
+    name_contact = models.CharField('Họ và tên', blank=True, null=False, max_length=100)
+    email = models.EmailField(max_length = 50, blank = True, null = True)
+    phone = models.CharField('Điện thoại', max_length = 20, blank = True, null = True)
+    address = models.CharField('Địa chỉ', blank=True, max_length = 255) #
+    contact_type = models.CharField('Mục liên hệ', max_length=20, choices=CONTACT_CHOICES)
+    content = models.CharField('Nội dung', max_length=3000, blank=True, null=False)
 #class SchoolYear(models.Model):
 #    name = models.CharField(max_length=100)
 #    start_date = models.DateField()
