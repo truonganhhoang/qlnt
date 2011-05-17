@@ -15,7 +15,7 @@
 
 
 <div id="topPan">
-	<a href="{% url views.index%}"><img src="/static/css/images/qlnt_logo.png" width="100" height="100" border="0" /></a>
+	<a href="{% url views.index %}"><img src="/static/css/images/qlnt_logo.png" width="100" height="100" border="0" /></a>
 	<div id="topMenuPan">
 	  	{% if user.is_authenticated %}
 	  	<div id="topUser">
@@ -43,7 +43,7 @@
 
 
 <div id="bodyPan">
-	<table><tr><td>
+	<table><td valign="top">
 	<div id="bodyRightPan">
 		{% block left_menu %}
 	{% if user.is_superuser %}
@@ -64,26 +64,19 @@
 	{% endif %}
   	{% endblock %}
  	</div></td>
-  	<td><div id="bodyLeftPan">
+  	<td valign="top"><div id="bodyLeftPan">
 	  	{% block content %}
 	  	{% endblock %}
   	</div></td>
-  	</tr></table>
+  	</table>
   
 </div>
 
-<div id="footermainPan">
-  	<div id="footerPan">
-	  	<ul>
-				<li><a href="#">Liên hệ</a></li>
-				<li><a href="/help">Trợ giúp</a></li>
-		</ul>
-	<p class="copyright">©SchoolTool phát triển bởi Viettel & UET-VNU.</p>	
-		<ul class="templateworld">
-			<li><a href="http://uet.vnu.edu.vn" target="_blank">University of Engineering and Technology.</a></li>
-	
-  		</ul>
-  	</div>
+<div id="footer">
+	<table><center>
+	<a class="footer" href="#">Liên hệ</a><a class="footer" href="/help">Trợ giúp</a>
+	<p class="copyright">©FreeSchool phát triển bởi Viettel & UET-VNU.</p>
+	</center></table>
 </div>
 </body>
 </html>

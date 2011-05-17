@@ -3,11 +3,27 @@
 
 {% block content %}
 	{% if user.is_authenticated %}
-		<h3>Gửi tin nhắn mới</h3>
+		<h4><a href="/sms/manual_sms/">Gửi tin nhắn mới</a> - Gửi tin nhắn từ file Excel</h4>
 		<form enctype="multipart/form-data" action="" method="post">{% csrf_token %}
-			{{ form.as_p }}
-            <p>Hay tải file Excel mẫu <a href="{{ MEDIA_URL }}template_files/sms_template.xls">tại đây.</a></p>
-			<p><input type="submit" name="upload" value="Xem trước file Excel" /></p>
+			<table valign="top">
+			<col width="160">
+			<tr>
+				<td></td>
+				<td>{{ error }}</td>
+			</tr>
+			<tr>
+				<td>Chọn file Excel</td>
+				<td><input name="file" type="file" /></td> 
+			</tr>
+			<tr>
+				<td></td>
+            	<td>Hay tải file Excel mẫu <a href="{{ MEDIA_URL }}template_files/sms_template.xls">tại đây.</a></td>
+            </tr>
+            <tr>
+            	<td><p><input type="submit" name="upload" value="Xem trước file Excel" /></p></td>
+				<td><p>{% if data %}<input type="submit" name="delete" value="Xóa danh sách hiện tại" />{% endif %}</p></td>
+			</tr>
+			</table><br />
             {% if data %}
             	{% autopaginate data 30 %}
 	            <table class="solid_border">
@@ -25,11 +41,8 @@
 				{% endfor %}
 				</table>
             	{% paginate %}
-				<p><input type="submit" name="send" value="Gửi tin nhắn" /></p>
+				<p><input type="submit" name="send" value="Gửi" /></p>
 			{% endif %}
 		</form>
-		<p class="right">
-		<a href="/sms/manual_sms/">Chuyển sang nhập tin nhắn trực tiếp</a>
-		</p>
 	{% endif %}
 {% endblock %}

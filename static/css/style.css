@@ -30,7 +30,7 @@ table.styleA td {
 
 
 /*----TOP PANEL----*/
-#topPan{ min-width: 1150px ; height:158px; position:relative; margin:0 auto; background:url(images/topPan-bg.gif) 0 0 repeat-x #15AEFD; color:#fff; padding:0px;}
+#topPan{ min-width: 1150px ; height:158px; position:relative; margin:0 auto; color:#fff; padding:0px;}
 #topPan img.logo{
 	width:600px;
 	height:58px;
@@ -132,14 +132,37 @@ table.styleA td {
 /*----/BODY RIGHT PANEL----*/
 /*----/BODY PANEL----*/
 /*----FOOTER PANEL----*/
+
+/*****quyendt*****/
+#footer{
+	width: 100%;
+	background:url(images/footerbg.gif) 0 0 repeat-x #fff;
+	clear: both;
+	padding: 72px;
+}
+a.footer{
+	color:#010101;
+	text-decoration:none;
+	padding: 20px;
+}
+a.footer:hover{
+	text-decoration:underline;
+}
+#footer p.copyright{
+	color:#04496D;
+	position:relative;
+	font-size:12px;
+}
+/*****quyendt*****/
+
 #footermainPan{ width: 100%; margin: auto auto; margin-left: auto; margin-right: auto; height:85px; background:url(images/footerbg.gif) 0 0 repeat-x #fff; color:#010101; clear:both; padding: 72px 0 0;}
 
-#footerPan{width:auto; position: relative; margin:auto auto; margin-left: 200px; margin-right: auto; font-family:"Trebuchet MS",Arial, Helvetica, sans-serif}
+#footerPan{width:auto; position: relative; margin:auto auto; font-family:"Trebuchet MS",Arial, Helvetica, sans-serif}
 
 #footerPan ul{width:auto; position: relative; margin:auto auto; margin-left: auto; margin-right: auto;}
-#footerPan li{float:left; }
-#footerPan ul li a{padding:0 10px 0; color:#010101; background:#F3F3F3; text-decoration:none;}
-#footerPan ul li a:hover{text-decoration:underline;}
+#footerPan li{}
+#footerPan ul a{padding:0 10px 0; color:#010101; background:#F3F3F3; text-decoration:none;}
+#footerPan ul a:hover{text-decoration:underline;}
 
 #footerPan p.copyright{width:auto; margin-left: auto; margin-right: auto; background:#F3F3F3; color:#04496D; position:absolute; top:23px; left:40px; font-size:12px;}
 
@@ -156,7 +179,7 @@ table.styleA td {
 #footerPancss a{width:40px; height:11px; display:block; background:url(images/blue-arrow.gif) 35px 3px no-repeat #fff; color:#4F4F4F; border:1px solid #DEDEDE; line-height:11px; font-size:11px; font-weight:bold; text-decoration:none; padding:1px 0 0 10px; text-transform:uppercase;}
 #footerPancss a:hover{background:url(images/gray-arrow.gif) 35px 3px no-repeat #fff; color:#4F4F4F;}
 
-
+/*****quyendt******/
 table.solid_border{
 	border-collapse:collapse;
 }
@@ -165,3 +188,4 @@ td.solid_border, th.solid_border{
 	border:1px solid black;
 	padding:5px;
 }
+/*****quyendt******/
