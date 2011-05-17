@@ -52,46 +52,10 @@ function confirmDelete()
 		</td>
 	</tr>
 	</table>
-	<table border = 0 width = "100%" align = "center">
-	<tr>
-		<td width = "5%"> </td>
-  		{{ form.non_field_errors }}
-  		<td align="center" width="20%">
-  		<div class="fieldWrapper">
-    		{{ form.name.errors }}
-    		<label for="id_name">
-    		<p>{{ form.name }}</p>
-  		</div>
-			</td>
-		
-		<td align="center" width="20%">
-		<div class="fieldWrapper">
-			{{ form.block_id.errors }}
-			<label for="id_block_id">
-			<p>{{ form.block_id }}</p>
-		</div>
-		</td>
-  	
-		<td align="center" width="25%">
-			<div class="fieldWrapper">
-			{{ form.teacher_id.errors }}
-			<label for="id_teacher_id">
-			<p>{{ form.teacher_id }}</p>
-			</div>
-		</td>
-		
-		<td align="center" width="20%">
-		<div class="fieldWrapper">
-			{{ form.year_id.errors }}
-			<label for="id_year_id">
-			<p>{{ form.year_id }}</p>
-		</div>
-		</td>
-		
-		<td align = "center" width="10%">
-		</td>
-	</tr>
 </table>
-<p><input type="submit" value="Thêm" /></p>
+<p><input type="submit" value="Cập nhật" /></p>
+<td>
+<a href = "{%url school.views.school_index  %}addclass">Thêm lớp học</a></li>
 </form>
+
 {% endblock %}

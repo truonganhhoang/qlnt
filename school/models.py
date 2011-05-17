@@ -9,7 +9,7 @@ from django.forms.extras.widgets import SelectDateWidget
 from app.models import *
 
 
-GENDER_CHOICES = ((u'M', u'Nam'),(u'F', u'Nữ'),)
+GENDER_CHOICES = ((u'Nam', u'Nam'),(u'Nữ', u'Nữ'),)
 TERM_CHOICES = ((1, u'1'), (2, u'2'),(3, u'3'),)
 HK_CHOICES = ((u'T', u'Tốt'), (u'K', u'Khá'),(u'TB',u'Trung Bình'),(u'Y', u'Yếu'),)
 HL_CHOICES = ((u'G', u'Giỏi'), (u'K', u'Khá'),(u'TB',u'Trung Bình'),(u'Y', u'Yếu'),(u'Kem', u'Kém'))
@@ -108,9 +108,9 @@ class BasicPersonInfo(models.Model):
 	birth_place = models.CharField(max_length = 200, null = True, blank = True)
 	dan_toc = models.IntegerField(choices = DT_CHOICE, blank = True, null = True, default = 1)
 	ton_giao = models.CharField(max_length = 20, blank = True, null = True)
-	quoc_tich = models.CharField(max_length = 20, blank = True, null = True, default = 'Viet Nam')
+	quoc_tich = models.CharField(max_length = 20, blank = True, null = True, default = 'Việt Nam')
 	home_town = models.CharField(max_length = 100, null = True, blank = True) #nguyen quan
-	sex = models.CharField(max_length = 2, choices = GENDER_CHOICES, blank = True, null = True, default = 'M')
+	sex = models.CharField(max_length = 3, choices = GENDER_CHOICES, blank = True, null = True, default = 'Nam')
 	phone = models.CharField(max_length = 15, null = True, blank = True, validators = [validate_phone])
 	current_address = models.CharField(max_length = 200, blank = True, null = True)
 	email = models.EmailField(null = True, blank = True)
@@ -180,7 +180,7 @@ class Class(models.Model):
 		return self.name
         
     class Meta:
-        unique_together = ("year_id", "block_id", "name")
+        unique_together = ("year_id", "name")
 	#class Admin: pass
 	
 class ClassForm(forms.ModelForm):
@@ -440,4 +440,4 @@ class TKDiemDanhForm(forms.ModelForm)        :
         model = TKDiemDanh
         
 class DateForm(forms.Form):
-    date = forms.DateField(label = '',widget=SelectDateWidget(years = range( this_year(), this_year()-2 , -1)))
+    date = forms.DateField(label = '',widget=SelectDateWidget(years = range( this_year(), this_year()-2 , -1)),initial=date.today())

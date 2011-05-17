@@ -40,6 +40,7 @@ urlpatterns = patterns('',
 
     url(r'classes/(?P<sort_type>\w+)/(?P<sort_status>\w+)/(?P<page>\w+)$', 'school.views.classes'),
     url(r'classes$', 'school.views.classes'),
+    url(r'addclass$', 'school.views.addClass'),
     url(r'hanhkiem/(?P<class_id>\w+)', 'school.views.hanh_kiem'),
     url(r'teachers/(?P<sort_type>\w+)/(?P<sort_status>\w+)/(?P<page>\w+)$', 'school.views.teachers'),
     url(r'teachers$', 'school.views.teachers'),
