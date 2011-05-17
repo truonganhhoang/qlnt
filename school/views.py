@@ -1124,11 +1124,7 @@ def deleteStudentInClass(request, student_id):
     if (get_position(request) < 4):
         return HttpResponseRedirect('/school')
     student.delete()
-    studentList = Pupil.objects.filter(class_id=class_id)
-    form = PupilForm()
-    t = loader.get_template(os.path.join('school', 'student_per_class.html'))
-    c = RequestContext(request, {'form': form, 'message': message, 'studentList': studentList, 'class_id': class_id.id})
-    return HttpResponse(t.render(c))
+    return HttpResponseRedirect('/school/studentPerClass/'+str(class_id.id))
 
 def deleteStudentInSchool(request, student_id):
     user = request.user
@@ -1141,11 +1137,7 @@ def deleteStudentInSchool(request, student_id):
     if (get_position(request) < 4):
         return HttpResponseRedirect('/school')
     sub.delete()
-    studentList = Pupil.objects.all()
-    form = PupilForm()
-    t = loader.get_template(os.path.join('school', 'students.html'))
-    c = RequestContext(request, {'form': form, 'message': message, 'studentList': studentList})
-    return HttpResponse(t.render(c))
+    return HttpResponseRedirect ('/school/students')
 
 def khen_thuong(request, student_id):
     user = request.user
