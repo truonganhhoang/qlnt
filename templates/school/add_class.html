@@ -1,0 +1,35 @@
+﻿{% extends "school/base_school.html" %}
+
+{% block content %}
+<form action="/school/addclass" method="post">{% csrf_token %}
+    {{ form.non_field_errors }}
+    <div class="fieldWrapper">
+        {{form.name.errors }}
+        <p><label for="id_first_name">Tên lớp:</label>
+            {{ form.name }}</p>
+    </div>
+
+    <div class="fieldWrapper">
+        {{ form.teacher_id.errors }}
+        <p><label for="id_last_name">Giáo viên chủ nhiệm:</label>
+            {{ form.teacher_id }}</p>
+    </div>
+
+    <div class="fieldWrapper">
+        {{ form.year_id.errors }}
+        <p><label for="id_brithday">Khóa:</label>
+            {{ form.year_id }}</p>
+    </div>
+
+    <div class="fieldWrapper">
+        {{ form.block_id.errors }}
+        <p><label for="id_birth_place">Khối:</label>
+            {{ form.block_id }}</p>
+    </div>
+    
+   {% if message != None %}
+	{{message}} <br>
+	{% endif %}
+	<input type ="submit" value="Thêm"/>
+</form>
+{% endblock %}
