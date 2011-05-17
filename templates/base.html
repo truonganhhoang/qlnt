@@ -43,6 +43,7 @@
 
 
 <div id="bodyPan">
+	<table><tr><td>
 	<div id="bodyRightPan">
 		{% block left_menu %}
 	{% if user.is_superuser %}
@@ -62,11 +63,12 @@
 		</ul>
 	{% endif %}
   	{% endblock %}
- 	</div>  
-  	<div id="bodyLeftPan">
+ 	</div></td>
+  	<td><div id="bodyLeftPan">
 	  	{% block content %}
 	  	{% endblock %}
-  	</div>
+  	</div></td>
+  	</tr></table>
   
 </div>
 
