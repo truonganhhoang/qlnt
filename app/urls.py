@@ -26,4 +26,5 @@ urlpatterns = patterns('',
 #    url('organization/add$', 'app.views.organization_add')
      url('organization/delete/(\d+)$', 'app.views.organization_delete'),
      url('schooladmin/add/$', 'app.views.school_admin_add'),
+     url('list_org/$', 'app.views.list_org'),
 )

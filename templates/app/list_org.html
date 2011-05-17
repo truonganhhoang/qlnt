@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+	{% if user.is_authenticated %}
+		{% if user.is_superuser %}
+			<h4>Sở giáo dục thuộc quyền quản lý </h4>
+			{{ form.name_s }}
+			<h4>Phòng giáo dục thuộc quyền quản lý </h4>
+			{{ form.name_p }}
+			<h4>Các trường thuộc quyền quản lý </h4>
+			{{ form.name_t }}
+		{% endif%}
+		{% if user.userprofile.position == 'GIAM_DOC_PHONG' %}
+		
+		{% endif %}
+		{% if user.userprofile.position == 'TRUONG_PHONG' %}
+		
+		{% endif%}
+	{% else %}
+		You need login to use this.
+	{% endif %}
+{% endblock %}

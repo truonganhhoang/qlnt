@@ -20,35 +20,11 @@ def user_add(request):
     c = RequestContext(request, {'form' : form})
     return HttpResponse(t.render(c))
 
-#def organization_add (request):
-#    if request.method == 'POST':
-#        form = OrganizationForm (request.POST)
-#        if form.is_valid() or form.upper_organization == None :
-#            form.save()
-#            return HttpResponseRedirect ('/app/organization/add/')
-#    else:
-#        form = OrganizationForm()
-#    t = loader.get_template('app/organization/add.html')
-#    c = RequestContext (request, {'form': form})
-#    return HttpResponse (t.render(c))
 @object_permission_required('view_level=T', Organization)
 def organization_delete(request, id):
     o = Organization.objects.get(pk=id)
     o.delete()
     return HttpResponse('Deleted')
-
-
-#def positiontype_add(request):
-#    if request.method == 'POST':
-#        form = PositionTypeForm(request.POST)
-#        if form.is_valid():
-#            form.save()
-#            return HttpResponseRedirect('/app/positiontype/')
-#        else:
-#            form = PositionTypeForm()
-#        t = loader.get_template('app/positiontype/add.html')
-#        c = RequestContext(request, {'form' : form})
-#        return HttpResponse(t.render(c))
 
 class SchoolAdminAddForm(forms.Form):
     def __init__(self, *args, **kwargs):
@@ -70,7 +46,7 @@ class SchoolAdminAddForm(forms.Form):
 
     username = forms.ChoiceField()
     school = forms.ChoiceField()
-    
+   
 def school_admin_add(request):
     if request.method == 'POST':
         form = SchoolAdminAddForm(request.POST)
@@ -83,5 +59,23 @@ def school_admin_add(request):
         form = SchoolAdminAddForm()
 
     t = loader.get_template('app/school_admin_add.html')
+    c = RequestContext(request, {'form': form})
+    return HttpResponse(t.render(c))
+
+# Developer: Do Duc Binh
+class ListOrganizationForm (forms.Form):
+    def __init__(self, *args, **kwargs):
+        super(ListOrganizationForm, self).__init__(*args, **kwargs)        
+        self.fields['name_t'].choices = [(o.id, o.name) for o in Organization.objects.all() if o.level == 'T']
+        self.fields['name_p'].choices = [(o.id, o.name) for o in Organization.objects.all() if o.level == 'P']
+        self.fields['name_s'].choices = [(o.id, o.name) for o in Organization.objects.all() if o.level == 'S']
+    name_t = forms.ChoiceField()
+    name_p = forms.ChoiceField()
+    name_s = forms.ChoiceField()
+ 
+def list_org (request):
+    user = request.user
+    form = ListOrganizationForm()
+    t = loader.get_template('app/list_org.html')
     c = RequestContext(request, {'form': form})
     return HttpResponse(t.render(c))
