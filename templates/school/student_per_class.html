@@ -10,14 +10,12 @@ function confirmDelete()
 
 <table border=0 width = "100%">
 <tr>
-	<td width = "25%"><a href="{%url school.views.school_index  %}markTable/{{class_id}}">Điểm</a><td>
-	<td width = "25%"><a href="{%url school.views.school_index  %}diemdanh/{{class_id}}">Điểm Danh</a><td>
-	<td width = "25%"><a href="">Khen Thưởng</a><td>
-	<td width = "25%"><a href="">Kỉ Luật</a><td>
+	<td width = "50%"><a href="{%url school.views.school_index  %}markTable/{{class_id}}">Điểm</a><td>
+	<td width = "50%"><a href="{%url school.views.school_index  %}diemdanh/{{class_id}}">Điểm Danh</a><td>	
 </tr>
 	
 </table>
-<table border=1 width = "100%" >
+<table class="styleA" width = "100%" >
     <tr>
 		<td align="center" width="5%"> STT </td>
         <td align="center" width="25%"> <a href="{%url school.views.school_index  %}studentPerClass/{{class_id}}/1/{{next_status}}/1">Họ & Tên </a></td>

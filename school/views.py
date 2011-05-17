@@ -334,10 +334,10 @@ def teachers(request, sort_type=1, sort_status=0, page=1):
         form = TeacherForm(data)
         if form.is_valid():
             add_teacher(first_name=data['first_name'], last_name=data['last_name'], school=get_school(request), birthday=birthday, sex=data['sex'], birthplace=data['birth_place'])
-            message = 'You have added new teacher'
+            message = 'Bạn vừa thêm một giáo viên mới'
             form = TeacherForm()
         else:
-            message = 'Please check your information, something is wrong'
+            message = 'Bạn vui lòng sửa một số lỗi sai dưới đây'
 			
     if int(sort_type) == 1:
         if int(sort_status) == 0:
@@ -379,9 +379,9 @@ def viewTeacherDetail(request, teacher_id):
         form = TeacherForm(request.POST, instance=teacher)
         if form.is_valid():
             form.save()
-            message = 'You have updated successfully'
+            message = 'Bạn vừa cập nhật thành công'
         else:
-            message = 'Please check again'
+            message = 'Bạn vui lòng sửa một số lỗi sai dưới đây'
     
     t = loader.get_template(os.path.join('school', 'teacher_detail.html'))
     c = RequestContext(request, {'form': form, 'message': message, 'id': teacher_id})
@@ -439,7 +439,7 @@ def subjectPerClass(request, class_id, sort_type=1, sort_status=0):
                 add_subject(subject_name=data['name'], hs=float(data['hs']), teacher=None, _class=_class, term=get_current_term(request))
             message = 'You have added new subject'
         else:
-            message = 'Please check your information, something is wrong'
+            message = 'Bạn vui lòng sửa một số lỗi sai dưới đây'
     if int(sort_type) == 1:
         if int(sort_status) == 0:
             subjectList = cl.subject_set.order_by('name')
@@ -499,10 +499,10 @@ def studentPerClass(request, class_id, sort_type=1, sort_status=0, page=1):
             _class = Class.objects.get(id=class_id)
             start_year = StartYear.objects.get(id=int(data['start_year_id']))
             add_student(student=data, start_year=start_year, year=get_current_year(request), _class=_class, term=get_current_term(request), school=get_school(request), school_join_date=school_join_date)
-            message = 'You have added new student'
+            message = 'Bạn vừa thêm một học sinh mới'
             form = PupilForm(school.id)
         else:
-            message = 'Please check your information, something is wrong'
+            message = 'Bạn vui lòng sửa một số lỗi sai dưới đây'
     if int(sort_type) == 1:
         if int(sort_status) == 0:
             studentList = cl.pupil_set.order_by('first_name', 'last_name')
@@ -571,10 +571,10 @@ def students(request, sort_type=1, sort_status=1, page=1):
             _class = Class.objects.get(id=data['class_id'])
             data['ban'] = data['ban_dk']
             add_student(student=data, start_year=start_year, year=get_current_year(request), _class=_class, term=get_current_term(request), school=get_school(request), school_join_date=school_join_date)
-            message = 'You have added new student'
+            message = 'Bạn vừa thêm một học sinh mới'
             form = PupilForm(school.id)
         else:
-            message = 'Please check your information, something is wrong'
+            message = 'Bạn vui lòng sửa một số lỗi sai dưới đây'
 	
     if int(sort_type) == 1:
         if int(sort_status) == 0:
@@ -633,9 +633,9 @@ def viewStudentDetail(request, student_id):
         form = PupilForm(school_id, request.POST, instance=pupil)
         if form.is_valid():
             form.save()
-            message = 'You have updated successfully'
+            message = 'Bạn đã cập nhật thành công'
         else:
-            message = 'Please check again'
+            message = 'Bạn vui lòng sửa một số lỗi sai dưới đây'
 
     t = loader.get_template(os.path.join('school', 'student_detail.html'))
     c = RequestContext(request, {'form': form, 'message': message, 
