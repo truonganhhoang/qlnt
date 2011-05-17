@@ -10,11 +10,13 @@
             {% autopaginate sms_list 30 %}
 			<table class="solid_border">
 				<col width=150>
+				<col width=200>
 				<col width=300>
 				<col width=180>
 				<col width=160>
 				<tr class="solid_border">
 				<td class="solid_border">Số điện thoại</td>
+				<td class="solid_border">Người nhận</td>
 				<td class="solid_border">Nội dung</td>
 				<td class="solid_border">Thời gian tạo</td>
 				<td class="solid_border">Lý do</td>
@@ -22,6 +24,7 @@
 			{% for s in sms_list %}
 				<tr class="solid_border">
 				<td class="solid_border">{{ s.phone }}</td>
+				<td class="solid_border">{{ s.receiver }}</td>
 				<td class="solid_border">{{ s.content }}</td>
 				<td class="solid_border">{{ s.createdFormat }}</td>
 				<td class="solid_border"><b>x</b></td>

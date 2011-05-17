@@ -8,33 +8,10 @@
 			<col width="160">
 			<tr>
 				<td>
-				Số điện thoại
-				</td>
-				<td>
-				<font><small><b>Lưu ý:</b> Các ký tự hỗ trợ: "0-9" "," ";" và dầu cách.<br />
-				Số điện thoại người nhận phân cách bằng dấu dấu cách hoặc ";" hoặc ",".</small><br>
-				<textarea name="phone" onkeypress="return onlyNumbers();" rows="7" wrap="physical" cols="60"></textarea>
-				<script language="JavaScript">
-				function onlyNumbers(evt)
-				{
-					var e = event || evt; // for trans-browser compatibility
-					var charCode = e.which || e.keyCode;
-				
-					if (charCode > 32 && (charCode < 48 || charCode > 57) && charCode != 44 && charCode != 59)
-						return false;
-				
-					return true;
-				
-				}
-				</script>
-				</td>
-			</tr>
-			<tr>
-				<td>
 				Nội dung
 				</td>
 				<td>
-				<font><small><b>Lưu ý:</b> Nội dung tin nhắn chỉ được phép chứa tối đa 160 ký tự.</small><br>
+				<font><br /><small><b>Lưu ý:</b> Nội dung tin nhắn chỉ được phép chứa tối đa 160 ký tự.</small><br>
 				<textarea onKeyPress="return taLimit(this)" onKeyUp="return taCount(this,'myCounter')" name="content" rows=7 wrap="physical" cols=60></textarea><br />
 				Bạn đã điền <B><SPAN id=myCounter>160</SPAN></B> ký tự.</font>
 				<script language = "Javascript">
@@ -67,6 +44,40 @@
 					else return eval("document." + objId);
 				}
 				</script>
+			</tr>
+			<tr>
+				<td>
+				Số điện thoại
+				</td>
+				<td>
+				<font><br /><small><b>Lưu ý:</b> Các ký tự hỗ trợ: "0-9" "," ";" và dầu cách.<br />
+				Số điện thoại người nhận phân cách bằng dấu dấu cách hoặc ";" hoặc ",".</small><br>
+				<textarea name="phone" onkeypress="return onlyNumbers();" rows="7" wrap="physical" cols="60"></textarea>
+				<script language="JavaScript">
+				function onlyNumbers(evt)
+				{
+					var e = event || evt; // for trans-browser compatibility
+					var charCode = e.which || e.keyCode;
+				
+					if (charCode > 32 && (charCode < 48 || charCode > 57) && charCode != 44 && charCode != 59)
+						return false;
+				
+					return true;
+				
+				}
+				</script>
+				</td>
+			</tr>
+			<tr>
+				<td>Chọn người nhận</td>
+				<td>
+				<br /><small><b>Lưu ý:</b> Giữ phím Ctrl để  có thể chọn nhiều người nhận cùng lúc.</small><br>
+				<select multiple="multiple" name="receiver" size="10">
+				{% for u in user_list %}
+					<option value="{{ u.username }}">{{ u.last_name }} {{u.first_name }}</option>
+				{% endfor %}
+				</select>
+				</td>
 			</tr>
 			<tr>
 				<td></td>

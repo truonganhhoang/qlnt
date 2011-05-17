@@ -49,72 +49,103 @@ def checkValidPhoneNumber(phone):
     user_list = User.objects.all()
     user_phone_list = []
     for u in user_list:
-        user_phone_list.append(u.get_profile().phone)
+        try:
+            if (u.get_profile().phone):
+                user_phone_list.append(u.get_profile().phone)
+        except:
+            pass
         
     for p in user_phone_list:
         if p == phone:
             return True
     return False
 
+def getUserFromPhone(phone):
+    user_list = User.objects.all()
+    for u in user_list:
+        try:
+            if phone == u.get_profile().phone:
+                return u
+        except:
+            pass
+    return ""
+
 def manual_sms(request):
     if request.method == 'POST':
-        # update all record in sms db: recent = false
-        all_sms = sms.objects.filter(sender=request.user)
-        for s in all_sms:
-            s.recent = False
-            s.save()
-        
+        receiver_list = request.POST.getlist('receiver')
         phone_list = request.POST['phone']
         content = request.POST['content']
-        
-        if( len(phone_list) == 0 & len(content) == 0):
+        if ((len(phone_list) != 0 and len(content) != 0) or\
+            (len(receiver_list) != 0 and len(content) != 0) ):
+            # update all record in sms db: recent = false
+            all_sms = sms.objects.filter(sender=request.user)
+            for s in all_sms:
+                s.recent = False
+                s.save()
+            
+            phone = []
+            for r in receiver_list:
+                user = User.objects.get(username=r)
+                try:
+                    phone.append(user.get_profile().phone)
+                except:
+                    pass
+                
+            for p1 in phone_list.split(','):
+                p1 = p1.split(';')
+                for p2 in p1:
+                    p2 = p2.split()
+                    for p3 in p2:
+                        phone.append(p3)
+                        
+            open = urllib2.build_opener(urllib2.HTTPCookieProcessor())
+            urllib2.install_opener(open)
+                
+            para = urllib.urlencode({'u': 'VT_username', 'p': 'VT_password'})
+                
+    #        f = open.open('http://viettelvas.vn:7777/fromcp.asmx', para)
+    #        f.close();
+                
+            for p in phone:
+                if checkValidPhoneNumber(p):    
+                    '''Save to db'''
+                    s = sms(phone=p, receiver=getUserFromPhone(p), content=content, sender=request.user, recent=True, success=True)
+                    s.save()
+                        
+                    '''Send sms via Viettel system'''
+                    data = urllib.urlencode({
+                                    'RequestID'     : '4',
+                                    'CPCode'        : '',
+                                    'UserID'        : '',
+                                    'ReceiverID'    : p,
+                                    'ServiceID'     : '',
+                                    'CommandCode'   : '',
+                                    'Content'       : content,
+                                    'ContentType'   : '',
+                                    })
+    #                f = open.open('http://viettelvas.vn:7777/fromcp.asmx', data)
+                else:    
+                    '''Save to db'''
+                    s = sms(phone=p, receiver=getUserFromPhone(p), content=content, sender=request.user, recent=True, success=False)
+                    s.save()
+            return HttpResponseRedirect('/sms/sent_sms/')
+        else:
+            user = User.objects.filter()
+            user_list = []
+            for u in user:
+                user_list.append(u)
+                
             t = loader.get_template('sms/manual_sms.html')
-            c = RequestContext(request)
+            c = RequestContext(request, {'user_list': user_list})
             return HttpResponse(t.render(c))
-        
-        phone = []
-        for p1 in phone_list.split(','):
-            p1 = p1.split(';')
-            for p2 in p1:
-                p2 = p2.split()
-                for p3 in p2:
-                    phone.append(p3)
-                    
-        open = urllib2.build_opener(urllib2.HTTPCookieProcessor())
-        urllib2.install_opener(open)
+    else:    
+        user = User.objects.filter()
+        user_list = []
+        for u in user:
+            user_list.append(u)
             
-        para = urllib.urlencode({'u': 'VT_username', 'p': 'VT_password'})
-            
-#        f = open.open('http://viettelvas.vn:7777/fromcp.asmx', para)
-#        f.close();
-            
-        for p in phone:
-            if checkValidPhoneNumber(p):    
-                '''Save to db'''
-                s = sms(phone=p, content=content, sender=request.user, recent=True, success=True)
-                s.save()
-                    
-                '''Send sms via Viettel system'''
-                data = urllib.urlencode({
-                                'RequestID'     : '4',
-                                'CPCode'        : '',
-                                'UserID'        : '',
-                                'ReceiverID'    : p,
-                                'ServiceID'     : '',
-                                'CommandCode'   : '',
-                                'Content'       : content,
-                                'ContentType'   : '',
-                                })
-#                f = open.open('http://viettelvas.vn:7777/fromcp.asmx', data)
-            else:    
-                '''Save to db'''
-                s = sms(phone=p, content=content, sender=request.user, recent=True, success=False)
-                s.save()
-                                
-        return HttpResponseRedirect('/sms/sent_sms/')
-    else:        
         t = loader.get_template('sms/manual_sms.html')
-        c = RequestContext(request)
+        c = RequestContext(request, {'user_list': user_list})
         return HttpResponse(t.render(c))
 
 def save_file(file):
@@ -189,7 +220,7 @@ def excel_sms(request):
             for r in range(1, sheet.nrows):
                 if checkValidPhoneNumber(sheet.cell_value(r,0)):    
                     '''Save to db'''
-                    s = sms(phone=sheet.cell_value(r,0), content=sheet.cell_value(r,1), sender=request.user, recent=True, success=True)
+                    s = sms(phone=sheet.cell_value(r,0), receiver=getUserFromPhone(sheet.cell_value(r,0)), content=sheet.cell_value(r,1), sender=request.user, recent=True, success=True)
                     s.save()
                     
                     '''Send sms via Viettel system'''
@@ -206,7 +237,7 @@ def excel_sms(request):
 #                    f = open.open('http://viettelvas.vn:7777/fromcp.asmx', data)
                 else:    
                     '''Save to db'''
-                    s = sms(phone=sheet.cell_value(r,0), content=sheet.cell_value(r,1), sender=request.user, recent=True, success=False)
+                    s = sms(phone=sheet.cell_value(r,0), receiver=getUserFromPhone(sheet.cell_value(r,0)), content=sheet.cell_value(r,1), sender=request.user, recent=True, success=False)
                     s.save()
             
             os.remove(filepath)
