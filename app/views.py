@@ -7,6 +7,7 @@ from django import forms
 from django.shortcuts import render_to_response
 from objectpermission.decorators import object_permission_required
 from reportlab.pdfgen import canvas
+from django.core.exceptions import ObjectDoesNotExist
 
 def user_add(request):
     if request.method == 'POST':
@@ -62,20 +63,30 @@ def school_admin_add(request):
     c = RequestContext(request, {'form': form})
     return HttpResponse(t.render(c))
 
-# Developer: Do Duc Binh
-class ListOrganizationForm (forms.Form):
-    def __init__(self, *args, **kwargs):
-        super(ListOrganizationForm, self).__init__(*args, **kwargs)        
-        self.fields['name_t'].choices = [(o.id, o.name) for o in Organization.objects.all() if o.level == 'T']
-        self.fields['name_p'].choices = [(o.id, o.name) for o in Organization.objects.all() if o.level == 'P']
-        self.fields['name_s'].choices = [(o.id, o.name) for o in Organization.objects.all() if o.level == 'S']
-    name_t = forms.ChoiceField()
-    name_p = forms.ChoiceField()
-    name_s = forms.ChoiceField()
- 
+# Developer: Do Duc Binh    
 def list_org (request):
     user = request.user
-    form = ListOrganizationForm()
+#    query = Organization.objects.all()
+    if user.is_superuser:
+        query = Organization.objects.filter(level = 'S')
+    else:
+        query = Organization.objects.filter(upper_organization = user.userprofile.organization_id)
+        
+    list = []
+    for q in query:
+        list.append(q)
     t = loader.get_template('app/list_org.html')
-    c = RequestContext(request, {'form': form})
+    c = RequestContext(request, {'list': list})
+    return HttpResponse(t.render(c))
+
+def list_under_org (request):
+    org = request.GET
+    if org.level == 'S' or org.level == 'P':
+        query = Organization.objects.filter(upper_organization = org.id)
+        
+    list = []
+    for q in query:
+        list.append(q)
+    t = loader.get_template('app/list_under_org.html')
+    c = RequestContext(request, {'list': list, 'org': org})
     return HttpResponse(t.render(c))

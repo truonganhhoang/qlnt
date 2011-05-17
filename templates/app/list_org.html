@@ -4,18 +4,22 @@
 	{% if user.is_authenticated %}
 		{% if user.is_superuser %}
 			<h4>Sở giáo dục thuộc quyền quản lý </h4>
-			{{ form.name_s }}
-			<h4>Phòng giáo dục thuộc quyền quản lý </h4>
-			{{ form.name_p }}
-			<h4>Các trường thuộc quyền quản lý </h4>
-			{{ form.name_t }}
-		{% endif%}
-		{% if user.userprofile.position == 'GIAM_DOC_PHONG' %}
-		
+			{% for q in list %}
+				<li><a href="/app/list_under_org"> {{ q.name }} </a></li>
+			{% endfor %}
+		{% endif %}
+		{% if user.userprofile.position == 'GIAM_DOC_SO' %}
+			<h4>Phòng giáo dục thuộc quyển quản lý </h4>
+			{% for q in list %}
+				<li><a href="#"> {{ q.name }}</a></li>
+			{% endfor %}
 		{% endif %}
 		{% if user.userprofile.position == 'TRUONG_PHONG' %}
-		
-		{% endif%}
+			<h4>Các trường thuộc quyển quản lý </h4>
+			{% for q in list %}
+				<li><a href="#"> {{ q.name }}</a></li>
+			{% endfor %}
+		{% endif %}
 	{% else %}
 		You need login to use this.
 	{% endif %}

@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+	{% if user.is_authenticated %}
+		{% if org.level == 'S' %}
+			<h4>Phòng giáo dục trực thuộc {{ org.name }} </h4>
+			{% for q in list %}
+				<li><a href="{% url app.views.list_under_org %}"> {{ q.name }} </a></li>
+			{% endfor %}
+		{% endif %}
+		{% if org.level == 'P' %}
+			<h4>Các trường trực thuộc {{ org.name }}<h4>
+			{% for q in list %}
+				<a href ="#"> {{ q.name }} </a>
+			{% endfor %}
+		{% endif %}
+	{% else %}
+		You need login to use this.
+	{% endif %}
+{% endblock %}
