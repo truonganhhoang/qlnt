@@ -57,10 +57,17 @@ def school_admin_add(request):
             c = RequestContext(request, {})
             return HttpResponse(t.render(c))
     else:
-        form = SchoolAdminAddForm()
+        user = User.objects.all()
+        user = []
+        for u in user:
+            try:
+                if (u.get_profile().position != 'HOC_SINH'):
+                    user.append(u)
+            except:
+                pass
 
     t = loader.get_template('app/school_admin_add.html')
-    c = RequestContext(request, {'form': form})
+    c = RequestContext(request,{'user': user})
     return HttpResponse(t.render(c))
 
 # Developer: Do Duc Binh    

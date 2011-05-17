@@ -133,16 +133,24 @@ def manual_sms(request):
             user = User.objects.filter()
             user_list = []
             for u in user:
-                user_list.append(u)
+                try:
+                    if (u.get_profile().position in ['HIEU_TRUONG','HIEU_PHO','TRUONG_PHONG','GIAM_DOC_SO']):
+                        user_list.append(u)
+                except:
+                    pass
                 
             t = loader.get_template('sms/manual_sms.html')
             c = RequestContext(request, {'user_list': user_list})
             return HttpResponse(t.render(c))
     else:    
-        user = User.objects.filter()
+        user = User.objects.all()
         user_list = []
         for u in user:
-            user_list.append(u)
+            try:
+                if (u.get_profile().position in ['HIEU_TRUONG','HIEU_PHO','TRUONG_PHONG','GIAM_DOC_SO']):
+                    user_list.append(u)
+            except:
+                pass
             
         t = loader.get_template('sms/manual_sms.html')
         c = RequestContext(request, {'user_list': user_list})
