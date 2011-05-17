@@ -13,7 +13,6 @@ GENDER_CHOICES = ((u'Nam', u'Nam'),(u'Nữ', u'Nữ'),)
 TERM_CHOICES = ((1, u'1'), (2, u'2'),(3, u'3'),)
 HK_CHOICES = ((u'T', u'Tốt'), (u'K', u'Khá'),(u'TB',u'Trung Bình'),(u'Y', u'Yếu'),)
 HL_CHOICES = ((u'G', u'Giỏi'), (u'K', u'Khá'),(u'TB',u'Trung Bình'),(u'Y', u'Yếu'),(u'Kem', u'Kém'))
-DAY_CHOICES = (('01','1'),('02','2'),('03','3'),('04','4'),('05','5'),('06','6'),('07','7'),('08','8'),('09','9'),('10','10'))
 #k co nghia la khong duoc danh hieu gi
 DH_CHOICES = ((u'XS', u'Học sinh xuất sắc'),(u'G', u'Hoc sinh giỏi'), (u'TT', u'Học sinh tiên tiến'),(u'K',u'Không được gì'))
 KT_CHOICES = ((u'Khen trước lớp',u'Khen trước lớp'), (u'Khen trước toàn trường',u'Khen trước toàn trường'),
@@ -136,7 +135,7 @@ class TeacherForm(forms.ModelForm):
 
         field = ('birthday')
         widgets = {
-            'birthday' : SelectDateWidget(years = range( this_year()-15 ,this_year()-100,-1)),
+            'birthday' : SelectDateWidget(years = range( this_year()-15 ,this_year()-100, -1)),
         }
 
 class Year(models.Model):
@@ -154,7 +153,7 @@ class StartYear(models.Model):
 class Term(models.Model):
 	number = models.IntegerField(max_length=1, choices = TERM_CHOICES)
 	# neu active =false thi khong cho phep sua diem nua
-	year_id= models.ForeignKey(Year)
+	year_id = models.ForeignKey(Year)
 	def __unicode__(self):
 		return str(self.number)+" "+str(self.year_id.time)		 
 	#class Admin: pass
@@ -190,7 +189,7 @@ class ClassForm(forms.ModelForm):
     def __init__(self, school_id, *args, **kwargs):
         super(ClassForm, self).__init__(*args, **kwargs)
         self.fields['teacher_id'] = forms.ModelChoiceField(required = False, queryset=Teacher.objects.filter(school_id = school_id))
-        self.fields['year_id'] = forms.ModelChoiceField(queryset=Year.objects.filter(school_id = school_id))
+        self.fields['year_id'] = forms.ModelChoiceField(queryset=Year.objects.filter(school_id = school_id),initial = Year.objects.filter(school_id = school_id).latest('time'))
         self.fields['block_id'] = forms.ModelChoiceField(queryset=Block.objects.filter(school_id = school_id))
 		
 class Pupil(BasicPersonInfo):
@@ -207,7 +206,7 @@ class Pupil(BasicPersonInfo):
     ngay_vao_doi = models.DateField(blank = True, null = True)
     dang = models.BooleanField(blank = True, default = False)
     ngay_vao_dang = models.DateField(blank = True, null = True)
-		
+	
 	#thong tin gia dinh
     father_name = models.CharField(max_length = 45, blank = True, null = True)
     father_birthday = models.DateField( null = True, blank = True)
@@ -232,22 +231,22 @@ class Pupil(BasicPersonInfo):
 class PupilForm(forms.ModelForm):
     class Meta:
         model = Pupil
-        field = ('birthday','school_join_date','ngay_vao_doan','ngay_vao_doi','ngay_vao_dang','father_birthday','mother_birthday')
+        field = ('birthday', 'school_join_date', 'ngay_vao_doan', 'ngay_vao_doi', 'ngay_vao_dang', 'father_birthday', 'mother_birthday')
         widgets = {
-            'birthday' : SelectDateWidget(years = range( this_year() ,this_year()-100,-1)),
-            'school_join_date' : SelectDateWidget(years = range( this_year() ,this_year()-100,-1)),
-            'ngay_vao_doan': SelectDateWidget(years = range( this_year() ,this_year()-100,-1)),
-            'ngay_vao_doi': SelectDateWidget(years = range( this_year() ,this_year()-100,-1)),
-            'ngay_vao_dang': SelectDateWidget(years = range( this_year() ,this_year()-100,-1)),
-            'father_birthday': SelectDateWidget(years = range( this_year() ,this_year()-100,-1)),
-            'mother_birthday': SelectDateWidget(years = range( this_year() ,this_year()-100,-1)),
+            'birthday' : SelectDateWidget(years = range( this_year() ,this_year()-100, -1)),
+            'school_join_date' : SelectDateWidget(years = range( this_year() ,this_year()-100, -1)),
+            'ngay_vao_doan': SelectDateWidget(years = range( this_year() ,this_year()-100, -1)),
+            'ngay_vao_doi': SelectDateWidget(years = range( this_year() ,this_year()-100, -1)),
+            'ngay_vao_dang': SelectDateWidget(years = range( this_year() ,this_year()-100, -1)),
+            'father_birthday': SelectDateWidget(years = range( this_year() ,this_year()-100, -1)),
+            'mother_birthday': SelectDateWidget(years = range( this_year() ,this_year()-100, -1)),
         }
     def __init__(self, school_id, *args, **kwargs):
         super(PupilForm, self).__init__(*args, **kwargs)
         school = Organization.objects.get(id = school_id)
         year_id = school.year_set.latest('time').id
-        self.fields['start_year_id'] = forms.ModelChoiceField(queryset=StartYear.objects.filter(school_id = school_id))
-        self.fields['class_id'] = forms.ModelChoiceField(queryset=Class.objects.filter(year_id = year_id))
+        self.fields['start_year_id'] = forms.ModelChoiceField(queryset = StartYear.objects.filter(school_id = school_id))
+        self.fields['class_id'] = forms.ModelChoiceField(queryset = Class.objects.filter(year_id = year_id))
 
 
 class Subject(models.Model):	
@@ -268,7 +267,7 @@ class SubjectForm(forms.ModelForm):
         
     def __init__(self, school_id, *args, **kwargs):
         super(SubjectForm, self).__init__(*args, **kwargs)
-        self.fields['teacher_id'] = forms.ModelChoiceField(required = False, queryset=Teacher.objects.filter(school_id = school_id))
+        self.fields['teacher_id'] = forms.ModelChoiceField(required = False, queryset = Teacher.objects.filter(school_id = school_id))
 
 class Mark(models.Model):
 	
@@ -291,10 +290,10 @@ class Mark(models.Model):
 	tb = models.FloatField( null = True, blank = True, validators = [validate_mark])
 	
 	subject_id = models.ForeignKey(Subject)
-	student_id = models.ForeignKey(Pupil,null=True,blank=True)		
+	student_id = models.ForeignKey(Pupil, null = True, blank = True)		
 	term_id	= models.ForeignKey(Term)
 	def __unicode__(self):
-		return self.subject_id.name +" "+str(self.term_id.number)+self.student_id.first_name
+		return self.subject_id.name + " " + str(self.term_id.number) + self.student_id.first_name
 
 class TKMon(models.Model):	
 	tb_nam = models.FloatField( null = True, blank = True, validators = [validate_mark])
@@ -307,7 +306,7 @@ class TKMon(models.Model):
 	student_id = models.ForeignKey(Pupil)		
 	#class Admin: pass
 	def __unicode__(self):
-		return self.subject_id.name +" "+self.student_id.first_name
+		return self.subject_id.name + " " + self.student_id.first_name
 	
 class MarkForm(forms.ModelForm):
 	class Meta:
@@ -331,8 +330,8 @@ class KhenThuongForm(forms.ModelForm)        :
         model = KhenThuong
         field = ('time', 'noi_dung')
         widgets = {
-            'time' : SelectDateWidget(years = range( this_year() ,this_year()-100,-1)),
-            'noi_dung': forms.Textarea(attrs={'cols': 50, 'rows': 10}),
+            'time' : SelectDateWidget(years = range( this_year() ,this_year()-100, -1)),
+            'noi_dung': forms.Textarea(attrs = {'cols': 50, 'rows': 10}),
         }
 
 class KiLuat(models.Model):
@@ -354,7 +353,7 @@ class KiLuatForm(forms.ModelForm):
         field = ('time', 'noi_dung')
         widgets = {
             'time' : SelectDateWidget(years = range( this_year() ,this_year()-100,-1)),
-            'noi_dung': forms.Textarea(attrs={'cols': 50, 'rows': 10}),
+            'noi_dung': forms.Textarea(attrs = {'cols': 50, 'rows': 10}),
         }
         
 class HanhKiem(models.Model):
@@ -373,12 +372,12 @@ class TBHocKy(models.Model):
 	student_id = models.ForeignKey(Pupil)
 	term_id = models.ForeignKey(Term)
 	
-	tb_hk=models.FloatField( validators = [validate_mark],null=True,blank=True)		
-	hl_hk=models.CharField( max_length = 3, choices = HL_CHOICES,null=True,blank=True)
-	danh_hieu_hk=models.CharField( max_length = 2, choices = DH_CHOICES,null=True,blank=True)
+	tb_hk = models.FloatField( validators = [validate_mark], null = True, blank = True)		
+	hl_hk = models.CharField( max_length = 3, choices = HL_CHOICES, null = True, blank = True)
+	danh_hieu_hk = models.CharField( max_length = 2, choices = DH_CHOICES, null = True, blank = True)
 	
 	def __unicode__(self):
-		return  str(self.tb_hk)+" "+ self.term_id.__unicode__() + self.student_id.__unicode__()
+		return  str(self.tb_hk) + " " + self.term_id.__unicode__() + self.student_id.__unicode__()
 		
 class TBNam(models.Model):
 	student_id = models.ForeignKey(Pupil)
@@ -404,7 +403,7 @@ class TBNam(models.Model):
 	
 	
 	def __unicode__(self):
-		return self.student_id.__unicode__()+" "+str(self.year_id.__unicode__())+" "+ str(self.tb_nam) 
+		return self.student_id.__unicode__() + " " + str(self.year_id.__unicode__()) + " " + str(self.tb_nam) 
 
 class DiemDanh(models.Model):
     student_id = models.ForeignKey(Pupil)
@@ -421,23 +420,23 @@ class DiemDanhForm(forms.ModelForm):
         model = DiemDanh
         field = ('time')
         widgets = {
-            'time' : SelectDateWidget(years = range( this_year() ,this_year()-100,-1)),
+            'time' : SelectDateWidget(years = range( this_year() ,this_year()-100, -1)),
         }
         
 class TKDiemDanh(models.Model):
     student_id = models.ForeignKey(Pupil)
     term_id = models.ForeignKey(Term)
     
-    tong_so = models.IntegerField(blank=True,null=True)
-    co_phep = models.IntegerField(blank=True,null=True)
-    khong_phep = models.IntegerField(blank=True,null=True)
+    tong_so = models.IntegerField(blank = True, null = True)
+    co_phep = models.IntegerField(blank = True, null = True)
+    khong_phep = models.IntegerField(blank = True, null = True)
     
     def __unicode__(self):
-        return str(self.student_id) +" "+ self.term_id.__unicode__()+" " + str(self.tong_so)
+        return str(self.student_id) + " " + self.term_id.__unicode__() + " " + str(self.tong_so)
 
 class TKDiemDanhForm(forms.ModelForm)        :
     class Meta:
         model = TKDiemDanh
         
 class DateForm(forms.Form):
-    date = forms.DateField(label = '',widget=SelectDateWidget(years = range( this_year(), this_year()-2 , -1)),initial=date.today())
+    date = forms.DateField(label = '',widget=SelectDateWidget(years = range( this_year(), this_year()-2 , -1)), initial = date.today())
