@@ -389,6 +389,7 @@
 
 <td width="33%">
 </ul> 
+{% ifequal currentTerm.number 1 %}
 <p> Học kỳ II :</p>	
 <ul>
 	<li><a href = "{%url school.views.school_index  %}countPractisingInTerm/{{secondTerm.id}}"> Hạnh kiểm</a></li>
@@ -404,6 +405,26 @@
 	<li><a href = "{%url school.views.school_index  %}countLearningInYear/{{selectedYear.id}}"> Học lực</a></li>
 	<li><a href = "{%url school.views.school_index  %}countAllInYear/{{selectedYear.id}}">Xếp loại chung</a></li>
 </ul> 
+
+{% else %}
+
+<p> Học kỳ II :</p>	
+<ul>
+	<li><a title="Đang trong học kỳ I nên chức năng này đã bị vô hiệu hóa"> Hạnh kiểm</a></li>
+	<li><a  title="Đang trong học kỳ I nên chức năng này đã bị vô hiệu hóa"> Học lực</a></li>
+	<li><a  title="Đang trong học kỳ I nên chức năng này đã bị vô hiệu hóa">Xếp loại chung</a></li>
+</ul> 
+</td>
+
+<td width="33%">
+<p> Cả năm : </p>	
+<ul>
+	<li><a  title="Đang trong học kỳ I nên chức năng này đã bị vô hiệu hóa"> Hạnh kiểm</a></li>
+	<li><a  title="Đang trong học kỳ I nên chức năng này đã bị vô hiệu hóa" > Học lực</a></li>
+	<li><a  title="Đang trong học kỳ I nên chức năng này đã bị vô hiệu hóa">Xếp loại chung</a></li>
+</ul> 
+
+{% endifequal %} 
 </td>
 </tr>	
 </table>
