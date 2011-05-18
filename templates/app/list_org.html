@@ -2,12 +2,11 @@
 
 {% block content %}
 	{% if user.is_authenticated %}
-		<h4>Tổ chức thuộc quyền quản lý </h4>
 		{% if user.is_superuser %}
 			{% if list_s %}
 				{% for s in list_s %}
 					<li><b>{{ s.name }}</b>
-					<br /><button type="button" onclick="if(document.getElementById('spoilerS') .style.display=='none') {document.getElementById('spoilerS') .style.display=''}else{document.getElementById('spoilerS') .style.display='none'}">Danh sách phòng</button>
+					<br /><button type="button" onclick="if(document.getElementById('spoilerS') .style.display=='none') {document.getElementById('spoilerS') .style.display=''}else{document.getElementById('spoilerS') .style.display='none'}"><small>Danh sách phòng</small></button>
 					</li>
 					<div id="spoilerS" style="display:none">
 					{% if list_p %}
@@ -15,7 +14,7 @@
 							<p><p>
 							{% if p.upper_organization == s %}
 								+ <b>{{ p.name }}</b>
-								<br /><button type="button" onclick="if(document.getElementById('spoiler{{p.id}}') .style.display=='none') {document.getElementById('spoiler{{p.id}}') .style.display=''}else{document.getElementById('spoiler{{p.id}}') .style.display='none'}">Danh sách trường</button>
+								<br /><button type="button" onclick="if(document.getElementById('spoiler{{p.id}}') .style.display=='none') {document.getElementById('spoiler{{p.id}}') .style.display=''}else{document.getElementById('spoiler{{p.id}}') .style.display='none'}"><small>Danh sách trường</small></button>
 								<br/>
 								<div id="spoiler{{p.id}}" style="display:none">
 								{% if list_t %}
@@ -31,28 +30,33 @@
 							</p></p>
 						{% endfor %}
 					{% endif %}
-					</div>
-	
-					
+					</div>					
 				{% endfor %}
 			{% endif %}
 		{% endif %}
+		
 		{% if user.userprofile.position == 'GIAM_DOC_SO' %}
 			{% if list_p %}
 				{% for p in list_p %}
 					{% if p.upper_organization == user.get_profile.organization %}
-						<li>{{ p.name }}</li>
-						{% if list_t %}uộc
+						<li><b>{{ p.name }}</b>
+						<br /><button type="button" onclick="if(document.getElementById('spoiler{{p.id}}') .style.display=='none') {document.getElementById('spoiler{{p.id}}') .style.display=''}else{document.getElementById('spoiler{{p.id}}') .style.display='none'}"><small>Danh sách trường</small></button>
+						</li>
+						<div id="spoiler{{p.id}}" style="display:none">
+						{% if list_t %}
 							{% for t in list_t %}
 								{% if t.upper_organization == p %}
 									- {{ t.name }} <br/>
 								{% endif %}
 							{% endfor %}
 						{% endif %}
+						</div>
 					{% endif %}
+					
 				{% endfor %}
 			{% endif %}
 		{% endif %}
+		
 		{% if user.userprofile.position == 'TRUONG_PHONG' %}
 			<h4>Các trường thuộc quyển quản lý </h4>
 			{% for t in list_t %}
