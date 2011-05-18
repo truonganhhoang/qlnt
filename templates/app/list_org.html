@@ -6,11 +6,18 @@
 		{% if user.is_superuser %}
 			{% if list_s %}
 				{% for s in list_s %}
-					<li>{{ s.name }}</li>
+					<li><b>{{ s.name }}</b>
+					<br /><button type="button" onclick="if(document.getElementById('spoilerS') .style.display=='none') {document.getElementById('spoilerS') .style.display=''}else{document.getElementById('spoilerS') .style.display='none'}">Danh sách phòng</button>
+					</li>
+					<div id="spoilerS" style="display:none">
 					{% if list_p %}
 						{% for p in list_p %}
+							<p><p>
 							{% if p.upper_organization == s %}
-								+ {{ p.name }} <br/>
+								+ <b>{{ p.name }}</b>
+								<br /><button type="button" onclick="if(document.getElementById('spoiler{{p.id}}') .style.display=='none') {document.getElementById('spoiler{{p.id}}') .style.display=''}else{document.getElementById('spoiler{{p.id}}') .style.display='none'}">Danh sách trường</button>
+								<br/>
+								<div id="spoiler{{p.id}}" style="display:none">
 								{% if list_t %}
 									{% for t in list_t %}
 										{% if t.upper_organization == p %}
@@ -18,9 +25,15 @@
 										{% endif %}
 									{% endfor %}
 								{% endif %}
+								</div>
+								
 							{% endif %}
+							</p></p>
 						{% endfor %}
 					{% endif %}
+					</div>
+	
+					
 				{% endfor %}
 			{% endif %}
 		{% endif %}
@@ -29,7 +42,7 @@
 				{% for p in list_p %}
 					{% if p.upper_organization == user.get_profile.organization %}
 						<li>{{ p.name }}</li>
-						{% if list_t %}
+						{% if list_t %}uộc
 							{% for t in list_t %}
 								{% if t.upper_organization == p %}
 									- {{ t.name }} <br/>
