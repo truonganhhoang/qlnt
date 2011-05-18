@@ -4,8 +4,7 @@
 {% if message != None %}
 {{message}}
 {% endif %}
-<script type="text/javascript" >
-//lock enter
+<script language="JavaScript" type="text/javascript" >
 function catchEnter(e)
 
 {
@@ -22,10 +21,15 @@ window.onload = function() { document.onkeypress = catchEnter; };
    
 
 	function acceptDigits(tb){
+		if (tb.value=="-")
+		{
+			tb.value="10";
+			return;
+		}	
 		var exp = /[^((\d).,)]/g;
 		var exp1=/[,]/g
 		tb.value = tb.value.replace(exp,'');
-		var value=tb.value;
+		var value=tb.value;		
 		value=value.replace(exp1,'.');		
 		//kiem tra xem no co nhieu hon hai dau cham hay ko
 		var countDot=0;
@@ -40,15 +44,115 @@ window.onload = function() { document.onkeypress = catchEnter; };
 		}			
 		var number=parseFloat(value);
 		//alert(number);		
-		if (number>10 )
-			tb.value="";
+		if ((10<number ) & (number<100))
+		{
+			temp=number/10;
+			tb.value=temp.toString();
+		}
+		if (tb.value.length>4)	
+			tb.value=tb.value.substring(0,4);
 	}
+	function returnMove()
+	{
+		for(i=0;i<3;i++)
+			if (document.info.move[i].checked)
+				return i;
+	}
+	
+	function directionFirstRow(nameNumber,valueOfMove)
+	{
+		var lengthList={{lengthList}};		
+		if (valueOfMove==2)			
+			temp=nameNumber+100;
+		else
+		{	
+			if (nameNumber % 100==16)
+				temp=parseInt(nameNumber/100)*100+101
+			else
+				temp=nameNumber+1
+		}	
+		var tempName=temp.toString();
+		var cel=document.getElementsByName(tempName);
+		if (cel[0])
+		{
+			cel[0].focus();
+		}					
+	}
+	
+	function directionOtherRow(nameNumber,valueOfMove)
+	{
+		var lengthList={{lengthList}};
+		if (valueOfMove==2)			
+		{
+			if (parseInt(nameNumber/100)==lengthList)
+				temp=100+nameNumber % 100;
+			else					
+				temp=nameNumber+100;
+		}		
+		else
+		if (valueOfMove==1)			
+		{	
+			if (nameNumber % 100==16)
+				temp=parseInt(nameNumber/100)*100+101
+			else
+				temp=nameNumber+1
+		}
+		else
+		{	
+			if (nameNumber % 100==16)
+				temp=parseInt(nameNumber/100)*100+101;
+			else
+			{
+				var beforeRow=nameNumber-100;
+				var index = beforeRow-beforeRow % 100 ;
+				var ok=false;
+				for (i=beforeRow % 100+1;i<17;i++)
+				{
+					var cellNumber=index+i;
+					tempCel=document.getElementsByName(cellNumber.toString());
+					if (tempCel[0])
+						if (tempCel[0].value.length>0)
+						{
+							ok=true;
+							break;
+						}	
+				}
+				
+				if (ok)
+					temp=index+100+i;
+				else
+					temp=nameNumber+1;
+			}			
+		}
+		
+		var tempName=temp.toString();
+		var cel=document.getElementsByName(tempName);
+		if (cel[0])
+		{
+			cel[0].focus();
+		}					
+	}
+	
 	function controlDirection(tb,event)
 	{
 		var keycode=event.keyCode;
 		var name=tb.name;
 		var nameNumber=parseInt(name);
-		if ((keycode==40) ||(keycode==13))
+
+		if ((keycode==32) | (keycode==13))
+		{
+			valueOfMove=returnMove();
+			if (parseInt(nameNumber/100)==1)
+			{
+				directionFirstRow(nameNumber,valueOfMove);
+			}	
+			else
+			{
+				directionOtherRow(nameNumber,valueOfMove);
+			}	
+		}	
+		else	
+		if ((keycode==40))
 		{
 			var temp=nameNumber+100;
 			var tempName=temp.toString();
@@ -90,30 +194,37 @@ window.onload = function() { document.onkeypress = catchEnter; };
 				{
 					cel[0].focus();
 				}
-		}					
+		}
 	}
 	function submitTerm()
 	{
-		if (document.info.term.value!=-1)
 			if (document.info.term.value!={{termChoice}})
+ 			if (document.info.subject.value!=-1)
 			{
 				document.info.submitChoice.value="hienthi";
 				document.info.submit();
 			}	
 	}
 
-
+	function submitSubject()
+	{
+			if (document.info.subject.value!={{subjectChoice}})
+			if (document.info.subject.value!=-1)
+			{	
+				document.info.submitChoice.value="hienthi";
+				document.info.submit();
+			}	
+	}
 	function saveMark()
 	{
 		document.info.submitChoice.value="luulai";
-
-		if (document.info.term.value!=-1)
 			document.info.submit();
 	}
 	function saveMarkHasComment()
 	{
 		var length={{lengthList}};
 		//alert(length);
+		document.getElementById("commentTable").style.visibility='hidden';
 		for(i=1;i<=length;i++)
 			for(j=1;j<5;j++)
 			{
@@ -146,6 +257,7 @@ window.onload = function() { document.onkeypress = catchEnter; };
 	function saveMarkHasComment1()
 	{
 		var length={{lengthList}};
+		document.getElementById("commentTable").style.visibility='hidden';
 		//alert(length);
 		for(i=1;i<=length;i++)
 			for(j=1;j<6;j++)
@@ -187,46 +299,80 @@ window.onload = function() { document.onkeypress = catchEnter; };
 			tb.value="";
 		}
 	}
-	
 </script>
+
 <form action="/school/markForASubject/{{selectedSubject.id}}"  name="info" method="post" id='myform' 
 	onsubmit="return false" >{% csrf_token %}
 <table border="0" width=100% >
 	<input type="hidden" name="submitChoice" value="">	
 
 	<tr>
-		<td align="center" colspan =2 style="font-size:25px" >
+		<td align="center" colspan =4 style="font-size:25px" >
 			<b>Bảng điểm  theo môn  </b>
+			<br>
+			<br>
 		</td>
 	</tr>
 	<tr>
-		<td width="50 %" >
+		<td colspan=2 >
 			Môn: {{selectedSubject.name}}
 		</td>
-		<td width="50 %" >
+		<td  >
 			Lớp: {{selectedSubject.class_id.name}}
 		</td>
 	</tr>
 	<tr>
 	<td>&nbsp</td>
 	</tr>
-	
-	
-	<tr>								
-		
-		<td width ="50%"> Học kỳ &nbsp&nbsp:  
+	<tr>										
+		<td width ="20%"> Học kỳ &nbsp&nbsp:  
 		<select name="term" onchange="submitTerm();" >				
 			{% for term in termList %}
 					<option   value={{ term.id }} selected> {{ term}} </option>	
 			{% endfor %}	
 			
 		</select>
-		</td>					
-	</tr>
+		</td>
+	{%ifnotequal hsSubject 0 %}
+		<td width ="25%" >
+			Dịch chuyển: <br >
+			<p title="Sau khi nhập xong sẽ tự động nhảy đến đúng cột mà cột ở trên cũng có điểm">
+				<input type="radio" name="move" id="ngang1" value="ngang1" checked  > Ngang theo điểm hàng trên
+				<br>
+			</p>
+			
+			<p title="Nhảy bình thường sang cột tiếp theo">
+				<input type="radio" name="move" id="ngang2" value="ngang2" >
+				Ngang bình thường			
+				<br>
+			</p>
+			
+			<p title="Sau khi nhập xong sẽ tự động nhảy xuống hàng tiếp theo">
+				<input type="radio" name="move" id="doc" value="doc" >
+				Dọc
+			</p>
+		</td>	
+		<td width ="35%">
+			Ghi chú: <br>
+				+ Sau khi nhập điểm xong ở một ô, 
+					có thể ấn enter hoặc dấu cách 
+					 để chuyển sang ô tiếp theo   <br>
+				+ Bạn có thể dùng dấu - thay cho điểm 10 <br>
+				+ Bạn có thể gõ tắt mà không cần gõ dấu chấm.<br>
+				+ Vd: 75->7,5 hoặc 675->6,75  <br>
+			</ul>
+		</td>	
+	 {% endifnotequal %}		
+	</tr>	
 </table>
+	Lưu ý:Nhập xong nhớ ấn lưu lại.
+	<br>
+
 	
 <script type="text/javascript" >
 	document.info.term.value={{termChoice}}
+	m=document.getElementById("{{move}}")
+	if (m) m.checked=true;
 	
 </script>		
 
