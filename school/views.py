@@ -281,6 +281,9 @@ def classes(request, sort_type=1, sort_status=0, page=1):
     c = RequestContext(request, {'list': list, 'form': form, 'message': message, 'classList': classList, 'sort_type':sort_type, 'sort_status':sort_status, 'next_status':1-int(sort_status), 'base_order': (int(page)-1) * 20})
     return HttpResponse(t.render(c))
 
+
+#User: loi.luuthe@gmail.com
+#This function recieves a form from template, then imediately it creates new class with the information of form
 def addClass(request):
     user = request.user
     if not user.is_authenticated():
@@ -304,6 +307,9 @@ def addClass(request):
         t = loader.get_template(os.path.join('school', 'add_class.html'))
         c = RequestContext(request)
         return HttpResponse(t.render(c))
+		
+#User: loi.luuthe@gmail.com
+#This function has class_id is an int argument. It gets the information of the class corresponding to the class_id and response to the template
 def viewClassDetail(request, class_id):
     user = request.user
     if not user.is_authenticated():
@@ -1306,7 +1312,7 @@ def edit_ki_luat(request, kt_id):
     c = RequestContext(request, {'form': form, 'p': pupil, 'student_id':pupil.id, 'term':term})
     return HttpResponse(t.render(c))    
 
-def hanh_kiem(request, class_id):
+def hanh_kiem(request, class_id, sort_type = 1, sort_status = 0):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
@@ -1318,7 +1324,23 @@ def hanh_kiem(request, class_id):
     message = None
     listdh = None
     term = None
-    pupilList = Pupil.objects.filter(class_id=class_id)
+    pupilList = c.pupil_set.all()
+    if int(sort_type) == 1:
+        if int(sort_status) == 0:
+            pupilList = c.pupil_set.order_by('first_name', 'last_name')
+        else:
+            pupilList = c.pupil_set.order_by('-first_name', '-last_name')
+    if int(sort_type) == 2:
+        if int(sort_status) == 0:
+            pupilList = c.pupil_set.order_by('birthday')
+        else:
+            pupilList = c.pupil_set.order_by('-birthday')
+    if int(sort_type) == 3:
+        if int(sort_status) == 0:
+            pupilList = c.pupil_set.order_by('sex')
+        else:
+            pupilList = c.pupil_set.order_by('-sex')
+	
     term = get_current_term(request)
     form = []
     i = 0
@@ -1350,5 +1372,5 @@ def hanh_kiem(request, class_id):
 			
     listdh = zip(pupilList, form)
     t = loader.get_template(os.path.join('school', 'hanh_kiem.html'))
-    c = RequestContext(request, {'form':form, 'pupilList': pupilList, 'message':message, 'class_id':class_id, 'list':listdh})
+    c = RequestContext(request, {'form':form, 'pupilList': pupilList, 'message':message, 'class':c, 'list':listdh, 'sort_type':sort_type, 'sort_status':sort_status, 'next_status':1-int(sort_status), 'term':term})
     return HttpResponse(t.render(c))
