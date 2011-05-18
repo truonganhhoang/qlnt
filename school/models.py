@@ -93,13 +93,14 @@ class DanhSachLoaiLop(models.Model):
 class Block(models.Model):
 	number=models.SmallIntegerField(max_length = 2, choices=KHOI_CHOICE)
 	school_id = models.ForeignKey(Organization)
-	
+
 	def __unicode__(self):
 		return str(self.number)	
 	
 class BlockForm(forms.ModelForm):
 	class Meta:
 		model = Block
+        
 class BasicPersonInfo(models.Model):
 	first_name = models.CharField(max_length = 45)
 	last_name = models.CharField(max_length = 45, blank = True) # tach ra first_name and last_name de sort va import from excel file
@@ -162,8 +163,7 @@ class TermForm(forms.ModelForm):
 	class Meta:
 		model = Term
 
-class Class(models.Model):
-	
+class Class(models.Model):	
 	#cai nay sau cung bo di	
 	#class_code = models.CharField(max_length = 20, unique = True)	
     name = models.CharField(max_length = 20)
@@ -226,6 +226,7 @@ class Pupil(BasicPersonInfo):
     school_id = models.ForeignKey(Organization, null = True, blank = True)
     
     class Meta:
+        verbose_name_plural = "Học sinh"
         unique_together = ("class_id", "first_name", "last_name", "birthday",)
         
 class PupilForm(forms.ModelForm):
@@ -255,7 +256,7 @@ class Subject(models.Model):
 
 	class_id = models.ForeignKey(Class)	
 	teacher_id = models.ForeignKey(Teacher, null= True, blank = True) # field nay de cung cap permission cho giao vien de nhap diem
-	
+    
 	def __unicode__(self):
 		return self.name
 	
@@ -292,6 +293,7 @@ class Mark(models.Model):
 	subject_id = models.ForeignKey(Subject)
 	student_id = models.ForeignKey(Pupil, null = True, blank = True)		
 	term_id	= models.ForeignKey(Term)
+
 	def __unicode__(self):
 		return self.subject_id.name + " " + str(self.term_id.number) + self.student_id.first_name
 

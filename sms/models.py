@@ -27,6 +27,9 @@ class sms(models.Model):
     recent = models.BooleanField()
     success = models.BooleanField()
     
+    class Meta:
+        verbose_name_plural = "SMS"
+        
     def createdFormat(self):
         return self.created.strftime('%d') + "/"\
                 + self.created.strftime('%m') + " - "\
