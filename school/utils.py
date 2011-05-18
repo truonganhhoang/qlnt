@@ -130,7 +130,10 @@ def add_student( student = None, start_year = None , year = None,
             st.start_year_id = start_year
             st.class_id = _class
             st.school_id = school
-            st.sex = student['sex']
+            if 'sex' in student:
+                st.sex = student['sex']
+            else: 
+                st.sex = 'Nam'
             
             user = User()
             user.username = make_username( first_name = first_name, last_name = last_name, start_year = start_year)

@@ -157,10 +157,10 @@ a.footer:hover{
 
 #footermainPan{ width: 100%; margin: auto auto; margin-left: auto; margin-right: auto; height:85px; background:url(images/footerbg.gif) 0 0 repeat-x #fff; color:#010101; clear:both; padding: 72px 0 0;}
 
-#footerPan{width:auto; position: relative; margin:auto auto; font-family:"Trebuchet MS",Arial, Helvetica, sans-serif}
+#footerPan{width:auto; position: relative; margin:auto auto; font-family:"Trebuchet MS",Arial, Helvetica, sans-serif; text-align: center;}
 
 #footerPan ul{width:auto; position: relative; margin:auto auto; margin-left: auto; margin-right: auto;}
-#footerPan li{}
+#footerPan li{float: left;}
 #footerPan ul a{padding:0 10px 0; color:#010101; background:#F3F3F3; text-decoration:none;}
 #footerPan ul a:hover{text-decoration:underline;}
 
