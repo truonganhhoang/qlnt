@@ -51,7 +51,9 @@ def school_index(request):
 def class_label(request):
     school = get_school(request)
     class_labels = []
-    message = request.session['message']
+    message = None
+    if 'message' in request.session:
+        message = request.session['message']
     for loai in school.danhsachloailop_set.all():
         class_labels.append(loai.loai)
     labels = ' '.join(class_labels)
