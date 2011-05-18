@@ -11,12 +11,12 @@ function confirmDelete()
 
 <table class="styleA" width = "75%" align = "center">
     <tr>
-		<td width="5%"> STT </td>
-        <td align="center" width="20%"> <a href="{%url school.views.school_index  %}subjectPerClass/{{class_id}}/1/{{next_status}}">Tên Môn Học</a></td>
-        <td align="center" width="10%"> <a href="{%url school.views.school_index  %}subjectPerClass/{{class_id}}/2/{{next_status}}">Hệ số </a></td>
-        <td align="center" width="25%"> <a href="{%url school.views.school_index  %}subjectPerClass/{{class_id}}/3/{{next_status}}">Giáo viên</a></td>
-		<td align="center" width="10%"></td>
-        <td width = "5%"> </td>
+		<th width="5%"> STT </td>
+        <th align="center" width="20%"> <a href="{%url school.views.school_index  %}subjectPerClass/{{class_id}}/1/{{next_status}}">Tên Môn Học</a></th>
+        <th align="center" width="10%"> <a href="{%url school.views.school_index  %}subjectPerClass/{{class_id}}/2/{{next_status}}">Hệ số </a></th>
+        <th align="center" width="25%"> <a href="{%url school.views.school_index  %}subjectPerClass/{{class_id}}/3/{{next_status}}">Giáo viên</a></th>
+		<th align="center" width="10%"></th>
+        <th width = "5%"> </th>
     </tr>
 
     {% if message != None %}

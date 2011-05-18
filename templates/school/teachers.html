@@ -17,12 +17,12 @@ function confirmDelete()
 
 <table class="styleA" width = "100%" >
     <tr>
-		<td align="center" width="5%"> STT </td>
-        <td align="center" width="25%"> <a href="{%url school.views.school_index  %}teachers/1/{{next_status}}/1">Họ & Tên </a></td>
-        <td align="center" width="25%"> <a href="{%url school.views.school_index  %}teachers/2/{{next_status}}/1">Ngày sinh</a></td>
-        <td align="center" width="25%"> Nơi sinh</td>
-        <td align="center" width="10%"> <a href="{%url school.views.school_index  %}teachers/3/{{next_status}}/1">Giới tính </a></td>
-        <td width = "10%"></td>
+		<th align="center" width="5%"> STT </th>
+        <th align="center" width="25%"> <a href="{%url school.views.school_index  %}teachers/1/{{next_status}}/1">Họ & Tên </a></th>
+        <th align="center" width="25%"> <a href="{%url school.views.school_index  %}teachers/2/{{next_status}}/1">Ngày sinh</a></th>
+        <th align="center" width="25%"> Nơi sinh</th>
+        <th align="center" width="10%"> <a href="{%url school.views.school_index  %}teachers/3/{{next_status}}/1">Giới tính </a></th>
+        <th width = "10%"></th>
     </tr>
 
     {% if message != None %}
