@@ -31,6 +31,8 @@ CONTACT_CHOICES = (('GY', u'Góp ý xây dựng'),
                    ('HT', u'Hỗ trợ'),
                    ('BL', u'Báo lỗi'),
                    ('LH', 'Liên hệ hợp tác'))
+CC_CHOICES = (('True', u'Có'),
+              ('False', u'Không'))
 class Organization(models.Model):
     ''' Thông tin về sơ đồ tổ chức của các sở, phòng và các trường ''' 
     name = models.CharField(u'Tên tổ chức', max_length = 100) #tên đơn vị. tổ chức 
@@ -127,3 +129,12 @@ class ChangePasswordForm(forms.Form):
             raise forms.ValidationError("Mật khẩu cũ không đúng. Hãy nhập lại.")
         return old_password
 ChangePasswordForm.base_fields.keyOrder = ['old_password', 'new_password1', 'new_password2']
+
+class ContactForm(forms.Form):
+#Hainhh    
+    subject = forms.CharField(label = 'Tiêu đề',max_length=100)
+    message = forms.CharField(label = 'Nội dung', widget=forms.Textarea)
+    sender = forms.EmailField(label = 'Email của bạn')
+    cc_myself = forms.BooleanField(label = 'Gửi một bản cho chính bạn',required=False,widget = forms.RadioSelect(choices = CC_CHOICES))
+    
+         

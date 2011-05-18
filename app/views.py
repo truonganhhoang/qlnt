@@ -1,7 +1,7 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
-from app.models import UserForm, Organization, UserProfile, ChangePasswordForm
+from app.models import UserForm, Organization, UserProfile, ChangePasswordForm, ContactForm
 #from app.models import PositionTypeForm
 from django.template import RequestContext, loader
 from django import forms
@@ -108,3 +108,27 @@ def change_password_done(request):
     t = loader.get_template('app/change_password_done.html')
     c = RequestContext(request)
     return HttpResponse(t.render(c))
+
+def contact(request):
+#hainhh
+    if request.method == 'POST': # If the form has been submitted...
+        form = ContactForm(request.POST) # A form bound to the POST data
+        if form.is_valid():
+            subject = form.cleaned_data['subject']
+            message = form.cleaned_data['message']
+            sender = form.cleaned_data['sender']
+            cc_myself = form.cleaned_data['cc_myself']
+        
+            recipients = ['info@example.com']
+            if cc_myself:
+                recipients.append(sender)
+        
+            from django.core.mail import send_mail
+            send_mail(subject, message, sender, recipients)
+            return HttpResponseRedirect('/thanks/') # Redirect after POST
+    else:
+        form = ContactForm() # An unbound form
+
+    return render_to_response('contact.html', {
+        'form': form,
+    })

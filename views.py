@@ -12,8 +12,8 @@ from django.contrib.auth import authenticate, login
 def index(request): 
     return render_to_response("index.html", context_instance=RequestContext(request))
 
-def contact(request): 
-    return render_to_response("contact.html", context_instance=RequestContext(request))
+#def contact(request): 
+ #   return render_to_response("contact.html", context_instance=RequestContext(request))
 
 def render_to_pdf(template_src, context_dict):
     template = get_template(template_src)
