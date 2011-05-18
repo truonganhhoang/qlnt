@@ -630,7 +630,9 @@ def viewStudentDetail(request, student_id):
         return HttpResponseRedirect('/school')
     form = PupilForm (school_id, instance=pupil)
     if request.method == 'POST':
-        form = PupilForm(school_id, request.POST, instance=pupil)
+        data = request.POST.copy()
+        data.appendlist('school_id', school_id)
+        form = PupilForm(school_id, data, instance=pupil)
         if form.is_valid():
             form.save()
             message = 'Bạn đã cập nhật thành công'
