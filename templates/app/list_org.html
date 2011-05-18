@@ -13,7 +13,7 @@
 						{% for p in list_p %}
 							<p><p>
 							{% if p.upper_organization == s %}
-								+ <b>{{ p.name }}</b>
+								<b> + {{ p.name }}</b>
 								<br /><button type="button" onclick="if(document.getElementById('spoiler{{p.id}}') .style.display=='none') {document.getElementById('spoiler{{p.id}}') .style.display=''}else{document.getElementById('spoiler{{p.id}}') .style.display='none'}"><small>Danh sách trường</small></button>
 								<br/>
 								<div id="spoiler{{p.id}}" style="display:none">
