@@ -255,7 +255,7 @@ def completely_del_subject( subject):
 def get_school(request):
     if request.user.userprofile.organization.level != 'T':
         raise Exception('UserDoesNotHaveAnySchool')
-    return request.user.userprofile.organization
+    return Organization.objects.get(id=request.user.userprofile.organization.id)
 
 def get_permission(request):
     if request.user.userprofile.organization.level != 'T':
@@ -285,8 +285,9 @@ def get_current_year(request):
 		
 def get_current_term(request):
     school = get_school(request)
+    print "ok"+str(school.status)
     try:
-        return school.year_set.latest('time').term_set.get(number__exact = school.status)
+        return school.year_set.latest('time').term_set.get(number = school.status)
     except Exception( 'Term does not exist'):
         return None    
 
