@@ -441,7 +441,7 @@ def subjectPerClass(request, class_id, sort_type=1, sort_status=0):
                 if sfl[i].is_valid():
                     sfl[i].save()
             i = i + 1
-        if teacher_list[i] != u'':
+        if teacher_list[i] != u'' or request.POST['name'] != u'' or hs_list[i] != u'':
             data = {'name':request.POST['name'], 'hs':hs_list[i], 'class_id':class_id, 'teacher_id':teacher_list[i]}
             form = SubjectForm(school_id, data)
             if form.is_valid():
