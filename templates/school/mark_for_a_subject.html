@@ -38,10 +38,8 @@ window.onload = function() { document.onkeypress = catchEnter; };
 				countDot++;
 				
 		if (countDot>1)
-		{		
-			tb.value="";
-			return;
-		}			
+			tb.value=tb.value.substring(0,tb.value.length-1);
+			
 		var number=parseFloat(value);
 		//alert(number);		
 		if ((10<number ) & (number<100))
