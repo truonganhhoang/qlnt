@@ -43,15 +43,15 @@ class SchoolAdminAddForm(forms.Form):
             except UserProfile.DoesNotExist:
                 users.append(u)
 
-        self.fields['username'].choices = [(i.id, i.username) for i in users]
+        self.fields['full_name'].choices = [(i.id, i.last_name + ' ' + i.first_name) for i in users]
         self.fields['school'].choices = [(o.id, o.name) for o in Organization.objects.all() if o.level == 'T']
 
-    username = forms.ChoiceField()
+    full_name = forms.ChoiceField()
     school = forms.ChoiceField()
    
 def school_admin_add(request):
+    form = SchoolAdminAddForm(request.POST)
     if request.method == 'POST':
-        form = SchoolAdminAddForm(request.POST)
         if form.is_valid():
             # TODO Add initial permission here
             t = loader.get_template('app/school_admin_add_success.html')
@@ -68,7 +68,7 @@ def school_admin_add(request):
                 pass
 
     t = loader.get_template('app/school_admin_add.html')
-    c = RequestContext(request,{'user': user})
+    c = RequestContext(request,{'form': form})
     return HttpResponse(t.render(c))
 
 # Developer: Do Duc Binh    

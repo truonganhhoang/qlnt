@@ -6,14 +6,14 @@
                 <h1>Thêm người quản lý cấp trường</h1>
                 <form action="/app/schooladmin/add/" method="post">{% csrf_token %}
         <div class="fieldWrapper">
-          {{ form.username.errors }}
-          <label for="id_username">Tên đăng nhập:</label>
-          {{ form.username }}
+          <i>	{{ form.full_name.errors }} </i>
+          <b><label for="id_username">Tên người quản lý:</label></b>
+          {{ form.full_name }}
           <a href="/admin/auth/user/add/">Thêm</a>
         </div>
         <div class="fieldWrapper">
-          {{ form.school.errors }}
-          <label for="id_school">Trường:</label>
+          <i> {{ form.school.errors }} </i>
+          <b><label for="id_school">Trường:</label></b>
           {{ form.school }}
           <a href="/admin/app/organization/add/">Thêm</a>
         </div>
