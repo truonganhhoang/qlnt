@@ -1088,17 +1088,20 @@ def deleteTeacher(request, teacher_id):
         return HttpResponseRedirect(reverse('login'))
     message = "You have deleted succesfully"
     school = get_school(request)
-    s = school.teacher_set.get(id=teacher_id)
+    s = Teacher.objects.get(id = teacher_id)
     if in_school(request, s.school_id) == False:
         return HttpResponseRedirect('/school')
     if (get_position(request) < 4):
         return HttpResponseRedirect('/school')
-	cl = Class.objects.filter(teacher_id=s)
-	print cl
-	for sj in cl:
-		sj.teacher_id = None
-		sj.save()
-    #s.delete()
+    cl = Subject.objects.filter(teacher_id = s.id)
+    for sj in cl:
+        sj.teacher_id = None
+        sj.save()   
+    cl = Class.objects.filter(teacher_id = s.id)
+    for sj in cl:
+        sj.teacher_id = None
+        sj.save()   
+    s.delete()
     return HttpResponseRedirect('/school/teachers')
 
 def deleteClass(request, class_id):
