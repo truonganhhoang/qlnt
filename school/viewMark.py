@@ -475,6 +475,7 @@ def markTable(request,class_id):
     tbnamListObjects=[]
     list=None
     idList=[]
+    move=None
         
     selectedClass=Class.objects.get(id=class_id)    
     yearChoice=selectedClass.year_id.id
@@ -490,7 +491,9 @@ def markTable(request,class_id):
     termChoice=selectedTerm.id
     subjectList=Subject.objects.filter(class_id=class_id)
 
-    if request.method == 'POST':        
+    if request.method == 'POST':  
+        if request.POST.get('move'):
+             move=request.POST['move']          
         termChoice =int(request.POST['term'])
         subjectChoice=int(request.POST['subject'])                
         selectedTerm=Term.objects.get(id=termChoice)
@@ -535,6 +538,7 @@ def markTable(request,class_id):
                                 'class_id':class_id,
                                 'hsSubject':hsSubject,
                                 'lengthList':lengthList,
+                                'move':move,
                                 }
                        )
     
@@ -655,7 +659,7 @@ def markForASubject(request,subject_id):
     tbnamListObjects=[]
     list=None
     idList=[]
-        
+    move=None    
     selectedClass=Class.objects.get(id=selectedSubject.class_id.id)    
     yearChoice=selectedClass.year_id.id
     
@@ -672,6 +676,8 @@ def markForASubject(request,subject_id):
     
 
     if request.method == 'POST':        
+        if request.POST.get('move'):
+             move=request.POST['move']          
         termChoice =int(request.POST['term'])
         selectedTerm=Term.objects.get(id=termChoice)
         pupilList,markList,tbhk1ListObjects,tbnamListObjects,idList=getMark(selectedSubject.class_id.id,subjectChoice,selectedTerm)
@@ -716,6 +722,7 @@ def markForASubject(request,subject_id):
                                 'selectedSubject':selectedSubject,
                                 'hsSubject':hsSubject,
                                 'lengthList':lengthList,
+                                'move':move,
                                 }
                        )
     
