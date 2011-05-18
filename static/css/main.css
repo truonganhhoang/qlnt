@@ -32,9 +32,27 @@ ul{list-style-type:none;}
 #topMenuPan{width:1024px; height:16px; position:absolute; bottom:9px; left:10px;}
 #topMenuLeftPan{width:69px; height:16px; float:left; background:url(images/menu-leftbg.gif) 0 0 no-repeat;}
 #topMenuMiddlePan{width	: auto; height:16px; float:left;}
-#topUser{width: 200px; height: 16px; float: right;} 
-#topUser p {width: auto; height: 16px; padding: 0 0 0 0; float: left; color:#000000; font:12px/14px "Trebuchet MS",Arial, Helvetica, sans-serif; text-decoration:none; font-weight:bold; text-align:left;}
-#topUser a {width: auto; height: 16px; padding: 0 0 0 0; float: left; color:#4A4A4A; font:12px/14px "Trebuchet MS",Arial, Helvetica, sans-serif; text-decoration:none; font-weight:bold; text-align:left;}
+
+#topUser{
+	height: 16px;
+	float: right;
+	margin-right: 10px;
+	margin-top: 0px;
+	} 
+
+
+#topUser p {
+	margin: 0;
+	}
+
+#topUser a {
+	margin: 0px 10px; 
+	float: left; 
+	color:#4A4A4A; 
+	font:12px/14px "Trebuchet MS",Arial, Helvetica, sans-serif; 
+	text-decoration:none; 
+	font-weight:bold;
+	}
 
 
 #topMenuMiddlePan ul{width:auto; height:16px;}
@@ -68,6 +86,7 @@ ul{list-style-type:none;}
 
 #bodyRightPan{
 	width:250px;
+	min-height: 220px;
 	float:left;
 	border:1px solid #DADADA;
 	background:#F3F3F3;
