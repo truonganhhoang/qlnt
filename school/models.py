@@ -359,7 +359,7 @@ class KiLuatForm(forms.ModelForm):
 class HanhKiem(models.Model):
 	student_id = models.ForeignKey(Pupil)
 	term_id = models.ForeignKey(Term)
-	loai = models.CharField( max_length = 2, choices = HK_CHOICES, default = 'T',null=True,blank=True)
+	loai = models.CharField( max_length = 2, choices = HK_CHOICES, null=True,blank=True)
 	
 	def __unicode__(self):
 		return str(self.loai)

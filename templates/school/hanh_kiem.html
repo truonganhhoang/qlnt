@@ -3,14 +3,14 @@
 {% block content %}
 <br>
 <form action="/school/hanhkiem/{{class_id}}" method="post">{% csrf_token %}       
-<table border=1 width = "85%">
+<table class="styleA" width = "85%">
 
     <tr>
-        <td align="center" width="5%"> STT </td>
-        <td align="center" width="20%"> Họ & Tên </td>
-        <td align="center" width="20%"> Ngày sinh</td>
-        <td align="center" width="20%"> Giới tính </td>
-        <td align="center" width="20%"> Hạnh Kiểm </td>
+        <th align="center" width="5%"> STT </th>
+        <th align="center" width="20%"> Họ & Tên </th>
+        <th align="center" width="20%"> Ngày sinh</th>
+        <th align="center" width="20%"> Giới tính </th>
+        <th align="center" width="20%"> Hạnh Kiểm </th>
     </tr>
     {% if message != None %}
     {{message}}
