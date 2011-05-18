@@ -29,6 +29,10 @@ CLASS_LABEL = os.path.join('school', 'class_labels.html')
 def school_index(request):
 
     user = request.user
+    try:
+        school = get_school(request)
+    except Exception as e:
+        return HttpResponseRedirect(reverse('index'))
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
     if request.method == "POST":
@@ -47,7 +51,7 @@ def school_index(request):
 def class_label(request):
     school = get_school(request)
     class_labels = []
-    message = None
+    message = request.session['message']
     for loai in school.danhsachloailop_set.all():
         class_labels.append(loai.loai)
     labels = ' '.join(class_labels)
@@ -77,6 +81,13 @@ def class_label(request):
 def b1(request):
     # tao moi cac khoi neu truong moi thanh lap
     school = get_school(request)
+    message = None
+    if not school.danhsachloailop_set.all():
+        message = u'Bạn chưa thiết lập danh sách tên lớp học cho nhà trường. Hãy điền vào ô dưới \
+                    danh sách tên lớp học cho nhà trường rồi ấn nút Lưu lại'
+        request.session['message'] = message
+        transaction.commit()
+        return HttpResponseRedirect( reverse('class_label'))
     print school
     print school.school_level
     if school.school_level == u'1':
@@ -1273,6 +1284,7 @@ def edit_ki_luat(request, kt_id):
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
     kt = KiLuat.objects.get(id=kt_id)
+
     pupil = kt.student_id
     if in_school(request, pupil.class_id.block_id.school_id) == False:
         return HttpResponseRedirect('/school')

@@ -6,7 +6,7 @@ from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    (r'^$', 'views.index'),
+    url(r'^$', 'views.index', name = "index"),
 #    (r'^$', 'django.contrib.auth.views.login', {'template_name': 'login.html'}),
     (r'^help/$', 'views.help'),
     (r'^contact/$', 'views.contact'),
