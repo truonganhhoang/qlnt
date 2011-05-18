@@ -2,22 +2,50 @@
 
 {% block content %}
 	{% if user.is_authenticated %}
+		<h4>Tổ chức thuộc quyền quản lý </h4>
 		{% if user.is_superuser %}
-			<h4>Sở giáo dục thuộc quyền quản lý </h4>
-			{% for q in list %}
-				<li><a href="/app/list_under_org"> {{ q.name }} </a></li>
-			{% endfor %}
+			{% if list_s %}
+				{% for s in list_s %}
+					<li>{{ s.name }}</li>
+					{% if list_p %}
+						{% for p in list_p %}
+							{% if p.upper_organization == s %}
+								+ {{ p.name }} <br/>
+								{% if list_t %}
+									{% for t in list_t %}
+										{% if t.upper_organization == p %}
+											- {{ t.name }}<br/>
+										{% endif %}
+									{% endfor %}
+								{% endif %}
+							{% endif %}
+						{% endfor %}
+					{% endif %}
+				{% endfor %}
+			{% endif %}
 		{% endif %}
 		{% if user.userprofile.position == 'GIAM_DOC_SO' %}
-			<h4>Phòng giáo dục thuộc quyển quản lý </h4>
-			{% for q in list %}
-				<li><a href="#"> {{ q.name }}</a></li>
-			{% endfor %}
+			{% if list_p %}
+				{% for p in list_p %}
+					{% if p.upper_organization == user.get_profile.organization %}
+						<li>{{ p.name }}</li>
+						{% if list_t %}
+							{% for t in list_t %}
+								{% if t.upper_organization == p %}
+									- {{ t.name }} <br/>
+								{% endif %}
+							{% endfor %}
+						{% endif %}
+					{% endif %}
+				{% endfor %}
+			{% endif %}
 		{% endif %}
 		{% if user.userprofile.position == 'TRUONG_PHONG' %}
 			<h4>Các trường thuộc quyển quản lý </h4>
-			{% for q in list %}
-				<li><a href="#"> {{ q.name }}</a></li>
+			{% for t in list_t %}
+				{% if t.upper_organization == user.get_profile.organization %}
+					<li>{{ t.name }}</li>
+				{% endif %}
 			{% endfor %}
 		{% endif %}
 	{% else %}

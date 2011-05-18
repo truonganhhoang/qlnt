@@ -73,17 +73,24 @@ def school_admin_add(request):
 # Developer: Do Duc Binh    
 def list_org (request):
     user = request.user
-#    query = Organization.objects.all()
-    if user.is_superuser:
-        query = Organization.objects.filter(level = 'S')
-    else:
-        query = Organization.objects.filter(upper_organization = user.userprofile.organization_id)
-        
     list = []
-    for q in query:
-        list.append(q)
+    list_t = []
+    list_s = Organization.objects.filter(level = 'S')
+    list_p = Organization.objects.filter(level = 'P')
+    list_t = Organization.objects.filter(level = 'T')
+#        temp = 0
+#        for q in query:
+#            query_t = Organization.objects.filter(upper_organization = q.id)
+#            list_t.append([])
+#            for q_t in query_t:
+#                list_t[temp].append(q_t)
+#            list.append(q)
+#            temp = temp + 1
+    #list = []
+    #for q in query:
+    #    list.append(q)
     t = loader.get_template('app/list_org.html')
-    c = RequestContext(request, {'list': list})
+    c = RequestContext(request, {'list_s':list_s, 'list_p': list_p, 'list_t':list_t})
     return HttpResponse(t.render(c))
 
 def list_under_org (request):
