@@ -1,6 +1,7 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.models import User
-from app.models import UserForm, Organization, UserProfile
+from django.core.urlresolvers import reverse
+from app.models import UserForm, Organization, UserProfile, ChangePasswordForm
 #from app.models import PositionTypeForm
 from django.template import RequestContext, loader
 from django import forms
@@ -78,4 +79,32 @@ def list_org (request):
     
     t = loader.get_template('app/list_org.html')
     c = RequestContext(request, {'list_s':list_s, 'list_p': list_p, 'list_t':list_t})
+    return HttpResponse(t.render(c))
+
+# quyendt
+def change_password(request,
+                    template_name='app/change_password.html',
+                    post_change_redirect=None,
+                    password_change_form=ChangePasswordForm,
+                    current_app=None, extra_context=None):
+    if post_change_redirect is None:
+        post_change_redirect = reverse('app.views.change_password_done')
+    if request.method == "POST":
+        form = password_change_form(user=request.user, data=request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(post_change_redirect)
+    else:
+        form = password_change_form(user=request.user)
+    context = {
+        'form': form,
+    }
+    context.update(extra_context or {})
+    return render_to_response(template_name, context,
+                              context_instance=RequestContext(request, current_app=current_app))
+    
+# quyendt
+def change_password_done(request):
+    t = loader.get_template('app/change_password_done.html')
+    c = RequestContext(request)
     return HttpResponse(t.render(c))

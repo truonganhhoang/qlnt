@@ -22,7 +22,7 @@
 			{% if user.is_authenticated %}
 				<a href="#" >Xin chào {{user.username}}.</a>
 				<a href="{% url django.contrib.auth.views.logout %}">Đăng Xuất</a>
-				<a href="#">Thay đổi mật khẩu </a>
+				<a href="/app/change_password/">Thay đổi mật khẩu </a>
             {% else %}
 				<a href="/login">Đăng nhập</a> 
 			{% endif %}
@@ -64,10 +64,11 @@
 </div>
 
 <div id="footer">
-        <table><center>
-        <a class="footer" href="{% url views.contact %}">Liên hệ</a><a class="footer" href="/help">Trợ giúp</a>
-        <p class="copyright">©FreeSchool phát triển bởi Viettel & UET-VNU.</p>
-        </center></table>
+	<hr />
+    <table><center>
+    <a class="footer" href="{% url views.contact %}">Liên hệ</a><a class="footer" href="/help">Trợ giúp</a>
+    <p class="copyright">©FreeSchool phát triển bởi Viettel & UET-VNU.</p>
+    </center></table>
 </div>
 </body>
 </html>

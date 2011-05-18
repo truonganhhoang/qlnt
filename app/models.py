@@ -96,6 +96,37 @@ class ReportContact(models.Model):
     address = models.CharField('Địa chỉ', blank=True, max_length = 255) #
     contact_type = models.CharField('Mục liên hệ', max_length=20, choices=CONTACT_CHOICES)
     content = models.CharField('Nội dung', max_length=3000, blank=True, null=False)
+
+# quyendt
+class ChangePasswordForm(forms.Form):
+    old_password = forms.CharField(label='Mật khẩu cũ', widget=forms.PasswordInput)
+    new_password1 = forms.CharField(label='Mật khẩu mới', widget=forms.PasswordInput)
+    new_password2 = forms.CharField(label='Nhập lại mật khẩu mới', widget=forms.PasswordInput)
+    
+    def __init__(self, user, *args, **kwargs):
+        self.user = user
+        super(ChangePasswordForm, self).__init__(*args, **kwargs)
+
+    def clean_new_password2(self):
+        password1 = self.cleaned_data.get('new_password1')
+        password2 = self.cleaned_data.get('new_password2')
+        if password1 and password2:
+            if password1 != password2:
+                raise forms.ValidationError("Xác nhận mật khẩu mới không chính xác. Hãy nhập lại.")
+        return password2
+
+    def save(self, commit=True):
+        self.user.set_password(self.cleaned_data['new_password1'])
+        if commit:
+            self.user.save()
+        return self.user
+    
+    def clean_old_password(self):
+        old_password = self.cleaned_data["old_password"]
+        if not self.user.check_password(old_password):
+            raise forms.ValidationError("Mật khẩu cũ không đúng. Hãy nhập lại.")
+        return old_password
+ChangePasswordForm.base_fields.keyOrder = ['old_password', 'new_password1', 'new_password2']
 #class SchoolYear(models.Model):
 #    name = models.CharField(max_length=100)
 #    start_date = models.DateField()
