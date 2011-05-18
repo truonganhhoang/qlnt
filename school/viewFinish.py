@@ -21,6 +21,7 @@ def finish(request):
 
     
     message=None
+    
     currentTerm=get_current_term(request)
     yearString = str(currentTerm.number)+"-"+str(currentTerm.number+1)
     firstTerm  =Term.objects.get(year_id=currentTerm.year_id,number=1)
@@ -31,7 +32,8 @@ def finish(request):
     c = RequestContext(request, {"message":message,
                                  'yearString':yearString,
                                  'firstTerm':firstTerm,
-                                 'secondTerm':secondTerm
+                                 'secondTerm':secondTerm,
+                                 'currentTerm':currentTerm,
                                 }
                        )
     return HttpResponse(t.render(c))
@@ -626,10 +628,8 @@ def finishTerm(request,term_id=None):
             else:
                 selectedTerm.year_id.school_id.status=selectedTerm.number
                 
-            selectedTerm.year_id.school_id.save()  
-
+            selectedTerm.year_id.school_id.save()
     currentTerm=get_current_term(request)            
-
     t = loader.get_template(os.path.join('school','finish_term.html'))    
     c = RequestContext(request, {"message":message,
                                  "selectedTerm":selectedTerm,
