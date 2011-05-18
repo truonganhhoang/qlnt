@@ -57,9 +57,9 @@ def school_admin_add(request):
             c = RequestContext(request, {})
             return HttpResponse(t.render(c))
     else:
-        user = User.objects.all()
+        user_all = User.objects.all()
         user = []
-        for u in user:
+        for u in user_all:
             try:
                 if (u.get_profile().position != 'HOC_SINH'):
                     user.append(u)

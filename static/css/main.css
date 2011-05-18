@@ -1,36 +1,16 @@
 /* CSS Document */
-body{padding:0px; margin:0px; background:url(images/mainbg.gif) 0 0 repeat-x #fff; color:#5E5E5E; font:14px/18px Arial, Helvetica, sans-serif;}
+body{
+	padding:0px;
+	margin:0px;
+	background:url(images/mainbg.gif) 0 0 repeat-x #fff;
+	color:#5E5E5E;
+	font:14px/18px Arial, Helvetica, sans-serif;
+}
 div, p, ul, h2, h3, img{padding:0px; margin:0px;}
 ul{list-style-type:none;}
 
-table.styleA {
-	font-family: Arial, Helvetica, sans-serif;
-	font-size:14px;
-	color:#333333;
-	border-width: 1px;
-	border-color: #999999;
-	border-collapse: collapse;
-}
-table.styleA th {
-	background-color:#c3dde0;
-	border-width: 1px;
-	padding: 8px;
-	border-style: solid;
-	border-color: #a9c6c9;
-}
-table.styleA tr {
-	background-color:#d4e3e5;
-}
-table.styleA td {
-	border-width: 1px;
-	padding: 8px;
-	border-style: solid;
-	border-color: #a9c6c9;
-}
-
-
 /*----TOP PANEL----*/
-#topPan{ min-width: 1150px ; height:158px; position:relative; margin:0 auto; color:#fff; padding:0px;}
+#topPan{ width: 100%; height:158px; position:relative; margin:0 auto; color:#fff; padding:0px;}
 #topPan img.logo{
 	width:600px;
 	height:58px;
@@ -38,9 +18,6 @@ table.styleA td {
 	top:0px;
 	left:43px;
 }
-#topPan img.book{width:158px; height:99px; position:absolute; top:20px; right:46px;}
-
-#topPan p{font-size:16px; padding:70px 0 0 43px;}
 
 #topContactPan{width:159px; height:51px; position:absolute; top:43px; right:240px;}
 #topContactPan p.callus{background:#0C71A4; color:#fff; width:64px; height:14px; line-height:14px; font-size:14px; font-weight:bold; text-transform:uppercase; padding:0px;}
@@ -68,10 +45,12 @@ table.styleA td {
 /*----BODY PANEL----*/
 #bodyPan{width:auto; position:relative; margin:0 auto; padding:25px 0 0;left: 5px; }
 /*----BODY LEFT PANEL----*/
-#bodyLeftPan{ width: 900px; position: relative; float:left; padding:0 36px 0 36px;}
-#bodyLeftPan h2{width:410px; height:30px; background:url(images/border1.gif) 100% 70% no-repeat #fff; color:#00111A; font:28px/28px Georgia, "Times New Roman", Times, serif;}
-#bodyLeftPan h2 span{background:#fff; color:#046598;}
-
+#bodyLeftPan{
+	width: 900px;
+	position: relative; 
+	float:left; 
+	padding:0 36px 0 36px;
+}
 #bodyLeftPan h3{width:410px; height:30px; background:url(images/border2.gif) 100% 70% no-repeat #fff; color:#00111A; font:28px/28px Georgia, "Times New Roman", Times, serif;}
 #bodyLeftPan h3 span{background:#fff; color:#046598;}
 
@@ -110,25 +89,24 @@ table.styleA td {
 
 /*----/BODY LEFT PANEL----*/
 /*----BODY RIGHT PANEL----*/
-#bodyRightPan{width:275px; float:left; border:1px solid #DADADA; background:#F3F3F3; color:#1A1A1A; padding:0 0 28px;}
+#bodyRightPan{
+	width:250px;
+	float:left;
+	border:1px solid #DADADA;
+	background:#F3F3F3;
+}
 
-#bodyRightPan h2{width:240px; height:35px; display:block; border:1px solid #DADADA; background:#fff; color:#00111A; font:24px/34px Georgia, "Times New Roman", Times, serif; margin:6px 8px 16px; padding:0 0 0 20px;}
-#bodyRightPan h2 span{background:#fff; color:#046598;}
+#bodyRightPan ul li{
+	margin:20px;
+}
+#bodyRightPan ul li a{
+	text-decoration:none;
+}
+#bodyRightPan ul li a:hover{
+	color:#797878;
+	text-decoration:none;
+}
 
-#bodyRightPan h3{width:240px; height:35px; display:block; border:1px solid #DADADA; background:#fff; color:#00111A; font:18px/26px Georgia, "Times New Roman", Times, serif; margin:6px 8px 0; padding:0 0 0 20px;}
-#bodyRightPan h3 span{background:#fff; color:#046598;}
-
-#bodyRightPan ul{width:225px; margin:0 0 17px 29px;}
-#bodyRightPan ul li{width:225px; height:40px;}
-#bodyRightPan ul li a{width:225px; height:18px; display:block; background:url(images/button.gif) 0 6px no-repeat #F3F3F3; color:#1A1A1A; text-decoration:none; padding:0 0 0 20px;}
-#bodyRightPan ul li a:hover{background:url(images/button-hover.gif) 0 6px no-repeat #F3F3F3; color:#797878; text-decoration:none;}
-
-#bodyRightPan p{padding:0px 29px 0px 29px;}
-#bodyRightPan p.boldtext{padding:10px 29px 0px; font-size:14px; background:#F3F3F3; color:#1A1A1A; font-weight:bold;}
-
-#bodyRightPan p.more{background:#fff; color:#003D5C; width:220px; height:11px; margin:10px 29px 10px; padding:0px; line-height:11px; }
-#bodyRightPan p.more a{display:block; width:90px; height:11px; background:#F3F3F3; color:#003D5C; text-decoration:none; margin:0 0 0 60px; font-size:11px; line-height:11px; text-align:center; text-transform:uppercase;}
-#bodyRightPan p.more a:hover{display:block; width:90px; height:11px; background:#E0DEDE; color:#003D5C; text-decoration:none;}
 /*----/BODY RIGHT PANEL----*/
 /*----/BODY PANEL----*/
 /*----FOOTER PANEL----*/
