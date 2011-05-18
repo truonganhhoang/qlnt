@@ -1,29 +1,35 @@
 /* CSS Document */
-body{
-	padding:0px;
-	margin:0px;
-	background:url(images/mainbg.gif) 0 0 repeat-x #fff;
+body {
+	width: 1024px;
+	height: 100%;
+	margin:0px auto;
 	color:#5E5E5E;
 	font:14px/18px Arial, Helvetica, sans-serif;
-}
+	background-color:#c0c0c0;
+	}
+	
 div, p, ul, h2, h3, img{padding:0px; margin:0px;}
 ul{list-style-type:none;}
 
 /*----TOP PANEL----*/
-#topPan{ width: 100%; height:158px; position:relative; margin:0 auto; color:#fff; padding:0px;}
+#topPan{
+	width: 100%;
+	height:158px;
+	position:relative;
+	margin:0 auto;
+	color:#fff;
+	padding:0px;
+	background:url(images/mainbg.gif) 0 0 repeat-x #fff;
+	}
 #topPan img.logo{
-	width:600px;
-	height:58px;
 	position:absolute;
-	top:0px;
-	left:43px;
 }
 
 #topContactPan{width:159px; height:51px; position:absolute; top:43px; right:240px;}
 #topContactPan p.callus{background:#0C71A4; color:#fff; width:64px; height:14px; line-height:14px; font-size:14px; font-weight:bold; text-transform:uppercase; padding:0px;}
 #topContactPan p.no{font-size:26px; padding:4px 0 0;}
 
-#topMenuPan{width:100%; height:16px; position:absolute; bottom:9px; left:10px;}
+#topMenuPan{width:1024px; height:16px; position:absolute; bottom:9px; left:10px;}
 #topMenuLeftPan{width:69px; height:16px; float:left; background:url(images/menu-leftbg.gif) 0 0 no-repeat;}
 #topMenuMiddlePan{width	: auto; height:16px; float:left;}
 #topUser{width: 200px; height: 16px; float: right;} 
@@ -43,57 +49,29 @@ ul{list-style-type:none;}
 #topMenuRightPan{width:70px; height:16px; float:left; background:url(images/menu-rightbg.gif) 0 0 no-repeat;}
 /*----/TOP PANEL----*/
 /*----BODY PANEL----*/
-#bodyPan{width:auto; position:relative; margin:0 auto; padding:25px 0 0;left: 5px; }
-/*----BODY LEFT PANEL----*/
-#bodyLeftPan{
-	width: 900px;
-	position: relative; 
-	float:left; 
-	padding:0 36px 0 36px;
+#bodyPan{
+	width: 100%;
+	min-height: 400px;
+	position:relative;
+	margin:0 auto;
+	background-color:#ffffff;
+	padding:0px;
 }
-#bodyLeftPan h3{width:410px; height:30px; background:url(images/border2.gif) 100% 70% no-repeat #fff; color:#00111A; font:28px/28px Georgia, "Times New Roman", Times, serif;}
-#bodyLeftPan h3 span{background:#fff; color:#046598;}
 
-#bodyLeftPan p{padding:7px 0 0;}
-#bodyLeftPan p span{background:#fff; color:#046598; font-weight:bold;}
+#bodyLeftPan{
+	width: 700px;
+	position: relative; 
+	float:left;
+	padding: 0 25px;
+	margin-top: 25px;
+}
 
-#bodyLeftPan ul{width:410px; margin:10px 0 0;}
-#bodyLeftPan ul li{width:410px; height:20px;}
-#bodyLeftPan ul li a{width:390px; height:20px; background:url(images/button.gif) 0 6px no-repeat #fff; color:#1A1A1A; text-decoration:underline; padding:0 0 0 20px;}
-#bodyLeftPan ul li a:hover{width:390px; height:20px; background:url(images/button-hover.gif) 0 6px no-repeat #fff; color:#676363; text-decoration:underline;}
-
-#bodyLeftPan p.more{background:#F3F3F3; color:#003D5C; width:410px; height:11px; margin:25px 0; padding:0px; line-height:11px; font-size:11px; }
-#bodyLeftPan p.more a{display:block; width:44px; height:11px; background:#fff; color:#003D5C; text-decoration:none; margin:0 0 0 246px; line-height:11px; text-align:center; padding:0px; text-transform:uppercase;}
-#bodyLeftPan p.more a:hover{display:block; width:44px; height:11px; background:#E0DEDE; color:#003D5C; text-decoration:none;}
-
-#bodyLeftNextPan{width:410px; clear:both; padding:10px 0 0;}
-#bodyLeftPan p.next{background:#F3F3F3; color:#003D5C; width:410px; height:11px; padding:0px; line-height:11px; font-size:11px; clear:both; }
-#bodyLeftPan p.next a{display:block; width:44px; height:11px; background:#fff; color:#003D5C; text-decoration:none; margin:0 0 0 246px; line-height:11px; text-align:center; padding:0px; text-transform:uppercase;}
-#bodyLeftPan p.next a:hover{display:block; width:44px; height:11px; background:#E0DEDE; color:#003D5C; text-decoration:none;}
-
-#bookcatagories{width:410px; position:relative; margin:0 auto; padding:5px 0 0;}
-#namePan{width:156px; float:left; background:url(images/name-dot.gif) 100% 85% no-repeat #fff; color:#4F4F4F; font-size:14px; text-transform:uppercase;}
-#nameonePan{width:156px; float:left;}
-#nameonePan ul{width:156px;}
-#nameonePan ul li{width:auto; height:20px; background:url(images/arrow.gif) 0 6px no-repeat #fff; color:#03537D; padding:0 0 0 10px;}
-
-#pricePan{width:106px; float:left; background:url(images/price-dot.gif) 100% 85% no-repeat #fff; color:#4F4F4F; font-size:14px; text-transform:uppercase;}
-#priceonePan{width:143px; float:left;}
-#priceonePan ul{width:143px;}
-#priceonePan ul li{width:133px; height:20px; background:url(images/price-border.gif) 100% 50% no-repeat #fff; color:#00111A; line-height:20px; font-size:12px; font-weight:bold; padding:0 0 0 10px;}
-
-#discountPan{width:126px; float:left; background:url(images/discount-dot.gif) 100% 85% no-repeat #fff; color:#4F4F4F; font-size:14px; text-transform:uppercase; padding:0 0 0 12px;}
-#discountonePan{width:110px; float:left;}
-#discountonePan ul{width:110px;}
-#discountonePan ul li{width:100px; height:20px; background:url(images/dicount-border.gif) 100% 50% no-repeat #fff; color:#00111A; font-size:12px; font-weight:bold; padding:0 0 0 10px;}
-
-/*----/BODY LEFT PANEL----*/
-/*----BODY RIGHT PANEL----*/
 #bodyRightPan{
 	width:250px;
 	float:left;
 	border:1px solid #DADADA;
 	background:#F3F3F3;
+	margin-top: 20px;
 }
 
 #bodyRightPan ul li{
@@ -107,57 +85,34 @@ ul{list-style-type:none;}
 	text-decoration:none;
 }
 
-/*----/BODY RIGHT PANEL----*/
-/*----/BODY PANEL----*/
 /*----FOOTER PANEL----*/
 
 /*****quyendt*****/
 #footer{
 	width: 100%;
-	background:url(images/footerbg.gif) 0 0 repeat-x #fff;
+	position:relative;
+	margin:0 auto;
+	padding: 20px 0px;
 	clear: both;
-	padding: 72px;
+	background-color:#F3F3F3;
 }
+
 a.footer{
 	color:#010101;
 	text-decoration:none;
 	padding: 20px;
 }
+
 a.footer:hover{
 	text-decoration:underline;
 }
+
 #footer p.copyright{
 	color:#04496D;
 	position:relative;
 	font-size:12px;
 }
-/*****quyendt*****/
 
-#footermainPan{ width: 100%; margin: auto auto; margin-left: auto; margin-right: auto; height:85px; background:url(images/footerbg.gif) 0 0 repeat-x #fff; color:#010101; clear:both; padding: 72px 0 0;}
-
-#footerPan{width:auto; position: relative; margin:auto auto; font-family:"Trebuchet MS",Arial, Helvetica, sans-serif}
-
-#footerPan ul{width:auto; position: relative; margin:auto auto; margin-left: auto; margin-right: auto;}
-#footerPan li{}
-#footerPan ul a{padding:0 10px 0; color:#010101; background:#F3F3F3; text-decoration:none;}
-#footerPan ul a:hover{text-decoration:underline;}
-
-#footerPan p.copyright{width:auto; margin-left: auto; margin-right: auto; background:#F3F3F3; color:#04496D; position:absolute; top:23px; left:40px; font-size:12px;}
-
-#footerPan ul.templateworld{width:auto; background:#F3F3F3; color:#444; display:block; position:absolute; top:40px; left:40px; font-size:10px;}
-#footerPan ul.templateworld li{height:20px;}
-#footerPan ul.templateworld li a{background:#F3F3F3; display:block; color:#444; text-decoration:none;}
-#footerPan ul.templateworld li a:hover{text-decoration:underline;}
-
-#footerPanhtml{width:60px; height:13px; display:block; position:absolute; top:26px; left:260px;}
-#footerPanhtml a{width:48px; height:11px; display:block; background:url(images/blue-arrow.gif) 85% 60% no-repeat #fff; color:#4F4F4F; border:1px solid #DEDEDE; line-height:11px; font-size:11px; font-weight:bold; text-decoration:none; padding:1px 0 0 10px;}
-#footerPanhtml a:hover{background:url(images/gray-arrow.gif) 85% 60% no-repeat #fff; color:#4F4F4F;}
-
-#footerPancss{width:50px; height:13px; display:block; position:absolute; top:26px; left:320px;}
-#footerPancss a{width:40px; height:11px; display:block; background:url(images/blue-arrow.gif) 35px 3px no-repeat #fff; color:#4F4F4F; border:1px solid #DEDEDE; line-height:11px; font-size:11px; font-weight:bold; text-decoration:none; padding:1px 0 0 10px; text-transform:uppercase;}
-#footerPancss a:hover{background:url(images/gray-arrow.gif) 35px 3px no-repeat #fff; color:#4F4F4F;}
-
-/*****quyendt******/
 table.solid_border{
 	border-collapse:collapse;
 }
