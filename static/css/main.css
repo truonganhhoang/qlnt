@@ -8,7 +8,7 @@ body {
 	background-color:#c0c0c0;
 	}
 	
-div, p, ul, h2, h3, img{padding:0px; margin:0px;}
+div, ul, h2, h3, img{padding:0px; margin:0px;}
 ul{list-style-type:none;}
 
 /*----TOP PANEL----*/
