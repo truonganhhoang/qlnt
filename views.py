@@ -1,6 +1,8 @@
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.http import HttpResponse, HttpResponseRedirect
+from django.core.urlresolvers import reverse
+
 import cStringIO as StringIO
 from cgi import escape
 import ho.pisa as pisa
@@ -20,16 +22,14 @@ from django.contrib.sites.models import get_current_site
 
 OVER_SCHOOL = ['GIAM_DOC_SO', 'TRUONG_PHONG']
 
-#def index(request):
-##    if not request.user.is_anonymous() and request.user.get_profile().position in OVER_SCHOOL or\
-#    if request.user.get_profile().position in OVER_SCHOOL or\
-#    request.user.is_superuser:
-#        return render_to_response("index.html", context_instance=RequestContext(request))
-#    else:
-#        return HttpResponseRedirect('/school/')
-def index(request): 
-    return render_to_response("index.html", context_instance=RequestContext(request))
-
+def index(request):
+    if not request.user.is_authenticated():
+        return HttpResponseRedirect( reverse('login'))
+    if request.user.get_profile().position in OVER_SCHOOL or\
+    request.user.is_superuser:
+        return render_to_response("index.html", context_instance=RequestContext(request))
+    else:
+        return HttpResponseRedirect('/school/')
 
 def render_to_pdf(template_src, context_dict):
     template = get_template(template_src)
