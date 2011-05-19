@@ -13,7 +13,7 @@ from django.core.exceptions import *
 def index(request): 
     return render_to_response("report/index.html", context_instance=RequestContext(request))
 
-def addReceiverReport(request):
+def add_Receiver_Report(request):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
@@ -29,7 +29,7 @@ def addReceiverReport(request):
     c= RequestContext(request, {'form': form})
     return HttpResponse(t.render(c))
 
-def addSendReport(request):
+def add_Send_Report(request):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))

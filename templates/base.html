@@ -50,6 +50,7 @@
                         <li><a href="{% url sms.views.manual_sms %}">Gửi tin nhắn</a></li>
                         <li><a href="#">Thống kê báo cáo</a></li>
                         <li><a href="{% url app.views.school_admin_add %}">Thêm Người Quản Lý Trường</a></li>
+                        <li><a href="{% url report.views.index%}">Công văn</a></li>
                 </ul>
         {% endif %}
         {% if user.userprofile.position == 'HIEU_TRUONG' or user.userprofile.position == 'HIEU_PHO' or user.userprofile.position == 'GIAO_VIEN' or user.userprofile.position == 'GIAO_VU' or user.userprofile.position == 'HOC_SINH' %}

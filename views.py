@@ -8,6 +8,7 @@ from django.template.loader import get_template
 from django.template import Context
 from django.core.context_processors import csrf
 
+
 #login logout
 from django import forms
 from django.contrib.auth import REDIRECT_FIELD_NAME, login as auth_login, logout as auth_logout
@@ -19,13 +20,16 @@ from django.contrib.sites.models import get_current_site
 
 OVER_SCHOOL = ['GIAM_DOC_SO', 'TRUONG_PHONG']
 
-def index(request):
-    if request.user.get_profile().position in OVER_SCHOOL or\
-        request.user.is_superuser:
-        
-        return render_to_response("index.html", context_instance=RequestContext(request))
-    else:
-        return HttpResponseRedirect('/school/')
+#def index(request):
+##    if not request.user.is_anonymous() and request.user.get_profile().position in OVER_SCHOOL or\
+#    if request.user.get_profile().position in OVER_SCHOOL or\
+#    request.user.is_superuser:
+#        return render_to_response("index.html", context_instance=RequestContext(request))
+#    else:
+#        return HttpResponseRedirect('/school/')
+def index(request): 
+    return render_to_response("index.html", context_instance=RequestContext(request))
+
 
 def render_to_pdf(template_src, context_dict):
     template = get_template(template_src)

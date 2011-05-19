@@ -1,7 +1,6 @@
 {% extends "base.html" %}
-{% load i18n %}
 {% block content %}
-<form action="/report/addreport" method="post">{% csrf_token%}
+<form action="/report/addsendreport" method="post">{% csrf_token%}
 	{{form.non_field_errors}}
 	<table>
 	<left>

@@ -1,92 +1,10 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-{% block title %}
-<title> QLNT-report </title>
-{% endblock %}
-<link href="/static/css/main.css" rel="stylesheet" type="text/css" />
-{% block css %}
-{% endblock %}
-{% block js %}
-{% endblock %}
-</head>
-<body>
-<h1> Danh sach bao cao </h1>
-
-
-<div id="topPan">
-	<a href="{% url views.index %}"><img src="/static/css/images/qlnt_logo.png" width="100" height="100" border="0" /></a>
-	<div id="topMenuPan">
-		<div id="topUser">
-	  		<a href="/help">Trợ giúp</a> 	
-	  	</div>
-	  	<div id="topUser">
-	  		<a href="{% url app.views.contact %}">Báo cáo lỗi</a>
-	  	</div>
-	  	{% if user.is_authenticated %}
-	  	<div id="topUser">
-			<p>Xin chào,&nbsp </p> <p><a href="#" > {{user.username}}</a>,&nbsp</p><p><a href="{%url django.contrib.auth.views.logout %}">Đăng Xuất</a></p>
-			  
-	  	</div>
-	  	<div id="topUser">
-	  	<a href="#">Thay đổi mật khẩu </a> 	
-	  	</div>
-	  		{% if user.is_superuser%}
-	  		{% else%}
-	  			{% if user.userprofile.position == 'GIAO_VIEN' or user.userprofile.position == 'HOC_SINH' or user.userprofile.position == 'HIEU_TRUONG' or user.userprofile.position == 'HIEU_PHO'%}
-	  			<meta HTTP-EQUIV="REFRESH" content="0; url=school">
-	  		{% endif %}
-	  		{% endif %}
-	  	{% else %}
-	  	
-		  	<div id="topUser">
-		  		<ul>
-			 	<a href="/login">Đăng nhập</a>
-			 	</ul>
-			</div>
-		{% endif %}
-	</div>
-</div>
-
-
-<div id="bodyPan">
-        <table><td valign="top">
-        <div id="bodyRightPan">
-                {% block left_menu %}
-        {% if user.is_superuser %}
-                <ul>
-                        <li><a href="/admin">Trang Quản Trị Hệ Thống</a></li>
-                        <li><a href="/app/list_org">Sơ đồ tổ chức</a></li>
-                        <li><a href="{% url sms.views.manual_sms %}">Gửi tin nhắn</a></li>
-                        <li><a href="{% url app.views.school_admin_add %}">Thêm Người Quản Lý Trường</a></li>
-                </ul>
-        {% endif %}     
-        {% if user.userprofile.position == 'GIAM_DOC_SO' or user.userprofile.position == 'TRUONG_PHONG' %}
-                <ul>
-                        <li><a href="/app/list_org">Danh sách các Tổ chức trực thuộc</a></li>
-                        <li><a href="{% url sms.views.manual_sms %}">Gửi tin nhắn</a></li>
-                        <li><a href="#">Thống kê báo cáo</a></li>
-                        <li><a href="{% url app.views.school_admin_add %}">Thêm Người Quản Lý Trường</a></li>
-                </ul>
-        {% endif %}
-        {% endblock %}
-        </div></td>
-        <td valign="top"><div id="bodyLeftPan">
-                {% block content %}
-                {% endblock %}
-        </div></td>
-        </table>
-  
-</div>
-
-
-<div id="footer">
-	<hr />
-    <table><center>
-    <a class="footer" href="{% url app.views.contact %}">Liên hệ</a><a class="footer" href="/help">Trợ giúp</a>
-    <p class="copyright">©FreeSchool phát triển bởi Viettel & UET-VNU.</p>
-    </center></table>
-</div>
-</body>
-</html>
+{% extends "base.html" %}
+	{% block content %}
+	{% if user.userprofile.position == 'GIAM_DOC_SO' or user.userprofile.position == 'TRUONG_PHONG' %}
+		<h1><center>Quản lý công văn</center></h1>
+		<ul>
+			<li><a href="/report/addreceiverreport">Cập nhật công văn gửi đến</a></li>
+			<li><a href="/report/addsendreport">Cập nhật công văn gửi đi</a></li>
+		</ul>
+	 {% endif %}
+     {% endblock %} 
