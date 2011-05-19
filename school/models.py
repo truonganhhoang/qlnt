@@ -1,10 +1,8 @@
 # -*- coding: utf-8 -*-
 from django.db import models
-from django import forms
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from datetime import date
-from django.forms.extras.widgets import SelectDateWidget
 
 from app.models import *
 
@@ -105,10 +103,6 @@ class Block(models.Model):
 
     def __unicode__(self):
         return str(self.number)    
-    
-class BlockForm(forms.ModelForm):
-    class Meta:
-        model = Block
         
 class BasicPersonInfo(models.Model):
     first_name = models.CharField("Tên", max_length = 45)
@@ -140,15 +134,6 @@ class Teacher(BasicPersonInfo):
         verbose_name = "Giáo viên"
         verbose_name_plural = "Giáo viên"
         unique_together = ("school_id", "first_name", "last_name", "birthday",)
-    
-class TeacherForm(forms.ModelForm):
-    class Meta:
-        model = Teacher
-        exclude = ('school_id', 'user_id')
-        field = ('birthday')
-        widgets = {
-            'birthday' : SelectDateWidget(years = range( this_year()-15 ,this_year()-100, -1)),
-        }
 
 class Year(models.Model):
     time = models.IntegerField("Năm", max_length = 4, validators = [validate_year]) # date field but just use Year
@@ -186,10 +171,6 @@ class Term(models.Model):
         return str(self.number) + " " + str(self.year_id)         
     #class Admin: pass
 
-class TermForm(forms.ModelForm):
-    class Meta:
-        model = Term
-
 class Class(models.Model):    
     #cai nay sau cung bo di    
     #class_code = models.CharField(max_length = 20, unique = True)    
@@ -210,16 +191,6 @@ class Class(models.Model):
         verbose_name_plural = "Lớp"
         unique_together = ("year_id", "name")
     #class Admin: pass
-    
-class ClassForm(forms.ModelForm):
-    class Meta:
-        model = Class
-        
-    def __init__(self, school_id, *args, **kwargs):
-        super(ClassForm, self).__init__(*args, **kwargs)
-        self.fields['teacher_id'] = forms.ModelChoiceField(required = False, queryset=Teacher.objects.filter(school_id = school_id))
-        self.fields['year_id'] = forms.ModelChoiceField(queryset=Year.objects.filter(school_id = school_id),initial = Year.objects.filter(school_id = school_id).latest('time'))
-        self.fields['block_id'] = forms.ModelChoiceField(queryset=Block.objects.filter(school_id = school_id))
         
 class Pupil(BasicPersonInfo):
     year = models.IntegerField("Năm học lớp 1", validators = [validate_year], blank = True, null = True) #year that pupil go to class 1
@@ -258,28 +229,6 @@ class Pupil(BasicPersonInfo):
         verbose_name = "Học sinh"
         verbose_name_plural = "Học sinh"
         unique_together = ("class_id", "first_name", "last_name", "birthday",)
-        
-class PupilForm(forms.ModelForm):
-    class Meta:
-        model = Pupil
-        exclude = ('school_id','user_id')
-        field = ('birthday', 'school_join_date', 'ngay_vao_doan', 'ngay_vao_doi', 'ngay_vao_dang', 'father_birthday', 'mother_birthday')
-        widgets = {
-            'birthday' : SelectDateWidget(years = range( this_year() ,this_year()-100, -1)),
-            'school_join_date' : SelectDateWidget(years = range( this_year() ,this_year()-100, -1)),
-            'ngay_vao_doan': SelectDateWidget(years = range( this_year() ,this_year()-100, -1)),
-            'ngay_vao_doi': SelectDateWidget(years = range( this_year() ,this_year()-100, -1)),
-            'ngay_vao_dang': SelectDateWidget(years = range( this_year() ,this_year()-100, -1)),
-            'father_birthday': SelectDateWidget(years = range( this_year() ,this_year()-100, -1)),
-            'mother_birthday': SelectDateWidget(years = range( this_year() ,this_year()-100, -1)),
-        }
-    def __init__(self, school_id, *args, **kwargs):
-        super(PupilForm, self).__init__(*args, **kwargs)
-        school = Organization.objects.get(id = school_id)
-        year_id = school.year_set.latest('time').id
-        self.fields['start_year_id'] = forms.ModelChoiceField(queryset = StartYear.objects.filter(school_id = school_id))
-        self.fields['class_id'] = forms.ModelChoiceField(queryset = Class.objects.filter(year_id = year_id))
-
 
 class Subject(models.Model):    
     name = models.CharField("Tên môn học", max_length = 45) # can't be null
@@ -296,14 +245,6 @@ class Subject(models.Model):
         return self.name
     
     #class Admin: pass
-
-class SubjectForm(forms.ModelForm):
-    class Meta:
-        model = Subject   
-        
-    def __init__(self, school_id, *args, **kwargs):
-        super(SubjectForm, self).__init__(*args, **kwargs)
-        self.fields['teacher_id'] = forms.ModelChoiceField(required = False, queryset = Teacher.objects.filter(school_id = school_id))
 
 class Mark(models.Model):
     
@@ -352,10 +293,6 @@ class TKMon(models.Model):
     #class Admin: pass
     def __unicode__(self):
         return self.subject_id.name + " " + self.student_id.first_name
-    
-class MarkForm(forms.ModelForm):
-    class Meta:
-        model = Mark
         
 class KhenThuong(models.Model):
     student_id = models.ForeignKey(Pupil, verbose_name = "Học sinh", null = True)
@@ -374,16 +311,6 @@ class KhenThuong(models.Model):
     def __unicode__(self):
         return self.hinh_thuc
 
-class KhenThuongForm(forms.ModelForm)        :
-    class Meta:
-        model = KhenThuong
-        exclude = ('student_id', 'term_id')
-        field = ('time', 'noi_dung')
-        widgets = {
-            'time' : SelectDateWidget(years = range( this_year() ,this_year()-100, -1)),
-            'noi_dung': forms.Textarea(attrs = {'cols': 50, 'rows': 10}),
-        }
-
 class KiLuat(models.Model):
     student_id = models.ForeignKey(Pupil, verbose_name = "Học sinh")
     term_id = models.ForeignKey(Term, verbose_name = "Kì")
@@ -401,16 +328,6 @@ class KiLuat(models.Model):
     def __unicode__(self):
         return self.hinh_thuc
         
-class KiLuatForm(forms.ModelForm):        
-    class Meta:
-        model = KiLuat
-        exclude = ('student_id', 'term_id')
-        field = ('time', 'noi_dung')
-        widgets = {
-            'time' : SelectDateWidget(years = range( this_year() ,this_year()-100,-1)),
-            'noi_dung': forms.Textarea(attrs = {'cols': 50, 'rows': 10}),
-        }
-        
 class HanhKiem(models.Model):
     student_id = models.ForeignKey(Pupil, verbose_name = "Học sinh")
     term_id = models.SmallIntegerField(max_length = 2, verbose_name = "Kì")
@@ -423,10 +340,6 @@ class HanhKiem(models.Model):
     
     def __unicode__(self):
         return str(self.loai)
-
-class HanhKiemForm(forms.ModelForm):
-    class Meta:
-        model = HanhKiem
         
 class TBHocKy(models.Model):
     student_id = models.ForeignKey(Pupil, verbose_name = "Học sinh")
@@ -484,14 +397,6 @@ class DiemDanh(models.Model):
         
     def __unicode__(self):
         return str(self.student_id) + " " + str(self.time)
-    
-class DiemDanhForm(forms.ModelForm):
-    class Meta:
-        model = DiemDanh
-        field = ('time')
-        widgets = {
-            'time' : SelectDateWidget(years = range( this_year() ,this_year()-100, -1)),
-        }
         
 class TKDiemDanh(models.Model):
     student_id = models.ForeignKey(Pupil, verbose_name = "Học sinh")
@@ -507,10 +412,4 @@ class TKDiemDanh(models.Model):
     
     def __unicode__(self):
         return self.student_id.__unicode__()
-
-class TKDiemDanhForm(forms.ModelForm):
-    class Meta:
-        model = TKDiemDanh
         
-class DateForm(forms.Form):
-    date = forms.DateField(label = '', widget = SelectDateWidget(years = range( this_year(), this_year()-2 , -1)), initial = date.today())
