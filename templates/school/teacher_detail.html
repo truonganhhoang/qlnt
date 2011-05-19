@@ -3,88 +3,9 @@
 {% block content %}
 <form action="/school/viewTeacherDetail/{{id}}" method="post">{% csrf_token %}
     {{ form.non_field_errors }}
-    <div class="fieldWrapper">
-        {{form.first_name.errors }}
-        <p><label for="id_first_name">Tên:</label>
-            {{ form.first_name }}</p>
-    </div>
-
-    <div class="fieldWrapper">
-        {{ form.last_name.errors }}
-        <p><label for="id_last_name">Họ:</label>
-            {{ form.last_name }}</p>
-    </div>
-
-    <div class="fieldWrapper">
-        {{ form.birthday.errors }}
-        <p><label for="id_brithday">Ngày Sinh:</label>
-            {{ form.birthday }}</p>
-    </div>
-
-    <div class="fieldWrapper">
-        {{ form.birth_place.errors }}
-        <p><label for="id_birth_place">Nơi sinh</label>
-            {{ form.birth_place }}</p>
-    </div>
-    
-    <div class="fieldWrapper">
-        {{ form.dan_toc.errors }}
-        <p><label for="id_dan_toc">Dân tộc:</label>
-            {{ form.dan_toc }}</p>
-    </div>
-    
-    <div class="fieldWrapper">
-        {{ form.ton_giao.errors }}
-        <p><label for="id_ton_giao">Tôn giáo:</label>
-            {{ form.ton_giao }}</p>
-    </div>
-    
-    <div class="fieldWrapper">
-        {{ form.quoc_tich.errors }}
-        <p><label for="id_quoc_tich">Quốc tịch:</label>
-            {{ form.quoc_tich }}</p>
-    </div>
-    
-    <div class="fieldWrapper">
-        {{ form.home_town.errors }}
-        <p><label for="id_home_town">Quê quán</label>
-            {{ form.home_town }}</p>
-    </div>
-
-    <div class="fieldWrapper">
-        {{form.sex.errors }}
-        <p><label for="id_sex">Giới tính:</label>
-            {{ form.sex }}</p>
-    </div>
-
-    <div class="fieldWrapper">
-        {{ form.phone.errors }}
-        <p><label for="id_phone">Điện thoại liên lạc:</label>
-            {{ form.phone }}</p>
-    </div>
-
-    <div class="fieldWrapper">
-        {{ form.current_address.errors }}
-        <p><label for="id_current_address">Địa chỉ hiện tại:</label>
-            {{ form.current_address }}</p>
-    </div>
-
-    <div class="fieldWrapper">
-        {{ form.email.errors }}
-        <p><label for="id_email">Email</label>
-            {{ form.email }}</p>
-    </div>
-    
-    <div class="fieldWrapper">
-        {{ form.school_id.errors }}
-        <p><label for="id_school_id">Trường</label>
-            {{ form.school_id}}</p>
-    </div>
-    
-    
-   {% if message != None %}
-	{{message}} <br>
-	{% endif %}
-	<input type ="submit" value="Cập nhật"/>
+    <table class="styleA">
+	    {{ form.as_table }}
+	 </table>
+   <input type ="submit" value="Cập nhật"/>
 </form>
 {% endblock %}

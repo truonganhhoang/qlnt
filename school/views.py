@@ -1192,7 +1192,10 @@ def add_khen_thuong(request, student_id):
     if request.method == 'POST':
         form = KhenThuongForm(request.POST)
         if form.is_valid():
-            form.save()
+            kt = form.save(commit = False)
+            kt.student_id = pupil
+            kt.term_id = term
+            kt.save()
             url = '/school/khenthuong/' + str(student_id)
             return HttpResponseRedirect(url)
     t = loader.get_template(os.path.join('school', 'khen_thuong_detail.html'))
@@ -1228,7 +1231,10 @@ def edit_khen_thuong(request, kt_id):
     if request.method == 'POST':
         form = KhenThuongForm(request.POST, instance=kt)
         if form.is_valid():
-            form.save()
+            kt = form.save(commit = False)
+            kt.student_id = pupil
+            kt.term_id = term
+            kt.save()
             url = '/school/khenthuong/' + str(pupil.id)
             return HttpResponseRedirect(url)
     t = loader.get_template(os.path.join('school', 'khen_thuong_detail.html'))
@@ -1265,8 +1271,11 @@ def add_ki_luat(request, student_id):
     if request.method == 'POST':
         form = KiLuatForm(request.POST)
         if form.is_valid():
-            form.save()
-            url = '/school/khenthuong/' + str(student_id)
+            kt = form.save(commit = False)
+            kt.student_id = pupil
+            kt.term_id = term
+            kt.save()
+            url = '/school/kiluat/' + str(student_id)
             return HttpResponseRedirect(url)
     t = loader.get_template(os.path.join('school', 'ki_luat_detail.html'))
     c = RequestContext(request, {'form': form, 'p': pupil, 'student_id':student_id, 'term':term})
@@ -1302,7 +1311,10 @@ def edit_ki_luat(request, kt_id):
     if request.method == 'POST':
         form = KiLuatForm(request.POST, instance=kt)
         if form.is_valid():
-            form.save()
+            kt = form.save(commit = False)
+            kt.student_id = pupil
+            kt.term_id = term
+            kt.save()
             url = '/school/khenthuong/' + str(pupil.id)
             return HttpResponseRedirect(url)
     t = loader.get_template(os.path.join('school', 'ki_luat_detail.html'))

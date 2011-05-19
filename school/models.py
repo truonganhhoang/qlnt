@@ -144,7 +144,7 @@ class Teacher(BasicPersonInfo):
 class TeacherForm(forms.ModelForm):
     class Meta:
         model = Teacher
-
+        exclude = ('school_id', 'user_id')
         field = ('birthday')
         widgets = {
             'birthday' : SelectDateWidget(years = range( this_year()-15 ,this_year()-100, -1)),
@@ -262,6 +262,7 @@ class Pupil(BasicPersonInfo):
 class PupilForm(forms.ModelForm):
     class Meta:
         model = Pupil
+        exclude = ('school_id','user_id')
         field = ('birthday', 'school_join_date', 'ngay_vao_doan', 'ngay_vao_doi', 'ngay_vao_dang', 'father_birthday', 'mother_birthday')
         widgets = {
             'birthday' : SelectDateWidget(years = range( this_year() ,this_year()-100, -1)),
@@ -357,8 +358,8 @@ class MarkForm(forms.ModelForm):
         model = Mark
         
 class KhenThuong(models.Model):
-    student_id = models.ForeignKey(Pupil, verbose_name = "Học sinh")
-    term_id = models.ForeignKey(Term, verbose_name = "Kì")
+    student_id = models.ForeignKey(Pupil, verbose_name = "Học sinh", null = True)
+    term_id = models.ForeignKey(Term, verbose_name = "Kì", null = True)
     
     time = models.DateField("Thời gian", blank = True)
     hinh_thuc = models.CharField("Hình thức", max_length = 100, choices = KT_CHOICES)
@@ -376,6 +377,7 @@ class KhenThuong(models.Model):
 class KhenThuongForm(forms.ModelForm)        :
     class Meta:
         model = KhenThuong
+        exclude = ('student_id', 'term_id')
         field = ('time', 'noi_dung')
         widgets = {
             'time' : SelectDateWidget(years = range( this_year() ,this_year()-100, -1)),
@@ -387,7 +389,7 @@ class KiLuat(models.Model):
     term_id = models.ForeignKey(Term, verbose_name = "Kì")
     
     time = models.DateField("Thời gian", blank = True)
-    hinh_thuc = models.CharField("Hình thức", max_length = 10, choices = KL_CHOICES)
+    hinh_thuc = models.CharField("Hình thức", max_length = 30, choices = KL_CHOICES)
     dia_diem= models.CharField("Địa điểm", max_length = 100, blank = True, null = True)
     noi_dung = models.CharField("Nội dung", max_length = 400, blank = True, null = True) # description
     luu_hoc_ba = models.BooleanField("Lưu học bạ", blank = True, default = False)
@@ -402,6 +404,7 @@ class KiLuat(models.Model):
 class KiLuatForm(forms.ModelForm):        
     class Meta:
         model = KiLuat
+        exclude = ('student_id', 'term_id')
         field = ('time', 'noi_dung')
         widgets = {
             'time' : SelectDateWidget(years = range( this_year() ,this_year()-100,-1)),
@@ -503,7 +506,7 @@ class TKDiemDanh(models.Model):
         verbose_name_plural = "Tổng kết điểm danh"
     
     def __unicode__(self):
-        return str(self.student_id) + " " + str(self.term_id) + " " + str(self.tong_so)
+        return str(self.student_id)
 
 class TKDiemDanhForm(forms.ModelForm):
     class Meta:
