@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block content %}
+<form action="/report/addreport" method="post">{% csrf_token%}
+	{{form.non_field_errors}}
+	<table>
+	<left>
+	<h1>Quản lý công văn - văn bản dến</h1>
+	<div class="fieldWrapper">
+        {{form.name.errors }}
+        <p><label for="id_first_name">Tên báo cáo: </label>
+            {{ form.name }}</p>
+
+    </div>
+    <div class="fieldWrapper">
+        {{form.name.errors }}
+        <p><label for="id_first_name">Số hiệu: </label>
+            {{ form.munber_sign }}</p>
+    </div>
+    
+    <div class="fieldWrapper">
+        {{form.name.errors }}
+        <p><label for="id_first_name">Loại báo cáo: </label>
+            {{ form.type_doc }}</p>
+    </div>
+    
+    <div class="fieldWrapper">
+        {{form.name.errors }}
+        <p><label for="id_first_name">Trích yếu: </label>
+            {{ form.note }}</p>
+    </div>
+    
+    <div class="fieldWrapper">
+        {{form.name.errors }}
+        <p><label for="id_first_name">Đơn vị gửi: </label>
+            {{ form.organization_send }}</p>
+    </div>
+    
+    <div class="fieldWrapper">
+        {{form.name.errors }}
+        <p><label for="id_first_name">Cấp: </label>
+            {{ form.organization_level }}</p>
+    </div>
+    
+    <div class="fieldWrapper">
+        {{form.name.errors }}
+        <p><label for="id_first_name">Mức độ ưu tiên: </label>
+            {{ form.level_pri }}</p>
+    </div>
+    
+    <div class="fieldWrapper">
+        {{form.name.errors }}
+        <p><label for="id_first_name">Đơn vị nhận: </label>
+            {{ form.address_receiver }}</p>
+    </div>
+    
+    <div class="fieldWrapper">
+        {{form.name.errors }}
+        <p><label for="id_first_name">Ngaỳ gửi báo cáo: </label>
+            {{ form.date_send }}</p>
+    </div>
+    
+    <div class="fieldWrapper">
+        {{form.name.errors }}
+        <p><label for="id_first_name">Ngày nhận báo cáo: </label>
+            {{ form.date_receiver }}</p>
+    </div>
+    
+    <div class="fieldWrapper">
+        {{form.name.errors }}
+        <p><label for="id_first_name">Trả lời công văn đi số hiệu: </label>
+            {{ form.reply_doc }}</p>
+    </div>
+    
+    <div class="fieldWrapper">
+        {{form.name.errors }}
+        <p><label for="id_first_name">Ngày hết hạn sử lý: </label>
+            {{ form.date_end }}</p>
+    </div>
+    
+    <div class="fieldWrapper">
+        {{form.name.errors }}
+        <p><label for="id_first_name">Người ký: </label>
+            {{ form.human_sign }}</p>
+    </div>
+    
+    <div class="fieldWrapper">
+        {{form.name.errors }}
+        <p><label for="id_first_name">Nơi lưu: </label>
+            {{ form.store_place }}</p>
+    </div>
+    
+    {% if message != None %}
+	{{message}} <br>
+	{% endif %}
+	<input type ="submit" value="Lưu"/>
+	</left>
+	</table>
+</form>
+{% endblock %}
