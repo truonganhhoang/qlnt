@@ -95,7 +95,7 @@ function confirmDelete()
 		<div class = "pagination">
 		<span class = "step-links">
 			{% if studentList.has_previous %}
-				<a href = "{%url school.views.school_index  %}viewClassDetail/{{class_id}}/{{sort_type}}/{{sort_status}}/{{studentList.previous_page_number}}"> Trang trước </a>
+				<a href = "{%url school.views.school_index  %}viewClassDetail/{{class.id}}/{{sort_type}}/{{sort_status}}/{{studentList.previous_page_number}}"> Trang trước </a>
 			{% endif %}
 			
 			<span class = "current">
@@ -103,7 +103,7 @@ function confirmDelete()
 			</span>
 			
 			{% if studentList.has_next %}
-				<a href = "{%url school.views.school_index  %}viewClassDetail/{{class_id}}/{{sort_type}}/{{sort_status}}/{{studentList.next_page_number}}"> Trang sau </a>
+				<a href = "{%url school.views.school_index  %}viewClassDetail/{{class.id}}/{{sort_type}}/{{sort_status}}/{{studentList.next_page_number}}"> Trang sau </a>
 			{% endif %}
 		</span>
 		</div>
