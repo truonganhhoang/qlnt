@@ -457,10 +457,12 @@ def markTable(request,class_id):
         return HttpResponseRedirect( reverse('login'))
 
     selectedClass = Class.objects.get(id__exact = class_id)
+    try:        
+        if in_school(request,selectedClass.year_id.school_id) == False:
+            return HttpResponseRedirect('/school')
     
-    if in_school(request,selectedClass.year_id.school_id) == False:
-        return HttpResponseRedirect('/school')
-    
+    except Exception as e:
+        return HttpResponseRedirect(reverse('index'))
     
     enableChangeMark=checkChangeMark(class_id)
     message = None            
@@ -553,10 +555,12 @@ def markForAStudent(request,class_id,student_id):
         return HttpResponseRedirect( reverse('login'))
 
     selectedClass = Class.objects.get(id__exact = class_id)
+    try:
+        if in_school(request,selectedClass.year_id.school_id) == False:
+            return HttpResponseRedirect('/school')
     
-    if in_school(request,selectedClass.year_id.school_id) == False:
-        return HttpResponseRedirect('/school')
-    
+    except Exception as e:
+        return HttpResponseRedirect(reverse('index'))
     
     message = None
     student=Pupil.objects.get(id=student_id)
@@ -639,11 +643,13 @@ def markForASubject(request,subject_id):
         return HttpResponseRedirect( reverse('login'))
 
     selectedSubject = Subject.objects.get(id=subject_id)
-    
-    if in_school(request,selectedSubject.class_id.year_id.school_id) == False:
-        return HttpResponseRedirect('/school')
+    try:
+        if in_school(request,selectedSubject.class_id.year_id.school_id) == False:
+            return HttpResponseRedirect('/school')
 
-    
+    except Exception as e:
+        return HttpResponseRedirect(reverse('index'))
+
     enableChangeMark=checkChangeMark(subject_id)
     
     message = None            

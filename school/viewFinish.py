@@ -23,6 +23,7 @@ def finish(request):
     message=None
     
     currentTerm=get_current_term(request)
+    
     yearString = str(currentTerm.number)+"-"+str(currentTerm.number+1)
     firstTerm  =Term.objects.get(year_id=currentTerm.year_id,number=1)
     secondTerm  =Term.objects.get(year_id=currentTerm.year_id,number=2)
@@ -245,9 +246,12 @@ def xepLoaiHlTheoLop(request,class_id):
 
     selectedClass = Class.objects.get(id__exact = class_id)
     
-    if in_school(request,selectedClass.year_id.school_id) == False:
-        return HttpResponseRedirect('/school')
-    
+    try:
+        if in_school(request,selectedClass.year_id.school_id) == False:
+            return HttpResponseRedirect('/school')
+    except Exception as e:
+        return HttpResponseRedirect(reverse('index'))
+
     message=None    
     yearChoice  =selectedClass.year_id.id
           
@@ -353,42 +357,6 @@ def xepLoaiHlTheoLop(request,class_id):
     
 
     return HttpResponse(t.render(c))
-# tinh diem tong ket cua hoc ky va tinh hoc luc cua tat ca hoc sinh trong toan truong theo hoc ky
-def finishTermByLearning1(request,term_id):
-    
-    message=None
-    finishList=[]
-    notFinishList=[]
-    
-    selectedTerm=Term.objects.get(id=term_id)
-    classList   =Class.objects.filter(year_id=selectedTerm.year_id)
-    
-    for c in classList:
-        tempMessage=calculateOverallMarkTerm(c.id,selectedTerm.number)
-        if tempMessage!=None:
-            notFinishList.append(tempMessage)
-        else:
-            finishList.append(c.name)    
-                         
-        
-    ttt=None    
-    yearString=str(selectedTerm.year_id.time)+'-'+str(selectedTerm.year_id.time+1)
-    t = loader.get_template(os.path.join('school','finish_term_by_learning.html'))
-    c = RequestContext(request, {"message":message, 
-                                 "finishList":finishList,
-                                 "notFinishList":notFinishList,
-                                 "selectedTerm":selectedTerm,
-                                 "yearString":yearString,
-                                }
-                       )
-    
-
-    return HttpResponse(t.render(c))
-
-
-
-
-
 def definePass(tbNam,p):
     try:
         hk1_id=Term.objects.get(year_id=tbNam.year_id,number=1).id
@@ -427,9 +395,12 @@ def xlCaNamTheoLop(request,class_id):
         return HttpResponseRedirect( reverse('login'))
 
     selectedClass = Class.objects.get(id__exact = class_id)
-    
-    if in_school(request,selectedClass.year_id.school_id) == False:
-        return HttpResponseRedirect('/school')
+    try:
+        if in_school(request,selectedClass.year_id.school_id) == False:
+            return HttpResponseRedirect('/school')
+
+    except Exception as e:
+        return HttpResponseRedirect(reverse('index'))
     
     message=None
 
@@ -607,9 +578,11 @@ def finishTerm(request,term_id=None):
         return HttpResponseRedirect( reverse('login'))
 
     selectedTerm = Term.objects.get(id__exact = term_id)
-    
-    if in_school(request,selectedTerm.year_id.school_id) == False:
-        return HttpResponseRedirect('/school')
+    try:
+        if in_school(request,selectedTerm.year_id.school_id) == False:
+            return HttpResponseRedirect('/school')
+    except Exception as e:
+        return HttpResponseRedirect(reverse('index'))
     
     
     message=None
@@ -758,9 +731,11 @@ def finishYear(request,year_id):
         return HttpResponseRedirect( reverse('login'))
 
     selectedTerm=Term.objects.get(year_id=year_id,number=2)
-    
-    if in_school(request,selectedTerm.year_id.school_id) == False:
-        return HttpResponseRedirect('/school')
+    try:
+        if in_school(request,selectedTerm.year_id.school_id) == False:
+            return HttpResponseRedirect('/school')
+    except Exception as e:
+        return HttpResponseRedirect(reverse('index'))
     
     message=None
     

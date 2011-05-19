@@ -124,8 +124,11 @@ def countInSchool(request,year_id=None):
         year_id=get_current_year(request).id
     
     selectedYear =Year.objects.get(id=year_id)    
-    if in_school(request,selectedYear.school_id) == False:
-        return HttpResponseRedirect('/school')
+    try:
+        if in_school(request,selectedYear.school_id) == False:
+            return HttpResponseRedirect('/school')
+    except Exception as e:
+        return HttpResponseRedirect(reverse('index'))
 
     #currentTerm.year_id.school_id.status=1    
     #currentTerm.year_id.school_id.save()
@@ -197,9 +200,11 @@ def countPractisingInTerm(request,term_id):
         return HttpResponseRedirect( reverse('login'))
 
     selectedTerm=Term.objects.get(id=term_id)    
-    
-    if in_school(request,selectedTerm.year_id.school_id) == False:
-        return HttpResponseRedirect('/school')
+    try:
+        if in_school(request,selectedTerm.year_id.school_id) == False:
+            return HttpResponseRedirect('/school')
+    except Exception as e:
+        return HttpResponseRedirect(reverse('index'))
 
     
     message=None
@@ -258,9 +263,11 @@ def countPractisingInYear(request,year_id):
         return HttpResponseRedirect( reverse('login'))
 
     selectedYear=Year.objects.get(id=year_id)    
-    
-    if in_school(request,selectedYear.school_id) == False:
-        return HttpResponseRedirect('/school')
+    try:
+        if in_school(request,selectedYear.school_id) == False:
+            return HttpResponseRedirect('/school')
+    except Exception as e:
+        return HttpResponseRedirect(reverse('index'))
 
     message=None    
     yearString = str(selectedYear.time)+"-"+str(selectedYear.time+1)
@@ -317,9 +324,11 @@ def countLearningInTerm(request,term_id):
         return HttpResponseRedirect( reverse('login'))
 
     selectedTerm=Term.objects.get(id=term_id)    
-    
-    if in_school(request,selectedTerm.year_id.school_id) == False:
-        return HttpResponseRedirect('/school')
+    try:
+        if in_school(request,selectedTerm.year_id.school_id) == False:
+            return HttpResponseRedirect('/school')
+    except Exception as e:
+        return HttpResponseRedirect(reverse('index'))
     
     message=None
     yearString = str(selectedTerm.year_id.time)+"-"+str(selectedTerm.year_id.time+1)
@@ -378,9 +387,11 @@ def countLearningInYear(request,year_id):
         return HttpResponseRedirect( reverse('login'))
 
     selectedYear=Year.objects.get(id=year_id)    
-    
-    if in_school(request,selectedYear.school_id) == False:
-        return HttpResponseRedirect('/school')
+    try:
+        if in_school(request,selectedYear.school_id) == False:
+            return HttpResponseRedirect('/school')
+    except Exception as e:
+        return HttpResponseRedirect(reverse('index'))
     
     message=None
     selectedYear=Year.objects.get(id=year_id)    
@@ -437,9 +448,11 @@ def countAllInTerm(request,term_id):
         return HttpResponseRedirect( reverse('login'))
 
     selectedTerm=Term.objects.get(id=term_id)    
-    
-    if in_school(request,selectedTerm.year_id.school_id) == False:
-        return HttpResponseRedirect('/school')
+    try:
+        if in_school(request,selectedTerm.year_id.school_id) == False:
+            return HttpResponseRedirect('/school')
+    except Exception as e:
+        return HttpResponseRedirect(reverse('index'))
     
     message=None
     selectedTerm=Term.objects.get(id=term_id)    
@@ -507,9 +520,11 @@ def countAllInYear(request,year_id):
         return HttpResponseRedirect( reverse('login'))
 
     selectedYear=Year.objects.get(id=year_id)    
-    
-    if in_school(request,selectedYear.school_id) == False:
-        return HttpResponseRedirect('/school')
+    try:
+        if in_school(request,selectedYear.school_id) == False:
+            return HttpResponseRedirect('/school')
+    except Exception as e:
+        return HttpResponseRedirect(reverse('index'))
     
     message=None
     selectedYear=Year.objects.get(id=year_id)
