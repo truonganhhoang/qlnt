@@ -46,7 +46,7 @@
         {% endif %}     
         {% if user.userprofile.position == 'GIAM_DOC_SO' or user.userprofile.position == 'TRUONG_PHONG' %}
                 <ul>
-                        <li><a href="/app/list_org">Danh sách các Tổ chức trực thuộc</a></li>
+                        <li><a href="/app/list_org">Danh sách Tổ chức trực thuộc</a></li>
                         <li><a href="{% url sms.views.manual_sms %}">Gửi tin nhắn</a></li>
                         <li><a href="#">Thống kê báo cáo</a></li>
                         <li><a href="{% url app.views.school_admin_add %}">Thêm Người Quản Lý Trường</a></li>

@@ -157,8 +157,6 @@ def login(request, template_name='app/login.html',
 
     request.session.set_test_cookie()
 
-    current_site = get_current_site(request)
-
     context = {
         'form': form,
         redirect_field_name: redirect_to

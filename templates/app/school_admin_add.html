@@ -2,25 +2,29 @@
 
 
 {% block content %}
-        {% if user.is_authenticated %}
-                <h1>Thêm người quản lý cấp trường</h1>
-                <form action="/app/schooladmin/add/" method="post">{% csrf_token %}
-		        <div class="fieldWrapper">
-		          <i>	{{ form.full_name.errors }} </i>
-		          <b><label for="id_username">Tên người quản lý:</label></b>
-		          {{ form.full_name }}
-		          <a href="/admin/auth/user/add/">Thêm</a>
-		        </div>
-		        <div class="fieldWrapper">
-		          <i> {{ form.school.errors }} </i>
-		          <b><label for="id_school">Trường:</label></b>
-		          {{ form.school }}
-		          <a href="/admin/app/organization/add/">Thêm</a>
-		        </div>
-		        
-	            <br/><input type="submit" value="Hoàn tất" align="right" />
-                </form>
-        {% else %}
-                You need login to use this.
-        {% endif %}
+	{% if user.is_authenticated %}
+	<h2>Thêm người quản lý cấp trường</h2><br />
+	<form action="/app/schooladmin/add/" method="post">{% csrf_token %}
+		<table>
+		<col width="160px">
+		<tr> 
+		<td><b><label for="id_username">Tên người quản lý:</label></b></td>               
+		<td><i>	{{ form.full_name.errors }} </i>
+		{{ form.full_name }}<a href="/admin/auth/user/add/">Thêm</a></td>
+		</tr>          
+		<tr>
+		<td><b><label for="id_school">Trường:</label></b></td>
+		<td><i> {{ form.school.errors }} </i>
+		{{ form.school }}<a href="/admin/app/organization/add/">Thêm</a></td>
+		</tr>
+		<tr>
+		<td></td>
+		<td><br/><input type="submit" value="Hoàn tất" align="right" /></td>
+		<td></td>
+		</tr>
+		</table>
+	</form>
+	{% else %}
+		 You need login to use this.
+	{% endif %}
 {% endblock %}
