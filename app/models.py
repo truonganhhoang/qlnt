@@ -4,6 +4,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.contrib.auth import authenticate
 
 '''
 Các mô hình dữ liệu dùng chung giữa các đơn vị trong hệ thống và 
@@ -129,6 +130,43 @@ class ChangePasswordForm(forms.Form):
             raise forms.ValidationError("Mật khẩu cũ không đúng. Hãy nhập lại.")
         return old_password
 ChangePasswordForm.base_fields.keyOrder = ['old_password', 'new_password1', 'new_password2']
+
+# quyendt
+class AuthenticationForm(forms.Form):
+    username = forms.CharField(label="Username", max_length=30)
+    password = forms.CharField(label="Password", widget=forms.PasswordInput)
+
+    def __init__(self, request=None, *args, **kwargs):
+        self.request = request
+        self.user_cache = None
+        super(AuthenticationForm, self).__init__(*args, **kwargs)
+    
+    def clean(self):
+        username = self.cleaned_data.get('username')
+        password = self.cleaned_data.get('password')
+
+        if username and password:
+            self.user_cache = authenticate(username=username, password=password)
+            if self.user_cache is None:
+                raise forms.ValidationError("Please enter a correct username and password. Note that both fields are case-sensitive.")
+            elif not self.user_cache.is_active:
+                raise forms.ValidationError("This account is inactive.")
+        self.check_for_test_cookie()
+        return self.cleaned_data
+
+    def check_for_test_cookie(self):
+        if self.request and not self.request.session.test_cookie_worked():
+            raise forms.ValidationError(
+                "Your Web browser doesn't appear to have cookies enabled. "
+                  "Cookies are required for logging in.")
+
+    def get_user_id(self):
+        if self.user_cache:
+            return self.user_cache.id
+        return None
+
+    def get_user(self):
+        return self.user_cache
 
 class ContactForm(forms.Form):
 #Hainhh    

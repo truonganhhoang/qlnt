@@ -1,7 +1,9 @@
+import urlparse
+from django.conf import settings
 from django.http import HttpResponse, HttpResponseRedirect
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User 
 from django.core.urlresolvers import reverse
-from app.models import UserForm, Organization, UserProfile, ChangePasswordForm, ContactForm
+from app.models import UserForm, Organization, UserProfile, ChangePasswordForm, ContactForm, AuthenticationForm
 #from app.models import PositionTypeForm
 from django.template import RequestContext, loader
 from django import forms
@@ -9,6 +11,8 @@ from django.shortcuts import render_to_response
 from objectpermission.decorators import object_permission_required
 from reportlab.pdfgen import canvas
 from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.auth import REDIRECT_FIELD_NAME, login as auth_login
+from django.contrib.sites.models import get_current_site
 
 def user_add(request):
     if request.method == 'POST':
@@ -108,6 +112,48 @@ def change_password_done(request):
     t = loader.get_template('app/change_password_done.html')
     c = RequestContext(request)
     return HttpResponse(t.render(c))
+
+# quyendt
+def login(request, template_name='app/login.html',
+          redirect_field_name=REDIRECT_FIELD_NAME,
+          authentication_form=AuthenticationForm):
+    
+    redirect_to = request.REQUEST.get(redirect_field_name, '')
+
+    if request.method == "POST":
+        form = authentication_form(data=request.POST)
+        if form.is_valid():
+            netloc = urlparse.urlparse(redirect_to)[1]
+
+            # Use default setting if redirect_to is empty
+            if not redirect_to:
+                redirect_to = settings.LOGIN_REDIRECT_URL
+
+            # Security check -- don't allow redirection to a different
+            # host.
+            elif netloc and netloc != request.get_host():
+                redirect_to = settings.LOGIN_REDIRECT_URL
+
+            # Okay, security checks complete. Log the user in.
+            auth_login(request, form.get_user())
+
+            if request.session.test_cookie_worked():
+                request.session.delete_test_cookie()
+
+            return HttpResponseRedirect(redirect_to)
+    else:
+        form = authentication_form(request)
+
+    request.session.set_test_cookie()
+
+    current_site = get_current_site(request)
+
+    context = {
+        'form': form,
+        redirect_field_name: redirect_to
+    }
+    return render_to_response(template_name, context,
+                              context_instance=RequestContext(request))
 
 def contact(request):
 #hainhh
