@@ -18,6 +18,9 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth import REDIRECT_FIELD_NAME, login as auth_login
 from django.contrib.sites.models import get_current_site
 
+from django.views.decorators.cache import never_cache
+from django.views.decorators.csrf import csrf_protect
+
 def user_add(request):
     if request.method == 'POST':
         form = UserForm(request.POST)
@@ -90,6 +93,8 @@ def list_org (request):
     return HttpResponse(t.render(c))
 
 # quyendt
+@csrf_protect
+@never_cache
 def change_password(request,
                     template_name='app/change_password.html',
                     post_change_redirect=None,
@@ -118,6 +123,8 @@ def change_password_done(request):
     return HttpResponse(t.render(c))
 
 # quyendt
+@csrf_protect
+@never_cache
 def login(request, template_name='app/login.html',
           redirect_field_name=REDIRECT_FIELD_NAME,
           authentication_form=AuthenticationForm):
