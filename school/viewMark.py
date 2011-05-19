@@ -669,7 +669,7 @@ def markForASubject(request,subject_id):
     selectedClass=Class.objects.get(id=selectedSubject.class_id.id)    
     yearChoice=selectedClass.year_id.id
     
-    selectedClass.year_id.school_id.status=2
+    #selectedClass.year_id.school_id.status=2
         
     if selectedClass.year_id.school_id.status==1:
         termList=Term.objects.filter(year_id=yearChoice,number=1).order_by('number')
