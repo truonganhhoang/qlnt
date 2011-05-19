@@ -278,8 +278,6 @@ def countPractisingInYear(request,year_id):
         for i in range(5):
             totalSlList[i]+=aslList[i]
 
-    print "ok"
-    print list
     sum=0
     for i in range(5):
       sum+=totalSlList[i]
