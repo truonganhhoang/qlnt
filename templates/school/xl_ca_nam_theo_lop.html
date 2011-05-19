@@ -102,12 +102,7 @@
 
 	<tr>
 		<td align="center"  style="font-size:25px" >
-			<b> Kết quả xếp loại học sinh  </b>
-		</td>
-		
-	</tr>
-	<tr>
-		<td align="center"  style="font-size:25px" >
+			<b> Kết quả xếp loại học sinh  </b> <br><br>
 			<b> Năm học: {{yearString}}  </b>
 		</td>
 		
@@ -126,16 +121,16 @@
 	<td>
 	<table border=0 width = "100%">
 	<tr>
-		<td width = "25%"> <button type="button" onclick="displayAll();" style="width:110px">  tất cả </button> </td>
-		<td width = "25%"> <button type="button" onclick="displaygioi();" style="width:110px">  giỏi </button> </td>
-		<td width = "25%"> <button type="button" onclick="displaylenlop();" style="width:110px">lên lớp </button> </td>
-		<td width = "25%"><button type="button" onclick="displaythilai();" style="width:110px"> thi lại  </button> </td>
+		<td width = "25%"> <button type="button" onclick="displayAll();" style="width:110px" title="Hiện thị danh sách của cả lớp ">  tất cả </button> </td>
+		<td width = "25%"> <button type="button" onclick="displaygioi();" style="width:110px" title="Danh sách học sinh đạt danh hiệu học sinh giỏi ">  giỏi </button> </td>
+		<td width = "25%"> <button type="button" onclick="displaylenlop();" style="width:110px" title="Danh sách những học sinh được lên lớp" >lên lớp </button> </td>
+		<td width = "25%"> <button type="button" onclick="displaythilai();" style="width:110px" title="Danh sách những học sinh phải thi lại" > thi lại  </button> </td>
 	</tr>
 	<tr>	
-		<td width = "20%"> <button type="button" onclick="displaychuaxeploai();" style="width:110px">chưa xếp loại</a></td>
-		<td width = "25%"><button type="button" onclick="displaytientien();" style="width:110px" >tiên tiến </a></td>
-		<td width = "25%"><button type="button" onclick="displaykhonglenlop();" style="width:110px">không lên lớp </a></td>
-		<td width = "25%"><button type="button" onclick="displayrenluyenthem();">rèn luyện thêm trong hè</a></td>
+		<td width = "20%"> <button type="button" onclick="displaychuaxeploai();" style="width:110px" title="Hiện thị danh sách những học sinh chưa đủ thông tin để xếp loại ">chưa xếp loại</a></td>
+		<td width = "25%"><button type="button" onclick="displaytientien();" style="width:110px" title="Danh sách học sinh đạt danh hiệu học sinh tiên tiến " >tiên tiến </a></td>
+		<td width = "25%"><button type="button" onclick="displaykhonglenlop();" style="width:110px" title="Danh sách những học sinh không lên lớp ">không lên lớp </a></td>
+		<td width = "25%"><button type="button" onclick="displayrenluyenthem();" title="Danh sách học sinh phải rèn thêm trong hè " >rèn luyện thêm trong hè</a></td>
 	</tr>
 	</table>
 	</td>
@@ -151,7 +146,7 @@
 	{#----------------------------------------------------------------------#}
 	
 	<div id="allList" >
-	<table border="1" width="100%">
+	<table class="styleA" width="100%">
 		<tr>
 			<td  align="center" width="1%">
 				Stt
@@ -288,7 +283,7 @@
 	{#----------------------------------------------------------------------#}
 	
 	<div id="gioi" style="display:none" >
-	<table border="1" width="100%">
+	<table class="styleA" width="100%">
 		<tr>
 			<td  align="center" width="1%">
 				Stt
@@ -428,7 +423,7 @@
 	{#----------------------------------------------------------------------#}
 	
 	<div id="tientien" style="display:none" >
-	<table border="1" width="100%">
+	<table class="styleA" width="100%">
 		<tr>
 			<td  align="center" width="1%">
 				Stt
@@ -565,7 +560,7 @@
 	{#----------------------------------------------------------------------#}
 	
 	<div id="lenlop" style="display:none" >
-	<table border="1" width="100%">
+	<table class="styleA" width="100%">
 		<tr>
 			<td  align="center" width="1%">
 				Stt
@@ -703,7 +698,7 @@
 	{#----------------------------------------------------------------------#}
 	
 	<div id="khonglenlop" style="display:none" >
-	<table border="1" width="100%">
+	<table class="styleA" width="100%">
 		<tr>
 			<td  align="center" width="1%">
 				Stt
@@ -850,7 +845,7 @@
 	{#----------------------------------------------------------------------#}
 	
 	<div id="thilai"  style="display:none">
-	<table border="1" width="100%">
+	<table class="styleA" width="100%">
 		<tr>
 			<td  align="center" width="1%">
 				Stt
@@ -990,7 +985,7 @@
 	{#----------------------------------------------------------------------#}
 	
 	<div id="renluyenthem" style="display:none" >
-	<table border="1" width="100%" >
+	<table class="styleA" width="100%" >
 		<tr>
 			<td  align="center" width="1%">
 				Stt
@@ -1131,7 +1126,7 @@
 	{#----------------------------------------------------------------------#}
 	
 	<div id="chuaxeploai" style="display:none" >
-	<table border="1" width="100%" >
+	<table class="styleA" width="100%" >
 		<tr>
 			<td  align="center" width="1%">
 				Stt

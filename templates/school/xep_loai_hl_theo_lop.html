@@ -24,12 +24,15 @@
 	
 	<tr>								
 		
-		<td width ="50%"> Học kỳ &nbsp&nbsp:  
+		<td width ="50%" title="Chọn học kỳ hoặc chọn cả năm" > Học kỳ &nbsp&nbsp:  
 		<select name="term" onclick="submitTerm();" >				
 			{% for term in termList %}
 					<option   value={{ term.id }} selected> {{ term}} </option>	
 			{% endfor %}	
-			<option value=-2 > Cả năm </option>
+			
+			{% ifnotequal currentTerm.number 1 %}
+				<option value=-2 > Cả năm </option>
+			{% endifnotequal %}	
 			
 		</select>
 		</td>					
@@ -47,7 +50,7 @@
 </script>		
 	<tr>
 	<td>
-		<table border="1" width="100%">
+		<table class="styleA" width="100%">
 		<tr>
 			<td  align="center" width="1%">
 				Stt

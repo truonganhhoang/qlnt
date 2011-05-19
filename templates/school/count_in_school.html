@@ -389,7 +389,7 @@
 
 <td width="33%">
 </ul> 
-{% ifequal currentTerm.number 1 %}
+{% ifnotequal currentTerm.number 1 %}
 <p> Học kỳ II :</p>	
 <ul>
 	<li><a href = "{%url school.views.school_index  %}countPractisingInTerm/{{secondTerm.id}}"> Hạnh kiểm</a></li>
@@ -424,7 +424,7 @@
 	<li><a  title="Đang trong học kỳ I nên chức năng này đã bị vô hiệu hóa">Xếp loại chung</a></li>
 </ul> 
 
-{% endifequal %} 
+{% endifnotequal %} 
 </td>
 </tr>	
 </table>
