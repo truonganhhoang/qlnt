@@ -11,7 +11,7 @@ urlpatterns = patterns('',
     (r'^help/$', 'views.help'),
     (r'^app/contact/$', 'app.views.contact'),
     # the built-in sign-in/out module 
-    url(r'^login/$', 'app.views.login'),
+    url(r'^login/$', 'app.views.login', name = "login"),
     url(r'^logout/$', 'django.contrib.auth.views.logout', name = "logout"),
     #(r'^accounts/$', 'django.views.generic.simple.redirect_to', {'url': '/'}),
     #(r'^accounts/profile/$', 'django.views.generic.simple.redirect_to', {'url': '/'}),
