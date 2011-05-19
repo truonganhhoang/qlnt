@@ -558,18 +558,78 @@ def addClass(request):
 		
 #User: loi.luuthe@gmail.com
 #This function has class_id is an int argument. It gets the information of the class corresponding to the class_id and response to the template
-def viewClassDetail(request, class_id):
+def viewClassDetail(request, class_id, sort_type=1, sort_status=0, page=1):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
     if (get_position(request) < 4):
         return HttpResponseRedirect('/school')
-    class_view = Class.objects.get(id=class_id)
-    if in_school(request, class_view.block_id.school_id) == False:
-        return HttpResponseRedirect('/school')
+    cl = Class.objects.get(id=class_id)
+	
+    if in_school(request, cl.block_id.school_id) == False:
+        return HttpResponseRedirect('/school')   
+    message = None
+    school = cl.block_id.school_id
+    form = PupilForm(school.id)
+			
+    if request.method == 'POST':
+        if (request.POST['first_name']):
+            name = request.POST['first_name'].split()
+            last_name = ' '.join(name[:len(name)-1])
+            first_name = name[len(name)-1]
+        else:
+            last_name = None
+            first_name = None
+        print request.POST['birthday_year']
+        if (int(request.POST['birthday_year']) and int(request.POST['birthday_month']) and int(request.POST['birthday_day'])):
+            birthday = date(int(request.POST['birthday_year']), int(request.POST['birthday_month']), int(request.POST['birthday_day']))
+        else:
+            birthday = None
+        if (request.POST['school_join_date_year'] and request.POST['school_join_date_month'] and request.POST['school_join_date_day']):
+            school_join_date = date(int(request.POST['school_join_date_year']), int(request.POST['school_join_date_month']), int(request.POST['school_join_date_day']))
+        data = {'first_name':first_name, 'last_name':last_name, 'birthday':birthday, 'class_id':class_id, 'sex':request.POST['sex'], 'ban_dk':request.POST['ban_dk'], 'school_join_date':school_join_date, 'start_year_id':request.POST['start_year_id']}
+        form = PupilForm(school.id, data)
+        if form.is_valid():
+            data['ban'] = data['ban_dk']
+            _class = Class.objects.get(id=class_id)
+            start_year = StartYear.objects.get(id=int(data['start_year_id']))
+            add_student(student=data, start_year=start_year, year=get_current_year(request), _class=_class, term=get_current_term(request), school=get_school(request), school_join_date=school_join_date)
+            message = 'Bạn vừa thêm một học sinh mới'
+            form = PupilForm(school.id)
+        else:
+            message = 'Bạn vui lòng sửa một số lỗi sai dưới đây'
+    if int(sort_type) == 1:
+        if int(sort_status) == 0:
+            studentList = cl.pupil_set.order_by('first_name', 'last_name')
+        else:
+            studentList = cl.pupil_set.order_by('-first_name', '-last_name')
+    if int(sort_type) == 2:
+        if int(sort_status) == 0:
+            studentList = cl.pupil_set.order_by('birthday')
+        else:
+            studentList = cl.pupil_set.order_by('-birthday')
+    if int(sort_type) == 3:
+        if int(sort_status) == 0:
+            studentList = cl.pupil_set.order_by('sex')
+        else:
+            studentList = cl.pupil_set.order_by('-sex')
+    if int(sort_type) == 4:
+        if int(sort_status) == 0:
+            studentList = cl.pupil_set.order_by('ban_dk')
+        else:
+            studentList = cl.pupil_set.order_by('-ban_dk')
+    if int(sort_type) == 5:
+        if int(sort_status) == 0:
+            studentList = cl.pupil_set.order_by('school_join_date')
+        else:
+            studentList = cl.pupil_set.order_by('-school_join_date')
+    paginator = Paginator (studentList, 20)
+    try:
+        student_list = paginator.page(page)
+    except (EmptyPage, InvalidPage):
+        student_list = paginator.page(paginator.num_pages)
     t = loader.get_template(os.path.join('school', 'classDetail.html'))
-    c = RequestContext(request, {'class_view': class_view})
-
+    c = RequestContext(request, {'form': form, 'message': message, 'studentList': student_list, 'class': cl, 'sort_type':int(sort_type), 'sort_status':int(sort_status), 'next_status':1-int(sort_status), 'base_order': (int(page)-1) * 20})
     return HttpResponse(t.render(c))
 
 #sort_type = '1': fullname, '2': birthday, '3':'sex'
@@ -732,79 +792,6 @@ def subjectPerClass(request, class_id, sort_type=1, sort_status=0):
     list = zip(subjectList, sfl)
     t = loader.get_template(os.path.join('school', 'subject_per_class.html'))
     c = RequestContext(request, {'list':list, 'form': form, 'message': message, 'subjectList': subjectList, 'class_id': class_id, 'sort_type': sort_type, 'sort_status':sort_status, 'next_status':1-int(sort_status)})
-    return HttpResponse(t.render(c))
-
-def studentPerClass(request, class_id, sort_type=1, sort_status=0, page=1):
-    user = request.user
-    if not user.is_authenticated():
-        return HttpResponseRedirect(reverse('login'))
-    cl = Class.objects.get(id=class_id)
-    if in_school(request, cl.block_id.school_id) == False:
-        return HttpResponseRedirect('/school')
-    if (get_position(request) < 4):
-        return HttpResponseRedirect('/school')
-    message = None
-    school = cl.block_id.school_id
-    form = PupilForm(school.id)
-			
-    if request.method == 'POST':
-        if (request.POST['first_name']):
-            name = request.POST['first_name'].split()
-            last_name = ' '.join(name[:len(name)-1])
-            first_name = name[len(name)-1]
-        else:
-            last_name = None
-            first_name = None
-        print request.POST['birthday_year']
-        if (int(request.POST['birthday_year']) and int(request.POST['birthday_month']) and int(request.POST['birthday_day'])):
-            birthday = date(int(request.POST['birthday_year']), int(request.POST['birthday_month']), int(request.POST['birthday_day']))
-        else:
-            birthday = None
-        if (request.POST['school_join_date_year'] and request.POST['school_join_date_month'] and request.POST['school_join_date_day']):
-            school_join_date = date(int(request.POST['school_join_date_year']), int(request.POST['school_join_date_month']), int(request.POST['school_join_date_day']))
-        data = {'first_name':first_name, 'last_name':last_name, 'birthday':birthday, 'class_id':class_id, 'sex':request.POST['sex'], 'ban_dk':request.POST['ban_dk'], 'school_join_date':school_join_date, 'start_year_id':request.POST['start_year_id']}
-        form = PupilForm(school.id, data)
-        if form.is_valid():
-            data['ban'] = data['ban_dk']
-            _class = Class.objects.get(id=class_id)
-            start_year = StartYear.objects.get(id=int(data['start_year_id']))
-            add_student(student=data, start_year=start_year, year=get_current_year(request), _class=_class, term=get_current_term(request), school=get_school(request), school_join_date=school_join_date)
-            message = 'Bạn vừa thêm một học sinh mới'
-            form = PupilForm(school.id)
-        else:
-            message = 'Bạn vui lòng sửa một số lỗi sai dưới đây'
-    if int(sort_type) == 1:
-        if int(sort_status) == 0:
-            studentList = cl.pupil_set.order_by('first_name', 'last_name')
-        else:
-            studentList = cl.pupil_set.order_by('-first_name', '-last_name')
-    if int(sort_type) == 2:
-        if int(sort_status) == 0:
-            studentList = cl.pupil_set.order_by('birthday')
-        else:
-            studentList = cl.pupil_set.order_by('-birthday')
-    if int(sort_type) == 3:
-        if int(sort_status) == 0:
-            studentList = cl.pupil_set.order_by('sex')
-        else:
-            studentList = cl.pupil_set.order_by('-sex')
-    if int(sort_type) == 4:
-        if int(sort_status) == 0:
-            studentList = cl.pupil_set.order_by('ban_dk')
-        else:
-            studentList = cl.pupil_set.order_by('-ban_dk')
-    if int(sort_type) == 5:
-        if int(sort_status) == 0:
-            studentList = cl.pupil_set.order_by('school_join_date')
-        else:
-            studentList = cl.pupil_set.order_by('-school_join_date')
-    paginator = Paginator (studentList, 20)
-    try:
-        student_list = paginator.page(page)
-    except (EmptyPage, InvalidPage):
-        student_list = paginator.page(paginator.num_pages)
-    t = loader.get_template(os.path.join('school', 'student_per_class.html'))
-    c = RequestContext(request, {'form': form, 'message': message, 'studentList': student_list, 'class_id': class_id, 'sort_type':int(sort_type), 'sort_status':int(sort_status), 'next_status':1-int(sort_status), 'base_order': (int(page)-1) * 20})
     return HttpResponse(t.render(c))
 
 def students(request, sort_type=1, sort_status=1, page=1):
@@ -1142,7 +1129,7 @@ def deleteStudentInClass(request, student_id):
     if (get_position(request) < 4):
         return HttpResponseRedirect('/school')
     student.delete()
-    return HttpResponseRedirect('/school/studentPerClass/'+str(class_id.id))
+    return HttpResponseRedirect('/school/viewClassDetail/'+str(class_id.id))
 
 def deleteStudentInSchool(request, student_id):
     user = request.user
