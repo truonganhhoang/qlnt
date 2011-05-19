@@ -129,6 +129,4 @@ def contact(request):
     else:
         form = ContactForm() # An unbound form
 
-    return render_to_response('contact.html', {
-        'form': form,
-    })
+    return render_to_response('contact.html', {'form': form}, RequestContext(request))
