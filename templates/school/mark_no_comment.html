@@ -2,12 +2,12 @@
 {% ifnotequal subjectChoice -1  %} 	
 {% ifnotequal termChoice -1  %} 	
 
-	<table border =1 width = "100%" >
+	<table  class="styleB"  width = "100%" >
 		<tr>
-			<td rowspan=2 align="center" width="4%">
+			<td rowspan=2 align="center" width="1%">
 				Stt
 			</td>	
-			<td rowspan=2 align="center" width="18%">
+			<td rowspan=2 colspan=2 align="center" width="20%">
 				Họ và tên
 			</td>	
 			<td rowspan=2 align="center" width="10%">			
@@ -23,11 +23,11 @@
 			<td colspan=5 align="center" width="20%">
 				45 phút
 			</td>
-			<td rowspan=2 align="center" width="5%">
+			<td rowspan=2 align="center" width="1%">
 				Thi cuối kì
 			</td>	
 		{% ifequal selectedTerm.number 1 %}
-			<td rowspan=2  >
+			<td rowspan=2 width="5%" >
 				TBHK
 			</td>	
 		{% else %}
@@ -39,25 +39,25 @@
 			
 		</tr>
 		<tr>
-		<td width ="4%" align="center" > 1</td>
-		<td width ="4%" align="center"> 2</td>
-		<td width ="4%" align="center"> 3</td>
-		<td width ="4%" align="center"> 4</td>
-		<td width ="4%" align="center"> 5</td>
-		<td width ="4%" align="center" > 1</td>
-		<td width ="4%" align="center"> 2</td>
-		<td width ="4%" align="center"> 3</td>
-		<td width ="4%" align="center"> 4</td>
-		<td width ="4%" align="center"> 5</td>
-		<td width ="4%" align="center" > 1</td>
-		<td width ="4%" align="center"> 2</td>
-		<td width ="4%" align="center"> 3</td>
-		<td width ="4%" align="center"> 4</td>
-		<td width ="4%" align="center"> 5</td>
+		<td width ="1%" align="center" > 1</td>
+		<td width ="1%" align="center"> 2</td>
+		<td width ="1%" align="center"> 3</td>
+		<td width ="1%" align="center"> 4</td>
+		<td width ="1%" align="center"> 5</td>
+		<td width ="1%" align="center" > 1</td>
+		<td width ="1%" align="center"> 2</td>
+		<td width ="1%" align="center"> 3</td>
+		<td width ="1%" align="center"> 4</td>
+		<td width ="1%" align="center"> 5</td>
+		<td width ="1%" align="center" > 1</td>
+		<td width ="1%" align="center"> 2</td>
+		<td width ="1%" align="center"> 3</td>
+		<td width ="1%" align="center"> 4</td>
+		<td width ="1%" align="center"> 5</td>
 		{% ifequal selectedTerm.number 2 %}
-			<td align="center" width ="10%">HK I  </td>
-			<td align="center" width ="10%">HK II </td>
-			<td align="center" width ="10%"> CK </td>
+			<td align="center" width ="5%">HK I  </td>
+			<td align="center" width ="5%">HK II </td>
+			<td align="center" width ="5%"> CK </td>
 			
 		{% endifequal %}
 		
@@ -70,8 +70,12 @@
 			<td align="center">
 			 {{forloop.counter}}	
 			</td>
-			<td>
-			 {{p.last_name}}&nbsp {{ p.first_name }} 			
+			<td style="border-right-width:0px" width ="15%">
+			 {{p.last_name}}
+			</td>
+			
+			<td style="border-left-width:0px" width ="5%" >
+			{{ p.first_name }} 			
 			</td>
 			<td>
 			{{ p.birthday.day}}/{{ p.birthday.month}}/{{ p.birthday.year}} 
@@ -294,9 +298,15 @@
 			<td align="center">
 			 {{forloop.counter}}	
 			</td>
-			<td>
-			 {{p.last_name}}&nbsp {{ p.first_name }} 			
+			<td style="border-right-width:0px" width ="15%">
+			 {{p.last_name}}
 			</td>
+			
+			<td style="border-left-width:0px" width ="5%" >
+			{{ p.first_name }} 			
+			</td>
+			
+			
 			<td>
 			{{ p.birthday.day}}/{{ p.birthday.month}}/{{ p.birthday.year}} 
 			</td>
@@ -539,9 +549,15 @@
 			<td align="center">
 			 {{forloop.counter}}	
 			</td>
-			<td>
-			 {{p.last_name}}&nbsp {{ p.first_name }} 			
+
+			<td style="border-right-width:0px" width ="15%">
+			 {{p.last_name}}
 			</td>
+			
+			<td style="border-left-width:0px" width ="5%" >
+			{{ p.first_name }} 			
+			</td>
+
 			<td>
 			{{ p.birthday.day}}/{{ p.birthday.month}}/{{ p.birthday.year}} 
 			</td>
@@ -611,9 +627,14 @@
 			<td align="center">
 			 {{forloop.counter}}	
 			</td>
-			<td>
-			 {{p.last_name}}&nbsp {{ p.first_name }} 			
+			<td style="border-right-width:0px" width ="15%">
+			 {{p.last_name}}
 			</td>
+			
+			<td style="border-left-width:0px" width ="5%" >
+			{{ p.first_name }} 			
+			</td>
+
 			<td>
 			{{ p.birthday.day}}/{{ p.birthday.month}}/{{ p.birthday.year}} 
 			</td>

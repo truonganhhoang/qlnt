@@ -13,12 +13,12 @@
 {% ifnotequal subjectChoice -1  %} 	
 {% ifnotequal termChoice -1  %} 	
 	<div id="commentTable">
-	<table border =1 width = "100%" >
+	<table class="styleB" width = "100%" >
 		<tr>
 			<td rowspan=2 align="center" width="4%">
 				Stt
 			</td>	
-			<td rowspan=2 align="center" width="18%">
+			<td rowspan=2 colspan=2 align="center" width="20%">
 				Họ và tên
 			</td>	
 			<td rowspan=2 align="center" width="10%">			
@@ -64,9 +64,14 @@
 			<td align="center">
 			 {{forloop.counter}}	
 			</td>
-			<td>
-			 {{p.last_name}}&nbsp {{ p.first_name }} 			
+			<td style="border-right-width:0px" width ="15%">
+			 {{p.last_name}}
 			</td>
+			
+			<td style="border-left-width:0px" width ="5%" >
+			{{ p.first_name }} 			
+			</td>
+
 			<td>
 			{{ p.birthday.day}}/{{ p.birthday.month}}/{{ p.birthday.year}} 
 			</td>
@@ -174,8 +179,12 @@
 			<td align="center">
 			 {{forloop.counter}}	
 			</td>
-			<td>
-			 {{p.last_name}}&nbsp {{ p.first_name }} 			
+			<td style="border-right-width:0px" width ="15%">
+			 {{p.last_name}}
+			</td>
+			
+			<td style="border-left-width:0px" width ="5%" >
+			{{ p.first_name }} 			
 			</td>
 			<td>
 			{{ p.birthday.day}}/{{ p.birthday.month}}/{{ p.birthday.year}} 
@@ -323,8 +332,12 @@
 			<td align="center">
 			 {{forloop.counter}}	
 			</td>
-			<td>
-			 {{p.last_name}}&nbsp {{ p.first_name }} 			
+			<td style="border-right-width:0px" width ="15%">
+			 {{p.last_name}}
+			</td>
+			
+			<td style="border-left-width:0px" width ="5%" >
+			{{ p.first_name }} 			
 			</td>
 			<td>
 			{{ p.birthday.day}}/{{ p.birthday.month}}/{{ p.birthday.year}} 
@@ -432,8 +445,12 @@
 			<td align="center">
 			 {{forloop.counter}}	
 			</td>
-			<td>
-			 {{p.last_name}}&nbsp {{ p.first_name }} 			
+			<td style="border-right-width:0px" width ="15%">
+			 {{p.last_name}}
+			</td>
+			
+			<td style="border-left-width:0px" width ="5%" >
+			{{ p.first_name }} 			
 			</td>
 			<td>
 			{{ p.birthday.day}}/{{ p.birthday.month}}/{{ p.birthday.year}} 
