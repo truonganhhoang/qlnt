@@ -1,3 +1,7 @@
+﻿# -*- coding: utf-8 -*-
+
+import os.path
+import datetime
 import urlparse
 from django.conf import settings
 from django.http import HttpResponse, HttpResponseRedirect
@@ -58,7 +62,7 @@ def school_admin_add(request):
     if request.method == 'POST':
         if form.is_valid():
             # TODO Add initial permission here
-            t = loader.get_template('app/school_admin_add_success.html')
+            t = loader.get_template(os.path.join('app', 'school_admin_add_success.html'))
             c = RequestContext(request, {})
             return HttpResponse(t.render(c))
     else:
@@ -71,7 +75,7 @@ def school_admin_add(request):
             except:
                 pass
 
-    t = loader.get_template('app/school_admin_add.html')
+    t = loader.get_template(os.path.join('app', 'school_admin_add.html'))
     c = RequestContext(request,{'form': form})
     return HttpResponse(t.render(c))
 
@@ -81,7 +85,7 @@ def list_org (request):
     list_p = Organization.objects.filter(level = 'P')
     list_t = Organization.objects.filter(level = 'T')
     
-    t = loader.get_template('app/list_org.html')
+    t = loader.get_template(os.path.join('app', 'list_org.html'))
     c = RequestContext(request, {'list_s':list_s, 'list_p': list_p, 'list_t':list_t})
     return HttpResponse(t.render(c))
 
@@ -109,7 +113,7 @@ def change_password(request,
     
 # quyendt
 def change_password_done(request):
-    t = loader.get_template('app/change_password_done.html')
+    t = loader.get_template(os.path.join('app', 'change_password_done.html'))
     c = RequestContext(request)
     return HttpResponse(t.render(c))
 

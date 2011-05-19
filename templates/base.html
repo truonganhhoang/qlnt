@@ -23,7 +23,7 @@
                                 <a href="#" >Xin chào {{user.username}}.</a>
                                 <a href="{% url django.contrib.auth.views.logout %}">Đăng Xuất</a>
                                 <a href="/app/change_password/">Thay đổi mật khẩu </a>
-            {% else %}
+            			{% else %}
                                 <a href="/login">Đăng nhập</a> 
                         {% endif %}
                                 <a href="/help">Trợ giúp</a>

@@ -32,6 +32,12 @@ class ReceiverReport(models.Model):
     date_end = models.DateField('Ngày hết hạn xử lý')
     human_sign = models.CharField('Người kí', max_length=100)
     store_place = models.CharField('Nơi lưu', max_length=1000)
+    
+    def __unicode__(self):
+        return self.name
+class ReceiverReportForm(forms.ModelForm):
+    class Meta:
+        model = ReceiverReport
 
 class SendReport(models.Model):
     name = models.CharField('Tên báo cáo', max_length=1000)
@@ -46,3 +52,9 @@ class SendReport(models.Model):
     reply_doc = models.CharField('Trả lời công văn , số hiệu', max_length=100)
     human_sign = models.CharField('Người kí', max_length=100)
     store_place = models.CharField('Nơi lưu', max_length=1000)
+    
+    def __unicode__(self):
+        return self.name
+class SendReportForm(forms.ModelForm):
+    class Meta:
+        model = SendReport

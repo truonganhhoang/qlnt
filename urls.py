@@ -6,8 +6,8 @@ from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    url(r'^$', 'views.index', name = "index"),
 #    (r'^$', 'django.contrib.auth.views.login', {'template_name': 'login.html'}),
+    url(r'^$', 'views.index', name = "index"),
     (r'^help/$', 'views.help'),
     (r'^app/contact/$', 'app.views.contact'),
     # the built-in sign-in/out module 

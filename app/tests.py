@@ -210,7 +210,7 @@ class UserFunctionTest(TestCase):
         # after deleting, database has no group with name "teachers02"
         response = self.client.post('/admin/auth/group/')
         self.assertContains(response, "teachers02", 0, status_code=200)
-
+        
 class OrganizationTest(TestCase):
     def setUp(self):
         self.client = Client()
