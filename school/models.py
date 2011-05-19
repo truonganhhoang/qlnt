@@ -411,7 +411,8 @@ class KiLuatForm(forms.ModelForm):
         
 class HanhKiem(models.Model):
     student_id = models.ForeignKey(Pupil, verbose_name = "Học sinh")
-    term_id = models.ForeignKey(Term, verbose_name = "Kì")
+    term_id = models.SmallIntegerField(max_length = 2, verbose_name = "Kì")
+    year_id = models.ForeignKey(Year, verbose_name = "Năm học")
     loai = models.CharField("Hạnh kiểm", max_length = 2, choices = HK_CHOICES, null=True,blank=True)
     
     class Meta:

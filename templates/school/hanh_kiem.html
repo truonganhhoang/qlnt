@@ -2,15 +2,26 @@
 
 {% block content %}
 <br>
-<h1 align = center>Hạnh kiểm lớp {{class}} kì {{term.number}} năm {{term.year_id}}</h1>
-<form action="/school/hanhkiem/{{class_id}}" method="post">{% csrf_token %}       
+{%if term < 3%}
+<h1 align = center>Hạnh kiểm lớp {{class}} kì {{term}} năm {{year}}</h1>
+{% else %}
+<h1 align = center>Hạnh kiểm lớp {{class}} năm {{year}}</h1>
+{% endif %}
+<table border = 0 width = "90%" align="center">
+	<tr>
+		<td width = "30%"><a href="{%url school.views.school_index  %}hanhkiem/{{class.id}}/1">Hạnh kiểm kì 1</a></td>
+		<td width = "30%"><a href="{%url school.views.school_index  %}hanhkiem/{{class.id}}/2">Hạnh kiểm kì 2</a></td>
+		<td width = "30%"><a href="{%url school.views.school_index  %}hanhkiem/{{class.id}}/3">Hạnh kiểm cả năm</a></td>
+	</tr>	
+</table>
+<form action="/school/hanhkiem/{{class.id}}/{{term}}" method="post">{% csrf_token %}       
 <table class="styleA" width = "85%">
 
     <tr>
         <th align="center" width="5%"> STT </th>
-        <th align="center" width="20%"> <a href="{%url school.views.school_index  %}hanhkiem/{{class.id}}/1/{{next_status}}">Họ & Tên </a></th>
-        <th align="center" width="20%"> <a href="{%url school.views.school_index  %}hanhkiem/{{class.id}}/2/{{next_status}}">Ngày sinh</a></th>
-        <th align="center" width="20%"> <a href="{%url school.views.school_index  %}hanhkiem/{{class.id}}/3/{{next_status}}">Giới tính </a></th>
+        <th align="center" width="20%"> <a href="{%url school.views.school_index  %}hanhkiem/{{class.id}}/{{term}}/1/{{next_status}}">Họ & Tên </a></th>
+        <th align="center" width="20%"> <a href="{%url school.views.school_index  %}hanhkiem/{{class.id}}/{{term}}/2/{{next_status}}">Ngày sinh</a></th>
+        <th align="center" width="20%"> <a href="{%url school.views.school_index  %}hanhkiem/{{class.id}}/{{term}}/3/{{next_status}}">Giới tính </a></th>
         <th align="center" width="20%"> Hạnh Kiểm </th>
     </tr>
     {% if message != None %}
