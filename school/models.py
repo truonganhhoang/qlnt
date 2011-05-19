@@ -506,7 +506,7 @@ class TKDiemDanh(models.Model):
         verbose_name_plural = "Tổng kết điểm danh"
     
     def __unicode__(self):
-        return str(self.student_id)
+        return self.student_id.__unicode__()
 
 class TKDiemDanhForm(forms.ModelForm):
     class Meta:
