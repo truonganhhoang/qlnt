@@ -81,7 +81,8 @@ urlpatterns = patterns('',
     #top menu
     url(r'years/$', 'school.views.years', name = "years"),
     #side menu
-    url(r'classlabels/$', 'school.views.class_label', name = "class_label")
+    url(r'classlabels/$', 'school.views.class_label', name = "class_label"),
+    url(r'classify/$', 'school.views.classify', name = "classify"),
     #url(r'^school/test$','school.views.test'), 
     
 	)

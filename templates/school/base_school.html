@@ -53,7 +53,7 @@
 		{% endif %}
 		{% if user.userprofile.organization.status != 0 %}
 		<li><a href="{%url school.views.teachers %}">Danh sách giáo viên</a> </li>
-		<li><a href="#">Phân công giảng dạy</a> </li>
+		<li><a href="">Phân công giảng dạy</a> </li>
 		<li><a href="{%url school.views.classes %}">Danh sách lớp học</a> </li>
 		<li><a title="Tính điểm tổng kết toàn trường và quyết định kết thúc học kỳ" href="{%url school.viewFinish.finish %}">Tính điểm tổng kết toàn trường</a> </li>
 		{% endif %}
@@ -63,7 +63,7 @@
 		{% if user.userprofile.organization.status != 0 %}
 		<li><a href="{%url school.views.b1  %}/import">Nhập học sinh từ file excel</a> </li>
 		<li><a href="{%url school.views.b1 %}/manual">Nhập học sinh bằng tay</a> </li>
-		<li><a href="#">Phân lớp</a></li>
+		<li><a href="{%url school.views.classify %}">Phân lớp</a></li>
 		{% endif %}
 		<li><a href="{%url school.views.class_label %}">Chỉnh sửa danh sách tên lớp học</a> </li>
 		<li><a href="#">Thông tin trường học</a> </li>

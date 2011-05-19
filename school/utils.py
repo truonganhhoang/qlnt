@@ -5,6 +5,13 @@ from school.models import *
 from django.contrib.auth.models import User
 
 
+def to_date(value):
+    v = value.split('-')
+    return date(int(v[2]), int(v[1]), int(v[0]))
+
+
+
+
 def to_en(string):
     result = ''
     uni_a = u'ăắẳẵặằâầấẩẫậàáảãạ'
@@ -56,7 +63,30 @@ def make_default_password( pw):
 # student: Pupil object,
 # old_class: Class object,
 # new_class: Class object,
-def move_student( student, old_class, new_class):
+def move_student(school, student, new_class):
+    old_class = student.class_id
+    if not new_class:
+        return
+    if not old_class:
+        _class = new_class 
+        subjects = _class.subject_set.all()
+        year = school.year_set.latest('time')
+        for subject in subjects:
+            for i in range(1,3):
+                term1 = year.term_set.get( number__exact = i)
+                the_mark = Mark()
+                the_mark.student_id = student
+                the_mark.subject_id = subject
+                the_mark.term_id = term1
+                the_mark.save()
+                                   
+            tkmon = TKMon()
+            tkmon.student_id = student
+            tkmon.subject_id = subject
+            tkmon.save()
+        student.class_id = new_class
+        student.save()      
+        return       
     if old_class.block.number != new_class.block.number:
         raise Exception("chuyển học sinh tới lớp không cùng khối")
     else:
@@ -73,7 +103,9 @@ def move_student( student, old_class, new_class):
             else:
                 print student, "moved from ", find.class_id, " to ", _class
                 print "but the subject: ", subject, " doesn't exist"
-                #raise Exception("Subject does not exist")        
+                #raise Exception("Subject does not exist")   
+    student.class_id = new_class
+    student.save()      
 
 
 # This function will handle a change of students in a particular class
@@ -169,21 +201,22 @@ def add_student( student = None, start_year = None , year = None,
             tb_nam.student_id = st
             tb_nam.year_id = year
             tb_nam.save()
-                    
-            subjects = _class.subject_set.all()
-            for subject in subjects:
-                for i in range(1,3):
-                    term1 = year.term_set.get( number__exact = i)
-                    the_mark = Mark()
-                    the_mark.student_id = st
-                    the_mark.subject_id = subject
-                    the_mark.term_id = term1
-                    the_mark.save()
-                                   
-                tkmon = TKMon()
-                tkmon.student_id = st
-                tkmon.subject_id = subject
-                tkmon.save()
+            
+            if _class:        
+                subjects = _class.subject_set.all()
+                for subject in subjects:
+                    for i in range(1,3):
+                        term1 = year.term_set.get( number__exact = i)
+                        the_mark = Mark()
+                        the_mark.student_id = st
+                        the_mark.subject_id = subject
+                        the_mark.term_id = term1
+                        the_mark.save()
+                                       
+                    tkmon = TKMon()
+                    tkmon.student_id = st
+                    tkmon.subject_id = subject
+                    tkmon.save()
                 
                 
                 
@@ -265,7 +298,15 @@ def get_permission(request):
     if request.user.userprofile.organization.level != 'T':
         raise Exception('UserDoesNotHaveAnySchoolPosition')
     return request.user.userprofile.position
-
+def get_lower_bound(school):
+    if school.school_level == '1':
+        return 1
+    elif school.school_level == '2':
+        return 6
+    elif school.school_level == '3':
+        return 10
+    else:
+        raise Exception('SchoolLevelIsNotProvied')
 def get_position(request):
     if request.user.userprofile.position == 'HOC_SINH':
         return 1
@@ -286,13 +327,30 @@ def get_current_year(request):
         return school.year_set.latest('time')
     except Exception( 'YearDoesNotExist'):
         return None
+
+def get_latest_startyear(request):
+    school = get_school(request)
+    try:
+        return school.startyear_set.latest('time')
+    except Exception( 'StartYearDoesNotExist'):
+        return None
+
+
+def get_startyear(request, time):
+    school = get_school(request)
+    try:
+        return school.startyear_set.get(time = time)
+    except Exception( 'StartYearDoesNotExist'):
+        return None
+
+
 		
 def get_current_term(request):
     school = get_school(request)
     print "ok"+str(school.status)
     try:
         return school.year_set.latest('time').term_set.get(number = school.status)
-    except Exception( 'Term does not exist'):
+    except Exception( 'TermDoesNotExist'):
         return None    
 
 def in_school(request,school_id):
