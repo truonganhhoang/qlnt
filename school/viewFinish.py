@@ -106,7 +106,6 @@ def calculateOverallMarkTerm(class_id=7,termNumber=1):
     for p in pupilList:
         
         tbHocKy=p.tbhocky_set.get(term_id__number=termNumber)
-        print p.first_name    
         markSum=0
         factorSum=0
         ok=True
@@ -255,8 +254,11 @@ def xepLoaiHlTheoLop(request,class_id):
     currentTerm=get_current_term(request)
     termChoice= currentTerm.id
     
+    if (currentTerm.number==2):    
+        termList= Term.objects.filter(year_id=selectedClass.year_id,number__lt=3).order_by('number')
+    else:    
+        termList= Term.objects.filter(year_id=selectedClass.year_id,number=1).order_by('number')
         
-    termList= Term.objects.filter(year_id=selectedClass.year_id,number__lt=3).order_by('number')    
     subjectList=selectedClass.subject_set.all().order_by("-hs")
     pupilList  =Pupil.objects.filter(class_id=class_id)
     
@@ -345,6 +347,7 @@ def xepLoaiHlTheoLop(request,class_id):
                                  "termChoice":termChoice,
                                  "selectedTerm":selectedTerm,
                                  "class_id":class_id,
+                                 "currentTerm":currentTerm,
                                 }
                        )
     
