@@ -723,6 +723,7 @@ def subjectPerClass(request, class_id, sort_type=1, sort_status=0):
         return HttpResponseRedirect('/school')
     message = None
     cl = Class.objects.get(id=class_id)
+    term=get_current_term(request)
     school_id = cl.block_id.school_id.id
     if int(sort_type) == 1:
         if int(sort_status) == 0:
@@ -763,10 +764,10 @@ def subjectPerClass(request, class_id, sort_type=1, sort_status=0):
                 _class = Class.objects.get(id=class_id)
                 if teacher_list[i] != u'':
                     teacher = Teacher.objects.get(id=int(data['teacher_id']))
-                    add_subject(subject_name=data['name'], hs=float(data['hs']), teacher=teacher, _class=_class, term=get_current_term(request))
+                    add_subject(subject_name=data['name'], hs=float(data['hs']), teacher=teacher, _class=_class, term=term)
                     form = SubjectForm(school_id)
                 else:
-                    add_subject(subject_name=data['name'], hs=float(data['hs']), teacher=None, _class=_class, term=get_current_term(request))
+                    add_subject(subject_name=data['name'], hs=float(data['hs']), teacher=None, _class=_class, term=term)
                     form = SubjectForm(school_id)
                 message = 'You have added new subject'
             else:
@@ -791,7 +792,8 @@ def subjectPerClass(request, class_id, sort_type=1, sort_status=0):
         sfl.append(SubjectForm(school_id, instance=s))
     list = zip(subjectList, sfl)
     t = loader.get_template(os.path.join('school', 'subject_per_class.html'))
-    c = RequestContext(request, {'list':list, 'form': form, 'message': message, 'subjectList': subjectList, 'class_id': class_id, 'sort_type': sort_type, 'sort_status':sort_status, 'next_status':1-int(sort_status)})
+    c = RequestContext(request, {'list':list, 'form': form, 'message': message, 'subjectList': subjectList, 'class_id': class_id, 'cl':cl,
+                                'sort_type': sort_type, 'sort_status':sort_status, 'next_status':1-int(sort_status), 'term':term})
     return HttpResponse(t.render(c))
 
 def students(request, sort_type=1, sort_status=1, page=1):
