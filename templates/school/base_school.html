@@ -13,7 +13,7 @@
 </head>
 <body>
 <div id="topPan">
-	<a href="index.html"><img src="/static/css/images/logo.png" alt="Hệ thống quản lý trường {{ user.userprofile.organization.name }}" width="1200" height="50" border="0"  class="logo" title="Hệ thống quản lý trường {{ user.userprofile.organization.name }}"/></a>
+	<a href="{%url school.views.school_index %}"><img src="/static/css/images/logo.png" alt="Hệ thống quản lý trường {{ user.userprofile.organization.name }}" width="1200" height="50" border="0"  class="logo" title="Hệ thống quản lý trường {{ user.userprofile.organization.name }}"/></a>
 		
   <p>{{user.userprofile.organization.name}}</p>
 		
@@ -113,7 +113,7 @@
 
 <div id="footermainPan">
   <div id="footerPan">
-  	<ul>
+   <ul>
 		<li><a href="#">Trang chủ</a> | </li>
 		<li><a href="#">Các năm trước</a> | </li>
 		<li><a href="#">Quản lý giáo viên</a> | </li>
@@ -130,8 +130,9 @@
 	<li>modified by:</li>
 	<li><a href="http://uet.vnu.edu.vn" target="_blank">University of Engineering and Technology.</a></li>
 	
-  </ul>
+   </ul>
   </div>
+  
 </div>
 </body>
 </html>

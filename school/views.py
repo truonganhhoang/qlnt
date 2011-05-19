@@ -79,7 +79,7 @@ def class_label(request):
     c = RequestContext(request, {'labels': labels, 'message': message}, )
     return HttpResponse(t.render(c)) 
 
-@transaction.commit_manually    
+@transaction.commit_on_success   
 def b1(request):
     # tao moi cac khoi neu truong moi thanh lap
     school = get_school(request)
@@ -168,7 +168,6 @@ def b1(request):
                     subject.hs = 1
                     subject.class_id = _class
                     subject.save()
-        transaction.commit()
         # -- day cac hoc sinh len lop        
         last_year = school.year_set.filter(time__exact=current_year -1)
         if last_year:
@@ -199,16 +198,13 @@ def b1(request):
                                 student.save()
                             else:
                                 pass
-            transaction.commit()
         else: # truong ko co nam cu
             pass
         # render HTML
     else: 
         #raise Exception(u'Start_year: đã bắt đầu năm học rồi ?')    
         pass
-    transaction.commit()
-    context = RequestContext(request)
-    return render_to_response(START_YEAR, context_instance=context)     
+    return HttpResponseRedirect(reverse("classes"))     
 
 def years(request):
     school = get_school(request)    
@@ -1075,6 +1071,7 @@ def tk_diem_danh(student_id, term_id):
     data = {'student_id':student_id, 'tong_so':ts, 'co_phep':cp, 'khong_phep':kp, 'term_id':term.id}
     tk = TKDiemDanhForm()
     try:
+
         tkdd = TKDiemDanh.objects.get(student_id__exact=student_id, term_id__exact=term.id)
         tk = TKDiemDanhForm(data, instace=tkdd)
     except ObjectDoesNotExist:

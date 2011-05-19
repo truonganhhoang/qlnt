@@ -14,12 +14,12 @@ function confirmDelete()
 
 <table class="styleA" width = "100%" align = "center">
 	<tr>
-		<td align="center" width="5%"> STT</td>
-		<td align="center" width="20%"><a href="{%url school.views.school_index  %}classes/1/{{next_status}}/1"> Tên Lớp </a></td>
-		<td align="center" width="20%"><a href="{%url school.views.school_index  %}classes/2/{{next_status}}/1"> Khối </a></td>
-		<td align="center" width="25%"><a href="{%url school.views.school_index  %}classes/3/{{next_status}}/1">Giáo Viên Chủ Nhiệm</a></td>
-		<td align="center" width="20%"><a href="{%url school.views.school_index  %}classes/4/{{next_status}}/1"> Năm </a></td>
-		<td align="center" width="10%"></td>
+		<th align="center" width="5%"> STT</td>
+		<th align="center" width="20%"><a href="{%url school.views.school_index  %}classes/1/{{next_status}}/1"> Tên Lớp </a></td>
+		<th align="center" width="20%"><a href="{%url school.views.school_index  %}classes/2/{{next_status}}/1"> Khối </a></td>
+		<th align="center" width="25%"><a href="{%url school.views.school_index  %}classes/3/{{next_status}}/1">Giáo Viên Chủ Nhiệm</a></td>
+		<th align="center" width="20%"><a href="{%url school.views.school_index  %}classes/4/{{next_status}}/1"> Năm </a></td>
+		<th align="center" width="10%"></td>
 	</tr>
 	<form action="/school/classes/{{sort_type}}/{{sort_status}}/{{classList.number}}" method="post">{% csrf_token %}
 	{% for class, f in list %}

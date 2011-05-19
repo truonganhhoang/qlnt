@@ -98,15 +98,6 @@ table.styleA td {
 #nameonePan ul{width:156px;}
 #nameonePan ul li{width:auto; height:20px; background:url(images/arrow.gif) 0 6px no-repeat #fff; color:#03537D; padding:0 0 0 10px;}
 
-#pricePan{width:106px; float:left; background:url(images/price-dot.gif) 100% 85% no-repeat #fff; color:#4F4F4F; font-size:14px; text-transform:uppercase;}
-#priceonePan{width:143px; float:left;}
-#priceonePan ul{width:143px;}
-#priceonePan ul li{width:133px; height:20px; background:url(images/price-border.gif) 100% 50% no-repeat #fff; color:#00111A; line-height:20px; font-size:12px; font-weight:bold; padding:0 0 0 10px;}
-
-#discountPan{width:126px; float:left; background:url(images/discount-dot.gif) 100% 85% no-repeat #fff; color:#4F4F4F; font-size:14px; text-transform:uppercase; padding:0 0 0 12px;}
-#discountonePan{width:110px; float:left;}
-#discountonePan ul{width:110px;}
-#discountonePan ul li{width:100px; height:20px; background:url(images/dicount-border.gif) 100% 50% no-repeat #fff; color:#00111A; font-size:12px; font-weight:bold; padding:0 0 0 10px;}
 
 /*----/BODY LEFT PANEL----*/
 /*----BODY RIGHT PANEL----*/
@@ -157,7 +148,7 @@ a.footer:hover{
 
 #footermainPan{ width: 100%; margin: auto auto; margin-left: auto; margin-right: auto; height:85px; background:url(images/footerbg.gif) 0 0 repeat-x #fff; color:#010101; clear:both; padding: 72px 0 0;}
 
-#footerPan{width:auto; position: relative; margin:auto auto; font-family:"Trebuchet MS",Arial, Helvetica, sans-serif; text-align: center;}
+#footerPan{width:100%; position: relative; margin:auto auto; font-family:"Trebuchet MS",Arial, Helvetica, sans-serif;}
 
 #footerPan ul{width:auto; position: relative; margin:auto auto; margin-left: auto; margin-right: auto;}
 #footerPan li{float: left;}
@@ -170,14 +161,6 @@ a.footer:hover{
 #footerPan ul.templateworld li{height:20px;}
 #footerPan ul.templateworld li a{background:#F3F3F3; display:block; color:#444; text-decoration:none;}
 #footerPan ul.templateworld li a:hover{text-decoration:underline;}
-
-#footerPanhtml{width:60px; height:13px; display:block; position:absolute; top:26px; left:260px;}
-#footerPanhtml a{width:48px; height:11px; display:block; background:url(images/blue-arrow.gif) 85% 60% no-repeat #fff; color:#4F4F4F; border:1px solid #DEDEDE; line-height:11px; font-size:11px; font-weight:bold; text-decoration:none; padding:1px 0 0 10px;}
-#footerPanhtml a:hover{background:url(images/gray-arrow.gif) 85% 60% no-repeat #fff; color:#4F4F4F;}
-
-#footerPancss{width:50px; height:13px; display:block; position:absolute; top:26px; left:320px;}
-#footerPancss a{width:40px; height:11px; display:block; background:url(images/blue-arrow.gif) 35px 3px no-repeat #fff; color:#4F4F4F; border:1px solid #DEDEDE; line-height:11px; font-size:11px; font-weight:bold; text-decoration:none; padding:1px 0 0 10px; text-transform:uppercase;}
-#footerPancss a:hover{background:url(images/gray-arrow.gif) 35px 3px no-repeat #fff; color:#4F4F4F;}
 
 /*****quyendt******/
 table.solid_border{

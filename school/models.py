@@ -127,7 +127,6 @@ class BasicPersonInfo(models.Model):
     
     class Meta:
         abstract = True
-        
     def __unicode__(self):
         return self.last_name + " " + self.first_name
         
