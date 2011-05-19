@@ -908,8 +908,8 @@ def diem_danh(request, class_id, day, month, year):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
-    c = Class.objects.get(id__exact=class_id)
-    if in_school(request, c.block_id.school_id) == False:
+    cl = Class.objects.get(id__exact=class_id)
+    if in_school(request, cl.block_id.school_id) == False:
         return HttpResponseRedirect('/school')
     if (get_position(request) < 4):
         return HttpResponseRedirect('/school')
@@ -955,7 +955,7 @@ def diem_danh(request, class_id, day, month, year):
     listdh = zip(pupilList, form)
     t = loader.get_template(os.path.join('school', 'diem_danh.html'))
     c = RequestContext(request, {'form':form, 'pupilList': pupilList, 'time': time, 'message':message, 'class_id':class_id, 'time':time, 'list':listdh,
-                       'day':day, 'month':month, 'year':year})
+                       'day':day, 'month':month, 'year':year, 'cl':cl})
     return HttpResponse(t.render(c))
     
 def time_select(request, class_id):
@@ -1036,7 +1036,7 @@ def diem_danh_hs(request, student_id):
                 form.append(iform)
                 iform = DiemDanhForm  
     t = loader.get_template(os.path.join('school', 'diem_danh_hs.html'))
-    c = RequestContext(request, {'form': form, 'iform': iform, 'pupil':pupil, 'student_id':student_id})
+    c = RequestContext(request, {'form': form, 'iform': iform, 'pupil':pupil, 'student_id':student_id, 'term':term})
     return HttpResponse(t.render(c))
     
 def tk_dd_lop(class_id, term_id):
@@ -1156,7 +1156,7 @@ def khen_thuong(request, student_id):
     message = ''
     ktl = KhenThuong.objects.filter(student_id=student_id).order_by('time')
     t = loader.get_template(os.path.join('school', 'khen_thuong.html'))
-    c = RequestContext(request, {'ktl': ktl, 'message':message, 'student_id':student_id})
+    c = RequestContext(request, {'ktl': ktl, 'message':message, 'student_id':student_id,'pupil':sub})
     return HttpResponse(t.render(c))
     
 def add_khen_thuong(request, student_id):
@@ -1235,7 +1235,7 @@ def ki_luat(request, student_id):
     message = ''
     ktl = KiLuat.objects.filter(student_id=student_id).order_by('time')
     t = loader.get_template(os.path.join('school', 'ki_luat.html'))
-    c = RequestContext(request, {'ktl': ktl, 'message':message, 'student_id':student_id})
+    c = RequestContext(request, {'ktl': ktl, 'message':message, 'student_id':student_id, 'pupil':student})
     return HttpResponse(t.render(c))
     
 def add_ki_luat(request, student_id):

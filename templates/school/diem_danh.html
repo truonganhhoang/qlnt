@@ -1,12 +1,13 @@
 {% extends "school/base_school.html" %}
 
 {% block content %}
+<h1>Danh sách điểm danh lớp {{cl}} ngày {{day}}/{{month}}/{{year}}</h1>
 <br>
 <form action="/school/diemdanh/{{class_id}}/{{day}}/{{month}}/{{year}}" method="post">{% csrf_token %}
         <tr>
         
         </tr>
-<table border=1 width = "100%" >
+<table class="styleA" >
 
     <tr>
         <td align="center" width="5%"> STT </td>

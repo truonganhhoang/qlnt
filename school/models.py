@@ -183,7 +183,7 @@ class Term(models.Model):
         verbose_name_plural = "Kì"
         
     def __unicode__(self):
-        return str(self.number) + " " + str(self.year_id.time)         
+        return str(self.number) + " " + str(self.year_id)         
     #class Admin: pass
 
 class TermForm(forms.ModelForm):

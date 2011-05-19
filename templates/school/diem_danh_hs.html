@@ -2,14 +2,14 @@
 
 {% block content %}
 <br>
-<tr>
-    {{pupil}}
-</tr>
+
+<h1>Những buổi nghỉ của {{pupil}} học kì {{term}}</h1>
+
 <form action="/school/diemdanhhs/{{student_id}}" method="post">{% csrf_token %}
         <tr>
         
         </tr>
-<table border=1 width = "100%" >
+<table class="styleA" >
 
     <tr>
         <td align="center" width="5%"> STT </td>
