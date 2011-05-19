@@ -40,7 +40,7 @@ class ClassifyForm(forms.Form):
         super(ClassifyForm, self).__init__(*args, ** kwargs)
         for student in students:
             label = ' '.join([student.last_name, student.first_name])
-            label += u'---' + str(student.birthday )
+            label += u'[' + str(student.birthday.day ) + '-' + str(student.birthday.month) + '-' + str(student.birthday.year)+']'
             self.fields[str(student.id)] = forms.ChoiceField(label = label, choices=classes, required=False)
             
         

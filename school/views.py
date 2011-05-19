@@ -50,7 +50,10 @@ def class_label(request):
     labels = ' '.join(class_labels)
     if request.method == 'POST':
         labels = request.POST['labels']
-        list_labels = labels.split(' ')
+        if ',' in labels:
+            list_labels = labels.split(',')
+        else:
+            list_labels = labels.split(' ')
         if len(list_labels) == 0:
             message = u'Bạn cần nhập ít nhất một tên lớp'
         else:
@@ -58,12 +61,13 @@ def class_label(request):
             for d in ds:
                 d.delete()
             for label in list_labels:
-                find = school.danhsachloailop_set.filter( loai__exact = label )
-                if not find:
-                    lb = DanhSachLoaiLop()
-                    lb.loai = label
-                    lb.school_id = school
-                    lb.save()
+                if label:
+                    find = school.danhsachloailop_set.filter( loai__exact = label )
+                    if not find:
+                        lb = DanhSachLoaiLop()
+                        lb.loai = label
+                        lb.school_id = school
+                        lb.save()
             message = u'Bạn vừa thiết lập thành công danh sách tên lớp cho trường.'    
     context = RequestContext(request)
     t = loader.get_template(CLASS_LABEL)
