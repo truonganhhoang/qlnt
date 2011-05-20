@@ -5,30 +5,34 @@
 		{% if user.is_superuser %}
 			{% if list_s %}
 				{% for s in list_s %}
-					<li><b>{{ s.name }}</b>
-					<br /><button type="button" onclick="if(document.getElementById('spoilerS') .style.display=='none') {document.getElementById('spoilerS') .style.display=''}else{document.getElementById('spoilerS') .style.display='none'}"><small>Danh sách phòng</small></button>
-					</li>
+					<small>+ </small><b><a href="#" onclick="if(document.getElementById('spoilerS') .style.display=='none') {document.getElementById('spoilerS') .style.display=''}else{document.getElementById('spoilerS') .style.display='none'}">{{ s.name }}</a></b><br />
 					<div id="spoilerS" style="display:none">
 					{% if list_p %}
+						<table>
+						<col width="15px">
+						<td></td>
+						<td>
 						{% for p in list_p %}
-							<p><p>
+							<small>+ </small><a href="#" onclick="if(document.getElementById('spoiler{{p.id}}') .style.display=='none') {document.getElementById('spoiler{{p.id}}') .style.display=''}else{document.getElementById('spoiler{{p.id}}') .style.display='none'}">{{ p.name }}</a><br />
+							<div id="spoiler{{p.id}}" style="display:none">
 							{% if p.upper_organization == s %}
-								<b> + {{ p.name }}</b>
-								<br /><button type="button" onclick="if(document.getElementById('spoiler{{p.id}}') .style.display=='none') {document.getElementById('spoiler{{p.id}}') .style.display=''}else{document.getElementById('spoiler{{p.id}}') .style.display='none'}"><small>Danh sách trường</small></button>
-								<br/>
-								<div id="spoiler{{p.id}}" style="display:none">
-								{% if list_t %}
-									{% for t in list_t %}
-										{% if t.upper_organization == p %}
-											- {{ t.name }}<br/>
-										{% endif %}
-									{% endfor %}
-								{% endif %}
-								</div>
-								
+								<table>
+								<col width="15px">
+								<td></td>
+								<td>
+								{% for t in list_t %}
+									
+									{% if t.upper_organization == p %}
+										{{ t.name }}
+									{% endif %}
+								{% endfor %}
+								</td>
+								</table>
 							{% endif %}
-							</p></p>
+							</div>
 						{% endfor %}
+						</td>
+						</table>
 					{% endif %}
 					</div>					
 				{% endfor %}

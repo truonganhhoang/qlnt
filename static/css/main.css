@@ -149,4 +149,8 @@ table.login{
 td.login, th.login{
 	border-collapse:collapse;
 	}
+a:link, a:active, a:visited{
+	color: #0000FF;
+	text-decoration:none;
+	}
 /*****quyendt******/
