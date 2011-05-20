@@ -21,7 +21,7 @@
         </table>
         <div id="topMenuPan">
         	<div id="topMenu">
-        		<a href="#" onclick="if(document.getElementById('menu') .style.display=='none') {document.getElementById('menu') .style.display=''}else{document.getElementById('menu') .style.display='none'}">Menu</a>
+        		<a href="#" onMouseOver="document.getElementById('menu') .style.display=''">Menu</a>
         	</div>
         	
             <div id="topUser">
@@ -61,7 +61,7 @@
 </div>
 </div>
 
-<div id="bodyPan">
+<div id="bodyPan" onMouseOut="document.getElementById('menu') .style.display='none'">
 	{% block content %}
 	{% endblock %}
 </div>

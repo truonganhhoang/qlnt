@@ -48,8 +48,29 @@
 				</script>
 			</tr>
 			<tr>
+				<td>Hãy chọn người nhận</td>
+				<td><br />
+				<!-- 
+				<select multiple="multiple" name="receiver" size="10">
+				{% for u in user_list %}
+					<option value="{{ u.username }}">{{ u.last_name }} {{u.first_name }}</option>
+				{% endfor %}
+				</select>
+				 -->
+				
+				<div style="width:440px; height:200px; overflow: scroll; border:solid 1px">
+				{% for u in user_list %}
+					{% if not u.is_superuser %}
+						<input type="checkbox" name="receiver" value="{{ u }}">{{ u.last_name }} {{u.first_name }}<br>
+					{% endif %}
+				{% endfor %}
+				</div>
+				</td>
+			</tr>
+			<tr>
+			<tr>
 				<td>
-				Số điện thoại
+				Hoặc nhập số điện thoại
 				</td>
 				<td>
 				<br /><i style="color:red">{{ phone_error }}</i>
@@ -71,30 +92,9 @@
 				</script>
 				</td>
 			</tr>
-			<tr>
-				<td>Hay chọn người nhận</td>
-				<td><br />
-				<!-- 
-				<select multiple="multiple" name="receiver" size="10">
-				{% for u in user_list %}
-					<option value="{{ u.username }}">{{ u.last_name }} {{u.first_name }}</option>
-				{% endfor %}
-				</select>
-				 -->
-				
-				<div style="width:250px; height:400px; overflow: scroll">
-				{% for u in user_list %}
-					{% if not u.is_superuser %}
-						<input type="checkbox" name="receiver" value="{{ u }}">{{ u.last_name }} {{u.first_name }}<br>
-					{% endif %}
-				{% endfor %}
-				</div>
-				<input text-align="right" type="submit" value="Gửi" />
-				</td>
-			</tr>
-			<tr>
 				<td></td>
-				<td><br /></td>
+				<td><br />
+				<input text-align="right" type="submit" value="Gửi" /></td>
 			</tr>
 			</table>
 		</form>
