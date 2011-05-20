@@ -13,7 +13,9 @@ from django.core.context_processors import csrf
 OVER_SCHOOL = ['GIAM_DOC_SO', 'TRUONG_PHONG']
 
 def index(request):
-    if request.user.get_profile().position in OVER_SCHOOL or\
+    if request.user.is_anonymous:
+        return render_to_response("index.html", context_instance=RequestContext(request)) 
+    elif request.user.get_profile().position in OVER_SCHOOL or\
     request.user.is_superuser:
         return render_to_response("index.html", context_instance=RequestContext(request)) 
     else:
