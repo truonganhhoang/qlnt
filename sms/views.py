@@ -72,6 +72,7 @@ def getUserFromPhone(phone):
 
 def manual_sms(request):
     if request.method == 'POST':
+#        return HttpResponse(request.POST.getlist('receiver'))
         receiver_list = request.POST.getlist('receiver')
         phone_list = request.POST['phone']
         content = request.POST['content']
@@ -130,6 +131,15 @@ def manual_sms(request):
                     s.save()
             return HttpResponseRedirect('/sms/sent_sms/')
         else:
+            if(len(content)==0):
+                content_error = 'Hãy nhập nội dung tin nhắn!'
+            else:
+                content_error = ''
+            if(len(phone_list)==0 and len(receiver_list)==0):
+                phone_error = 'Hãy nhập số điện thoại người nhận, hoặc chọn trong danh sách bên dưới.'
+            else:
+                phone_error = ''
+                
             user = User.objects.filter()
             user_list = []
             for u in user:
@@ -140,14 +150,17 @@ def manual_sms(request):
                     pass
                 
             t = loader.get_template('sms/manual_sms.html')
-            c = RequestContext(request, {'user_list': user_list})
+            c = RequestContext(request, {'user_list': user_list,
+                                         'content_error': content_error,
+                                         'phone_error': phone_error})
             return HttpResponse(t.render(c))
     else:    
         user = User.objects.all()
         user_list = []
         for u in user:
             try:
-                if (u.get_profile().position in ['HIEU_TRUONG','HIEU_PHO','TRUONG_PHONG','GIAM_DOC_SO']):
+                if (u.get_profile().position in ['HIEU_TRUONG','HIEU_PHO','TRUONG_PHONG','GIAM_DOC_SO']\
+                    and not u.is_superuser):
                     user_list.append(u)
             except:
                 pass

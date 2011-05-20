@@ -43,13 +43,6 @@ CONTENT_TYPES = ['application/vnd.ms-excel']
 
 class smsFromExcelForm(forms.Form):
     file  = forms.Field(label="Chọn file Excel:",
-                        help_text='<br/><table>\
-                                        <col width=160>\
-                                        <tr>\
-                                            <td></td>\
-                                            <td><small><b>Lưu ý:</b> Bạn chỉ được tải lên file Excel (.xls).</small>\
-                                        <tr>\
-                                        </table>',
                         error_messages={'required': 'Bạn chưa chọn file nào để tải lên.'},
                         widget=forms.FileInput())
     
