@@ -38,9 +38,3 @@ urlpatterns = patterns('',
     
     (r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
 )
-
-# remove after finish project
-#if 'rosetta' in settings.INSTALLED_APPS:
-#    urlpatterns += patterns('',
-#        url(r'^rosetta/', include('rosetta.urls')),
-#    )

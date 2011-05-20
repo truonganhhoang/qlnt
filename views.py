@@ -10,16 +10,6 @@ from django.template.loader import get_template
 from django.template import Context
 from django.core.context_processors import csrf
 
-
-#login logout
-from django import forms
-from django.contrib.auth import REDIRECT_FIELD_NAME, login as auth_login, logout as auth_logout
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import AuthenticationForm, PasswordResetForm, SetPasswordForm, PasswordChangeForm
-from django.contrib.auth.models import User
-from django.contrib.auth.tokens import default_token_generator
-from django.contrib.sites.models import get_current_site
-
 OVER_SCHOOL = ['GIAM_DOC_SO', 'TRUONG_PHONG']
 
 def index(request):
