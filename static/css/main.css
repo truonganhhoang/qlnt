@@ -84,43 +84,13 @@ ul{list-style-type:none;}
 	}
 
 #bodyPan{
-	width: 100%;
+	width: 974px;
 	min-height: 400px;
 	position:relative;
 	margin:0 auto;
 	background-color:#ffffff;
-	padding:0px;
+	padding:25px;
 }
-
-#bodyLeftPan{
-	width: 700px;
-	position: relative; 
-	float:left;
-	padding: 0 25px;
-	margin-top: 25px;
-}
-
-#bodyRightPan{
-	width:250px;
-	min-height: 220px;
-	float:left;
-	border:1px solid #DADADA;
-	background:#F3F3F3;
-	margin-top: 20px;
-}
-
-#bodyRightPan ul li{
-	margin:20px;
-}
-#bodyRightPan ul li a{
-	text-decoration:none;
-}
-#bodyRightPan ul li a:hover{
-	color:#797878;
-	text-decoration:none;
-}
-
-/*----FOOTER PANEL----*/
 
 /*****quyendt*****/
 #footer{
