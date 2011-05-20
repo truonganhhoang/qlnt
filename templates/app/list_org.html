@@ -21,9 +21,8 @@
 								<td></td>
 								<td>
 								{% for t in list_t %}
-									
 									{% if t.upper_organization == p %}
-										{{ t.name }}
+										- {{ t.name }}
 									{% endif %}
 								{% endfor %}
 								</td>
@@ -42,17 +41,21 @@
 		{% if user.userprofile.position == 'GIAM_DOC_SO' %}
 			{% if list_p %}
 				{% for p in list_p %}
+					<small>+ </small><a href="#" onclick="if(document.getElementById('spoiler{{p.id}}') .style.display=='none') {document.getElementById('spoiler{{p.id}}') .style.display=''}else{document.getElementById('spoiler{{p.id}}') .style.display='none'}">{{ p.name }}</a><br />
+					<div id="spoiler{{p.id}}" style="display:none">
 					{% if p.upper_organization == user.get_profile.organization %}
-						<li><b>{{ p.name }}</b>
-						<br /><button type="button" onclick="if(document.getElementById('spoiler{{p.id}}') .style.display=='none') {document.getElementById('spoiler{{p.id}}') .style.display=''}else{document.getElementById('spoiler{{p.id}}') .style.display='none'}"><small>Danh sách trường</small></button>
-						</li>
-						<div id="spoiler{{p.id}}" style="display:none">
 						{% if list_t %}
+							<table>
+							<col width="15px">
+							<td></td>
+							<td>
 							{% for t in list_t %}
 								{% if t.upper_organization == p %}
 									- {{ t.name }} <br/>
 								{% endif %}
 							{% endfor %}
+							</td>
+							</table>
 						{% endif %}
 						</div>
 					{% endif %}
@@ -62,10 +65,10 @@
 		{% endif %}
 		
 		{% if user.userprofile.position == 'TRUONG_PHONG' %}
-			<h4>Các trường thuộc quyển quản lý </h4>
+			<h4>Các trường trực thuộc </h4>
 			{% for t in list_t %}
 				{% if t.upper_organization == user.get_profile.organization %}
-					<li>{{ t.name }}</li>
+					- {{ t.name }}
 				{% endif %}
 			{% endfor %}
 		{% endif %}
