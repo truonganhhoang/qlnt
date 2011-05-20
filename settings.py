@@ -210,3 +210,16 @@ AUTH_PROFILE_MODULE = 'app.UserProfile'
 COVERAGE_REPORT_HTML_OUTPUT_DIR = (
     os.path.join(os.path.dirname(__file__), 'coverage_report')
 )
+
+#Email
+EMAIL_HOST = 'smtp.gmail.com'
+
+EMAIL_PORT = '465'
+
+EMAIL_HOST_PASSWORD = ''
+
+EMAIL_HOST_USER = ''
+
+EMAIL_SUBJECT_PREFIX = '[QLNT]'
+
+
