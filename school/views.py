@@ -597,6 +597,8 @@ def viewClassDetail(request, class_id, sort_type=1, sort_status=0, page=1):
             message = 'Bạn vừa thêm một học sinh mới'
             form = PupilForm(school.id)
         else:
+            data['first_name'] = data['last_name'] + ' ' + data['first_name']
+            form = PupilForm(school.id, data)
             message = 'Bạn vui lòng sửa một số lỗi sai dưới đây'
     if int(sort_type) == 1:
         if int(sort_status) == 0:
@@ -665,6 +667,8 @@ def teachers(request, sort_type=1, sort_status=0, page=1):
             message = 'Bạn vừa thêm một giáo viên mới'
             form = TeacherForm()
         else:
+            data['first_name'] = data['last_name'] + ' ' + data['first_name']
+            form = PupilForm(school.id, data)
             message = 'Bạn vui lòng sửa một số lỗi sai dưới đây'
 			
     if int(sort_type) == 1:
@@ -833,6 +837,8 @@ def students(request, sort_type=1, sort_status=1, page=1):
             message = 'Bạn vừa thêm một học sinh mới'
             form = PupilForm(school.id)
         else:
+            data['first_name'] = data['last_name'] + ' ' + data['first_name']
+            form = PupilForm(school.id, data)
             message = 'Bạn vui lòng sửa một số lỗi sai dưới đây'
 	
     if int(sort_type) == 1:
