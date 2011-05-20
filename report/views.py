@@ -17,7 +17,7 @@ def add_Receiver_Report(request):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
-    if request.method =='POST':
+    if request.method == 'POST':
         form = ReceiverReportForm(request.POST)
         if form.is_valid():
             t = loader.get_template('report/add_report_success.html')
