@@ -21,17 +21,33 @@ ul{list-style-type:none;}
 	padding:0px;
 	background:url(images/mainbg.gif) 0 0 repeat-x #fff;
 	}
+	
+#subMenuPan{
+	width:1019px; 
+	height:20px; 
+	position:relative;
+	padding: 3px;
+	background-color: #cccccc;
+	}
+	
 #topPan img.logo{
 	position:absolute;
-}
+	}
 
-#topContactPan{width:159px; height:51px; position:absolute; top:43px; right:240px;}
-#topContactPan p.callus{background:#0C71A4; color:#fff; width:64px; height:14px; line-height:14px; font-size:14px; font-weight:bold; text-transform:uppercase; padding:0px;}
-#topContactPan p.no{font-size:26px; padding:4px 0 0;}
+#topMenuPan{
+	width:1024px; 
+	height:16px; 
+	position:absolute; 
+	bottom:9px; 
+	left:10px;
+	}
 
-#topMenuPan{width:1024px; height:16px; position:absolute; bottom:9px; left:10px;}
-#topMenuLeftPan{width:69px; height:16px; float:left; background:url(images/menu-leftbg.gif) 0 0 no-repeat;}
-#topMenuMiddlePan{width	: auto; height:16px; float:left;}
+#topMenu{
+	height: 16px;
+	float: left;
+	margin-right: 10px;
+	margin-top: 0px;
+	}
 
 #topUser{
 	height: 16px;
@@ -54,19 +70,19 @@ ul{list-style-type:none;}
 	font-weight:bold;
 	}
 
+#subMenuPan p {
+	margin: 0;
+	}
 
-#topMenuMiddlePan ul{width:auto; height:16px;}
-#topMenuMiddlePan ul li{width: 100px; height:16px; border-right:1px solid #E5E5E5; float:left;}
-#topMenuMiddlePan ul li a{width:100px; height:16px; display:block; background:#fff; color:#4A4A4A; font:10px/16px "Trebuchet MS",Arial, Helvetica, sans-serif; text-decoration:none; font-weight:bold; text-align:center; text-transform:uppercase;}
-#topMenuMiddlePan ul li a:hover{background:#fff; color:#0574AF; text-decoration:none;}
-#topMenuMiddlePan ul li.home{background:#fff; color:#0574AF; text-decoration:none; font:10px/16px "Trebuchet MS",Arial, Helvetica, sans-serif; font-weight:bold; text-align:center; text-transform:uppercase;}
-#topMenuMiddlePan ul li.contact{width:67px; border-right:1px solid #fff;}
-#topMenuMiddlePan ul li.contact a{width:67px; height:16px; display:block; background:#fff; color:#4A4A4A; font:10px/16px "Trebuchet MS",Arial, Helvetica, sans-serif; text-decoration:none; font-weight:bold; text-align:center; text-transform:uppercase;}
-#topMenuMiddlePan ul li.contact a:hover{background:#fff; color:#0574AF; text-decoration:none;}
+#subMenuPan a {
+	margin: 0px 10px; 
+	float: left; 
+	color:#4A4A4A; 
+	font:12px/14px "Trebuchet MS",Arial, Helvetica, sans-serif; 
+	text-decoration:none; 
+	font-weight:bold;
+	}
 
-#topMenuRightPan{width:70px; height:16px; float:left; background:url(images/menu-rightbg.gif) 0 0 no-repeat;}
-/*----/TOP PANEL----*/
-/*----BODY PANEL----*/
 #bodyPan{
 	width: 100%;
 	min-height: 400px;

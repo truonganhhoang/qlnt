@@ -15,21 +15,50 @@
 
 
 <div id="topPan">
-        <a href="{% url views.index %}"><img src="/static/css/images/qlnt_logo.png" width="100" height="100" border="0" /></a>
+        <table>
+        <td><a href="{% url views.index %}"><img src="/static/css/images/qlnt_logo.png" width="100" height="100" border="0" /></a></td>
+        <td><h2>Hệ thống quản lý nhà trường</h2></td>
+        </table>
         <div id="topMenuPan">
-                <div id="topUser">
-                        <p>
-                        {% if user.is_authenticated %}
-                                <a href="#" >Xin chào {{user.username}}.</a>
-                                <a href="{% url django.contrib.auth.views.logout %}">Đăng Xuất</a>
-                                <a href="/app/change_password/">Thay đổi mật khẩu </a>
-            			{% else %}
-                                <a href="/login">Đăng nhập</a> 
-                        {% endif %}
-                                <a href="/help">Trợ giúp</a>
-                        </p>
-                </div>
+        	<div id="topMenu">
+        		<a href="#" onclick="if(document.getElementById('spoilerS') .style.display=='none') {document.getElementById('spoilerS') .style.display=''}else{document.getElementById('spoilerS') .style.display='none'}">Menu</a>
+        	</div>
+        	
+            <div id="topUser">
+				<p>
+				{% if user.is_authenticated %}
+					<a href="#" >Xin chào {{user.username}}.</a>
+					<a href="{% url django.contrib.auth.views.logout %}">Đăng Xuất</a>
+					<a href="/app/change_password/">Thay đổi mật khẩu </a>
+				{% else %}
+					<a href="/login">Đăng nhập</a> 
+				{% endif %}
+					<a href="/help">Trợ giúp</a>
+				</p>
+			</div>
         </div>
+</div>
+<div id="subMenuPan">
+<div id="spoilerS" style="display:none">
+	<p>
+	{% if user.is_superuser %}
+		<a href="/admin">Trang Quản Trị Hệ Thống</a>
+		<a href="/app/list_org">Sơ đồ tổ chức</a>
+		<a href="{% url sms.views.manual_sms %}">Gửi tin nhắn</a>
+		<a href="{% url app.views.school_admin_add %}">Thêm Người Quản Lý Trường</a>
+	{% endif %}     
+	{% if user.userprofile.position == 'GIAM_DOC_SO' or user.userprofile.position == 'TRUONG_PHONG' %}
+		<a href="/app/list_org">Danh sách Tổ chức trực thuộc</a>
+		<a href="{% url sms.views.manual_sms %}">Gửi tin nhắn</a>
+		<a href="#">Thống kê báo cáo</a>
+		<a href="{% url app.views.school_admin_add %}">Thêm Người Quản Lý Trường</a>
+		<a href="{% url report.views.index%}">Công văn</a>
+	{% endif %}
+	{% if user.userprofile.position == 'HIEU_TRUONG' or user.userprofile.position == 'HIEU_PHO' or user.userprofile.position == 'GIAO_VIEN' or user.userprofile.position == 'GIAO_VU' or user.userprofile.position == 'HOC_SINH' %}
+				
+	{% endif %}
+	</p>
+</div>
 </div>
 
 <div id="bodyPan">
