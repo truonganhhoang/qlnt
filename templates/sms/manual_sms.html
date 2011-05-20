@@ -58,11 +58,9 @@
 				</select>
 				 -->
 				
-				<div style="width:440px; height:200px; overflow: scroll; border:solid 1px">
+				<div style="width:440px; height:200px; overflow: auto; border:solid 1px">
 				{% for u in user_list %}
-					{% if not u.is_superuser %}
-						<input type="checkbox" name="receiver" value="{{ u }}">{{ u.last_name }} {{u.first_name }}<br>
-					{% endif %}
+					<input type="checkbox" name="receiver" value="{{ u }}">{{ u.last_name }} {{u.first_name }}<br>
 				{% endfor %}
 				</div>
 				</td>
