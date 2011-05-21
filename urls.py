@@ -9,6 +9,7 @@ urlpatterns = patterns('',
     url(r'^$', 'views.index', name = "index"),
     (r'^help/$', 'views.help'),
     (r'^app/contact/$', 'app.views.contact'),
+    (r'^thanks/$', 'views.thanks'),
     # the built-in sign-in/out module 
     url(r'^login/$', 'app.views.login', name = "login"),
     url(r'^logout/$', 'django.contrib.auth.views.logout', {'template_name': 'app/logout.html'}, name = "logout"),

@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
 from django.forms.formsets import formset_factory
-from app.models import Organization, UserProfile, Membership
+from app.models import Organization, UserProfile, Membership, ReportContact 
 #, SchoolYear, Semester
 
 class UserProfileAdmin(admin.ModelAdmin):
@@ -37,4 +37,13 @@ class OrganizationAdmin(admin.ModelAdmin):
     list_per_page = 20
     
 admin.site.register(Organization, OrganizationAdmin)
+    
+class ReportContactAdmin(admin.ModelAdmin):
+    list_display = ('fullname', 'phone', 'address','email','type','content')
+    list_filter = ('type', 'email')
+    search_fields = ['fullname', 'content']
+    list_per_page = 20
+    
+admin.site.register(ReportContact, ReportContactAdmin)    
+
 

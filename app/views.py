@@ -7,7 +7,7 @@ from django.conf import settings
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.models import User 
 from django.core.urlresolvers import reverse
-from app.models import UserForm, Organization, UserProfile, ChangePasswordForm, ContactForm, AuthenticationForm
+from app.models import UserForm, Organization, UserProfile, ChangePasswordForm, ContactForm, AuthenticationForm, ReportContact
 #from app.models import PositionTypeForm
 from django.template import RequestContext, loader
 from django import forms
@@ -176,18 +176,16 @@ def contact(request):
     if request.method == 'POST': # If the form has been submitted...
         form = ContactForm(request.POST) # A form bound to the POST data
         if form.is_valid():
-            subject = form.cleaned_data['subject']
-            message = form.cleaned_data['message']
-            sender = form.cleaned_data['sender']
-            cc_myself = form.cleaned_data['cc_myself']
-        
-            recipients = ['info@example.com']
-            if cc_myself:
-                recipients.append(sender)
-        
-            from django.core.mail import send_mail
-            send_mail(subject, message, sender, recipients)
-            return HttpResponseRedirect('/thanks/') # Redirect after POST
+            c = ReportContact(fullname = form.cleaned_data['fullname'] ,
+                              email = form.cleaned_data['email'],
+                              phone = form.cleaned_data['phone'],
+                              address = form.cleaned_data['address'],
+                              type = form.cleaned_data['type'],
+                              content = form.cleaned_data['content'],
+                              
+                              )
+            c.save()
+            return HttpResponseRedirect('/thanks') # Redirect after POST
     else:
         form = ContactForm() # An unbound form
 

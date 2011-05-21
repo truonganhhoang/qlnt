@@ -10,26 +10,15 @@
 		<form action="" method="post">{% csrf_token %}
 			<table>
 			<col width="200">
+				{%for field in form %}
 				<tr>
-			    	<td valign="bottom">Email của bạn:</td>
-			    	<td>{{ form.sender.errors }}<br />{{ form.sender }}<td>
+			    	<td valign="center">{{field.label}}</td>
+			    	<td>{{ field.errors }}<br />{{ field }}<td>
 			    </tr>
-				<tr>
-			    	<td valign="bottom">Tiêu đề:</td>
-			    	<td>{{ form.subject.errors }}<br />{{ form.subject }}<td>
-			    </tr>
-				<tr>
-			    	<td valign="bottom">Nội dung:</td>
-			    	<td>{{ form.message.errors }}<br />{{ form.message }}<td>
-			    </tr>
-				<tr>
-			    	<td valign="bottom">Gửi cả cho bạn:</td>
-			    	<td>{{ form.cc_myself.errors }}<br />{{ form.cc_myself }}<td>
-			    </tr>
+			    {%endfor%}
 			    <tr>
 			    <td></td>
-			    <td><input type="submit" value="Gửi đi" /></td>
-			    
+			    <td valign = "bottom"><p><input type='submit' value ='Phản hồi'/></p></td>
 			    </tr>
 			</table>
 			

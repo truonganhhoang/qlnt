@@ -89,16 +89,6 @@ class UserForm(forms.ModelForm):
     class Meta:
         model = UserProfile
 
-class ReportContact(models.Model):
-    '''
-    Thông tin về các bản báo cáo lỗi hay liên hệ từ khách hàng
-    '''
-    name_contact = models.CharField('Họ và tên', blank=True, null=False, max_length=100)
-    email = models.EmailField(max_length = 50, blank = True, null = True)
-    phone = models.CharField('Điện thoại', max_length = 20, blank = True, null = True)
-    address = models.CharField('Địa chỉ', blank=True, max_length = 255) #
-    contact_type = models.CharField('Mục liên hệ', max_length=20, choices=CONTACT_CHOICES)
-    content = models.CharField('Nội dung', max_length=3000, blank=True, null=False)
 
 # quyendt
 class ChangePasswordForm(forms.Form):
@@ -167,12 +157,27 @@ class AuthenticationForm(forms.Form):
 
     def get_user(self):
         return self.user_cache
+    
+class ReportContact(models.Model):
+    '''
+    Thông tin về các bản báo cáo lỗi hay liên hệ từ khách hàng
+    '''
+    fullname = models.CharField('Họ và tên', blank=True, null=False, max_length=100)
+    email = models.EmailField(max_length = 50, blank = True, null = True)
+    phone = models.CharField('Điện thoại', max_length = 20, blank = True, null = True)
+    address = models.CharField('Địa chỉ', blank=True, max_length = 255) #
+    type = models.CharField('Mục liên hệ', max_length=20, choices=CONTACT_CHOICES)
+    content = models.TextField('Nội dung', max_length=3000, blank=True, null=False)
+
 
 class ContactForm(forms.Form):
+    
 #Hainhh    
-    subject = forms.CharField(label = 'Tiêu đề',max_length=100)
-    message = forms.CharField(label = 'Nội dung', widget=forms.Textarea)
-    sender = forms.EmailField(label = 'Email của bạn')
-    cc_myself = forms.BooleanField(label = 'Gửi một bản cho chính bạn',required=False,widget = forms.RadioSelect(choices = CC_CHOICES))
+    fullname = forms.CharField(label = 'Họ Tên',max_length=100)
+    phone = forms.CharField(label = 'Điện thoại', max_length = 15)
+    address = forms.CharField(label = 'Địa chỉ liên hệ', max_length = 255)
+    email = forms.EmailField(label = 'Email của bạn')
+    type = forms.CharField(label = 'Loại liên hệ', widget = forms.RadioSelect(choices = CONTACT_CHOICES))
+    content = forms.CharField(label = 'Nội dung' , widget=forms.Textarea)    
     
          
