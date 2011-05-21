@@ -16,6 +16,7 @@ from objectpermission.decorators import object_permission_required
 from reportlab.pdfgen import canvas
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth import REDIRECT_FIELD_NAME, login as auth_login
+from django.contrib.auth import logout
 from django.contrib.sites.models import get_current_site
 
 from django.views.decorators.cache import never_cache
@@ -32,6 +33,12 @@ def user_add(request):
     t = loader.get_template('app/user/add.html')
     c = RequestContext(request, {'form' : form})
     return HttpResponse(t.render(c))
+
+def user_detail(request, user_id):
+    user = request.user
+    if not user.is_authenticated():
+        return HttpResponseRedirect(reverse, ('login'))
+    
 
 @object_permission_required('view_level=T', Organization)
 def organization_delete(request, id):

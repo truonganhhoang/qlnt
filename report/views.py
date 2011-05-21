@@ -20,6 +20,7 @@ def add_Receiver_Report(request):
     if request.method == 'POST':
         form = ReceiverReportForm(request.POST)
         if form.is_valid():
+            form.save()
             t = loader.get_template('report/add_report_success.html')
             c = RequestContext(request, {})
             return HttpResponse(t.render(c))
@@ -36,6 +37,7 @@ def add_Send_Report(request):
     if request.method =='POST':
         form = SendReportForm(request.POST)
         if form.is_valid():
+            form.save()
             t = loader.get_template('report/add_report_success.html')
             c = RequestContext(request, {})
             return HttpResponse(t.render(c))
