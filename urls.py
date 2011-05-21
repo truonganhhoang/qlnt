@@ -38,4 +38,5 @@ urlpatterns = patterns('',
     (r'^topdf/$', 'views.topdf'),
     
     (r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
+    url(r'^profiles/', include('profiles.urls')),
 )

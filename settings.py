@@ -167,6 +167,7 @@ INSTALLED_APPS = (
     'sms',
     'report',
     'pagination',
+    'profiles',
 )
 
 DILLA_USE_LOREM_IPSUM = True

@@ -2,6 +2,7 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse
+from django.db import models
 
 import cStringIO as StringIO
 from cgi import escape
@@ -45,3 +46,9 @@ def thanks(request):
 def topdf(request):
     return render_to_pdf('base.html',{        
         'pagesize': 'A4'})
+    
+#method routes to the view ``profiles.views.profile_detail``, passing the username
+@models.permalink
+def get_absolute_url(self):
+        return ('profiles_profile_detail', (), { 'username': self.user.username })
+get_absolute_url = models.permalink(get_absolute_url)

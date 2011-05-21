@@ -5,7 +5,7 @@ import datetime
 import urlparse
 from django.conf import settings
 from django.http import HttpResponse, HttpResponseRedirect
-from django.contrib.auth.models import User 
+from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from app.models import UserForm, Organization, UserProfile, ChangePasswordForm, ContactForm, AuthenticationForm, ReportContact
 #from app.models import PositionTypeForm
@@ -34,11 +34,24 @@ def user_add(request):
     c = RequestContext(request, {'form' : form})
     return HttpResponse(t.render(c))
 
-def user_detail(request, user_id):
+def user_detail(request):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse, ('login'))
+    message = None
+#    usera = User.objects.get(id=user.id)
+    form = UserForm(initial={'user': request.user})
+    if request.method == 'POST':
+        form = UserForm(request.POST, initial={'user': request.user})
+        if form.is_valid():
+            form.save()
+            message = 'Bạn vừa cập nhật thông tin cá nhân thành công'
+        else:
+            message = 'Bạn vui lòng sửa một số lỗi sai dưới đây'
     
+    t = loader.get_template(os.path.join('app', 'user_detail.html'))
+    c = RequestContext(request, {'form': form, 'message': message, 'id': user.id})
+    return HttpResponse(t.render(c))
 
 @object_permission_required('view_level=T', Organization)
 def organization_delete(request, id):
