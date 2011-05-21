@@ -7,6 +7,7 @@
 	<div id="profile_table">
 		<table>
 		<tr>
+		<h4>
 			<ul>
 			<li>Tài khoản: {{ profile.user.username}}</li>
 			<li>Họ và Tên: {{ profile.user.first_name }}</li>
@@ -14,12 +15,9 @@
 			<li>Vị trí: {{ profile.position }}</li>
 			<li>Số điện thoại: {{ profile.phone }}</li>
 			<li>Ghi chú: {{profile.notes}}</li>
-			{% if profile.home_city %}
-			{{ profile.home_city }},
-			{% endif %} {{ profile.home_state }}</li>
-			<li>Last Login: {{ profile.user.last_login|date:"F j, Y" }}</li>
-			<li>Member since: {{ profile.user.date_joined|date:"F j, Y" }}</li>
+			<li>Đăng nhập lần cuối vào lúc: {{ profile.user.last_login|date:"F j, Y" }}</li>
 			</ul>
+		</h4>
 		</tr>
 		</table>
 	</div>

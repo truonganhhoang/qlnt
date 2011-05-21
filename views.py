@@ -43,6 +43,7 @@ def help(request):
 
 def thanks(request):
     return render_to_response('thanks.html', context_instance=RequestContext(request))
+
 def topdf(request):
     return render_to_pdf('base.html',{        
         'pagesize': 'A4'})
