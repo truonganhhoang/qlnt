@@ -20,7 +20,7 @@ def index(request):
     request.user.is_superuser:
         return render_to_response("index.html", context_instance=RequestContext(request)) 
     else:
-        return HttpResponseRedirect('/school/')
+        return HttpResponseRedirect(reverse('school_index'))
 
 def render_to_pdf(template_src, context_dict):
     template = get_template(template_src)

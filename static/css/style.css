@@ -57,6 +57,14 @@ table.styleA th {
 table.styleA tr {
 	background-color:#d4e3e5;
 }
+table.styleA tr:hover{
+	background-color: #f0f1c3;
+}
+
+table.styleA tr.selected{
+	background-color: #f3f48d;
+}
+
 table.styleA td {
 	border-width: 1px;
 	padding: 4px;

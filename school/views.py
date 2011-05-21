@@ -10,11 +10,13 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext, loader
 from django.core.exceptions import *
 from django.db import transaction
+from django.utils import simplejson
 
 from school.utils import *
 from school.models import *
 from school.forms import *
 from school.school_settings import *
+from sms.views import *
 import xlrd
 
 NHAP_DANH_SACH_TRUNG_TUYEN = os.path.join('school', 'import', 'nhap_danh_sach_trung_tuyen.html')
@@ -28,7 +30,7 @@ CLASS_LABEL = os.path.join('school', 'class_labels.html')
 CLASSIFY = os.path.join('school','classify.html')
 
 def school_index(request):
-
+    
     user = request.user
     try:
         school = get_school(request)
@@ -924,6 +926,32 @@ def diem_danh(request, class_id, day, month, year):
     message = None
     listdh = None
     term = None
+    print "is_ajax:", request.is_ajax()
+    if request.is_ajax():
+        if request.method == 'POST':
+            id = int(request.POST['id'])
+            loai = request.POST['loai']
+            # send sms
+            student = Pupil.objects.get( id = id)
+            phone_number = student.sms_phone
+            print student
+            
+            if loai == 'k':
+                loai = u'có đi học'
+            elif loai == u'Có phép':
+                loai = u'nghỉ học có phép'
+            else:
+                loai = u'nghỉ học không phép'
+            
+            name = ' '.join([student.last_name,student.first_name])
+            time = '/'.join([str(day),str(month),str(year)])
+            sms_message = u'Em '+name+u' đã ' + loai + u'.\n Ngày: ' + time + '.'
+            
+            #sendSMS(phone_number, sms_message, user)
+            data = simplejson.dumps({'message':sms_message, 'phone': phone_number})
+            return HttpResponse(data, mimetype = 'json')
+        else:
+            raise Exception('StrangeRequestMethod')
     pupilList = Pupil.objects.filter(class_id=class_id).order_by('first_name', 'last_name')
     time = date(int(year), int(month), int(day))
     term = get_current_term(request)
@@ -985,7 +1013,7 @@ def time_select(request, class_id):
             day = int(request.POST['date_day'])
             month = int(request.POST['date_month'])
             year = int(request.POST['date_year'])
-            url = '/school/diemdanh/' + str(class_id) + '/' + str(day) + '/' + str(month) + '/' + str(year) + '/'
+            url = '/school/diemdanh/' + str(class_id) + '/' + str(day) + '/' + str(month) + '/' + str(year)
             #url = os.path.join('','school','diemdanh', str(class_id), str(day), str(month), str(year),'')
             return HttpResponseRedirect(url)
     t = loader.get_template(os.path.join('school', 'time_select.html'))

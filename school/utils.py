@@ -338,6 +338,7 @@ def get_latest_startyear(request):
 
 def get_startyear(request, time):
     school = get_school(request)
+    
     try:
         return school.startyear_set.get(time = time)
     except Exception( 'StartYearDoesNotExist'):
