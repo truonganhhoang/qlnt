@@ -16,15 +16,11 @@ TEMP_FILE_LOCATION = os.path.join(os.path.dirname(__file__), 'uploaded')
 EXPORTED_FILE_LOCATION = os.path.join(os.path.dirname(__file__), 'exported')
 
 def sendSMS(phone,content,user):
-    print "start send"
     open = urllib2.build_opener(urllib2.HTTPCookieProcessor())
     urllib2.install_opener(open)
-    print "ok 0"        
     para = urllib.urlencode({'u': 'VT_username', 'p': 'VT_password'})
-    print "ok 1"        
     f = open.open('http://viettelvas.vn:7777/fromcp.asmx', para)
     f.close();
-    print "ok 2"
     if checkValidPhoneNumber(phone):    
         '''Save to db'''
         s = sms(phone=phone, content=content, sender=user, recent=True, success=True)
