@@ -38,10 +38,9 @@
 	  </div>
 	  <div id="topMenuRightPan"></div>
 	  <div id="topUser">
-			<p>Xin chào,&nbsp </p> <p><a href="#" > {{user.username}}</a>,&nbsp</p><p><a href="{%url django.contrib.auth.views.logout %}">Logout</a></p> 	  
+			<p>Xin chào,&nbsp </p> <p><a href="/profiles/{{user.username}}" > {{user.username}}</a>,&nbsp</p><p><a href="{%url django.contrib.auth.views.logout %}">Logout</a></p> 	  
 	  </div>
 	  <div id="topUser">
-	  <a href="/profiles/{{user.username}}">Hồ sơ</a>
 	  </div>
 	</div>
 </div>

@@ -937,7 +937,7 @@ def diem_danh(request, class_id, day, month, year):
             print student
             
             if loai == 'k':
-                loai = u'có đi học'
+                loai = u'đi học'
             elif loai == u'Có phép':
                 loai = u'nghỉ học có phép'
             else:
@@ -947,7 +947,8 @@ def diem_danh(request, class_id, day, month, year):
             time = '/'.join([str(day),str(month),str(year)])
             sms_message = u'Em '+name+u' đã ' + loai + u'.\n Ngày: ' + time + '.'
             
-            #sendSMS(phone_number, sms_message, user)
+            if phone_number:
+                sendSMS(phone_number, sms_message, user)
             data = simplejson.dumps({'message':sms_message, 'phone': phone_number})
             return HttpResponse(data, mimetype = 'json')
         else:

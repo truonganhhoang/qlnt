@@ -29,7 +29,11 @@ $(document).ready(function(){
 	});
 
 	var done = function(json){
-		alert(json.message);
+		if (json.phone != null)		
+			newLine = "<p>Đã nhắn tới số: "+json.phone+"    : "+ json.message+"</p>";
+		else
+			newLine = "<p>Tin nhắn: " + json.message + " chưa gửi được do không có số người dùng.";		
+		$("#note").append(newLine);
 	};	
 	var sendSmS = function(){
 	   var id = $(this).attr('name');
@@ -110,8 +114,7 @@ $(document).ready(function(){
 
     <tr>
         <th align="center" width="3%"> STT </th>
-        <th align="center" width="15%"> Họ </th>
-        <th align="center" width="5%"> Tên </th>
+        <th align="center" width="15%"> Họ Tên </th>
         <th align="center" width="10%"> Ngày sinh</th>
         <th align="center" width="7%"> Giới tính </th>
         <th align="center" width="8%"> Điểm danh </th>
@@ -124,11 +127,7 @@ $(document).ready(function(){
                 </td>
             
                 <td align="center" width="15%">
-                    <p>{{ p.last_name }}</p>
-                </td>
-
-                <td align="center" width="5%">
-                    <p>{{ p.first_name }}</p>
+                    <p>{{ p.last_name }}&nbsp{{ p.first_name }}</p>
                 </td>
 
                 <td align="center" width="10%">
@@ -143,7 +142,7 @@ $(document).ready(function(){
                     {{ f.loai.errors }}
                     {{ f.loai }}
                 </td>
-                <td align="center" width="10%">
+                <td align="center" width="20px">
 						  <input type="submit" value="sms" name="{{p.id}}" class="sms" />                
                 </td>
             </tr>
