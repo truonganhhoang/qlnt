@@ -27,7 +27,7 @@
             <div id="topUser">
 				<p>
 				{% if user.is_authenticated %}
-					<a href="#" >Xin chào {{user.username}}.</a>
+					<a href="/profiles/{{user.username}}" >Xin chào {{user.username}}.</a>
 					<a href="{% url django.contrib.auth.views.logout %}">Đăng Xuất</a>
 					<a href="/profiles/{{user.username}}">Xem thông tin cá nhân</a>
 				{% else %}
