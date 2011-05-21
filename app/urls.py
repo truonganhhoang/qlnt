@@ -29,5 +29,4 @@ urlpatterns = patterns('',
      url('list_org/$', 'app.views.list_org'),
      url(r'^change_password/$', 'app.views.change_password'),
      url(r'^change_password_done/$', 'app.views.change_password_done'),
-     url(r'viewuserdetail/$', 'app.views.user_detail'),
 )
