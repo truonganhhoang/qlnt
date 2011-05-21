@@ -19,8 +19,8 @@ def sendSMS(phone,content,user):
     open = urllib2.build_opener(urllib2.HTTPCookieProcessor())
     urllib2.install_opener(open)
     para = urllib.urlencode({'u': 'VT_username', 'p': 'VT_password'})
-    f = open.open('http://viettelvas.vn:7777/fromcp.asmx', para)
-    f.close();
+#    f = open.open('http://viettelvas.vn:7777/fromcp.asmx', para)
+#    f.close();
     if checkValidPhoneNumber(phone):    
         '''Save to db'''
         s = sms(phone=phone, content=content, sender=user, recent=True, success=True)
@@ -69,6 +69,8 @@ def getUserFromPhone(phone):
 
 def manual_sms(request):
     if request.method == 'POST':
+        sendSMS('123','check sendSMS function', request.user)
+        return HttpResponseRedirect('/sms/sent_sms/')
 #        return HttpResponse(request.POST.getlist('receiver'))
         receiver_list = request.POST.getlist('receiver')
         phone_list = request.POST['phone']
