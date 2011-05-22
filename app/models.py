@@ -179,5 +179,15 @@ class ContactForm(forms.Form):
     email = forms.EmailField(label = 'Email của bạn')
     type = forms.CharField(label = 'Loại liên hệ', widget = forms.RadioSelect(choices = CONTACT_CHOICES))
     content = forms.CharField(label = 'Nội dung' , widget=forms.Textarea)    
+
+class ResetPassword(models.Model):
+#Hainhh
+    username = models.CharField(max_length = 50)
+    code = models.CharField(max_length = 15)
+    
+class ResetPasswordForm(forms.Form):
+    email = forms.EmailField(label = 'Email của bạn',max_length = 255)
+        
+    
     
          

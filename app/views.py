@@ -7,7 +7,7 @@ from django.conf import settings
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
-from app.models import UserForm, Organization, UserProfile, ChangePasswordForm, ContactForm, AuthenticationForm, ReportContact
+from app.models import UserForm, Organization, UserProfile, ChangePasswordForm, ContactForm, AuthenticationForm, ReportContact, ResetPassword, ResetPasswordForm
 #from app.models import PositionTypeForm
 from django.template import RequestContext, loader
 from django import forms
@@ -184,3 +184,32 @@ def contact(request):
         form = ContactForm() # An unbound form
 
     return render_to_response('contact.html', {'form': form}, RequestContext(request))
+
+def reset_password_request(request):
+    #hainhh
+    '''send a link to reset password to user's email'''
+    if request.method == 'POST':
+        form = ResetPasswordForm(request.POST)
+        if form.is_valid():
+            username = get_username(form.cleaned_data['email'])
+            if username == '':
+                # email is not in database
+                #todo
+                print 'invalid'
+            else:
+                code = str(random.randint(0,10000000))
+                r = ResetPassword(username = username, code = code)
+                r.save()
+                #sendMail() #todo
+    
+def is_reset_pass_request_valid(username, code):
+    return False
+    #todo
+    
+def reset_password(request):
+    '''reset password if email is valid'''
+    if request.method == 'GET':
+        username = request.GET[username]
+        code = request.GET['code']
+        if is_reset_pass_request_valid(username, code):
+            password = str(random.randint(0,1000000))
