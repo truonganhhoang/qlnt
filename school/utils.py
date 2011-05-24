@@ -183,8 +183,7 @@ def add_student( student = None, start_year = None , year = None,
                 term1 = year.term_set.get( number__exact = i)
                 hk = HanhKiem()
                 hk.student_id = st
-                hk.term_id = term1.id
-                hk.year_id = term1.year_id
+                hk.term_id = term1               
                 hk.save()
                
                 tb_hoc_ky = TBHocKy()
