@@ -1077,22 +1077,22 @@ def diem_danh_hs(request, student_id):
     return HttpResponse(t.render(c))
     
 def tk_dd_lop(class_id, term_id):
-    ppl = pupil.objects.filter(class_id=class_id)
+    ppl = Pupil.objects.filter(class_id=class_id)
     for p in ppl:
         tk_diem_danh(p.id, term_id)
     
 def tk_diem_danh(student_id, term_id):
     pupil = Pupil.objects.get(id=student_id)
     c = pupil.class_id
-    ts = DiemDanh.objects.filter(student_id=student_id, term_id=term.id).count()
-    cp = DiemDanh.objects.filter(student_id=student_id, term_id=term.id, loai=u'C').count()
+    ts = DiemDanh.objects.filter(student_id=student_id, term_id=term_id).count()
+    cp = DiemDanh.objects.filter(student_id=student_id, term_id=term_id, loai=u'C').count()
     kp = ts - cp
-    data = {'student_id':student_id, 'tong_so':ts, 'co_phep':cp, 'khong_phep':kp, 'term_id':term.id}
+    data = {'student_id':student_id, 'tong_so':ts, 'co_phep':cp, 'khong_phep':kp, 'term_id':term_id}
     tk = TKDiemDanhForm()
     try:
 
-        tkdd = TKDiemDanh.objects.get(student_id__exact=student_id, term_id__exact=term.id)
-        tk = TKDiemDanhForm(data, instace=tkdd)
+        tkdd = TKDiemDanh.objects.get(student_id__exact=student_id, term_id__exact=term_id)
+        tk = TKDiemDanhForm(data, instance=tkdd)
     except ObjectDoesNotExist:
         tk = TKDiemDanhForm(data)
     tk.save()
@@ -1371,6 +1371,8 @@ def hanh_kiem(request, class_id, term_id = 1, sort_type = 1, sort_status = 0):
 	    
     form = []
     i = 0
+    if (term_id < 3):
+	    tk_dd_lop(class_id, term_id)
     for p in pupilList:
         form.append(HanhKiemForm())
         try:
