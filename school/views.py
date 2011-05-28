@@ -923,33 +923,38 @@ def diem_danh(request, class_id, day, month, year):
         return HttpResponseRedirect('/school')
     if (get_position(request) < 4):
         return HttpResponseRedirect('/school')
-    message = None
+    message = ''
     listdh = None
     term = None
     print "is_ajax:", request.is_ajax()
     if request.is_ajax():
         if request.method == 'POST':
-            id = int(request.POST['id'])
-            loai = request.POST['loai']
-            # send sms
-            student = Pupil.objects.get( id = id)
-            phone_number = student.sms_phone
-            print student
-            
-            if loai == 'k':
-                loai = u'đi học'
-            elif loai == u'Có phép':
-                loai = u'nghỉ học có phép'
-            else:
-                loai = u'nghỉ học không phép'
-            
-            name = ' '.join([student.last_name,student.first_name])
-            time = '/'.join([str(day),str(month),str(year)])
-            sms_message = u'Em '+name+u' đã ' + loai + u'.\n Ngày: ' + time + '.'
-            
-            if phone_number:
-                sendSMS(phone_number, sms_message, user)
-            data = simplejson.dumps({'message':sms_message, 'phone': phone_number})
+            data = request.POST[u'data']
+            sms_message = ''
+            data = data.split(':')
+            for element in data:
+                if element:
+                    element = element.split('-')
+                    id = element[0]
+                    loai = element[1]
+                    # send sms
+                    student = Pupil.objects.get( id = id)
+                    phone_number = student.sms_phone
+                    
+                    if loai == 'k':
+                        loai = u'đi học'
+                    elif loai == u'Có phép':
+                        loai = u'nghỉ học có phép'
+                    else:
+                        loai = u'nghỉ học không phép'
+                
+                    name = ' '.join([student.last_name,student.first_name])
+                    time = '/'.join([str(day),str(month),str(year)])
+                    sms_message = u'Em '+name+u' đã ' + loai + u'.\n Ngày: ' + time + '.'
+                    message = message + u'---> ' + str(phone_number) + u': ' + sms_message + u'<br>'
+                    if phone_number:
+                        sendSMS(phone_number, sms_message, user)
+            data = simplejson.dumps({'message':message})
             return HttpResponse(data, mimetype = 'json')
         else:
             raise Exception('StrangeRequestMethod')

@@ -4,6 +4,7 @@
 <script>
 
 $(document).ready(function(){
+	var note = '';	
 	$.ajaxSetup({ 
      beforeSend: function(xhr, settings) {
          function getCookie(name) {
@@ -29,21 +30,27 @@ $(document).ready(function(){
 	});
 
 	var done = function(json){
-		if (json.phone != null)		
-			newLine = "<p>Đã nhắn tới số: "+json.phone+"    : "+ json.message+"</p>";
-		else
-			newLine = "<p>Tin nhắn: " + json.message + " chưa gửi được do không có số người dùng.";		
-		$("#note").append(newLine);
+		if (json.message != null)		
+			$.fancybox({
+				'title': "Những tin nhắn đã gửi",
+				'content': json.message		
+			});
+		else 
+			$.fancybox({
+				'title': "Thông báo",
+				'content': 'Bạn chưa chọn học sinh nào.'		
+			});
+		$(".selected").each( select);
 	};	
 	var sendSmS = function(){
-	   var id = $(this).attr('name');
+		var id = $(this).attr('name');
 		var select = "tr." + id + " > td:has(select) > select ";
 		var loai = $(select).val();
-		var data = { id:id, loai:loai };
+		var data = id + '-' + loai;		
 		//alert(window.location.pathname);
 		var arg ={ type:"POST", 
 					  url:"", 
-					  data:data, 
+					  data:{data: data}, 
 					  datatype:"json", 
 					  success:done
 	   }; 
@@ -52,20 +59,28 @@ $(document).ready(function(){
 	};
    
    var sendSelected = function(){
-		var id = $(this).attr('class').split(' ')[0];
-		var select = "tr." + id + " > td:has(select) > select ";
-		var loai = $(select).val();
-		var data = { id:id, loai:loai };
-		//alert(window.location.pathname);
+		
+		var data = '';
+		$(".selected").each(function(){		
+			var id = $(this).attr('class').split(' ')[0];
+			var select = "tr." + id + " > td:has(select) > select ";
+			var loai = $(select).val();
+			var element = id + '-' + loai;
+			data = data + ':' + element;
+		});		
+		
+		alert(data);
 		var arg ={ type:"POST", 
 					  url:"", 
-					  data:data, 
+					  data:{data: data}, 
 					  datatype:"json", 
 					  success:done
 	   }; 
-      $.ajax( arg);		  
+      $.ajax( arg);
+      return false;		  
    }
 	var select = function(){
+		if ($(this).hasClass('thead')) return;
 		if ($(this).hasClass('selected')){
 			$(this).removeClass('selected');		
 		} else {
@@ -74,16 +89,13 @@ $(document).ready(function(){
 	};
 	$(".sms").each(function(){
 		$(this).click( sendSmS );
-		
+		note='';
 	});
 	$("tr").each(function(){
 		$(this).click( select );
 	});
 	
-	$("#sendSelected").click( function(){
-		$(".selected").each( sendSelected );
-		return false;	
-	});
+	$("#sendSelected").click( sendSelected );
 	
 	$("#selectAll").click( function(){
 		$("tr").each( select );
@@ -105,14 +117,12 @@ $(document).ready(function(){
 {% if message != None %}
     {{message}}
 {% endif %}
-<div id="note">
-</div>
 <br>
 <button id="selectAll">Chọn cả lớp</button>
 <button id="sendSelected">Gửi SMS cho những học sinh đã chọn</button>
 <table class="styleA" >
 
-    <tr>
+    <tr class="thead">
         <th align="center" width="3%"> STT </th>
         <th align="center" width="15%"> Họ Tên </th>
         <th align="center" width="10%"> Ngày sinh</th>
