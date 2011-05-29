@@ -4,7 +4,7 @@ import datetime
 from school.models import *
 from django.contrib.auth.models import User
 
-
+# date-month-year => time object
 def to_date(value):
     v = value.split('-')
     return date(int(v[2]), int(v[1]), int(v[0]))
@@ -347,7 +347,6 @@ def get_startyear(request, time):
 		
 def get_current_term(request):
     school = get_school(request)
-    print "ok"+str(school.status)
     try:
         return school.year_set.latest('time').term_set.get(number = school.status)
     except Exception( 'TermDoesNotExist'):

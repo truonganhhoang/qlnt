@@ -50,7 +50,7 @@ $(document).ready(function(){
 		//alert(window.location.pathname);
 		var arg ={ type:"POST", 
 					  url:"", 
-					  data:{data: data}, 
+					  data:{data: data, request_type:'sms'}, 
 					  datatype:"json", 
 					  success:done
 	   }; 
@@ -69,10 +69,9 @@ $(document).ready(function(){
 			data = data + ':' + element;
 		});		
 		
-		alert(data);
 		var arg ={ type:"POST", 
 					  url:"", 
-					  data:{data: data}, 
+					  data:{data: data, request_type:'sms'}, 
 					  datatype:"json", 
 					  success:done
 	   }; 
@@ -105,6 +104,31 @@ $(document).ready(function(){
 			$(this).text("Chọn cả lớp");
 		return false;		
 	});
+	
+	$("select[name=loai]").each( function(){
+		$(this).change(function(){
+			var id = $(this).parents("tr").attr('class');
+			var loai = $(this).val();
+			var data = { id: id, loai:loai, request_type:'update'}
+			var arg ={ type:"POST", 
+					  url:"", 
+					  data: data, 
+					  datatype:"json" 
+					  //success: 
+					  //function(json){
+					  //		$.fancybox({
+					  //		content: json.message,
+					  //		title: "Updated successfully"	
+					//		});								  
+					//  }
+	   	};
+	   	
+	   	$.ajax(arg);
+			
+		});	
+	});	
+	
+	
 });
 
 </script>

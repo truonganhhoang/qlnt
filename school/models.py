@@ -121,6 +121,10 @@ class BasicPersonInfo(models.Model):
     
     class Meta:
         abstract = True
+    
+    def full_name(self):
+        return ' '.join([self.last_name, self.first_name])
+    
     def __unicode__(self):
         return self.last_name + " " + self.first_name
         
@@ -395,7 +399,7 @@ class DiemDanh(models.Model):
         verbose_name_plural = "Điểm danh"
         
     def __unicode__(self):
-        return str(self.student_id) + " " + str(self.time)
+        return self.student_id.__unicode__() + " " + str(self.time)
         
 class TKDiemDanh(models.Model):
     student_id = models.ForeignKey(Pupil, verbose_name = "Học sinh")

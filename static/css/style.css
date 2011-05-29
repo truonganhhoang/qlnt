@@ -56,6 +56,12 @@ table.styleA th {
 }
 table.styleA tr {
 	background-color:#d4e3e5;
+	cursor: pointer;
+}
+
+table.styleA tr.thead {
+	background-color:#d4e3e5;
+	cursor: auto;
 }
 table.styleA tr:hover{
 	background-color: #f0f1c3;

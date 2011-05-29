@@ -929,6 +929,51 @@ def diem_danh(request, class_id, day, month, year):
     print "is_ajax:", request.is_ajax()
     if request.is_ajax():
         if request.method == 'POST':
+            print request.POST
+            request_type = request.POST[u'request_type']
+            print 'request_type', request_type
+            if request_type == u'update':
+                id = request.POST[u'id']
+                loai = request.POST[u'loai']
+                print 'id, loai:',id,loai
+                
+                print 'loai != k'
+                student = Pupil.objects.get( id = int(id))
+                print student
+                time = date(int(year), int(month), int(day))
+                print 'time',time
+                diemdanh = student.diemdanh_set.filter( student_id__exact = student)\
+                                                .filter( time__exact = time)
+                print diemdanh
+                
+                if not diemdanh:
+                    
+                    diemdanh = DiemDanh()
+                    diemdanh.term_id = get_current_term(request)
+                    diemdanh.student_id = student
+                    diemdanh.time = time
+                    diemdanh.loai = loai
+                    diemdanh.save()
+                else:   
+                    diemdanh = diemdanh[0] 
+                    if loai == 'k':
+                        diemdanh.delete()
+                        message = u'No need to update'
+                        data = simplejson.dumps({'message':message})                    
+                        return HttpResponse(data, mimetype = 'json')
+                                    
+                    if diemdanh.loai != loai:
+                        print 11
+                        diemdanh.loai = loai
+                        diemdanh.save()
+                
+                print u'almost done'
+                print student.full_name()
+                message = student.full_name() + ': updated.'
+                print 'message', message
+                data = simplejson.dumps({'message': message})
+                return HttpResponse( data, mimetype = 'json')    
+                 
             data = request.POST[u'data']
             sms_message = ''
             data = data.split(':')
