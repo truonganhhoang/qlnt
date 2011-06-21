@@ -1,4 +1,4 @@
-from sms.models import sms
+from models import sms
 from django.contrib import admin
 
 admin.site.register(sms)

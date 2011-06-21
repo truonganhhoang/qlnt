@@ -1,12 +1,13 @@
 {% extends "base.html" %}
 
 {%block content %}
-	<p><h1>Thông tin liên hệ</h1>
-	<h4>Sản phẩn phần mềm Free School được hợp tác phát triển bởi Viettel Vn và UET-VNU</br>
-	Để được biết thông tin chi tiết về sản phẩm vui lòng liên hệ với chúng tôi qua địa chỉ sau:</br></br>
-	Địa chỉ : 144 Xuân Thủy - Cầu Giấy - Hà Nội</br>
-	Email  : QLNT@googlecode.com 
-	</h4></p>
+	<h2>Thông tin liên hệ</h2>
+	Dịch vụ phần mềm này được Viettel cung cấp miễn phí. Để đăng ký sử dụng, xin vui lòng liên hệ với chúng tôi bằng một trong các cách sau:
+	<ul>
+		<li>Gửi email đến truongphothong@gmail.com. </li>
+		<li>Gọi điện thoại đến: 0462880168.</li>
+		<li>Điền thông tin theo mẫu sau</li>
+	</ul>
 		<form action="" method="post">{% csrf_token %}
 			<table>
 			<col width="200">
@@ -18,10 +19,8 @@
 			    {%endfor%}
 			    <tr>
 			    <td></td>
-			    <td valign = "bottom"><p><input type='submit' value ='Phản hồi'/></p></td>
+			    <td valign = "bottom"><p><input type='submit' value ='Gửi'/></p></td>
 			    </tr>
 			</table>
-			
 		</form>	
 {% endblock %}
-</html>

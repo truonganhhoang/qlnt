@@ -1,4 +1,4 @@
-
+from school import views
 from django.conf.urls.defaults import patterns, url 
 
 

@@ -5,7 +5,7 @@
 {% block navi %}
 	<a href ="/">Index</a> - <a href="/help">help</a> - 
 	{% if user.is_authenticated %}
-		Welcome {{user.username}}! <a href="/logout">logout</a> 
+		Welcome {{user.username}}! <a href="/logout">Đăng xuất</a> 
 	{% else %} 
 	 	<a href="/login">login</a>
 	{% endif %}

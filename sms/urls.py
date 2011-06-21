@@ -1,6 +1,6 @@
 from django.conf.urls.defaults import patterns, url
 from django.views.generic.list import ListView
-from sms.models import sms
+from models import sms
 from datetime import datetime, timedelta
 
 urlpatterns = patterns('',

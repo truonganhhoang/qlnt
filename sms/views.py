@@ -5,7 +5,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext, loader
 from django.views.generic.list import ListView
-from sms.models import sms, smsFromExcelForm
+from models import sms, smsFromExcelForm
 import os
 import urllib
 import urllib2
