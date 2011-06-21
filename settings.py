@@ -196,7 +196,7 @@ LOGGING = {
     }
 }
 
-LOGIN_REDIRECT_URL = '/' 
+LOGIN_REDIRECT_URL = '/school/' 
 
 # Set the message storage backend
 MESSAGE_STORAGE = 'persistent_messages.storage.PersistentMessageStorage'
