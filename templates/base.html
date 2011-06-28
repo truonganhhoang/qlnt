@@ -15,24 +15,33 @@
 </head>
 
 <body>
-<div id="topPan">
-        <a href="{% url views.index %}"><img src="/static/css/images/logo.png" class="logo"/></a>
-        <p>Quản lý nhà trường</p>
-        
-        <div id="topMenuPan">
-            <div id="topMenuMiddlePan">
-				<ul>
-				{% if user.is_authenticated %}
-					<li>Đang đăng nhập: <a href="/profiles/{{user.username}}" > {{user.username}}.</a></li>
-					<li><a href="{% url django.contrib.auth.views.logout %}">Đăng Xuất</a></li>
-					<li><a href="/profiles/{{user.username}}">Hồ sơ</a></li>
-				{% else %}
-					<li><a href="/login">Đăng nhập</a></li> 
-				{% endif %}
-					<li><a href="/help">Trợ giúp</a></li>
-				</ul>
-			</div>
-        </div>
+<div id="topPanel">
+	<a href="{%url school.views.school_index %}"><img src="/static/css/images/logo.png" class="logo" title="Hệ thống quản lý trường {{ user.userprofile.organization.name }}"/></a>	
+	<p>
+		{% if user.is_authenticated %}
+			{{user.userprofile.organization.name}}
+		{% else %}
+			Quản lý nhà trường
+		{% endif %}
+	</p>
+    
+	<div id="topUser">
+		<ul>
+		{% if user.is_authenticated %}
+			<li><a href="/profiles/{{user.username}}"> {{user.username}}</a></li>
+			<li><a href="{%url django.contrib.auth.views.logout %}">Đăng xuất</a></li>
+		{% endif %}
+		</ul>
+	</div>
+	<div id="topMenu">
+		<ul>
+		{% if user.is_authenticated %}
+		{% else %}
+			<li><a href="/login">Đăng nhập</a></li> 
+		{% endif %}
+		<li><a href="/app/contact">Liên hệ</a></li>
+		<li><a href="/help">Trợ giúp</a></li>
+	</div>
 </div>
 
 <div id="subMenuPan">
@@ -45,7 +54,7 @@
 		<a href="{% url app.views.school_admin_add %}">Người quản lý trường</a>
 	{% endif %}
 	{% if user.userprofile.position == 'GIAM_DOC_SO' or user.userprofile.position == 'TRUONG_PHONG' %}
-		<a href="/app/list_org">Danh sách Tổ chức trực thuộc</a>
+		<a href="/app/list_org">Đơn vị trực thuộc</a>
 		<a href="{% url sms.views.manual_sms %}">Gửi tin nhắn</a>
 		<a href="#">Thống kê báo cáo</a>
 		<a href="{% url app.views.school_admin_add %}">Người quản lý trường</a>
@@ -58,7 +67,7 @@
 </div>
 </div>
 
-<div id="bodyPan" onMouseOut="document.getElementById('menu') .style.display='none'">
+<div id="bodyPanel" onMouseOut="document.getElementById('menu') .style.display='none'">
 	{% block content %}
 	{% endblock %}
 </div>

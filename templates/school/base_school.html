@@ -20,36 +20,39 @@
 </head>
 <body>
 
-<div id="topPan">
+<div id="topPanel">
 	<a href="{%url school.views.school_index %}"><img src="/static/css/images/logo.png" class="logo" title="Hệ thống quản lý trường {{ user.userprofile.organization.name }}"/></a>	
-	<p>{{user.userprofile.organization.name}}</p>
+	<p>
+		{% if user.is_authenticated %}
+			{{user.userprofile.organization.name}}
+		{% else %}
+			Quản lý nhà trường
+		{% endif %}
+	</p>
 	
 	<div id="topUser">
 		<ul>
 		<li><a href="/profiles/{{user.username}}"> {{user.username}}</a></li>
 		<li><a href="{%url django.contrib.auth.views.logout %}">Đăng xuất</a></li>
+		<li><a href="/help">Trợ giúp</a></li>
 		</ul>
 	</div>
   
-	<div id="topMenuPan">
-	  <div id="topMenuMiddlePan">
-	  	<ul>
-			<li><a href="{%url school.views.school_index %}">Trang chủ</a></li>
-			{% if user.userprofile.organization.status != 0%}
-			<li><a href="{%url school.views.years %}">Các năm </a></li>
-			<li><a href="{%url school.views.teachers %} ">Giáo viên</a></li>
-			<li><a href="{%url school.views.classes %}">Lớp học</a></li>
-			<li><a title="Sẽ thống kê dữ liệu của kỳ hiện tại" href="{%url school.viewCount.countInSchool %}">Thống kê</a></li>
-			{% endif %}
-			<li><a href="/app/contact">Liên hệ</a></li>
-			<li><a href="/app/help">Trợ giúp</a></li>
-		</ul>
-	  </div>
-	</div>
-	
+  <div id="topMenu">
+  	<ul>
+		<li><a href="{%url school.views.school_index %}">Trang chủ</a></li>
+		{% if user.userprofile.organization.status != 0%}
+		<li><a href="{%url school.views.years %}">Các năm </a></li>
+		<li><a href="{%url school.views.teachers %} ">Giáo viên</a></li>
+		<li><a href="{%url school.views.classes %}">Lớp học</a></li>
+		<li><a title="Sẽ thống kê dữ liệu của kỳ hiện tại" href="{%url school.viewCount.countInSchool %}">Thống kê</a></li>
+		{% endif %}
+		
+	</ul>
+  </div>
 </div>
 
-<div id="body">
+<div id="bodyPanel">
 	<div id="leftMenu">
 	{% block left_menu %}
 	{% if user.userprofile.position == 'HIEU_TRUONG'  or user.userprofile.position == 'HIEU_PHO' %}
