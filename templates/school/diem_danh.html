@@ -41,6 +41,7 @@ $(document).ready(function(){
 				'content': 'Bạn chưa chọn học sinh nào.'		
 			});
 		$(".selected").each( select);
+		$("#selectAll").text("Chọn cả lớp");
 	};	
 	var sendSmS = function(){
 		var id = $(this).attr('name');
@@ -107,7 +108,7 @@ $(document).ready(function(){
 	
 	$("select[name=loai]").each( function(){
 		$(this).change(function(){
-			var id = $(this).parents("tr").attr('class');
+			var id = $(this).parents("tr").attr('class').split(' ')[0];
 			var loai = $(this).val();
 			var data = { id: id, loai:loai, request_type:'update'}
 			var arg ={ type:"POST", 
