@@ -5,25 +5,25 @@
 {% block title %}
 <title> QLNT </title>
 {% endblock %}
-<link href="/static/css/style.css" rel="stylesheet" type="text/css" />
+
 {% block css %}
+<link href="/static/css/style.css" rel="stylesheet" type="text/css" />
 {% endblock %}
+
 {% block js %}
 {% endblock %}
 </head>
+
 <body>
-
-
 <div id="topPan">
         <a href="{% url views.index %}"><img src="/static/css/images/logo.png" class="logo"/></a>
         <p>Quản lý nhà trường</p>
         
         <div id="topMenuPan">
-            
             <div id="topMenuMiddlePan">
 				<ul>
 				{% if user.is_authenticated %}
-					<li><a href="/profiles/{{user.username}}" >Xin chào {{user.username}}.</a></li>
+					<li>Đang đăng nhập: <a href="/profiles/{{user.username}}" > {{user.username}}.</a></li>
 					<li><a href="{% url django.contrib.auth.views.logout %}">Đăng Xuất</a></li>
 					<li><a href="/profiles/{{user.username}}">Hồ sơ</a></li>
 				{% else %}
@@ -39,16 +39,16 @@
 <div id="menu" style="display:none">
 	<p>
 	{% if user.is_superuser %}
-		<a href="/admin">Trang Quản Trị Hệ Thống</a>
+		<a href="/admin">Quản trị hệ thống</a>
 		<a href="/app/list_org">Sơ đồ tổ chức</a>
 		<a href="{% url sms.views.manual_sms %}">Gửi tin nhắn</a>
-		<a href="{% url app.views.school_admin_add %}">Thêm Người Quản Lý Trường</a>
-	{% endif %}     
+		<a href="{% url app.views.school_admin_add %}">Người quản lý trường</a>
+	{% endif %}
 	{% if user.userprofile.position == 'GIAM_DOC_SO' or user.userprofile.position == 'TRUONG_PHONG' %}
 		<a href="/app/list_org">Danh sách Tổ chức trực thuộc</a>
 		<a href="{% url sms.views.manual_sms %}">Gửi tin nhắn</a>
 		<a href="#">Thống kê báo cáo</a>
-		<a href="{% url app.views.school_admin_add %}">Thêm Người Quản Lý Trường</a>
+		<a href="{% url app.views.school_admin_add %}">Người quản lý trường</a>
 		<a href="{% url report.views.index%}">Công văn</a>
 	{% endif %}
 	{% if user.userprofile.position == 'HIEU_TRUONG' or user.userprofile.position == 'HIEU_PHO' or user.userprofile.position == 'GIAO_VIEN' or user.userprofile.position == 'GIAO_VU' or user.userprofile.position == 'HOC_SINH' %}

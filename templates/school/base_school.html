@@ -19,42 +19,40 @@
 {% endblock %}
 </head>
 <body>
+
 <div id="topPan">
-  <a href="{%url school.views.school_index %}"><img src="/static/css/images/logo.png" class="logo" title="Hệ thống quản lý trường {{ user.userprofile.organization.name }}"/></a>	
-  <p>{{user.userprofile.organization.name}}</p>
-		
-  <div id="topContactPan">
-  </div>
+	<a href="{%url school.views.school_index %}"><img src="/static/css/images/logo.png" class="logo" title="Hệ thống quản lý trường {{ user.userprofile.organization.name }}"/></a>	
+	<p>{{user.userprofile.organization.name}}</p>
+	
+	<div id="topUser">
+		<ul>
+		<li><a href="/profiles/{{user.username}}"> {{user.username}}</a></li>
+		<li><a href="{%url django.contrib.auth.views.logout %}">Đăng xuất</a></li>
+		</ul>
+	</div>
+  
 	<div id="topMenuPan">
-	  <div id="topMenuLeftPan"></div>
-	  
 	  <div id="topMenuMiddlePan">
 	  	<ul>
-			<li class="home"><a href="{%url school.views.school_index %}" class="home">Trang chủ</a></li>
+			<li><a href="{%url school.views.school_index %}">Trang chủ</a></li>
 			{% if user.userprofile.organization.status != 0%}
 			<li><a href="{%url school.views.years %}">Các năm </a></li>
 			<li><a href="{%url school.views.teachers %} ">Giáo viên</a></li>
 			<li><a href="{%url school.views.classes %}">Lớp học</a></li>
 			<li><a title="Sẽ thống kê dữ liệu của kỳ hiện tại" href="{%url school.viewCount.countInSchool %}">Thống kê</a></li>
 			{% endif %}
-			<li><a href="#">Liên hệ</a></li>
-			<li class="contact"><a href="/help" class="contact">Trợ giúp</a></li>
+			<li><a href="/app/contact">Liên hệ</a></li>
+			<li><a href="/app/help">Trợ giúp</a></li>
 		</ul>
 	  </div>
-	  <div id="topMenuRightPan"></div>
-	  <div id="topUser">
-			<p>Xin chào,&nbsp </p> <p><a href="/profiles/{{user.username}}" > {{user.username}}</a>,&nbsp</p><p><a href="{%url django.contrib.auth.views.logout %}">Đăng xuất</a></p> 	  
-	  </div>
-	  <div id="topUser">
-	  </div>
 	</div>
+	
 </div>
 
-<div id="bodyPan">
-	<div id="bodyRightPan">
+<div id="body">
+	<div id="leftMenu">
 	{% block left_menu %}
 	{% if user.userprofile.position == 'HIEU_TRUONG'  or user.userprofile.position == 'HIEU_PHO' %}
-  	<h3><span>Chức năng chính</span></h3>
 	<ul>
 		{% if user.userprofile.organization.status == 0  or user.userprofile.organization.status == 3 %}
 		<li><a href="{%url school.views.b1 %}">Bắt đầu năm học mới</a> </li>
@@ -63,24 +61,22 @@
 		<li><a href="{%url school.views.teachers %}">Danh sách giáo viên</a> </li>
 		<li><a href="">Phân công giảng dạy</a> </li>
 		<li><a href="{%url school.views.classes %}">Danh sách lớp học</a> </li>
-		<li><a title="Tính điểm tổng kết toàn trường và quyết định kết thúc học kỳ" href="{%url school.viewFinish.finish %}">Tính điểm tổng kết toàn trường</a> </li>
+		<li><a title="Tính điểm tổng kết toàn trường và quyết định kết thúc học kỳ" href="{%url school.viewFinish.finish %}">Tính điểm tổng kết trường</a> </li>
 		{% endif %}
 	</ul>
-	<h3><span>Chức năng phụ</span></h3>
 	<ul>
 		{% if user.userprofile.organization.status != 0 %}
-		<li><a href="{%url school.views.b1  %}/import">Nhập học sinh từ file excel</a> </li>
-		<li><a href="{%url school.views.b1 %}/manual">Nhập học sinh bằng tay</a> </li>
+		<li><a href="{%url school.views.b1  %}/import">Nhập học sinh từ file Excel</a> </li>
+		<li><a href="{%url school.views.b1 %}/manual">Nhập học sinh trực tiếp</a> </li>
 		<li><a href="{%url school.views.classify %}">Phân lớp</a></li>
 		{% endif %}
-		<li><a href="{%url school.views.class_label %}">Chỉnh sửa danh sách tên lớp học</a> </li>
+		<li><a href="{%url school.views.class_label %}">Đặt tên lớp học</a> </li>
 		<li><a href="#">Thông tin trường học</a> </li>
 	</ul>
 		{%if user.userprofile.organization.status != 0 %}		
 		{% endif %}
   {% else %}
   		{% if user.userprofile.position == 'GIAO_VIEN'%}
-		<h2><span>Menu</span> chính</h2>
 		<ul>
 			<li><a href="#">Lớp chủ nhiệm</a> </li>
 			<li><a href="#">Các lớp giảng dạy</a> </li>
@@ -88,7 +84,6 @@
 		</ul>
 		{% else %}
 			{% if user.userprofile.position == 'HOC_SINH' %}
-				<h2><span>Menu</span> chính</h2>
 				<ul>
 					<li><a href="#">Lớp học</a> </li>
 					<li><a href="#">Điểm</a> </li>
@@ -105,7 +100,7 @@
   {% endif %}
   {% endblock %}
   </div>  
-  <div id="bodyLeftPan">
+  <div id="content">
   	{% block content %}
   	{% endblock %}
   </div>

@@ -1,10 +1,11 @@
 /* CSS Document */
-body{	padding:0px; 
-		margin:0px; 
-		background:url(images/mainbg.gif) 0 0 repeat-x #fff; 
-		color:#5E5E5E; 
-		font:14px/18px Arial, Helvetica, sans-serif;
+body{	
+	padding:0px; 
+	margin:0px; 
+ 	color:#5E5E5E; 
+	font:14px/18px Arial, Helvetica, sans-serif;
 }
+
 div, p, ul, h2, h3, img {
 	padding:0px; 
 	margin:0px;
@@ -22,6 +23,7 @@ table.styleB {
 	border-color: #999999;
 	border-collapse: collapse;
 }
+
 table.styleB th {
 	background-color:#c3dde0;
 	border-width: 1px;
@@ -80,97 +82,121 @@ table.styleA td {
 }
 
 
+.button {
+    padding: 5px 10px;
+    display: inline;
+    background: #777 url(button.png) repeat-x bottom;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    font-weight: bold;
+    border-radius: 5px;
+    text-shadow: 1px 1px #666;
+    }
+.button:hover {
+    background-position: 0 -48px;
+    }
+.button:active {
+    background-position: 0 top;
+    position: relative;
+    top: 1px;
+    padding: 6px 10px 4px;
+}
+
 /*----TOP PANEL----*/
-#topPan{min-width: 1150px ; height:158px; position:relative; margin:0 auto; color:#fff; padding:0px;}
+#topPan{
+	min-width:1024px; 
+	height:108px; 
+	position:relative; 
+	margin:0 auto; 
+	color:#fff; 
+	background-color:#67A7E3;
+	padding:0px;
+}
 #topPan img.logo{
 	width:100px;
 	height:100px;
 	position:absolute;
-	top:10px;
-	left:10px;
+	top:0px;
+	left:0px;
 }
 #topPan p{
-
+	position:absolute;
+	top:30px;
+	left:101px;
+	font:20px Arial, Helvetica, sans-serif;
+	font-weight:bold;
 }
 
-#topContactPan{width:159px; height:51px; position:absolute; top:43px; right:240px;}
-#topContactPan p.callus{background:#0C71A4; color:#fff; width:64px; height:14px; line-height:14px; font-size:14px; font-weight:bold; text-transform:uppercase; padding:0px;}
-#topContactPan p.no{font-size:26px; padding:4px 0 0;}
 
-#topMenuPan{width:100%; height:16px; position:absolute; bottom:9px; left:10px;}
-#topMenuLeftPan{width:69px; height:16px; float:left; background:url(images/menu-leftbg.gif) 0 0 no-repeat;}
-#topMenuMiddlePan{width	: auto; height:16px; float:left;}
-#topUser{width: 200px; height: 16px; float: right;} 
-#topUser p {width: auto; height: 16px; padding: 0 0 0 0; float: left; color:#000000; font:12px/14px "Trebuchet MS",Arial, Helvetica, sans-serif; text-decoration:none; font-weight:bold; text-align:left;}
-#topUser a {width: auto; height: 16px; padding: 0 0 0 0; float: left; color:#4A4A4A; font:12px/14px "Trebuchet MS",Arial, Helvetica, sans-serif; text-decoration:none; font-weight:bold; text-align:left;}
+#topUser{width:50%; height:20px; position:absolute; top:10px; right:1px; }
+#topUser ul{width:auto; height:20px;}
+#topUser ul li{width: 100px; height:20px; border-right:1px solid #E5E5E5; float:left;}
+#topUser ul li p{width:100px; height:20px; display:block; color:#4A4A4A; 
+	text-decoration:none; text-align:center;}
+#topUser ul li a{width:100px; height:20px; display:block; background:#fff; color:#4A4A4A; 
+	text-decoration:none; text-align:center;}
+#topUser ul li a:hover{background:#fff; color:#0574AF; text-decoration:none;}
 
 
-#topMenuMiddlePan ul{width:auto; height:16px;}
-#topMenuMiddlePan ul li{width: 100px; height:16px; border-right:1px solid #E5E5E5; float:left;}
-#topMenuMiddlePan ul li a{width:100px; height:16px; display:block; background:#fff; color:#4A4A4A; font:10px/16px "Trebuchet MS",Arial, Helvetica, sans-serif; text-decoration:none; font-weight:bold; text-align:center; text-transform:uppercase;}
+#topMenuPan{width:100%;height:16px;position:absolute;bottom:5px;left:250px;}
+#topMenuMiddlePan{width: auto; height:16px; float:left;}
+#topMenuMiddlePan ul{width:auto; height:20px;}
+#topMenuMiddlePan ul li{width: 100px; height:20px; border-right:1px solid #E5E5E5; float:left;}
+#topMenuMiddlePan ul li a{width:100px; height:20px; display:block; background:#fff; color:#4A4A4A; 
+	text-decoration:none; text-align:center;}
 #topMenuMiddlePan ul li a:hover{background:#fff; color:#0574AF; text-decoration:none;}
-#topMenuMiddlePan ul li.home{background:#fff; color:#0574AF; text-decoration:none; font:10px/16px "Trebuchet MS",Arial, Helvetica, sans-serif; font-weight:bold; text-align:center; text-transform:uppercase;}
-#topMenuMiddlePan ul li.contact{width:67px; border-right:1px solid #fff;}
-#topMenuMiddlePan ul li.contact a{width:67px; height:16px; display:block; background:#fff; color:#4A4A4A; font:10px/16px "Trebuchet MS",Arial, Helvetica, sans-serif; text-decoration:none; font-weight:bold; text-align:center; text-transform:uppercase;}
-#topMenuMiddlePan ul li.contact a:hover{background:#fff; color:#0574AF; text-decoration:none;}
+/*----END OF TOP PANEL----*/
 
-#topMenuRightPan{width:70px; height:16px; float:left; background:url(images/menu-rightbg.gif) 0 0 no-repeat;}
-/*----/TOP PANEL----*/
+
+
 /*----BODY PANEL----*/
-#bodyPan{width:auto; position:relative; margin:0 auto; padding:25px 0 0;left: 5px; }
-/*----BODY LEFT PANEL----*/
-#bodyLeftPan{ width: 900px; position: relative; float:left; padding:0 36px 0 36px;}
-#bodyLeftPan h2{width:410px; height:30px; background:url(images/border1.gif) 100% 70% no-repeat #fff; color:#00111A; font:28px/28px Georgia, "Times New Roman", Times, serif;}
-#bodyLeftPan h2 span{background:#fff; color:#046598;}
+#body{width:auto; position:relative; margin:0 auto; padding:10px 0 0;left: 10px; }
+/*----BODY CONTENT----*/
+#content{width: 900px; position: relative; float:left; padding:0 36px 0 36px;}
+#content h2{width:410px; height:30px; 
+	background:url(images/border1.gif) 100% 70% no-repeat #fff; 
+	color:#00111A; font:28px/28px Georgia, "Times New Roman", Times, serif;}
+#content h2 span{background:#fff; color:#046598;}
 
-#bodyLeftPan h3{width:410px; height:30px; background:url(images/border2.gif) 100% 70% no-repeat #fff; color:#00111A; font:28px/28px Georgia, "Times New Roman", Times, serif;}
-#bodyLeftPan h3 span{background:#fff; color:#046598;}
+#content h3{width:410px; height:30px; background:url(images/border2.gif) 100% 70% no-repeat #fff; color:#00111A; font:28px/28px Georgia, "Times New Roman", Times, serif;}
+#content h3 span{background:#fff; color:#046598;}
 
-#bodyLeftPan p{padding:7px 0 0;}
-#bodyLeftPan p span{background:#fff; color:#046598; font-weight:bold;}
+#content p{padding:3px 0 0;}
+#content p span{background:#fff; color:#046598; font-weight:bold;}
+#content ul{width:410px; margin:5px 0 0;}
+#content ul li{width:410px; height:20px;}
+#content ul li a{width:390px; height:20px; background:url(images/button.gif) 0 6px no-repeat #fff; color:#1A1A1A; text-decoration:underline; padding:0 0 0 20px;}
+#content ul li a:hover{width:390px; height:20px; background:url(images/button-hover.gif) 0 6px no-repeat #fff; color:#676363; text-decoration:underline;}
 
-#bodyLeftPan ul{width:410px; margin:10px 0 0;}
-#bodyLeftPan ul li{width:410px; height:20px;}
-#bodyLeftPan ul li a{width:390px; height:20px; background:url(images/button.gif) 0 6px no-repeat #fff; color:#1A1A1A; text-decoration:underline; padding:0 0 0 20px;}
-#bodyLeftPan ul li a:hover{width:390px; height:20px; background:url(images/button-hover.gif) 0 6px no-repeat #fff; color:#676363; text-decoration:underline;}
+#content p.more{background:#F3F3F3; color:#003D5C; width:410px; height:11px; margin:25px 0; padding:0px; line-height:11px; font-size:11px; }
+#content p.more a{display:block; width:44px; height:11px; background:#fff; color:#003D5C; text-decoration:none; margin:0 0 0 246px; line-height:11px; text-align:center; padding:0px; text-transform:uppercase;}
+#content p.more a:hover{display:block; width:44px; height:11px; background:#E0DEDE; color:#003D5C; text-decoration:none;}
 
-#bodyLeftPan p.more{background:#F3F3F3; color:#003D5C; width:410px; height:11px; margin:25px 0; padding:0px; line-height:11px; font-size:11px; }
-#bodyLeftPan p.more a{display:block; width:44px; height:11px; background:#fff; color:#003D5C; text-decoration:none; margin:0 0 0 246px; line-height:11px; text-align:center; padding:0px; text-transform:uppercase;}
-#bodyLeftPan p.more a:hover{display:block; width:44px; height:11px; background:#E0DEDE; color:#003D5C; text-decoration:none;}
-
-#bodyLeftNextPan{width:410px; clear:both; padding:10px 0 0;}
-#bodyLeftPan p.next{background:#F3F3F3; color:#003D5C; width:410px; height:11px; padding:0px; line-height:11px; font-size:11px; clear:both; }
-#bodyLeftPan p.next a{display:block; width:44px; height:11px; background:#fff; color:#003D5C; text-decoration:none; margin:0 0 0 246px; line-height:11px; text-align:center; padding:0px; text-transform:uppercase;}
-#bodyLeftPan p.next a:hover{display:block; width:44px; height:11px; background:#E0DEDE; color:#003D5C; text-decoration:none;}
-
-#bookcatagories{width:410px; position:relative; margin:0 auto; padding:5px 0 0;}
-#namePan{width:156px; float:left; background:url(images/name-dot.gif) 100% 85% no-repeat #fff; color:#4F4F4F; font-size:14px; text-transform:uppercase;}
-#nameonePan{width:156px; float:left;}
-#nameonePan ul{width:156px;}
-#nameonePan ul li{width:auto; height:20px; background:url(images/arrow.gif) 0 6px no-repeat #fff; color:#03537D; padding:0 0 0 10px;}
+#content p.next{background:#F3F3F3; color:#003D5C; width:410px; height:11px; padding:0px; line-height:11px; font-size:11px; clear:both; }
+#content p.next a{display:block; width:44px; height:11px; background:#fff; color:#003D5C; text-decoration:none; margin:0 0 0 246px; line-height:11px; text-align:center; padding:0px; text-transform:uppercase;}
+#content p.next a:hover{display:block; width:44px; height:11px; background:#E0DEDE; color:#003D5C; text-decoration:none;}
 
 
-/*----/BODY LEFT PANEL----*/
-/*----BODY RIGHT PANEL----*/
-#bodyRightPan{width:275px; float:left; border:1px solid #DADADA; background:#F3F3F3; color:#1A1A1A; padding:0 0 28px;}
+/*---- LEFT MENU ----*/
+#leftMenu{width:240px; float:left; border:1px solid #DADADA; background:#F3F3F3; color:#1A1A1A; padding:0 0 28px;}
+#leftMenu ul{width:200px; margin:0 0 5px 5px;}
+#leftMenu ul li{width:200px; height:32px;}
+#leftMenu ul li a{width:200px; height:18px; display:block; background:url(images/button.gif) 0 6px no-repeat #F3F3F3; color:#1A1A1A; text-decoration:none; padding:0 0 0 20px;}
+#leftMenu ul li a:hover{background:url(images/button-hover.gif) 0 6px no-repeat #F3F3F3; color:#797878; text-decoration:none;}
 
-#bodyRightPan h2{width:240px; height:35px; display:block; border:1px solid #DADADA; background:#fff; color:#00111A; font:24px/34px Georgia, "Times New Roman", Times, serif; margin:6px 8px 16px; padding:0 0 0 20px;}
-#bodyRightPan h2 span{background:#fff; color:#046598;}
+#leftMenu p{padding:0px 29px 0px 29px;}
 
-#bodyRightPan h3{width:240px; height:35px; display:block; border:1px solid #DADADA; background:#fff; color:#00111A; font:18px/26px Georgia, "Times New Roman", Times, serif; margin:6px 8px 0; padding:0 0 0 20px;}
-#bodyRightPan h3 span{background:#fff; color:#046598;}
+#leftMenu p.more{background:#fff; color:#003D5C; width:220px; height:11px; margin:10px 29px 10px; padding:0px; line-height:11px; }
+#leftMenu p.more a{display:block; width:90px; height:11px; background:#F3F3F3; color:#003D5C; text-decoration:none; margin:0 0 0 60px; font-size:11px; line-height:11px; text-align:center; text-transform:uppercase;}
+#leftMenu p.more a:hover{display:block; width:90px; height:11px; background:#E0DEDE; color:#003D5C; text-decoration:none;}
 
-#bodyRightPan ul{width:225px; margin:0 0 17px 29px;}
-#bodyRightPan ul li{width:225px; height:40px;}
-#bodyRightPan ul li a{width:225px; height:18px; display:block; background:url(images/button.gif) 0 6px no-repeat #F3F3F3; color:#1A1A1A; text-decoration:none; padding:0 0 0 20px;}
-#bodyRightPan ul li a:hover{background:url(images/button-hover.gif) 0 6px no-repeat #F3F3F3; color:#797878; text-decoration:none;}
+/*#leftMenu h2{width:220px; height:25px; display:block; border:1px solid #DADADA; background:#fff; color:#00111A; font:24px/34px Georgia, "Times New Roman", Times, serif; margin:6px 8px 16px; padding:0 0 0 20px;}
+#leftMenu h2 span{background:#fff; color:#046598;}
+#leftMenu h3{width:240px; height:35px; display:block; border:1px solid #DADADA; background:#fff; color:#00111A; font:18px/26px Georgia, "Times New Roman", Times, serif; margin:6px 8px 0; padding:0 0 0 20px;}
+#leftMenu h3 span{background:#fff; color:#046598;}
+*/
 
-#bodyRightPan p{padding:0px 29px 0px 29px;}
-#bodyRightPan p.boldtext{padding:10px 29px 0px; font-size:14px; background:#F3F3F3; color:#1A1A1A; font-weight:bold;}
-
-#bodyRightPan p.more{background:#fff; color:#003D5C; width:220px; height:11px; margin:10px 29px 10px; padding:0px; line-height:11px; }
-#bodyRightPan p.more a{display:block; width:90px; height:11px; background:#F3F3F3; color:#003D5C; text-decoration:none; margin:0 0 0 60px; font-size:11px; line-height:11px; text-align:center; text-transform:uppercase;}
-#bodyRightPan p.more a:hover{display:block; width:90px; height:11px; background:#E0DEDE; color:#003D5C; text-decoration:none;}
 /*----/BODY RIGHT PANEL----*/
 /*----/BODY PANEL----*/
 /*----FOOTER PANEL----*/
@@ -207,11 +233,6 @@ a.footer:hover{
 #footerPan ul a:hover{text-decoration:underline;}
 
 #footerPan p.copyright{width:auto; margin-left: auto; margin-right: auto; background:#F3F3F3; color:#04496D; position:absolute; top:23px; left:40px; font-size:12px;}
-
-#footerPan ul.templateworld{width:auto; background:#F3F3F3; color:#444; display:block; position:absolute; top:40px; left:40px; font-size:10px;}
-#footerPan ul.templateworld li{height:20px;}
-#footerPan ul.templateworld li a{background:#F3F3F3; display:block; color:#444; text-decoration:none;}
-#footerPan ul.templateworld li a:hover{text-decoration:underline;}
 
 /*****quyendt******/
 table.solid_border{
