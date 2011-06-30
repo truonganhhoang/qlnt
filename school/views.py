@@ -650,7 +650,7 @@ def teachers(request, sort_type=1, sort_status=0, page=1):
     school = get_school(request)
     #print sort_type +' ' + sort_status
     if request.method == 'POST':
-        if (request.POST['first_name']):
+        if (request.POST['first_name'].strip()):
             name = request.POST['first_name'].split()
             last_name = ' '.join(name[:len(name)-1])
             first_name = name[len(name)-1]
@@ -662,7 +662,7 @@ def teachers(request, sort_type=1, sort_status=0, page=1):
             birthday = date(int(request.POST['birthday_year']), int(request.POST['birthday_month']), int(request.POST['birthday_day']))
         else:
             birthday = None
-        data = {'first_name':first_name, 'last_name':last_name, 'birthday':birthday, 'sex':request.POST['sex'], 'school_id':school.id, 'birth_place':request.POST['birth_place']}
+        data = {'first_name':first_name, 'last_name':last_name, 'birthday':birthday, 'sex':request.POST['sex'], 'school_id':school.id, 'birth_place':request.POST['birth_place'].strip()}
         form = TeacherForm(data)
         if form.is_valid():
             add_teacher(first_name=data['first_name'], last_name=data['last_name'], school=get_school(request), birthday=birthday, sex=data['sex'], birthplace=data['birth_place'])
