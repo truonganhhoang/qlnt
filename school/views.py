@@ -655,9 +655,9 @@ def teachers(request, sort_type=1, sort_status=0, page=1):
             last_name = ' '.join(name[:len(name)-1])
             first_name = name[len(name)-1]
         else:
-            last_name = None
-            first_name = None
-        print request.POST['birthday_year']
+            last_name = ''
+            first_name = ''
+
         if (int(request.POST['birthday_year']) and int(request.POST['birthday_month']) and int(request.POST['birthday_day'])):
             birthday = date(int(request.POST['birthday_year']), int(request.POST['birthday_month']), int(request.POST['birthday_day']))
         else:
