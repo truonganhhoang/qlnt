@@ -49,7 +49,7 @@ def class_label(request):
         message = request.session['message']
     for loai in school.danhsachloailop_set.all():
         class_labels.append(loai.loai)
-    labels = ' '.join(class_labels)
+    labels = ','.join(class_labels)
     if request.method == 'POST':
         labels = request.POST['labels']
         if ',' in labels:
