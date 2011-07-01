@@ -1,35 +1,47 @@
 ﻿{% extends "school/base_school.html" %}
 
 {% block content %}
+{% if message != None %}
+	{{message}} <br>
+{% endif %}
+	
 <form action="/school/addclass" method="post">{% csrf_token %}
     {{ form.non_field_errors }}
-    <div class="fieldWrapper">
-        {{form.name.errors }}
-        <p><label for="id_first_name">Tên lớp:</label>
-            {{ form.name }}</p>
-    </div>
-
-    <div class="fieldWrapper">
-        {{ form.teacher_id.errors }}
-        <p><label for="id_last_name">Giáo viên chủ nhiệm:</label>
-            {{ form.teacher_id }}</p>
-    </div>
-
-    <div class="fieldWrapper">
-        {{ form.year_id.errors }}
-        <p><label for="id_brithday">Khóa:</label>
-            {{ form.year_id }}</p>
-    </div>
-
-    <div class="fieldWrapper">
-        {{ form.block_id.errors }}
-        <p><label for="id_birth_place">Khối:</label>
-            {{ form.block_id }}</p>
-    </div>
+    <table class="styleA styleDetail" >
+		<tr>
+			<th><label for="id_first_name">Tên lớp:</label></th>
+			<td>
+				{{form.name.errors }}
+        		{{ form.name }}	
+			</td>		
+		</tr>
     
-   {% if message != None %}
-	{{message}} <br>
-	{% endif %}
-	<input type ="submit" value="Thêm"/>
+		<tr>
+			<th><label for="id_last_name">Giáo viên chủ nhiệm:</label></th>
+			<td>
+				{{ form.teacher_id.errors }}
+				{{ form.teacher_id }}			
+			</td>		
+		</tr>    
+    
+		<tr>
+			<th><label for="id_brithday">Khóa:</label></th>
+			<td>
+				{{ form.year_id.errors }}
+				{{ form.year_id }}			
+			</td>		
+		</tr>    
+      
+      <tr>
+			<th><label for="id_birth_place">Khối:</label></th>
+			<td>
+				{{ form.block_id.errors }}
+				{{ form.block_id }}							
+			</td>      
+      </tr>  
+    
+	</table>
+    
+   <input type ="submit" value="Thêm"/>
 </form>
 {% endblock %}

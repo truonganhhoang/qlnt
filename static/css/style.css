@@ -62,6 +62,24 @@ table.styleA tr {
 	cursor: pointer;
 }
 
+table input{
+	width: 95%;
+}
+
+table select{
+	width: 95%;
+}
+
+table select#id_birthday_day{
+	width: auto;	
+}
+table select#id_birthday_month{
+	width: auto;	
+}
+table select#id_birthday_year{
+	width: auto;	
+}
+
 table.styleDetail th{
 	text-align: right;
 }
