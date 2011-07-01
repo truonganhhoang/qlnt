@@ -104,18 +104,19 @@ table.styleA td {
 }
 
 /*----TOP PANEL----*/
-#topPanel{ min-width:1024px; height:108px; position:relative; margin:0 auto; color:#fff; background-color:#67A7E3; padding:0px; }
-#topPanel img.logo{ width:100px; height:100px; position:absolute; top:0px; left:0px; }
-#topPanel p{position:absolute; top:30px; left:101px; font:20px Arial, Helvetica, sans-serif; font-weight:bold; color:green}
+#topPanel{min-width:1024px; width:100%; height:80px; position:relative; margin:0 auto; color:#fff; background-color:#67A7E3; padding:0px;}
+#topPanel img.logo{width:80px; height:40px; position:absolute; top:0px; left:0px;}
+#topPanel p{position:absolute; top:10px; left:90px; font:18px Arial, Helvetica, sans-serif; font-weight:bold; color:black}
 
-#topUser{width:50%; height:20px; position:absolute; top:10px; right:1px; }
+#topUser{width:auto; height:20px; position:absolute; top:0px; right:0px;}
 #topUser ul{width:auto; height:20px;}
-#topUser ul li{width:auto; height:20px; /*border-right:1px solid #E5E5E5;*/ float:left;}
+#topUser ul li{width:auto; height:30px; /*border-right:1px solid #E5E5E5;*/ float:left;}
 #topUser ul li a{width:80px; height:20px; display:block; color:white; 
-	text-decoration:none; text-align:center;}
+	text-decoration:none; text-align:center;
+	padding: 3px 0px 3px;}
 #topUser ul li a:hover{background:#fff; color:#0574AF; text-decoration:none;}
 
-#topMenu{width: auto; height:26px; position:absolute;bottom:5px;left:250px;}
+#topMenu{height:26px; position:absolute; bottom:5px; left:90px;}
 #topMenu ul{width:auto; height:26px;}
 #topMenu ul li{width: auto; height:26px; /*border-right:1px solid #E5E5E5;*/ float:left;}
 #topMenu ul li a{width:auto; height:26px; display:block; /*background:#fff;*/ color:white; 
@@ -130,7 +131,7 @@ table.styleA td {
 /*----BODY PANEL----*/
 #bodyPanel{width:auto; position:relative; margin:0 auto; padding:10px 0 0;left: 10px; }
 /*----BODY CONTENT----*/
-#content{width: 900px; position: relative; float:left; padding:0 36px 0 36px;}
+#content{width: 900px; position:relative; float:left; padding:0 10px 0 10px;}
 #content h2{width:410px; height:30px; 
 	background:url(images/border1.gif) 100% 70% no-repeat #fff; 
 	color:#00111A; font:28px/28px Georgia, "Times New Roman", Times, serif;}
@@ -158,10 +159,10 @@ table.styleA td {
 
 
 /*---- LEFT MENU ----*/
-#leftMenu{width:240px; float:left; border:1px solid #DADADA; background:#F3F3F3; color:#1A1A1A; padding:0 0 28px;}
-#leftMenu ul{width:200px; margin:0 0 5px 5px;}
-#leftMenu ul li{width:200px; height:32px;}
-#leftMenu ul li a{width:200px; height:18px; display:block; background:url(images/button.gif) 0 6px no-repeat #F3F3F3; color:#1A1A1A; text-decoration:none; padding:0 0 0 20px;}
+#leftMenu{width:auto; float:left; border:1px solid #DADADA; background:#F3F3F3; color:#1A1A1A; padding:10px 10px 5px 5px;}
+#leftMenu ul{width:auto; margin:0 0 5px 5px;}
+#leftMenu ul li{width:auto; height:32px;}
+#leftMenu ul li a{width:auto; height:18px; display:block; background:url(images/button.gif) 0 6px no-repeat #F3F3F3; color:#1A1A1A; text-decoration:none; padding:0 0 0 20px;}
 #leftMenu ul li a:hover{background:url(images/button-hover.gif) 0 6px no-repeat #F3F3F3; color:#797878; text-decoration:none;}
 
 #leftMenu p{padding:0px 9px 0px 9px;}
@@ -180,7 +181,7 @@ table.styleA td {
 /*----/BODY PANEL----*/
 /*----FOOTER PANEL----*/
 
-/*****quyendt*****/
+/*
 #footer{
 	width: 100%;
 	background:url(images/footerbg.gif) 0 0 repeat-x #fff;
@@ -200,18 +201,18 @@ a.footer:hover{
 	position:relative;
 	font-size:12px;
 }
-/*****quyendt*****/
+*/
 
-#footermainPan{ width: 100%; margin: auto auto; margin-left: auto; margin-right: auto; height:85px; background:url(images/footerbg.gif) 0 0 repeat-x #fff; color:#010101; clear:both; padding: 72px 0 0;}
+#footerPanel{width: 100%; margin: auto auto; margin-left: auto; margin-right: auto; height:auto; position:absolute; bottom:0px;  
+	color:#010101; clear:both; padding: 1px 0 0;}
+#footerPanel p.copyright{width:auto; margin-left: auto; margin-right: auto; background:#F3F3F3; color:#04496D; font-size:12px; text-align:center}
 
-#footerPan{width:100%; position: relative; margin:auto auto; font-family:"Trebuchet MS",Arial, Helvetica, sans-serif;}
-
-#footerPan ul{width:auto; position: relative; margin:auto auto; margin-left: auto; margin-right: auto;}
-#footerPan li{float: left;}
-#footerPan ul a{padding:0 10px 0; color:#010101; background:#F3F3F3; text-decoration:none;}
-#footerPan ul a:hover{text-decoration:underline;}
-
-#footerPan p.copyright{width:auto; margin-left: auto; margin-right: auto; background:#F3F3F3; color:#04496D; position:absolute; top:23px; left:40px; font-size:12px;}
+/*#footerMenu{width:100%; position: relative; margin:auto auto;}
+#footerMenu ul{width:auto; position: relative; margin:auto auto; margin-left: auto; margin-right: auto;}
+#footerMenu li{float: left;}
+#footerMenu ul a{padding:0 10px 0; color:#010101; background:#F3F3F3; text-decoration:none;}
+#footerMenu ul a:hover{text-decoration:underline;}
+*/
 
 /*****quyendt******/
 table.solid_border{
