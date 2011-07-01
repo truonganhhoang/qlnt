@@ -19,7 +19,7 @@ class UserFunctionTest(TestCase):
     def test_failed_login(self):
         # Wrong username and password
         response = self.client.post('/login/', {'username': 'wrong_username', 'password': ''})
-        self.assertContains(response, "Your username and password didn't match. Please try again.", status_code=200)
+        self.assertContains(response, "TODO .", status_code=200)
     
     def test_logout(self):
         response = self.client.login(username='admin', password='admin')
@@ -27,7 +27,7 @@ class UserFunctionTest(TestCase):
         response = self.client.logout()
         self.assertEqual(response, None)
         response = self.client.post('/logout/')
-        self.assertContains(response, "You logged out successfully.")
+        self.assertContains(response, "TODO .")
  
     def test_user_addition(self):
         response = self.client.post('/login/', {'username': 'admin', 'password': 'admin'})

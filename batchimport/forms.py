@@ -1,3 +1,4 @@
+﻿# -*- coding: utf-8 -*-
 from django import forms
 from batchimport.util import get_model_list, get_column_choice_list, get_model_fields
 import batchimport.batchimport_settings
@@ -6,8 +7,8 @@ import batchimport.batchimport_settings
 import_model_list = get_model_list()
 
 class UploadImportFileForm(forms.Form):
-	model_for_import = forms.ChoiceField(import_model_list, label='What are you importing?')
-	import_file = forms.FileField(label='Select your XLS file:')
+	model_for_import = forms.ChoiceField(import_model_list, label='Bạn đang chuẩn bị nhập dữ liệu gì?')
+	import_file = forms.FileField(label='Chọn file Excel:')
 
 class ImportOptionsForm(forms.Form):
 	show_successful_imports = forms.BooleanField(initial=batchimport.batchimport_settings.BATCH_IMPORT_SHOW_SUCCESSFUL_IMPORTS, required=False)

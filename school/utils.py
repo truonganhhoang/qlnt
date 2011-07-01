@@ -101,8 +101,8 @@ def move_student(school, student, new_class):
                 tkmon.subject_id = subject_in_new_class
                 tkmon.save()       
             else:
-                print student, "moved from ", find.class_id, " to ", _class
-                print "but the subject: ", subject, " doesn't exist"
+                print student, "chuyển từ ", find.class_id, " sang ", _class
+                print "nhưng môn học: ", subject, " không có."
                 #raise Exception("Subject does not exist")   
     student.class_id = new_class
     student.save()      
@@ -130,7 +130,7 @@ def move_student(school, student, new_class):
 def add_student( student = None, start_year = None , year = None, 
                 _class = None, term = None, school = None, school_join_date = None ):
         if not ( student and start_year and term and school ):
-            raise Exception("Student,Start_Year,Term,School can't not be null")
+            raise Exception("Phải có giá trị cho các trường: Student,Start_Year,Term,School.")
         if 'full_name' in student:
             names = student['full_name'].split(" ")
             last_name = ' '.join(names[:len(names)-1])

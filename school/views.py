@@ -523,7 +523,7 @@ def classes(request, sort_type=1, sort_status=0, page=1):
             if str(of) != str(cfl[i]): 
                 if cfl[i].is_valid():
                     cfl[i].save()
-                message = 'You have update some classes'
+                message = 'Thông tin lớp đã được cập nhật.'
             i = i + 1
         cfl.append(ClassForm(school_id, instance=c))		
     list = zip(classList.object_list, cfl)
@@ -775,9 +775,9 @@ def subjectPerClass(request, class_id, sort_type=1, sort_status=0):
                 else:
                     add_subject(subject_name=data['name'], hs=float(data['hs']), teacher=None, _class=_class, term=term)
                     form = SubjectForm(school_id)
-                message = 'You have added new subject'
+                message = 'Môn học mới đã được thêm.'
             else:
-                message = 'Bạn vui lòng sửa một số lỗi sai dưới đây'
+                message = 'Bạn vui lòng sửa một số lỗi sai dưới đây.'
     if int(sort_type) == 1:
         if int(sort_status) == 0:
             subjectList = cl.subject_set.order_by('name')
@@ -1173,7 +1173,7 @@ def deleteTeacher(request, teacher_id):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
-    message = "You have deleted succesfully"
+    message = "Đã xóa xong."
     school = get_school(request)
     s = Teacher.objects.get(id = teacher_id)
     if in_school(request, s.school_id) == False:
@@ -1195,7 +1195,7 @@ def deleteClass(request, class_id):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
-    message = "You have deleted succesfully"
+    message = "Đã xóa xong."
     s = Class.objects.get(id=class_id)
     if in_school(request, s.block_id.school_id) == False:
         return HttpResponseRedirect('/school')
@@ -1208,7 +1208,7 @@ def deleteStudentInClass(request, student_id):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
-    message = "You have deleted succesfully"
+    message = "Đã xóa xong."
     student = Pupil.objects.get(id=student_id)
     class_id = student.class_id
     if in_school(request, class_id.block_id.school_id) == False:
@@ -1222,7 +1222,7 @@ def deleteStudentInSchool(request, student_id):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
-    message = "You have deleted succesfully"
+#    message = "Đã xóa xong."
     sub = Pupil.objects.get(id=student_id)
     if in_school(request, sub.class_id.block_id.school_id) == False:
         return HttpResponseRedirect('/school')

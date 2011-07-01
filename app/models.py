@@ -138,17 +138,16 @@ class AuthenticationForm(forms.Form):
         if username and password:
             self.user_cache = authenticate(username=username, password=password)
             if self.user_cache is None:
-                raise forms.ValidationError("Please enter a correct username and password. Note that both fields are case-sensitive.")
+                raise forms.ValidationError("Hãy nhập đúng tên và mật khẩu và phân biệt chữ hoa, chũ thường.")
             elif not self.user_cache.is_active:
-                raise forms.ValidationError("This account is inactive.")
+                raise forms.ValidationError("Tài khoản này đang bị khóa. Hãy liên hệ quản trị hệ thống.")
         self.check_for_test_cookie()
         return self.cleaned_data
 
     def check_for_test_cookie(self):
         if self.request and not self.request.session.test_cookie_worked():
             raise forms.ValidationError(
-                "Your Web browser doesn't appear to have cookies enabled. "
-                  "Cookies are required for logging in.")
+                "Cookies của trình duyệt chưa được bật. Cần phải bật cookies thì mới sử dụng được.")
 
     def get_user_id(self):
         if self.user_cache:

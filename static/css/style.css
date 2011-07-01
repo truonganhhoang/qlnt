@@ -159,7 +159,8 @@ table.styleA td {
 
 
 /*---- LEFT MENU ----*/
-#leftMenu{width:auto; float:left; border:1px solid #DADADA; background:#F3F3F3; color:#1A1A1A; padding:10px 10px 5px 5px;}
+#leftMenu{width:auto; float:left; border:1px solid #DADADA; background:#F3F3F3; color:#1A1A1A; padding:10px 10px 5px 5px;
+	}
 #leftMenu ul{width:auto; margin:0 0 5px 5px;}
 #leftMenu ul li{width:auto; height:32px;}
 #leftMenu ul li a{width:auto; height:18px; display:block; background:url(images/button.gif) 0 6px no-repeat #F3F3F3; color:#1A1A1A; text-decoration:none; padding:0 0 0 20px;}
@@ -203,8 +204,8 @@ a.footer:hover{
 }
 */
 
-#footerPanel{width: 100%; margin: auto auto; margin-left: auto; margin-right: auto; height:auto; position:absolute; bottom:0px;  
-	color:#010101; clear:both; padding: 1px 0 0;}
+#footerPanel{width: 100%; margin: auto auto; margin-left: auto; margin-right: auto; height:auto; position:relative; top:10px;  
+	color:#010101; clear:both; padding: 1px 0 0; border-top: thin solid;  border-top-color:silver;}
 #footerPanel p.copyright{width:auto; margin-left: auto; margin-right: auto; background:#F3F3F3; color:#04496D; font-size:12px; text-align:center}
 
 /*#footerMenu{width:100%; position: relative; margin:auto auto;}
