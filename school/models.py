@@ -105,8 +105,8 @@ class Block(models.Model):
         return str(self.number)    
         
 class BasicPersonInfo(models.Model):
-    first_name = models.CharField("Tên", max_length = 90)#vi phan nhap bang tay, ho ten se dc luu vao first_name nen max_length phai dc tang len gap doi
     last_name = models.CharField("Họ", max_length = 45, blank = True) # tach ra first_name and last_name de sort va import from excel file
+    first_name = models.CharField("Tên", max_length = 90)#vi phan nhap bang tay, ho ten se dc luu vao first_name nen max_length phai dc tang len gap doi
     birthday = models.DateField("Ngày sinh", null = True, validators = [validate_birthday])
     birth_place = models.CharField("Nơi sinh", max_length = 200, null = True, blank = True)
     dan_toc = models.IntegerField("Dân tộc", choices = DT_CHOICE, blank = True, null = True, default = 1)

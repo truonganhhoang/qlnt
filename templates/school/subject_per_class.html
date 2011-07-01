@@ -9,7 +9,7 @@ function confirmDelete()
 }
 </script>
 <h1>Danh sách môn học lớp {{cl}} học kì {{term}}</h1>
-<table class="styleA" width = "75%" align = "center">
+<table class="styleA" width = "75%" align = "left">
     <tr>
 		<th width="5%"> STT </td>
         <th align="center" width="20%"> <a href="{%url school.views.school_index  %}subjectPerClass/{{class_id}}/1/{{next_status}}">Tên Môn Học</a></th>
@@ -52,12 +52,15 @@ function confirmDelete()
                     {{ form.teacher_id.errors }}
                     <p>{{ form.teacher_id }}</p>
             </td>
+				<td width="10%">&nbsp</td>            
+            <td width = "5%" align = "left"><input type ="submit" value="Thêm"/></td>
+        		
 
         </tr>
 </table>
 <table border = "0" width = "75%" align = "center">
         <tr>
-        		<td width = "5%" align = "left"><input type ="submit" value="Thêm"/></td>
+        		<td width = "5%" align = "left">&nbsp</td>
         		<td align = "right"> <a href = ""> Xuất ra excel </a> </td>
 			</form>
         </tr>

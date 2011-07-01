@@ -41,7 +41,7 @@
   <div id="topMenu">
   	<ul>
 		<li><a href="{%url school.views.school_index %}">Trang chủ</a></li>
-		{% if user.userprofile.organization.status != 0%}
+		{% if user.userprofile.organization.status != 0 %}
 		<li><a href="{%url school.views.years %}">Các năm </a></li>
 		<li><a href="{%url school.views.teachers %} ">Giáo viên</a></li>
 		<li><a href="{%url school.views.classes %}">Lớp học</a></li>
@@ -53,6 +53,11 @@
 </div>
 
 <div id="bodyPanel">
+	
+	<table id="bodyTable">
+	<tr>
+	
+	<td id="tdleftMenu" width="220px">
 	<div id="leftMenu">
 	{% block left_menu %}
 	{% if user.userprofile.position == 'HIEU_TRUONG'  or user.userprofile.position == 'HIEU_PHO' %}
@@ -102,11 +107,18 @@
   		{% endif %}	 	
   {% endif %}
   {% endblock %}
-  </div>  
-  <div id="content">
-  	{% block content %}
-  	{% endblock %}
-  </div>
+    </div>   
+    </td>
+   <td>
+   	<div id="backward_link">
+   	</div> 
+   	<div id="content">  
+   		{% block content %}
+  			{% endblock %}
+  		</div>
+  	</td>
+	</tr>	
+	</table>	
 </div>
 
 

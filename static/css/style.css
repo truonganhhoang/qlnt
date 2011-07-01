@@ -36,7 +36,7 @@ table.styleB tr {
 }
 table.styleB td {
 	border:1px;
-	padding: 2px;
+	#padding: 2px;
 	border-style: solid;
 	border-color: #a9c6c9;
 }
@@ -62,23 +62,10 @@ table.styleA tr {
 	cursor: pointer;
 }
 
-table input{
+table.styleA input{
 	width: 95%;
 }
 
-table select{
-	width: 95%;
-}
-
-table select#id_birthday_day{
-	width: auto;	
-}
-table select#id_birthday_month{
-	width: auto;	
-}
-table select#id_birthday_year{
-	width: auto;	
-}
 
 table.styleDetail th{
 	text-align: right;
@@ -156,9 +143,21 @@ table.styleA td {
 
 
 /*----BODY PANEL----*/
-#bodyPanel{width:auto; position:relative; margin:0 auto; padding:10px 0 0;left: 10px; }
+#bodyPanel{
+	width:auto; 
+	position:relative; 
+	margin:0 auto; 
+	padding:20px 0 0;
+	bottom: 20px;
+}
 /*----BODY CONTENT----*/
-#content{width: 900px; position:relative; float:left; padding:0 10px 0 10px;}
+#content{
+	width: auto; 
+	position:relative; 
+	float:left; 
+	padding:20px 10px 0 10px;
+	min-height: 700px;
+}
 #content h2{width:410px; height:30px; 
 	background:url(images/border1.gif) 100% 70% no-repeat #fff; 
 	color:#00111A; font:28px/28px Georgia, "Times New Roman", Times, serif;}
@@ -185,9 +184,21 @@ table.styleA td {
 */
 
 
+#tdleftMenu{
+	border:1px solid #DADADA; 
+	background:#F3F3F3;  	
+}
+
 /*---- LEFT MENU ----*/
-#leftMenu{width:auto; float:left; border:1px solid #DADADA; background:#F3F3F3; color:#1A1A1A; padding:10px 10px 5px 5px;
-	}
+#leftMenu{
+	width:auto; 
+	float:left; 
+	background:#F3F3F3; 
+	color:#1A1A1A; 
+	top: 120px;
+	padding:10px 10px 5px 5px;
+	position: fixed;	
+}
 #leftMenu ul{width:auto; margin:0 0 5px 5px;}
 #leftMenu ul li{width:auto; height:32px;}
 #leftMenu ul li a{width:auto; height:18px; display:block; background:url(images/button.gif) 0 6px no-repeat #F3F3F3; color:#1A1A1A; text-decoration:none; padding:0 0 0 20px;}
@@ -231,7 +242,14 @@ a.footer:hover{
 }
 */
 
-#footerPanel{width: 100%; margin: auto auto; margin-left: auto; margin-right: auto; height:auto; position:relative; top:10px;  
+#footerPanel{
+	width: 100%; 
+	margin: auto auto; 
+	margin-left: auto; 
+	margin-right: auto; 
+	height:auto; 
+	position: fixed; 
+	bottom:0px;  
 	color:#010101; clear:both; padding: 1px 0 0; border-top: thin solid;  border-top-color:silver;}
 #footerPanel p.copyright{width:auto; margin-left: auto; margin-right: auto; background:#F3F3F3; color:#04496D; font-size:12px; text-align:center}
 

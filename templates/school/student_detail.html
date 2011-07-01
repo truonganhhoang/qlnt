@@ -16,7 +16,7 @@
 	
 <form action="/school/viewStudentDetail/{{id}}" method="post">{% csrf_token %}
     {{ form.non_field_errors }}
-    <table class="styleA">
+    <table class="styleA styleDetail">
 	    {{ form.as_table }}
 	 </table>
    <input type ="submit" value="Cập nhật"/>
