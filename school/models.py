@@ -131,8 +131,8 @@ class BasicPersonInfo(models.Model):
     #class Admin: pass
 
 class Teacher(BasicPersonInfo): 
-    user_id = models.OneToOneField(User, verbose_name = "Tài khoản",null = True, blank = True)
-    school_id = models.ForeignKey(Organization, verbose_name = "Trường", null=True, blank=True)
+    user_id = models.OneToOneField(User, verbose_name = "Tài khoản")
+    school_id = models.ForeignKey(Organization, verbose_name = "Trường")
     
     class Meta:
         verbose_name = "Giáo viên"

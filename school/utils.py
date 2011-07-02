@@ -3,6 +3,8 @@ import os.path
 import datetime
 from school.models import *
 from django.contrib.auth.models import User
+from django.contrib.auth.models import get_hexdigest
+
 
 # date-month-year => time object
 def to_date(value):
@@ -55,8 +57,14 @@ def make_username( first_name = None, last_name = None, full_name = None, start_
     
     return username1
     
-def make_default_password( pw):
-    return pw
+def make_default_password( raw_password):
+    import random
+    algo = 'sha1'
+    salt = get_hexdigest(algo, str(random.random()), str(random.random()))[:5]
+    hsh = get_hexdigest(algo, salt, raw_password)
+    password = '%s$%s$%s' % (algo, salt, hsh)
+
+    return password
         
         
 
