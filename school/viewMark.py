@@ -8,11 +8,26 @@ from school.utils import *
 from django.core.urlresolvers import reverse
 
 import os.path 
-
+import sys
 LOCK_MARK =False
 ENABLE_CHANGE_MARK=True
 
+def thu(request):
+    m1=Mark.objects.get(term_id=1,subject_id=1,student_id=1)
+    p =Pupil.objects.get(id=1)
+    print sys.getsizeof(m1)  
+    print sys.getsizeof(p)
+    print sys.getsizeof(m1.term_id)
+    print m1.__len__()
+    print p.__sizeof__()
 
+    t = loader.get_template(os.path.join('school','thu.html'))
+    
+    c = RequestContext(request, {
+                                }
+                       )
+    return HttpResponse(t.render(c))
+            
 class MarkID:
     def __init__(self,d1,d2,d3,d4,d5,d6,d7,d8,d9,d10,d11,d12,d13,d14,d15,d16):
         self.d1=d1
@@ -457,6 +472,7 @@ def markTable(request,class_id):
         return HttpResponseRedirect( reverse('login'))
 
     selectedClass = Class.objects.get(id__exact = class_id)
+    
     try:        
         if in_school(request,selectedClass.year_id.school_id) == False:
             return HttpResponseRedirect('/school')

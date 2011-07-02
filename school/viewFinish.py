@@ -15,10 +15,14 @@ import os.path
 ENABLE_CHANGE_MARK=True
 
 def finish(request):
+    
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect( reverse('login'))
 
+    
+    if (get_position(request) < 4):
+        return HttpResponseRedirect('/school')
     
     message=None
     
@@ -251,6 +255,19 @@ def xepLoaiHlTheoLop(request,class_id):
             return HttpResponseRedirect('/school')
     except Exception as e:
         return HttpResponseRedirect(reverse('index'))
+    
+    ok=False
+    position = get_position(request)
+    if position ==4: ok=True
+    #kiem tra xem giao vien nay co phai chu nhiem lop nay khong
+    if position ==3:
+        if selectedClass.teacher_id != None:
+            if selectedClass.teacher_id.user_id.id == request.user.id:
+                ok=True
+                 
+    if (not ok):
+        return HttpResponseRedirect('/school')
+
 
     message=None    
     yearChoice  =selectedClass.year_id.id
@@ -401,6 +418,19 @@ def xlCaNamTheoLop(request,class_id):
 
     except Exception as e:
         return HttpResponseRedirect(reverse('index'))
+
+    ok=False
+    position = get_position(request)
+    if position ==4: ok=True
+    #kiem tra xem giao vien nay co phai chu nhiem lop nay khong
+    if position ==3:
+        if selectedClass.teacher_id != None:
+            if selectedClass.teacher_id.user_id.id == request.user.id:
+                ok=True
+                 
+    if (not ok):
+        return HttpResponseRedirect('/school')
+
     
     message=None
 
@@ -583,6 +613,9 @@ def finishTerm(request,term_id=None):
             return HttpResponseRedirect('/school')
     except Exception as e:
         return HttpResponseRedirect(reverse('index'))
+
+    if (get_position(request) < 4):
+        return HttpResponseRedirect('/school')
     
     
     message=None
@@ -736,6 +769,10 @@ def finishYear(request,year_id):
             return HttpResponseRedirect('/school')
     except Exception as e:
         return HttpResponseRedirect(reverse('index'))
+
+    if (get_position(request) < 4):
+        return HttpResponseRedirect('/school')
+
     
     message=None
     
