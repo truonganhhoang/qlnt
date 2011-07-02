@@ -266,7 +266,8 @@ def add_teacher( first_name = None, last_name = None, full_name = None, school =
     teacher.save()
 
 def del_teacher( teacher):
-    teacher.delete()    
+    teacher.user_id.delete()
+    #teacher.delete()    
 # subject_name: string, teacher : Teacher object, _class : Class object
 def add_subject( subject_name = None, hs = 1, teacher = None, _class = None, term = None):
     find = _class.subject_set.filter( name__exact = subject_name)

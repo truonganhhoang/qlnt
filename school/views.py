@@ -1188,7 +1188,8 @@ def deleteTeacher(request, teacher_id):
     for sj in cl:
         sj.teacher_id = None
         sj.save()   
-    s.delete()
+    #s.delete()
+    del_teacher(s)
     return HttpResponseRedirect('/school/teachers')
 
 def deleteClass(request, class_id):
