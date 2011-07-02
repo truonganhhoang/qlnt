@@ -146,13 +146,13 @@ table.styleA td {
 #bodyPanel{
 	width:auto; 
 	position:relative; 
-	margin:0 auto; 
-	padding:20px 0 0;
+	margin:20px auto; 
+	padding:0px 0 0;
 	bottom: 20px;
 }
 /*----BODY CONTENT----*/
 #content{
-	width: auto; 
+	width: 98%; 
 	position:relative; 
 	float:left; 
 	padding:20px 10px 0 10px;

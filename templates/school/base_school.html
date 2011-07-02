@@ -54,7 +54,7 @@
 
 <div id="bodyPanel">
 	
-	<table id="bodyTable">
+	<table id="bodyTable" width="100%">
 	<tr>
 	
 	<td id="tdleftMenu" width="220px">
@@ -111,6 +111,8 @@
     </td>
    <td>
    	<div id="backward_link">
+   		{% block backward_link %}
+   		{% endblock %}
    	</div> 
    	<div id="content">  
    		{% block content %}
