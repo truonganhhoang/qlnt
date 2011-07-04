@@ -2,6 +2,7 @@
 
 {% block content %}
 	{% if user.is_authenticated %}
+	{% if user.username == profile.user.username %}
 	<h1>Thay đổi thông tin cá nhân cho tài khoản: {{ user }} </h1>
 	
 	<div id="edit_profile">
@@ -17,5 +18,6 @@
 		<input type="submit" name="submit" value="Lưu" id="submit">
 		</form>
 	</div>
-	{% endif%}	
+	{% endif %}
+	{% endif %}	
 {% endblock content %}

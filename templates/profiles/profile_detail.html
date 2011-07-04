@@ -1,16 +1,24 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1><center>Thông tin cá nhân của tài khoản: {{user.username}}</center></h1>
+{%if user.username == profile.user.username%}
+<h1><center>Hồ sơ cá nhân của tài khoản: {{user.username}}</center></h1>
 {% if profile %}
-<div id="profile_info">
-	<div id="profile_table">
+<div>
+	<div>
 		<table>
 		<tr>
 		<h4>
 			<ul>
-			<li>Tài khoản: {{ profile.user.username}}</li>
-			<li>Họ và Tên: {{ profile.user.first_name }}</li>
+			<div class="fieldWrapper">
+	        {{form.username.errors }}
+	        <p><label for="id_first_name">tài khoản: </label>
+	            {{ form.profile.user.username }}</p>
+
+    		</div>
+    		<div>
+			<p><label for="id_first_name">Tài khoản: {{ profile.user.username}}</label></p></div>
+			<li>Họ và Tên: {{ profile.user.first_name }} {{profile.user.last_name}}</li>
 			<li>Tổ chức: {{ profile.organization }}</li>
 			<li>Vị trí: {{ profile.position }}</li>
 			<li>Số điện thoại: {{ profile.phone }}</li>
@@ -32,8 +40,9 @@
 		 	{% endif %}
 	 	</ul>
  	</div>
-
+</div>
 {% else %}
+{% endif %}
 {% endif %}
 {% endblock %}
 	
