@@ -170,9 +170,8 @@ def contact(request):
         form = FeedbackForm(request.POST) # A form bound to the POST data
         if form.is_valid():
             c = Feedback(fullname = form.cleaned_data['fullname'] ,
-                              email = form.cleaned_data['email'],
                               phone = form.cleaned_data['phone'],
-                              address = form.cleaned_data['address'],
+                              email = form.cleaned_data['email'],
                               type = form.cleaned_data['type'],
                               content = form.cleaned_data['content'],
                               )

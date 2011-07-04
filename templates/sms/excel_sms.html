@@ -26,18 +26,18 @@
 			</table><br />
             {% if data %}
             	{% autopaginate data 30 %}
-	            <table class="solid_border">
+	            <table class="styleB">
 					<col width=150>
 					<col width=300>
-	            	<tr class="solid_border">
-					<td class="solid_border">Số điện thoại</td>
-					<td class="solid_border">Nội dung</td>
-					</tr class="solid_border">
+	            	<tr >
+					<td >Số điện thoại</td>
+					<td >Nội dung</td>
+					</tr>
 				{% for d in data %}
-					<tr class="solid_border">
-					<td class="solid_border">{{ d.number }}</td>
-					<td class="solid_border">{{ d.content }}</td>
-					</tr class="solid_border">
+					<tr >
+					<td >{{ d.number }}</td>
+					<td >{{ d.content }}</td>
+					</tr>
 				{% endfor %}
 				</table>
             	{% paginate %}

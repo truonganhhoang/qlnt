@@ -7,23 +7,23 @@
 		<h4>Danh sách tin nhắn đã được gửi đi:</h4>
 		{% if sms_list %}
             {% autopaginate sms_list 30 %}
-			<table class="solid_border">
+			<table class="styleB">
 				<col width=150>
 				<col width=200>
 				<col width=300>
 				<col width=180>
-				<tr class="solid_border">
-				<td class="solid_border">Số điện thoại</td>
-				<td class="solid_border">Người nhận</td>				
-				<td class="solid_border">Nội dung</td>
-				<td class="solid_border">Thời gian tạo</td>
+				<tr >
+				<td >Số điện thoại</td>
+				<td >Người nhận</td>				
+				<td >Nội dung</td>
+				<td >Thời gian tạo</td>
 				</tr>
 			{% for s in sms_list %}
-				<tr class="solid_border">
-				<td class="solid_border">{{ s.phone }}</td>
-				<td class="solid_border">{{ s.receiver }}</td>
-				<td class="solid_border">{{ s.content }}</td>
-				<td class="solid_border">{{ s.createdFormat }}</td>
+				<tr >
+				<td >{{ s.phone }}</td>
+				<td >{{ s.receiver }}</td>
+				<td >{{ s.content }}</td>
+				<td >{{ s.createdFormat }}</td>
 				</tr>
 			{% endfor %}
 			</table>

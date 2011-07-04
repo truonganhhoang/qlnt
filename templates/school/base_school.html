@@ -32,29 +32,29 @@
 	
 	<div id="topUser">
 		<ul>
-			<li><a href="/profiles/{{user.username}}" title="Xem hồ sơ người sử dụng"> {{user.username}}</a></li>
-			<li><a href="{%url django.contrib.auth.views.logout %}" title="Thoát ra khỏi hệ thống">Đăng xuất</a></li>
-			<li><a href="/help">Trợ giúp</a></li>
+		<li><a href="/profiles/{{user.username}}" title="Xem hồ sơ người sử dụng"> {{user.username}}</a></li>
+		<li><a href="{%url django.contrib.auth.views.logout %}" title="Thoát ra khỏi hệ thống">Đăng xuất</a></li>
+		<li><a href="/help" title="Xem hướng dẫn sử dụng">Trợ giúp</a></li>
 		</ul>
 	</div>
   
-  <div id="topMenu">
-  	<ul>
+	<div id="topMenu">
+	  	<ul>
 		<li><a href="{%url school.views.school_index %}" title="Trở về trang đầu tiên">Trang chủ</a></li>
 		{% if user.userprofile.organization.status != 0 %}
-		<li><a href="{%url school.views.years %}" title="Xem năm học khác, học kỳ khác">Các năm</a></li>
-		<li><a href="{%url school.views.teachers %}" title="Quản lý giáo viên">Giáo viên</a></li>
-		<li><a href="{%url school.views.classes %}" title="Quản lý lớp học">Lớp học</a></li>
-		<li><a href="{%url school.viewCount.countInSchool %}" title="Xem thông tin thống kê, báo cáo tổng hợp">Thống kê</a></li>
+			<li><a href="{%url school.views.years %}" title="Xem năm học khác, học kỳ khác">Các năm</a></li>
+			<li><a href="{%url school.views.teachers %}" title="Quản lý giáo viên">Giáo viên</a></li>
+			<li><a href="{%url school.views.classes %}" title="Quản lý lớp học">Lớp học</a></li>
+			<li><a href="{%url school.viewCount.countInSchool %}" title="Xem thông tin thống kê, báo cáo tổng hợp">Thống kê</a></li>
+			{% if user.userprofile.position == 'GIAO_VIEN' or user.userprofile.position == 'HIEU_TRUONG' or user.userprofile.position == 'HIEU_PHO' or user.userprofile.position == 'GIAO_VU'%}
+				<li><a href="#" title="Gửi tin nhắn SMS">Nhắn tin</a></li>
+			{% endif %}
 		{% endif %}
-	</ul>
-  </div>
+		</ul>
+	</div>
 </div>
 
 <div id="bodyPanel">
-  <table id="bodyTable" width="100%">
-  <tr>
-  <td id="tdleftMenu" width="200px">
 	<div id="leftMenu">
 	{% block left_menu %}
 	{% if user.userprofile.position == 'HIEU_TRUONG'  or user.userprofile.position == 'HIEU_PHO' %}
@@ -68,8 +68,7 @@
 		<li><a href="{%url school.views.classes %}" title="Khai báo danh sách lớp học của trường">Danh sách lớp học</a> </li>
 		<li><a href="{%url school.viewFinish.finish %}" title="Tính điểm tổng kết toàn trường và quyết định kết thúc học kỳ">Tính điểm tổng kết trường</a> </li>
 		{% endif %}
-	  </ul>
-	  <ul>
+		
 		{% if user.userprofile.organization.status != 0 %}
 		<li><a href="{%url school.views.b1  %}/import">Nhập học sinh từ file Excel</a> </li>
 		<li><a href="{%url school.views.b1 %}/manual">Nhập học sinh trực tiếp</a> </li>
@@ -104,19 +103,17 @@
 	{% endif %}
 	{% endblock %}
     </div>   
-    </td>
-  <td>
-   	<div id="backward_link">
-   		{% block backward_link %}
-   		{% endblock %}
-   	</div> 
-   	<div id="content">  
-   		{% block content %}
-  		{% endblock %}
-  		</div>
-  </td>
-  </tr>	
-  </table>	
+	<div id="rightContent">
+	   	<div id="contentTop">
+	   		{% block backward_link %}
+	   		{% endblock %}
+	   	</div> 
+	   	<div id="content">  
+	   		{% block content %}
+	   		content
+	  		{% endblock %}
+	  	</div>
+	</div>
 </div>
 
 
