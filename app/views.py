@@ -1,5 +1,4 @@
 ﻿# -*- coding: utf-8 -*-
-
 import os.path
 import datetime
 import urlparse
@@ -7,7 +6,7 @@ from django.conf import settings
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
-from app.models import UserForm, Organization, UserProfile, ChangePasswordForm, ContactForm, AuthenticationForm, ReportContact, ResetPassword, ResetPasswordForm
+from app.models import UserForm, Organization, UserProfile, ChangePasswordForm, FeedbackForm, AuthenticationForm, Feedback, ResetPassword, ResetPasswordForm
 #from app.models import PositionTypeForm
 from django.template import RequestContext, loader
 from django import forms
@@ -168,20 +167,19 @@ def login(request, template_name='app/login.html',
 def contact(request):
 #hainhh
     if request.method == 'POST': # If the form has been submitted...
-        form = ContactForm(request.POST) # A form bound to the POST data
+        form = FeedbackForm(request.POST) # A form bound to the POST data
         if form.is_valid():
-            c = ReportContact(fullname = form.cleaned_data['fullname'] ,
+            c = Feedback(fullname = form.cleaned_data['fullname'] ,
                               email = form.cleaned_data['email'],
                               phone = form.cleaned_data['phone'],
                               address = form.cleaned_data['address'],
                               type = form.cleaned_data['type'],
                               content = form.cleaned_data['content'],
-                              
                               )
             c.save()
             return HttpResponseRedirect('/thanks') # Redirect after POST
     else:
-        form = ContactForm() # An unbound form
+        form = FeedbackForm() # An unbound form
 
     return render_to_response('contact.html', {'form': form}, RequestContext(request))
 

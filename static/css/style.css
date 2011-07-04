@@ -36,7 +36,7 @@ table.styleB tr {
 }
 table.styleB td {
 	border:1px;
-	#padding: 2px;
+	/*padding: 2px;*/
 	border-style: solid;
 	border-color: #a9c6c9;
 }
@@ -65,7 +65,6 @@ table.styleA tr {
 table.styleA input{
 	width: 95%;
 }
-
 
 table.styleDetail th{
 	text-align: right;
@@ -96,6 +95,7 @@ table.styleA td {
 .errorlist ul{
 	width: auto;
 }
+
 .button {
     padding: 5px 10px;
     display: inline;
@@ -119,7 +119,7 @@ table.styleA td {
 
 /*----TOP PANEL----*/
 #topPanel{min-width:1024px; width:100%; height:80px; position:relative; margin:0 auto; color:#fff; background-color:#67A7E3; padding:0px;}
-#topPanel img.logo{width:80px; height:40px; position:absolute; top:0px; left:0px;}
+#topPanel img.logo{width:80px; height:40px; position:absolute; top:5px; left:5px;}
 #topPanel p{position:absolute; top:10px; left:90px; font:18px Arial, Helvetica, sans-serif; font-weight:bold; color:black}
 
 #topUser{width:auto; height:20px; position:absolute; top:0px; right:0px;}
@@ -158,8 +158,9 @@ table.styleA td {
 	padding:20px 10px 0 10px;
 	min-height: 700px;
 }
+
 #content h2{width:410px; height:30px; 
-	background:url(images/border1.gif) 100% 70% no-repeat #fff; 
+	/*background:url(images/border1.gif) 100% 70% no-repeat #fff;*/ 
 	color:#00111A; font:28px/28px Georgia, "Times New Roman", Times, serif;}
 #content h2 span{background:#fff; color:#046598;}
 
@@ -191,24 +192,24 @@ table.styleA td {
 
 /*---- LEFT MENU ----*/
 #leftMenu{
-	width:auto; 
+	width:auto;
 	float:left; 
 	background:#F3F3F3; 
 	color:#1A1A1A; 
-	top: 120px;
-	padding:10px 10px 5px 5px;
-	position: fixed;	
+	position:fixed;	
+	top:90px;
+	padding: 5px 0px 5px 0px;
 }
-#leftMenu ul{width:auto; margin:0 0 5px 5px;}
+#leftMenu ul{width:auto; margin:0 0 0px 0px;}
 #leftMenu ul li{width:auto; height:32px;}
-#leftMenu ul li a{width:auto; height:18px; display:block; background:url(images/button.gif) 0 6px no-repeat #F3F3F3; color:#1A1A1A; text-decoration:none; padding:0 0 0 20px;}
-#leftMenu ul li a:hover{background:url(images/button-hover.gif) 0 6px no-repeat #F3F3F3; color:#797878; text-decoration:none;}
+#leftMenu ul li a{width:auto; height:22px; display:block; background-color:#F3F3F3; color:#1A1A1A; text-decoration:none; padding:5px 15px 0px 15px;}
+#leftMenu ul li a:hover{background-color:#67A7E3;  text-decoration:none;}
 
-#leftMenu p{padding:0px 9px 0px 9px;}
-
+/*#leftMenu p{padding:0px 9px 0px 9px;}
 #leftMenu p.more{background:#fff; color:#003D5C; width:220px; height:11px; margin:10px 29px 10px; padding:0px; line-height:11px; }
 #leftMenu p.more a{display:block; width:90px; height:11px; background:#F3F3F3; color:#003D5C; text-decoration:none; margin:0 0 0 60px; font-size:11px; line-height:11px; text-align:center; text-transform:uppercase;}
 #leftMenu p.more a:hover{display:block; width:90px; height:11px; background:#E0DEDE; color:#003D5C; text-decoration:none;}
+*/
 
 /*#leftMenu h2{width:220px; height:25px; display:block; border:1px solid #DADADA; background:#fff; color:#00111A; font:24px/34px Georgia, "Times New Roman", Times, serif; margin:6px 8px 16px; padding:0 0 0 20px;}
 #leftMenu h2 span{background:#fff; color:#046598;}

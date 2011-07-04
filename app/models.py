@@ -157,26 +157,28 @@ class AuthenticationForm(forms.Form):
     def get_user(self):
         return self.user_cache
     
-class ReportContact(models.Model):
+class Feedback(models.Model):
     '''
     Thông tin về các bản báo cáo lỗi hay liên hệ từ khách hàng
     '''
-    fullname = models.CharField('Họ và tên', blank=True, null=False, max_length=100)
-    email = models.EmailField(max_length = 50, blank = True, null = True)
+    fullname = models.CharField('Họ tên', blank=True, null=False, max_length=100)
     phone = models.CharField('Điện thoại', max_length = 20, blank = True, null = True)
-    address = models.CharField('Địa chỉ', blank=True, max_length = 255) #
-    type = models.CharField('Mục liên hệ', max_length=20, choices=CONTACT_CHOICES)
+    email = models.EmailField(max_length = 50, blank = True, null = True)
+    type = models.CharField('Phân loại', max_length=20, choices=CONTACT_CHOICES)
     content = models.TextField('Nội dung', max_length=3000, blank=True, null=False)
 
-
-class ContactForm(forms.Form):
+    class Meta:
+        verbose_name_plural = "Phản hồi"
     
-#Hainhh    
-    fullname = forms.CharField(label = 'Họ Tên',max_length=100)
+    def __unicode__(self):
+        return self.name
+
+class FeedbackForm(forms.Form):
+    #Hainhh    
+    fullname = forms.CharField(label = 'Họ tên',max_length=100)
     phone = forms.CharField(label = 'Điện thoại', max_length = 15)
-    address = forms.CharField(label = 'Địa chỉ liên hệ', max_length = 255)
-    email = forms.EmailField(label = 'Email của bạn')
-    type = forms.CharField(label = 'Loại liên hệ', widget = forms.RadioSelect(choices = CONTACT_CHOICES))
+    email = forms.EmailField(label = 'Email')
+    type = forms.CharField(label = 'Phân loại', widget = forms.RadioSelect(choices = CONTACT_CHOICES))
     content = forms.CharField(label = 'Nội dung' , widget=forms.Textarea)    
 
 class ResetPassword(models.Model):

@@ -40,6 +40,7 @@ def school_index(request):
         return HttpResponseRedirect(reverse('login'))
     context = RequestContext(request)
     return render_to_response(SCHOOL, context_instance=context)
+
 @transaction.commit_on_success
 def class_label(request):
     school = get_school(request)

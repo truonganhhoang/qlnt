@@ -1,25 +1,27 @@
 {% extends "base.html" %}
 
 {%block content %}
+	<br/>
 	<h2>Thông tin liên hệ</h2>
+	<br/>
 	Dịch vụ phần mềm này được Viettel cung cấp miễn phí. Để đăng ký sử dụng, xin vui lòng liên hệ với chúng tôi bằng một trong các cách sau:
 	<ul>
 		<li>Gửi email đến truongphothong@gmail.com. </li>
 		<li>Gọi điện thoại đến: 0462880168.</li>
-		<li>Điền thông tin theo mẫu sau</li>
-	</ul>
+		<li>Gửi yêu cầu theo mẫu sau:</li>
+		</ul>
 		<form action="" method="post">{% csrf_token %}
-			<table>
-			<col width="200">
+			<table class="styleB">
 				{%for field in form %}
-				<tr>
-			    	<td valign="center">{{field.label}}</td>
-			    	<td>{{ field.errors }}<br />{{ field }}<td>
-			    </tr>
+					<tr>
+				    	<td>{{field.label}}:</td>
+				    	<td>{{field.errors}}{{ field }}
+				    	</td>
+				    </tr>
 			    {%endfor%}
 			    <tr>
 			    <td></td>
-			    <td valign = "bottom"><p><input type='submit' value ='Gửi'/></p></td>
+			    <td><input type='submit' value ='Gửi'/></td>
 			    </tr>
 			</table>
 		</form>	
