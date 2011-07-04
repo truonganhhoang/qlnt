@@ -38,7 +38,7 @@ def school_index(request):
         return HttpResponseRedirect(reverse('index'))
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
-    context = RequestContext(request)
+    context = RequestContext(request, {'year': get_current_year(request)})
     return render_to_response(SCHOOL, context_instance=context)
 
 @transaction.commit_on_success

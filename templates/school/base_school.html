@@ -12,7 +12,7 @@
 {% endblock %}
 
 {% block js %}
-<script src="/static/js/jquery.js"></script>
+<script type="text/javascript" src="/static/js/jquery.js"></script>
 <script type="text/javascript" src="/static/fancybox/jquery.fancybox-1.3.4.pack.js"></script>
 <script type="text/javascript" src="/static/fancybox/jquery.easing-1.4.pack.js"></script>
 <script type="text/javascript" src="/static/fancybox/jquery.mousewheel-3.0.4.pack.js"></script>
@@ -29,7 +29,22 @@
 			Quản lý nhà trường
 		{% endif %}
 	</p>
-	
+	<p id="detail">
+		
+		{% if user.userprofile.organization.status == 1 %}
+			Học kì I - Năm học {{year}}
+		{% else %}
+			{% if user.userprofile.organization.status == 2 %}
+				Học kì II - Năm học {{year}}
+			{% else %}
+				{% if user.userprofile.organization.status == 3 %}
+					Học kì hè - Năm học {{year}}
+				{% else %}
+				Chưa bắt đầu năm học
+				{% endif %}
+		   {% endif %}
+		{% endif %}	
+	</p>
 	<div id="topUser">
 		<ul>
 		<li><a href="/profiles/{{user.username}}" title="Xem hồ sơ người sử dụng"> {{user.username}}</a></li>
