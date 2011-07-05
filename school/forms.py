@@ -18,6 +18,8 @@ from school.models import *
 from school.school_settings import *
 import xlrd
     
+TEMP_FILE_LOCATION = os.path.join(os.path.dirname(__file__), 'uploaded')
+
 class BlockForm(forms.ModelForm):
     class Meta:
         model = Block
@@ -142,5 +144,27 @@ class ClassifyForm(forms.Form):
             label += u'[' + str(student.birthday.day ) + '-' + str(student.birthday.month) + '-' + str(student.birthday.year)+']'
             self.fields[str(student.id)] = forms.ChoiceField(label = label, choices=classes, required=False)
             
+CONTENT_TYPES = ['application/vnd.ms-excel']            
+            
+class smsFromExcelForm(forms.Form):
+    file  = forms.Field(label="Chọn file Excel:",
+                        error_messages={'required': 'Bạn chưa chọn file nào để tải lên.'},
+                        widget=forms.FileInput())
+    
+    def clean_file(self):
+        file = self.cleaned_data['file']
+        save_file(file)            
+        filepath = os.path.join(TEMP_FILE_LOCATION, 'sms_input.xls')
         
+        if not file.content_type in CONTENT_TYPES:
+            os.remove(filepath)
+            raise forms.ValidationError(u'Bạn chỉ được phép tải lên file Excel.')
+        elif os.path.getsize(filepath) == 0:
+            raise forms.ValidationError(u'Hãy tải lên một file Excel đúng. File của bạn hiện đang trống.')
+        elif xlrd.open_workbook(filepath).sheet_by_index(0).nrows == 0:
+            raise forms.ValidationError(u'Hãy tải lên một file Excel đúng. File của bạn hiện đang trống.')
+#        if content._size > settings.MAX_UPLOAD_SIZE:
+#            raise forms.ValidationError(_('Please keep filesize under %s. Current filesize %s') % (filesizeformat(settings.MAX_UPLOAD_SIZE), filesizeformat(content._size)))
+        else:
+            return file     
         

@@ -62,7 +62,7 @@
 			<li><a href="{%url school.views.classes %}" title="Quản lý lớp học">Lớp học</a></li>
 			<li><a href="{%url school.viewCount.countInSchool %}" title="Xem thông tin thống kê, báo cáo tổng hợp">Thống kê</a></li>
 			{% if user.userprofile.position == 'GIAO_VIEN' or user.userprofile.position == 'HIEU_TRUONG' or user.userprofile.position == 'HIEU_PHO' or user.userprofile.position == 'GIAO_VU'%}
-				<li><a href="#" title="Gửi tin nhắn SMS">Nhắn tin</a></li>
+				<li><a href="{%url school.sms_views.manual_sms %}" title="Gửi tin nhắn SMS">Nhắn tin</a></li>
 			{% endif %}
 		{% endif %}
 		</ul>

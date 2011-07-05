@@ -1,0 +1,47 @@
+{% extends "school/base_school.html" %}
+{% load pagination_tags %}
+{% block content %}
+{% if user.is_authenticated %}
+		<a href="{%url school.sms_views.manual_sms%}" >Gửi tin nhắn</a>&nbsp-&nbsp<a href="{%url school.sms_views.excel_sms%}" >Gửi tin nhắn từ file Excel</a> 		
+		<form enctype="multipart/form-data" action="" method="post">{% csrf_token %}
+			<table valign="top">
+			<col width="160">
+			<tr>
+				<td></td>
+				<td>{{ error }}</td>
+			</tr>
+			<tr>
+				<td>Chọn file Excel</td>
+				<td><input name="file" type="file" /></td> 
+			</tr>
+			<tr>
+				<td></td>
+            	<td>Hay tải file Excel mẫu <a href="{{ MEDIA_URL }}template_files/sms_template.xls">tại đây.</a></td>
+            </tr>
+            <tr>
+            	<td><p><input type="submit" name="upload" value="Tải lên" /></p></td>
+				<td><p>{% if data %}<input type="submit" name="delete" value="Xóa danh sách hiện tại" />{% endif %}</p></td>
+			</tr>
+			</table><br />
+            {% if data %}
+            	{% autopaginate data 30 %}
+	            <table class="styleB">
+					<col width=150>
+					<col width=300>
+	            	<tr >
+					<td >Số điện thoại</td>
+					<td >Nội dung</td>
+					</tr>
+				{% for d in data %}
+					<tr >
+					<td >{{ d.number }}</td>
+					<td >{{ d.content }}</td>
+					</tr>
+				{% endfor %}
+				</table>
+            	{% paginate %}
+				<p><input type="submit" name="send" value="Gửi" /></p>
+			{% endif %}
+		</form>
+	{% endif %}
+{% endblock %}

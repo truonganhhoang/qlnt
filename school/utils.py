@@ -5,6 +5,7 @@ from school.models import *
 from django.contrib.auth.models import User
 from django.contrib.auth.models import get_hexdigest
 
+TEMP_FILE_LOCATION = os.path.join(os.path.dirname(__file__), 'uploaded')
 
 # date-month-year => time object
 def to_date(value):
@@ -370,3 +371,11 @@ def in_school(request,school_id):
             return False
     except Exception('UserDoesNotHaveAnySchool'):
         return False
+
+def save_file(file):
+    saved_file = open(os.path.join(TEMP_FILE_LOCATION, 'sms_input.xls'), 'wb+')
+    for chunk in file.chunks():
+        saved_file.write(chunk)
+    saved_file.close()
+    return 'sms_input.xls'
+

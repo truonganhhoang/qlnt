@@ -79,6 +79,10 @@ urlpatterns = patterns('',
     
     #top menu
     url(r'years/$', 'school.views.years', name = "years"),
+    url(r'sms/$', 'school.sms_views.manual_sms', name = "manual_sms"),
+    url(r'sms/excel/$', 'school.sms_views.excel_sms', name = "excel_sms"),
+    url(r'sms/sent/$', 'school.sms_views.sent_sms', name = "sent_sms"),
+    url(r'sms/failed/$', 'school.sms_views.failed_sms', name = 'failed_sms'),
     #side menu
     url(r'classlabels/$', 'school.views.class_label', name = "class_label"),
     url(r'classify/$', 'school.views.classify', name = "classify"),
