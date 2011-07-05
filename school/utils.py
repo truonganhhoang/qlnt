@@ -4,6 +4,7 @@ import datetime
 from school.models import *
 from django.contrib.auth.models import User
 from django.contrib.auth.models import get_hexdigest
+from django.core.exceptions import *
 
 TEMP_FILE_LOCATION = os.path.join(os.path.dirname(__file__), 'uploaded')
 
@@ -332,16 +333,18 @@ def get_position(request):
     
 def get_current_year(request):
     school = get_school(request)
+    year = None
     try:
-        return school.year_set.latest('time')
-    except Exception( 'YearDoesNotExist'):
-        return None
+        year = school.year_set.latest('time')
+    except ObjectDoesNotExist as e:
+        pass
+    return year
 
 def get_latest_startyear(request):
     school = get_school(request)
     try:
         return school.startyear_set.latest('time')
-    except Exception( 'StartYearDoesNotExist'):
+    except Exception():
         return None
 
 
