@@ -10,7 +10,10 @@ TEMP_FILE_LOCATION = os.path.join(os.path.dirname(__file__), 'uploaded')
 
 # date-month-year => time object
 def to_date(value):
-    v = value.split('-')
+    if '-' in value:
+        v = value.split('-')
+    else:
+        v = value.split('/')
     return date(int(v[2]), int(v[1]), int(v[0]))
 
 

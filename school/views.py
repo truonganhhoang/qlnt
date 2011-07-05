@@ -38,7 +38,9 @@ def school_index(request):
         return HttpResponseRedirect(reverse('index'))
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
-    context = RequestContext(request, {'year': get_current_year(request)})
+    year = get_current_year(request)
+    request.session['year'] = year
+    context = RequestContext(request)
     return render_to_response(SCHOOL, context_instance=context)
 
 @transaction.commit_on_success
@@ -232,8 +234,10 @@ def classify(request):
     if request.method == "GET":
         if not student_list: message = u'Nhà trường hiện tại chưa có học sinh khóa mới hoặc tất cả đã được phân lớp.'    
     else:
+        print 1
         form = ClassifyForm( request.POST, student_list = student_list, class_list = _class_list)
         if form.is_valid():
+            print 11
             count =0
             for student in student_list:
                 _class = form.cleaned_data[str(student.id)]
@@ -404,7 +408,10 @@ def manual_adding(request):
                 request.session['student_list'] = student_list
             elif request.POST['clickedButton'] == 'add':
                 print "button add has been clicked"
-            
+                
+                
+                
+                
                 diem = float(request.POST['diem_hs_trung_tuyen'])
                 print "diem: ", diem
                 ns = to_date(request.POST['ns_hs_trung_tuyen'])

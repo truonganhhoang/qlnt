@@ -32,13 +32,13 @@
 	<p id="detail">
 		
 		{% if user.userprofile.organization.status == 1 %}
-			Học kì I - Năm học {{year}}
+			Học kì I - Năm học {{request.session.year}}
 		{% else %}
 			{% if user.userprofile.organization.status == 2 %}
-				Học kì II - Năm học {{year}}
+				Học kì II - Năm học {{request.session.year}}
 			{% else %}
 				{% if user.userprofile.organization.status == 3 %}
-					Học kì hè - Năm học {{year}}
+					Học kì hè - Năm học {{request.session.year}}
 				{% else %}
 				Chưa bắt đầu năm học
 				{% endif %}
