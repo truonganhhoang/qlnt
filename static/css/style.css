@@ -1,5 +1,7 @@
 /* CSS Document */
-body{ padding:0px; margin:0px; color:#5E5E5E; font:14px/18px Arial, Helvetica, sans-serif;}
+html {height: 100%;}
+
+body{ height: 100%; padding:0px; margin:0px; color:#5E5E5E; font:14px/18px Arial, Helvetica, sans-serif;}
 
 div, p, ul, h2, h3, img { padding:0px; 	margin:0px; }
 
@@ -70,17 +72,11 @@ table.styleA td {border-width: 1px; padding: 4px; border-style: solid; border-co
 #topMenu ul li a:hover{background:#fff; color:#0574AF; text-decoration:none;}
 
 /*----BODY PANEL----*/
-#bodyPanel{
-	width:100%; 
-}
+#bodyPanel{position:absolute; width:100%;}
+#bodyPanel h2{height:30px; color:#00111A; font:24px/24px Georgia, "Times New Roman", Times, serif; margin-bottom:10px;}
+#bodyPanel p{padding:3px 0 0;}
+#bodyPanel p span{background:#fff; color:#046598; font-weight:bold;}
 
-/* for content with no left menu */
-#singleContent {
-	position:absolute;
-	margin: 10px 20px 10px 20px; 
-} 
-#singleContent h2{width:410px; height:30px; color:#00111A; font:24px/24px Georgia, "Times New Roman", Times, serif; margin:10px 0 10px 0;}
-#singleContent h3{width:410px; height:30px; color:#00111A; font:20px/20px Georgia, "Times New Roman", Times, serif; margin:10px 0 10px 0;}
 
 /* for content with a left menu and a right content */
 /*---- LEFT MENU ----*/
@@ -102,7 +98,7 @@ table.styleA td {border-width: 1px; padding: 4px; border-style: solid; border-co
 
 /*---- CONTENT BODY----*/
 #content{width:98%; position:absolute; top:20px; padding-bottom: 20px; float:left; min-height:700px; min-width:800px; }
-#content h2{width:410px; height:30px; color:#00111A; font:24px/24px Georgia, "Times New Roman", Times, serif; margin-bottom:50px;}
+#content h2{height:30px; color:#00111A; font:24px/24px Georgia, "Times New Roman", Times, serif; margin:5px 0 5px 0;}
 #content h2 span{background:#fff; color:#046598;}
 #content h3{width:410px; height:30px; color:#00111A; font:20px/20px Georgia, "Times New Roman", Times, serif;}
 #content h3 span{background:#fff; color:#046598;}
@@ -113,11 +109,13 @@ table.styleA td {border-width: 1px; padding: 4px; border-style: solid; border-co
 #content ul li{width:auto; height:20px;}
 #content ul li a{width:390px; height:20px; color:#1A1A1A; text-decoration:underline; padding:0 0 0 0px;}
 #content ul li a:hover{width:390px; height:20px; color:#676363; text-decoration:underline;}
-
  
 
 /*----FOOTER PANEL----*/
-#footerPanel{ width: 100%; position: absolute; bottom:0px; color:#010101; clear:both; padding: 1px 0 0; border-top: thin solid silver;
-	margin: auto auto; margin-left: auto; margin-right: auto; height:auto;}
+#footerPanel{
+	position:absolute; 
+	bottom:10px;
+	color:#010101; clear:both; 
+	border-top: thin solid silver;}
 #footerPanel p.copyright{width:auto; margin-left: auto; margin-right: auto; background:#F3F3F3; color:#04496D; font-size:12px; text-align:center}
 

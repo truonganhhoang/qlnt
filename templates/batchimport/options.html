@@ -1,4 +1,4 @@
-{%extends "school/base_school.html" %}
+{%extends "base.html" %}
 
 {% block content %}
 <form id='import_execute_form' action="{% url batchimport_import_options %}" method="POST">{% csrf_token %}

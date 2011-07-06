@@ -2,9 +2,9 @@
 {% load i18n %}
 
 {% block content %}	
-<div id="singleContent">
+<div id="bodyPanel">
+<h2>Đăng nhập</h2>
 	<p>Nhập thông tin đăng nhập hoặc xem <a href="/help">Trợ giúp</a> để được hỗ trợ. </p>
-	<br>
 	<form action="{{ app_path }}" method="post" id="login-form">{% csrf_token %}
 		<table class="login">
 			<col width="160px">
