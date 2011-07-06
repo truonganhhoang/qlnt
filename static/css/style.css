@@ -73,6 +73,8 @@ table.styleA td {border-width: 1px; padding: 4px; border-style: solid; border-co
 #bodyPanel{
 	width:100%; 
 	position:absolute;
+	margin-top: 20px; /*top height = 80*/
+	margin-left: 50px;
 }
 
 /*---- LEFT MENU ----*/

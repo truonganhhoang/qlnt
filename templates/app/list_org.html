@@ -5,7 +5,11 @@
 		{% if user.is_superuser %}
 			{% if list_s %}
 				{% for s in list_s %}
-					<small>+ </small><b><font color="blue" onclick="if(document.getElementById('spoilerS') .style.display=='none') {document.getElementById('spoilerS') .style.display=''}else{document.getElementById('spoilerS') .style.display='none'}">{{ s.name }}</font></b><br />
+					<font id="+">+ </font><font id="-" style="display: none;">- </font>
+					<b><font style="cursor: pointer;" color="blue"
+						onclick="if(document.getElementById('spoilerS').style.display=='none'){document.getElementById('spoilerS').style.display='';} else {document.getElementById('spoilerS').style.display='none';} if(document.getElementById('-').style.display=='none'){document.getElementById('-').style.display='';} else {document.getElementById('-').style.display='none';} if(document.getElementById('+').style.display==''){document.getElementById('+').style.display='none';} else {document.getElementById('+').style.display='';}">
+						{{ s.name }}
+					</font></b><br />
 					<div id="spoilerS" style="display:none">
 					{% if list_p %}
 						<table>
@@ -13,7 +17,11 @@
 						<td></td>
 						<td>
 						{% for p in list_p %}
-							<small>+ </small><font color="blue" onclick="if(document.getElementById('spoiler{{p.id}}') .style.display=='none') {document.getElementById('spoiler{{p.id}}') .style.display=''}else{document.getElementById('spoiler{{p.id}}') .style.display='none'}">{{ p.name }}</font><br />
+							<font id="+{{p.id}}">+ </font><font id="-{{p.id}}" style="display: none;">- </font>
+							<font style="cursor: pointer;" color="blue"
+								onclick="if(document.getElementById('spoiler{{p.id}}').style.display=='none'){document.getElementById('spoiler{{p.id}}').style.display='';} else {document.getElementById('spoiler{{p.id}}').style.display='none';} if(document.getElementById('-{{p.id}}').style.display=='none'){document.getElementById('-{{p.id}}').style.display='';} else {document.getElementById('-{{p.id}}').style.display='none';} if(document.getElementById('+{{p.id}}').style.display==''){document.getElementById('+{{p.id}}').style.display='none';} else {document.getElementById('+{{p.id}}').style.display='';}">
+								{{ p.name }}
+							</font><br />
 							<div id="spoiler{{p.id}}" style="display:none">
 							{% if p.upper_organization == s %}
 								<table>
@@ -41,7 +49,11 @@
 		{% if user.userprofile.position == 'GIAM_DOC_SO' %}
 			{% if list_p %}
 				{% for p in list_p %}
-					<small>+ </small><font color="blue" onclick="if(document.getElementById('spoiler{{p.id}}') .style.display=='none') {document.getElementById('spoiler{{p.id}}') .style.display=''}else{document.getElementById('spoiler{{p.id}}') .style.display='none'}">{{ p.name }}</font><br />
+					<font id="+{{p.id}}">+ </font><font id="-{{p.id}}" style="display: none;">- </font>
+					<font style="cursor: pointer;" color="blue"
+						onclick="if(document.getElementById('spoiler{{p.id}}').style.display=='none'){document.getElementById('spoiler{{p.id}}').style.display='';} else {document.getElementById('spoiler{{p.id}}').style.display='none';} if(document.getElementById('-{{p.id}}').style.display=='none'){document.getElementById('-{{p.id}}').style.display='';} else {document.getElementById('-{{p.id}}').style.display='none';} if(document.getElementById('+{{p.id}}').style.display==''){document.getElementById('+{{p.id}}').style.display='none';} else {document.getElementById('+{{p.id}}').style.display='';}">
+						{{ p.name }}
+					</font><br />
 					<div id="spoiler{{p.id}}" style="display:none">
 					{% if p.upper_organization == user.get_profile.organization %}
 						{% if list_t %}
