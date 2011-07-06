@@ -91,7 +91,7 @@ def manual_sms(request):
             else:
                 content_error = ''
             if(len(phone_list)==0 and len(receiver_list)==0):
-                phone_error = 'Hãy nhập số điện thoại người nhận, hoặc chọn trong danh sách bên dưới.'
+                phone_error = 'Hãy nhập số điện thoại người nhận, hoặc chọn trong danh sách bên trên.'
             else:
                 phone_error = ''
                 

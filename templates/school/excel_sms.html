@@ -2,45 +2,35 @@
 {% load pagination_tags %}
 {% block content %}
 {% if user.is_authenticated %}
-		<a href="{%url school.sms_views.manual_sms%}" >Gửi tin nhắn</a>&nbsp-&nbsp<a href="{%url school.sms_views.excel_sms%}" >Gửi tin nhắn từ file Excel</a> 		
+	<h2>Gửi tin nhắn SMS từ file Excel</h2>
+		<a href="{%url school.sms_views.manual_sms%}" >Nhập trực tiếp</a>
+		<br/><br/>
+		 		
 		<form enctype="multipart/form-data" action="" method="post">{% csrf_token %}
-			<table valign="top">
-			<col width="160">
-			<tr>
-				<td></td>
-				<td>{{ error }}</td>
-			</tr>
-			<tr>
-				<td>Chọn file Excel</td>
-				<td><input name="file" type="file" /></td> 
-			</tr>
-			<tr>
-				<td></td>
-            	<td>Hay tải file Excel mẫu <a href="{{ MEDIA_URL }}template_files/sms_template.xls">tại đây.</a></td>
-            </tr>
-            <tr>
-            	<td><p><input type="submit" name="upload" value="Tải lên" /></p></td>
-				<td><p>{% if data %}<input type="submit" name="delete" value="Xóa danh sách hiện tại" />{% endif %}</p></td>
-			</tr>
-			</table><br />
+			<p class="errorlist">{{ error }}</p>
+			<p>Chọn file Excel (theo <a href="{{ MEDIA_URL }}template_files/sms_template.xls">mẫu</a>):
+			<input name="file" type="file" /></p>
+			<input type="submit" name="upload" value="Xem trước"/>
+			<br />
             {% if data %}
             	{% autopaginate data 30 %}
 	            <table class="styleB">
-					<col width=150>
-					<col width=300>
-	            	<tr >
-					<td >Số điện thoại</td>
-					<td >Nội dung</td>
-					</tr>
+	            <col width=100>
+	            <col width=500/>
+            	<tr >
+					<th>Số điện thoại</th>
+					<th>Nội dung</th>
+				</tr>
 				{% for d in data %}
 					<tr >
-					<td >{{ d.number }}</td>
-					<td >{{ d.content }}</td>
+						<td>{{ d.number }}</td>
+						<td>{{ d.content }}</td>
 					</tr>
 				{% endfor %}
 				</table>
             	{% paginate %}
-				<p><input type="submit" name="send" value="Gửi" /></p>
+				<input type="submit" name="delete" value="Hủy"/>
+				<input type="submit" name="send" value="Gửi"/>
 			{% endif %}
 		</form>
 	{% endif %}

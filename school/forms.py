@@ -126,7 +126,7 @@ class UploadImportFileForm(forms.Form):
         print "in form: ", class_list
         super(UploadImportFileForm, self).__init__(*args, ** kwargs)
         self.fields['the_class'] = forms.ChoiceField(label=u'Chọn lớp:', choices=class_list, required=False)
-        self.fields['import_file'] = forms.FileField(label=u'Chọn file excel:')
+        self.fields['import_file'] = forms.FileField(label=u'Chọn file Excel:')
         
 class ManualAddingForm(forms.Form):
     def __init__(self, * args, ** kwargs):
@@ -143,7 +143,6 @@ class ClassifyForm(forms.Form):
             label = ' '.join([student.last_name, student.first_name])
             label += u'[' + str(student.birthday.day ) + '-' + str(student.birthday.month) + '-' + str(student.birthday.year)+']'
             self.fields[str(student.id)] = forms.ChoiceField(label = label, choices=classes, required=False)
-            
 CONTENT_TYPES = ['application/vnd.ms-excel']            
             
 class smsFromExcelForm(forms.Form):

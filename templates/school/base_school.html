@@ -78,9 +78,7 @@
 		<li><a href="{%url school.views.b1 %}">Bắt đầu năm học mới</a> </li>
 		{% endif %}
 		{% if user.userprofile.organization.status != 0 %}
-		<li><a href="{%url school.views.teachers %}" title="Quản lý danh sách giáo viên">Danh sách giáo viên</a> </li>
 		<li><a href="" title="Phân công giáo viên dạy lớp nào, môn nào">Phân công giảng dạy</a> </li>
-		<li><a href="{%url school.views.classes %}" title="Khai báo danh sách lớp học của trường">Danh sách lớp học</a> </li>
 		<li><a href="{%url school.viewFinish.finish %}" title="Tính điểm tổng kết toàn trường và quyết định kết thúc học kỳ">Tính điểm tổng kết trường</a> </li>
 		{% endif %}
 		
