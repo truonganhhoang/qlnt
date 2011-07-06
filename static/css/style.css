@@ -145,7 +145,8 @@ table.styleA td {
 #bodyPanel{
 	width:100%; 
 	position:absolute;
-	top:82px; /*top height = 80*/ 
+	margin-top: 20px; /*top height = 80*/
+	left: 50px; 
 }
 
 /*---- LEFT MENU ----*/

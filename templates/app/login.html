@@ -1,30 +1,29 @@
 {% extends "base.html" %}
 {% load i18n %}
 
-{% block content %}
-<p>Nhập thông tin đăng nhập hoặc xem <a href="/help">Trợ giúp</a> để được hỗ trợ. </p>
-<br>
-<form action="{{ app_path }}" method="post" id="login-form">{% csrf_token %}
-	<table class="login">
-		<col width="160px">
-		<tr>
-		<td valign="bottom">Tên đăng nhập</td>
-		<td>{% if not form.this_is_the_login_form.errors %}{{ form.username.errors }}{% endif %}
-		{{ form.username }}</td>
-    	</tr>
-    	<tr>
-    	<td valign="bottom">Mật khẩu</td>
-    	<td>{% if not form.this_is_the_login_form.errors %}{{ form.password.errors }}{% endif %}
-	    {{ form.password }}</td>
-		</tr>
-		<tr>
-		<td></td>
-    	<td><input type="submit" value="Đăng nhập" /></td>
-    	</tr>
-    </table>
-</form>
-
-<script type="text/javascript">
-document.getElementById('id_username').focus()
-</script>
+{% block content %}	
+	<p>Nhập thông tin đăng nhập hoặc xem <a href="/help">Trợ giúp</a> để được hỗ trợ. </p>
+	<br>
+	<form action="{{ app_path }}" method="post" id="login-form">{% csrf_token %}
+		<table class="login">
+			<col width="160px">
+			<tr>
+			<td valign="bottom">Tên đăng nhập</td>
+			<td>{% if not form.this_is_the_login_form.errors %}{{ form.username.errors }}{% endif %}
+			{{ form.username }}</td>
+	    	</tr>
+	    	<tr>
+	    	<td valign="bottom">Mật khẩu</td>
+	    	<td>{% if not form.this_is_the_login_form.errors %}{{ form.password.errors }}{% endif %}
+		    {{ form.password }}</td>
+			</tr>
+			<tr>
+			<td></td>
+	    	<td><input type="submit" value="Đăng nhập" /></td>
+	    	</tr>
+	    </table>
+	</form>
+	<script type="text/javascript">
+		document.getElementById('id_username').focus()
+	</script>
 {% endblock %}
