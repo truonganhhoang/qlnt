@@ -1,6 +1,9 @@
 {%extends "school/base_school.html" %}
 
 {% block content %}
+<h2>Nhập học sinh</h2>
+<a href= {% url school.views.manual_adding %}>Nhập trực tiếp</a>
+<br/><br/>
 {% if form.errors %}
 <p>{{ form.errors }}</p>
 {% endif %}

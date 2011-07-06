@@ -2,22 +2,18 @@
 {% load pagination_tags %}
 
 {% block content %}
+<h2>Kết quả gửi tin nhắn</h2>
+<br>
 	{% if user.is_authenticated %}
-		<a href="{%url school.sms_views.sent_sms %}">Những tin nhắn gửi đi thành công</a>&nbsp-&nbsp
-		<a href="{%url school.sms_views.failed_sms %}">Những tin nhắn gửi đi thất bại</a>
-		<h4>Danh sách tin nhắn đã được gửi đi:</h4>
 		{% if sms_list %}
+			<h3>Các tin nhắn đã được gửi đi:</h3>
             {% autopaginate sms_list 30 %}
 			<table class="styleB">
-				<col width=150>
-				<col width=200>
-				<col width=300>
-				<col width=180>
 				<tr >
-				<td >Số điện thoại</td>
-				<td >Người nhận</td>				
-				<td >Nội dung</td>
-				<td >Thời gian tạo</td>
+				<th >Số điện thoại</th>
+				<th >Người nhận</th>				
+				<th >Nội dung</th>
+				<th >Thời gian gửi</th>
 				</tr>
 			{% for s in sms_list %}
 				<tr >
@@ -32,6 +28,33 @@
 		{% else %}
 		    <p>Không có tin nhắn nào đã được gửi đi.</p>
 		{% endif %}
+		<br>
+		{% if sms_list_failed %}
+			<h3>Các tin nhắn không gửi được:</h3>
+            {% autopaginate sms_list 30 %}
+			<table class="styleB">
+				<tr >
+				<th >Số điện thoại</th>
+				<th >Người nhận</th>
+				<th >Nội dung</th>
+				<th >Thời gian gửi</th>
+				<th >Lý do</th>
+				</tr>
+			{% for s in sms_list %}
+				<tr >
+				<td >{{ s.phone }}</td>
+				<td >{{ s.receiver }}</td>
+				<td >{{ s.content }}</td>
+				<td >{{ s.createdFormat }}</td>
+				<td >todo</td>
+				</tr>
+			{% endfor %}
+			</table>
+            {% paginate %}
+		{% else %}
+		    <p>Không có tin nhắn nào đã được gửi đi.</p>
+		{% endif %}
+
 	{% endif %}
 {% endblock %}
 

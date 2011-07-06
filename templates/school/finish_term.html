@@ -4,18 +4,11 @@
 {% if message != None %}
 	{{message}}
 {% endif %}
-<table width="100%" border=0>
-	<tr>
-		<td align=center style="font-size:25px" >
+<p align=center style="font-size:25px" >
 		<b> Tổng kết học kỳ {{ selectedTerm.number}} </b>
-		</td>
-	</tr>	
-	<tr>
-		<td align=center style="font-size:25px" >
-		       <b>    Năm học : {{yearString}}  </b>
-		</td>
-	</tr>
-</table>
+		<br><br>
+	    <b>    Năm học : {{yearString}}  </b>
+</p>
 <br>
 {#----------------------------------------------------#}
 
@@ -25,8 +18,8 @@
 <form action="/school/finishTerm/{{selectedTerm.id}}"  name="info" method="post" id='myform' 
 	 >{% csrf_token %}    
 	 {% ifequal selectedTerm currentTerm %}	 
-		Trạng thái học kỳ:
-		<span style="color:0043A8 ; font-size:23px">	Đang diễn ra  		</span>	
+		Thông tin học kỳ:
+		<span style="color:red;"> Đang diễn ra</span>	
 		&nbsp&nbsp&nbsp
 		<input type="submit"  name="finishTerm" value="click vào đây để kết thúc học kỳ" title="Sau khi click thì trạng thái trường sẽ chuyển sang kì tiếp theo và khóa sổ điểm đối với giáo viên ">
      {% endifequal %}

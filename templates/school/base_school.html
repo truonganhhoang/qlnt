@@ -79,12 +79,12 @@
 		{% endif %}
 		{% if user.userprofile.organization.status != 0 %}
 		<li><a href="" title="Phân công giáo viên dạy lớp nào, môn nào">Phân công giảng dạy</a> </li>
-		<li><a href="{%url school.viewFinish.finish %}" title="Tính điểm tổng kết toàn trường và quyết định kết thúc học kỳ">Tính điểm tổng kết trường</a> </li>
+		<li><a href="{%url school.viewFinish.finish %}" title="Tính điểm tổng kết toàn trường và quyết định kết thúc học kỳ">Tính điểm tổng kết</a> </li>
 		{% endif %}
 		
 		{% if user.userprofile.organization.status != 0 %}
-		<li><a href="{%url school.views.b1  %}/import">Nhập học sinh từ file Excel</a> </li>
-		<li><a href="{%url school.views.b1 %}/manual">Nhập học sinh trực tiếp</a> </li>
+		<li><a href="{%url school.views.b1  %}/import">Nhập học sinh</a> </li>
+					<!--li><a href="{%url school.views.b1 %}/manual">Nhập học sinh</a> </li--!>
 		<li><a href="{%url school.views.classify %}">Phân lớp</a></li>
 		{% endif %}
 		<li><a href="{%url school.views.class_label %}">Đặt tên lớp học</a> </li>

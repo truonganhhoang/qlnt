@@ -256,9 +256,10 @@ def excel_sms(request):
 
 def sent_sms(request):
     print "sent_sms view"
-    sms_list = sms.objects.filter(sender=request.user,recent=True,success=True)
+    sms_list_sent = sms.objects.filter(sender=request.user,recent=True,success=True)
+    sms_list_failed = sms.objects.filter(sender=request.user,recent=True,success=False)
     t = loader.get_template('school/sent_sms.html')
-    c = RequestContext(request, {'sms_list': sms_list})
+    c = RequestContext(request, {'sms_list': sms_list_sent, 'sms_list_failed':sms_list_failed})
     return HttpResponse(t.render(c))
 
 def failed_sms(request):
