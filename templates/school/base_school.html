@@ -21,7 +21,7 @@
 <body>
 
 <div id="topPanel">
-	<a href="{%url school.views.school_index %}"><img src="/static/css/images/logo.png" class="logo" title="Hệ thống quản lý trường {{ user.userprofile.organization.name }}"/></a>	
+	<a href="{%url school.views.school_index %}"><img src="/static/css/images/logo.png" class="logo" alt="logo" title="{{ user.userprofile.organization.name }}"/></a>	
 	<p>
 		{% if user.is_authenticated %}
 			{{user.userprofile.organization.name}}

@@ -2,6 +2,7 @@
 {% load i18n %}
 
 {% block content %}	
+<div id="singleContent">
 	<p>Nhập thông tin đăng nhập hoặc xem <a href="/help">Trợ giúp</a> để được hỗ trợ. </p>
 	<br>
 	<form action="{{ app_path }}" method="post" id="login-form">{% csrf_token %}
@@ -26,4 +27,5 @@
 	<script type="text/javascript">
 		document.getElementById('id_username').focus()
 	</script>
+</div>
 {% endblock %}
