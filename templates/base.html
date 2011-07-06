@@ -69,28 +69,34 @@
   
 	<div id="topMenu">
 	  	<ul>
-		{% if user.is_superuser %}
-			<li><a href="/admin" title="Mở trình quản trị sẵn có của hệ thống">Duyệt CSDL</a></li>
-			<li><a href="/app/list_org">Sơ đồ tổ chức</a></li>
-			<li><a href="{% url app.views.school_admin_add %}">Người quản trị trường</a></li>
-		{% endif %}
-		
-		{% if user.userprofile.position == 'GIAM_DOC_SO' or user.userprofile.position == 'TRUONG_PHONG' %}
-			<li><a href="/app/list_org">Đơn vị trực thuộc</a></li>
-			<li><a title="Chưa thực hiện">Thống kê báo cáo</a></li>
-		{% endif %}
-		
-		{% if user.userprofile.position == 'HIEU_TRUONG' or user.userprofile.position == 'HIEU_PHO' or user.userprofile.position == 'GIAO_VIEN' or user.userprofile.position == 'GIAO_VU' or user.userprofile.position == 'HOC_SINH' %}
-			<li><a href="{%url school.views.school_index %}" title="Trở về trang đầu tiên">Trang chủ</a></li>
-			{% if user.userprofile.organization.status != 0 %}
-				<li><a href="{%url school.views.years %}" title="Xem năm học khác, học kỳ khác">Các năm</a></li>
-				<li><a href="{%url school.views.teachers %}" title="Quản lý giáo viên">Giáo viên</a></li>
-				<li><a href="{%url school.views.classes %}" title="Quản lý lớp học">Lớp học</a></li>
-				<li><a href="{%url school.viewCount.countInSchool %}" title="Xem thông tin thống kê, báo cáo tổng hợp">Thống kê</a></li>
-				{% if user.userprofile.position == 'GIAO_VIEN' or user.userprofile.position == 'HIEU_TRUONG' or user.userprofile.position == 'HIEU_PHO' or user.userprofile.position == 'GIAO_VU'%}
-					<li><a href="{%url school.sms_views.manual_sms %}" title="Gửi tin nhắn SMS">Nhắn tin</a></li>
+		{% if user.is_authenticated %}
+			{% if user.is_superuser %}
+				<li><a href="/admin" title="Mở trình quản trị sẵn có của hệ thống">Duyệt CSDL</a></li>
+				<li><a href="/app/list_org">Sơ đồ tổ chức</a></li>
+				<li><a href="{% url app.views.school_admin_add %}">Người quản trị trường</a></li>
+			{% endif %}
+			
+			{% if user.userprofile.position == 'GIAM_DOC_SO' or user.userprofile.position == 'TRUONG_PHONG' %}
+				<li><a href="/app/list_org">Đơn vị trực thuộc</a></li>
+				<li><a title="Chưa thực hiện">Thống kê báo cáo</a></li>
+			{% endif %}
+			
+			{% if user.userprofile.position == 'HIEU_TRUONG' or user.userprofile.position == 'HIEU_PHO' or user.userprofile.position == 'GIAO_VIEN' or user.userprofile.position == 'GIAO_VU' or user.userprofile.position == 'HOC_SINH' %}
+				<li><a href="{%url school.views.school_index %}" title="Trở về trang đầu tiên">Trang chủ</a></li>
+				{% if user.userprofile.organization.status != 0 %}
+					<li><a href="{%url school.views.years %}" title="Xem năm học khác, học kỳ khác">Các năm</a></li>
+					<li><a href="{%url school.views.teachers %}" title="Quản lý giáo viên">Giáo viên</a></li>
+					<li><a href="{%url school.views.classes %}" title="Quản lý lớp học">Lớp học</a></li>
+					<li><a href="{%url school.viewCount.countInSchool %}" title="Xem thông tin thống kê, báo cáo tổng hợp">Thống kê</a></li>
+					{% if user.userprofile.position == 'GIAO_VIEN' or user.userprofile.position == 'HIEU_TRUONG' or user.userprofile.position == 'HIEU_PHO' or user.userprofile.position == 'GIAO_VU'%}
+						<li><a href="{%url school.sms_views.manual_sms %}" title="Gửi tin nhắn SMS">Nhắn tin</a></li>
+					{% endif %}
 				{% endif %}
 			{% endif %}
+		{% else %}
+			<li><a href="{%url app.views.login %}" title="Đăng nhập để sử dụng hệ thống">Đăng nhập</a></li>
+			<li><a href="/help" title="Xem hướng dẫn sử dụng">Trợ giúp</a></li>
+			<li><a href="{%url app.views.contact %}" title="Gửi thông tin về hệ thống">Liên hệ</a></li>
 		{% endif %}
 		</ul>
 	</div>
@@ -159,7 +165,7 @@
 </div>
 
 <div id="footerPanel">
-	<p class="copyright">©FreeSchool 2011 by Viettel & VNU Hanoi </p>
+	<p class="copyright">©2011 by Viettel and VNU Hanoi </p>
 </div>
 
 </body>

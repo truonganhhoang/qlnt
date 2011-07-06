@@ -81,7 +81,7 @@ table.styleA td {border-width: 1px; padding: 4px; border-style: solid; border-co
 /* for content with a left menu and a right content */
 /*---- LEFT MENU ----*/
 #leftMenu{
-	width:auto; min-width:200px; float:left; background-color:#F3F3F3; color:#1A1A1A; 
+	width:auto; min-width:180px; float:left; background-color:#F3F3F3; color:#1A1A1A; 
 	position:absolute; /* not fixed tam thoi de cho no move theo da */
 	top:10px; left:5px;	
 }
