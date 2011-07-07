@@ -84,13 +84,13 @@
 			{% ifnotequal m.mieng_1 None%}
 			<td>
 				<input type="text" name={{id.d1}} id="101" value={{m.mieng_1|floatformat:"-2"}} style="width:26px ; border:0px" align="center" 
-				onkeydown="controlDirection(this,event)" onkeyup="acceptDigits(this)">
+				onkeyup="acceptDigits(this);controlDirection(this,event)">
 			</td>
 			{% else %}
 
 			<td>
 				<input type="text" name={{id.d1}} value="" style="width:26px ; border:0px" align="center" 
-				onkeydown="controlDirection(this,event)" onkeyup="acceptDigits(this)">
+				onkeyup="acceptDigits(this);controlDirection(this,event)">
 			</td>
 			{% endifnotequal %}
 
@@ -99,13 +99,13 @@
 			{% ifnotequal m.mieng_2 None%}
 			<td>
 				<input type="text" name={{id.d2}} value={{m.mieng_2|floatformat:"-2"}} style="width:26px ; border:0px" align="center" 
-								onkeydown="controlDirection(this,event)" onkeyup="acceptDigits(this)">
+								onkeyup="acceptDigits(this);controlDirection(this,event)">
 			</td>
 			{% else %}
 
 			<td>
 				<input type="text" name={{id.d2}} value="" style="width:26px ; border:0px" align="center" 
-								onkeydown="controlDirection(this,event)" onkeyup="acceptDigits(this)">
+								onkeyup="acceptDigits(this);controlDirection(this,event)">
 			</td>
 			{% endifnotequal %}
 
@@ -113,161 +113,161 @@
 			{% ifnotequal m.mieng_3 None%}
 			<td>
 				<input type="text" name={{id.d3}} value={{m.mieng_3|floatformat:"-2"}} style="width:26px ; border:0px" align="center" 
-								onkeydown="controlDirection(this,event)" onkeyup="acceptDigits(this)">
+								onkeyup="acceptDigits(this);controlDirection(this,event)">
 			</td>
 			{% else %}
 
 			<td>
 				<input type="text" name={{id.d3}} value="" style="width:26px ; border:0px" align="center" 
-								onkeydown="controlDirection(this,event)" onkeyup="acceptDigits(this)">
+								onkeyup="acceptDigits(this);controlDirection(this,event)">
 			</td>
 			{% endifnotequal %}
 
 			{% ifnotequal m.mieng_4 None%}
 			<td>
 				<input type="text" name={{id.d4}} value={{m.mieng_4|floatformat:"-2"}} style="width:26px ; border:0px" align="center" 				
-								onkeydown="controlDirection(this,event)" onkeyup="acceptDigits(this)">
+								onkeyup="acceptDigits(this);controlDirection(this,event)">
 			</td>
 			{% else %}
 
 			<td>
 				<input type="text" name={{id.d4}} value="" style="width:26px ; border:0px" align="center" 
-								onkeydown="controlDirection(this,event)" onkeyup="acceptDigits(this)">
+								onkeyup="acceptDigits(this);controlDirection(this,event)">
 			</td>
 			{% endifnotequal %}
 
 			{% ifnotequal m.mieng_5 None%}
 			<td>
 				<input type="text" name={{id.d5}} value={{m.mieng_5|floatformat:"-2"}} style="width:26px ; border:0px" align="center" 
-								onkeydown="controlDirection(this,event)" onkeyup="acceptDigits(this)">
+								onkeyup="acceptDigits(this);controlDirection(this,event)">
 			</td>
 			{% else %}
 
 			<td>
 				<input type="text" name={{id.d5}} value="" style="width:26px ; border:0px" align="center" 
-								onkeydown="controlDirection(this,event)" onkeyup="acceptDigits(this)">
+								onkeyup="acceptDigits(this);controlDirection(this,event)">
 			</td>
 			{% endifnotequal %}
 			
 			{% ifnotequal m.mlam_1 None%}
 			<td>
 				<input type="text" name={{id.d6}} value={{m.mlam_1|floatformat:"-2"}} style="width:26px ; border:0px" align="center" 
-								onkeydown="controlDirection(this,event)" onkeyup="acceptDigits(this)">
+								onkeyup="acceptDigits(this);controlDirection(this,event)">
 			</td>
 			{% else %}
 
 			<td>
 				<input type="text" name={{id.d6}} value="" style="width:26px ; border:0px" align="center" 
-								onkeydown="controlDirection(this,event)" onkeyup="acceptDigits(this)">
+								onkeyup="acceptDigits(this);controlDirection(this,event)">
 			</td>
 			{% endifnotequal %}
 			{% ifnotequal m.mlam_2 None%}
 			<td>
 				<input type="text" name={{id.d7}} value={{m.mlam_2|floatformat:"-2"}} style="width:26px ; border:0px" align="center" 
-								onkeydown="controlDirection(this,event)" onkeyup="acceptDigits(this)">
+								onkeyup="acceptDigits(this);controlDirection(this,event)">
 			</td>
 			{% else %}
 
 			<td>
 				<input type="text" name={{id.d7}} value="" style="width:26px ; border:0px" align="center" 
-								onkeydown="controlDirection(this,event)" onkeyup="acceptDigits(this)">
+								onkeyup="acceptDigits(this);controlDirection(this,event)">
 			</td>
 			{% endifnotequal %}
 
 			{% ifnotequal m.mlam_3 None%}
 			<td>
-				<input type="text" name={{id.d8}} value={{m.mlam_3|floatformat:"-2"}} style="width:26px ; border:0px" align="center" 								onkeydown="controlDirection(this,event)" onkeyup="acceptDigits(this)">
+				<input type="text" name={{id.d8}} value={{m.mlam_3|floatformat:"-2"}} style="width:26px ; border:0px" align="center" 								onkeyup="acceptDigits(this);controlDirection(this,event)">
  
 				
 			</td>
 			{% else %}
 
 			<td>
-				<input type="text" name={{id.d8}} value="" style="width:26px ; border:0px" align="center" 				onkeydown="controlDirection(this,event)" onkeyup="acceptDigits(this)">
+				<input type="text" name={{id.d8}} value="" style="width:26px ; border:0px" align="center" 				onkeyup="acceptDigits(this);controlDirection(this,event)">
 			</td>
 			{% endifnotequal %}
 			
 			{% ifnotequal m.mlam_4 None%}
 			<td>
-				<input type="text" name={{id.d9}} value={{m.mlam_4|floatformat:"-2"}} style="width:26px ; border:0px" align="center" 				onkeydown="controlDirection(this,event)" onkeyup="acceptDigits(this)">
+				<input type="text" name={{id.d9}} value={{m.mlam_4|floatformat:"-2"}} style="width:26px ; border:0px" align="center" 				onkeyup="acceptDigits(this);controlDirection(this,event)">
 			</td>
 			{% else %}
 
 			<td>
-				<input type="text" name={{id.d9}} value="" style="width:26px ; border:0px" align="center" 				onkeydown="controlDirection(this,event)" onkeyup="acceptDigits(this)">
+				<input type="text" name={{id.d9}} value="" style="width:26px ; border:0px" align="center" 				onkeyup="acceptDigits(this);controlDirection(this,event)">
 			</td>
 			{% endifnotequal %}
 			
 			{% ifnotequal m.mlam_5 None%}
 			<td>
-				<input type="text" name={{id.d10}} value={{m.mlam_5|floatformat:"-2"}} style="width:26px ; border:0px" align="center" 				onkeydown="controlDirection(this,event)" onkeyup="acceptDigits(this)">
+				<input type="text" name={{id.d10}} value={{m.mlam_5|floatformat:"-2"}} style="width:26px ; border:0px" align="center" 				onkeyup="acceptDigits(this);controlDirection(this,event)">
 			</td>
 			{% else %}
 
 			<td>
-				<input type="text" name={{id.d10}} value="" style="width:26px ; border:0px" align="center" 				onkeydown="controlDirection(this,event)" onkeyup="acceptDigits(this)">
+				<input type="text" name={{id.d10}} value="" style="width:26px ; border:0px" align="center" 				onkeyup="acceptDigits(this);controlDirection(this,event)">
 			</td>
 			{% endifnotequal %}
 
 			{% ifnotequal m.mot_tiet_1 None%}
 			<td>
-				<input type="text" name={{id.d11}} value={{m.mot_tiet_1|floatformat:"-2"}} style="width:26px ; border:0px" align="center" 				onkeydown="controlDirection(this,event)" onkeyup="acceptDigits(this)">
+				<input type="text" name={{id.d11}} value={{m.mot_tiet_1|floatformat:"-2"}} style="width:26px ; border:0px" align="center" 				onkeyup="acceptDigits(this);controlDirection(this,event)">
 			</td>
 			{% else %}
 
 			<td>
-				<input type="text" name={{id.d11}} value="" style="width:26px ; border:0px" align="center" 				onkeydown="controlDirection(this,event)" onkeyup="acceptDigits(this)">
+				<input type="text" name={{id.d11}} value="" style="width:26px ; border:0px" align="center" 				onkeyup="acceptDigits(this);controlDirection(this,event)">
 			</td>
 			{% endifnotequal %}
 			{% ifnotequal m.mot_tiet_2 None%}
 			<td>
-				<input type="text" name={{id.d12}} value={{m.mot_tiet_2|floatformat:"-2"}} style="width:26px ; border:0px" align="center" 				onkeydown="controlDirection(this,event)" onkeyup="acceptDigits(this)">
+				<input type="text" name={{id.d12}} value={{m.mot_tiet_2|floatformat:"-2"}} style="width:26px ; border:0px" align="center" 				onkeyup="acceptDigits(this);controlDirection(this,event)">
 			</td>
 			{% else %}
 
 			<td>
-				<input type="text" name={{id.d12}} value="" style="width:26px ; border:0px" align="center" 				onkeydown="controlDirection(this,event)" onkeyup="acceptDigits(this)">
+				<input type="text" name={{id.d12}} value="" style="width:26px ; border:0px" align="center" 				onkeyup="acceptDigits(this);controlDirection(this,event)">
 			</td>
 			{% endifnotequal %}
 			{% ifnotequal m.mot_tiet_3 None%}
 			<td>
-				<input type="text" name={{id.d13}} value={{m.mot_tiet_3|floatformat:"-2"}} style="width:26px ; border:0px" align="center" 				onkeydown="controlDirection(this,event)" onkeyup="acceptDigits(this)">
+				<input type="text" name={{id.d13}} value={{m.mot_tiet_3|floatformat:"-2"}} style="width:26px ; border:0px" align="center" 				onkeyup="acceptDigits(this);controlDirection(this,event)">
 			</td>
 			{% else %}
 
 			<td>
-				<input type="text" name={{id.d13}} value="" style="width:26px ; border:0px" align="center" 				onkeydown="controlDirection(this,event)" onkeyup="acceptDigits(this)">
+				<input type="text" name={{id.d13}} value="" style="width:26px ; border:0px" align="center" 				onkeyup="acceptDigits(this);controlDirection(this,event)">
 			</td>
 			{% endifnotequal %}
 			{% ifnotequal m.mot_tiet_4 None%}
 			<td>
-				<input type="text" name={{id.d14}} value={{m.mot_tiet_4|floatformat:"-2"}} style="width:26px ; border:0px" align="center" 				onkeydown="controlDirection(this,event)" onkeyup="acceptDigits(this)">
+				<input type="text" name={{id.d14}} value={{m.mot_tiet_4|floatformat:"-2"}} style="width:26px ; border:0px" align="center" 				onkeyup="acceptDigits(this);controlDirection(this,event)">
 			</td>
 			{% else %}
 
 			<td>
-				<input type="text" name={{id.d14}} value="" style="width:26px ; border:0px" align="center" 				onkeydown="controlDirection(this,event)" onkeyup="acceptDigits(this)">
+				<input type="text" name={{id.d14}} value="" style="width:26px ; border:0px" align="center" 				onkeyup="acceptDigits(this);controlDirection(this,event)">
 			</td>
 			{% endifnotequal %}
 			{% ifnotequal m.mot_tiet_5 None%}
 			<td>
-				<input type="text" name={{id.d15}} value={{m.mot_tiet_5|floatformat:"-2"}} style="width:26px ; border:0px" align="center" 				onkeydown="controlDirection(this,event)" onkeyup="acceptDigits(this)">
+				<input type="text" name={{id.d15}} value={{m.mot_tiet_5|floatformat:"-2"}} style="width:26px ; border:0px" align="center" 				onkeyup="acceptDigits(this);controlDirection(this,event)">
 			</td>
 			{% else %}
 
 			<td>
-				<input type="text" name={{id.d15}} value="" style="width:26px ; border:0px" align="center" 				onkeydown="controlDirection(this,event)" onkeyup="acceptDigits(this)">
+				<input type="text" name={{id.d15}} value="" style="width:26px ; border:0px" align="center" 				onkeyup="acceptDigits(this);controlDirection(this,event)">
 			</td>
 			{% endifnotequal %}
 
 			{% ifnotequal m.ck None%}
 			<td>
-				<input type="text" name={{id.d16}} value={{m.ck|floatformat:"-2"}} style="width:26px ; border:0px" align="center" 				onkeydown="controlDirection(this,event)" onkeyup="acceptDigits(this)">
+				<input type="text" name={{id.d16}} value={{m.ck|floatformat:"-2"}} style="width:26px ; border:0px" align="center" 				onkeyup="acceptDigits(this);controlDirection(this,event)">
 			</td>
 			{% else %}
 
 			<td>
-				<input type="text" name={{id.d16}} value="" style="width:26px ; border:0px" align="center" 				onkeydown="controlDirection(this,event)" onkeyup="acceptDigits(this)">
+				<input type="text" name={{id.d16}} value="" style="width:26px ; border:0px" align="center" 				onkeyup="acceptDigits(this);controlDirection(this,event)">
 			</td>
 			{% endifnotequal %}
 			<td align="center"> 
@@ -314,13 +314,13 @@
 			{% ifnotequal m.mieng_1 None%}
 			<td>
 				<input type="text" name={{id.d1}} id="101" value={{m.mieng_1|floatformat:"-2"}} style="width:26px ; border:0px" align="center" 
-				onkeydown="controlDirection(this,event)" onkeyup="acceptDigits(this)">
+				onkeyup="acceptDigits(this);controlDirection(this,event)">
 			</td>
 			{% else %}
 
 			<td>
 				<input type="text" name={{id.d1}} value="" style="width:26px ; border:0px" align="center" 
-				onkeydown="controlDirection(this,event)" onkeyup="acceptDigits(this)">
+				onkeyup="acceptDigits(this);controlDirection(this,event)">
 			</td>
 			{% endifnotequal %}
 
@@ -329,13 +329,13 @@
 			{% ifnotequal m.mieng_2 None%}
 			<td>
 				<input type="text" name={{id.d2}} value={{m.mieng_2|floatformat:"-2"}} style="width:26px ; border:0px" align="center" 
-								onkeydown="controlDirection(this,event)" onkeyup="acceptDigits(this)">
+								onkeyup="acceptDigits(this);controlDirection(this,event)">
 			</td>
 			{% else %}
 
 			<td>
 				<input type="text" name={{id.d2}} value="" style="width:26px ; border:0px" align="center" 
-								onkeydown="controlDirection(this,event)" onkeyup="acceptDigits(this)">
+								onkeyup="acceptDigits(this);controlDirection(this,event)">
 			</td>
 			{% endifnotequal %}
 
@@ -343,161 +343,161 @@
 			{% ifnotequal m.mieng_3 None%}
 			<td>
 				<input type="text" name={{id.d3}} value={{m.mieng_3|floatformat:"-2"}} style="width:26px ; border:0px" align="center" 
-								onkeydown="controlDirection(this,event)" onkeyup="acceptDigits(this)">
+								onkeyup="acceptDigits(this);controlDirection(this,event)">
 			</td>
 			{% else %}
 
 			<td>
 				<input type="text" name={{id.d3}} value="" style="width:26px ; border:0px" align="center" 
-								onkeydown="controlDirection(this,event)" onkeyup="acceptDigits(this)">
+								onkeyup="acceptDigits(this);controlDirection(this,event)">
 			</td>
 			{% endifnotequal %}
 
 			{% ifnotequal m.mieng_4 None%}
 			<td>
 				<input type="text" name={{id.d4}} value={{m.mieng_4|floatformat:"-2"}} style="width:26px ; border:0px" align="center" 				
-								onkeydown="controlDirection(this,event)" onkeyup="acceptDigits(this)">
+								onkeyup="acceptDigits(this);controlDirection(this,event)">
 			</td>
 			{% else %}
 
 			<td>
 				<input type="text" name={{id.d4}} value="" style="width:26px ; border:0px" align="center" 
-								onkeydown="controlDirection(this,event)" onkeyup="acceptDigits(this)">
+								onkeyup="acceptDigits(this);controlDirection(this,event)">
 			</td>
 			{% endifnotequal %}
 
 			{% ifnotequal m.mieng_5 None%}
 			<td>
 				<input type="text" name={{id.d5}} value={{m.mieng_5|floatformat:"-2"}} style="width:26px ; border:0px" align="center" 
-								onkeydown="controlDirection(this,event)" onkeyup="acceptDigits(this)">
+								onkeyup="acceptDigits(this);controlDirection(this,event)">
 			</td>
 			{% else %}
 
 			<td>
 				<input type="text" name={{id.d5}} value="" style="width:26px ; border:0px" align="center" 
-								onkeydown="controlDirection(this,event)" onkeyup="acceptDigits(this)">
+								onkeyup="acceptDigits(this);controlDirection(this,event)">
 			</td>
 			{% endifnotequal %}
 			
 			{% ifnotequal m.mlam_1 None%}
 			<td>
 				<input type="text" name={{id.d6}} value={{m.mlam_1|floatformat:"-2"}} style="width:26px ; border:0px" align="center" 
-								onkeydown="controlDirection(this,event)" onkeyup="acceptDigits(this)">
+								onkeyup="acceptDigits(this);controlDirection(this,event)">
 			</td>
 			{% else %}
 
 			<td>
 				<input type="text" name={{id.d6}} value="" style="width:26px ; border:0px" align="center" 
-								onkeydown="controlDirection(this,event)" onkeyup="acceptDigits(this)">
+								onkeyup="acceptDigits(this);controlDirection(this,event)">
 			</td>
 			{% endifnotequal %}
 			{% ifnotequal m.mlam_2 None%}
 			<td>
 				<input type="text" name={{id.d7}} value={{m.mlam_2|floatformat:"-2"}} style="width:26px ; border:0px" align="center" 
-								onkeydown="controlDirection(this,event)" onkeyup="acceptDigits(this)">
+								onkeyup="acceptDigits(this);controlDirection(this,event)">
 			</td>
 			{% else %}
 
 			<td>
 				<input type="text" name={{id.d7}} value="" style="width:26px ; border:0px" align="center" 
-								onkeydown="controlDirection(this,event)" onkeyup="acceptDigits(this)">
+								onkeyup="acceptDigits(this);controlDirection(this,event)">
 			</td>
 			{% endifnotequal %}
 
 			{% ifnotequal m.mlam_3 None%}
 			<td>
-				<input type="text" name={{id.d8}} value={{m.mlam_3|floatformat:"-2"}} style="width:26px ; border:0px" align="center" 								onkeydown="controlDirection(this,event)" onkeyup="acceptDigits(this)">
+				<input type="text" name={{id.d8}} value={{m.mlam_3|floatformat:"-2"}} style="width:26px ; border:0px" align="center" 								onkeyup="acceptDigits(this);controlDirection(this,event)">
  
 				
 			</td>
 			{% else %}
 
 			<td>
-				<input type="text" name={{id.d8}} value="" style="width:26px ; border:0px" align="center" 				onkeydown="controlDirection(this,event)" onkeyup="acceptDigits(this)">
+				<input type="text" name={{id.d8}} value="" style="width:26px ; border:0px" align="center" 				onkeyup="acceptDigits(this);controlDirection(this,event)">
 			</td>
 			{% endifnotequal %}
 			
 			{% ifnotequal m.mlam_4 None%}
 			<td>
-				<input type="text" name={{id.d9}} value={{m.mlam_4|floatformat:"-2"}} style="width:26px ; border:0px" align="center" 				onkeydown="controlDirection(this,event)" onkeyup="acceptDigits(this)">
+				<input type="text" name={{id.d9}} value={{m.mlam_4|floatformat:"-2"}} style="width:26px ; border:0px" align="center" 				onkeyup="acceptDigits(this);controlDirection(this,event)">
 			</td>
 			{% else %}
 
 			<td>
-				<input type="text" name={{id.d9}} value="" style="width:26px ; border:0px" align="center" 				onkeydown="controlDirection(this,event)" onkeyup="acceptDigits(this)">
+				<input type="text" name={{id.d9}} value="" style="width:26px ; border:0px" align="center" 				onkeyup="acceptDigits(this);controlDirection(this,event)">
 			</td>
 			{% endifnotequal %}
 			
 			{% ifnotequal m.mlam_5 None%}
 			<td>
-				<input type="text" name={{id.d10}} value={{m.mlam_5|floatformat:"-2"}} style="width:26px ; border:0px" align="center" 				onkeydown="controlDirection(this,event)" onkeyup="acceptDigits(this)">
+				<input type="text" name={{id.d10}} value={{m.mlam_5|floatformat:"-2"}} style="width:26px ; border:0px" align="center" 				onkeyup="acceptDigits(this);controlDirection(this,event)">
 			</td>
 			{% else %}
 
 			<td>
-				<input type="text" name={{id.d10}} value="" style="width:26px ; border:0px" align="center" 				onkeydown="controlDirection(this,event)" onkeyup="acceptDigits(this)">
+				<input type="text" name={{id.d10}} value="" style="width:26px ; border:0px" align="center" 				onkeyup="acceptDigits(this);controlDirection(this,event)">
 			</td>
 			{% endifnotequal %}
 
 			{% ifnotequal m.mot_tiet_1 None%}
 			<td>
-				<input type="text" name={{id.d11}} value={{m.mot_tiet_1|floatformat:"-2"}} style="width:26px ; border:0px" align="center" 				onkeydown="controlDirection(this,event)" onkeyup="acceptDigits(this)">
+				<input type="text" name={{id.d11}} value={{m.mot_tiet_1|floatformat:"-2"}} style="width:26px ; border:0px" align="center" 				onkeyup="acceptDigits(this);controlDirection(this,event)">
 			</td>
 			{% else %}
 
 			<td>
-				<input type="text" name={{id.d11}} value="" style="width:26px ; border:0px" align="center" 				onkeydown="controlDirection(this,event)" onkeyup="acceptDigits(this)">
+				<input type="text" name={{id.d11}} value="" style="width:26px ; border:0px" align="center" 				onkeyup="acceptDigits(this);controlDirection(this,event)">
 			</td>
 			{% endifnotequal %}
 			{% ifnotequal m.mot_tiet_2 None%}
 			<td>
-				<input type="text" name={{id.d12}} value={{m.mot_tiet_2|floatformat:"-2"}} style="width:26px ; border:0px" align="center" 				onkeydown="controlDirection(this,event)" onkeyup="acceptDigits(this)">
+				<input type="text" name={{id.d12}} value={{m.mot_tiet_2|floatformat:"-2"}} style="width:26px ; border:0px" align="center" 				onkeyup="acceptDigits(this);controlDirection(this,event)">
 			</td>
 			{% else %}
 
 			<td>
-				<input type="text" name={{id.d12}} value="" style="width:26px ; border:0px" align="center" 				onkeydown="controlDirection(this,event)" onkeyup="acceptDigits(this)">
+				<input type="text" name={{id.d12}} value="" style="width:26px ; border:0px" align="center" 				onkeyup="acceptDigits(this);controlDirection(this,event)">
 			</td>
 			{% endifnotequal %}
 			{% ifnotequal m.mot_tiet_3 None%}
 			<td>
-				<input type="text" name={{id.d13}} value={{m.mot_tiet_3|floatformat:"-2"}} style="width:26px ; border:0px" align="center" 				onkeydown="controlDirection(this,event)" onkeyup="acceptDigits(this)">
+				<input type="text" name={{id.d13}} value={{m.mot_tiet_3|floatformat:"-2"}} style="width:26px ; border:0px" align="center" 				onkeyup="acceptDigits(this);controlDirection(this,event)">
 			</td>
 			{% else %}
 
 			<td>
-				<input type="text" name={{id.d13}} value="" style="width:26px ; border:0px" align="center" 				onkeydown="controlDirection(this,event)" onkeyup="acceptDigits(this)">
+				<input type="text" name={{id.d13}} value="" style="width:26px ; border:0px" align="center" 				onkeyup="acceptDigits(this);controlDirection(this,event)">
 			</td>
 			{% endifnotequal %}
 			{% ifnotequal m.mot_tiet_4 None%}
 			<td>
-				<input type="text" name={{id.d14}} value={{m.mot_tiet_4|floatformat:"-2"}} style="width:26px ; border:0px" align="center" 				onkeydown="controlDirection(this,event)" onkeyup="acceptDigits(this)">
+				<input type="text" name={{id.d14}} value={{m.mot_tiet_4|floatformat:"-2"}} style="width:26px ; border:0px" align="center" 				onkeyup="acceptDigits(this);controlDirection(this,event)">
 			</td>
 			{% else %}
 
 			<td>
-				<input type="text" name={{id.d14}} value="" style="width:26px ; border:0px" align="center" 				onkeydown="controlDirection(this,event)" onkeyup="acceptDigits(this)">
+				<input type="text" name={{id.d14}} value="" style="width:26px ; border:0px" align="center" 				onkeyup="acceptDigits(this);controlDirection(this,event)">
 			</td>
 			{% endifnotequal %}
 			{% ifnotequal m.mot_tiet_5 None%}
 			<td>
-				<input type="text" name={{id.d15}} value={{m.mot_tiet_5|floatformat:"-2"}} style="width:26px ; border:0px" align="center" 				onkeydown="controlDirection(this,event)" onkeyup="acceptDigits(this)">
+				<input type="text" name={{id.d15}} value={{m.mot_tiet_5|floatformat:"-2"}} style="width:26px ; border:0px" align="center" 				onkeyup="acceptDigits(this);controlDirection(this,event)">
 			</td>
 			{% else %}
 
 			<td>
-				<input type="text" name={{id.d15}} value="" style="width:26px ; border:0px" align="center" 				onkeydown="controlDirection(this,event)" onkeyup="acceptDigits(this)">
+				<input type="text" name={{id.d15}} value="" style="width:26px ; border:0px" align="center" 				onkeyup="acceptDigits(this);controlDirection(this,event)">
 			</td>
 			{% endifnotequal %}
 
 			{% ifnotequal m.ck None%}
 			<td>
-				<input type="text" name={{id.d16}} value={{m.ck|floatformat:"-2"}} style="width:26px ; border:0px" align="center" 				onkeydown="controlDirection(this,event)" onkeyup="acceptDigits(this)">
+				<input type="text" name={{id.d16}} value={{m.ck|floatformat:"-2"}} style="width:26px ; border:0px" align="center" 				onkeyup="acceptDigits(this);controlDirection(this,event)">
 			</td>
 			{% else %}
 
 			<td>
-				<input type="text" name={{id.d16}} value="" style="width:26px ; border:0px" align="center" 				onkeydown="controlDirection(this,event)" onkeyup="acceptDigits(this)">
+				<input type="text" name={{id.d16}} value="" style="width:26px ; border:0px" align="center" 				onkeyup="acceptDigits(this);controlDirection(this,event)">
 			</td>
 			{% endifnotequal %}
 
