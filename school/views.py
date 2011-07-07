@@ -224,6 +224,7 @@ def classify(request):
         print e
         return HttpResponseRedirect( reverse("school_index")) 
     message = None
+    nothing = False
     student_list = startyear.pupil_set.filter( class_id__exact = None).order_by('first_name')
     lower_bound = get_lower_bound(school)
     grade = school.block_set.filter( number__exact = lower_bound)
@@ -232,7 +233,8 @@ def classify(request):
     for _class in class_list:
         _class_list.append((_class.id, _class.name))    
     if request.method == "GET":
-        if not student_list: message = u'Không còn học sinh nào cần được phân lớp.'    
+        if not student_list: message = u'Không còn học sinh nào cần được phân lớp.'
+        nothing = True    
     else:
         print 1
         form = ClassifyForm( request.POST, student_list = student_list, class_list = _class_list)
@@ -255,7 +257,7 @@ def classify(request):
             message = u'Xảy ra trục trặc trong quá trình nhập dữ liệu.'        
         student_list = startyear.pupil_set.filter( class_id__exact = None).order_by('first_name')
     form = ClassifyForm( student_list = student_list, class_list= _class_list)
-    return render_to_response( CLASSIFY, { 'message':message, 'student_list':student_list, 'form':form},
+    return render_to_response( CLASSIFY, { 'message':message, 'student_list':student_list, 'form':form, 'nothing':nothing},
                                    context_instance = RequestContext(request))      
         
 #----------------------------------------------------------------------------------------------------------------- 
