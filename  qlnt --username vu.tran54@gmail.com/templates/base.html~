@@ -1,0 +1,43 @@
+<html>
+
+<head>
+	<title>
+	{% block title %}
+		Quản lý nhà trường
+	{% endblock %}
+	</title>
+	<link type="text/css" rel="stylesheet" href="/media/js/autocomplete.css">
+	<script type="text/javascript" src="/static/js/jquery.js"></script>
+   <script type="text/javascript" src="/static/js/dimensions.js"></script>
+   <script type="text/javascript" src="/static/js/autocomplete.js"></script>
+	{% block js %}	
+	{% endblock %}
+	{% block css %}<link rel="stylesheet" href="/static/css/main.css">{% endblock %}
+</head>
+
+<body>
+	<div id="top"><a href="/">Quản lý nhà trường</a></div>
+	
+	<div id="navi">{% block navi %} 
+		{% if user.is_authenticated %}
+			{% if user.is_superuser %}
+				<a href="/admin">Hệ thống</a> - 
+			{% else %}
+				<a href="/school">Trường</a>  - 
+			{% endif %}
+			<a href="/messages">Thông báo</a> -
+			<a href="/sms">Gửi tin nhắn</a> - 
+			<a href="/logout">Đăng xuất <b>{{user.username}}</b></a> -  
+		{% else %} 
+		 	<a href="/login">Đăng nhập</a> - 
+		{% endif %}
+	 	<a href="/help">Trợ giúp</a>
+	 	<a href="/topdf"> export to pdf </a>
+	 	
+	{% endblock %}</div>
+	
+	<div id="content">{% block content %}{% endblock %} </div>
+	
+	<div id="footer">{% block footer %}&copy 2011 UET-VNU & Viettel{% endblock %} </div>
+</body>
+</html>

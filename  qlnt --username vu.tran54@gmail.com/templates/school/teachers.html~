@@ -1,0 +1,98 @@
+<!DOCTYPE HTML>
+
+
+
+{% extends "school/base_school.html" %}
+
+{% block content %}
+
+
+<script>
+function confirmDelete()
+{
+    return confirm("Bạn có chắc chắn xóa không?");
+}
+</script>
+
+
+<table class="styleA" width = "100%" >
+    <tr>
+		<th align="center" width="5%"> STT </th>
+        <th align="center" width="25%"> <a href="{%url school.views.school_index  %}teachers/1/{{next_status}}/1">Họ & Tên </a></th>
+        <th align="center" width="25%"> <a href="{%url school.views.school_index  %}teachers/2/{{next_status}}/1">Ngày sinh</a></th>
+        <th align="center" width="25%"> Nơi sinh</th>
+        <th align="center" width="10%"> <a href="{%url school.views.school_index  %}teachers/3/{{next_status}}/1">Giới tính </a></th>
+        <th width = "10%"></th>
+    </tr>
+
+    {% if message != None %}
+    {{message}}
+    {% endif %}
+
+    {% for ss in teacherList.object_list %}
+    <tr>        
+		<td align="center" width="5%">{{forloop.counter|add:base_order}}</td>
+        <td align="center" width="25%"><a href="{%url school.views.school_index  %}viewTeacherDetail/{{ss.id}}"> {{ss.last_name}} {{ss.first_name}} </a></td>
+        <td align="center" width="25%"> {{ss.birthday|date:"SHORT_DATE_FORMAT"}}</td>
+        <td align="center" width="25%"> {{ss.birth_place}}</td>
+        <td align="center" width="10%"> {{ss.sex}} </td>
+        <td align="center" width = "10%"> <a href="{%url school.views.school_index  %}deleteTeacher/{{ss.id}}" onclick="return confirmDelete();"> xóa </a></td>
+    </tr>
+    {% endfor %}
+    
+    <form action="/school/teachers/{{sort_type}}/{{sort_status}}/{{teacherList.number}}" method="post">{% csrf_token %}
+        <tr>
+            {{ form.non_field_errors }}
+			
+			<td width="5%"></td>
+            <td align="center" width="25%">
+                    {{ form.first_name.errors }}
+                    <p>{{ form.first_name }}</p>
+            </td>
+
+            <td align="center" width="25%">
+                    {{ form.birthday.errors }}
+                    <p>{{ form.birthday }}</p>
+            </td>
+
+            <td align="center" width="25%">
+                    {{ form.birth_place.errors }}
+                    <p>{{ form.birth_place }}</p>
+            </td>
+
+
+            <td align="center" width="10%">
+                    {{form.sex.errors }}
+                    <p>{{ form.sex }}</p>
+            </td>
+            <td width = "10%" align = "center"><input type ="submit" value="Thêm"/></td>
+        		
+
+</table>
+<table border = "0" width = "100%">
+	<tr border = 0>
+		<td width = "100%" colspan = 6 align = "right">
+		<div class = "pagination">
+		<span class = "step-links">
+			{% if teacherList.has_previous %}
+				<a href = "{%url school.views.school_index  %}teachers/{{sort_type}}/{{sort_status}}/{{teacherList.previous_page_number}}"> Trang trước </a>
+			{% endif %}
+			
+			<span class = "current">
+				Trang {{teacherList.number}} trên {{teacherList.paginator.num_pages}}.
+			</span>
+			
+			{% if teacherList.has_next %}
+				<a href = "{%url school.views.school_index  %}teachers/{{sort_type}}/{{sort_status}}/{{teacherList.next_page_number}}"> Trang sau </a>
+			{% endif %}
+		</span>
+		</div>
+		</td>
+	</tr>
+        <tr>
+        		<td width = "5%" align = "left"><input type ="submit" value="Thêm"/></td>
+        		<td align = "right"> <a href = ""> Xuất ra excel </a> </td>
+			</form>
+        </tr>
+</table>
+{% endblock %}

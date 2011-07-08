@@ -1,0 +1,261 @@
+﻿<!DOCTYPE HTML>
+{% extends "school/base_school.html"%}
+{% block content %}
+{% if message != None %}
+{{message}}
+{% endif %}
+<script type="text/javascript" >
+//lock enter
+function catchEnter(e)
+
+{
+      if (!e) e = window.event; 
+      var code = (e.keyCode) ? e.keyCode : e.which;
+
+	if (code == 13 || code == 3) 
+	{
+		return false;
+	}	
+	else return true;
+}
+window.onload = function() { document.onkeypress = catchEnter; };
+   
+
+	function acceptDigits(tb){
+		var exp = /[^((\d).,)]/g;
+		var exp1=/[,]/g
+		tb.value = tb.value.replace(exp,'');
+		var value=tb.value;
+		value=value.replace(exp1,'.');		
+		//kiem tra xem no co nhieu hon hai dau cham hay ko
+		var countDot=0;
+		for(i=0;i<value.length;i++)
+			if (value.charAt(i)==".") 
+				countDot++;
+				
+		if (countDot>1)
+		{		
+			tb.value="";
+			return;
+		}			
+		var number=parseFloat(value);
+		//alert(number);		
+		if (number>10 )
+			tb.value="";
+	}
+	function controlDirection(tb,event)
+	{
+		var keycode=event.keyCode;
+		var name=tb.name;
+		var nameNumber=parseInt(name);
+		if ((keycode==40) ||(keycode==13))
+		{
+			var temp=nameNumber+100;
+			var tempName=temp.toString();
+			var cel=document.getElementsByName(tempName);
+			if (cel[0])
+				{
+					cel[0].focus();
+				}				
+		}
+		else
+		if (keycode==38)
+		{
+			var temp=nameNumber-100;
+			var tempName=temp.toString();
+			var cel=document.getElementsByName(tempName);
+			if (cel[0])
+				{
+					cel[0].focus();
+				}
+		}
+		else
+		if (keycode==37)
+		{
+			var temp=nameNumber-1;
+			var tempName=temp.toString();
+			var cel=document.getElementsByName(tempName);
+			if (cel[0])
+				{
+					cel[0].focus();
+				}
+		}
+		else
+		if (keycode==39)
+		{
+			var temp=nameNumber+1;
+			var tempName=temp.toString();
+			var cel=document.getElementsByName(tempName);
+			if (cel[0])
+				{
+					cel[0].focus();
+				}
+		}					
+	}
+	function submitTerm()
+	{
+		if (document.info.term.value!=-1)
+			if (document.info.term.value!={{termChoice}})
+			{
+				document.info.submitChoice.value="hienthi";
+				document.info.submit();
+			}	
+	}
+
+
+	function saveMark()
+	{
+		document.info.submitChoice.value="luulai";
+
+		if (document.info.term.value!=-1)
+			document.info.submit();
+	}
+	function saveMarkHasComment()
+	{
+		var length={{lengthList}};
+		//alert(length);
+		for(i=1;i<=length;i++)
+			for(j=1;j<5;j++)
+			{
+				k=i*100+j;
+				var name=k+"";
+				var t=document.getElementsByName(name)[0].value.toLowerCase();
+				//alert(t);
+				var value="";
+				if (t!="")
+					if (t=="g")
+						value="9";
+					else
+					if (t=="k")
+						value="7";
+					else						
+					if ((t=="tb") ||(t=="t"))
+						value="6";
+					else						
+					if (t=="y")
+						value="4";
+					else						
+						value="1";
+						
+					document.getElementsByName(name)[0].value=value;									
+				}
+		document.info.submitChoice.value="luulai";
+		document.info.submit();
+
+	}
+	function saveMarkHasComment1()
+	{
+		var length={{lengthList}};
+		//alert(length);
+		for(i=1;i<=length;i++)
+			for(j=1;j<6;j++)
+			{
+				k=i*100+j;
+				var name=k+"";
+				var t=document.getElementsByName(name)[0].value.toLowerCase();
+				//alert(t);
+				var value="";
+				if (t!="")
+					if (t=="g")
+						value="9";
+					else
+					if (t=="k")
+						value="7";
+					else						
+					if ((t=="tb") ||(t=="t"))
+						value="6";
+					else						
+					if (t=="y")
+						value="4";
+					else						
+						value="1";
+						
+					document.getElementsByName(name)[0].value=value;									
+				}
+		document.info.submitChoice.value="luulai";
+		document.info.submit();
+
+	}
+	function validateComment(tb)
+	{
+		var value=tb.value.toLowerCase();
+		if ((value!="g") && (value!="k") &&
+		(value!="tb")&& (value!="t")&& (value!="y") &&
+		(value!="ke") && (value!="kem")
+		&& (value!="kém"))
+		{
+			tb.value="";
+		}
+	}
+	
+</script>
+<table border="0" width=100% >
+<form action="/school/markForASubject/{{subjectChoice}}"  name="info" method="post" id='myform' 
+	onsubmit="return false" >{% csrf_token %}
+	<input type="hidden" name="submitChoice" value="">	
+
+	<tr>
+		<td align="center" colspan =2 style="font-size:25px" >
+			<b>Bảng điểm  theo môn  </b>
+		</td>
+	</tr>
+	<tr>
+		<td width="50 %" >
+			Môn: {{selectedSubject.name}}
+		</td>
+		<td width="50 %" >
+			Lớp: {{selectedSubject.class_id.name}}
+		</td>
+	</tr>
+	<tr>
+	<td>&nbsp</td>
+	</tr>
+	
+	
+	<tr>								
+		
+		<td width ="50%"> Học kỳ &nbsp&nbsp:  
+		<select name="term" onclick="submitTerm();" >				
+			<option value=-1 selected > Chọn kỳ </option>
+			{% for term in termList %}
+				{% ifequal term.year_id.time currentTerm.year_id.time %}				
+					<option   value={{ term.id }} selected> {{ term}} </option>	
+				{% else %}	
+					<option   value={{ term.id }}> {{ term}}</option>		
+				{% endifequal %}	
+			{% endfor %}	
+			
+		</select>
+		</td>					
+	</tr>
+	
+<script type="text/javascript" >
+	document.info.term.value={{termChoice}}
+	
+</script>		
+		
+	<tr><td>&nbsp </td>	</tr>
+	<tr> 
+	<td colspan=2 align="right">    
+	</td>
+	</tr>
+	{#<----------------------------------------------------------------------------------> #}	
+	{# day la phan tinh diem cho nhung mon thuoc nhan xet #}
+	{#<----------------------------------------------------------------------------------> #}
+	{%ifequal hsSubject 0 %}
+		{% include  "school\mark_has_comment.html" %}
+			
+	{% endifequal %}
+
+	{#<----------------------------------------------------------------------------------> #}
+	{#day la phan tinh diem nhung mon khong phai la nhan xet #}	
+	{#<----------------------------------------------------------------------------------> #}
+
+	
+	{%ifnotequal hsSubject 0 %}
+		{% include  "school\mark_no_comment.html" %}
+	{% endifnotequal %}
+</form>	
+</table>
+{% endblock %}
+

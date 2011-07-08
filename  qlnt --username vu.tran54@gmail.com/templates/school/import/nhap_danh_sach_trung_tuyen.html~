@@ -1,0 +1,14 @@
+{%extends "school/base_school.html" %}
+
+{% block content %}
+{% if form.errors %}
+<p>{{ form.errors }}</p>
+{% endif %}
+<form enctype="multipart/form-data" action="{% url school.views.nhap_danh_sach_trung_tuyen %}" method="POST">{% csrf_token %}
+<table >
+{{ form.as_table }}
+</table>
+<input type="submit" value="Gửi lên" />
+</form>
+
+{% endblock %}

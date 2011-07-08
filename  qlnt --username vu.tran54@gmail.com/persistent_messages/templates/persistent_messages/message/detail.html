@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+	{% if user.is_authenticated %}
+		<div class="message{% if message.tags %} {{ message.tags }}{% endif %}>">
+		<h4>
+		{% if message.from_user %}Người gửi: {{ message.from_user }}</h4>{% endif %}
+		{{ message.created|date }}
+		{% if message.subject %}<h4>{{ message.subject }}{% endif %}
+		</h4>
+		<p>{{ message.message }}</p>
+		</ul>
+	{% endif %}
+{% endblock %}
+
+

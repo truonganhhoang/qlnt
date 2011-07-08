@@ -1,0 +1,2 @@
+<title><style>
+{% extends "base.html" %}

@@ -1,0 +1,12 @@
+{% extends "school/base_school.html" %}
+{% block content %}
+
+{% if message != None %}
+	{{message}}
+{% endif %}
+<form action="{%url school.views.class_label %}" method="post">{% csrf_token %}
+<input type="text" name="labels" value="{{labels}}" />
+<br>
+<input type="submit" name="submit" value="Lưu lại" />
+</form>
+{% endblock %}

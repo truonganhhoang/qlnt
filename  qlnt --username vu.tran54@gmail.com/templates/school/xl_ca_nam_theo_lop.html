@@ -1,0 +1,1266 @@
+﻿{% extends "base.html"%}
+{% block content %}
+{% if message != None %}
+{{message}}
+{% endif %}
+<script language=javascript>
+	function displayAll()
+	{
+		document.getElementById("allList").style.display='';
+		document.getElementById("gioi").style.display='none';
+		document.getElementById("tientien").style.display='none';
+		document.getElementById("lenlop").style.display='none';
+		document.getElementById("khonglenlop").style.display='none';
+		document.getElementById("thilai").style.display='none';
+		document.getElementById("renluyenthem").style.display='none';		
+		document.getElementById("chuaxeploai").style.display='none';		
+	}
+	function displaygioi()
+	{
+		document.getElementById("allList").style.display='none';
+		document.getElementById("gioi").style.display='';
+		document.getElementById("tientien").style.display='none';
+		document.getElementById("lenlop").style.display='none';
+		document.getElementById("khonglenlop").style.display='none';
+		document.getElementById("thilai").style.display='none';
+		document.getElementById("renluyenthem").style.display='none';		
+		document.getElementById("chuaxeploai").style.display='none';		
+	}
+	
+	function displaytientien()
+	{
+		document.getElementById("allList").style.display='none';
+		document.getElementById("gioi").style.display='none';
+		document.getElementById("tientien").style.display='';
+		document.getElementById("lenlop").style.display='none';
+		document.getElementById("khonglenlop").style.display='none';
+		document.getElementById("thilai").style.display='none';
+		document.getElementById("renluyenthem").style.display='none';		
+		document.getElementById("chuaxeploai").style.display='none';		
+	}
+	function displaylenlop()
+	{
+		document.getElementById("allList").style.display='none';
+		document.getElementById("gioi").style.display='none';
+		document.getElementById("tientien").style.display='none';
+		document.getElementById("lenlop").style.display='';
+		document.getElementById("khonglenlop").style.display='none';
+		document.getElementById("thilai").style.display='none';
+		document.getElementById("renluyenthem").style.display='none';		
+		document.getElementById("chuaxeploai").style.display='none';		
+	}
+	function displaykhonglenlop()
+	{
+		document.getElementById("allList").style.display='none';
+		document.getElementById("gioi").style.display='none';
+		document.getElementById("tientien").style.display='none';
+		document.getElementById("lenlop").style.display='none';
+		document.getElementById("khonglenlop").style.display='';
+		document.getElementById("thilai").style.display='none';
+		document.getElementById("renluyenthem").style.display='none';		
+		document.getElementById("chuaxeploai").style.display='none';		
+	}
+	function displaythilai()
+	{
+		document.getElementById("allList").style.display='none';
+		document.getElementById("gioi").style.display='none';
+		document.getElementById("tientien").style.display='none';
+		document.getElementById("lenlop").style.display='none';
+		document.getElementById("khonglenlop").style.display='none';
+		document.getElementById("thilai").style.display='';
+		document.getElementById("renluyenthem").style.display='none';		
+		document.getElementById("chuaxeploai").style.display='none';		
+	}
+
+	function displayrenluyenthem()
+	{
+		document.getElementById("allList").style.display='none';
+		document.getElementById("gioi").style.display='none';
+		document.getElementById("tientien").style.display='none';
+		document.getElementById("lenlop").style.display='none';
+		document.getElementById("khonglenlop").style.display='none';
+		document.getElementById("thilai").style.display='none';
+		document.getElementById("renluyenthem").style.display='';		
+		document.getElementById("chuaxeploai").style.display='none';		
+	}
+	function displaychuaxeploai()
+	{
+		document.getElementById("allList").style.display='none';
+		document.getElementById("gioi").style.display='none';
+		document.getElementById("tientien").style.display='none';
+		document.getElementById("lenlop").style.display='none';
+		document.getElementById("khonglenlop").style.display='none';
+		document.getElementById("thilai").style.display='none';
+		document.getElementById("renluyenthem").style.display='none';		
+		document.getElementById("chuaxeploai").style.display='';		
+	}
+
+	
+</script>
+
+<table border="0" width=100% >
+
+	<tr>
+		<td align="center"  style="font-size:25px" >
+			<b> Kết quả xếp loại học sinh  </b> <br><br>
+			<b> Năm học: {{yearString}}  </b>
+		</td>
+		
+	</tr>
+	<tr>
+	<td>Lớp :&nbsp {{selectedClass.name}}</td>
+	</tr>
+	<tr>
+	<td>
+		Hãy chọn phân loại danh sách học sinh theo:
+	</td>
+	</tr>
+	
+	
+	<tr>								
+	<td>
+	<table border=0 width = "100%">
+	<tr>
+		<td width = "25%"> <button type="button" onclick="displayAll();" style="width:110px" title="Hiện thị danh sách của cả lớp ">  tất cả </button> </td>
+		<td width = "25%"> <button type="button" onclick="displaygioi();" style="width:110px" title="Danh sách học sinh đạt danh hiệu học sinh giỏi ">  giỏi </button> </td>
+		<td width = "25%"> <button type="button" onclick="displaylenlop();" style="width:110px" title="Danh sách những học sinh được lên lớp" >lên lớp </button> </td>
+		<td width = "25%"> <button type="button" onclick="displaythilai();" style="width:110px" title="Danh sách những học sinh phải thi lại" > thi lại  </button> </td>
+	</tr>
+	<tr>	
+		<td width = "20%"> <button type="button" onclick="displaychuaxeploai();" style="width:110px" title="Hiện thị danh sách những học sinh chưa đủ thông tin để xếp loại ">chưa xếp loại</a></td>
+		<td width = "25%"><button type="button" onclick="displaytientien();" style="width:110px" title="Danh sách học sinh đạt danh hiệu học sinh tiên tiến " >tiên tiến </a></td>
+		<td width = "25%"><button type="button" onclick="displaykhonglenlop();" style="width:110px" title="Danh sách những học sinh không lên lớp ">không lên lớp </a></td>
+		<td width = "25%"><button type="button" onclick="displayrenluyenthem();" title="Danh sách học sinh phải rèn thêm trong hè " >rèn luyện thêm trong hè</a></td>
+	</tr>
+	</table>
+	</td>
+	</tr>
+
+	<tr>
+	<td>&nbsp </td>
+	</tr>
+	</table>
+	
+	{#----------------------------------------------------------------------#}
+	{# tat ca danh sach #}
+	{#----------------------------------------------------------------------#}
+	
+	<div id="allList" >
+	<table class="styleA" width="100%">
+		<tr>
+			<td  align="center" width="1%">
+				Stt
+			</td>	
+			<td  align="center" width="18%">
+				Họ và tên
+			</td>	
+			<td align="center" width="10%">			
+				Ngày sinh
+			</td>	
+			<td align="center" width="10%">			
+				Học lực
+			</td>	
+			<td align="center" width="7%">			
+				Hạnh kiểm
+			</td>	
+			<td align="center" width="5%">			
+				Tổng số ngày nghỉ
+			</td>	
+			<td align="center" width="15%">			
+				Danh hiệu
+			</td>	
+			
+			<td align="center" width="15%">			
+				Thuộc diện
+			</td>	
+			
+
+		</tr>
+		{% for name,birthday,tbNam in allList %}
+			<tr>
+				<td align="center">
+					{{forloop.counter}}	
+				</td>
+				<td>
+					{{name}}
+				</td>
+				<td>
+				    {{birthday.day}}/{{birthday.month}}/{{birthday.year}}
+				</td>
+				<td align="center">
+					{% ifequal tbNam.hl_nam "G"  %}
+						Giỏi
+					{% else %}	
+					{% ifequal tbNam.hl_nam "K"  %}
+						Khá
+					{% else %}	
+					{% ifequal tbNam.hl_nam "TB"  %}
+						TB
+					{% else %}	
+					{% ifequal tbNam.hl_nam "Y"  %}
+						Yếu
+					{% else %}	
+					{% ifequal tbNam.hl_nam "Kem"  %}
+						Kém
+					{% else %}
+					   &nbsp	
+					{% endifequal %}
+					{% endifequal %}
+					{% endifequal %}
+					{% endifequal %}
+					{% endifequal %}
+				</td>
+
+				<td align="center">
+
+					{% ifequal tbNam.hk_nam "T"  %}
+						Tốt
+					{% else %}	
+					{% ifequal tbNam.hk_nam "K"  %}
+						Khá
+					{% else %}	
+					{% ifequal tbNam.hk_nam "TB"  %}
+						TB
+					{% else %}	
+					{% ifequal tbNam.hk_nam "Y"  %}
+						Yếu
+					{% else %}
+					   &nbsp	
+					{% endifequal %}
+					{% endifequal %}
+					{% endifequal %}
+					{% endifequal %}
+
+				</td >
+				<td align="center">
+					
+					{% if tbNam.tong_so_ngay_nghi == None %}
+						&nbsp
+					{%else %}
+						tbNam.tong_so_ngay_nghi
+					{% endif %}	
+				</td>
+
+				<td align="center">
+					{% ifequal tbNam.danh_hieu_nam "G" %}
+						Học sinh Giỏi
+					{% else %}	
+					{% ifequal tbNam.danh_hieu_nam "TT"  %}
+						Học sinh tiên tiến
+					{% else %}
+					   &nbsp	
+					{% endifequal %}
+					{% endifequal %}
+				</td>
+				<td align="center">
+					{% if tbNam.len_lop %}
+						Được lên lớp
+					{% else  %}
+					{% if tbNam.len_lop != None  %}
+						Không được lên lớp 
+					{% else %}
+					{% if tbNam.thi_lai  %}
+						Thi lại
+					{% else %}	
+					{% if tbNam.ren_luyen_lai %}
+						Rèn luyện thêm trong hè
+					{% else %}
+						Chưa được xếp loại						
+					{% endif %}	
+					{% endif %}	
+					{% endif %}	
+					{% endif %}	
+				</td>
+				
+			</tr>
+		{% endfor %}
+		</table>
+		</div>
+ 
+ 
+	{#----------------------------------------------------------------------#}
+	{# danh sach hoc sinh gioi #}
+	{#----------------------------------------------------------------------#}
+	
+	<div id="gioi" style="display:none" >
+	<table class="styleA" width="100%">
+		<tr>
+			<td  align="center" width="1%">
+				Stt
+			</td>	
+			<td  align="center" width="18%">
+				Họ và tên
+			</td>	
+			<td align="center" width="10%">			
+				Ngày sinh
+			</td>	
+			<td align="center" width="10%">			
+				Học lực
+			</td>	
+			<td align="center" width="7%">			
+				Hạnh kiểm
+			</td>	
+			<td align="center" width="5%">			
+				Tổng số ngày nghỉ
+			</td>	
+			<td align="center" width="15%">			
+				Danh hiệu
+			</td>	
+			
+			<td align="center" width="15%">			
+				Thuộc diện
+			</td>	
+			
+
+		</tr>
+		{% for name,birthday,tbNam in allList %}
+	    {% ifequal tbNam.danh_hieu_nam "G"  %} 
+			<tr>
+				<td align="center">
+					{{forloop.counter}}	
+				</td>
+				<td>
+					{{name}}
+				</td>
+				<td>
+				    {{birthday.day}}/{{birthday.month}}/{{birthday.year}}
+				</td>
+				<td align="center">
+					{% ifequal tbNam.hl_nam "G"  %}
+						Giỏi
+					{% else %}	
+					{% ifequal tbNam.hl_nam "K"  %}
+						Khá
+					{% else %}	
+					{% ifequal tbNam.hl_nam "TB"  %}
+						TB
+					{% else %}	
+					{% ifequal tbNam.hl_nam "Y"  %}
+						Yếu
+					{% else %}	
+					{% ifequal tbNam.hl_nam "Kem"  %}
+						Kém
+					{% else %}
+					   &nbsp	
+					{% endifequal %}
+					{% endifequal %}
+					{% endifequal %}
+					{% endifequal %}
+					{% endifequal %}
+				</td>
+
+				<td align="center">
+
+					{% ifequal tbNam.hk_nam "T"  %}
+						Tốt
+					{% else %}	
+					{% ifequal tbNam.hk_nam "K"  %}
+						Khá
+					{% else %}	
+					{% ifequal tbNam.hk_nam "TB"  %}
+						TB
+					{% else %}	
+					{% ifequal tbNam.hk_nam "Y"  %}
+						Yếu
+					{% else %}
+					   &nbsp	
+					{% endifequal %}
+					{% endifequal %}
+					{% endifequal %}
+					{% endifequal %}
+
+				</td >
+				<td align="center">
+					
+					{% if tbNam.tong_so_ngay_nghi == None %}
+						&nbsp
+					{%else %}
+						tbNam.tong_so_ngay_nghi
+					{% endif %}	
+				</td>
+
+				<td align="center">
+					{% ifequal tbNam.danh_hieu_nam 'G'  %}
+						Học sinh Giỏi
+					{% else %}	
+					{% ifequal tbNam.danh_hieu_nam 'TT'  %}
+						Học sinh tiên tiến
+					{% else %}
+					   &nbsp	
+					{% endifequal %}
+					{% endifequal %}
+				</td>
+				<td align="center">
+					{% if tbNam.len_lop %}
+						Được lên lớp
+					{% else  %}
+					{% if tbNam.len_lop != None  %}
+						Không được lên lớp 
+					{% else %}
+					{% if tbNam.thi_lai  %}
+						Thi lại
+					{% else %}	
+					{% if tbNam.ren_luyen_lai %}
+						Rèn luyện thêm trong hè
+					{% else %}
+						Chưa được xếp loại						
+					{% endif %}	
+					{% endif %}	
+					{% endif %}	
+					{% endif %}	
+				</td>
+				
+			</tr>
+			{% endifequal %} 
+		{% endfor %}
+		</table>
+		</div>
+
+
+
+	{#----------------------------------------------------------------------#}
+	{# danh sach hoc sinh tien tien #}
+	{#----------------------------------------------------------------------#}
+	
+	<div id="tientien" style="display:none" >
+	<table class="styleA" width="100%">
+		<tr>
+			<td  align="center" width="1%">
+				Stt
+			</td>	
+			<td  align="center" width="18%">
+				Họ và tên
+			</td>	
+			<td align="center" width="10%">			
+				Ngày sinh
+			</td>	
+			<td align="center" width="10%">			
+				Học lực
+			</td>	
+			<td align="center" width="7%">			
+				Hạnh kiểm
+			</td>	
+			<td align="center" width="5%">			
+				Tổng số ngày nghỉ
+			</td>	
+			<td align="center" width="15%">			
+				Danh hiệu
+			</td>	
+			
+			<td align="center" width="15%">			
+				Thuộc diện
+			</td>	
+			
+
+		</tr>
+		{% for name,birthday,tbNam in allList %}
+	    {% ifequal tbNam.danh_hieu_nam "TT"  %} 
+			<tr>
+				<td align="center">
+					{{forloop.counter}}	
+				</td>
+				<td>
+					{{name}}
+				</td>
+				<td>
+				    {{birthday.day}}/{{birthday.month}}/{{birthday.year}}
+				</td>
+				<td align="center">
+					{% ifequal tbNam.hl_nam "G"  %}
+						Giỏi
+					{% else %}	
+					{% ifequal tbNam.hl_nam "K"  %}
+						Khá
+					{% else %}	
+					{% ifequal tbNam.hl_nam "TB"  %}
+						TB
+					{% else %}	
+					{% ifequal tbNam.hl_nam "Y"  %}
+						Yếu
+					{% else %}	
+					{% ifequal tbNam.hl_nam "Kem"  %}
+						Kém
+					{% else %}
+					   &nbsp	
+					{% endifequal %}
+					{% endifequal %}
+					{% endifequal %}
+					{% endifequal %}
+					{% endifequal %}
+				</td>
+
+				<td align="center">
+
+					{% ifequal tbNam.hk_nam "T"  %}
+						Tốt
+					{% else %}	
+					{% ifequal tbNam.hk_nam "K"  %}
+						Khá
+					{% else %}	
+					{% ifequal tbNam.hk_nam "TB"  %}
+						TB
+					{% else %}	
+					{% ifequal tbNam.hk_nam "Y"  %}
+						Yếu
+					{% else %}
+					   &nbsp	
+					{% endifequal %}
+					{% endifequal %}
+					{% endifequal %}
+					{% endifequal %}
+
+				</td >
+				<td align="center">					
+					{% if tbNam.tong_so_ngay_nghi == None %}
+						&nbsp
+					{%else %}
+						tbNam.tong_so_ngay_nghi
+					{% endif %}	
+				</td>
+
+				<td align="center">
+					{% ifequal tbNam.danh_hieu_nam 'G'  %}
+						Học sinh Giỏi
+					{% else %}	
+					{% ifequal tbNam.danh_hieu_nam 'TT'  %}
+						Học sinh tiên tiến
+					{% else %}
+					   &nbsp	
+					{% endifequal %}
+					{% endifequal %}
+				</td>
+				<td align="center">
+					{% if tbNam.len_lop %}
+						Được lên lớp
+					{% else  %}
+					{% if tbNam.len_lop != None  %}
+						Không được lên lớp 
+					{% else %}
+					{% if tbNam.thi_lai  %}
+						Thi lại
+					{% else %}	
+					{% if tbNam.ren_luyen_lai %}
+						Rèn luyện thêm trong hè
+					{% else %}
+						Chưa được xếp loại						
+					{% endif %}	
+					{% endif %}	
+					{% endif %}	
+					{% endif %}	
+				</td>
+				
+			</tr>
+			{% endifequal %} 
+		{% endfor %}
+		</table>
+		</div>
+
+	{#----------------------------------------------------------------------#}
+	{# danh sach hoc sinh len lop #}
+	{#----------------------------------------------------------------------#}
+	
+	<div id="lenlop" style="display:none" >
+	<table class="styleA" width="100%">
+		<tr>
+			<td  align="center" width="1%">
+				Stt
+			</td>	
+			<td  align="center" width="18%">
+				Họ và tên
+			</td>	
+			<td align="center" width="10%">			
+				Ngày sinh
+			</td>	
+			<td align="center" width="10%">			
+				Học lực
+			</td>	
+			<td align="center" width="7%">			
+				Hạnh kiểm
+			</td>	
+			<td align="center" width="5%">			
+				Tổng số ngày nghỉ
+			</td>	
+			<td align="center" width="15%">			
+				Danh hiệu
+			</td>	
+			
+			<td align="center" width="15%">			
+				Thuộc diện
+			</td>	
+			
+
+		</tr>
+		{% for name,birthday,tbNam in allList %}
+	    {% if tbNam.len_lop   %} 
+			<tr>
+				<td align="center">
+					{{forloop.counter}}	
+				</td>
+				<td>
+					{{name}}
+				</td>
+				<td>
+				    {{birthday.day}}/{{birthday.month}}/{{birthday.year}}
+				</td>
+				<td align="center">
+					{% ifequal tbNam.hl_nam "G"  %}
+						Giỏi
+					{% else %}	
+					{% ifequal tbNam.hl_nam "K"  %}
+						Khá
+					{% else %}	
+					{% ifequal tbNam.hl_nam "TB"  %}
+						TB
+					{% else %}	
+					{% ifequal tbNam.hl_nam "Y"  %}
+						Yếu
+					{% else %}	
+					{% ifequal tbNam.hl_nam "Kem"  %}
+						Kém
+					{% else %}
+					   &nbsp	
+					{% endifequal %}
+					{% endifequal %}
+					{% endifequal %}
+					{% endifequal %}
+					{% endifequal %}
+				</td>
+
+				<td align="center">
+
+					{% ifequal tbNam.hk_nam "T"  %}
+						Tốt
+					{% else %}	
+					{% ifequal tbNam.hk_nam "K"  %}
+						Khá
+					{% else %}	
+					{% ifequal tbNam.hk_nam "TB"  %}
+						TB
+					{% else %}	
+					{% ifequal tbNam.hk_nam "Y"  %}
+						Yếu
+					{% else %}
+					   &nbsp	
+					{% endifequal %}
+					{% endifequal %}
+					{% endifequal %}
+					{% endifequal %}
+
+				</td >
+				<td align="center">
+					
+					{% if tbNam.tong_so_ngay_nghi == None %}
+						&nbsp
+					{%else %}
+						tbNam.tong_so_ngay_nghi
+					{% endif %}	
+				</td>
+
+				<td align="center">
+					{% ifequal tbNam.danh_hieu_nam 'G'  %}
+						Học sinh Giỏi
+					{% else %}	
+					{% ifequal tbNam.danh_hieu_nam 'TT'  %}
+						Học sinh tiên tiến
+					{% else %}
+					   &nbsp	
+					{% endifequal %}
+					{% endifequal %}
+				</td>
+				<td align="center">
+					{% if tbNam.len_lop %}
+						Được lên lớp
+					{% else  %}
+					{% if tbNam.len_lop != None  %}
+						Không được lên lớp 
+					{% else %}
+					{% if tbNam.thi_lai  %}
+						Thi lại
+					{% else %}	
+					{% if tbNam.ren_luyen_lai %}
+						Rèn luyện thêm trong hè
+					{% else %}
+						Chưa được xếp loại						
+					{% endif %}	
+					{% endif %}	
+					{% endif %}	
+					{% endif %}	
+				</td>
+				
+			</tr>
+			{% endif %} 
+		{% endfor %}
+		</table>
+		</div>
+
+	{#----------------------------------------------------------------------#}
+	{# danh sach hoc sinh ko len lop #}
+	{#----------------------------------------------------------------------#}
+	
+	<div id="khonglenlop" style="display:none" >
+	<table class="styleA" width="100%">
+		<tr>
+			<td  align="center" width="1%">
+				Stt
+			</td>	
+			<td  align="center" width="18%">
+				Họ và tên
+			</td>	
+			<td align="center" width="10%">			
+				Ngày sinh
+			</td>	
+			<td align="center" width="10%">			
+				Học lực
+			</td>	
+			<td align="center" width="7%">			
+				Hạnh kiểm
+			</td>	
+			<td align="center" width="5%">			
+				Tổng số ngày nghỉ
+			</td>	
+			<td align="center" width="15%">			
+				Danh hiệu
+			</td>	
+			
+			<td align="center" width="15%">			
+				Thuộc diện
+			</td>	
+			
+
+		</tr>
+		{% for name,birthday,tbNam in allList %}
+	    {% if tbNam.len_lop != None   %} 
+	    {% if  not tbNam.len_lop   %} 
+			<tr>
+				<td align="center">
+					{{forloop.counter}}	
+				</td>
+				<td>
+					{{name}}
+				</td>
+				<td>
+				    {{birthday.day}}/{{birthday.month}}/{{birthday.year}}
+				</td>
+				<td align="center">
+					{% ifequal tbNam.hl_nam "G"  %}
+						Giỏi
+					{% else %}	
+					{% ifequal tbNam.hl_nam "K"  %}
+						Khá
+					{% else %}	
+					{% ifequal tbNam.hl_nam "TB"  %}
+						TB
+					{% else %}	
+					{% ifequal tbNam.hl_nam "Y"  %}
+						Yếu
+					{% else %}	
+					{% ifequal tbNam.hl_nam "Kem"  %}
+						Kém
+					{% else %}
+					   &nbsp	
+					{% endifequal %}
+					{% endifequal %}
+					{% endifequal %}
+					{% endifequal %}
+					{% endifequal %}
+				</td>
+
+				<td align="center">
+
+					{% ifequal tbNam.hk_nam "T"  %}
+						Tốt
+					{% else %}	
+					{% ifequal tbNam.hk_nam "K"  %}
+						Khá
+					{% else %}	
+					{% ifequal tbNam.hk_nam "TB"  %}
+						TB
+					{% else %}	
+					{% ifequal tbNam.hk_nam "Y"  %}
+						Yếu
+					{% else %}
+					   &nbsp	
+					{% endifequal %}
+					{% endifequal %}
+					{% endifequal %}
+					{% endifequal %}
+
+				</td >
+				<td align="center">
+					
+					{% if tbNam.tong_so_ngay_nghi == None %}
+						&nbsp
+					{%else %}
+						tbNam.tong_so_ngay_nghi
+					{% endif %}	
+				</td>
+
+				<td align="center">
+					{% ifequal tbNam.danh_hieu_nam 'G'  %}
+						Học sinh Giỏi
+					{% else %}	
+					{% ifequal tbNam.danh_hieu_nam 'TT'  %}
+						Học sinh tiên tiến
+					{% else %}
+					   &nbsp	
+					{% endifequal %}
+					{% endifequal %}
+				</td>
+				<td align="center">
+					{% if tbNam.len_lop %}
+						Được lên lớp
+					{% else  %}
+					{% if tbNam.len_lop != None  %}
+						Không được lên lớp 
+					{% else %}
+					{% if tbNam.thi_lai  %}
+						Thi lại
+					{% else %}	
+					{% if tbNam.ren_luyen_lai %}
+						Rèn luyện thêm trong hè
+					{% else %}
+						Chưa được xếp loại						
+					{% endif %}	
+					{% endif %}	
+					{% endif %}	
+					{% endif %}	
+				</td>
+				
+			</tr>
+			{% endif %} 
+			{% endif %} 
+		{% endfor %}
+		</table>
+		</div>
+
+
+
+
+
+
+
+
+	{#----------------------------------------------------------------------#}
+	{# danh sach hoc sinh thi lai #}
+	{#----------------------------------------------------------------------#}
+	
+	<div id="thilai"  style="display:none">
+	<table class="styleA" width="100%">
+		<tr>
+			<td  align="center" width="1%">
+				Stt
+			</td>	
+			<td  align="center" width="18%">
+				Họ và tên
+			</td>	
+			<td align="center" width="10%">			
+				Ngày sinh
+			</td>	
+			<td align="center" width="10%">			
+				Học lực
+			</td>	
+			<td align="center" width="7%">			
+				Hạnh kiểm
+			</td>	
+			<td align="center" width="5%">			
+				Tổng số ngày nghỉ
+			</td>	
+			<td align="center" width="15%">			
+				Danh hiệu
+			</td>	
+			
+			<td align="center" width="15%">			
+				Thuộc diện
+			</td>	
+			
+
+		</tr>
+		{% for name,birthday,tbNam in allList %}
+	    {% if tbNam.thi_lai    %} 
+			<tr>
+				<td align="center">
+					{{forloop.counter}}	
+				</td>
+				<td>
+					{{name}}
+				</td>
+				<td>
+				    {{birthday.day}}/{{birthday.month}}/{{birthday.year}}
+				</td>
+				<td align="center">
+					{% ifequal tbNam.hl_nam "G"  %}
+						Giỏi
+					{% else %}	
+					{% ifequal tbNam.hl_nam "K"  %}
+						Khá
+					{% else %}	
+					{% ifequal tbNam.hl_nam "TB"  %}
+						TB
+					{% else %}	
+					{% ifequal tbNam.hl_nam "Y"  %}
+						Yếu
+					{% else %}	
+					{% ifequal tbNam.hl_nam "Kem"  %}
+						Kém
+					{% else %}
+					   &nbsp	
+					{% endifequal %}
+					{% endifequal %}
+					{% endifequal %}
+					{% endifequal %}
+					{% endifequal %}
+				</td>
+
+				<td align="center">
+
+					{% ifequal tbNam.hk_nam "T"  %}
+						Tốt
+					{% else %}	
+					{% ifequal tbNam.hk_nam "K"  %}
+						Khá
+					{% else %}	
+					{% ifequal tbNam.hk_nam "TB"  %}
+						TB
+					{% else %}	
+					{% ifequal tbNam.hk_nam "Y"  %}
+						Yếu
+					{% else %}
+					   &nbsp	
+					{% endifequal %}
+					{% endifequal %}
+					{% endifequal %}
+					{% endifequal %}
+
+				</td >
+				<td align="center">
+					
+					{% if tbNam.tong_so_ngay_nghi == None %}
+						&nbsp
+					{%else %}
+						tbNam.tong_so_ngay_nghi
+					{% endif %}	
+				</td>
+
+				<td align="center">
+					{% ifequal tbNam.danh_hieu_nam 'G'  %}
+						Học sinh Giỏi
+					{% else %}	
+					{% ifequal tbNam.danh_hieu_nam 'TT'  %}
+						Học sinh tiên tiến
+					{% else %}
+					   &nbsp	
+					{% endifequal %}
+					{% endifequal %}
+				</td>
+				<td align="center">
+					{% if tbNam.len_lop %}
+						Được lên lớp
+					{% else  %}
+					{% if tbNam.len_lop != None  %}
+						Không được lên lớp 
+					{% else %}
+					{% if tbNam.thi_lai  %}
+						Thi lại
+					{% else %}	
+					{% if tbNam.ren_luyen_lai %}
+						Rèn luyện thêm trong hè
+					{% else %}
+						Chưa được xếp loại						
+					{% endif %}	
+					{% endif %}	
+					{% endif %}	
+					{% endif %}	
+				</td>
+				
+			</tr>
+			{% endif %} 
+		{% endfor %}
+		</table>
+		</div>
+
+
+
+	{#----------------------------------------------------------------------#}
+	{# danh sach hoc sinh ren luyen lai #}
+	{#----------------------------------------------------------------------#}
+	
+	<div id="renluyenthem" style="display:none" >
+	<table class="styleA" width="100%" >
+		<tr>
+			<td  align="center" width="1%">
+				Stt
+			</td>	
+			<td  align="center" width="18%">
+				Họ và tên
+			</td>	
+			<td align="center" width="10%">			
+				Ngày sinh
+			</td>	
+			<td align="center" width="10%">			
+				Học lực
+			</td>	
+			<td align="center" width="7%">			
+				Hạnh kiểm
+			</td>	
+			<td align="center" width="5%">			
+				Tổng số ngày nghỉ
+			</td>	
+			<td align="center" width="15%">			
+				Danh hiệu
+			</td>	
+			
+			<td align="center" width="15%">			
+				Thuộc diện
+			</td>	
+			
+
+		</tr>
+		{% for name,birthday,tbNam in allList %}
+	    {% if tbNam.ren_luyen_lai    %} 
+			<tr>
+				<td align="center">
+					{{forloop.counter}}	
+				</td>
+				<td>
+					{{name}}
+				</td>
+				<td>
+				    {{birthday.day}}/{{birthday.month}}/{{birthday.year}}
+				</td>
+				<td align="center">
+					{% ifequal tbNam.hl_nam "G"  %}
+						Giỏi
+					{% else %}	
+					{% ifequal tbNam.hl_nam "K"  %}
+						Khá
+					{% else %}	
+					{% ifequal tbNam.hl_nam "TB"  %}
+						TB
+					{% else %}	
+					{% ifequal tbNam.hl_nam "Y"  %}
+						Yếu
+					{% else %}	
+					{% ifequal tbNam.hl_nam "Kem"  %}
+						Kém
+					{% else %}
+					   &nbsp	
+					{% endifequal %}
+					{% endifequal %}
+					{% endifequal %}
+					{% endifequal %}
+					{% endifequal %}
+				</td>
+
+				<td align="center">
+
+					{% ifequal tbNam.hk_nam "T"  %}
+						Tốt
+					{% else %}	
+					{% ifequal tbNam.hk_nam "K"  %}
+						Khá
+					{% else %}	
+					{% ifequal tbNam.hk_nam "TB"  %}
+						TB
+					{% else %}	
+					{% ifequal tbNam.hk_nam "Y"  %}
+						Yếu
+					{% else %}
+					   &nbsp	
+					{% endifequal %}
+					{% endifequal %}
+					{% endifequal %}
+					{% endifequal %}
+
+				</td >
+				<td align="center">
+					
+					{% if tbNam.tong_so_ngay_nghi == None %}
+						&nbsp
+					{%else %}
+						tbNam.tong_so_ngay_nghi
+					{% endif %}	
+				</td>
+
+				<td align="center">
+					{% ifequal tbNam.danh_hieu_nam 'G'  %}
+						Học sinh Giỏi
+					{% else %}	
+					{% ifequal tbNam.danh_hieu_nam 'TT'  %}
+						Học sinh tiên tiến
+					{% else %}
+					   &nbsp	
+					{% endifequal %}
+					{% endifequal %}
+				</td>
+				<td align="center">
+					{% if tbNam.len_lop %}
+						Được lên lớp
+					{% else  %}
+					{% if tbNam.len_lop != None  %}
+						Không được lên lớp 
+					{% else %}
+					{% if tbNam.thi_lai  %}
+						Thi lại
+					{% else %}	
+					{% if tbNam.ren_luyen_lai %}
+						Rèn luyện thêm trong hè
+					{% else %}
+						Chưa được xếp loại						
+					{% endif %}	
+					{% endif %}	
+					{% endif %}	
+					{% endif %}	
+				</td>
+				
+			</tr>
+			{% endif %} 
+		{% endfor %}
+		</table>
+		</div>
+
+
+
+
+	{#----------------------------------------------------------------------#}
+	{# danh sach hoc sinh chua dc xep loai #}
+	{#----------------------------------------------------------------------#}
+	
+	<div id="chuaxeploai" style="display:none" >
+	<table class="styleA" width="100%" >
+		<tr>
+			<td  align="center" width="1%">
+				Stt
+			</td>	
+			<td  align="center" width="18%">
+				Họ và tên
+			</td>	
+			<td align="center" width="10%">			
+				Ngày sinh
+			</td>	
+			<td align="center" width="10%">			
+				Học lực
+			</td>	
+			<td align="center" width="7%">			
+				Hạnh kiểm
+			</td>	
+			<td align="center" width="5%">			
+				Tổng số ngày nghỉ
+			</td>	
+			<td align="center" width="15%">			
+				Danh hiệu
+			</td>	
+			
+			<td align="center" width="15%">			
+				Thuộc diện
+			</td>	
+			
+
+		</tr>
+		{% for name,birthday,tbNam in allList %}
+	    {% if  not tbNam.hl_nam or not tbNam.hk_nam %} 
+			<tr>
+				<td align="center">
+					{{forloop.counter}}	
+				</td>
+				<td>
+					{{name}}
+				</td>
+				<td>
+				    {{birthday.day}}/{{birthday.month}}/{{birthday.year}}
+				</td>
+				<td align="center">
+					{% ifequal tbNam.hl_nam "G"  %}
+						Giỏi
+					{% else %}	
+					{% ifequal tbNam.hl_nam "K"  %}
+						Khá
+					{% else %}	
+					{% ifequal tbNam.hl_nam "TB"  %}
+						TB
+					{% else %}	
+					{% ifequal tbNam.hl_nam "Y"  %}
+						Yếu
+					{% else %}	
+					{% ifequal tbNam.hl_nam "Kem"  %}
+						Kém
+					{% else %}
+					   &nbsp	
+					{% endifequal %}
+					{% endifequal %}
+					{% endifequal %}
+					{% endifequal %}
+					{% endifequal %}
+				</td>
+
+				<td align="center">
+
+					{% ifequal tbNam.hk_nam "T"  %}
+						Tốt
+					{% else %}	
+					{% ifequal tbNam.hk_nam "K"  %}
+						Khá
+					{% else %}	
+					{% ifequal tbNam.hk_nam "TB"  %}
+						TB
+					{% else %}	
+					{% ifequal tbNam.hk_nam "Y"  %}
+						Yếu
+					{% else %}
+					   &nbsp	
+					{% endifequal %}
+					{% endifequal %}
+					{% endifequal %}
+					{% endifequal %}
+
+				</td >
+				<td align="center">
+					
+					{% if tbNam.tong_so_ngay_nghi == None %}
+						&nbsp
+					{%else %}
+						tbNam.tong_so_ngay_nghi
+					{% endif %}	
+				</td>
+
+				<td align="center">
+					{% ifequal tbNam.danh_hieu_nam 'G'  %}
+						Học sinh Giỏi
+					{% else %}	
+					{% ifequal tbNam.danh_hieu_nam 'TT'  %}
+						Học sinh tiên tiến
+					{% else %}
+					   &nbsp	
+					{% endifequal %}
+					{% endifequal %}
+				</td>
+				<td align="center">
+					{% if tbNam.len_lop %}
+						Được lên lớp
+					{% else  %}
+					{% if tbNam.len_lop != None  %}
+						Không được lên lớp 
+					{% else %}
+					{% if tbNam.thi_lai  %}
+						Thi lại
+					{% else %}	
+					{% if tbNam.ren_luyen_lai %}
+						Rèn luyện thêm trong hè
+					{% else %}
+						Chưa được xếp loại						
+					{% endif %}	
+					{% endif %}	
+					{% endif %}	
+					{% endif %}	
+				</td>
+				
+			</tr>
+			{% endif %} 
+		{% endfor %}
+		</table>
+		</div>
+
+
+		
+
+
+{% endblock %}

@@ -1,0 +1,22 @@
+﻿ {% extends "school/base_school.html"%}  
+{% block content %}
+	{% if message != None %}
+	{{message}}
+	{% endif %}
+<p align="center" style="font-size:25px"> <b> Tính điểm tổng kết toàn trường </b> </p>	
+<br>
+<br>
+
+<ul>
+	<li><a title="Sẽ tự động tính điểm tổng kết của toàn trường học kỳ I" href = "{%url school.views.school_index  % }finishTerm/{{firstTerm.id}}"> Tính tổng kết học kỳ I </a></li>
+	
+	{% ifnotequal currentTerm.number 1 %}	
+		<li><a title="Sẽ tự động tính điểm tổng kết của toàn trường học kỳ II" href = "{%url school.views.school_index  %}finishTerm/{{secondTerm.id}}">Tính tổng kết học kỳ II </a></li>
+		<li><a title="Sẽ tự động tính điểm tổng kết của toàn trường cả năm học" href = "{%url school.views.school_index  %}finishYear/{{firstTerm.year_id.id}}">Tính tổng kết cả năm</a></li>
+	{% else %}
+		<li><a title="Đang trong học kỳ I nên link này đã bị vô hiệu hóa">Tính tổng kết học kỳ II </a></li>
+		<li><a title="Đang trong học kỳ I nên link này sẽ bị vô hiệu hóa" >Tính tổng kết cả năm</a></li>
+	{% endifnotequal %}		
+	
+</td>
+{% endblock %}	

@@ -1,0 +1,62 @@
+﻿{% extends "base.html" %}
+
+{% block content %}
+<br>
+
+<h1>Những buổi nghỉ của {{pupil}} học kì {{term}}</h1>
+
+<form action="/school/diemdanhhs/{{student_id}}" method="post">{% csrf_token %}
+        <tr>
+        
+        </tr>
+<table class="styleA" >
+
+    <tr>
+        <td align="center" width="5%"> STT </td>
+        <td align="center" width="15%"> Ngày</td>
+        <td align="center" width="8%"> Điểm danh </td>
+    </tr>
+    {% if message != None %}
+    {{message}}
+    {% endif %}
+    
+
+        {% for f in form %}
+            <tr>
+                <td align="center" width="5%">
+                    <p>{{forloop.counter}}</p>
+                </td>
+
+                <td align="center" width="15%">
+                    {{f.time.errors}}
+                    <p>{{ f.time }}</p>
+                </td>
+                
+                <td align="center" width="8%">
+                    {{ f.loai.errors }}
+                    <p>{{ f.loai }}</p>
+                </td>
+            </tr>
+        {% endfor %}
+        
+            <tr>
+                <td align="center" width="5%">
+                    <p>{{ p.id }}</p>
+                </td>
+
+                <td align="center" width="15%">
+                    {{iform.time.errors}}
+                    <p>{{ iform.time }}</p>
+                </td>
+                
+                <td align="center" width="8%">
+                    {{ iform.loai.errors }}
+                    <p>{{ iform.loai }}</p>
+                </td>
+            </tr>
+        <tr>
+        <td><input type ="submit" value="Cập nhật"/></td>
+	</form>
+        </tr>
+</table>
+{% endblock %}

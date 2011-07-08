@@ -1,0 +1,384 @@
+{% extends "base.html"%}
+{% block content %}
+{% if message != None %}
+{{message}}
+{% endif %}
+<script language="JavaScript" type="text/javascript" >
+function catchEnter(e)
+
+{
+      if (!e) e = window.event; 
+      var code = (e.keyCode) ? e.keyCode : e.which;
+
+	if (code == 13 || code == 3) 
+	{
+		return false;
+	}	
+	else return true;
+}
+window.onload = function() { document.onkeypress = catchEnter; };
+   
+
+	function acceptDigits(tb){
+		if (tb.value=="-")
+		{
+			tb.value="10";
+			return;
+		}	
+		var exp = /[^((\d).,)]/g;
+		var exp1=/[,]/g
+		tb.value = tb.value.replace(exp,'');
+		var value=tb.value;		
+		value=value.replace(exp1,'.');		
+		//kiem tra xem no co nhieu hon hai dau cham hay ko
+		var countDot=0;
+		for(i=0;i<value.length;i++)
+			if (value.charAt(i)==".") 
+				countDot++;
+				
+		if (countDot>1)
+			tb.value=tb.value.substring(0,tb.value.length-1);
+			
+		var number=parseFloat(value);
+		//alert(number);		
+		if ((10<number ) & (number<100))
+		{
+			temp=number/10;
+			tb.value=temp.toString();
+		}
+		if (tb.value.length>4)	
+			tb.value=tb.value.substring(0,4);
+	}
+	function returnMove()
+	{
+		for(i=0;i<3;i++)
+			if (document.info.move[i].checked)
+				return i;
+	}
+	
+	function directionFirstRow(nameNumber,valueOfMove)
+	{
+		var lengthList={{lengthList}};		
+		if (valueOfMove==2)			
+			temp=nameNumber+100;
+		else
+		{	
+			if (nameNumber % 100==16)
+				temp=parseInt(nameNumber/100)*100+101
+			else
+				temp=nameNumber+1
+		}	
+		var tempName=temp.toString();
+		var cel=document.getElementsByName(tempName);
+		if (cel[0])
+		{
+			cel[0].focus();
+		}					
+	}
+	
+	function directionOtherRow(nameNumber,valueOfMove)
+	{
+		var lengthList={{lengthList}};
+		if (valueOfMove==2)			
+		{
+			if (parseInt(nameNumber/100)==lengthList)
+				temp=100+nameNumber % 100;
+			else					
+				temp=nameNumber+100;
+		}		
+		else
+		if (valueOfMove==1)			
+		{	
+			if (nameNumber % 100==16)
+				temp=parseInt(nameNumber/100)*100+101
+			else
+				temp=nameNumber+1
+		}
+		else
+		{	
+			if (nameNumber % 100==16)
+				temp=parseInt(nameNumber/100)*100+101;
+			else
+			{
+				var beforeRow=nameNumber-100;
+				var index = beforeRow-beforeRow % 100 ;
+				var ok=false;
+				for (i=beforeRow % 100+1;i<17;i++)
+				{
+					var cellNumber=index+i;
+					tempCel=document.getElementsByName(cellNumber.toString());
+					if (tempCel[0])
+						if (tempCel[0].value.length>0)
+						{
+							ok=true;
+							break;
+						}	
+				}
+				
+				if (ok)
+					temp=index+100+i;
+				else
+					temp=nameNumber+1;
+			}			
+		}
+		
+		var tempName=temp.toString();
+		var cel=document.getElementsByName(tempName);
+		if (cel[0])
+		{
+			cel[0].focus();
+		}					
+	}
+	
+	function controlDirection(tb,event)
+	{
+		var keycode=event.keyCode;
+		var name=tb.name;
+		var nameNumber=parseInt(name);
+
+		if ((keycode==32) | (keycode==13))
+		{
+			valueOfMove=returnMove();
+			if (parseInt(nameNumber/100)==1)
+			{
+				directionFirstRow(nameNumber,valueOfMove);
+			}	
+			else
+			{
+				directionOtherRow(nameNumber,valueOfMove);
+			}	
+		}	
+		else	
+		if ((keycode==40))
+		{
+			var temp=nameNumber+100;
+			var tempName=temp.toString();
+			var cel=document.getElementsByName(tempName);
+			if (cel[0])
+				{
+					cel[0].focus();
+				}				
+		}
+		else
+		if (keycode==38)
+		{
+			var temp=nameNumber-100;
+			var tempName=temp.toString();
+			var cel=document.getElementsByName(tempName);
+			if (cel[0])
+				{
+					cel[0].focus();
+				}
+		}
+		else
+		if (keycode==37)
+		{
+			var temp=nameNumber-1;
+			var tempName=temp.toString();
+			var cel=document.getElementsByName(tempName);
+			if (cel[0])
+				{
+					cel[0].focus();
+				}
+		}
+		else
+		if (keycode==39)
+		{
+			var temp=nameNumber+1;
+			var tempName=temp.toString();
+			var cel=document.getElementsByName(tempName);
+			if (cel[0])
+				{
+					cel[0].focus();
+				}
+		}
+	}
+	function submitTerm()
+	{
+			if (document.info.term.value!={{termChoice}})
+			{
+				document.info.submitChoice.value="hienthi";
+				document.info.submit();
+			}	
+	}
+
+	function saveMark()
+	{
+		document.info.submitChoice.value="luulai";
+			document.info.submit();
+	}
+	function saveMarkHasComment()
+	{
+		var length={{lengthList}};
+		//alert(length);
+		document.getElementById("commentTable").style.visibility='hidden';
+		for(i=1;i<=length;i++)
+			for(j=1;j<5;j++)
+			{
+				k=i*100+j;
+				var name=k+"";
+				var t=document.getElementsByName(name)[0].value.toLowerCase();
+				//alert(t);
+				var value="";
+				if (t!="")
+					if (t=="g")
+						value="9";
+					else
+					if (t=="k")
+						value="7";
+					else						
+					if ((t=="tb") ||(t=="t"))
+						value="6";
+					else						
+					if (t=="y")
+						value="4";
+					else						
+						value="1";
+						
+					document.getElementsByName(name)[0].value=value;									
+				}
+		document.info.submitChoice.value="luulai";
+		document.info.submit();
+
+	}
+	function saveMarkHasComment1()
+	{
+		var length={{lengthList}};
+		document.getElementById("commentTable").style.visibility='hidden';
+		//alert(length);
+		for(i=1;i<=length;i++)
+			for(j=1;j<6;j++)
+			{
+				k=i*100+j;
+				var name=k+"";
+				var t=document.getElementsByName(name)[0].value.toLowerCase();
+				//alert(t);
+				var value="";
+				if (t!="")
+					if (t=="g")
+						value="9";
+					else
+					if (t=="k")
+						value="7";
+					else						
+					if ((t=="tb") ||(t=="t"))
+						value="6";
+					else						
+					if (t=="y")
+						value="4";
+					else						
+						value="1";
+						
+					document.getElementsByName(name)[0].value=value;									
+				}
+		document.info.submitChoice.value="luulai";
+		document.info.submit();
+
+	}
+	function validateComment(tb)
+	{
+		var value=tb.value.toLowerCase();
+		if ((value!="g") && (value!="k") &&
+		(value!="tb")&& (value!="t")&& (value!="y") &&
+		(value!="ke") && (value!="kem")
+		&& (value!="kém"))
+		{
+			tb.value="";
+		}
+	}
+</script>
+
+<form action="/school/markForASubject/{{selectedSubject.id}}"  name="info" method="post" id='myform' 
+	onsubmit="return false" >{% csrf_token %}
+<table border="0" width=100% >
+	<input type="hidden" name="submitChoice" value="">	
+
+	<tr>
+		<td align="center" colspan =4 style="font-size:25px" >
+			<b>Bảng điểm  theo môn  </b>
+			<br>
+			<br>
+		</td>
+	</tr>
+	<tr>
+		<td colspan=2 >
+			Môn: {{selectedSubject.name}}
+		</td>
+		<td  >
+			Lớp: {{selectedSubject.class_id.name}}
+		</td>
+	</tr>
+	<tr>
+	<td>&nbsp</td>
+	</tr>
+	<tr>										
+		<td width ="20%"> Học kỳ &nbsp&nbsp:  
+		<select name="term" onchange="submitTerm();" >				
+			{% for term in termList %}
+					<option   value={{ term.id }} selected> {{ term}} </option>	
+			{% endfor %}	
+			
+		</select>
+		</td>
+	{%ifnotequal hsSubject 0 %}
+		<td width ="25%" >
+			Dịch chuyển: <br >
+			<p title="Sau khi nhập xong sẽ tự động nhảy đến đúng cột mà cột ở trên cũng có điểm">
+				<input type="radio" name="move" id="ngang1" value="ngang1" checked  > Ngang theo điểm hàng trên
+				<br>
+			</p>
+			
+			<p title="Nhảy bình thường sang cột tiếp theo">
+				<input type="radio" name="move" id="ngang2" value="ngang2" >
+				Ngang bình thường			
+				<br>
+			</p>
+			
+			<p title="Sau khi nhập xong sẽ tự động nhảy xuống hàng tiếp theo">
+				<input type="radio" name="move" id="doc" value="doc" >
+				Dọc
+			</p>
+		</td>	
+		<td width ="35%">
+			Ghi chú: <br>
+				+ Sau khi nhập điểm xong ở một ô, 
+					có thể ấn enter hoặc dấu cách 
+					 để chuyển sang ô tiếp theo   <br>
+				+ Bạn có thể dùng dấu - thay cho điểm 10 <br>
+				+ Bạn có thể gõ tắt mà không cần gõ dấu chấm.<br>
+				+ Vd: 75->7,5 hoặc 675->6,75  <br>
+			</ul>
+		</td>	
+	 {% endifnotequal %}		
+	</tr>	
+</table>
+	Lưu ý:Nhập xong nhớ ấn lưu lại.
+	<br>
+
+	
+<script type="text/javascript" >
+	document.info.term.value={{termChoice}}
+	m=document.getElementById("{{move}}")
+	if (m) m.checked=true;
+	
+</script>		
+
+	{#<----------------------------------------------------------------------------------> #}	
+	{# day la phan tinh diem cho nhung mon thuoc nhan xet #}
+	{#<----------------------------------------------------------------------------------> #}
+	{%ifequal hsSubject 0 %}
+		{% include  "school/mark_has_comment.html" %}
+			
+	{% endifequal %}
+
+	{#<----------------------------------------------------------------------------------> #}
+	{#day la phan tinh diem nhung mon khong phai la nhan xet #}	
+	{#<----------------------------------------------------------------------------------> #}
+
+	
+	{%ifnotequal hsSubject 0 %}
+		{% include  "school/mark_no_comment.html" %}
+	{% endifnotequal %}
+</form>	
+{% endblock %}
+

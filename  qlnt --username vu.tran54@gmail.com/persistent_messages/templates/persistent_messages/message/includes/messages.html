@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+	{% if user.is_authenticated %}
+		{% load i18n %}
+		{% if messages %}
+			<ul class="messages">
+			    {% for message in messages %}
+				    {% if not hide_persistent or not message.is_persistent %}
+				    	
+				    	<li id="message-{{ message.pk }}" {% if message.tags %} class="{{ message.tags }}"{% endif %}>
+        				{% if message.from_user %}Người gửi: {{ message.from_user }}<br />{% endif %}
+				    	<a href="/messages/detail/{{ message.id }}">
+				    		{% if message.subject %}<strong>{{ message.subject }}</strong>{% endif %}
+				    	</a>
+				    	{% endif %}
+			    {% endfor %}
+			</ul>
+			{% if close_all and messages|length > 1 %}
+				<a class="message-close-all icon" href="{% url message_mark_all_read %}"><span>{% trans "close all" %}</span></a>
+			{% endif %}
+		{% else %}
+			Không có thông báo nào.
+		{% endif %}
+		
+		<br /><a href="add_message/">Gửi thông báo</a>
+		<br /><a href="all_messages/">Xem danh sách thông báo</a>
+	{% endif %}
+{% endblock %}
+

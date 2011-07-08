@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}
+Xem thông báo 
+{% endblock %}
+  
+{% block content %}
+	{% if user.is_authenticated %}
+	    {% if message_list %}
+		    <ul>
+		    {% for ml in message_list %}
+		    	{% if ml.user == user %}
+		        	<li><a href="/messages/detail/{{ ml.id }}">{{ ml.subject }}</a></li>
+		        {% endif %}
+		    {% endfor %}
+		    </ul>
+		{% else %}
+		    <p>Không có thông báo nào.</p>
+		{% endif %}
+		
+		<a href="/messages/add_message/">Gửi thông báo mới</a>
+	{% endif %}
+{% endblock %}
+
+

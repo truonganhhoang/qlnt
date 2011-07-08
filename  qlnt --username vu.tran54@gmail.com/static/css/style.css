@@ -1,0 +1,396 @@
+/* CSS Document */
+html {
+    height: 100%;
+}
+
+body {
+    height: 100%;
+    padding: 0px;
+    margin: 0px;
+    color: #5E5E5E;
+    font: 14px/18px Arial, Helvetica, sans-serif;
+}
+
+div, p, ul, h2, h3, img {
+    padding: 0px;
+    margin: 0px;
+}
+
+ul {
+    list-style-type: none;
+}
+
+table.styleB {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    color: #333333;
+    border-width: 1px;
+    border-color: #999999;
+    border-collapse: collapse;
+}
+
+table.styleB th {
+    padding: 2px;
+    background-color: #c3dde0;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #a9c6c9;
+}
+
+table.styleB tr {
+    background-color: #d4e3e5;
+}
+
+table.styleB td {
+    border: 1px;
+    border-style: solid;
+    border-color: #a9c6c9;
+}
+
+table.styleA {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    color: #333333;
+    border-width: 1px;
+    border-color: #999999;
+    border-collapse: collapse;
+}
+
+table.styleA th {
+    background-color: #c3dde0;
+    border-width: 1px;
+    padding: 8px;
+    border-style: solid;
+    border-color: #a9c6c9;
+}
+
+table.styleA tr {
+    background-color: #d4e3e5;
+    cursor: pointer;
+}
+
+table.styleA input {
+    width: 95%;
+}
+
+table.styleDetail th {
+    text-align: right;
+}
+
+table.styleA tr.thead {
+    background-color: #d4e3e5;
+    cursor: auto;
+}
+
+table.styleA tr:hover {
+    background-color: #f0f1c3;
+}
+
+table.styleA tr.selected {
+    background-color: #f3f48d;
+}
+
+table.styleA td {
+    border-width: 1px;
+    padding: 4px;
+    border-style: solid;
+    border-color: #a9c6c9;
+}
+
+.errorlist {
+    color: red;
+}
+
+.errorlist ul {
+    width: auto;
+}
+
+/*
+|-----------------------------------------------|
+|                                     userTop   |
+|                 topMenu                       |   topPanel
+|-----------------------------------------------|
+|leftMenu   | contentTop                        |
+|           |-----------------------------------|
+|           | content                           |
+|           |                                   |   bodyPanel
+|           |                                   |   
+|           |                                   |
+|           |                                   |
+|-----------------------------------------------|
+|            footerPanel                        |   footerPanel
+|-----------------------------------------------|
+*/
+
+/*----TOP PANEL----*/
+#topPanel {
+    min-width: 1024px;
+    width: 100%;
+    height: 80px;
+    position: relative;
+    margin: 0 auto;
+    color: #fff;
+    background-color: #67A7E3;
+    padding: 0px;
+}
+
+#topPanel img.logo {
+    width: 80px;
+    height: 40px;
+    position: absolute;
+    top: 5px;
+    left: 15px;
+}
+
+#topPanel p {
+    position: absolute;
+    top: 5px;
+    left: 120px;
+    font: 16px Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    color: black
+}
+
+#topPanel p#detail {
+    position: absolute;
+    left: 120px;
+    top: 30px;
+    font-weight: normal;
+    font-size: 15px;
+}
+
+#topUser {
+    width: auto;
+    height: 20px;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+}
+
+#topUser ul {
+    width: auto;
+    height: 20px;
+}
+
+#topUser ul li {
+    width: auto;
+    height: 30px;
+    float: left;
+}
+
+#topUser ul li a {
+    width: 80px;
+    height: 20px;
+    display: block;
+    color: white;
+    text-decoration: none;
+    text-align: center;
+    padding: 3px 0px 3px;
+}
+
+#topUser ul li a:hover {
+    background: #fff;
+    color: #0574AF;
+    text-decoration: none;
+}
+
+#topMenu {
+    height: 24px;
+    position: absolute;
+    bottom: 0px;
+    left: 10px; /*background-color:red;*/
+}
+
+#topMenu ul {
+    width: auto;
+    height: 22px;
+}
+
+#topMenu ul li {
+    width: auto;
+    height: 22px;
+    float: left;
+}
+
+#topMenu ul li a {
+    width: auto;
+    height: 22px;
+    display: block; /*background-color:blue;*/
+    color: white;
+    text-decoration: none;
+    text-align: center;
+    padding: 2px 10px 0px;
+}
+
+#topMenu ul li a:hover {
+    background: #fff;
+    color: #0574AF;
+    text-decoration: none;
+}
+
+/*----BODY PANEL----*/
+#bodyPanel {
+    position: absolute;
+    width: 100%;
+}
+
+#bodyPanel h2 {
+    height: 30px;
+    color: #00111A;
+    font: 24px/24px Georgia, "Times New Roman", Times, serif;
+    margin-bottom: 10px;
+}
+
+#bodyPanel p {
+    padding: 3px 0 0;
+}
+
+#bodyPanel p span {
+    background: #fff;
+    color: #046598;
+    font-weight: bold;
+}
+
+/* for content with a left menu and a right content */
+/*---- LEFT MENU ----*/
+#leftMenu {
+    width: auto;
+    min-width: 180px;
+    float: left;
+    background-color: #F3F3F3;
+    color: #1A1A1A;
+    position: absolute; /* not fixed tam thoi de cho no move theo da */
+    top: 10px;
+    left: 5px;
+}
+
+#leftMenu ul {
+    width: auto;
+    margin: 0px 0px 0px 0px;
+    border: 1px solid #DADADA;
+}
+
+#leftMenu ul li {
+    width: auto;
+    height: 32px;
+}
+
+#leftMenu ul li a {
+    width: auto;
+    height: 22px;
+    display: block;
+    background-color: #F3F3F3;
+    color: #1A1A1A;
+    text-decoration: none;
+    padding: 5px 15px 0px 15px;
+}
+
+#leftMenu ul li a:hover {
+    background-color: #67A7E3;
+    text-decoration: none;
+}
+
+/*---- RIGHT CONTENT----*/
+#rightContent {
+    position: absolute;
+    left: 210px;
+    right: 5px;
+    padding: 5px 5px 5px 5px;
+    min-width: 800px;
+}
+
+/*---- CONTENT TOP----*/
+#contentTop {
+    position: absolute;
+    background-color: #F3F3F3;
+}
+
+/*---- CONTENT BODY----*/
+#content {
+    width: 98%;
+    position: absolute;
+    top: 20px;
+    padding-bottom: 20px;
+    float: left;
+    min-height: 700px;
+    min-width: 800px;
+}
+
+#content h2 {
+    height: 30px;
+    color: #00111A;
+    font: 24px/24px Georgia, "Times New Roman", Times, serif;
+    margin: 5px 0 5px 0;
+}
+
+#content h2 span {
+    background: #fff;
+    color: #046598;
+}
+
+#content h3 {
+    width: 410px;
+    height: 30px;
+    color: #00111A;
+    font: 20px/20px Georgia, "Times New Roman", Times, serif;
+}
+
+#content h3 span {
+    background: #fff;
+    color: #046598;
+}
+
+#content p {
+    padding: 3px 0 0;
+}
+
+#content p span {
+    background: #fff;
+    color: #046598;
+    font-weight: bold;
+}
+
+#content ul {
+    width: auto;
+    margin: 5px 0 0;
+}
+
+#content ul li {
+    width: auto;
+    height: 20px;
+}
+
+#content ul li a {
+    width: 390px;
+    height: 20px;
+    color: #1A1A1A;
+    text-decoration: underline;
+    padding: 0 0 0 0px;
+}
+
+#content ul li a:hover {
+    width: 390px;
+    height: 20px;
+    color: #676363;
+    text-decoration: underline;
+}
+
+/*----FOOTER PANEL----*/
+#footerPanel {
+    position: absolute;
+    bottom: 10px;
+    color: #010101;
+    clear: both;
+    border-top: thin solid silver;
+}
+
+#footerPanel p.copyright {
+    width: auto;
+    margin-left: auto;
+    margin-right: auto;
+    background: #F3F3F3;
+    color: #04496D;
+    font-size: 12px;
+    text-align: center
+}
+

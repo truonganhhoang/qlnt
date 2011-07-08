@@ -1,0 +1,11 @@
+{% extends "school/base_school.html" %}
+
+{% block content %}
+<form action="/school/viewTeacherDetail/{{id}}" method="post">{% csrf_token %}
+    {{ form.non_field_errors }}
+    <table class="styleDetail">
+	    {{ form.as_table }}
+	 </table>
+   <input type ="submit" value="Cập nhật"/>
+</form>
+{% endblock %}

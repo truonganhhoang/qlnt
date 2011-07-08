@@ -1,0 +1,36 @@
+{% extends "school/base_school.html" %}
+{% load pagination_tags %}
+
+{% block content %}
+	{% if user.is_authenticated %}
+		<small>Những tin nhắn gửi đi thành công - <a href="/sms/failed_sms/">Những tin nhắn gửi đi thất bại</a></small>
+		<h4>Danh sách tin nhắn đã được gửi đi:</h4>
+		{% if sms_list %}
+            {% autopaginate sms_list 30 %}
+			<table class="styleB">
+				<col width=150>
+				<col width=200>
+				<col width=300>
+				<col width=180>
+				<tr >
+				<td >Số điện thoại</td>
+				<td >Người nhận</td>				
+				<td >Nội dung</td>
+				<td >Thời gian tạo</td>
+				</tr>
+			{% for s in sms_list %}
+				<tr >
+				<td >{{ s.phone }}</td>
+				<td >{{ s.receiver }}</td>
+				<td >{{ s.content }}</td>
+				<td >{{ s.createdFormat }}</td>
+				</tr>
+			{% endfor %}
+			</table>
+            {% paginate %}
+		{% else %}
+		    <p>Không có tin nhắn nào đã được gửi đi.</p>
+		{% endif %}
+	{% endif %}
+{% endblock %}
+

@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block content %}
+ <h2>Các lớp học</h2>
+{% if message != None %}
+{{message}}
+{% endif %}
+
+<script>
+function confirmDelete()
+{
+    return confirm("Bạn có chắc chắn xóa không?");
+}
+</script>
+
+<table class="styleA" width = "100%" align = "center">
+	<tr>
+		<th align="center"> STT</td>
+		<th align="center"><a href="{%url school.views.school_index  %}classes/1/{{next_status}}/1"> Tên Lớp </a></td>
+		<th align="center"><a href="{%url school.views.school_index  %}classes/2/{{next_status}}/1"> Khối </a></td>
+		<th align="center"><a href="{%url school.views.school_index  %}classes/3/{{next_status}}/1">Giáo Viên Chủ Nhiệm</a></td>
+		<th align="center"><a href="{%url school.views.school_index  %}classes/4/{{next_status}}/1"> Năm </a></td>
+		<th align="center"></td>
+	</tr>
+	<form action="/school/classes/{{sort_type}}/{{sort_status}}/{{classList.number}}" method="post">{% csrf_token %}
+	{% for class, f in list %}
+	<tr>
+		<td align="center"> {{forloop.counter|add:base_order}}</td>
+		<td align="center"><a href="{%url school.views.school_index  %}viewClassDetail/{{class.id}}" >{{class.name}} </a></td>
+		<td align="center"> {{class.block_id}} </td>
+		<td align="center"> {{f.teacher_id}} </td>
+		<td align="center"> {{class.year_id}} </td>
+		<td align="center"> <a href="{%url school.views.school_index  %}deleteClass/{{class.id}}" onclick="return confirmDelete();"> xóa </a></td>
+	</tr>
+	{% endfor %}
+	<tr align = "right" width = "100%">
+		<td width = "100%" colspan = 6>
+		<div class = "pagination">
+		<span class = "step-links">
+			{% if classList.has_previous %}
+				<a href = "{%url school.views.school_index  %}classes/{{sort_type}}/{{sort_status}}/{{classList.previous_page_number}}"> Trang trước </a>
+			{% endif %}
+			
+			<span class = "current">
+				Trang {{classList.number}} trên {{classList.paginator.num_pages}}.
+			</span>
+			
+			{% if classList.has_next %}
+				<a href = "{%url school.views.school_index  %}classes/{{sort_type}}/{{sort_status}}/{{classList.next_page_number}}"> Trang sau </a>
+			{% endif %}
+		</span>
+		</div>
+		</td>
+	</tr>
+	
+</table>
+<p><input type="submit" value="Cập nhật" /></p>
+<a href = "{%url school.views.school_index %}addclass">Thêm lớp học</a></li>
+</form>
+
+{% endblock %}

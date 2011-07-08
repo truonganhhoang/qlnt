@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block content %}
+{%if user.username == profile.user.username%}
+<h1><center>Hồ sơ cá nhân của tài khoản: {{user.username}}</center></h1>
+{% if profile %}
+<div>
+	<div>
+		<table>
+		<tr>
+		<h4>
+			<ul>
+			<div class="fieldWrapper">
+	        {{form.username.errors }}
+	        <p><label for="id_first_name">tài khoản: </label>
+	            {{ form.profile.user.username }}</p>
+
+    		</div>
+    		<div>
+			<p><label for="id_first_name">Tài khoản: {{ profile.user.username}}</label></p></div>
+			<li>Họ và Tên: {{ profile.user.first_name }} {{profile.user.last_name}}</li>
+			<li>Tổ chức: {{ profile.organization }}</li>
+			<li>Vị trí: {{ profile.position }}</li>
+			<li>Số điện thoại: {{ profile.phone }}</li>
+			<li>Ghi chú: {{profile.notes}}</li>
+			<li>Đăng nhập lần cuối vào lúc: {{ profile.user.last_login|date:"F j, Y" }}</li>
+			</ul>
+		</h4>
+		</tr>
+		</table>
+	</div>
+ 	
+ 	<div id="user_details">
+	 	<ul>
+		 	{% if user.is_authenticated %}
+		 	{% ifequal user profile.user %}
+		 	<li><a href="{% url profiles_edit_profile %}">Chỉnh sửa thông tin cá nhân.</a></li>
+		 	<li><a href="/app/change_password/">Thay đổi mật khẩu </a></li>
+		 	{% endifequal %}
+		 	{% endif %}
+	 	</ul>
+ 	</div>
+</div>
+{% else %}
+{% endif %}
+{% endif %}
+{% endblock %}
+	
