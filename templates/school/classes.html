@@ -20,7 +20,9 @@ function confirmDelete()
 		<th align="center"><a href="{%url school.views.school_index  %}classes/2/{{next_status}}/1"> Khối </a></td>
 		<th align="center"><a href="{%url school.views.school_index  %}classes/3/{{next_status}}/1">Giáo Viên Chủ Nhiệm</a></td>
 		<th align="center"><a href="{%url school.views.school_index  %}classes/4/{{next_status}}/1"> Năm </a></td>
-		<th align="center"></td>
+        {%if pos >= 4 %}
+            <th align="center"></td>
+        {% endif %}
 	</tr>
 	<form action="/school/classes/{{sort_type}}/{{sort_status}}/{{classList.number}}" method="post">{% csrf_token %}
 	{% for class, f in list %}
@@ -28,9 +30,15 @@ function confirmDelete()
 		<td align="center"> {{forloop.counter|add:base_order}}</td>
 		<td align="center"><a href="{%url school.views.school_index  %}viewClassDetail/{{class.id}}" >{{class.name}} </a></td>
 		<td align="center"> {{class.block_id}} </td>
-		<td align="center"> {{f.teacher_id}} </td>
+		{%if pos >= 4 %}
+            <td align="center"> {{f.teacher_id}} </td>
+        {% else %}           
+            <td align="center"> {{class.teacher_id}} </td>
+        {% endif %}
 		<td align="center"> {{class.year_id}} </td>
-		<td align="center"> <a href="{%url school.views.school_index  %}deleteClass/{{class.id}}" onclick="return confirmDelete();"> xóa </a></td>
+        {%if pos >= 4 %}
+            <td align="center"> <a href="{%url school.views.school_index  %}deleteClass/{{class.id}}" onclick="return confirmDelete();"> xóa </a></td>
+        {% endif %}
 	</tr>
 	{% endfor %}
 	<tr align = "right" width = "100%">
@@ -54,8 +62,10 @@ function confirmDelete()
 	</tr>
 	
 </table>
-<p><input type="submit" value="Cập nhật" /></p>
-<a href = "{%url school.views.school_index %}addclass">Thêm lớp học</a></li>
+{%if pos >= 4 %}
+    <p><input type="submit" value="Cập nhật" /></p>
+    <a href = "{%url school.views.school_index %}addclass">Thêm lớp học</a>
+{% endif %}
 </form>
 
 {% endblock %}

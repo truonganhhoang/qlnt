@@ -505,8 +505,7 @@ def classes(request, sort_type=1, sort_status=0, page=1):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
-    if (get_position(request) < 4):
-        return HttpResponseRedirect('/')
+    pos = get_position(request)    
     message = None
     school_id = get_school(request).id
     form = ClassForm(school_id)
@@ -556,7 +555,15 @@ def classes(request, sort_type=1, sort_status=0, page=1):
         cfl.append(ClassForm(school_id, instance=c))		
     list = zip(classList.object_list, cfl)
     t = loader.get_template(os.path.join('school', 'classes.html'))
-    c = RequestContext(request, {'list': list, 'form': form, 'message': message, 'classList': classList, 'sort_type':sort_type, 'sort_status':sort_status, 'next_status':1-int(sort_status), 'base_order': (int(page)-1) * 20})
+    c = RequestContext(request, {   'list': list, 
+                                    'form': form, 
+                                    'message': message, 
+                                    'classList': classList, 
+                                    'sort_type':sort_type, 
+                                    'sort_status':sort_status, 
+                                    'next_status':1-int(sort_status), 
+                                    'base_order': (int(page)-1) * 20,
+                                    'pos':pos,})
     return HttpResponse(t.render(c))
 
 
@@ -592,7 +599,8 @@ def viewClassDetail(request, class_id, sort_type=1, sort_status=0, page=1):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
-    if (get_position(request) < 4):
+    pos = get_position(request)
+    if (pos == 0):
         return HttpResponseRedirect('/')
     cl = Class.objects.get(id=class_id)
 	
@@ -661,7 +669,15 @@ def viewClassDetail(request, class_id, sort_type=1, sort_status=0, page=1):
     except (EmptyPage, InvalidPage):
         student_list = paginator.page(paginator.num_pages)
     t = loader.get_template(os.path.join('school', 'classDetail.html'))
-    c = RequestContext(request, {'form': form, 'message': message, 'studentList': student_list, 'class': cl, 'sort_type':int(sort_type), 'sort_status':int(sort_status), 'next_status':1-int(sort_status), 'base_order': (int(page)-1) * 20})
+    c = RequestContext(request, {   'form': form, 
+                                    'message': message, 
+                                    'studentList': student_list, 
+                                    'class': cl, 
+                                    'sort_type':int(sort_type), 
+                                    'sort_status':int(sort_status), 
+                                    'next_status':1-int(sort_status), 
+                                    'base_order': (int(page)-1) * 20,
+                                    'pos': pos})
     return HttpResponse(t.render(c))
 
 #sort_type = '1': fullname, '2': birthday, '3':'sex'
@@ -753,7 +769,8 @@ def subjectPerClass(request, class_id, sort_type=1, sort_status=0):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
-    if (get_position(request) < 4):
+    pos = get_position(request)
+    if (pos == 0):
         return HttpResponseRedirect('/')
     message = None
     cl = Class.objects.get(id=class_id)
@@ -827,8 +844,17 @@ def subjectPerClass(request, class_id, sort_type=1, sort_status=0):
         sfl.append(SubjectForm(school_id, instance=s))
     list = zip(subjectList, sfl)
     t = loader.get_template(os.path.join('school', 'subject_per_class.html'))
-    c = RequestContext(request, {'list':list, 'form': form, 'message': message, 'subjectList': subjectList, 'class_id': class_id, 'cl':cl,
-                                'sort_type': sort_type, 'sort_status':sort_status, 'next_status':1-int(sort_status), 'term':term})
+    c = RequestContext(request, {   'list':list, 
+                                    'form': form, 
+                                    'message': message, 
+                                    'subjectList': subjectList, 
+                                    'class_id': class_id, 
+                                    'cl':cl,
+                                    'sort_type': sort_type, 
+                                    'sort_status':sort_status, 
+                                    'next_status':1-int(sort_status), 
+                                    'term':term,
+                                    'pos':pos})
     return HttpResponse(t.render(c))
 
 def students(request, sort_type=1, sort_status=1, page=1):

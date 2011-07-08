@@ -17,6 +17,7 @@ function confirmCancel()
 	    {{ form.as_table }}
 	 </table>
    <input type ="submit" value="Cập nhật"/>
-   <a href="{%url school.views.school_index  %}teachers" onclick="return confirmCancel();">Hủy</a>
+
+   <a title="Hủy cập nhật và quay về danh sách giáo viên" href="{%url school.views.school_index  %}teachers" onclick="return confirmCancel();"><input type = "button" value ="Hủy"/></a>
 </form>
 {% endblock %}
