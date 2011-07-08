@@ -2,13 +2,12 @@
 
 {% block content %}
 	{% if user.is_authenticated and user.username == profile.user.username %}
-	<h2>Sửa thông tin tài khoản: {{ user }}</h2>
+	<h2>Thông tin tài khoản: {{ user }}</h2>
 	
 		<form method="POST" action="" enctype="multipart/form-data"> {% csrf_token %}
 			<dl>
 			{% for field in form %}
-				<dt>{{ field.label_tag }}</dt>
-				<dd>{{ field }}</dd>
+				<dt>{{ field.label_tag }}</dt> 	<dd>{{ field }}</dd>
 				{% if field.help_text %}<dd>{{ field.help_text }}</dd>{% endif %}
 				{% if field.errors %}<dd class="form_errors">{{ field.errors }}</dd>{% endif %}
 			{% endfor %}

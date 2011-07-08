@@ -15,6 +15,12 @@ ADMINS = (
 MANAGERS = ADMINS
 
 DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.mysql',
+#        'NAME': 'qlnt',
+#        'USER': 'root',
+#        'PASSWORD':'admin',
+#    },
     'default': {
         'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
         'NAME': os.path.join(os.path.dirname(__file__), 'sqlite3.db'), # Or path to database file if using sqlite3.
@@ -23,16 +29,8 @@ DATABASES = {
         'HOST': '', # Set to empty string for localhost. Not used with sqlite3.
         'PORT': '', # Set to empty string for default. Not used with sqlite3.
     },
-#    # added by: vu.tran54 - K54CA - school app
-#    'Mark_1':{
-#        'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-#        'NAME': os.path.join(os.path.dirname(__file__), 'Mark_1.db'), # Or path to database file if using sqlite3.
-#        'USER': '', # Not used with sqlite3.
-#        'PASSWORD': '', # Not used with sqlite3.
-#        'HOST': '', # Set to empty string for localhost. Not used with sqlite3.
-#        'PORT': '', # Set to empty string for default. Not used with sqlite3.      
-#    } 
 }
+
 # uncomment following line to use auto multiple db router.
 #DATABASE_ROUTERS = ['school.schoolrouter.SchoolRouter']
 # Local time zone for this installation. Choices can be found here:
@@ -123,7 +121,7 @@ MIDDLEWARE_CLASSES = (
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
-    'objectpermission.backends.ObjectPermissionBackend',
+#    'objectpermission.backends.ObjectPermissionBackend',
 )
 
 ROOT_URLCONF = 'qlnt.urls'
@@ -160,7 +158,8 @@ INSTALLED_APPS = (
     'app',
     'school',
     'persistent_messages',
-    'objectpermission',
+    'object_permission',
+#    'objectpermission',
     'dilla',
 #    'django_coverage',
 #    'rosetta',
@@ -196,7 +195,7 @@ LOGGING = {
     }
 }
 
-LOGIN_REDIRECT_URL = '/school/' 
+LOGIN_REDIRECT_URL = '/'
 
 # Set the message storage backend
 MESSAGE_STORAGE = 'persistent_messages.storage.PersistentMessageStorage'
@@ -222,5 +221,4 @@ EMAIL_HOST_PASSWORD = ''
 EMAIL_HOST_USER = ''
 
 EMAIL_SUBJECT_PREFIX = '[QLNT]'
-
 

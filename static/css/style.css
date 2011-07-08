@@ -394,3 +394,22 @@ table.styleA td {
     font-size: 12px;
     text-align: center
 }
+
+
+/*DL, DT, DD TAGS LIST DATA*/
+dl {
+    margin-bottom:50px;
+}
+
+dl dt {
+    float:left;
+    font-weight:bold;
+    margin-right:10px;
+    padding:5px;
+    width:150px;
+}
+
+dl dd {
+    margin:2px 0;
+    padding:5px 0;
+}

@@ -9,7 +9,7 @@ from app.models import UserForm, Organization, UserProfile, ChangePasswordForm, 
 import django.template
 from django import forms
 from django.shortcuts import render_to_response
-from objectpermission.decorators import object_permission_required
+#from objectpermission.decorators import object_permission_required
 from django.contrib.auth import REDIRECT_FIELD_NAME, login as auth_login
 
 from django.views.decorators.cache import never_cache
@@ -27,7 +27,7 @@ def user_add(request):
     c = django.template.RequestContext(request, {'form' : form})
     return HttpResponse(t.render(c))
 
-@object_permission_required('view_level=T', Organization)
+#@object_permission_required('view_level=T', Organization)
 def organization_delete(request, id):
     o = Organization.objects.get(pk=id)
     o.delete()
