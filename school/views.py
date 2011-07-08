@@ -378,6 +378,11 @@ def manual_adding(request):
     except Exception as e:
         print e
         _class_list = None
+    
+    ns_error = False
+    name_error = False
+    ns_entered = ""
+                
     if request.method == 'POST':
         form = ManualAddingForm(request.POST, class_list=_class_list)
         student_list = request.session['student_list']
@@ -410,20 +415,28 @@ def manual_adding(request):
                 request.session['student_list'] = student_list
             elif request.POST['clickedButton'] == 'add':
                 print "button add has been clicked"
-                
-                
-                
-                
-                diem = float(request.POST['diem_hs_trung_tuyen'])
+                try:
+                    diem = float(request.POST['diem_hs_trung_tuyen'])
+                except Exception as e:
+                    diem = 0
                 print "diem: ", diem
-                ns = to_date(request.POST['ns_hs_trung_tuyen'])
-                print "ngay sinh: ", ns
-                element = {'ten': request.POST['name_hs_trung_tuyen'],
-                    'ngay_sinh': ns,
-                    'nguyen_vong': request.POST['nv_hs_trung_tuyen'],
-                    'tong_diem': diem,
-                }
-                student_list.append(element)
+                if not request.POST['name_hs_trung_tuyen'].strip():
+                    name_error = True    
+                try:
+                    ns = to_date(request.POST['ns_hs_trung_tuyen'])
+                    print "ngay sinh: ", ns
+                    if request.POST['name_hs_trung_tuyen'].strip():
+                        element = { 'ten': request.POST['name_hs_trung_tuyen'],
+                                'ngay_sinh': ns,
+                                'nguyen_vong': request.POST['nv_hs_trung_tuyen'],
+                                'tong_diem': diem,
+                               }
+                        student_list.append(element)
+                
+                except Exception as e:
+                    print e
+                    ns_error = True
+                    ns_entered = request.POST['ns_hs_trung_tuyen']
                 request.session['student_list'] = student_list                            
     else:
         student_list = []
@@ -431,7 +444,11 @@ def manual_adding(request):
         form = ManualAddingForm(class_list=_class_list)
     transaction.commit()
     context = RequestContext(request, {'student_list': student_list})    
-    return render_to_response(NHAP_BANG_TAY, {'form':form}, context_instance=context)   
+    print name_error, ns_error, ns_entered
+    return render_to_response(NHAP_BANG_TAY, {'form':form, 
+                                              'name_error':name_error, 
+                                              'ns_error':ns_error, 
+                                              'ns_entered':ns_entered}, context_instance=context)   
 
 @transaction.commit_on_success    
 def danh_sach_trung_tuyen(request):

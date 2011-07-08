@@ -14,7 +14,13 @@ def to_date(value):
         v = value.split('-')
     else:
         v = value.split('/')
-    return date(int(v[2]), int(v[1]), int(v[0]))
+    result = None
+    try:
+        result = date(int(v[2]), int(v[1]), int(v[0]))
+    except Exception as e:
+        print e
+        raise Exception("PhaseDateException")
+    return result
 
 
 

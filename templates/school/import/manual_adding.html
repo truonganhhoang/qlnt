@@ -68,49 +68,72 @@
       </tr>
       {% for student in student_list %}
         <tr>
-          <td align="center">
-            {{ forloop.counter }}
-          </td>
-          <td align="center">
-            {{ student.ten }}
-          </td>
-          <td align="center">
-            <input type="text" value={{ student.ngay_sinh|date:"SHORT_DATE_FORMAT"}}>
-          </td>
-          <td align="center">
-            <input type="text" value={{ student.nguyen_vong }}>
-          </td>
-          <td align="center">
-            <input type="text" value={{ student.tong_diem }}>
-          </td>
-          <td>
-            
-          </td>
-        </tr>
+			<td rowspan=1 align="center">
+				STT
+			</td>	
+			<td rowspan=1 align="center">
+				Tên học sinh
+			</td>	
+			<td rowspan=1 align="center">			
+				Ngày sinh
+			</td>	
+			<td rowspan=1 align="center">
+				Nguyện vọng
+			</td>	
+
+			<td rowspan=1 align="center">
+				Điểm
+			</td>	
+		</tr>
+		{% for student in student_list %}
+		<tr>
+		    <td align="center">
+		        {{ forloop.counter }}   
+		    </td>
+		    <td align="center">
+		    		{{student.ten}}
+		    </td>
+		    <td align="center">
+		        {{ student.ngay_sinh|date:"SHORT_DATE_FORMAT" }}
+		    </td>
+		    <td align="center">
+		        {{ student.nguyen_vong }}
+		    </td>
+		    <td align="center">
+		        {{ student.tong_diem }}
+		    </td>
+		    
+		</tr>
       {% endfor %}
       <tr>
-        <td align="center">
-          --
-        </td>
-        <td align="center">
-          <input type="text" value="" name="name_hs_trung_tuyen" style="border:0px;" align="center"/>
-        </td>
-        <td align="center">
-          <input type="text" value="" name="ns_hs_trung_tuyen" style="width:70px; border:0px;" align="center"/>
-        </td>
-        <td align="center">
-          <input type="text" value="" name="nv_hs_trung_tuyen" style="border:0px;" align="center"/>
-        </td>
-        <td align="center">
-          <input type="text" value="" name="diem_hs_trung_tuyen" style="border:0px; width:40px;" align="center"
-                 onkeyup="check_key(this)"/>
-        </td>
-        <td align="center">
-          <input type="submit" name="add" value="Thêm" onclick="add_student()"/>
-        </td>
-      </tr>
-    </table>
-
-    <input type="submit" name="save" value="Lưu lại" onclick="save_student()"/>
-  </form>
+		    <td align="center">
+		        --   
+		    </td>
+		    <td align="center">
+		    	  {% if name_error %}			    	  
+		    	  <ul class="errorlist"><li>Trường này là bắt buộc.</li></ul>
+		    	  {% endif %}	
+		    	  <input type="text" value="" name="name_hs_trung_tuyen" style="border:0px;" align="center"/>
+		    </td>
+		    <td align="center">
+				  {% if ns_error %}			    	  
+		    	  <ul class="errorlist"><li>Nhập theo mẫu DD/MM/YYYY.</li></ul>
+		    	  {% endif %}	
+		    	  <input type="text" value="{{ns_entered}}" name="ns_hs_trung_tuyen"style="border:0px;" align="center" />
+		    </td>
+		    <td align="center">
+		        <input type="text" value="" name="nv_hs_trung_tuyen"style="border:0px;" align="center"/>
+		    </td>
+		    <td align="center">
+		        <input type="text" value="" name="diem_hs_trung_tuyen"style="border:0px; width:40px;" align="center"
+		        			onkeyup="check_key(this)"/>
+		    </td>
+		    <td align="center">
+		    	  <input type="submit" name="add" value="Thêm" onclick="add_student()" />
+		    </td>
+		</tr>
+	 </table>
+			 
+	 <input type="submit" name="save" value="Lưu lại" onclick="save_student()" />
+	</form>
 {% endblock %}
