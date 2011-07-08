@@ -39,9 +39,6 @@
   {% ifnotequal message None %}
     {{ message }}
   {% endifnotequal %}
-  {% if form.errors %}
-    <p>{{ form.errors }}</p>
-  {% endif %}
   <form action="" name="theForm" method="post"> {% csrf_token %}
     <input type="hidden" name="clickedButton" value="notClicked"/>
     {{ form.as_p }}
@@ -63,29 +60,9 @@
         <th rowspan=1 >
           Điểm
         </th>
-        <th>
-        </th>
+        
       </tr>
       {% for student in student_list %}
-        <tr>
-			<td rowspan=1 align="center">
-				STT
-			</td>	
-			<td rowspan=1 align="center">
-				Tên học sinh
-			</td>	
-			<td rowspan=1 align="center">			
-				Ngày sinh
-			</td>	
-			<td rowspan=1 align="center">
-				Nguyện vọng
-			</td>	
-
-			<td rowspan=1 align="center">
-				Điểm
-			</td>	
-		</tr>
-		{% for student in student_list %}
 		<tr>
 		    <td align="center">
 		        {{ forloop.counter }}   

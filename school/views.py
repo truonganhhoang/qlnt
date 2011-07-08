@@ -233,8 +233,9 @@ def classify(request):
     for _class in class_list:
         _class_list.append((_class.id, _class.name))    
     if request.method == "GET":
-        if not student_list: message = u'Không còn học sinh nào cần được phân lớp.'
-        nothing = True    
+        if not student_list: 
+            message = u'Không còn học sinh nào cần được phân lớp.'
+            nothing = True    
     else:
         print 1
         form = ClassifyForm( request.POST, student_list = student_list, class_list = _class_list)
