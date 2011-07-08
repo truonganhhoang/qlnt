@@ -1,22 +1,16 @@
 ﻿# -*- coding: utf-8 -*-
 import os.path
-import datetime
 import urlparse
 from django.conf import settings
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from app.models import UserForm, Organization, UserProfile, ChangePasswordForm, FeedbackForm, AuthenticationForm, Feedback, ResetPassword, ResetPasswordForm
-#from app.models import PositionTypeForm
-from django.template import RequestContext, loader
+import django.template
 from django import forms
 from django.shortcuts import render_to_response
 from objectpermission.decorators import object_permission_required
-from reportlab.pdfgen import canvas
-from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth import REDIRECT_FIELD_NAME, login as auth_login
-from django.contrib.auth import logout
-from django.contrib.sites.models import get_current_site
 
 from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_protect
@@ -29,8 +23,8 @@ def user_add(request):
             return HttpResponseRedirect('/app/user/')
     else:
         form = UserForm()
-    t = loader.get_template('app/user/add.html')
-    c = RequestContext(request, {'form' : form})
+    t = django.template.loader.get_template('app/user/add.html')
+    c = django.template.RequestContext(request, {'form' : form})
     return HttpResponse(t.render(c))
 
 @object_permission_required('view_level=T', Organization)
@@ -65,8 +59,8 @@ def school_admin_add(request):
     if request.method == 'POST':
         if form.is_valid():
             # TODO Add initial permission here
-            t = loader.get_template(os.path.join('app', 'school_admin_add_success.html'))
-            c = RequestContext(request, {})
+            t = django.template.loader.get_template(os.path.join('app', 'school_admin_add_success.html'))
+            c = django.template.RequestContext(request, {})
             return HttpResponse(t.render(c))
     else:
         user_all = User.objects.all()
@@ -78,8 +72,8 @@ def school_admin_add(request):
             except:
                 pass
 
-    t = loader.get_template(os.path.join('app', 'school_admin_add.html'))
-    c = RequestContext(request,{'form': form})
+    t = django.template.loader.get_template(os.path.join('app', 'school_admin_add.html'))
+    c = django.template.RequestContext(request,{'form': form})
     return HttpResponse(t.render(c))
 
 # Developer: Do Duc Binh    
@@ -88,8 +82,8 @@ def list_org (request):
     list_p = Organization.objects.filter(level = 'P')
     list_t = Organization.objects.filter(level = 'T')
     
-    t = loader.get_template(os.path.join('app', 'list_org.html'))
-    c = RequestContext(request, {'list_s':list_s, 'list_p': list_p, 'list_t':list_t})
+    t = django.template.loader.get_template(os.path.join('app', 'list_org.html'))
+    c = django.template.RequestContext(request, {'list_s':list_s, 'list_p': list_p, 'list_t':list_t})
     return HttpResponse(t.render(c))
 
 # quyendt
@@ -114,12 +108,12 @@ def change_password(request,
     }
     context.update(extra_context or {})
     return render_to_response(template_name, context,
-                              context_instance=RequestContext(request, current_app=current_app))
+                              context_instance=django.template.RequestContext(request, current_app=current_app))
     
 # quyendt
 def change_password_done(request):
-    t = loader.get_template(os.path.join('app', 'change_password_done.html'))
-    c = RequestContext(request)
+    t = django.template.loader.get_template(os.path.join('app', 'change_password_done.html'))
+    c = django.template.RequestContext(request)
     return HttpResponse(t.render(c))
 
 # quyendt
@@ -129,6 +123,9 @@ def login(request, template_name='app/login.html',
           redirect_field_name=REDIRECT_FIELD_NAME,
           authentication_form=AuthenticationForm):
     
+    """
+    login the system
+    """
     redirect_to = request.REQUEST.get(redirect_field_name, '')
 
     if request.method == "POST":
@@ -162,7 +159,7 @@ def login(request, template_name='app/login.html',
         redirect_field_name: redirect_to
     }
     return render_to_response(template_name, context,
-                              context_instance=RequestContext(request))
+                              context_instance=django.template.RequestContext(request))
 
 def contact(request):
 #hainhh
@@ -180,7 +177,7 @@ def contact(request):
     else:
         form = FeedbackForm() # An unbound form
 
-    return render_to_response('contact.html', {'form': form}, RequestContext(request))
+    return render_to_response('contact.html', {'form': form}, django.template.RequestContext(request))
 
 def reset_password_request(request):
     #hainhh

@@ -1,6 +1,7 @@
 /* CSS Document */
 html {
     height: 100%;
+    min-width:1024px;
 }
 
 body {
@@ -9,6 +10,7 @@ body {
     margin: 0px;
     color: #5E5E5E;
     font: 14px/18px Arial, Helvetica, sans-serif;
+    min-width:1024px;
 }
 
 div, p, ul, h2, h3, img {
@@ -130,7 +132,7 @@ table.styleA td {
     position: relative;
     margin: 0 auto;
     color: #fff;
-    background-color: #67A7E3;
+    background-color: #4d94d7;
     padding: 0px;
 }
 
@@ -155,8 +157,9 @@ table.styleA td {
     position: absolute;
     left: 120px;
     top: 30px;
-    font-weight: normal;
+    font-weight: bold;
     font-size: 15px;
+    color: #a82e2e;
 }
 
 #topUser {
@@ -190,7 +193,7 @@ table.styleA td {
 
 #topUser ul li a:hover {
     background: #fff;
-    color: #0574AF;
+    color: #4d94d7;
     text-decoration: none;
 }
 
@@ -224,7 +227,7 @@ table.styleA td {
 
 #topMenu ul li a:hover {
     background: #fff;
-    color: #0574AF;
+    color: #4d94d7;
     text-decoration: none;
 }
 
@@ -255,12 +258,12 @@ table.styleA td {
 /*---- LEFT MENU ----*/
 #leftMenu {
     width: auto;
-    min-width: 180px;
+    min-width: 170px;
     float: left;
     background-color: #F3F3F3;
     color: #1A1A1A;
     position: absolute; /* not fixed tam thoi de cho no move theo da */
-    top: 10px;
+    top: 20px;
     left: 5px;
 }
 
@@ -286,14 +289,14 @@ table.styleA td {
 }
 
 #leftMenu ul li a:hover {
-    background-color: #67A7E3;
+    background-color: #4d94d7;
     text-decoration: none;
 }
 
 /*---- RIGHT CONTENT----*/
 #rightContent {
     position: absolute;
-    left: 210px;
+    left: 190px;
     right: 5px;
     padding: 5px 5px 5px 5px;
     min-width: 800px;
@@ -312,20 +315,18 @@ table.styleA td {
     top: 20px;
     padding-bottom: 20px;
     float: left;
-    min-height: 700px;
-    min-width: 800px;
 }
 
 #content h2 {
     height: 30px;
-    color: #00111A;
+    color: #4d94d7;
     font: 24px/24px Georgia, "Times New Roman", Times, serif;
     margin: 5px 0 5px 0;
 }
 
 #content h2 span {
     background: #fff;
-    color: #046598;
+    color: #4d94d7;
 }
 
 #content h3 {
@@ -337,7 +338,7 @@ table.styleA td {
 
 #content h3 span {
     background: #fff;
-    color: #046598;
+    color: #4d94d7;
 }
 
 #content p {
@@ -378,7 +379,7 @@ table.styleA td {
 /*----FOOTER PANEL----*/
 #footerPanel {
     position: absolute;
-    bottom: 10px;
+    bottom: 0px;
     color: #010101;
     clear: both;
     border-top: thin solid silver;
@@ -389,8 +390,6 @@ table.styleA td {
     margin-left: auto;
     margin-right: auto;
     background: #F3F3F3;
-    color: #04496D;
     font-size: 12px;
     text-align: center
 }
-

@@ -125,14 +125,14 @@ class UploadImportFileForm(forms.Form):
         class_list = kwargs.pop('class_list')
         print "in form: ", class_list
         super(UploadImportFileForm, self).__init__(*args, ** kwargs)
-        self.fields['the_class'] = forms.ChoiceField(label=u'Chọn lớp:', choices=class_list, required=False)
+        self.fields['the_class'] = forms.ChoiceField(label=u'Nhập vào lớp:', choices=class_list, required=False)
         self.fields['import_file'] = forms.FileField(label=u'Chọn file Excel:')
         
 class ManualAddingForm(forms.Form):
     def __init__(self, * args, ** kwargs):
         class_list = kwargs.pop('class_list')
         super(ManualAddingForm, self).__init__(*args, ** kwargs)
-        self.fields['the_class'] = forms.ChoiceField(label=u'Chọn lớp:', choices=class_list, required=False)
+        self.fields['the_class'] = forms.ChoiceField(label=u'Nhập vào lớp:', choices=class_list, required=False)
         
 class ClassifyForm(forms.Form):
     def __init__(self, * args, ** kwargs):
