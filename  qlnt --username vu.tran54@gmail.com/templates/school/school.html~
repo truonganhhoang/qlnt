@@ -1,7 +1,0 @@
-{% extends "school/base_school.html" %}
-{% block js %}
-
-{% block content %}
-<p>DASH BOX, GOING TO BE IMPLEMENTED</p>
-{% endblock %}
-
