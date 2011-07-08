@@ -178,7 +178,7 @@ def b1(request):
                     for _class in classes:
                         students = _class.pupil_set.all()
                         for student in students:
-                            if (student.tbnam_set.get(year_id=last_year).len_lop):
+                            if student.tbnam_set.get(year_id=last_year).len_lop:
                                 student.disable = False
                                 student.class_id = None
                                 student.save()
