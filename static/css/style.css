@@ -56,6 +56,7 @@ table.styleA {
     border-width: 1px;
     border-color: #999999;
     border-collapse: collapse;
+    margin-bottom: 10px;
 }
 
 table.styleA th {
@@ -316,6 +317,27 @@ table.styleA td {
     top: 20px;
     padding-bottom: 20px;
     float: left;
+}
+
+div.infoContent{
+   width: 100%;
+   display: inline-block;
+}
+div.leftInfoDiv{
+   width: auto;
+   float: left;
+   border-top: 1px solid #DADADA;
+   border-right: 1px solid #DADADA;
+   border-bottom: 1px solid #DADADA;
+   padding: 20px;
+}
+div.rightInfoDiv{
+   position: relative;
+   width: auto;
+   border-top: 1px solid #DADADA;
+   border-bottom: 1px solid #DADADA;
+   padding: 20px;
+   float: left;
 }
 
 #content h2 {

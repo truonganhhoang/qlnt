@@ -28,6 +28,8 @@ SCHOOL = os.path.join('school', 'school.html')
 YEARS = os.path.join('school', 'years.html')
 CLASS_LABEL = os.path.join('school', 'class_labels.html')
 CLASSIFY = os.path.join('school','classify.html')
+INFO = os.path.join('school','info.html')
+
 
 def school_index(request):
     
@@ -42,10 +44,36 @@ def school_index(request):
     request.session['year'] = year
     context = RequestContext(request)
     return render_to_response(SCHOOL, context_instance=context)
+    
+def info(request):
+    user = request.user
+    message = None
+    try:
+        school = get_school(request)
+    except Exception as e:
+        return HttpResponseRedirect( reverse('index'))
+    if request.method == 'POST':
+        form = SchoolForm(request.POST, request = request)
+        if form.is_valid():
+            form.save_to_model()
+            message = u'Bạn vừa cập nhật thông tin trường học thành công.'                
+    else:
+        data = {'name': school.name, 'school_level':school.school_level,
+                'address': school.address, 'phone': school.phone,
+                'email': school.email}
+        form = SchoolForm(data, request= request)
+    
+    context = RequestContext(request)
+    return render_to_response(INFO, { 'form':form, 'school':school, 'message':message}, context_instance = context)    
+    
 
 @transaction.commit_on_success
 def class_label(request):
-    school = get_school(request)
+    try:
+        school = get_school(request)
+    except Exception as e:
+        return HttpResponseRedirect(reverse('index'))
+    
     class_labels = []
     message = None
     if 'message' in request.session:

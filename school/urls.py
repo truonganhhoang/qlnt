@@ -85,6 +85,7 @@ urlpatterns = patterns('',
     url(r'sms/failed/$', 'school.sms_views.failed_sms', name = 'failed_sms'),
     #side menu
     url(r'classlabels/$', 'school.views.class_label', name = "class_label"),
+    url(r'info/$', 'school.views.info', name = "info"),
     url(r'classify/$', 'school.views.classify', name = "classify"),
     #url(r'^school/test$','school.views.test'), 
     

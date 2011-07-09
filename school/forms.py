@@ -15,6 +15,7 @@ from django import forms
 
 from school.utils import *
 from school.models import *
+from app.models import *
 from school.school_settings import *
 import xlrd
     
@@ -53,6 +54,28 @@ class PupilForm(forms.ModelForm):
         year_id = school.year_set.latest('time').id
         self.fields['start_year_id'] = forms.ModelChoiceField(queryset = StartYear.objects.filter(school_id = school_id))
         self.fields['class_id'] = forms.ModelChoiceField(queryset = Class.objects.filter(year_id = year_id))
+
+class SchoolForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop('request')
+        super(SchoolForm, self).__init__(*args, **kwargs)
+        if get_permission(self.request) in [u'HIEU_TRUONG', u'HIEU_PHO']:
+            self.fields['name'] = forms.CharField(label=u'Tên tổ chức', max_length = 100, required=True) #tên đơn vị. tổ chức 
+            self.fields['school_level'] = forms.ChoiceField(label=u"Cấp:", choices = KHOI_CHOICES, required = True)
+            self.fields['address'] = forms.CharField(label=u"Địa chỉ:", max_length = 255, required = False) #
+            self.fields['phone'] = forms.CharField(label="Điện thoại", max_length = 20, validators=[validate_phone], required = False)
+            self.fields['email'] = forms.EmailField(max_length = 50,  required = False) 
+    def save_to_model(self):
+        try:
+            school = get_school(self.request)
+            school.name = self.cleaned_data['name']
+            school.school_level = self.cleaned_data['school_level']
+            school.address = self.cleaned_data['address']
+            school.phone = self.cleaned_data['phone']
+            school.email = self.cleaned_data['email']
+            school.save()
+        except Exception as e:
+            print e
     
 class ClassForm(forms.ModelForm):
     class Meta:

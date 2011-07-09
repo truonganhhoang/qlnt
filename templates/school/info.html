@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Thông tin trường học</h2>
+{% if message != None %}
+	{{message}}
+	<br/>
+{% endif %}
+
+<form action="{%url school.views.info %}" method="post">{% csrf_token %}
+<div class="infoContent">
+<div class="leftInfoDiv">
+<table class="styleA">
+{{form.as_table}}
+</table>
+</div>
+<div class="rightInfoDiv">
+
+<a href={%url school.views.classes %} >Nhập lớp học</a>
+</div>
+</div>
+<input type="submit" name="submit" value="Lưu lại" />
+</form>
+{% endblock %}

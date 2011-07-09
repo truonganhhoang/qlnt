@@ -113,7 +113,7 @@
     			<li><a href="{%url school.views.classify %}">Phân lớp</a></li>
 		  	{% endif %}
         <li><a href="{%url school.views.class_label %}">Đặt tên lớp học</a> </li>
-        <li><a title="Thông tin trường học">Thông tin trường học</a> </li>
+        <li><a href="{%url school.views.info %}" title="Thông tin trường học">Thông tin trường học</a> </li>
         </ul>
         {%if user.userprofile.organization.status != 0 %}
         {% endif %}
