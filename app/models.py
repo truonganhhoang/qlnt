@@ -55,8 +55,11 @@ class Organization(models.Model):
     
     def get_status(self):
         if self.level == 'T':
-            year = self.year_set.latest('time')
-            return STATUS[self.status] + ' - ' + u'Năm học ' + year.__unicode__()
+            try:
+                year = self.year_set.latest('time')
+                return STATUS[self.status] + ' - ' + u'Năm học ' + year.__unicode__()
+            except Exception as e:
+                return STATUS[0]
         else:
             return '' 
             
