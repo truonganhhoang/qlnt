@@ -28,6 +28,8 @@ SCHOOL_ACTION_STATUS=((0, u'Trường mới'),
                       (2, u'Đang học kì 2'), 
                       (3, u'Đang nghỉ hè'))
 
+STATUS = [u'Chưa thiết lập',u'Học kì I', u'Học kì II', u'Học kì hè']
+
 CONTACT_CHOICES = (('GY', u'Góp ý xây dựng'),
                    ('HT', u'Hỗ trợ'),
                    ('BL', u'Báo lỗi'),
@@ -51,6 +53,13 @@ class Organization(models.Model):
     class Meta:
         verbose_name_plural = "Tổ chức"
     
+    def get_status(self):
+        if self.level == 'T':
+            year = self.year_set.latest('time')
+            return STATUS[self.status] + ' - ' + u'Năm học ' + year.__unicode__()
+        else:
+            return '' 
+            
     def __unicode__(self):
         return self.name
 
