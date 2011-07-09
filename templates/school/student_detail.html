@@ -9,12 +9,22 @@ function confirmCancel()
 </script>
 
 <table border = 0 align = "center" width = "100%">
+{%if pos > 0%}
 <tr>
-	<td width = "25%" align = "center"><a href="{%url school.views.school_index  %}markForAStudent/{{class_id}}/{{id}}">Điểm</a></td>
-	<td width = "25%" align = "center"><a href="{%url school.views.school_index  %}diemdanhhs/{{id}}">Điểm danh</a></td>
-    <td width = "25%" align = "center"><a href="{%url school.views.school_index  %}khenthuong/{{id}}">Khen thưởng</a></td>
-	<td width = "25%" align = "center"><a href="{%url school.views.school_index  %}kiluat/{{id}}">Kỉ luật</a></td>
+	<td width = "25%" align = "center"><a title="Xem điểm các môn của học sinh" href="{%url school.views.school_index  %}markForAStudent/{{class_id}}/{{id}}">Điểm</a></td>
+	<td width = "25%" align = "center"><a titie="Xem các buổi điểm danh của học sinh" href="{%url school.views.school_index  %}diemdanhhs/{{id}}">Điểm danh</a></td>
+    <td width = "25%" align = "center"><a title="Các hình thức khen thưởng học sinh nhận được" href="{%url school.views.school_index  %}khenthuong/{{id}}">Khen thưởng</a></td>
+	<td width = "25%" align = "center"><a title="Xem các kỷ luật dành cho học sinh" href="{%url school.views.school_index  %}kiluat/{{id}}">Kỉ luật</a></td>
 </tr>
+{%else%}
+<tr>
+	<td width = "25%" align = "center"><a title="Bạn chưa quyền hạn sử dụng chức năng này">Điểm</a></td>
+	<td width = "25%" align = "center"><a title="Bạn chưa quyền hạn sử dụng chức năng này">href="{%url school.views.school_index  %}diemdanhhs/{{id}}">Điểm danh</a></td>
+    <td width = "25%" align = "center"><a title="Bạn chưa quyền hạn sử dụng chức năng này">href="{%url school.views.school_index  %}khenthuong/{{id}}">Khen thưởng</a></td>
+	<td width = "25%" align = "center"><a title="Bạn chưa quyền hạn sử dụng chức năng này">href="{%url school.views.school_index  %}kiluat/{{id}}">Kỉ luật</a></td>
+	<td width = "25%" align = "center"><a title="Bạn chưa quyền hạn sử dụng chức năng này">href="{%url school.views.school_index  %}kiluat/{{id}}">Kỉ luật</a></td>
+</tr>
+{%endif%}
 </table>
 <br>
 {% if message != None %}
@@ -26,7 +36,9 @@ function confirmCancel()
     <table class="styleA styleDetail">
 	    {{ form.as_table }}
 	 </table>
+    {%if pos > 2%}
    <input type ="submit" value="Cập nhật"/>
+   {%endif%}
    <a href="{%url school.views.school_index  %}viewClassDetail/{{class_id}}" onclick="return confirmCancel();">Hủy</a>
 </form>
 {% endblock %}

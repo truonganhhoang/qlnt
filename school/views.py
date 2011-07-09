@@ -716,8 +716,7 @@ def teachers(request, sort_type=1, sort_status=0, page=1):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
-    if (get_position(request) < 4):
-        return HttpResponseRedirect('/')
+    pos = get_position(request)
     message = None
     form = TeacherForm()
     school = get_school(request)
@@ -768,7 +767,14 @@ def teachers(request, sort_type=1, sort_status=0, page=1):
         teacher_list = paginator.page(paginator.num_pages)
 
     t = loader.get_template(os.path.join('school', 'teachers.html'))
-    c = RequestContext(request, {'form': form, 'message': message, 'teacherList': teacher_list, 'sort_type':sort_type, 'sort_status':sort_status, 'next_status':1-int(sort_status), 'base_order':(int (page)-1) * 20})
+    c = RequestContext(request, {   'form': form,
+                                    'message': message,
+                                    'teacherList': teacher_list,
+                                    'sort_type':sort_type, 
+                                    'sort_status':sort_status, 
+                                    'next_status':1-int(sort_status), 
+                                    'base_order':(int (page)-1) * 20,
+                                    'pos':pos})
     return HttpResponse(t.render(c))
 
 def viewTeacherDetail(request, teacher_id):
@@ -779,7 +785,8 @@ def viewTeacherDetail(request, teacher_id):
     teacher = Teacher.objects.get(id=teacher_id)
     if in_school(request, teacher.school_id) == False:
         return HttpResponseRedirect('/')
-    if (get_position(request) < 4):
+    pos = get_position(request)
+    if (pos < 1):
         return HttpResponseRedirect('/')
     form = TeacherForm (instance=teacher)
     if request.method == 'POST':
@@ -791,7 +798,9 @@ def viewTeacherDetail(request, teacher_id):
             message = 'Bạn vui lòng sửa một số lỗi sai dưới đây'
     
     t = loader.get_template(os.path.join('school', 'teacher_detail.html'))
-    c = RequestContext(request, {'form': form, 'message': message, 'id': teacher_id})
+    c = RequestContext(request, {   'form': form, 'message': message,
+                                    'id': teacher_id,
+                                    'pos': pos})
     return HttpResponse(t.render(c))
 
 def subjectPerClass(request, class_id, sort_type=1, sort_status=0):
@@ -972,7 +981,8 @@ def viewStudentDetail(request, student_id):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
-    if (get_position(request) < 4):
+    pos = get_position(request)
+    if (get_position(request) < 1):
         return HttpResponseRedirect('/')
     message = None
     pupil = Pupil.objects.get(id=student_id)
@@ -991,10 +1001,12 @@ def viewStudentDetail(request, student_id):
             message = 'Bạn vui lòng sửa một số lỗi sai dưới đây'
 
     t = loader.get_template(os.path.join('school', 'student_detail.html'))
-    c = RequestContext(request, {'form': form, 'message': message, 
-                       'id': student_id,
-                       'class_id':pupil.class_id.id
-                       }
+    c = RequestContext(request, {   'form': form, 
+                                    'message': message, 
+                                    'id': student_id,
+                                    'class_id':pupil.class_id.id,
+                                    'pos':pos
+                                }
                        )
     return HttpResponse(t.render(c))
 

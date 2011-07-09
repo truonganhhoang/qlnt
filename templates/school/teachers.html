@@ -18,7 +18,9 @@
             <th align="center" width="25%"> Nơi sinh</th>
             <th align="center" width="10%"><a href="{%url school.views.school_index  %}teachers/3/{{next_status}}/1">Giới
                 tính </a></th>
+            {%if pos > 3%}
             <th width="10%"></th>
+            {%endif%}
         </tr>
 
         {% if message != None %}
@@ -28,17 +30,19 @@
         {% for ss in teacherList.object_list %}
             <tr>
                 <td align="center" width="5%">{{ forloop.counter|add:base_order }}</td>
-                <td align="center" width="25%"><a
-                        href="{%url school.views.school_index  %}viewTeacherDetail/{{ss.id}}"> {{ ss.last_name }} {{ ss.first_name }} </a>
+                <td align="center" width="25%">
+                    <a href="{%url school.views.school_index  %}viewTeacherDetail/{{ss.id}}"> {{ ss.last_name }} {{ ss.first_name }} </a>
                 </td>
                 <td align="center" width="25%"> {{ ss.birthday|date:"SHORT_DATE_FORMAT" }}</td>
                 <td align="center" width="25%"> {{ ss.birth_place }}</td>
                 <td align="center" width="10%"> {{ ss.sex }} </td>
+                {%if pos > 3%}
                 <td align="center" width="10%"><a href="{%url school.views.school_index  %}deleteTeacher/{{ss.id}}"
                                                   onclick="return confirmDelete();"> xóa </a></td>
+                {%endif%}
             </tr>
         {% endfor %}
-
+        {% if pos > 2%}
         <form action="/school/teachers/{{sort_type}}/{{sort_status}}/{{teacherList.number}}"
               method="post">{% csrf_token %}
             <tr>
@@ -68,6 +72,7 @@
                 <td><input type="submit" value="Thêm"/></td>
             </tr>
         </form>
+        {%endif%}
     </table>
 
 
