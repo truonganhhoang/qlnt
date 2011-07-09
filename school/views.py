@@ -56,7 +56,8 @@ def info(request):
         form = SchoolForm(request.POST, request = request)
         if form.is_valid():
             form.save_to_model()
-            message = u'Bạn vừa cập nhật thông tin trường học thành công.'                
+            message = u'Bạn vừa cập nhật thông tin trường học thành công.'
+            return HttpResponseRedirect( reverse('info'))                
     else:
         data = {'name': school.name, 'school_level':school.school_level,
                 'address': school.address, 'phone': school.phone,
