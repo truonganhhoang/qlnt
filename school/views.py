@@ -1017,8 +1017,9 @@ def diem_danh(request, class_id, day, month, year):
     cl = Class.objects.get(id__exact=class_id)
     if in_school(request, cl.block_id.school_id) == False:
         return HttpResponseRedirect('/')
+    url = '/school/dsnghi/' + str(class_id) + '/' + str(day) + '/' + str(month) + '/' + str(year)
     if (get_position(request) < 3):
-        return HttpResponseRedirect('/')
+        return HttpResponseRedirect(url)
     message = ''
     listdh = None
     term = None
@@ -1145,8 +1146,6 @@ def time_select(request, class_id):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
-    if (get_position(request) < 4):
-        return HttpResponseRedirect('/')
     message = 'Hãy chọn 1 ngày'
     try:
         cl = Class.objects.get(id__exact=class_id)
@@ -1166,7 +1165,27 @@ def time_select(request, class_id):
     t = loader.get_template(os.path.join('school', 'time_select.html'))
     c = RequestContext(request, {'form':form, 'class_id':class_id, 'message':message})
     return HttpResponse(t.render(c))
-   
+
+def ds_nghi(request, class_id, day, month, year):
+    pos = get_position(request)
+    cl  = Class.objects.get(id=class_id)
+    pupilList = Pupil.objects.filter(class_id=class_id).order_by('first_name', 'last_name')
+    time = date(int(year), int(month), int(day))
+    term = get_current_term(request)
+    hs_nghi = []
+    stt = []
+    for p in pupilList:
+        try:
+            dd = DiemDanh.objects.get(time__exact=time, student_id__exact=p.id, term_id__exact=term.id)
+            hs_nghi.append(p)
+            stt.append(dd.loai)
+        except ObjectDoesNotExist:
+            pass
+    ds_nghi = zip(hs_nghi,stt)
+    t = loader.get_template(os.path.join('school', 'ds_nghi_hoc.html'))
+    c = RequestContext(request, {'list':ds_nghi, 'class_id':class_id, 'time':time, 'day':day, 'month':month, 'year':year, 'cl':cl, 'pos':pos})
+    return HttpResponse(t.render(c))
+    
 def diem_danh_hs(request, student_id):
     user = request.user
     if not user.is_authenticated():
