@@ -24,31 +24,43 @@ window.onload = function() { document.onkeypress = catchEnter; };
 		{
 			tb.value="10";
 			return;
-		}	
+		}
+			
 		var exp = /[^((\d).,)]/g;
+		tb.value=tb.value.replace(exp,'');		
+		
+		
+		value=tb.value;			
 		var exp1=/[,]/g
-		tb.value = tb.value.replace(exp,'');
-		var value=tb.value;		
 		value=value.replace(exp1,'.');		
 		//kiem tra xem no co nhieu hon hai dau cham hay ko
+		
 		var countDot=0;
 		for(i=0;i<value.length;i++)
 			if (value.charAt(i)==".") 
 				countDot++;
 				
 		if (countDot>1)
-			tb.value=tb.value.substring(0,tb.value.length-1);
+			tb.value=value.substring(0,value.length-1);
 			
-		var number=parseFloat(value);
-		//alert(number);		
-		if ((10<number ) & (number<100))
+		if (tb.value.length>4)	
+			tb.value=tb.value.substring(0,4);
+			
+		var number=parseFloat(tb.value);
+		
+			
+		if ((10<number ) && (number<100))
 		{
 			temp=number/10;
 			tb.value=temp.toString();
 		}
-		if (tb.value.length>4)	
-			tb.value=tb.value.substring(0,4);
+		if ((100<=number ) && (number<1000))
+		{
+			temp=number/100;
+			tb.value=temp.toString();
+		}
 	}
+	
 	function returnMove()
 	{
 		for(i=0;i<3;i++)
@@ -69,11 +81,9 @@ window.onload = function() { document.onkeypress = catchEnter; };
 				temp=nameNumber+1
 		}	
 		var tempName=temp.toString();
-		var cel=document.getElementsByName(tempName);
-		if (cel[0])
-		{
-			cel[0].focus();
-		}					
+		var cel=document.getElementById(tempName);
+		if (cel)
+			cel.focus();
 	}
 	
 	function directionOtherRow(nameNumber,valueOfMove)
@@ -106,9 +116,9 @@ window.onload = function() { document.onkeypress = catchEnter; };
 				for (i=beforeRow % 100+1;i<17;i++)
 				{
 					var cellNumber=index+i;
-					tempCel=document.getElementsByName(cellNumber.toString());
-					if (tempCel[0])
-						if (tempCel[0].value.length>0)
+					tempCel=document.getElementById(cellNumber.toString());
+					if (tempCel)
+						if (tempCel.value.length>0)
 						{
 							ok=true;
 							break;
@@ -123,19 +133,19 @@ window.onload = function() { document.onkeypress = catchEnter; };
 		}
 		
 		var tempName=temp.toString();
-		var cel=document.getElementsByName(tempName);
-		if (cel[0])
+		var cel=document.getElementById(tempName);
+		if (cel)
 		{
-			cel[0].focus();
+			cel.focus();
 		}					
 	}
 	
 	function controlDirection(tb,event)
 	{
 		var keycode=event.keyCode;
-		var name=tb.name;
+		var name=tb.id;
 		var nameNumber=parseInt(name);
-
+		
 		if ((keycode==32) | (keycode==13))
 		{
 			valueOfMove=returnMove();
@@ -153,44 +163,36 @@ window.onload = function() { document.onkeypress = catchEnter; };
 		{
 			var temp=nameNumber+100;
 			var tempName=temp.toString();
-			var cel=document.getElementsByName(tempName);
-			if (cel[0])
-				{
-					cel[0].focus();
-				}				
+			var cel=document.getElementById(tempName);
+			if (cel)
+				cel.focus();
 		}
 		else
 		if (keycode==38)
 		{
 			var temp=nameNumber-100;
 			var tempName=temp.toString();
-			var cel=document.getElementsByName(tempName);
-			if (cel[0])
-				{
-					cel[0].focus();
-				}
+			var cel=document.getElementById(tempName);
+			if (cel)
+				cel.focus();
 		}
 		else
 		if (keycode==37)
 		{
 			var temp=nameNumber-1;
 			var tempName=temp.toString();
-			var cel=document.getElementsByName(tempName);
-			if (cel[0])
-				{
-					cel[0].focus();
-				}
+			var cel=document.getElementById(tempName);
+			if (cel)
+				cel.focus();
 		}
 		else
 		if (keycode==39)
 		{
 			var temp=nameNumber+1;
 			var tempName=temp.toString();
-			var cel=document.getElementsByName(tempName);
-			if (cel[0])
-				{
-					cel[0].focus();
-				}
+			var cel=document.getElementById(tempName);
+			if (cel)
+				cel.focus();
 		}
 	}
 	function submitTerm()
@@ -210,14 +212,13 @@ window.onload = function() { document.onkeypress = catchEnter; };
 	function saveMarkHasComment()
 	{
 		var length={{lengthList}};
-		//alert(length);
 		document.getElementById("commentTable").style.visibility='hidden';
 		for(i=1;i<=length;i++)
 			for(j=1;j<5;j++)
 			{
 				k=i*100+j;
 				var name=k+"";
-				var t=document.getElementsByName(name)[0].value.toLowerCase();
+				var t=document.getElementById(name).value.toLowerCase();
 				//alert(t);
 				var value="";
 				if (t!="")
@@ -235,7 +236,7 @@ window.onload = function() { document.onkeypress = catchEnter; };
 					else						
 						value="1";
 						
-					document.getElementsByName(name)[0].value=value;									
+					document.getElementById(name).value=value;									
 				}
 		document.info.submitChoice.value="luulai";
 		document.info.submit();
@@ -251,7 +252,7 @@ window.onload = function() { document.onkeypress = catchEnter; };
 			{
 				k=i*100+j;
 				var name=k+"";
-				var t=document.getElementsByName(name)[0].value.toLowerCase();
+				var t=document.getElementById(name).value.toLowerCase();
 				//alert(t);
 				var value="";
 				if (t!="")
@@ -269,7 +270,7 @@ window.onload = function() { document.onkeypress = catchEnter; };
 					else						
 						value="1";
 						
-					document.getElementsByName(name)[0].value=value;									
+					document.getElementById(name).value=value;									
 				}
 		document.info.submitChoice.value="luulai";
 		document.info.submit();
@@ -286,13 +287,43 @@ window.onload = function() { document.onkeypress = catchEnter; };
 			tb.value="";
 		}
 	}
+	function  control(tb,event)
+	{
+		acceptDigits(tb);
+		controlDirection(tb,event);				
+	}
+	
+	var length={{lengthList}} + 1;
+	var oldAr = new Array(length);
+	var newAr = new Array(length); 
+	var idAr  = new Array(length);
+	var hk1Ar = new Array(length);	
+	var indexId = 0;
+	var indexHk1= 0;
+	function setArrayId(id)
+	{
+		indexId++;
+		idAr[indexId] = id;
+	}
+	function setArrayHk1None()
+	{
+		indexHk1++;
+		hk1Ar[indexHk1] = -1;
+	}
+	function setArrayHk1(value)
+	{
+		indexHk1++;
+		hk1Ar[indexHk1] =value;
+	}
+	
+	
 </script>
 
 <form action="/school/markForASubject/{{selectedSubject.id}}"  name="info" method="post" id='myform' 
 	onsubmit="return false" >{% csrf_token %}
 <table border="0" width=100% >
 	<input type="hidden" name="submitChoice" value="">	
-
+			
 	<tr>
 		<td align="center" colspan =4 style="font-size:25px" >
 			<b>Bảng điểm  theo môn  </b>
@@ -352,8 +383,6 @@ window.onload = function() { document.onkeypress = catchEnter; };
 	 {% endifnotequal %}		
 	</tr>	
 </table>
-	Lưu ý:Nhập xong nhớ ấn lưu lại.
-	<br>
 
 	
 <script type="text/javascript" >
@@ -379,6 +408,237 @@ window.onload = function() { document.onkeypress = catchEnter; };
 	{%ifnotequal hsSubject 0 %}
 		{% include  "school/mark_no_comment.html" %}
 	{% endifnotequal %}
+	
 </form>	
+
+<script>
+    function getCookie(name) {
+    var cookieValue = null;
+        if (document.cookie && document.cookie != '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+             // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+         }
+        }
+        return cookieValue;
+    } 
+	cookieValue = getCookie('csrftoken') 
+	var tong=0	
+	var tong1=0
+	
+	function sendToServer(str)
+	{
+		var xmlhttp;
+		if (window.XMLHttpRequest)
+		{// code for IE7+, Firefox, Chrome, Opera, Safari
+			xmlhttp=new XMLHttpRequest();
+			//alert("chao");
+		}
+		else
+		{// code for IE6, IE5
+			xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+		}
+
+		xmlhttp.onreadystatechange=function()
+		{
+			if (xmlhttp.readyState==4 && xmlhttp.status==200)
+			{
+				//document.getElementById("myDiv").innerHTML=xmlhttp.responseText;
+				//alert("fdfdf fsdfffhello1");
+				//tong=tong+1
+				//document.getElementById("myDiv1").innerHTML=tong;
+			}
+		}   				
+
+		xmlhttp.open("POST", "/school/saveMark",true);
+        xmlhttp.setRequestHeader("X-CSRFToken",cookieValue );
+		data = "str="+str;
+		xmlhttp.send(data);
+		
+		
+	}
+
+
+	for(var i=0;i<length;i++)
+	{	
+		oldAr[i] = new Array(20);
+		newAr[i] = new Array(20);
+	}	
+	var exp1=/[,]/g	
+	for(var i=1;i<length;i++)
+	{
+		for(var j=1;j<17;j++)
+		{		
+			var id = i*100+j;
+			var value=document.getElementById(id.toString()).value;
+			value=value.replace(exp1,'.');		
+			if ((value=="") || (value==" "))				
+				oldAr[i][j]=-1;
+			else	
+				oldAr[i][j]=parseFloat(value);
+		}
+	}	
+	function calculateNewArray()
+	{
+		for(var i=1;i<length;i++)
+			for(var j=1;j<17;j++)
+			{		
+				var id = i*100+j;
+				var value=document.getElementById(id.toString()).value;
+				value=value.replace(exp1,'.');		
+				if ((value=="") || (value==" "))
+					newAr[i][j]=-1;
+				else	
+					newAr[i][j]=parseFloat(value);
+			}		
+	}
+	function viewAverage()
+	{
+		var termNumber = {{selectedTerm.number}};
+		calculateNewArray();
+		var sum=0;
+		var factor=0
+		for(var i=1;i<length;i++)
+		{
+			var ok=true;
+			for(j=1;j<17;j++)
+			if (isNaN(newAr[i][j]))
+			{
+				ok=false;
+				break;				
+			}
+			if (newAr[i][16]==-1) 
+				ok=false;
+			if (ok)
+			{
+				sum=newAr[i][16]*3;
+				factor=3;
+				for(j=1;j<11;j++)
+				if (newAr[i][j]!=-1)
+				{
+					sum=sum+newAr[i][j];
+					factor++;
+				}
+				for(j=11;j<16;j++)
+				if (newAr[i][j]!=-1)
+				{
+					sum=sum+newAr[i][j]*2;
+					factor=factor+2;
+				}
+				var name= i*100+17;
+				
+				var averageValue = Math.round(sum/factor *10+0.00000001)/10;
+				document.getElementById(name.toString()).innerHTML= averageValue;
+				if (termNumber==2)
+					if (hk1Ar[i]!=-1)
+					{
+						var name1= i*100+19;
+						var value= (averageValue*2+hk1Ar[i])/3; 
+						document.getElementById(name1.toString()).innerHTML=Math.round(value * 10+0.0000001)/10;
+					}					
+			}
+			else
+			{
+				var name= i*100+17;
+				document.getElementById(name.toString()).innerHTML="";
+				if (termNumber==2)
+				{
+					var name1= i*100+19;
+					document.getElementById(name1.toString()).innerHTML="";					
+				}	
+			}	
+		}		
+	}
+	function update()
+	{
+		//var date1 = new Date();
+
+		var str="";
+		for(var i=1;i<length;i++)
+		{
+			var ok=false;
+			for(var j=1;j<17;j++)
+				if (newAr[i][j]!=oldAr[i][j])
+				{
+					ok=true;
+					break;
+				}
+			if (ok==true)
+			{
+				str=str+"/"+idAr[i]+":";
+				var numberString="";
+				var valueString ="";
+				for(var j=1;j<17;j++)
+					if (newAr[i][j]!=oldAr[i][j])
+					{
+						numberString=numberString+j+"*";
+						valueString =valueString+newAr[i][j]+"*"; 
+					}
+				str=str+numberString+":"+valueString;					
+			}				
+		}
+		//tong1=tong1+1
+		//var str1 =document.getElementById("myDiv").innerHTML+" | "+str;
+		//document.getElementById("myDiv").innerHTML=str1;
+		
+		//alert(str);	
+		if (str!="")
+			sendToServer(str);
+		//writeOld();	
+		for(var i=1;i<length;i++)
+			for(var j=1;j<17;j++)
+				oldAr[i][j] = newAr[i][j];
+		
+		
+		//var date2 = new Date();
+		//var difference=date2.getTime()-date1.getTime();
+		//document.getElementById("myDiv6").innerHTML="abc"+difference;
+		//alert(difference);
+		
+		//writeNew();	
+	}
+	var myTimer;
+	var myTimer1;
+
+
+   myTimer  = setInterval("update()", 2000);
+   myTimer1 = setInterval("viewAverage()", 1000);
+   //clearInterval(myTimer);
+   
+	function writeOld()
+	{
+		var str=""
+		for(var i=0;i<length;i++)
+		{
+			for(var j=0;j<17;j++)
+			{
+				str=str+oldAr[i][j]+" ";
+			}		
+			str=str+"<p>"
+		}	
+		document.getElementById("myDiv2").innerHTML = str;
+	}	
+	function writeNew()
+	{
+		var str=""
+		for(var i=0;i<length;i++)
+		{
+			for(var j=0;j<17;j++)
+			{
+				str=str+newAr[i][j]+" ";
+			}		
+			str=str+"<p>"
+		}	
+		document.getElementById("myDiv3").innerHTML = str;
+		
+	}	
+	
+</script>
+
 {% endblock %}
 
