@@ -16,14 +16,6 @@ function confirmCancel()
     <td width = "25%" align = "center"><a title="Các hình thức khen thưởng học sinh nhận được" href="{%url school.views.school_index  %}khenthuong/{{id}}">Khen thưởng</a></td>
 	<td width = "25%" align = "center"><a title="Xem các kỷ luật dành cho học sinh" href="{%url school.views.school_index  %}kiluat/{{id}}">Kỉ luật</a></td>
 </tr>
-{%else%}
-<tr>
-	<td width = "25%" align = "center"><a title="Bạn chưa quyền hạn sử dụng chức năng này">Điểm</a></td>
-	<td width = "25%" align = "center"><a title="Bạn chưa quyền hạn sử dụng chức năng này">href="{%url school.views.school_index  %}diemdanhhs/{{id}}">Điểm danh</a></td>
-    <td width = "25%" align = "center"><a title="Bạn chưa quyền hạn sử dụng chức năng này">href="{%url school.views.school_index  %}khenthuong/{{id}}">Khen thưởng</a></td>
-	<td width = "25%" align = "center"><a title="Bạn chưa quyền hạn sử dụng chức năng này">href="{%url school.views.school_index  %}kiluat/{{id}}">Kỉ luật</a></td>
-	<td width = "25%" align = "center"><a title="Bạn chưa quyền hạn sử dụng chức năng này">href="{%url school.views.school_index  %}kiluat/{{id}}">Kỉ luật</a></td>
-</tr>
 {%endif%}
 </table>
 <br>

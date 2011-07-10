@@ -390,4 +390,21 @@ def save_file(file):
         saved_file.write(chunk)
     saved_file.close()
     return 'sms_input.xls'
-
+#this function check whether the current user is the gvcn of the class with class_id or not
+def gvcn(request, class_id):
+    if (request.user.userprofile.position != 'GIAO_VIEN'):
+        return 0
+    cClass = Class.objects.get(id=class_id)
+    if ((cClass.teacher_id) and (cClass.teacher_id.user_id == request.user)):
+        return 1
+    return 0
+#this function check whether the current user is the student of the class with class_id or not
+def inClass(request, class_id):
+    if (request.user.userprofile.position != 'HOC_SINH'):
+        return 0
+    cl = Class.objects.get(id = class_id)
+    students=cl.pupil_set.all()
+    for student in students:
+        if (student.user_id == request.user):
+            return 1   
+    return 0
