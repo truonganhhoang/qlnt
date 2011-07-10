@@ -30,8 +30,11 @@
         {% for ss in teacherList.object_list %}
             <tr>
                 <td align="center" width="5%">{{ forloop.counter|add:base_order }}</td>
-                <td align="center" width="25%">
-                    <a href="{%url school.views.school_index  %}viewTeacherDetail/{{ss.id}}"> {{ ss.last_name }} {{ ss.first_name }} </a>
+                <td align="center" width="25%">                
+                    {% if pos > 2%}
+                    <a href="{%url school.views.school_index  %}viewTeacherDetail/{{ss.id}}">
+                    {% endif %}
+                    {{ ss.last_name }} {{ ss.first_name }} </a>
                 </td>
                 <td align="center" width="25%"> {{ ss.birthday|date:"SHORT_DATE_FORMAT" }}</td>
                 <td align="center" width="25%"> {{ ss.birth_place }}</td>
