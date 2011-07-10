@@ -6,6 +6,7 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext, loader
 from school.utils import *
 from django.core.urlresolvers import reverse
+from django.utils import simplejson
 
 import os.path 
 LOCK_MARK =False
@@ -13,7 +14,7 @@ ENABLE_CHANGE_MARK=True
 
             
 class MarkID:
-    def __init__(self,d1,d2,d3,d4,d5,d6,d7,d8,d9,d10,d11,d12,d13,d14,d15,d16):
+    def __init__(self,d1,d2,d3,d4,d5,d6,d7,d8,d9,d10,d11,d12,d13,d14,d15,d16,d17,d18,d19):
         self.d1=d1
         self.d2=d2
         self.d3=d3
@@ -30,6 +31,10 @@ class MarkID:
         self.d14=d14
         self.d15=d15
         self.d16=d16
+        self.d17=d17
+        self.d18=d18
+        self.d19=d19
+        
 def checkChangeMark(class_id):
     return (not LOCK_MARK) and ENABLE_CHANGE_MARK
 
@@ -111,245 +116,6 @@ def createAllInfoInTerm(request,term_id):
 
     return HttpResponse(t.render(c))   
 
-def saveMarkNoComment(request,selectedTerm,markList,idList,tbhk1ListObjects,tbnamListObjects):
-            i=0;            
-            for m in markList:
-                sum=0
-                factorSum=0
-                id=idList[i]
-                
-                #diem mieng 1
-                t1=str(id.d1)    
-                t2=request.POST[t1]
-                t3=t2.replace(',','.',1)
-
-                if t3.isspace() or (len(t3)==0) :                
-                    m.mieng_1=None
-                else:
-                    tt=float(t3)
-                    m.mieng_1=tt
-                    sum=sum+tt
-                    factorSum+=1
-                    
-                #diem mieng 2
-                
-                t1=str(id.d2)    
-                t2=request.POST[t1]
-                t3=t2.replace(',','.',1)
-
-                if t3.isspace() or (len(t3)==0) :                
-                    m.mieng_2=None
-                else:
-                    tt=float(t3)
-                    m.mieng_2=tt
-                    sum=sum+tt
-                    factorSum+=1
-                    
-                #diem mieng 2
-                
-                t1=str(id.d3)    
-                t2=request.POST[t1]
-                t3=t2.replace(',','.',1)
-
-                if t3.isspace() or (len(t3)==0) :                
-                    m.mieng_3=None
-                else:
-                    tt=float(t3)
-                    m.mieng_3=tt
-                    sum=sum+tt
-                    factorSum+=1
-                #diem mieng 2
-
-                t1=str(id.d4)    
-                t2=request.POST[t1]
-                t3=t2.replace(',','.',1)
-
-                if t3.isspace() or (len(t3)==0) :                
-                    m.mieng_4=None
-                else:
-                    tt=float(t3)
-                    m.mieng_4=tt
-                    sum=sum+tt
-                    factorSum+=1
-
-                #diem mieng 2
-                
-                t1=str(id.d5)    
-                t2=request.POST[t1]
-                t3=t2.replace(',','.',1)
-
-                if t3.isspace() or (len(t3)==0) :                
-                    m.mieng_5=None
-                else:
-                    tt=float(t3)
-                    m.mieng_5=tt
-                    sum=sum+tt
-                    factorSum+=1
-
-                #diem mieng 2
-                t1=str(id.d6)    
-                t2=request.POST[t1]
-                t3=t2.replace(',','.',1)
-
-                if t3.isspace() or (len(t3)==0) :                
-                    m.mlam_1=None
-                else:
-                    tt=float(t3)
-                    m.mlam_1=tt
-                    sum=sum+tt
-                    factorSum+=1
-
-                #diem mieng 2
-                
-                t1=str(id.d7)    
-                t2=request.POST[t1]
-                t3=t2.replace(',','.',1)
-
-                if t3.isspace() or (len(t3)==0) :                
-                    m.mlam_2=None
-                else:
-                    tt=float(t3)
-                    m.mlam_2=tt
-                    sum=sum+tt
-                    factorSum+=1
-                    
-                #diem mieng 2
-                
-                t1=str(id.d8)    
-                t2=request.POST[t1]
-                t3=t2.replace(',','.',1)
-
-                if t3.isspace() or (len(t3)==0) :                
-                    m.mlam_3=None
-                else:
-                    tt=float(t3)
-                    m.mlam_3=tt
-                    sum=sum+tt
-                    factorSum+=1
-                #diem mieng 2
-                
-                t1=str(id.d9)    
-                t2=request.POST[t1]
-                t3=t2.replace(',','.',1)
-
-                if t3.isspace() or (len(t3)==0) :                
-                    m.mlam_4=None
-                else:
-                    tt=float(t3)
-                    m.mlam_4=tt
-                    sum=sum+tt
-                    factorSum+=1
-
-                #diem mieng 2
-                
-                t1=str(id.d10)    
-                t2=request.POST[t1]
-                t3=t2.replace(',','.',1)
-
-                if t3.isspace() or (len(t3)==0) :                
-                    m.mlam_5=None
-                else:
-                    tt=float(t3)
-                    m.mlam_5=tt
-                    sum=sum+tt
-                    factorSum+=1
-                #diem mieng 2
-                t1=str(id.d11)    
-                t2=request.POST[t1]
-                t3=t2.replace(',','.',1)
-
-                if t3.isspace() or (len(t3)==0) :                
-                    m.mot_tiet_1=None
-                else:
-                    tt=float(t3)
-                    m.mot_tiet_1=tt
-                    sum=sum+tt*2
-                    factorSum+=2
-                    
-                #diem mieng 2
-                
-                t1=str(id.d12)    
-                t2=request.POST[t1]
-                t3=t2.replace(',','.',1)
-
-                if t3.isspace() or (len(t3)==0) :                
-                    m.mot_tiet_2=None
-                else:
-                    tt=float(t3)
-                    m.mot_tiet_2=tt
-                    sum=sum+tt*2
-                    factorSum+=2
-                #diem mieng 2
-                
-                t1=str(id.d13)    
-                t2=request.POST[t1]
-                t3=t2.replace(',','.',1)
-
-                if t3.isspace() or (len(t3)==0) :                
-                    m.mot_tiet_3=None
-                else:
-                    tt=float(t3)
-                    m.mot_tiet_3=tt
-                    sum=sum+tt*2
-                    factorSum+=2
-                #diem mieng 2
-                
-                t1=str(id.d14)    
-                t2=request.POST[t1]
-                t3=t2.replace(',','.',1)
-
-                if t3.isspace() or (len(t3)==0) :                
-                    m.mot_tiet_4=None
-                else:
-                    tt=float(t3)
-                    m.mot_tiet_4=tt
-                    sum=sum+tt*2
-                    factorSum+=2
-                #diem mieng 2
-                
-                t1=str(id.d15)    
-                t2=request.POST[t1]
-                t3=t2.replace(',','.',1)
-
-                if t3.isspace() or (len(t3)==0) :                
-                    m.mot_tiet_5=None
-                else:
-                    tt=float(t3)
-                    m.mot_tiet_5=tt
-                    sum=sum+tt*2
-                    factorSum+=2
-                #diem mieng 2
-                
-                t1=str(id.d16)    
-                t2=request.POST[t1]
-                t3=t2.replace(',','.',1)
-
-                if t3.isspace() or (len(t3)==0) :                
-                    m.ck=None
-                else:
-                    tt=float(t3)
-                    m.ck=tt
-                    sum=sum+tt*3
-                    factorSum+=3
-
-                e=0.00000000001    
-                if m.ck!=None:
-                    if factorSum==0:
-                        m.tb=0
-                    else:                        
-                        m.tb=round(sum/factorSum+e,1)
-                else:
-                    m.tb=None 
-                               
-                if (selectedTerm.number==2):
-                    if (tbhk1ListObjects[i].tb!=None) & (m.tb!=None):
-                        tbnamListObjects[i].tb_nam=round((tbhk1ListObjects[i].tb+m.tb*2)/3+e,1)
-                        tbnamListObjects[i].save()
-                    else:
-                        tbnamListObjects[i].tb_nam=None
-                        tbnamListObjects[i].save()        
-                m.save()
-                i=i+1                            
                     
 def saveMarkHasComment(request,selectedTerm,markList,idList,tbhk1ListObjects,tbnamListObjects):
             i=0
@@ -426,7 +192,7 @@ def getMark(class_id,subjectChoice,selectedTerm):
             markList.append(m)
         
             k=i*100
-            id=MarkID(k+1,k+2,k+3,k+4,k+5,k+6,k+7,k+8,k+9,k+10,k+11,k+12,k+13,k+14,k+15,k+16)
+            id=MarkID(k+1,k+2,k+3,k+4,k+5,k+6,k+7,k+8,k+9,k+10,k+11,k+12,k+13,k+14,k+15,k+16,k+17,k+18,k+19)
             idList.append(id)
             i=i+1
             
@@ -440,7 +206,7 @@ def getMark(class_id,subjectChoice,selectedTerm):
 
             tbhk1ListObjects.append(hk1)                                                       
             k=i*100
-            id=MarkID(k+1,k+2,k+3,k+4,k+5,k+6,k+7,k+8,k+9,k+10,k+11,k+12,k+13,k+14,k+15,k+16)
+            id=MarkID(k+1,k+2,k+3,k+4,k+5,k+6,k+7,k+8,k+9,k+10,k+11,k+12,k+13,k+14,k+15,k+16,k+17,k+18,k+19)
             idList.append(id)
             i=i+1
                             
@@ -734,4 +500,143 @@ def markForASubject(request,subject_id):
     
 
     return HttpResponse(t.render(c))
+tong=0
+def update(s):
+    strings=s.split(':')
+    idMark=int(strings[0])    
+    setOfNumber =strings[1].split('*')
+    setOfValue  =strings[2].split('*')    
+    length = len(setOfNumber)
+    
+    m = Mark.objects.get(id=idMark)
+        
+    for i in range(length-1):
+        
+        if setOfValue[i]=="NaN":
+            print "oooooooooooooooooooooooooooooooooooooooooooo" 
+            continue
+         
+        number= int(setOfNumber[i])
+        value = float(setOfValue[i].replace(',','.',1))
+        
+        if value==-1    : value = None
+        
+        print number
+        print value
+        
+        if   number ==1 :  m.mieng_1=value
+        elif number ==2 :  m.mieng_2=value
+        elif number ==3 :  m.mieng_3=value
+        elif number ==4 :  m.mieng_4=value
+        elif number ==5 :  m.mieng_5=value
+        
+        elif number ==6 :  m.mlam_1=value
+        elif number ==7 :  m.mlam_2=value
+        elif number ==8 :  m.mlam_3=value
+        elif number ==9 :  m.mlam_4=value
+        elif number ==10:  m.mlam_5=value
+        
+        elif number ==11:  m.mot_tiet_1=value
+        elif number ==12:  m.mot_tiet_2=value
+        elif number ==13:  m.mot_tiet_3=value
+        elif number ==14:  m.mot_tiet_4=value
+        elif number ==15:  m.mot_tiet_5=value
+        elif number ==16:  m.ck        =value
+    print m.ck    
+    if m.ck==None:
+        subject_id = m.subject_id
+        student_id = m.student_id
+        print "ok3"
+        tbcn=TKMon.objects.get(subject_id=subject_id.id,student_id=student_id.id)
+        print "ok4"
+        tbcn.tb_nam = None
+        m.tb        = None  
+        tbcn.save()
+        print "ok5"
+                
+    else :   
+            sum=m.ck*3
+            factor=3
+            if m.mieng_1 != None : 
+                sum=sum+m.mieng_1 
+                factor=factor+1 
+            if m.mieng_2 != None : 
+                sum=sum+m.mieng_2 
+                factor=factor+1 
+            if m.mieng_3 != None : 
+                sum=sum+m.mieng_3 
+                factor=factor+1 
+            if m.mieng_4 != None : 
+                sum=sum+m.mieng_4 
+                factor=factor+1 
+            if m.mieng_5 != None : 
+                sum=sum+m.mieng_5 
+                factor=factor+1 
+        
+            if m.mlam_1 != None : 
+                sum=sum+m.mlam_1
+                factor=factor+1 
+            if m.mlam_2 != None : 
+                sum=sum+m.mlam_2
+                factor=factor+1 
+            if m.mlam_3 != None: 
+                sum=sum+m.mlam_3
+                factor=factor+1 
+            if m.mlam_4 != None: 
+                sum=sum+m.mlam_4
+                factor=factor+1 
+            if m.mlam_5 != None: 
+                sum=sum+m.mlam_5
+                factor=factor+1 
+
+            if m.mot_tiet_1 != None : 
+                sum=sum+m.mot_tiet_1*2
+                factor=factor+2 
+            if m.mot_tiet_2 != None: 
+                sum=sum+m.mot_tiet_2*2
+                factor=factor+2 
+            if m.mot_tiet_3 != None: 
+                sum=sum+m.mot_tiet_3*2
+                factor=factor+2 
+            if m.mot_tiet_4 != None: 
+                sum=sum+m.mot_tiet_4*2
+                factor=factor+2 
+            if m.mot_tiet_5 != None: 
+                sum=sum+m.mot_tiet_5*2
+                factor=factor+2
+            print sum
+            print factor    
+            e=0.00000001    
+            m.tb = round(sum/factor + e,1)
+            
+            print m.term_id.number
+            if m.term_id.number==2:
+                subject_id = m.subject_id
+                student_id = m.student_id
+                print "ok3"
+                tbk1=Mark.objects.get(subject_id=subject_id.id,student_id=student_id.id,term_id__number=1)
+                if tbk1.ck!=None:
+                    tbcn=TKMon.objects.get(subject_id=subject_id.id,student_id=student_id.id)
+                    tbcn.tb_nam = round((m.tb*2 + tbk1.tb+e)/3 , 1)
+                    tbcn.save()
+    print "ok2"                                     
+    m.save()    
+    
+def saveMark(request):
+    global tong
+    message = 'hello'
+    if request.method == 'POST':
+        
+        tong=tong+1        
+        str = request.POST['str']
+        strs=str.split('/')
+        for s in strs:
+            if s!="":
+                update(s)     
+                                            
+        message='ok'
+        data = simplejson.dumps({'message': message})
+        return HttpResponse( data, mimetype = 'json')    
+                 
+    
 
