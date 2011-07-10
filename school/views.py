@@ -1017,7 +1017,7 @@ def diem_danh(request, class_id, day, month, year):
     cl = Class.objects.get(id__exact=class_id)
     if in_school(request, cl.block_id.school_id) == False:
         return HttpResponseRedirect('/')
-    if (get_position(request) < 4):
+    if (get_position(request) < 3):
         return HttpResponseRedirect('/')
     message = ''
     listdh = None
@@ -1171,7 +1171,8 @@ def diem_danh_hs(request, student_id):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
-    if (get_position(request) < 4):
+    pos = get_position(request)
+    if (pos < 1):
         return HttpResponseRedirect('/')
     term = None
     pupil = Pupil.objects.get(id=student_id)
@@ -1219,7 +1220,12 @@ def diem_danh_hs(request, student_id):
                 form.append(iform)
                 iform = DiemDanhForm  
     t = loader.get_template(os.path.join('school', 'diem_danh_hs.html'))
-    c = RequestContext(request, {'form': form, 'iform': iform, 'pupil':pupil, 'student_id':student_id, 'term':term})
+    c = RequestContext(request, {   'form': form, 
+                                    'iform': iform, 
+                                    'pupil':pupil, 
+                                    'student_id':student_id, 
+                                    'term':term,
+                                    'pos':pos})
     return HttpResponse(t.render(c))
     
 def tk_dd_lop(class_id, term_id):
@@ -1335,12 +1341,13 @@ def khen_thuong(request, student_id):
     sub = Pupil.objects.get(id=student_id)
     if in_school(request, sub.class_id.block_id.school_id) == False:
         return HttpResponseRedirect('/')
-    if (get_position(request) < 4):
+    pos = get_position(request)
+    if (get_position(request) < 1):
         return HttpResponseRedirect('/')
     message = ''
     ktl = KhenThuong.objects.filter(student_id=student_id).order_by('time')
     t = loader.get_template(os.path.join('school', 'khen_thuong.html'))
-    c = RequestContext(request, {'ktl': ktl, 'message':message, 'student_id':student_id,'pupil':sub})
+    c = RequestContext(request, {'ktl': ktl, 'message':message, 'student_id':student_id,'pupil':sub, 'pos':pos})
     return HttpResponse(t.render(c))
     
 def add_khen_thuong(request, student_id):
@@ -1414,12 +1421,13 @@ def ki_luat(request, student_id):
     student = Pupil.objects.get(id=student_id)
     if in_school(request, student.class_id.block_id.school_id) == False:
         return HttpResponseRedirect('/')
-    if (get_position(request) < 4):
+    pos = get_position(request)
+    if (get_position(request) < 1):
         return HttpResponseRedirect('/')
     message = ''
     ktl = KiLuat.objects.filter(student_id=student_id).order_by('time')
     t = loader.get_template(os.path.join('school', 'ki_luat.html'))
-    c = RequestContext(request, {'ktl': ktl, 'message':message, 'student_id':student_id, 'pupil':student})
+    c = RequestContext(request, {'ktl': ktl, 'message':message, 'student_id':student_id, 'pupil':student, 'pos':pos})
     return HttpResponse(t.render(c))
     
 def add_ki_luat(request, student_id):
@@ -1430,7 +1438,7 @@ def add_ki_luat(request, student_id):
     pupil = Pupil.objects.get(id=student_id)
     if in_school(request, pupil.class_id.block_id.school_id) == False:
         return HttpResponseRedirect('/')
-    if (get_position(request) < 4):
+    if (get_position(request) < 2):
         return HttpResponseRedirect('/')
     cl = Class.objects.get(id__exact=pupil.class_id.id)
     term = get_current_term(request)
