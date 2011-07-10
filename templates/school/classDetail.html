@@ -11,21 +11,20 @@ function confirmDelete()
 <table border=0 align = "center" width="100%">
 	<tr>
         {% if pos > 0%}
-            <td width="15%" align = "center"><a title="Cập nhật điểm danh theo lớp" href="{%url school.views.school_index  %}diemdanh/{{class.id}}">Điểm danh</a></td>            
+            <td width="15%" align = "center"><a title="Cập nhật điểm danh theo lớp" href="{%url school.views.school_index  %}diemdanh/{{class.id}}">Điểm danh</a></td>                        
+
         {% endif %}
         
         
-        {% if pos > 2%}            
-            <td width="15%" align = "center"><a title="Đánh giá hạnh kiểm học sinh trong lớp" href="{%url school.views.school_index  %}hanhkiem/{{class.id}}">Hạnh Kiểm</a></td>            
-        {% else %}            
-            <td width="15%" align = "center"><a title="Bạn không đủ quyền để thực hiện thao tác này">Hạnh kiểm</a></td>
+        {% if pos > 3%}            
+            <td width="15%" align = "center"><a title="Đánh giá hạnh kiểm học sinh trong lớp" href="{%url school.views.school_index  %}hanhkiem/{{class.id}}">Hạnh Kiểm</a></td>                    
         {% endif %}
         
         {%if pos > 0%}
 		<td width="15%" align = "center"><a title="Xem tất cả thông tin của của môn học trong lớp"  href = "{%url school.views.school_index  %}subjectPerClass/{{class.id}}">Quản lý môn học</a></td>
         {%endif%}
         
-        {% if pos > 2 %}
+        {% if pos > 3 %}
             <td width="15%" align = "center"><a title="Nhập hoặc chỉnh sửa điểm của tất cả các môn trong lớp" href = "{%url school.views.school_index  %}markTable/{{class.id}}">Quản lý điểm</a></td>
             <td width="20%" align = "center"><a title="Tự động tính trung bình học lực của cả lớp" href = "{%url school.views.school_index  %}xepLoaiHlTheoLop/{{class.id}}">Tổng kết học lực</a></td>
             <td width="20%" align = "center">
@@ -34,10 +33,6 @@ function confirmDelete()
             {% else %}
                 <a title="Chức năng này đã bị vô hiệu hóa vì đang trong học kỳ I" >Tổng kết cả năm</a>
             {% endifnotequal  %}</td>
-        {% else %}
-            <td width="15%" align = "center"><a title="Bạn không đủ quyền để thực hiện thao tác này">Quản lý điểm</a></td>
-            <td width="20%" align = "center"><a title="Bạn không đủ quyền để thực hiện thao tác này">Tổng kết học lực</a></td>
-            <td width="20%" align = "center"><a title="Bạn không đủ quyền để thực hiện thao tác này">Tổng kết cả năm</a></td>
         {% endif %}
 	</tr>
 </table>
@@ -117,6 +112,14 @@ function confirmDelete()
             </td>         
         </tr>
 </table>
+<table width="100%">
+        <tr>
+        		<td width = "5%" align = "left"><input type ="submit" value="Thêm"/></td>
+        		<td align = "right"> <a href = ""> Xuất ra Excel </a> </td>
+			</form>
+        </tr>
+</table>
+{%endif%}
 <table border = "0" width = "100%">
 	<tr boder = 0>
 		<td width = "100%" colspan = 9 align = "right">
@@ -137,11 +140,6 @@ function confirmDelete()
 		</div>
 		</td>
 	</tr>
-        <tr>
-        		<td width = "5%" align = "left"><input type ="submit" value="Thêm"/></td>
-        		<td align = "right"> <a href = ""> Xuất ra Excel </a> </td>
-			</form>
-        </tr>
-</table
-{%endif%}
+</table>
+
 {% endblock %}
