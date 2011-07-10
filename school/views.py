@@ -1205,47 +1205,56 @@ def diem_danh_hs(request, student_id):
         ct = RequestContext(request, {'class_id':c.id, 'message':message})
         return HttpResponse(t.render(ct))
     ddl = DiemDanh.objects.filter(student_id=student_id, term_id=term.id).order_by('time')
-    form = []
-    iform = DiemDanhForm()
-    for dd in ddl:
-        form.append(DiemDanhForm(instance=dd))
-    if request.method == 'POST':
-        list = request.POST.getlist('loai')
-        time_day = request.POST.getlist('time_day')
-        time_month = request.POST.getlist('time_month')
-        time_year = request.POST.getlist('time_year')
-        i = 0
+    if (pos > 1):
+        form = []
+        iform = DiemDanhForm()
         for dd in ddl:
+            form.append(DiemDanhForm(instance=dd))
+        if request.method == 'POST':
+            list = request.POST.getlist('loai')
+            time_day = request.POST.getlist('time_day')
+            time_month = request.POST.getlist('time_month')
+            time_year = request.POST.getlist('time_year')
+            i = 0
+            for dd in ddl:
+                if list[i] != 'k':
+                    time = date(int(time_year[i]), int(time_month[i]), int(time_day[i]))
+                    data = {'student_id':student_id, 'time':time, 'loai':list[i], 'term_id':term.id}
+                    form[i] = DiemDanhForm(data, instance=dd)
+                    if form[i].is_valid():
+                        form[i].save()  
+                        i = i + 1
+                else:
+                    time_day.remove(time_day[i])
+                    time_month.remove(time_month[i])
+                    time_year.remove(time_year[i])
+                    form.remove(form[i])
+                    list.remove(list[i])
+                    dd.delete()
             if list[i] != 'k':
                 time = date(int(time_year[i]), int(time_month[i]), int(time_day[i]))
                 data = {'student_id':student_id, 'time':time, 'loai':list[i], 'term_id':term.id}
-                form[i] = DiemDanhForm(data, instance=dd)
-                if form[i].is_valid():
-                    form[i].save()  
-                    i = i + 1
-            else:
-                time_day.remove(time_day[i])
-                time_month.remove(time_month[i])
-                time_year.remove(time_year[i])
-                form.remove(form[i])
-                list.remove(list[i])
-                dd.delete()
-        if list[i] != 'k':
-            time = date(int(time_year[i]), int(time_month[i]), int(time_day[i]))
-            data = {'student_id':student_id, 'time':time, 'loai':list[i], 'term_id':term.id}
-            iform = DiemDanhForm(data)
-            if iform.is_valid():
-                iform.save()
-                form.append(iform)
-                iform = DiemDanhForm  
-    t = loader.get_template(os.path.join('school', 'diem_danh_hs.html'))
-    c = RequestContext(request, {   'form': form, 
-                                    'iform': iform, 
-                                    'pupil':pupil, 
-                                    'student_id':student_id, 
-                                    'term':term,
-                                    'pos':pos})
-    return HttpResponse(t.render(c))
+                iform = DiemDanhForm(data)
+                if iform.is_valid():
+                    iform.save()
+                    form.append(iform)
+                    iform = DiemDanhForm  
+        t = loader.get_template(os.path.join('school', 'diem_danh_hs.html'))
+        c = RequestContext(request, {   'form': form, 
+                                        'iform': iform, 
+                                        'pupil':pupil, 
+                                        'student_id':student_id, 
+                                        'term':term,
+                                        'pos':pos})
+        return HttpResponse(t.render(c))
+    else:
+        t = loader.get_template(os.path.join('school', 'diem_danh_hs.html'))
+        c = RequestContext(request, {   'form': ddl,  
+                                        'pupil':pupil, 
+                                        'student_id':student_id, 
+                                        'term':term,
+                                        'pos':pos})
+        return HttpResponse(t.render(c))
     
 def tk_dd_lop(class_id, term_id):
     ppl = Pupil.objects.filter(class_id=class_id)
