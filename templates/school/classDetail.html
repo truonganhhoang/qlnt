@@ -10,10 +10,8 @@ function confirmDelete()
 
 <table border=0 align = "center" width="100%">
 	<tr>
-        {% if pos > 1%}
+        {% if pos > 0%}
             <td width="15%" align = "center"><a title="Cập nhật điểm danh theo lớp" href="{%url school.views.school_index  %}diemdanh/{{class.id}}">Điểm danh</a></td>            
-        {% else %}
-            <td width="15%" align = "center"><a title="Bạn không đủ quyền để thực hiện thao tác này">Điểm danh</a></td>            
         {% endif %}
         
         
@@ -67,7 +65,7 @@ function confirmDelete()
     {% for ss in studentList.object_list %}
     <tr>
         <td align="center" width="5%"> {{forloop.counter|add:base_order}} </td>
-        {%if pos > 0%}
+        {%if pos > 1%}
             <td align="center" width="25%"> <a title = "Xem toàn bộ thông tin chi tiết" href="{%url school.views.school_index  %}viewStudentDetail/{{ss.id}}">{{ss.last_name}} {{ss.first_name}} </a></td>
         {%else%}   
             <td align="center" width="25%"> {{ss.last_name}} {{ss.first_name}}</td>
