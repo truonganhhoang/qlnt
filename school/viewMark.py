@@ -249,7 +249,7 @@ def markTable(request,class_id):
     yearChoice=selectedClass.year_id.id
     
     #selectedClass.year_id.school_id.status=2
-        
+    """    
     if selectedClass.year_id.school_id.status==1:
         termList=Term.objects.filter(year_id=yearChoice,number=1).order_by('number')
     else:    
@@ -257,6 +257,14 @@ def markTable(request,class_id):
     
     selectedTerm=termList[termList.__len__()-1]
     termChoice=selectedTerm.id
+    """
+    selectedTerm=get_current_term(request)    
+    termChoice  =selectedTerm.id
+    
+    termList= Term.objects.filter(year_id=yearChoice,number__lt=3).order_by('number')
+    
+    
+    
     subjectList=Subject.objects.filter(class_id=class_id)
 
     if request.method == 'POST':  
@@ -333,9 +341,10 @@ def markForAStudent(request,class_id,student_id):
     studentName=student.last_name+" "+student.first_name
     
     yearChoice=selectedClass.year_id.id
-    termList= Term.objects.filter(year_id=yearChoice,number__lt=3).order_by('-number')
-    termChoice=termList[0].id
-    selectedTerm=termList[0]
+
+    selectedTerm=get_current_term(request)    
+    termChoice  =selectedTerm.id
+    
     termList= Term.objects.filter(year_id=yearChoice,number__lt=3).order_by('number')
     
     if request.method == 'POST':
@@ -437,13 +446,11 @@ def markForASubject(request,subject_id):
     
     #selectedClass.year_id.school_id.status=2
         
-    if selectedClass.year_id.school_id.status==1:
-        termList=Term.objects.filter(year_id=yearChoice,number=1).order_by('number')
-    else:    
-        termList=Term.objects.filter(year_id=yearChoice,number__lt=3).order_by('number')
+    selectedTerm=get_current_term(request)    
+    termChoice  =selectedTerm.id    
+    termList= Term.objects.filter(year_id=yearChoice,number__lt=3).order_by('number')
     
-    selectedTerm=termList[termList.__len__()-1]
-    termChoice=selectedTerm.id
+    
     hsSubject=int(Subject.objects.get(id=subjectChoice).hs)    
     
 
