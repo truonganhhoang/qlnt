@@ -421,5 +421,5 @@ def get_teacher(request):
 def get_student(request):
     if (request.user.userprofile.position != 'HOC_SINH'):
         return 0
-    teacher = request.user.pupil
+    pupil = request.user.pupil
     return pupil

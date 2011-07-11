@@ -587,7 +587,7 @@ def classes(request, sort_type=1, sort_status=0, page=1):
     pos = get_position(request)
     if (pos == 1):
         url = '/school/viewClassDetail/' + str(get_student(request).class_id.id)
-        return HttpRedirect(url)
+        return HttpResponseRedirect(url)
     message = None
     school_id = get_school(request).id
     form = ClassForm(school_id)
