@@ -9,9 +9,9 @@
 {% endif %}
 <table border = 0 width = "90%" align="center">
 	<tr>
-		<td width = "30%"><a href="{%url school.views.school_index  %}hanhkiem/{{class.id}}/1">Hạnh kiểm kì 1</a></td>
+		<td width = "30%"><a href="{%url school.views.school_index  %}hanhkiem/{{class.id}}/1">Hạnh kiểm kì 1</a></td>        
 		<td width = "30%"><a href="{%url school.views.school_index  %}hanhkiem/{{class.id}}/2">Hạnh kiểm kì 2</a></td>
-		<td width = "30%"><a href="{%url school.views.school_index  %}hanhkiem/{{class.id}}/3">Hạnh kiểm cả năm</a></td>
+		<td width = "30%"><a href="{%url school.views.school_index  %}hanhkiem/{{class.id}}/3">Hạnh kiểm cả năm</a></td>       
 	</tr>	
 </table>
 <form action="/school/hanhkiem/{{class.id}}/{{term}}" method="post">{% csrf_token %}       
@@ -46,14 +46,22 @@
                 <td align="center" width="20%">
                     <p>{{ p.sex }}</p>
                 </td>
-
+                {%if pos > 3 %}
                 <td align="center" width="20%">
                     {{ f.loai.errors }}
                     <p>{{ f.loai }}</p>
                 </td>
+                {%else%}
+                <td align="center" width="20%">                    
+                    <p>{{ p.loai }}</p>
+                </td>
+                {%endif%}
             </tr>
         {% endfor %}        
 </table>
+{%if pos > 3%}
 <input type ="submit" value="Cập nhật"/>
+{%endif%}
+<a href="{%url school.views.school_index  %}viewClassDetail/{{class.id}}" title ="Hủy mọi thao tác và quay về danh sách lớp"> <input type ="button" value="Quay lại"/></a>
 	</form>
 {% endblock %}

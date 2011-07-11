@@ -31,6 +31,6 @@ function confirmCancel()
     {%if pos > 3%}
    <input type ="submit" value="Cập nhật"/>
    {%endif%}
-   <a href="{%url school.views.school_index  %}viewClassDetail/{{class_id}}" onclick="return confirmCancel();">Hủy</a>
+   <a title ="Hủy mọi thao tác và quay về danh sách lớp" href="{%url school.views.school_index  %}viewClassDetail/{{class_id}}" onclick="return confirmCancel();">Hủy</a>
 </form>
 {% endblock %}

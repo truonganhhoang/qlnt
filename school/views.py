@@ -1600,8 +1600,11 @@ def hanh_kiem(request, class_id, term_number = 1, sort_type = 1, sort_status = 0
     c = Class.objects.get(id__exact=class_id)
     if in_school(request, c.block_id.school_id) == False:
         return HttpResponseRedirect('/')
-    if (get_position(request) < 4):
+    pos=get_position(request)
+    if (pos < 1):
         return HttpResponseRedirect('/')
+    if (gvcn(request, class_id) == 1):
+        pos = 4
     message = None
     listdh = None    
     pupilList = c.pupil_set.all()
@@ -1654,5 +1657,14 @@ def hanh_kiem(request, class_id, term_number = 1, sort_type = 1, sort_status = 0
 			
     listdh = zip(pupilList, form)
     t = loader.get_template(os.path.join('school', 'hanh_kiem.html'))
-    c = RequestContext(request, {'form':form, 'pupilList': pupilList, 'message':message, 'class':c, 'list':listdh, 'sort_type':sort_type, 'sort_status':sort_status, 'next_status':1-int(sort_status), 'term': int(term.number), 'year' : year})
+    c = RequestContext(request, {   'form':form, 
+                                    'pupilList': pupilList, 
+                                    'message':message, 
+                                    'class':c, 'list':listdh, 
+                                    'sort_type':sort_type, 
+                                    'sort_status':sort_status, 
+                                    'next_status':1-int(sort_status), 
+                                    'term': int(term.number), 
+                                    'year' : year,
+                                    'pos':pos})
     return HttpResponse(t.render(c))
