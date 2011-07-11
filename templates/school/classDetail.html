@@ -47,7 +47,7 @@ function confirmDelete()
         <th align="center" width="10%"><a href="{%url school.views.school_index  %}viewClassDetail/{{class.id}}/4/{{next_status}}/1"> Ban Đăng kí </a></th>
         <th align="center" width="15%"><a href="{%url school.views.school_index  %}viewClassDetail/{{class.id}}/5/{{next_status}}/1">Ngày vào trường </a></th>
         <th align="center" width="10%"> Năm bắt đầu </th>
-        {%if pos > 1%}
+        {%if pos > 3%}
             <th width = "5%"></th>
         {%endif%}
     </tr>
@@ -59,7 +59,7 @@ function confirmDelete()
     {% for ss in studentList.object_list %}
     <tr>
         <td align="center" width="5%"> {{forloop.counter|add:base_order}} </td>
-        {%if pos > 1%}
+        {%if pos > 1 or student_id == ss.id%}
             <td align="center" width="25%"> <a title = "Xem toàn bộ thông tin chi tiết" href="{%url school.views.school_index  %}viewStudentDetail/{{ss.id}}">{{ss.last_name}} {{ss.first_name}} </a></td>
         {%else%}   
             <td align="center" width="25%"> {{ss.last_name}} {{ss.first_name}}</td>
@@ -69,13 +69,13 @@ function confirmDelete()
         <td align="center" width="10%"> {{ss.ban_dk}} </td>
         <td align="center" width="15%"> {{ss.school_join_date|date:"SHORT_DATE_FORMAT"}} </td>
         <td align="center" width="10%"> {{ss.start_year_id}} </td>
-        {%if pos > 1%}
+        {%if pos > 3%}
         <td width="5%"><a href = "{%url school.views.school_index  %}deleteStudentInClass/{{ss.id}}" onclick="return confirmDelete();"> xóa</a></td>
          {%endif%}
     </tr>
     {% endfor %}
     
-    {% if pos > 1%}
+    {% if pos > 3%}
     <form action="/school/viewClassDetail/{{class.id}}/{{sort_type}}/{{sort_status}}/{{studentList.number}}" method="post">{% csrf_token %}
         <tr>
             {{ form.non_field_errors }}

@@ -28,7 +28,7 @@ function confirmCancel()
     <table class="styleA styleDetail">
 	    {{ form.as_table }}
 	 </table>
-    {%if pos > 2%}
+    {%if pos > 3%}
    <input type ="submit" value="Cập nhật"/>
    {%endif%}
    <a href="{%url school.views.school_index  %}viewClassDetail/{{class_id}}" onclick="return confirmCancel();">Hủy</a>

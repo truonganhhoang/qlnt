@@ -31,7 +31,7 @@
             <tr>
                 <td align="center" width="5%">{{ forloop.counter|add:base_order }}</td>
                 <td align="center" width="25%">                
-                    {% if pos > 2%}
+                    {% if pos > 3 or teacher_id == ss.id %}
                     <a href="{%url school.views.school_index  %}viewTeacherDetail/{{ss.id}}">
                     {% endif %}
                     {{ ss.last_name }} {{ ss.first_name }} </a>
@@ -45,7 +45,7 @@
                 {%endif%}
             </tr>
         {% endfor %}
-        {% if pos > 2%}
+        {% if pos > 3%}
         <form action="/school/teachers/{{sort_type}}/{{sort_status}}/{{teacherList.number}}"
               method="post">{% csrf_token %}
             <tr>

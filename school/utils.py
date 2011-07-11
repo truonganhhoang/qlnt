@@ -414,12 +414,12 @@ def inClass(request, class_id):
     
 def get_teacher(request):
     if (request.user.userprofile.position != 'GIAO_VIEN'):
-        return 0
+        return None
     teacher = request.user.teacher
     return teacher
         
 def get_student(request):
     if (request.user.userprofile.position != 'HOC_SINH'):
-        return 0
+        return None
     pupil = request.user.pupil
     return pupil

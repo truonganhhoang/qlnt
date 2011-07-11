@@ -752,6 +752,10 @@ def viewClassDetail(request, class_id, sort_type=1, sort_status=0, page=1):
         student_list = paginator.page(page)
     except (EmptyPage, InvalidPage):
         student_list = paginator.page(paginator.num_pages)
+    tmp = get_student(request)
+    id = 0
+    if (tmp):
+        id = tmp.id
     t = loader.get_template(os.path.join('school', 'classDetail.html'))
     c = RequestContext(request, {   'form': form, 
                                     'message': message, 
@@ -763,7 +767,7 @@ def viewClassDetail(request, class_id, sort_type=1, sort_status=0, page=1):
                                     'base_order': (int(page)-1) * 20,
                                     'pos': pos,
                                     'gvcn':cn,
-                                    'inClass':inCl})
+                                    'student_id':id})
     return HttpResponse(t.render(c))
 
 #sort_type = '1': fullname, '2': birthday, '3':'sex'
@@ -824,6 +828,10 @@ def teachers(request, sort_type=1, sort_status=0, page=1):
         teacher_list = paginator.page(paginator.num_pages)
 
     t = loader.get_template(os.path.join('school', 'teachers.html'))
+    tmp = get_teacher(request)
+    id = 0
+    if (tmp):
+        id = tmp.id
     c = RequestContext(request, {   'form': form,
                                     'message': message,
                                     'teacherList': teacher_list,
@@ -831,7 +839,8 @@ def teachers(request, sort_type=1, sort_status=0, page=1):
                                     'sort_status':sort_status, 
                                     'next_status':1-int(sort_status), 
                                     'base_order':(int (page)-1) * 20,
-                                    'pos':pos})
+                                    'pos':pos,
+                                    'teacher_id':id})
     return HttpResponse(t.render(c))
 
 def viewTeacherDetail(request, teacher_id):
@@ -843,6 +852,8 @@ def viewTeacherDetail(request, teacher_id):
     if in_school(request, teacher.school_id) == False:
         return HttpResponseRedirect('/')
     pos = get_position(request)
+    if (pos==3) and (get_teacher(request).id == int(teacher_id)):
+        pos = 4
     if (pos < 1):
         return HttpResponseRedirect('/')
     form = TeacherForm (instance=teacher)
@@ -1039,6 +1050,8 @@ def viewStudentDetail(request, student_id):
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
     pos = get_position(request)
+    if (pos==1) and (get_student(request).id==int(student_id)):
+        pos = 4
     if (get_position(request) < 1):
         return HttpResponseRedirect('/')
     message = None
