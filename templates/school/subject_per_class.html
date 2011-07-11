@@ -31,7 +31,7 @@ function confirmDelete()
         <tr>
             <td width="5%">{{forloop.counter}} </td>
             <td align="center" width="20%"> {{ss.name}}</td>
-            {%if pos > 1%}
+            {%if pos > 3%}
                 <td align="center" width="10%"> {{f.hs}} </td>
                 <td align="center" width="25%"> {{f.teacher_id}}</td>
             {%else%}
@@ -39,12 +39,12 @@ function confirmDelete()
                 <td align="center" width="25%"> {{ss.teacher_id}}</td>
             {%endif%}
             <td align="center" width="10%"> <a href="{%url school.views.school_index  %}markForASubject/{{ss.id}}"> Điểm </a></td>
-            {%if pos > 1%}
+            {%if pos > 3%}
             <td width = "5%"> <a href = "{%url school.views.school_index  %}deleteSubject/{{ss.id}}" onclick="return confirmDelete();">xóa</a></td>
             {%endif%}
         </tr>
         {% endfor %}
-    {%if pos > 1%}
+    {%if pos > 3%}
         <tr>
             {{ form.non_field_errors }}
 			<td width="5%"> </td>
@@ -62,7 +62,7 @@ function confirmDelete()
                     {{ form.teacher_id.errors }}
                     <p>{{ form.teacher_id }}</p>
             </td>
-			<td width="10%"><input type ="submit" value="Thêm/Lưu Lại"/></td>            
+			<td width="10%"><input type ="submit" value="Thêm/Lưu"/></td>            
             <td width = "5%" align = "left"></td>
         		
 
