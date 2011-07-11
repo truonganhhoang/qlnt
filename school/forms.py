@@ -60,10 +60,10 @@ class SchoolForm(forms.Form):
         self.request = kwargs.pop('request')
         super(SchoolForm, self).__init__(*args, **kwargs)
         if get_permission(self.request) in [u'HIEU_TRUONG', u'HIEU_PHO']:
-            self.fields['name'] = forms.CharField(label=u'Tên tổ chức', max_length = 100, required=True) #tên đơn vị. tổ chức 
+            self.fields['name'] = forms.CharField(label=u'Tên trường:', max_length = 100, required=True) #tên đơn vị. tổ chức 
             self.fields['school_level'] = forms.ChoiceField(label=u"Cấp:", choices = KHOI_CHOICES, required = True)
             self.fields['address'] = forms.CharField(label=u"Địa chỉ:", max_length = 255, required = False) #
-            self.fields['phone'] = forms.CharField(label="Điện thoại", max_length = 20, validators=[validate_phone], required = False)
+            self.fields['phone'] = forms.CharField(label="Điện thoại:", max_length = 20, validators=[validate_phone], required = False)
             self.fields['email'] = forms.EmailField(max_length = 50,  required = False) 
     def save_to_model(self):
         try:

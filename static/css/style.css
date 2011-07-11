@@ -326,16 +326,12 @@ div.infoContent{
 div.leftInfoDiv{
    width: auto;
    float: left;
-   border-top: 1px solid #DADADA;
    border-right: 1px solid #DADADA;
-   border-bottom: 1px solid #DADADA;
    padding: 20px;
 }
 div.rightInfoDiv{
    position: relative;
    width: auto;
-   border-top: 1px solid #DADADA;
-   border-bottom: 1px solid #DADADA;
    padding: 20px;
    float: left;
 }

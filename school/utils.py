@@ -309,6 +309,8 @@ def completely_del_subject( subject):
     subject.delete()                
             
 def get_school(request):
+    if not request.user.is_authenticated():
+        raise Exception('NotAuthenticated') 
     if request.user.userprofile.organization.level != 'T':
         raise Exception('UserDoesNotHaveAnySchool')
     return Organization.objects.get(id=request.user.userprofile.organization.id)
@@ -415,4 +417,3 @@ def get_teacher_ID(request):
         return 0
     teacher = request.user.teacher
     return teacher.id
-    

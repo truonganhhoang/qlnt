@@ -34,6 +34,8 @@ INFO = os.path.join('school','info.html')
 def school_index(request):
     
     user = request.user
+    if not user.is_authenticated():
+        return HttpResponseRedirect(reverse('login'))
     try:
         school = get_school(request)
     except Exception as e:
@@ -54,6 +56,7 @@ def info(request):
         return HttpResponseRedirect( reverse('index'))
     if request.method == 'POST':
         form = SchoolForm(request.POST, request = request)
+        print request.POST
         if form.is_valid():
             form.save_to_model()
             message = u'Bạn vừa cập nhật thông tin trường học thành công.'
@@ -74,6 +77,13 @@ def class_label(request):
         school = get_school(request)
     except Exception as e:
         return HttpResponseRedirect(reverse('index'))
+    
+    permission = get_permission(request)
+    if not permission in [u'HIEU_TRUONG',u'HIEU_PHO']:
+        return HttpResponseRedirect(reverse('school_index'))
+    
+    
+    #------ user filtering
     
     class_labels = []
     message = None
@@ -111,7 +121,15 @@ def class_label(request):
 @transaction.commit_on_success   
 def b1(request):
     # tao moi cac khoi neu truong moi thanh lap
-    school = get_school(request)
+    try:
+        school = get_school(request)
+    except Exception as e:
+        return HttpResponseRedirect(reverse('index'))
+    
+    permission = get_permission(request)
+    if not permission in [u'HIEU_TRUONG',u'HIEU_PHO']:
+        return HttpResponseRedirect(reverse('school_index'))
+    
     message = None
     if not school.danhsachloailop_set.all():
         message = u'Bạn chưa thiết lập danh sách tên lớp học cho nhà trường. Hãy điền vào ô dưới \
@@ -252,6 +270,12 @@ def classify(request):
     except Exception as e:
         print e
         return HttpResponseRedirect( reverse("school_index")) 
+    
+    permission = get_permission(request)
+    if not permission in [u'HIEU_TRUONG',u'HIEU_PHO']:
+        return HttpResponseRedirect(reverse('school_index'))
+    
+    
     message = None
     nothing = False
     student_list = startyear.pupil_set.filter( class_id__exact = None).order_by('first_name')
@@ -364,7 +388,16 @@ def process_file(file_name, task):
     return None
 
 def nhap_danh_sach_trung_tuyen(request):
-    school = get_school(request)
+    try:
+        school = get_school(request)
+    except Exception as e:
+        return HttpResponseRedirect(reverse('index'))
+    
+    permission = get_permission(request)
+    if not permission in [u'HIEU_TRUONG',u'HIEU_PHO']:
+        return HttpResponseRedirect(reverse('school_index'))
+    
+        
     _class_list = [(u'0', u'---')]
     try:
         this_year = school.year_set.latest('time')
@@ -396,7 +429,15 @@ def nhap_danh_sach_trung_tuyen(request):
 
 @transaction.commit_manually   
 def manual_adding(request):
-    school = get_school(request)
+    try:
+        school = get_school(request)
+    except Exception as e:
+        return HttpResponseRedirect(reverse('index'))
+    
+    permission = get_permission(request)
+    if not permission in [u'HIEU_TRUONG',u'HIEU_PHO']:
+        return HttpResponseRedirect(reverse('school_index'))
+    
     _class_list = [(u'0', u'---')]
     message = None
     try:
@@ -482,8 +523,17 @@ def manual_adding(request):
 
 @transaction.commit_on_success    
 def danh_sach_trung_tuyen(request):
+
+    try:
+        school = get_school(request)
+    except Exception as e:
+        return HttpResponseRedirect(reverse('index'))
+    
+    permission = get_permission(request)
+    if not permission in [u'HIEU_TRUONG',u'HIEU_PHO']:
+        return HttpResponseRedirect(reverse('school_index'))
+    
     student_list = request.session['student_list']
-    school = get_school(request)
     term = school.year_set.latest('time').term_set.latest('number')
     chosen_class = request.session['chosen_class']
     current_year = school.year_set.latest('time')
