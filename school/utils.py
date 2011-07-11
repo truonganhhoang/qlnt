@@ -412,8 +412,14 @@ def inClass(request, class_id):
         return 0
 #this function return the student ID of the current user
     
-def get_teacher_ID(request):
+def get_teacher(request):
     if (request.user.userprofile.position != 'GIAO_VIEN'):
         return 0
     teacher = request.user.teacher
-    return teacher.id
+    return teacher
+        
+def get_student(request):
+    if (request.user.userprofile.position != 'HOC_SINH'):
+        return 0
+    teacher = request.user.pupil
+    return pupil
