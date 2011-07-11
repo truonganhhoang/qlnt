@@ -10,7 +10,7 @@
     {{ form.non_field_errors }}
     <table class="styleA styleDetail" >
 		<tr>
-			<th><label for="id_first_name">Tên lớp:</label></th>
+			<th><label for="id_name">Tên lớp:</label></th>
 			<td>
 				{{form.name.errors }}
         		{{ form.name }}	
@@ -18,7 +18,7 @@
 		</tr>
     
 		<tr>
-			<th><label for="id_last_name">Giáo viên chủ nhiệm:</label></th>
+			<th><label for="id_teacher_id">Giáo viên chủ nhiệm:</label></th>
 			<td>
 				{{ form.teacher_id.errors }}
 				{{ form.teacher_id }}			
@@ -26,7 +26,7 @@
 		</tr>    
     
 		<tr>
-			<th><label for="id_brithday">Năm học:</label></th>
+			<th><label for="id_year_id">Năm học:</label></th>
 			<td>
 				{{ form.year_id.errors }}
 				{{ form.year_id }}			
@@ -34,7 +34,7 @@
 		</tr>    
       
       <tr>
-			<th><label for="id_birth_place">Khối:</label></th>
+			<th><label for="id_block_id">Khối:</label></th>
 			<td>
 				{{ form.block_id.errors }}
 				{{ form.block_id }}							

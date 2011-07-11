@@ -633,7 +633,8 @@ def viewClassDetail(request, class_id, sort_type=1, sort_status=0, page=1):
         return HttpResponseRedirect('/')
     cl = Class.objects.get(id=class_id)
     cn=gvcn(request, class_id)
-    st=inClass(request, class_id)
+    inCl=inClass(request, class_id)
+    print inCl
     if in_school(request, cl.block_id.school_id) == False:
         return HttpResponseRedirect('/')   
     message = None
@@ -709,7 +710,7 @@ def viewClassDetail(request, class_id, sort_type=1, sort_status=0, page=1):
                                     'base_order': (int(page)-1) * 20,
                                     'pos': pos,
                                     'gvcn':cn,
-                                    'inClass':st})
+                                    'inClass':inCl})
     return HttpResponse(t.render(c))
 
 #sort_type = '1': fullname, '2': birthday, '3':'sex'
