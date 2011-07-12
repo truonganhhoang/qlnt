@@ -4,6 +4,14 @@
 {{message}}
 {% endif %}
 <script language="JavaScript" type="text/javascript" >
+	var temp = "{{enableChangeMark}}";
+	if (temp=="True") enableChangeMark=true;
+	else enableChangeMark=false;
+	
+	temp = "{{ enableSendSMS}}";
+	if (temp=="True") enableSendSMS=1;
+	else enableSendSMS=0;
+	
 function catchEnter(e)
 
 {
@@ -355,6 +363,7 @@ window.onload = function() { document.onkeypress = catchEnter; };
 			
 		</select>
 		</td>
+	{% if enableChangeMark %}	
 	{%ifnotequal hsSubject 0 %}
 		<td width ="25%" >
 			Dịch chuyển: <br >
@@ -385,12 +394,14 @@ window.onload = function() { document.onkeypress = catchEnter; };
 			</ul>
 		</td>	
 	 {% endifnotequal %}		
+	{% endif %}	
 	</tr>	
 </table>
-
-	<button id="sendSelect" onclick="sendSelected();" >Gửi SMS </button>
+	{% if enableSendSMS %}
+	<button id="sendSelect" onclick="sendSelected();" >Gửi SMS <img src="/static/images/message3.png" >  </button>
 	<br>
 	<div id="messageSMS"  > </div> 
+	{% endif %}
 	<br>
 <script type="text/javascript" >
 	document.info.term.value={{termChoice}}
@@ -434,10 +445,12 @@ window.onload = function() { document.onkeypress = catchEnter; };
         }
         return cookieValue;
     } 
-	cookieValue = getCookie('csrftoken') 
+	cookieValue = getCookie('csrftoken'); 
 	var tong=0	
 	var tong1=0
 	
+	// day la phan gui diem
+	////////////////////////////////////////////////////////////////////////////////////
 	function sendToServer(str)
 	{
 		var xmlhttp;
@@ -465,9 +478,7 @@ window.onload = function() { document.onkeypress = catchEnter; };
 		xmlhttp.open("POST", "/school/saveMark",true);
         xmlhttp.setRequestHeader("X-CSRFToken",cookieValue );
 		data = "str="+str;
-		xmlhttp.send(data);
-		
-		
+		xmlhttp.send(data);			
 	}
 
 
@@ -483,7 +494,10 @@ window.onload = function() { document.onkeypress = catchEnter; };
 		for(var j=1;j<17;j++)
 		{		
 			var id = i*100+j;
-			var value=document.getElementById(id.toString()).value;
+			if (enableChangeMark)
+				var value=document.getElementById(id.toString()).value;
+			else	
+				var value=document.getElementById(id.toString()).innerHTML;
 			value=value.replace(exp1,'.');		
 			if ((value=="") || (value==" "))				
 				oldAr[i][j]=-1;
@@ -497,7 +511,11 @@ window.onload = function() { document.onkeypress = catchEnter; };
 			for(var j=1;j<17;j++)
 			{		
 				var id = i*100+j;
-				var value=document.getElementById(id.toString()).value;
+				if (enableChangeMark)
+					var value=document.getElementById(id.toString()).value;
+				else	
+					var value=document.getElementById(id.toString()).innerHTML;
+
 				value=value.replace(exp1,'.');		
 				if ((value=="") || (value==" "))
 					newAr[i][j]=-1;
@@ -616,14 +634,6 @@ window.onload = function() { document.onkeypress = catchEnter; };
 		
 		//writeNew();	
 	}
-	var myTimer;
-	var myTimer1;
-
-
-   myTimer  = setInterval("update()", 2000);
-   myTimer1 = setInterval("viewAverage()", 1000);
-   //clearInterval(myTimer);
-   
 	function writeOld()
 	{
 		var str=""
@@ -651,7 +661,20 @@ window.onload = function() { document.onkeypress = catchEnter; };
 		document.getElementById("myDiv3").innerHTML = str;
 		
 	}	
+	</script>
+		
+	{% if enableChangeMark %}
+	<script>
+		var myTimer;
+		var myTimer1;
+		myTimer  = setInterval("update()", 2000);
+		myTimer1 = setInterval("viewAverage()", 1000);
+		//clearInterval(myTimer);
+   
+	</script>
+    {% endif %}
 	
+	<script>
 	///////////////////////////////////////////////////////////
 	//			the functions for sending sms
 	///////////////////////////////////////////////////////////
@@ -680,7 +703,8 @@ window.onload = function() { document.onkeypress = catchEnter; };
 				
 			}
 		}   				
-
+		//alert(str);
+		cookieValue=getCookie('csrftoken'); 
 		xmlhttp.open("POST", "/school/sendSMSMark",true);
         xmlhttp.setRequestHeader("X-CSRFToken",cookieValue );
 		data = "str="+str;
@@ -689,6 +713,7 @@ window.onload = function() { document.onkeypress = catchEnter; };
 	
 	function sendSelected()
 	{
+		viewAverage();
 		document.getElementById("messageSMS").innerHTML="Đang gửi";
 		var table=document.getElementById("markTable");
 		var str=""		
@@ -702,8 +727,7 @@ window.onload = function() { document.onkeypress = catchEnter; };
 				if (t.checked) 
 				{
 					checkAr[j]=true;	
-				}	
-				
+				}					
 		}
 		
 		for(var i=1;i<length;i++)
