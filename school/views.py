@@ -156,17 +156,14 @@ def phase_class_label(request, school):
     for loai in school.danhsachloailop_set.order_by('loai'):
         class_labels.append(loai.loai)
     
-    print "tag 1"    
     labels = ','.join(class_labels)
     labels = 'Nhanh: ' + labels
     success = None
     if request.method == 'POST':
-        print "tag 2"
         print request.POST
         labels = request.POST['labels']
         print labels
         if u'Nhanh:' in labels or u'nhanh:' in labels:
-            print labels
             try:
                 labels = labels.split(':')[1]
                 labels = labels.strip()
@@ -177,7 +174,6 @@ def phase_class_label(request, school):
                 list_labels = labels.split(',')
             else:
                 list_labels = labels.split(' ')
-            print 'list_labels',list_labels
         
             if empty(list_labels):
                 message = u'Bạn cần nhập ít nhất một tên lớp.'
@@ -185,33 +181,24 @@ def phase_class_label(request, school):
                 
             else:
                 ds = school.danhsachloailop_set.all()
-                print "tag 4", ds
                 for d in ds:
                     d.delete()
-                print "tag 5"
                 for label in list_labels:
                     if label:
                         label = label.strip()
-                        print "tag 6", label
                         find = school.danhsachloailop_set.filter( loai__exact = label )
-                        print "tag 7", find
                         if not find:
                             lb = DanhSachLoaiLop()
                             lb.loai = label
                             lb.school_id = school
-                            print "tag 8"
                             lb.save()
-                            print "tag 9"
                 message = u'Bạn vừa thiết lập thành công danh sách tên lớp cho trường.'
                 success = True
-                print "tag 10"
             labels = 'Nhanh: '+ labels
-            print "tag 11", labels    
         else:
             if ',' in labels:
                 list_labels = labels.split(',')
                 # draft version
-                print list_labels
                 if len(list_labels) == 0:
                     message = u'Bạn cần nhập ít nhất một tên lớp'
                     success = False
@@ -240,8 +227,6 @@ def phase_class_label(request, school):
                     success = True    
                 #--------------
     
-    print "tag 12"            
-    print "tag 13"
     return message, labels, success    
 
 @transaction.commit_on_success
@@ -519,9 +504,11 @@ def process_file(file_name, task):
             birthday = sheet.cell(r, c_ngay_sinh).value
             nv = sheet.cell_value( r, c_nguyen_vong)
             tong_diem = sheet.cell_value( r, c_tong_diem)
-            if ( name == "" or birthday =="" or nv == "" or tong_diem =="" ):
+            if ( name == "" or birthday =="" ):
                 print "co 1 cell empty or blank"
                 continue
+            if nv.strip() == "": nv = "CB"
+            if str(tong_diem).strip()=="": tong_diem = "0"
             date_value = xlrd.xldate_as_tuple(sheet.cell(r, c_ngay_sinh).value, book.datemode)
             birthday = date(*date_value[:3])
             student_list.append({'ten': name, \
