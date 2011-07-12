@@ -85,7 +85,7 @@ def setup(request):
             elif 'update_class_name' in request.POST:
                 print "update_class_name"
                 message, labels, success = phase_class_label(request, school)
-                print message, labels
+                print "tag 14", message, labels
                 data = simplejson.dumps( {'message': message, 'status': success})
             elif 'start_year' in request.POST:
                 print 'start_year'
@@ -206,7 +206,8 @@ def phase_class_label(request, school):
                 message = u'Bạn vừa thiết lập thành công danh sách tên lớp cho trường.'
                 success = True
                 print "tag 10"
-            labels = 'Nhanh: '+ labels    
+            labels = 'Nhanh: '+ labels
+            print "tag 11", labels    
         else:
             if ',' in labels:
                 list_labels = labels.split(',')
@@ -239,7 +240,10 @@ def phase_class_label(request, school):
                     message = u'Bạn vừa thiết lập thành công danh sách tên lớp cho trường.'
                     success = True    
                 #--------------
+    
+    print "tag 12"            
     print message, labels, success
+    print "tag 13"
     return message, labels, success    
 
 @transaction.commit_on_success
