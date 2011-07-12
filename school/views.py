@@ -154,7 +154,7 @@ def phase_class_label(request, school):
     message = None
     if 'message' in request.session:
         message = request.session['message']
-    for loai in school.danhsachloailop_set.all():
+    for loai in school.danhsachloailop_set.order_by('loai'):
         class_labels.append(loai.loai)
     
     print "tag 1"    
