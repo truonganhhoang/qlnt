@@ -310,12 +310,14 @@ window.onload = function() { document.onkeypress = catchEnter; };
 		indexHk1++;
 		hk1Ar[indexHk1] = -1;
 	}
-	function setArrayHk1(value)
+	function setArrayHk1(value,value2)
 	{
 		indexHk1++;
-		hk1Ar[indexHk1] =value;
+		var exp1=/[,]/g
+		hk1Ar[indexHk1] =value + value2/10.0;
 	}
 	
+
 	
 </script>
 
@@ -323,7 +325,9 @@ window.onload = function() { document.onkeypress = catchEnter; };
 	onsubmit="return false" >{% csrf_token %}
 <table border="0" width=100% >
 	<input type="hidden" name="submitChoice" value="">	
-			
+	
+	<div id="myDiv"> </div>  	
+	<div id="myDiv3"> </div>  	
 	<tr>
 		<td align="center" colspan =4 style="font-size:25px" >
 			<b>Bảng điểm  theo môn  </b>
@@ -384,7 +388,10 @@ window.onload = function() { document.onkeypress = catchEnter; };
 	</tr>	
 </table>
 
-	
+	<button id="sendSelect" onclick="sendSelected();" >Gửi SMS </button>
+	<br>
+	<div id="messageSMS"  > </div> 
+	<br>
 <script type="text/javascript" >
 	document.info.term.value={{termChoice}}
 	m=document.getElementById("{{move}}")
@@ -464,10 +471,11 @@ window.onload = function() { document.onkeypress = catchEnter; };
 	}
 
 
-	for(var i=0;i<length;i++)
+	for(var i=1;i<length;i++)
 	{	
 		oldAr[i] = new Array(20);
 		newAr[i] = new Array(20);
+		newAr[i][18]=hk1Ar[i];
 	}	
 	var exp1=/[,]/g	
 	for(var i=1;i<length;i++)
@@ -533,23 +541,29 @@ window.onload = function() { document.onkeypress = catchEnter; };
 				var name= i*100+17;
 				
 				var averageValue = Math.round(sum/factor *10+0.00000001)/10;
+				newAr[i][17]=averageValue;
+				
 				document.getElementById(name.toString()).innerHTML= averageValue;
 				if (termNumber==2)
 					if (hk1Ar[i]!=-1)
 					{
 						var name1= i*100+19;
 						var value= (averageValue*2+hk1Ar[i])/3; 
-						document.getElementById(name1.toString()).innerHTML=Math.round(value * 10+0.0000001)/10;
+							value= Math.round(value * 10+0.0000001)/10;
+						document.getElementById(name1.toString()).innerHTML=value;
+						newAr[i][19]=value;
 					}					
 			}
 			else
 			{
 				var name= i*100+17;
 				document.getElementById(name.toString()).innerHTML="";
+				newAr[i][17]=-1;
 				if (termNumber==2)
 				{
 					var name1= i*100+19;
 					document.getElementById(name1.toString()).innerHTML="";					
+					newAr[i][19]=-1;
 				}	
 			}	
 		}		
@@ -570,16 +584,16 @@ window.onload = function() { document.onkeypress = catchEnter; };
 				}
 			if (ok==true)
 			{
-				str=str+"/"+idAr[i]+":";
 				var numberString="";
 				var valueString ="";
 				for(var j=1;j<17;j++)
-					if (newAr[i][j]!=oldAr[i][j])
-					{
+					if ((newAr[i][j]!=oldAr[i][j]) && (!(isNaN(newAr[i][j]))))
+					{					
 						numberString=numberString+j+"*";
 						valueString =valueString+newAr[i][j]+"*"; 
 					}
-				str=str+numberString+":"+valueString;					
+				if (numberString!="")	
+					str=str+"/"+idAr[i]+":"+numberString+":"+valueString;					
 			}				
 		}
 		//tong1=tong1+1
@@ -613,7 +627,7 @@ window.onload = function() { document.onkeypress = catchEnter; };
 	function writeOld()
 	{
 		var str=""
-		for(var i=0;i<length;i++)
+		for(var i=1;i<length;i++)
 		{
 			for(var j=0;j<17;j++)
 			{
@@ -626,9 +640,9 @@ window.onload = function() { document.onkeypress = catchEnter; };
 	function writeNew()
 	{
 		var str=""
-		for(var i=0;i<length;i++)
+		for(var i=1;i<length;i++)
 		{
-			for(var j=0;j<17;j++)
+			for(var j=1;j<20;j++)
 			{
 				str=str+newAr[i][j]+" ";
 			}		
@@ -638,7 +652,139 @@ window.onload = function() { document.onkeypress = catchEnter; };
 		
 	}	
 	
+	///////////////////////////////////////////////////////////
+	//			the functions for sending sms
+	///////////////////////////////////////////////////////////
+	function sendToServer1(str)
+	{
+		var xmlhttp;
+		if (window.XMLHttpRequest)
+		{// code for IE7+, Firefox, Chrome, Opera, Safari
+			xmlhttp=new XMLHttpRequest();
+			//alert("chao");
+		}
+		else
+		{// code for IE6, IE5
+			xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+		}
+
+		xmlhttp.onreadystatechange=function()
+		{
+			if (xmlhttp.readyState==4 && xmlhttp.status==200)
+			{
+				//document.getElementById("myDiv").innerHTML=xmlhttp.responseText;
+				//alert("fdfdf fsdfffhello1");
+				//tong=tong+1
+				//document.getElementById("myDiv1").innerHTML=tong;
+				document.getElementById("messageSMS").innerHTML="Đã gửi thành công";
+				
+			}
+		}   				
+
+		xmlhttp.open("POST", "/school/sendSMSMark",true);
+        xmlhttp.setRequestHeader("X-CSRFToken",cookieValue );
+		data = "str="+str;
+		xmlhttp.send(data);			
+	}
+	
+	function sendSelected()
+	{
+		document.getElementById("messageSMS").innerHTML="Đang gửi";
+		var table=document.getElementById("markTable");
+		var str=""		
+		var checkAr = new Array(21);
+		for(var j=1;j<20;j++)
+		{
+			var name="checkbox"+j;
+			var t = document.getElementById(name);
+			checkAr[j]=false
+			if (t)
+				if (t.checked) 
+				{
+					checkAr[j]=true;	
+				}	
+				
+		}
+		
+		for(var i=1;i<length;i++)
+		{				
+			if (table.rows[i+2].className=="selected")
+			{
+				var number="";
+				var value ="";
+				var ok=false;
+				for(var j=1;j<20;j++)
+				if (checkAr[j] && (newAr[i][j]!=-1) && (!(isNaN(newAr[i][j])))) 
+				{
+					
+					ok=true;
+					number=number+j+"*";
+					value =value +newAr[i][j]+"*";
+				}
+				if (ok)
+					str=str+"/"+idAr[i]+":"+number+":"+value;
+			}			
+		}
+		//alert(str);
+		if (str!="")
+			sendToServer1(str);
+		else
+			document.getElementById("messageSMS").innerHTML="Chưa có điểm nào để gửi";
+		
+	}	
+	
+	function select(tb)
+	{
+		if (tb.parentNode.className=="selected")
+		{
+			tb.parentNode.className="";
+			var number=tb.parentNode.rowIndex;
+			var name =(number-2)*100;
+			document.getElementById(name).checked=false;
+		}		
+		else				
+		{
+			tb.parentNode.className="selected";
+			var number=tb.parentNode.rowIndex;
+			var name =(number-2)*100;
+			document.getElementById(name).checked=true;
+		}	
+	}
+	function checkAllRows(tb)
+	{
+		var value= tb.checked;
+		if (value)
+		{
+			var table = document.getElementById("markTable");
+			for(var i=1;i<length;i++)
+			{
+			    table.rows[i+2].className="selected"
+				var name=i*100;
+				document.getElementById(name).checked=true;	
+			}
+		}
+		else
+		{
+			var table = document.getElementById("markTable");
+			for(var i=1;i<length;i++)
+			{
+			    table.rows[i+2].className=""
+				var name=i*100;
+				document.getElementById(name).checked=false;	
+			}
+		}
+	}
+	function checkAllCols(tb)
+	{
+		var value=tb.checked;
+		for(var i=1;i<20;i++)
+		{
+			var name="checkbox"+i;
+			if (document.getElementById(name))
+				document.getElementById(name).checked=value;
+		}
+	}
 </script>
-
+  
 {% endblock %}
-
+    

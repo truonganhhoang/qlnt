@@ -17,6 +17,7 @@ urlpatterns = patterns('',
     url(r'markForAStudent/(?P<class_id>\w+)/(?P<student_id>\w+)','school.viewMark.markForAStudent'),
     url(r'markForASubject/(?P<subject_id>\w+)','school.viewMark.markForASubject'),
     url(r'saveMark$','school.viewMark.saveMark'),
+    url(r'sendSMSMark$','school.viewMark.sendSMSMark'),
     
 	# xep loai hoc luc theo lop, gom co xep loai k1, k2 va ca nam
     url(r'xepLoaiHlTheoLop/(?P<class_id>\w+)','school.viewFinish.xepLoaiHlTheoLop'),	

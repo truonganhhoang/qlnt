@@ -41,12 +41,20 @@ table.styleB th {
 
 table.styleB tr {
     background-color: #d4e3e5;
+    cursor: pointer;
 }
 
 table.styleB td {
     border: 1px;
     border-style: solid;
     border-color: #a9c6c9;
+}
+table.styleB tr:hover {
+    background-color: #f0f1c3;
+}
+
+table.styleB tr.selected {
+    background-color: #f3f48d;
 }
 
 table.styleA {

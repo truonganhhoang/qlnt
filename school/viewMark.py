@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # author: luulethe@gmail.com 
 
 from django.http import HttpResponse, HttpResponseRedirect
@@ -7,10 +8,21 @@ from django.template import RequestContext, loader
 from school.utils import *
 from django.core.urlresolvers import reverse
 from django.utils import simplejson
+from school.sms_views import sendSMS
 
 import os.path 
 LOCK_MARK =False
 ENABLE_CHANGE_MARK=True
+def thu(request):
+               
+    t = loader.get_template(os.path.join('school','thu.html'))
+    
+    c = RequestContext(request, {
+                                }
+                       )
+    
+
+    return HttpResponse(t.render(c))
 
             
 class MarkID:
@@ -189,6 +201,7 @@ def getMark(class_id,subjectChoice,selectedTerm):
         i=1    
         for p in pupilList:
             m = p.mark_set.get(subject_id=subjectChoice,term_id=selectedTerm.id)
+            
             markList.append(m)
         
             k=i*100
@@ -381,6 +394,7 @@ def markForAStudent(request,class_id,student_id):
         if     selectedTerm.number==1:    
             for s in subjectList:
                 m=s.mark_set.get(student_id=student_id,term_id=termChoice)
+                
                 markList.append(m)
                 
             list=zip(subjectList,markList)        
@@ -640,10 +654,78 @@ def saveMark(request):
         for s in strs:
             if s!="":
                 update(s)     
-                                            
         message='ok'
         data = simplejson.dumps({'message': message})
         return HttpResponse( data, mimetype = 'json')    
                  
+def sendSMSForAPupil(s,user):
+    
+    strings=s.split(':')
+    idMark=int(strings[0])    
+    setOfNumber =strings[1].split('*')
+    setOfValue  =strings[2].split('*')    
+    
+    length = len(setOfNumber)
+    
+    m = Mark.objects.get(id=idMark)
+    
+    markStr1="" 
+    markStr2="" 
+    markStr3="" 
+    markStr4=""
+    markStr5=""
+    markStr6=""
+    markStr7=""    
+    for i in range(length-1):                 
+        number= int(setOfNumber[i])
+        value = setOfValue[i].replace(',','.',1)
+        
+        if   number <6  : markStr1+=value+" "
+        elif number <11 : markStr2+=value+" " 
+        elif number <16 : markStr3+=value+" " 
+        elif number ==16: markStr4+=value+" " 
+        elif number ==17: markStr5+=value+" " 
+        elif number ==18: markStr6+=value+" " 
+        elif number ==19: markStr7+=value+" "
+    
+    smsString=u'Diem mon '+to_en1(m.subject_id.name)+ u' cua hs '
+    smsString+=to_en1(m.student_id.last_name)+" "+to_en1(m.student_id.first_name)+" nhu sau: "    
+    termNumber = m.term_id.number
+     
+    if markStr1 !="":  smsString+="Mieng:" + markStr1     
+    if markStr2 !="":  smsString+="diem 15 phut:" + markStr2     
+    if markStr3 !="":  smsString+="diem 45 phut:" + markStr3     
+    if markStr4 !="":  smsString+="Thi cuoi ky:" + markStr4
+    
+    if markStr5 !="":
+        if (termNumber==2):     
+            smsString+="TBHK II:" + markStr5
+        else:         
+            smsString+="TBHK I:" + markStr5
+
+    if markStr6 !="":  smsString+="TBHK I:" + markStr6         
+    if markStr7 !="":  smsString+="TB ca nam:" + markStr7
+    
+    if m.student_id.sms_phone != None:
+        sendSMS(m.student_id.sms_phone,smsString,user)
+    print smsString    
+    print len(smsString)
+    print user
+        
+def sendSMSMark(request):
+    global tong
+    message = 'hello'
+    if request.method == 'POST':
+        
+        tong=tong+1        
+        str = request.POST['str']
+        strs=str.split('/')
+        for s in strs:
+            if s!="":
+                sendSMSForAPupil(s,request.user)
+                                                            
+        message='ok'
+        data = simplejson.dumps({'message': message})
+        return HttpResponse( data, mimetype = 'json')    
     
 
