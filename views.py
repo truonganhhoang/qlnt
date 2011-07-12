@@ -14,16 +14,12 @@ from django.core.context_processors import csrf
 OVER_SCHOOL = ['GIAM_DOC_SO', 'TRUONG_PHONG']
 
 def index(request):
-    print 1, request.user.userprofile.position
     if not request.user.is_authenticated():
-        print "wrong"
         return render_to_response("index.html", context_instance=RequestContext(request)) 
     elif request.user.get_profile().position in OVER_SCHOOL or\
     request.user.is_superuser:
-        print "wronggggg"
         return render_to_response("index.html", context_instance=RequestContext(request)) 
     else:
-        print "taggggggg"
         return HttpResponseRedirect(reverse('school_index'))
 
 def render_to_pdf(template_src, context_dict):
