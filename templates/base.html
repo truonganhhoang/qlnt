@@ -26,7 +26,7 @@
   <a href="{%url school.views.school_index %}"><img src="/static/css/images/logo.png" class="logo" alt="logo"
                                                     title="{{ user.userprofile.organization.name }}"/>
   </a>
-  <p>
+  <p id="headTitle">
     {% if user.is_authenticated %}
       {% if user.is_superuser %}
         Quản trị hệ thống
@@ -100,7 +100,7 @@
       {% if user.userprofile.position == 'HIEU_TRUONG'  or user.userprofile.position == 'HIEU_PHO' %}
         <ul>
         {% if user.userprofile.organization.status == 0  or user.userprofile.organization.status == 3 %}
-          <li><a href="{%url school.views.b1 %}">Bắt đầu năm học mới</a></li>
+          <li><a href="{%url school.views.setup %}">Cài đặt thông tin đâu năm</a></li>
         {% endif %}
         {% if user.userprofile.organization.status != 0 %}
           <li><a href="{%url school.views.b1  %}/import">Nhập học sinh</a></li>
@@ -114,8 +114,10 @@
          {% endif %}
 
         
-        <li><a href="{%url school.views.class_label %}">Đặt tên lớp học</a> </li>
+        <!-- <li><a href="{%url school.views.class_label %}">Đặt tên lớp học</a> </li> -->
+        {% if user.userprofile.organization.status != 0 %}
         <li><a href="{%url school.views.info %}" title="Thông tin trường học">Thông tin trường học</a> </li>
+        {% endif %}         
         </ul>
         {%if user.userprofile.organization.status != 0 %}
         {% endif %}

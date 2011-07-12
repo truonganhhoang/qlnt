@@ -29,20 +29,10 @@ $(document).ready( function(){
 {{form.as_table}}
 </table>
 </div>
-<div class="rightInfoDiv">
-
-<a href={%url school.views.classes %} >Nhập lớp học</a>
-</div>
 </div>
 <input type="submit" name="submit" value="Lưu lại" />
 <input type="reset"  id="cancel" name="cancel" value="Hủy" />
 </form>
 {% else %}
-<table class="styleReadOnly">
-<tr>
-<thead>Tên trường:</thead>
-<td>{{school.name}}</td>
-</tr>
-</table>
 {% endif %}
 {% endblock %}

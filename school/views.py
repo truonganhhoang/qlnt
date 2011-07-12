@@ -29,7 +29,7 @@ YEARS = os.path.join('school', 'years.html')
 CLASS_LABEL = os.path.join('school', 'class_labels.html')
 CLASSIFY = os.path.join('school','classify.html')
 INFO = os.path.join('school','info.html')
-
+SETUP = os.path.join('school','setup.html')
 
 def school_index(request):
     
@@ -42,10 +42,84 @@ def school_index(request):
         return HttpResponseRedirect(reverse('index'))
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
+    
+    if school.status == 0:
+        return HttpResponseRedirect(reverse('setup'))
+    
     year = get_current_year(request)
     request.session['year'] = year
     context = RequestContext(request)
     return render_to_response(SCHOOL, context_instance=context)
+
+def is_safe(school):
+    if school.danhsachloailop_set.all(): return True
+    else: return False
+
+def setup(request):
+    user = request.user
+    message = None
+    print "tag 0"
+    try:
+        school = get_school(request)
+    except Exception as e:
+        return HttpResponseRedirect( reverse('index'))
+    permission = get_permission(request)
+    if not permission in [u'HIEU_TRUONG',u'HIEU_PHO']:
+        return HttpResponseRedirect(reverse('school_index'))
+    
+    
+    print "tag 1"
+    if request.is_ajax():
+        if request.method == 'POST':
+            print "sent by ajax"
+            if 'update_school_detail' in request.POST:
+                print "update_school"
+                school_form = SchoolForm(request.POST, request = request)
+                print request.POST
+                if school_form.is_valid():
+                    school_form.save_to_model()
+                    message = u'Bạn vừa cập nhật thông tin trường học thành công.\
+                    Hãy cung cấp danh sách tên lớp học theo dạng [khối] [tên lớp]. Ví dụ: 10 A'
+                
+                data = simplejson.dumps( {'message': message, 'status':'done'})
+            elif 'update_class_name' in request.POST:
+                print "update_class_name"
+                message, labels, success = phase_class_label(request, school)
+                print message, labels
+                data = simplejson.dumps( {'message': message, 'status': success})
+            elif 'start_year' in request.POST:
+                print 'start_year'
+                if is_safe(school): 
+                    print 'is_safe'
+                    data = simplejson.dumps({'status':'done'})
+                else:
+                    data = simplejson.dumps( {'message': message,'status': 'failed'} )
+            print "data", data
+            return HttpResponse(data, mimetype = 'json')
+        else:
+            raise Exception('StrangeRequestMethod')
+    
+    form_data = {'name': school.name, 'school_level':school.school_level,
+                'address': school.address, 'phone': school.phone,
+                'email': school.email}
+    school_form = SchoolForm(form_data, request= request)
+    message, labels, success = phase_class_label(request, school)
+        
+    if request.method == 'POST':
+        school_form = SchoolForm(request.POST, request = request)
+        if school_form.is_valid():
+            school_form.save_to_model()
+            message = u'Bạn vừa cập nhật thông tin trường học thành công. '
+        
+        if 'start_year' in request.POST and is_safe(school):
+            HttpResponseRedirect( reverse('start_year'))
+        
+    context = RequestContext(request)
+    return render_to_response( SETUP, { 'form': school_form, 'message':message, 'labels':labels},
+                               context_instance = context )
+    
+    
+
     
 def info(request):
     user = request.user
@@ -69,7 +143,95 @@ def info(request):
     
     context = RequestContext(request)
     return render_to_response(INFO, { 'form':form, 'school':school, 'message':message}, context_instance = context)    
+
+def empty(label_list):
+    for l in label_list:
+        if l.strip(): return False
+    return True
+
+def phase_class_label(request, school):
+    class_labels = []
+    message = None
+    if 'message' in request.session:
+        message = request.session['message']
+    for loai in school.danhsachloailop_set.all():
+        class_labels.append(loai.loai)
     
+    print "tag 1"    
+    labels = ','.join(class_labels)
+    labels = 'Nhanh: ' + labels
+    success = None
+    if request.method == 'POST':
+        print "tag 2"
+        print request.POST
+        labels = request.POST['labels']
+        print labels
+        if u'Nhanh:' in labels or u'nhanh:' in labels:
+            print labels
+            try:
+                labels = labels.split(':')[1]
+                labels = labels.strip()
+            except Exception as e:
+                message = u'Bạn cần nhập ít nhất một tên lớp.'
+                success = False            
+            if ',' in labels:
+                list_labels = labels.split(',')
+            else:
+                list_labels = labels.split(' ')
+            print 'list_labels',list_labels
+        
+            if empty(list_labels):
+                message = u'Bạn cần nhập ít nhất một tên lớp.'
+                success = False
+            else:
+                ds = school.danhsachloailop_set.all()
+                for d in ds:
+                    d.delete()
+                for label in list_labels:
+                    if label:
+                        find = school.danhsachloailop_set.filter( loai__exact = label )
+                        if not find:
+                            lb = DanhSachLoaiLop()
+                            lb.loai = label
+                            lb.school_id = school
+                            lb.save()
+                message = u'Bạn vừa thiết lập thành công danh sách tên lớp cho trường.'
+                success = True
+            labels = 'Nhanh: '+ labels    
+        else:
+            if ',' in labels:
+                list_labels = labels.split(',')
+                # draft version
+                print list_labels
+                if len(list_labels) == 0:
+                    message = u'Bạn cần nhập ít nhất một tên lớp'
+                    success = False
+                else:
+                    ds = school.danhsachloailop_set.all()
+                    for d in ds:
+                        d.delete()
+                    for label in list_labels:
+                        label = label.strip()
+                        if label:
+                            print label, '-->', label.split(' ')
+                            try:
+                                label = label.split(' ')[1]
+                                find = school.danhsachloailop_set.filter( loai__exact = label )
+                                if not find:
+                                    lb = DanhSachLoaiLop()
+                                    lb.loai = label
+                                    lb.school_id = school
+                                    lb.save()
+                            except Exception as e:
+                                print e
+                                message = u'Các tên lớp phải được cung cấp theo dạng [khối][dấu cách][tên lớp]. Ví dụ: 10 A'
+                                success = False
+                                return message, labels, success     
+                    message = u'Bạn vừa thiết lập thành công danh sách tên lớp cho trường.'
+                    success = True    
+                #--------------
+    print message, labels, success
+    return message, labels, success    
 
 @transaction.commit_on_success
 def class_label(request):
@@ -84,35 +246,8 @@ def class_label(request):
     
     
     #------ user filtering
+    message, labels, success = phase_class_label(request, school)
     
-    class_labels = []
-    message = None
-    if 'message' in request.session:
-        message = request.session['message']
-    for loai in school.danhsachloailop_set.all():
-        class_labels.append(loai.loai)
-    labels = ','.join(class_labels)
-    if request.method == 'POST':
-        labels = request.POST['labels']
-        if ',' in labels:
-            list_labels = labels.split(',')
-        else:
-            list_labels = labels.split(' ')
-        if len(list_labels) == 0:
-            message = u'Bạn cần nhập ít nhất một tên lớp'
-        else:
-            ds = school.danhsachloailop_set.all()
-            for d in ds:
-                d.delete()
-            for label in list_labels:
-                if label:
-                    find = school.danhsachloailop_set.filter( loai__exact = label )
-                    if not find:
-                        lb = DanhSachLoaiLop()
-                        lb.loai = label
-                        lb.school_id = school
-                        lb.save()
-            message = u'Bạn vừa thiết lập thành công danh sách tên lớp cho trường.'    
     context = RequestContext(request)
     t = loader.get_template(CLASS_LABEL)
     c = RequestContext(request, {'labels': labels, 'message': message}, )
@@ -427,7 +562,7 @@ def nhap_danh_sach_trung_tuyen(request):
     context = RequestContext(request, {'form':form, })
     return render_to_response(NHAP_DANH_SACH_TRUNG_TUYEN, context_instance=context)
 
-@transaction.commit_manually   
+@transaction.commit_on_success  
 def manual_adding(request):
     try:
         school = get_school(request)
@@ -513,9 +648,12 @@ def manual_adding(request):
         student_list = []
         request.session['student_list'] = student_list
         form = ManualAddingForm(class_list=_class_list)
-    transaction.commit()
+        print 'tag 1'
+        
+    print 'tag 2'
     context = RequestContext(request, {'student_list': student_list})    
-    print name_error, ns_error, ns_entered
+    print name_error, ns_error, ns_entered, form
+    print 'tag 3'
     return render_to_response(NHAP_BANG_TAY, {'form':form, 
                                               'name_error':name_error, 
                                               'ns_error':ns_error, 

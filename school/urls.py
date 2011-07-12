@@ -87,6 +87,7 @@ urlpatterns = patterns('',
     url(r'sms/excel/$', 'school.sms_views.excel_sms', name = "excel_sms"),
     url(r'sms/sent/$', 'school.sms_views.sent_sms', name = "sent_sms"),
     url(r'sms/failed/$', 'school.sms_views.failed_sms', name = 'failed_sms'),
+    url(r'setup/$', 'school.views.setup', name = 'setup'),
     #side menu
     url(r'classlabels/$', 'school.views.class_label', name = "class_label"),
     url(r'info/$', 'school.views.info', name = "info"),

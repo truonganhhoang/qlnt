@@ -35,12 +35,10 @@
 {% endblock %}
 
 {% block content %}
+<h2>Danh sách học sinh từ file Excel </h2>
 {% ifnotequal message None %}
 {{message}}
 {% endifnotequal %}
-{% if form.errors %}
-<p>{{ form.errors }}</p>
-{% endif %}
     <form action="" name="theForm" method="post" > {% csrf_token %}
     	<input type="hidden" name="clickedButton" value="notClicked" />
 		<table class= "styleA" >

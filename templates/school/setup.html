@@ -1,0 +1,162 @@
+{% extends "base.html" %}
+
+
+
+{% block content %}
+<script>
+
+$(document).ready( function(){
+   $.ajaxSetup({ 
+     beforeSend: function(xhr, settings) {
+         function getCookie(name) {
+             var cookieValue = null;
+             if (document.cookie && document.cookie != '') {
+                 var cookies = document.cookie.split(';');
+                 for (var i = 0; i < cookies.length; i++) {
+                     var cookie = jQuery.trim(cookies[i]);
+                     // Does this cookie string begin with the name we want?
+                 if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                     cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                     break;
+                 }
+             }
+         }
+         return cookieValue;
+         }
+         if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+             // Only send the token to relative URLs i.e. locally.
+             xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+         }
+     } 
+	});
+	
+   $(".rightInfoDiv").hide();
+   $(".startYear").hide();
+   	
+	
+	var update_school_detail_done = function(json){
+      if (json.status == 'done'){
+         $("#headTitle").text($("#id_name").val());      
+         $(".leftInfoDiv").hide();
+         $(".message").text('');      
+         $(".rightInfoDiv").show(500);
+      } else {
+               
+      }	
+	};
+	
+   $("#update_school_detail").click(function(){
+      var school_name = $("#id_name").val();
+      var school_level = $("#id_school_level").val();
+      var school_address = $("#id_address").val();
+      var school_phone = $("#id_phone").val();
+      var school_email = $("#id_email").val();
+      var data = { name: school_name, school_level: school_level,
+                   address: school_address, phone: school_phone, email: school_email,
+                   update_school_detail: true };      
+      
+      var para = {
+                  type:"POST",
+                  url:"",
+                  data: data,
+                  datatype: "json",
+                  success: update_school_detail_done
+                  };            
+      $.ajax(para);
+      return false;   
+   });
+   
+   var update_class_name_done = function(json){
+      if (json.status){
+         $(".rightInfoDiv").hide();
+         $("#message").text('');      
+         $(".startYear").show(500);
+      } else {
+         $("#message").text(json.message);      
+      }   
+   };   
+   
+   $("#update_class_name").click( function(){
+      var labels = $("#labels").val();
+      var data = { labels: labels, 
+                   update_class_name: true};
+      var para = {
+                  type:"POST",
+                  url:"",
+                  data: data,
+                  datatype: "json",
+                  success: update_class_name_done
+                  };
+      $.ajax(para);   
+      return false;            
+   });
+   
+   var start_year_done = function(json){
+      if (json.status == 'done'){
+         window.location.href = "{%url school.views.b1 %}"
+      } else {
+         window.location.href = "{%url school.views.setup %}"      
+      }
+   }
+   
+   $("#start_year").click( function(){
+      var data= { start_year: true };
+      var para = { 
+                  type:"POST",
+                  url:"",
+                  data: data,
+                  datatype: "json",
+                  success: start_year_done
+                 };
+      $.ajax(para);
+      return false;     
+   });
+});
+</script>
+
+
+<h2>Thiết lập thông tin cho trường học</h2>
+<p id="message">
+{% if message != None %}
+	{{message}}
+	<br/>
+{% endif %}
+</p>
+{% if user.userprofile.position == 'HIEU_TRUONG' or user.userprofile.position == 'HIEU_PHO' %}
+
+<form action="{%url school.views.setup %}" method="post">{% csrf_token %}
+<div class="infoContent">
+<div class="leftInfoDiv">
+<table class="styleA" >
+{{form.as_table}}
+</table>
+
+<input type="submit" name="submit" id="update_school_detail" value="Tiếp tục" />
+
+</div>
+
+<div class="rightInfoDiv">
+<div class="rightInfoDivMain" >
+<p>Nhập tên các lớp cách nhau bởi dấu phảy.</p>
+<p>-Bạn có thể lần lượt nhập tên các lớp học theo dạng [Khối][Dấu cách][Tên lớp],</p>
+<p> các lớp cách nhau một dấu phảy (,). Ví dụ: 10 A, 10 B, 10 C ...</p>
+<p>-Hoặc nhập nhanh tên các lớp bằng cách thêm chuỗi "Nhanh:" vào trước, sau đó</p>
+<p> gõ tên các lớp cách nhau bằng dấu phảy (,).</p> 
+<p> Ví dụ: "Nhanh: A, B" để tạo lớp 10 A, 10 B, 11 A, 11 B, 12 A, 12 B</p>
+<br>
+<input type="text" name="labels" id="labels" style="width: 400px;" value="{{labels}}" />
+</div>
+<br>
+<input type="submit" name="submit" id="update_class_name" value="Tiếp tục" />
+
+</div>
+<div class="startYear">
+<p>Hãy ấn "Bắt đầu năm học" để kết thúc quá trình nhập thông tin cho trường học</p>
+<br>
+<br>
+<input type="submit" name="start_year" id="start_year" value="Bắt đầu năm học"/>
+</div>
+</div>
+</form>
+{% endif %}
+{% endblock %}

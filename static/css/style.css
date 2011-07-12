@@ -107,6 +107,7 @@ table.styleA td {
     padding: 4px;
     border-style: solid;
     border-color: #a9c6c9;
+    text-align: left;
 }
 
 .errorlist {
@@ -268,7 +269,7 @@ table.styleA td {
 /*---- LEFT MENU ----*/
 #leftMenu {
     width: auto;
-    min-width: 170px;
+    min-width: 190px;
     float: left;
     background-color: #F3F3F3;
     color: #1A1A1A;
@@ -324,6 +325,7 @@ table.styleA td {
     position: absolute;
     top: 20px;
     padding-bottom: 20px;
+    padding-left: 20px;
     float: left;
 }
 
@@ -336,13 +338,21 @@ div.leftInfoDiv{
    float: left;
    border-right: 1px solid #DADADA;
    padding: 20px;
+   text-align: right;
+   
 }
 div.rightInfoDiv{
    position: relative;
    width: auto;
    padding: 20px;
+   border-right: 1px solid #DADADA;
    float: left;
+   text-align: right;
 }
+div.rightInfoDivMain{
+   text-align: left;
+}
+
 
 #content h2 {
     height: 30px;
