@@ -183,20 +183,29 @@ def phase_class_label(request, school):
             if empty(list_labels):
                 message = u'Bạn cần nhập ít nhất một tên lớp.'
                 success = False
+                print "tag 3", message, success
             else:
                 ds = school.danhsachloailop_set.all()
+                print "tag 4", ds
                 for d in ds:
                     d.delete()
+                print "tag 5"
                 for label in list_labels:
                     if label:
+                        label = label.strip()
+                        print "tag 6", label
                         find = school.danhsachloailop_set.filter( loai__exact = label )
+                        print "tag 7", find
                         if not find:
                             lb = DanhSachLoaiLop()
                             lb.loai = label
                             lb.school_id = school
+                            print "tag 8"
                             lb.save()
+                            print "tag 9"
                 message = u'Bạn vừa thiết lập thành công danh sách tên lớp cho trường.'
                 success = True
+                print "tag 10"
             labels = 'Nhanh: '+ labels    
         else:
             if ',' in labels:
