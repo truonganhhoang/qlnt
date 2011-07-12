@@ -263,6 +263,8 @@ def markTable(request,class_id):
         
     selectedClass=Class.objects.get(id=class_id)    
     yearChoice=selectedClass.year_id.id
+    enableChangeMark=True
+    enableSendSMS   =True
     
     #selectedClass.year_id.school_id.status=2
     """    
@@ -317,6 +319,7 @@ def markTable(request,class_id):
     c = RequestContext(request, { 
                                 'message' : message,
                                 'enableChangeMark':enableChangeMark,
+                                'enableSendSMS':enableChangeMark,
                                 'selectedClass':selectedClass,
 
                                 'termList':termList,
@@ -462,6 +465,7 @@ def markForASubject(request,subject_id):
 
     ok=False        
     position = get_position(request)
+    """
     if position ==4: ok=True
     #kiem tra xem giao vien nay co phai day lop nay khong ?
     if position ==3:
@@ -472,9 +476,27 @@ def markForASubject(request,subject_id):
     if (not ok):
         return HttpResponseRedirect('/school')
 
-
-
-    enableChangeMark=checkChangeMark(subject_id)
+    """
+    enableChangeMark=True
+    enableSendSMS   =True
+    if    position ==4: pass
+    elif position == 3:
+        # kiem tra giao vien chu nhiem
+        enableChangeMark=False
+        enableSendSMS   =False
+        if selectedSubject.class_id.teacher_id:
+            if selectedSubject.class_id.teacher_id.user_id.id == request.user.id:
+                enableChangeMark=False
+                enableSendSMS   =True
+          
+        if selectedSubject.teacher_id != None:
+            if selectedSubject.teacher_id.user_id.id == request.user.id:
+                enableChangeMark=True
+                enableSendSMS   =True
+    elif position == 1:
+        enableChangeMark=False
+        enableSendSMS   =False
+    #enableChangeMark=checkChangeMark(subject_id)
     
     message = None            
     
@@ -539,6 +561,7 @@ def markForASubject(request,subject_id):
     c = RequestContext(request, { 
                                 'message' : message,
                                 'enableChangeMark':enableChangeMark,
+                                'enableSendSMS':enableSendSMS,
                                 'selectedClass':selectedClass,
 
                                 'termList':termList,
@@ -556,7 +579,7 @@ def markForASubject(request,subject_id):
     
 
     return HttpResponse(t.render(c))
-tong=0
+
 def update(s):
     strings=s.split(':')
     idMark=int(strings[0])    
@@ -679,13 +702,12 @@ def update(s):
     m.save()    
     
 def saveMark(request):
-    global tong
     message = 'hello'
     if request.method == 'POST':
         
-        tong=tong+1        
         str = request.POST['str']
         strs=str.split('/')
+        print str
         for s in strs:
             if s!="":
                 update(s)     
@@ -750,14 +772,13 @@ def sendSMSForAPupil(s,user):
     print user
         
 def sendSMSMark(request):
-    global tong
     message = 'hello'
+    print "hello"
     if request.method == 'POST':
-        
-        tong=tong+1        
+        print "hello1"    
         str = request.POST['str']
         strs=str.split('/')
-        #print str
+        print str
         for s in strs:
             if s!="":
                 sendSMSForAPupil(s,request.user)
