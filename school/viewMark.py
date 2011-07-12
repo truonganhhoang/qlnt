@@ -242,6 +242,9 @@ def markTable(request,class_id):
     
     except Exception as e:
         return HttpResponseRedirect(reverse('index'))
+
+    if get_position(request) != 4:
+       return HttpResponseRedirect('/school')
     
     enableChangeMark=checkChangeMark(class_id)
     message = None            
@@ -348,9 +351,26 @@ def markForAStudent(request,class_id,student_id):
     
     except Exception as e:
         return HttpResponseRedirect(reverse('index'))
-    
+
     message = None
     student=Pupil.objects.get(id=student_id)
+
+    ok=False    
+    
+    position = get_position(request)
+    if position ==4: ok=True
+    #kiem tra xem giao vien nay co phai chu nhiem lop nay khong
+    if position ==3:
+        if selectedClass.teacher_id != None:
+            if selectedClass.teacher_id.user_id.id == request.user.id:
+                ok=True
+                
+    if request.user.id==student.user_id.id: ok =True                 
+    if (not ok):
+        return HttpResponseRedirect('/school')
+    
+    
+    
     studentName=student.last_name+" "+student.first_name
     
     yearChoice=selectedClass.year_id.id
@@ -438,6 +458,20 @@ def markForASubject(request,subject_id):
 
     except Exception as e:
         return HttpResponseRedirect(reverse('index'))
+
+    ok=False        
+    position = get_position(request)
+    if position ==4: ok=True
+    #kiem tra xem giao vien nay co phai day lop nay khong ?
+    if position ==3:
+        if selectedSubject.teacher_id != None:
+            if selectedSubject.teacher_id.user_id.id == request.user.id:
+                ok=True
+                                
+    if (not ok):
+        return HttpResponseRedirect('/school')
+
+
 
     enableChangeMark=checkChangeMark(subject_id)
     
@@ -659,7 +693,7 @@ def saveMark(request):
         return HttpResponse( data, mimetype = 'json')    
                  
 def sendSMSForAPupil(s,user):
-    
+    #print s
     strings=s.split(':')
     idMark=int(strings[0])    
     setOfNumber =strings[1].split('*')
@@ -675,7 +709,8 @@ def sendSMSForAPupil(s,user):
     markStr4=""
     markStr5=""
     markStr6=""
-    markStr7=""    
+    markStr7=""
+        
     for i in range(length-1):                 
         number= int(setOfNumber[i])
         value = setOfValue[i].replace(',','.',1)
@@ -708,6 +743,7 @@ def sendSMSForAPupil(s,user):
     
     if m.student_id.sms_phone != None:
         sendSMS(m.student_id.sms_phone,smsString,user)
+    print "ok1"    
     print smsString    
     print len(smsString)
     print user
@@ -720,6 +756,7 @@ def sendSMSMark(request):
         tong=tong+1        
         str = request.POST['str']
         strs=str.split('/')
+        #print str
         for s in strs:
             if s!="":
                 sendSMSForAPupil(s,request.user)

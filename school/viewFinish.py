@@ -21,7 +21,7 @@ def finish(request):
         return HttpResponseRedirect( reverse('login'))
 
     
-    if (get_position(request) < 4):
+    if (get_position(request) != 4):
         return HttpResponseRedirect('/school')
     
     message=None
@@ -614,7 +614,7 @@ def finishTerm(request,term_id=None):
     except Exception as e:
         return HttpResponseRedirect(reverse('index'))
 
-    if (get_position(request) < 4):
+    if (get_position(request) != 4):
         return HttpResponseRedirect('/school')
     
     
@@ -770,7 +770,7 @@ def finishYear(request,year_id):
     except Exception as e:
         return HttpResponseRedirect(reverse('index'))
 
-    if (get_position(request) < 4):
+    if (get_position(request) != 4):
         return HttpResponseRedirect('/school')
 
     
