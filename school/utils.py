@@ -40,6 +40,29 @@ def to_en(string):
             exec("if c in uni_" + cc + ": c = " + "'" + cc + "'" )
         result += c
     return result
+def to_en1(string):
+    result = ''
+    uni_a = u'ăắẳẵặằâầấẩẫậàáảãạ'
+    uni_A = u'ĂẮẲẴẶẰÂẦẤẨẪẬÀÁẢÃẠ' 
+    uni_o = u'óòỏõọơớờởỡợôốồỗộổ'
+    uni_O = u'ÓÒỎÕỌƠỚỜỞỠỢÔỐỒỖỘỔ'
+    uni_i = u'ìĩịỉí'
+    uni_I = u'ÌĨỊỈÍ'
+    uni_u = u'ủùũụúưừứựữử'
+    uni_U = u'ỦÙŨỤÚƯỪỨỰỮỬ'
+    uni_e = u'éèẽẻẹêếềễệể'
+    uni_E = u'ÉÈẼẺẸÊẾỀỄỆỂ'
+    uni_y = u'ýỳỷỹỵ'
+    uni_Y = u'ÝỲỶỸỴ'
+    uni_d = u'đ'
+    uni_D = u'Đ'
+    
+    for c in string:
+        for cc in ['a','o','i','u','e','d','y','A','O','I','U','E','D','Y']:
+            exec("if c in uni_" + cc + ": c = " + "'" + cc + "'" )
+        result += c
+    return result
+
         
 # make username: example: input: AA, Nguyen Van, 2006 => output: AAnv_2006
 #                         input: AA, Nguyen Van       => output: AAnv
