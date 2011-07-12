@@ -358,6 +358,7 @@ def markForAStudent(request,class_id,student_id):
     ok=False    
     
     position = get_position(request)
+    """
     if position ==4: ok=True
     #kiem tra xem giao vien nay co phai chu nhiem lop nay khong
     if position ==3:
@@ -368,7 +369,7 @@ def markForAStudent(request,class_id,student_id):
     if request.user.id==student.user_id.id: ok =True                 
     if (not ok):
         return HttpResponseRedirect('/school')
-    
+    """
     
     
     studentName=student.last_name+" "+student.first_name
