@@ -860,9 +860,9 @@ def viewClassDetail(request, class_id, sort_type=1, sort_status=0, page=1):
             message = 'Bạn vui lòng sửa một số lỗi sai dưới đây'
     if int(sort_type) == 1:
         if int(sort_status) == 0:
-            studentList = cl.pupil_set.order_by('first_name', 'last_name')
+            studentList = cl.pupil_set.order_by('first_name', 'last_name','birthday')
         else:
-            studentList = cl.pupil_set.order_by('-first_name', '-last_name')
+            studentList = cl.pupil_set.order_by('-first_name', '-last_name','-birthday')
     if int(sort_type) == 2:
         if int(sort_status) == 0:
             studentList = cl.pupil_set.order_by('birthday')

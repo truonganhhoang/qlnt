@@ -191,7 +191,7 @@ def saveMarkHasComment(request,selectedTerm,markList,idList,tbhk1ListObjects,tbn
 #cac chuc nang:
 #hien thu bang diem cua mot lop, cho edit roi save lai
 def getMark(class_id,subjectChoice,selectedTerm):
-    pupilList=Pupil.objects.filter(class_id=class_id)                
+    pupilList=Pupil.objects.filter(class_id=class_id).order_by('first_name', 'last_name','birthday')                
     markList=[]
     idList=[]    
     tbhk1ListObjects=[]
@@ -705,14 +705,25 @@ def update(s):
     
 def saveMark(request):
     message = 'hello'
+
     if request.method == 'POST':
-        
         str = request.POST['str']
-        strs=str.split('/')
-        print str
-        for s in strs:
-            if s!="":
-                update(s)     
+        strs=str.split('/')        
+        position = get_position(request)
+        
+        if   position ==4 :pass
+        elif position ==3 :
+            idTeacher= int(strs[0])
+            if idTeacher==-1: return 
+            else:
+                teacher= Teacher.objects.get(id=idTeacher)
+                if request.user.id!=teacher.user_id.id: return
+        else: return
+                
+        #print str
+        length= len(strs)
+        for i in range(1,length):
+                update(strs[i])     
         message='ok'
         data = simplejson.dumps({'message': message})
         return HttpResponse( data, mimetype = 'json')    

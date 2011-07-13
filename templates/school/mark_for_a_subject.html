@@ -3,7 +3,21 @@
 {% if message != None %}
 {{message}}
 {% endif %}
+
+{% if selectedSubject.teacher_id %}
+	<script>
+		var idTeacher = {{ selectedSubject.teacher_id.id }};
+	</script>
+{% else %}
+	<script>
+		var idTeacher = -1;
+	</script>
+{% endif %}	
+   	
+	
 <script language="JavaScript" type="text/javascript" >
+	
+	
 	var temp = "{{enableChangeMark}}";
 	if (temp=="True") enableChangeMark=true;
 	else enableChangeMark=false;
@@ -649,7 +663,7 @@ window.onload = function() { document.onkeypress = catchEnter; };
 		if (str!="")
 		{
 			document.getElementById("messageChanging").innerHTML="Đang lưu";
-			sendToServer(str);
+			sendToServer(idTeacher+str);
 		}
 		//writeOld();	
 		for(var i=1;i<length;i++)

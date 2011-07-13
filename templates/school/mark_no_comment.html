@@ -23,7 +23,7 @@
 			</td>	
 			
 			{% endif %}
-			<td rowspan=2 align="center" width="10%" style="border-bottom-width:0px" >			
+			<td rowspan=2 align="center" width="5%" style="border-bottom-width:0px" >			
 				Ngày sinh
 			</td>	
 			<td colspan=5 align="center" width="20%" >
@@ -53,21 +53,21 @@
 			
 		</tr>
 		<tr>
-		<td width ="1%" align="center" > 1 </td>
-		<td width ="1%" align="center" > 2 </td>
-		<td width ="1%" align="center" > 3 </td>
-		<td width ="1%" align="center" > 4 </td>
-		<td width ="1%" align="center" > 5 </td>
-		<td width ="1%" align="center" > 1 </td>
-		<td width ="1%" align="center" > 2 </td>
-		<td width ="1%" align="center" > 3 </td>
-		<td width ="1%" align="center" > 4 </td>
-		<td width ="1%" align="center" > 5 </td>
-		<td width ="1%" align="center" > 1 </td>
-		<td width ="1%" align="center" > 2 </td>
-		<td width ="1%" align="center" > 3 </td>
-		<td width ="1%" align="center" > 4 </td>
-		<td width ="1%" align="center" > 5 </td>
+		<td width ="3%" align="center" > 1 </td>
+		<td width ="3%" align="center" > 2 </td>
+		<td width ="3%" align="center" > 3 </td>
+		<td width ="3%" align="center" > 4 </td>
+		<td width ="3%" align="center" > 5 </td>
+		<td width ="3%" align="center" > 1 </td>
+		<td width ="3%" align="center" > 2 </td>
+		<td width ="3%" align="center" > 3 </td>
+		<td width ="3%" align="center" > 4 </td>
+		<td width ="3%" align="center" > 5 </td>
+		<td width ="3%" align="center" > 1 </td>
+		<td width ="3%" align="center" > 2 </td>
+		<td width ="3%" align="center" > 3 </td>
+		<td width ="3%" align="center" > 4 </td>
+		<td width ="3%" align="center" > 5 </td>
 											
 		{% ifequal selectedTerm.number 2 %}
 			<td align="center" width ="5%">HK I  </td>
@@ -660,19 +660,19 @@
 			 <input type="checkbox" id="{{forloop.counter}}00" > 	
 			</td>
 			{% endif %}
-			<td align="center" style="border-left-width:0px" >
+			<td align="center" onclick="select(this)" style="border-left-width:0px" >
 			 {{forloop.counter}}	
 			</td>
 
-			<td style="border-right-width:0px" width ="15%">
+			<td style="border-right-width:0px" width ="15%" onclick="select(this)">
 			 {{p.last_name}}
 			</td>
 			
-			<td style="border-left-width:0px" width ="5%" >
+			<td style="border-left-width:0px" width ="5%" onclick="select(this)" >
 			{{ p.first_name }} 			
 			</td>
 
-			<td>
+			<td onclick="select(this)">
 			{{ p.birthday.day}}/{{ p.birthday.month}}/{{ p.birthday.year}} 
 			</td>
 
@@ -757,18 +757,18 @@
 			</td>
 			{% endif %}
 		
-			<td align="center" >
+			<td align="center" onclick="select(this)" >
 			 {{forloop.counter}}	
 			</td>
-			<td style="border-right-width:0px" width ="15%">
+			<td style="border-right-width:0px" width ="15%" onclick="select(this)">
 			 {{p.last_name}}
 			</td>
 			
-			<td style="border-left-width:0px" width ="5%" >
+			<td style="border-left-width:0px" width ="5%" onclick="select(this)" >
 			{{ p.first_name }} 			
 			</td>
 
-			<td>
+			<td onclick="select(this)">
 			{{ p.birthday.day}}/{{ p.birthday.month}}/{{ p.birthday.year}} 
 			</td>
 
