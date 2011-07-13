@@ -304,6 +304,7 @@ window.onload = function() { document.onkeypress = catchEnter; };
 	var length={{lengthList}} + 1;
 	var oldAr = new Array(length);
 	var newAr = new Array(length); 
+	var tempNewAr = new Array(length); 
 	var idAr  = new Array(length);
 	var hk1Ar = new Array(length);	
 	var indexId = 0;
@@ -397,11 +398,28 @@ window.onload = function() { document.onkeypress = catchEnter; };
 	{% endif %}	
 	</tr>	
 </table>
+	{% if  enableChangeMark %}
+		<table border=0 width="100%">
+			<tr>
+				<td width="90%"> 
+				<button id="sendSelect" onclick="sendSelected();" >Gửi SMS <img src="/static/images/message3.png" >  </button>
+				<br>
+				<div id="messageSMS"  > </div> 
+				</td width="10%">
+				
+				<td> <img src="/static/images/save1.png" > <div id="messageChanging"  >  </div>   
+				</td>
+			</tr>			
+		</table>
+	{% else %} 
 	{% if enableSendSMS %}
 	<button id="sendSelect" onclick="sendSelected();" >Gửi SMS <img src="/static/images/message3.png" >  </button>
 	<br>
 	<div id="messageSMS"  > </div> 
 	{% endif %}
+	{% endif %}
+
+	
 	<br>
 <script type="text/javascript" >
 	document.info.term.value={{termChoice}}
@@ -445,7 +463,7 @@ window.onload = function() { document.onkeypress = catchEnter; };
         }
         return cookieValue;
     } 
-	cookieValue = getCookie('csrftoken'); 
+	var cookieValue = getCookie('csrftoken'); 
 	var tong=0	
 	var tong1=0
 	
@@ -471,10 +489,13 @@ window.onload = function() { document.onkeypress = catchEnter; };
 				//document.getElementById("myDiv").innerHTML=xmlhttp.responseText;
 				//alert("fdfdf fsdfffhello1");
 				//tong=tong+1
+				document.getElementById("messageChanging").innerHTML="Đã lưu";
+				updateOldAr();
 				//document.getElementById("myDiv1").innerHTML=tong;
 			}
 		}   				
-
+		//alert(cookieValue);
+		
 		xmlhttp.open("POST", "/school/saveMark",true);
         xmlhttp.setRequestHeader("X-CSRFToken",cookieValue );
 		data = "str="+str;
@@ -484,9 +505,10 @@ window.onload = function() { document.onkeypress = catchEnter; };
 
 	for(var i=1;i<length;i++)
 	{	
-		oldAr[i] = new Array(20);
-		newAr[i] = new Array(20);
-		newAr[i][18]=hk1Ar[i];
+		oldAr[i]     = new Array(20);
+		newAr[i] 	 = new Array(20);
+		tempNewAr[i] = new Array(20); 
+		newAr[i][18] = hk1Ar[i];
 	}	
 	var exp1=/[,]/g	
 	for(var i=1;i<length;i++)
@@ -586,10 +608,15 @@ window.onload = function() { document.onkeypress = catchEnter; };
 			}	
 		}		
 	}
+	function updateOldAr()
+	{
+		for(var i=1;i<length;i++)
+			for(var j=1;j<17;j++)
+				oldAr[i][j] = tempNewAr[i][j];
+	}
 	function update()
 	{
 		//var date1 = new Date();
-
 		var str="";
 		for(var i=1;i<length;i++)
 		{
@@ -620,11 +647,14 @@ window.onload = function() { document.onkeypress = catchEnter; };
 		
 		//alert(str);	
 		if (str!="")
+		{
+			document.getElementById("messageChanging").innerHTML="Đang lưu";
 			sendToServer(str);
+		}
 		//writeOld();	
 		for(var i=1;i<length;i++)
 			for(var j=1;j<17;j++)
-				oldAr[i][j] = newAr[i][j];
+				tempNewAr[i][j] = newAr[i][j];
 		
 		
 		//var date2 = new Date();
@@ -668,7 +698,7 @@ window.onload = function() { document.onkeypress = catchEnter; };
 		var myTimer;
 		var myTimer1;
 		myTimer  = setInterval("update()", 2000);
-		myTimer1 = setInterval("viewAverage()", 1000);
+		myTimer1 = setInterval("viewAverage()", 1001);
 		//clearInterval(myTimer);
    
 	</script>
@@ -704,7 +734,7 @@ window.onload = function() { document.onkeypress = catchEnter; };
 			}
 		}   				
 		//alert(str);
-		cookieValue=getCookie('csrftoken'); 
+		//cookieValue=getCookie('csrftoken'); 
 		xmlhttp.open("POST", "/school/sendSMSMark",true);
         xmlhttp.setRequestHeader("X-CSRFToken",cookieValue );
 		data = "str="+str;
