@@ -34,7 +34,7 @@
 
 {% block content %}
   <h2>Nhập học sinh</h2>
-  <a href= {% url school.views.nhap_danh_sach_trung_tuyen %}>Nhập từ file Excel</a>
+  <a href= "{% url school.views.nhap_danh_sach_trung_tuyen %}" title="Nhập học sinh từ file Excel">Nhập từ file Excel</a>
   <br/><br/>
   {% ifnotequal message None %}
     {{ message }}

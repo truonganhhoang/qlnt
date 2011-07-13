@@ -1,16 +1,15 @@
 {% extends "base.html" %}
-{% load pagination_tags %}
+
 {% block content %}
+  {% load pagination_tags %}
   {% if user.is_authenticated %}
     <h2>Gửi tin nhắn SMS</h2>
     <a href="{%url school.sms_views.excel_sms%}">Nhập từ file Excel</a>
     <form action="" method="post">{% csrf_token %}
-      <table class="StyleA">
+      <table class="styleB styleDetail">
         <col width="160">
         <tr>
-          <td>
-            Nội dung
-          </td>
+          <th>Nội dung:</th>
           <td>
             <p class="errorlist">{{ content_error }}</p>
             <textarea title="Nội dung tin nhắn không quá 160 chữ cái."
@@ -51,8 +50,8 @@
             </script>
         </tr>
         <tr>
-          <td>Hãy chọn người nhận</td>
-          <td><br/>
+          <th>Người nhận:</th>
+          <td>
             <div style="width:500px; height:200px; overflow: auto; border:solid 1px">
               {% for u in user_list %}
                 {% if u.last_name or u.first_name %}
@@ -66,12 +65,10 @@
           </td>
         </tr>
         <tr>
+          <th>
+            Hoặc nhập số điện thoại:
+          </th>
           <td>
-            Hoặc nhập số điện thoại
-          </td>
-          <td>
-            <br/>
-
             <p class="errorlist">{{ phone_error }}</p>
             <small>
               Số điện thoại người nhận phân cách bằng dấu dấu cách hoặc ";" hoặc ",".
@@ -92,11 +89,10 @@
         </tr>
         <tr>
           <td></td>
-          <td><br/>
+          <td>
             <input text-align="right" type="submit" value="Gửi"/></td>
         </tr>
       </table>
     </form>
   {% endif %}
 {% endblock %}
-

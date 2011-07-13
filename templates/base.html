@@ -100,11 +100,11 @@
       {% if user.userprofile.position == 'HIEU_TRUONG'  or user.userprofile.position == 'HIEU_PHO' %}
         <ul>
         {% if user.userprofile.organization.status == 0  or user.userprofile.organization.status == 3 %}
-          <li><a href="{%url school.views.setup %}">Cài đặt thông tin đầu năm</a></li>
+          <li><a href="{%url school.views.setup %}" title="Khai báo một số thông tin về trường học và tạo nhanh các lớp học">Thông tin trường học</a></li>
         {% endif %}
         {% if user.userprofile.organization.status != 0 %}
-          <li><a href="{%url school.views.b1  %}/import">Nhập học sinh</a></li>
-    			<li><a href="{%url school.views.classify %}">Phân lớp</a></li>
+          <li><a href="{%url school.views.b1  %}/import" title="Nhập danh sách học sinh từ file hoặc nhập trực tiếp">Nhập học sinh</a></li>
+    			<li><a href="{%url school.views.classify %}" title="Phân học sinh đã nhập vào các lớp">Phân lớp</a></li>
 		  	{% endif %}
 		  	{% if user.userprofile.organization.status != 0 %}
           <!-- <li><a href="" title="Phân công giáo viên dạy lớp nào, môn nào">Phân công giảng dạy</a></li>  -->
@@ -160,7 +160,7 @@
 </div>
 
 <div id="footer">
-  <p class="copyright">©2011 by Viettel and VNU Hanoi </p>
+  <p class="copyright">©2011 by Viettel and VNU Hanoi. <a href="/app/contact">Liên hệ</a></p>
 </div>
 
 </body>

@@ -5,7 +5,7 @@ import os.path
 import django
 from django.conf import settings
 
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
@@ -15,19 +15,11 @@ ADMINS = (
 MANAGERS = ADMINS
 
 DATABASES = {
-#    'default': {
-#        'ENGINE': 'django.db.backends.mysql',
-#        'NAME': 'qlnt',
-#        'USER': 'root',
-#        'PASSWORD':'admin',
-#    },
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': os.path.join(os.path.dirname(__file__), 'sqlite3.db'), # Or path to database file if using sqlite3.
-        'USER': '', # Not used with sqlite3.
-        'PASSWORD': '', # Not used with sqlite3.
-        'HOST': '', # Set to empty string for localhost. Not used with sqlite3.
-        'PORT': '', # Set to empty string for default. Not used with sqlite3.
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'qlnt',
+        'USER': 'root',
+        'PASSWORD':'to-be-edited',
     },
 }
 
@@ -59,7 +51,6 @@ DATE_INPUT_FORMATS = ('%d-%m-%Y', '%d/%m/%Y')
 DECIMAL_SEPARATOR = ','
 
 SITE_ID = 1
-
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/media/"
@@ -144,7 +135,6 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 )
 
 INSTALLED_APPS = (
-#    'grappelli',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -161,12 +151,10 @@ INSTALLED_APPS = (
     'object_permission',
 #    'objectpermission',
 #    'django_coverage',
-#    'rosetta',
     'sms',
     'report',
     'pagination',
     'profiles',
-    'test_utils',
 )
 
 # A sample logging configuration. The only tangible logging

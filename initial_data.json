@@ -4,7 +4,7 @@
     "pk": 1,
     "fields": {
         "name": "Demo 1",
-        "email": "demo1@demo.vn",
+        "email": "qlnt@googlegroups.com",
         "level": "T",
         "address": "ABC",
         "manager_name": "Demo 1",
@@ -17,7 +17,7 @@
     "pk": 2,
     "fields": {
         "name": "Demo 2",
-        "email": "demo2@demo.vn",
+        "email": "qlnt@googlegroups.com",
         "level": "T",
         "address": "ABC",
         "manager_name": "Demo 2",
@@ -30,7 +30,7 @@
     "pk": 3,
     "fields": {
         "name": "Demo 3",
-        "email": "demo2@demo.vn",
+        "email": "qlnt@googlegroups.com",
         "level": "T",
         "address": "ABC",
         "manager_name": "Demo 3",
@@ -43,7 +43,7 @@
     "pk": 4,
     "fields": {
         "name": "Demo 4",
-        "email": "demo4@demo.vn",
+        "email": "qlnt@googlegroups.com",
         "level": "T",
         "address": "ABC",
         "manager_name": "Demo 4",
@@ -56,7 +56,7 @@
     "pk": 5,
     "fields": {
         "name": "Demo 5",
-        "email": "demo5@demo.vn",
+        "email": "qlnt@googlegroups.com",
         "level": "T",
         "address": "ABC",
         "manager_name": "Demo 5",
@@ -69,7 +69,7 @@
     "pk": 6,
     "fields": {
         "name": "Demo 6",
-        "email": "demo6@demo.vn",
+        "email": "qlnt@googlegroups.com",
         "level": "T",
         "address": "ABC",
         "manager_name": "Demo 6",
@@ -82,7 +82,7 @@
     "pk": 7,
     "fields": {
         "name": "Demo 7",
-        "email": "demo7@demo.vn",
+        "email": "qlnt@googlegroups.com",
         "level": "T",
         "address": "ABC",
         "manager_name": "Demo 7",
@@ -95,7 +95,7 @@
     "pk": 8,
     "fields": {
         "name": "Demo 8",
-        "email": "demo8@demo.vn",
+        "email": "qlnt@googlegroups.com",
         "level": "T",
         "address": "ABC",
         "manager_name": "Demo 8",
@@ -108,7 +108,7 @@
     "pk": 9,
     "fields": {
         "name": "Demo 9",
-        "email": "demo9@demo.vn",
+        "email": "qlnt@googlegroups.com",
         "level": "T",
         "address": "ABC",
         "manager_name": "Demo 9",
@@ -121,7 +121,7 @@
     "pk": 10,
     "fields": {
         "name": "Demo 10",
-        "email": "demo10@demo.vn",
+        "email": "qlnt@googlegroups.com",
         "level": "T",
         "address": "ABC",
         "manager_name": "Demo 10",
