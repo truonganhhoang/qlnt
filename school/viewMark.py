@@ -697,8 +697,8 @@ def update(s):
                 if tbk1.ck!=None:
                     tbcn=TKMon.objects.get(subject_id=subject_id.id,student_id=student_id.id)
                     tbcn.tb_nam = round((m.tb*2 + tbk1.tb+e)/3 , 1)
-                    print "ooooooooooooooooooooooooooooooooo"
-                    print tbcn.tb_nam
+                    #print "ooooooooooooooooooooooooooooooooo"
+                    #print tbcn.tb_nam
                     tbcn.save()
     print "ok2"                                     
     m.save()    
