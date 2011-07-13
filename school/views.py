@@ -836,8 +836,8 @@ def viewClassDetail(request, class_id, sort_type=1, sort_status=0, page=1):
             last_name = ' '.join(name[:len(name)-1])
             first_name = name[len(name)-1]
         else:
-            last_name = None
-            first_name = None
+            last_name = ''
+            first_name = ''
         print request.POST['birthday_year']
         if (int(request.POST['birthday_year']) and int(request.POST['birthday_month']) and int(request.POST['birthday_day'])):
             birthday = date(int(request.POST['birthday_year']), int(request.POST['birthday_month']), int(request.POST['birthday_day']))
@@ -855,8 +855,8 @@ def viewClassDetail(request, class_id, sort_type=1, sort_status=0, page=1):
             message = 'Bạn vừa thêm một học sinh mới'
             form = PupilForm(school.id)
         else:
-            data['first_name'] = data['last_name'] + ' ' + data['first_name']
-            form = PupilForm(school.id, data)
+            if data['first_name'] != '':
+                form['first_name']=form['last_name'] + ' ' + data['first_name']
             message = 'Bạn vui lòng sửa một số lỗi sai dưới đây'
     if int(sort_type) == 1:
         if int(sort_status) == 0:
@@ -938,8 +938,8 @@ def teachers(request, sort_type=1, sort_status=0, page=1):
             message = 'Bạn vừa thêm một giáo viên mới'
             form = TeacherForm()
         else:
-            data['first_name'] = data['last_name'] + ' ' + data['first_name']
-            form = PupilForm(school.id, data)
+            if data['first_name'] != '':
+                form['first_name']=form['last_name'] + ' ' + data['first_name']
             message = 'Bạn vui lòng sửa một số lỗi sai dưới đây'
 			
     if int(sort_type) == 1:
