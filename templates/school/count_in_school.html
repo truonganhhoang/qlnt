@@ -1,431 +1,430 @@
-﻿  {% extends "base.html"%} 
+﻿{% extends "base.html" %}
+
 {% block content %}
-	{% if message != None %}
-	{{message}}
-	{% endif %}
+  {% if message != None %}
+    {{ message }}
+  {% endif %}
 
-<p align="center" style="font-size:25px"> 
-<b> Thống kê </b> <br><br>
-<b> Năm học: {{yearString}}</b>
-</p>
+  <p align="center" style="font-size:25px">
+    <b>Thống kê</b> <br><br>
+    <b>Năm học: {{ yearString }}</b>
+  </p>
 
-<br>
-<br>
-<br>
-<span style="font-size:18px" > <b> <u>A. THỐNG KÊ TOÀN TRƯỜNG:</u> </b> </span><br>
-<br>
-<span style="font-size:17px" > <b> I. HỌC KỲ 
-{% if currentTerm.number = 1 %}  
- I
-{% else  %}
-II
-{% endif %}	
-:
-</b> </span>
-<br>
-<br>
-&nbsp &nbsp<b>Hạnh kiểm:</b> 
-<table border=1 width="100%">
-	<tr> 
-		<td width="14%">
-		</td>
-		<td width="14%" align="center">
-			Tốt
-		</td>
-		<td width="14%" align="center">
-			Khá
-		</td>
-		<td width="14%" align="center">
-			Trung bình
-		</td>
-		<td width="28%" align="center">
-			Yếu
-		</td>
-		<td width="14%" align="center">
-			Chưa xếp loại
-		</td>		
-	</tr>
-	<tr>
-		<td align="center">
-			Số lượng
-		</td>
-		{% for h in hkList %}
-		<td align="center">
-			{{h}}
-		</td>
-		{% endfor %}
-	</tr>
-	<tr>
-		<td align="center">
-			Phần trăm (%)
-		</td>
-		{% for h in pthkList %}
-		<td align="center">
-			{{h|floatformat:"1"}}
-		</td>
-		{% endfor %}
-	</tr>
-</table>
-
-
-{#-------------------------------------------------------------------------#}
-<br>
-&nbsp &nbsp<b>Học lực: </b>
-<table border=1 width="100%">
-	<tr> 
-		<td width="14%">
-		</td>
-		<td width="14%" align="center">
-			Giỏi
-		</td>
-		<td width="14%" align="center">
-			Khá
-		</td>
-		<td width="14%" align="center">
-			Trung bình
-		</td>
-		<td width="14%" align="center">
-			Yếu
-		</td>
-		<td width="14%" align="center">
-			Kém
-		</td>
-		<td width="14%" align="center">
-			Chưa xếp loại
-		</td>		
-	</tr>
-	<tr>
-		<td align="center">
-			Số lượng
-		</td>
-		{% for h in hlList %}
-		<td align="center">
-			{{h}}
-		</td>
-		{% endfor %}
-	</tr>
-	<tr>
-		<td align="center">
-			Phần trăm (%)
-		</td>
-		{% for h in pthlList %}
-		<td align="center">
-			{{h|floatformat:"1"}}
-		</td>
-		{% endfor %}
-	</tr>
-</table>
+  <br>
+  <br>
+  <span style="font-size:18px"> <b> <u>A. THỐNG KÊ TOÀN TRƯỜNG:</u> </b> </span><br>
+  <br>
+  <span style="font-size:17px"> <b> I. HỌC KỲ
+    {% if currentTerm.number == 1 %}
+      I
+    {% else %}
+      II
+    {% endif %}
+    :
+  </b> </span>
+  <br>
+  <br>
+  &nbsp &nbsp<b>Hạnh kiểm:</b>
+  <table class="styleB" width="98%">
+    <tr>
+      <th width="14%">
+      </th>
+      <th width="14%" align="center">
+        Tốt
+      </th>
+      <th width="14%" align="center">
+        Khá
+      </th>
+      <th width="14%" align="center">
+        Trung bình
+      </th>
+      <th width="28%" align="center">
+        Yếu
+      </th>
+      <th width="14%" align="center">
+        Chưa xếp loại
+      </th>
+    </tr>
+    <tr>
+      <td align="center">
+        Số lượng
+      </td>
+      {% for h in hkList %}
+        <td align="center">
+          {{ h }}
+        </td>
+      {% endfor %}
+    </tr>
+    <tr>
+      <td align="center">
+        Phần trăm (%)
+      </td>
+      {% for h in pthkList %}
+        <td align="center">
+          {{ h|floatformat:"1" }}
+        </td>
+      {% endfor %}
+    </tr>
+  </table>
 
 
-{#--------------------------------------------------------------------------#}
+  {#-------------------------------------------------------------------------#}
+  <br>
+  &nbsp &nbsp<b>Học lực: </b>
+  <table class="styleB" width="98%">
+    <tr>
+      <th width="14%">
+      </th>
+      <th width="14%" align="center">
+        Giỏi
+      </th>
+      <th width="14%" align="center">
+        Khá
+      </th>
+      <th width="14%" align="center">
+        Trung bình
+      </th>
+      <th width="14%" align="center">
+        Yếu
+      </th>
+      <th width="14%" align="center">
+        Kém
+      </th>
+      <th width="14%" align="center">
+        Chưa xếp loại
+      </th>
+    </tr>
+    <tr>
+      <td align="center">
+        Số lượng
+      </td>
+      {% for h in hlList %}
+        <td align="center">
+          {{ h }}
+        </td>
+      {% endfor %}
+    </tr>
+    <tr>
+      <td align="center">
+        Phần trăm (%)
+      </td>
+      {% for h in pthlList %}
+        <td align="center">
+          {{ h|floatformat:"1" }}
+        </td>
+      {% endfor %}
+    </tr>
+  </table>
 
 
-{#--------------------------------------------------------------------------#}
-<br>
-&nbsp &nbsp<b>Danh hiệu: </b> 
-<table border=1 width="100%">
-	<tr> 
-		<td width="14%">
-		</td>
-		<td width="14%" align="center">
-			Học sinh giỏi
-		</td>
-		<td width="15%" align="center">
-			Học sinh tiên tiến
-		</td>
-		<td width="42%" align="center">
-			Không có
-		</td>
-		<td width="14%" align="center">
-			Chưa xếp loại
-		</td>		
-	</tr>
-	<tr>
-		<td align="center">
-			Số lượng
-		</td>
-		{% for h in ddList %}
-		<td align="center">
-			{{h}}
-		</td>
-		{% endfor %}
-	</tr>
-	<tr>
-		<td align="center">
-			Phần trăm (%)
-		</td>
-		{% for h in ptddList %}
-		<td align="center">
-			{{h|floatformat:"1"}}
-		</td>
-		{% endfor %}
-	</tr>
-</table>
-<br>
-<br>
-
-{#-------------------------------------------------------------#}
-{#-------------------------------------------------------------#}
-
-{% ifequal  currentTerm.number 2 %}
-
-<span style="font-size:17px" > <b> II. CẢ NĂM
-</b> </span>
-<br>
-<br>
-&nbsp &nbsp<b>Hạnh kiểm: </b> <br>
-<br>
-<table border=1 width="100%">
-	<tr> 
-		<td width="14%">
-		</td>
-		<td width="14%" align="center">
-			Tốt
-		</td>
-		<td width="14%" align="center">
-			Khá
-		</td>
-		<td width="14%" align="center">
-			Trung bình
-		</td>
-		<td width="28%" align="center">
-			Yếu
-		</td>
-		<td width="14%" align="center">
-			Chưa xếp loại
-		</td>		
-	</tr>
-	<tr>
-		<td align="center">
-			Số lượng
-		</td>
-		{% for h in hkcnList %}
-		<td align="center">
-			{{h}}
-		</td>
-		{% endfor %}
-	</tr>
-	<tr>
-		<td align="center">
-			Phần trăm (%)
-		</td>
-		{% for h in pthkcnList %}
-		<td align="center">
-			{{h|floatformat:"1"}}
-		</td>
-		{% endfor %}
-	</tr>
-</table>
+  {#--------------------------------------------------------------------------#}
 
 
-{#-------------------------------------------------------------------------#}
-<br>
-&nbsp &nbsp<b>Học lực:<br> <br>
-<br>
-<table border=1 width="100%">
-	<tr> 
-		<td width="14%">
-		</td>
-		<td width="14%" align="center">
-			Giỏi
-		</td>
-		<td width="14%" align="center">
-			Khá
-		</td>
-		<td width="14%" align="center">
-			Trung bình
-		</td>
-		<td width="14%" align="center">
-			Yếu
-		</td>
-		<td width="14%" align="center">
-			Kém
-		</td>
-		<td width="14%" align="center">
-			Chưa xếp loại
-		</td>		
-	</tr>
-	<tr>
-		<td align="center">
-			Số lượng
-		</td>
-		{% for h in hlcnList %}
-		<td align="center">
-			{{h}}
-		</td>
-		{% endfor %}
-	</tr>
-	<tr>
-		<td align="center">
-			Phần trăm (%)
-		</td>
-		{% for h in pthlcnList %}
-		<td align="center">
-			{{h|floatformat:"1"}}
-		</td>
-		{% endfor %}
-	</tr>
-</table>
+  {#--------------------------------------------------------------------------#}
+  <br>
+  &nbsp &nbsp<b>Danh hiệu: </b>
+  <table class="styleB" width="98%">
+    <tr>
+      <th width="14%">
+      </th>
+      <th width="14%" align="center">
+        Học sinh giỏi
+      </th>
+      <th width="15%" align="center">
+        Học sinh tiên tiến
+      </th>
+      <th width="42%" align="center">
+        Không có
+      </th>
+      <th width="14%" align="center">
+        Chưa xếp loại
+      </th>
+    </tr>
+    <tr>
+      <td align="center">
+        Số lượng
+      </td>
+      {% for h in ddList %}
+        <td align="center">
+          {{ h }}
+        </td>
+      {% endfor %}
+    </tr>
+    <tr>
+      <td align="center">
+        Phần trăm (%)
+      </td>
+      {% for h in ptddList %}
+        <td align="center">
+          {{ h|floatformat:"1" }}
+        </td>
+      {% endfor %}
+    </tr>
+  </table>
+  <br>
+  <br>
+
+  {#-------------------------------------------------------------#}
+  {#-------------------------------------------------------------#}
+
+  {% ifequal  currentTerm.number 2 %}
+
+    <span style="font-size:17px"> <b> II. CẢ NĂM </b> </span>
+    <br>
+    <br>
+    &nbsp &nbsp<b>Hạnh kiểm: </b> <br>
+    <br>
+    <table class="styleB" width="98%">
+      <tr>
+        <th width="14%">
+        </th>
+        <th width="14%" align="center">
+          Tốt
+        </th>
+        <th width="14%" align="center">
+          Khá
+        </th>
+        <th width="14%" align="center">
+          Trung bình
+        </th>
+        <th width="28%" align="center">
+          Yếu
+        </th>
+        <th width="14%" align="center">
+          Chưa xếp loại
+        </th>
+      </tr>
+      <tr>
+        <td align="center">
+          Số lượng
+        </td>
+        {% for h in hkcnList %}
+          <td align="center">
+            {{ h }}
+          </td>
+        {% endfor %}
+      </tr>
+      <tr>
+        <td align="center">
+          Phần trăm (%)
+        </td>
+        {% for h in pthkcnList %}
+          <td align="center">
+            {{ h|floatformat:"1" }}
+          </td>
+        {% endfor %}
+      </tr>
+    </table>
 
 
-{#--------------------------------------------------------------------------#}
+    {#-------------------------------------------------------------------------#}
+    <br>
+    &nbsp &nbsp<b>Học lực:</b><br> <br>
+    <br>
+    <table class="styleB" width="98%">
+      <tr>
+        <th width="14%">
+        </th>
+        <th width="14%" align="center">
+          Giỏi
+        </th>
+        <th width="14%" align="center">
+          Khá
+        </th>
+        <th width="14%" align="center">
+          Trung bình
+        </th>
+        <th width="14%" align="center">
+          Yếu
+        </th>
+        <th width="14%" align="center">
+          Kém
+        </th>
+        <th width="14%" align="center">
+          Chưa xếp loại
+        </th>
+      </tr>
+      <tr>
+        <td align="center">
+          Số lượng
+        </td>
+        {% for h in hlcnList %}
+          <td align="center">
+            {{ h }}
+          </td>
+        {% endfor %}
+      </tr>
+      <tr>
+        <td align="center">
+          Phần trăm (%)
+        </td>
+        {% for h in pthlcnList %}
+          <td align="center">
+            {{ h|floatformat:"1" }}
+          </td>
+        {% endfor %}
+      </tr>
+    </table>
 
 
-{#--------------------------------------------------------------------------#}
-<br>
-<br>
-&nbsp &nbsp<b>Danh hiệu:<br> <br>
-<br>
-<table border=1 width="100%">
-	<tr> 
-		<td width="14%">
-		</td>
-		<td width="14%" align="center">
-			Học sinh giỏi
-		</td>
-		<td width="15%" align="center">
-			Học sinh tiên tiến
-		</td>
-		<td width="42%" align="center">
-			Không có
-		</td>
-		<td width="14%" align="center">
-			Chưa xếp loại
-		</td>		
-	</tr>
-	<tr>
-		<td align="center">
-			Số lượng
-		</td>
-		{% for h in ddcnList %}
-		<td align="center">
-			{{h}}
-		</td>
-		{% endfor %}
-	</tr>
-	<tr>
-		<td align="center">
-			Phần trăm (%)
-		</td>
-		{% for h in ptddcnList %}
-		<td align="center">
-			{{h|floatformat:"1"}}
-		</td>
-		{% endfor %}
-	</tr>
-</table>
-<br>
+    {#--------------------------------------------------------------------------#}
 
-<br>
-&nbsp &nbsp<b>Xếp loại:<br> <br>
-<br>
-<table border=1 width="100%">
-	<tr> 
-		<td width="14%">
-		</td>
-		<td width="14%" align="center">
-			Lên lớp
-		</td>
-		<td width="14%" align="center">
-		    Không lên lớp
-		</td>
-		<td width="14%" align="center">
-			Thi lại
-		</td>
-		<td width="14%" align="center">
-			Rèn luyện thêm
-		</td>		
-		<td width="14%" align="center">
-			Chưa xếp loại
-		</td>		
-	</tr>
-	<tr>
-		<td align="center">
-			Số lượng
-		</td>
-		{% for h in passedList %}
-		<td align="center">
-			{{h}}
-		</td>
-		{% endfor %}
-	</tr>
-	<tr>
-		<td align="center">
-			Phần trăm (%)
-		</td>
-		{% for h in ptPassedList %}
-		<td align="center">
-			{{h|floatformat:"1"}}
-		</td>
-		{% endfor %}
-	</tr>
-</table>
-<br>
-<br>
-	
-{% endifequal %}
+
+    {#--------------------------------------------------------------------------#}
+    <br>
+    <br>
+    &nbsp &nbsp<b>Danh hiệu:</b><br> <br>
+    <br>
+    <table class="styleB" width="98%">
+      <tr>
+        <th width="14%">
+        </th>
+        <th width="14%" align="center">
+          Học sinh giỏi
+        </th>
+        <th width="15%" align="center">
+          Học sinh tiên tiến
+        </th>
+        <th width="42%" align="center">
+          Không có
+        </th>
+        <th width="14%" align="center">
+          Chưa xếp loại
+        </th>
+      </tr>
+      <tr>
+        <td align="center">
+          Số lượng
+        </td>
+        {% for h in ddcnList %}
+          <td align="center">
+            {{ h }}
+          </td>
+        {% endfor %}
+      </tr>
+      <tr>
+        <td align="center">
+          Phần trăm (%)
+        </td>
+        {% for h in ptddcnList %}
+          <td align="center">
+            {{ h|floatformat:"1" }}
+          </td>
+        {% endfor %}
+      </tr>
+    </table>
+    <br>
+
+    <br>
+    &nbsp &nbsp<b>Xếp loại:</b><br> <br>
+    <br>
+    <table class="styleB" width="98%">
+      <tr>
+        <th width="14%">
+        </th>
+        <th width="14%" align="center">
+          Lên lớp
+        </th>
+        <th width="14%" align="center">
+          Không lên lớp
+        </th>
+        <th width="14%" align="center">
+          Thi lại
+        </th>
+        <th width="14%" align="center">
+          Rèn luyện thêm
+        </th>
+        <th width="14%" align="center">
+          Chưa xếp loại
+        </th>
+      </tr>
+      <tr>
+        <td align="center">
+          Số lượng
+        </td>
+        {% for h in passedList %}
+          <td align="center">
+            {{ h }}
+          </td>
+        {% endfor %}
+      </tr>
+      <tr>
+        <td align="center">
+          Phần trăm (%)
+        </td>
+        {% for h in ptPassedList %}
+          <td align="center">
+            {{ h|floatformat:"1" }}
+          </td>
+        {% endfor %}
+      </tr>
+    </table>
+    <br>
+    <br>
+
+  {% endifequal %}
 
 
 
 
 
-<span style="font-size:18px" > <b> <u>B. XEM CHI TIẾT  </u><br> </span><br>	
-<br>
-<br>
-<table width= "100%" border=0>
-<tr>
+  <span style="font-size:18px"> <b> <u>B. XEM CHI TIẾT </u></b></span>
+  <br>
+  <br>
+  <table class="styleB" width="98%">
+    <tr>
 
-<td width="33%">
-<p> Học kỳ I : </p>	
-<ul>
-	<li><a href = "{%url school.views.school_index  %}countPractisingInTerm/{{firstTerm.id}}"> Hạnh kiểm</a></li>
-	<li><a href = "{%url school.views.school_index  %}countLearningInTerm/{{firstTerm.id}}"> Học lực</a></li>
-	<li><a href = "{%url school.views.school_index  %}countAllInTerm/{{firstTerm.id}}">Xếp loại chung</a></li>
-</td>
+      <td width="33%">
+        <p> Học kỳ I : </p>
+        <ul>
+          <li><a href="{%url school.views.school_index  %}countPractisingInTerm/{{firstTerm.id}}"> Hạnh kiểm</a></li>
+          <li><a href="{%url school.views.school_index  %}countLearningInTerm/{{firstTerm.id}}"> Học lực</a></li>
+          <li><a href="{%url school.views.school_index  %}countAllInTerm/{{firstTerm.id}}">Xếp loại chung</a></li>
+        </ul>
+      </td>
 
-<td width="33%">
-</ul> 
-{% ifnotequal currentTerm.number 1 %}
-<p> Học kỳ II :</p>	
-<ul>
-	<li><a href = "{%url school.views.school_index  %}countPractisingInTerm/{{secondTerm.id}}"> Hạnh kiểm</a></li>
-	<li><a href = "{%url school.views.school_index  %}countLearningInTerm/{{secondTerm.id}}"> Học lực</a></li>
-	<li><a href = "{%url school.views.school_index  %}countAllInTerm/{{secondTerm.id}}">Xếp loại chung</a></li>
-</ul> 
-</td>
+      <td width="33%">
+        </ul>
+        {% ifnotequal currentTerm.number 1 %}
+          <p> Học kỳ II :</p>
+          <ul>
+            <li><a href="{%url school.views.school_index  %}countPractisingInTerm/{{secondTerm.id}}"> Hạnh kiểm</a></li>
+            <li><a href="{%url school.views.school_index  %}countLearningInTerm/{{secondTerm.id}}"> Học lực</a></li>
+            <li><a href="{%url school.views.school_index  %}countAllInTerm/{{secondTerm.id}}">Xếp loại chung</a></li>
+          </ul>
+          </td>
 
-<td width="33%">
-<p> Cả năm : </p>	
-<ul>
-	<li><a href = "{%url school.views.school_index  %}countPractisingInYear/{{selectedYear.id}}"> Hạnh kiểm</a></li>
-	<li><a href = "{%url school.views.school_index  %}countLearningInYear/{{selectedYear.id}}"> Học lực</a></li>
-	<li><a href = "{%url school.views.school_index  %}countAllInYear/{{selectedYear.id}}">Xếp loại chung</a></li>
-</ul> 
+          <td width="33%">
+            <p> Cả năm : </p>
+            <ul>
+              <li><a href="{%url school.views.school_index  %}countPractisingInYear/{{selectedYear.id}}"> Hạnh kiểm</a>
+              </li>
+              <li><a href="{%url school.views.school_index  %}countLearningInYear/{{selectedYear.id}}"> Học lực</a></li>
+              <li><a href="{%url school.views.school_index  %}countAllInYear/{{selectedYear.id}}">Xếp loại chung</a>
+              </li>
+            </ul>
 
-{% else %}
+            {% else %}
 
-<p> Học kỳ II :</p>	
-<ul>
-	<li><a title="Đang trong học kỳ I nên chức năng này đã bị vô hiệu hóa"> Hạnh kiểm</a></li>
-	<li><a  title="Đang trong học kỳ I nên chức năng này đã bị vô hiệu hóa"> Học lực</a></li>
-	<li><a  title="Đang trong học kỳ I nên chức năng này đã bị vô hiệu hóa">Xếp loại chung</a></li>
-</ul> 
-</td>
+            <p> Học kỳ II :</p>
+            <ul>
+              <li><a title="Đang trong học kỳ I nên chức năng này đã bị vô hiệu hóa"> Hạnh kiểm</a></li>
+              <li><a title="Đang trong học kỳ I nên chức năng này đã bị vô hiệu hóa"> Học lực</a></li>
+              <li><a title="Đang trong học kỳ I nên chức năng này đã bị vô hiệu hóa">Xếp loại chung</a></li>
+            </ul>
+          </td>
 
-<td width="33%">
-<p> Cả năm : </p>	
-<ul>
-	<li><a  title="Đang trong học kỳ I nên chức năng này đã bị vô hiệu hóa"> Hạnh kiểm</a></li>
-	<li><a  title="Đang trong học kỳ I nên chức năng này đã bị vô hiệu hóa" > Học lực</a></li>
-	<li><a  title="Đang trong học kỳ I nên chức năng này đã bị vô hiệu hóa">Xếp loại chung</a></li>
-</ul> 
+          <td width="33%">
+          <p> Cả năm : </p>
+          <ul>
+            <li><a title="Đang trong học kỳ I nên chức năng này đã bị vô hiệu hóa"> Hạnh kiểm</a></li>
+            <li><a title="Đang trong học kỳ I nên chức năng này đã bị vô hiệu hóa"> Học lực</a></li>
+            <li><a title="Đang trong học kỳ I nên chức năng này đã bị vô hiệu hóa">Xếp loại chung</a></li>
+          </ul>
 
-{% endifnotequal %} 
-</td>
-</tr>	
-</table>
-	
-{% endblock %}	
-	
-	
-	
+        {% endifnotequal %}
+        </td>
+    </tr>
+  </table>
+
+{% endblock %}

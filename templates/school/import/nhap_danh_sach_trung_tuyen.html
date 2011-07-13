@@ -1,15 +1,16 @@
-{%extends "base.html" %}
+{% extends "base.html" %}
 
 {% block content %}
-<h2>Nhập học sinh</h2>
-<a href= {% url school.views.manual_adding %}>Nhập trực tiếp</a>
-<br/><br/>
-<form enctype="multipart/form-data" action="{% url school.views.nhap_danh_sach_trung_tuyen %}" method="POST">{% csrf_token %}
-<table class="styleA styleDetail">
-{{ form.as_table }}
-<tr>Hay tải file Excel mẫu <a href="{{ MEDIA_URL }}template_files/student_template.xls">tại đây</tr>
-</table>
-<input type="submit" value="Gửi lên" />
-</form>
+  <h2>Nhập học sinh</h2>
+  <a href= {% url school.views.manual_adding %}>Nhập trực tiếp</a>
+  <br/><br/>
+  <form enctype="multipart/form-data" action="{% url school.views.nhap_danh_sach_trung_tuyen %}"
+        method="POST">{% csrf_token %}
+    <table class="styleA styleDetail">
+      {{ form.as_table }}
+      <tr>Hay tải file Excel mẫu <a href="{{ MEDIA_URL }}template_files/student_template.xls">tại đây</tr>
+    </table>
+    <input type="submit" value="Gửi lên"/>
+  </form>
 
 {% endblock %}

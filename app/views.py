@@ -161,7 +161,7 @@ def login(request, template_name='app/login.html',
     return render_to_response(template_name, context,
                               context_instance=django.template.RequestContext(request))
 
-def contact(request):
+def feedback(request):
 #hainhh
     if request.method == 'POST': # If the form has been submitted...
         form = FeedbackForm(request.POST) # A form bound to the POST data
@@ -169,11 +169,11 @@ def contact(request):
             c = Feedback(fullname = form.cleaned_data['fullname'] ,
                               phone = form.cleaned_data['phone'],
                               email = form.cleaned_data['email'],
-                              type = form.cleaned_data['type'],
+                              title = form.cleaned_data['title'],
                               content = form.cleaned_data['content'],
                               )
             c.save()
-            return HttpResponseRedirect('/thanks') # Redirect after POST
+            return HttpResponseRedirect('/app/contact') # Redirect after POST
     else:
         form = FeedbackForm() # An unbound form
 

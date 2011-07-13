@@ -5,7 +5,7 @@
 		<h2>Thông tin tài khoản: {{user.username}}</h2>
 		{% if profile %}
 			<a href="{% url profiles_edit_profile %}">Chỉnh sửa</a></dd>
-			&nbsp &nbsp<a href="/app/change_password/">Đổi mật khẩu </a></dd>
+			&nbsp &nbsp<a href="{% url app.views.change_password %}">Đổi mật khẩu </a></dd>
 				<div class="fieldWrapper">
 			        {{form.username.errors }}
 				</div>
@@ -15,7 +15,7 @@
 					<dt>Vị trí:</dt> <dd> {{ profile.position }}</dd>
 					<dt>Số điện thoại:</dt> <dd> {{ profile.phone }}</dd>
 					<dt>Ghi chú:</dt> <dd> {{profile.notes}}</dd>
-					<dt>Lần đăng nhập gần đây nhất:</dt> <dd> {{ profile.user.last_login|date:"F j, Y" }}</dd>
+					<dt>Lần đăng nhập trước:</dt> <dd> {{ profile.user.last_login|date:"j F Y" }}</dd>
 				</dl>
 			</div>
 		{% else %}

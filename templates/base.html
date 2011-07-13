@@ -87,7 +87,7 @@
       {% else %}
         <li><a href="{%url app.views.login %}" title="Đăng nhập để sử dụng hệ thống">Đăng nhập</a></li>
         <li><a href="/help" title="Xem hướng dẫn sử dụng">Trợ giúp</a></li>
-        <li><a href="{%url app.views.contact %}" title="Gửi thông tin về hệ thống">Liên hệ</a></li>
+        <li><a href="{%url app.views.feedback %}" title="Gửi thông tin về hệ thống">Liên hệ</a></li>
       {% endif %}
     </ul>
   </div>
@@ -159,8 +159,8 @@
 {% endblock %}
 </div>
 
-<div id="footerPanel">
-	<p class="copyright">©2011 by Viettel and VNU Hanoi </p>
+<div id="footer">
+  <p class="copyright">©2011 by Viettel and VNU Hanoi </p>
 </div>
 
 </body>

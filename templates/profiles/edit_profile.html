@@ -1,19 +1,19 @@
 {% extends "base.html" %}
 
 {% block content %}
-	{% if user.is_authenticated and user.username == profile.user.username %}
-	<h2>Thông tin tài khoản: {{ user }}</h2>
-	
-		<form method="POST" action="" enctype="multipart/form-data"> {% csrf_token %}
-			<dl>
-			{% for field in form %}
-				<dt>{{ field.label_tag }}</dt> 	<dd>{{ field }}</dd>
-				{% if field.help_text %}<dd>{{ field.help_text }}</dd>{% endif %}
-				{% if field.errors %}<dd class="form_errors">{{ field.errors }}</dd>{% endif %}
-			{% endfor %}
-			</dl>
-		<input type="submit" name="submit" value="Lưu" id="submit">
-		</form>
-	</div>
-	{% endif %}	
+  {% if user.is_authenticated and user.username == profile.user.username %}
+    <h2>Thông tin tài khoản: {{ user }}</h2>
+
+    <form method="POST" action="" enctype="multipart/form-data"> {% csrf_token %}
+      <dl>
+        <dt><label for="id_phone">Điện thoại di động</label></dt>
+        <dd><input id="id_phone" type="text" name="phone" maxlength="20"/></dd>
+
+        <dt><label for="id_notes">Ghi chú</label></dt>
+        <dd><input id="id_notes" type="text" name="notes" maxlength="255"/></dd>
+      </dl>
+      <input type="submit" name="submit" value="Lưu" id="submit">
+    </form>
+    </div>
+  {% endif %}
 {% endblock content %}

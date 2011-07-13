@@ -8,7 +8,7 @@ admin.autodiscover()
 urlpatterns = patterns('',
     url(r'^$', 'views.index', name = "index"),
     (r'^help/$', 'views.help'),
-    (r'^app/contact/$', 'app.views.contact'),
+    (r'^app/contact/$', 'app.views.feedback'),
     (r'^thanks/$', 'views.thanks'),
     # the built-in sign-in/out module 
     url(r'^login/$', 'app.views.login', name = "login"),

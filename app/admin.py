@@ -38,9 +38,9 @@ class OrganizationAdmin(admin.ModelAdmin):
 admin.site.register(Organization, OrganizationAdmin)
 
 class FeedbackAdmin(admin.ModelAdmin):
-    list_display = ('fullname', 'phone', 'email','type','content')
-    list_filter = ('type', 'email')
-    search_fields = ['fullname', 'content']
+    list_display = ('fullname', 'phone', 'email','title','content')
+    list_filter = ('title', 'email')
+    search_fields = ['title', 'content']
     list_per_page = 20
     
 admin.site.register(Feedback, FeedbackAdmin)

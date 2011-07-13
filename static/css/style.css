@@ -1,16 +1,16 @@
 /* CSS Document */
 html {
+    width: 100%;
     height: 100%;
-    min-width:1024px;
+    min-width: 1024px;
 }
 
 body {
-    height: 100%;
-    padding: 0px;
-    margin: 0px;
-    color: #5E5E5E;
+    width: 100%;
+    padding: 0 0 0 0;
+    margin: 0 0 0 0;
+    color: #595959;
     font: 14px/18px Arial, Helvetica, sans-serif;
-    min-width:1024px;
 }
 
 div, p, ul, h2, h3, img {
@@ -26,17 +26,14 @@ table.styleB {
     font-family: Arial, Helvetica, sans-serif;
     font-size: 14px;
     color: #333333;
-    border-width: 1px;
-    border-color: #999999;
+    border: 1px solid #999999;
     border-collapse: collapse;
 }
 
 table.styleB th {
     padding: 2px;
     background-color: #c3dde0;
-    border-width: 1px;
-    border-style: solid;
-    border-color: #a9c6c9;
+    border: 1px solid #a9c6c9;
 }
 
 table.styleB tr {
@@ -45,10 +42,9 @@ table.styleB tr {
 }
 
 table.styleB td {
-    border: 1px;
-    border-style: solid;
-    border-color: #a9c6c9;
+    border: 1px solid #a9c6c9;
 }
+
 table.styleB tr:hover {
     background-color: #f0f1c3;
 }
@@ -61,18 +57,15 @@ table.styleA {
     font-family: Arial, Helvetica, sans-serif;
     font-size: 14px;
     color: #333333;
-    border-width: 1px;
-    border-color: #999999;
+    border: 1px solid #999999;
     border-collapse: collapse;
     margin-bottom: 10px;
 }
 
 table.styleA th {
     background-color: #c3dde0;
-    border-width: 1px;
     padding: 8px;
-    border-style: solid;
-    border-color: #a9c6c9;
+    border: 1px solid #a9c6c9;
 }
 
 table.styleA tr {
@@ -131,7 +124,7 @@ table.styleA td {
 |           |                                   |
 |           |                                   |
 |-----------------------------------------------|
-|            footerPanel                        |   footerPanel
+|            footer                             |   footer
 |-----------------------------------------------|
 */
 
@@ -178,7 +171,7 @@ table.styleA td {
     height: 20px;
     position: absolute;
     top: 0px;
-    right: 0px;
+    right: 1px;
 }
 
 #topUser ul {
@@ -244,8 +237,11 @@ table.styleA td {
 
 /*----BODY PANEL----*/
 #bodyPanel {
-    position: absolute;
+    position:relative;
     width: 100%;
+    height: auto;
+    min-height: 500px;
+    clear: both;
 }
 
 #bodyPanel h2 {
@@ -307,9 +303,9 @@ table.styleA td {
 /*---- RIGHT CONTENT----*/
 #rightContent {
     position: absolute;
-    left: 190px;
-    right: 5px;
-    padding: 5px 5px 5px 5px;
+    left: 180px;
+    right: 0px;
+    margin: 2px 25px 2px 5px;
     min-width: 800px;
 }
 
@@ -321,7 +317,7 @@ table.styleA td {
 
 /*---- CONTENT BODY----*/
 #content {
-    width: 98%;
+    width: 100%;
     position: absolute;
     top: 20px;
     padding-bottom: 20px;
@@ -329,30 +325,51 @@ table.styleA td {
     float: left;
 }
 
-div.infoContent{
-   width: 100%;
-   display: inline-block;
-}
-div.leftInfoDiv{
-   width: auto;
-   float: left;
-   border-right: 1px solid #DADADA;
-   padding: 20px;
-   text-align: right;
-   
-}
-div.rightInfoDiv{
-   position: relative;
-   width: auto;
-   padding: 20px;
-   border-right: 1px solid #DADADA;
-   float: left;
-   text-align: right;
-}
-div.rightInfoDivMain{
-   text-align: left;
+div.infoContent {
+    width: 100%;
+    display: inline-block;
 }
 
+div.leftInfoDiv {
+    width: auto;
+    float: left;
+    border-right: 1px solid #DADADA;
+    padding: 20px;
+    text-align: right;
+
+}
+
+div.rightInfoDiv {
+    position: relative;
+    width: auto;
+    padding: 20px;
+    border-right: 1px solid #DADADA;
+    float: left;
+    text-align: right;
+}
+
+div.rightInfoDivMain {
+    text-align: left;
+}
+
+div.infoContent {
+    width: 100%;
+    display: inline-block;
+}
+
+div.leftInfoDiv {
+    width: auto;
+    float: left;
+    border-right: 1px solid #DADADA;
+    padding: 20px;
+}
+
+div.rightInfoDiv {
+    position: relative;
+    width: auto;
+    padding: 20px;
+    float: left;
+}
 
 #content h2 {
     height: 30px;
@@ -369,8 +386,9 @@ div.rightInfoDivMain{
 #content h3 {
     width: 410px;
     height: 30px;
-    color: #00111A;
+    color: #4d94d7;
     font: 20px/20px Georgia, "Times New Roman", Times, serif;
+    padding: 15px 0 0px 0;
 }
 
 #content h3 span {
@@ -414,38 +432,56 @@ div.rightInfoDivMain{
 }
 
 /*----FOOTER PANEL----*/
-#footerPanel {
-    position: absolute;
+div#footer {
+    margin-top: 60px;
+    padding: 6px 0 6px;
+    border-top: thin solid #c0c0c0;
+    display:block;
+}
+
+div#footer p {
+    color:#999;
+    font-size:80%;
+    text-align:center
+}
+
+/*
+footer {
+    width:100%;
+    position:absolute;
     bottom: 0px;
     color: #010101;
     clear: both;
-    border-top: thin solid silver;
+    border-top: thin solid #c0c0c0;
+    display:block;
 }
 
-#footerPanel p.copyright {
+footer p.copyright {
     width: auto;
     margin-left: auto;
     margin-right: auto;
     background: #F3F3F3;
-    font-size: 12px;
-    text-align: center
+    font-size: 10px;
+    text-align: center;
 }
-
+*/
 
 /*DL, DT, DD TAGS LIST DATA*/
 dl {
-    margin-bottom:50px;
+    width: 100%;
+    overflow: hidden;
 }
 
-dl dt {
-    float:left;
-    font-weight:bold;
-    margin-right:10px;
-    padding:5px;
-    width:150px;
+dt {
+    float: left;
+    clear: left;
+    width: 200px; /* adjust the width; make sure the total of both is 100% */
+    background: #c3dde0;
+    font-weight: bold;
 }
 
-dl dd {
-    margin:2px 0;
-    padding:5px 0;
+dd {
+    padding: 0;
+    margin: 0;
+    float: left;
 }
