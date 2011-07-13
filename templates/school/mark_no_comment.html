@@ -80,7 +80,7 @@
 		
 		{% if enableSendSMS %}
 		<tr>
-		<td style="border-right-width:0px; border-top-width:0px" > 
+		<td title="Click vào đây để chọn tất cả" style="border-right-width:0px; border-top-width:0px" > 
 			<input type="checkbox" id="checkAllRow" onclick="checkAllRows(this)">  
 		</td>
 		
@@ -88,31 +88,31 @@
 		<td style="border-left-width:0px; border-top-width:0px" >&nbsp </td>
 		
 		<td align="right" style="border-top-width:0px" > 
-			<input type="checkbox" id="checkAllCol" onclick="checkAllCols(this)" >  
+			<input title="Click vào đây để chọn tất cả" type="checkbox" id="checkAllCol" onclick="checkAllCols(this)" >  
 		</td>
 		
-		<td> <input type="checkbox" id="checkbox1">  </td>
-		<td> <input type="checkbox" id="checkbox2">  </td>
-		<td> <input type="checkbox" id="checkbox3">  </td>
-		<td> <input type="checkbox" id="checkbox4">  </td>
-		<td> <input type="checkbox" id="checkbox5">  </td>
-		<td> <input type="checkbox" id="checkbox6">  </td>
-		<td> <input type="checkbox" id="checkbox7">  </td>
-		<td> <input type="checkbox" id="checkbox8">  </td>
-		<td> <input type="checkbox" id="checkbox9">  </td>
-		<td> <input type="checkbox" id="checkbox10">  </td>
-		<td> <input type="checkbox" id="checkbox11">  </td>
-		<td> <input type="checkbox" id="checkbox12">  </td>
-		<td> <input type="checkbox" id="checkbox13">  </td>
-		<td> <input type="checkbox" id="checkbox14">  </td>
-		<td> <input type="checkbox" id="checkbox15">  </td>
-		<td> <input type="checkbox" id="checkbox16">  </td>
+		<td> <input title="Click vào đây để chọn điểm này để gửi tin nhắn" type="checkbox" id="checkbox1">  </td>
+		<td> <input title="Click vào đây để chọn điểm này để gửi tin nhắn" type="checkbox" id="checkbox2">  </td>
+		<td> <input title="Click vào đây để chọn điểm này để gửi tin nhắn" type="checkbox" id="checkbox3">  </td>
+		<td> <input title="Click vào đây để chọn điểm này để gửi tin nhắn" type="checkbox" id="checkbox4">  </td>
+		<td> <input title="Click vào đây để chọn điểm này để gửi tin nhắn" type="checkbox" id="checkbox5">  </td>
+		<td> <input title="Click vào đây để chọn điểm này để gửi tin nhắn" type="checkbox" id="checkbox6">  </td>
+		<td> <input title="Click vào đây để chọn điểm này để gửi tin nhắn" type="checkbox" id="checkbox7">  </td>
+		<td> <input title="Click vào đây để chọn điểm này để gửi tin nhắn" type="checkbox" id="checkbox8">  </td>
+		<td> <input title="Click vào đây để chọn điểm này để gửi tin nhắn"type="checkbox" id="checkbox9">  </td>
+		<td> <input title="Click vào đây để chọn điểm này để gửi tin nhắn" type="checkbox" id="checkbox10">  </td>
+		<td> <input title="Click vào đây để chọn điểm này để gửi tin nhắn" type="checkbox" id="checkbox11">  </td>
+		<td> <input title="Click vào đây để chọn điểm này để gửi tin nhắn" type="checkbox" id="checkbox12">  </td>
+		<td> <input title="Click vào đây để chọn điểm này để gửi tin nhắn" type="checkbox" id="checkbox13">  </td>
+		<td> <input title="Click vào đây để chọn điểm này để gửi tin nhắn" type="checkbox" id="checkbox14">  </td>
+		<td> <input title="Click vào đây để chọn điểm này để gửi tin nhắn" type="checkbox" id="checkbox15">  </td>
+		<td> <input title="Click vào đây để chọn điểm này để gửi tin nhắn" type="checkbox" id="checkbox16">  </td>
 		{% ifequal selectedTerm.number 2 %}
-		<td> <input type="checkbox" id="checkbox18">  </td>
-		<td> <input type="checkbox" id="checkbox17">  </td>
-		<td> <input type="checkbox" id="checkbox19">  </td>			
+		<td> <input title="Click vào đây để chọn điểm này để gửi tin nhắn" type="checkbox" id="checkbox18">  </td>
+		<td> <input title="Click vào đây để chọn điểm này để gửi tin nhắn" type="checkbox" id="checkbox17">  </td>
+		<td> <input title="Click vào đây để chọn điểm này để gửi tin nhắn" type="checkbox" id="checkbox19">  </td>			
 		{% else %}
-		<td> <input type="checkbox" id="checkbox17">  </td>			
+		<td> <input title="Click vào đây để chọn điểm này để gửi tin nhắn" type="checkbox" id="checkbox17">  </td>			
 		{% endifequal %}
 		
 		</tr>
@@ -127,20 +127,20 @@
 		<tr >
 			{% if enableSendSMS %}
 			<td align="center" onclick="select(this)" style="border-right-width:0px" > 
-			 <input type="checkbox" id="{{forloop.counter}}00" > 	
+			 <input title="Có thể click vào cột họ tên và ngày sinh để chọn cho nhanh hơn" type="checkbox" id="{{forloop.counter}}00" > 	
 			</td>
 			{% endif %}
-			<td align="center" onclick="select(this)" style="border-left-width:0px" >
+			<td title="Click vào đây để chọn học sinh được gửi tin nhắn" align="center" onclick="select(this)" style="border-left-width:0px" >
 			 {{forloop.counter}}	
 			</td>
-			<td style="border-right-width:0px" width ="15%" onclick="select(this)">
+			<td title="Click vào đây để chọn học sinh được gửi tin nhắn" style="border-right-width:0px" width ="15%" onclick="select(this)">
 			 {{p.last_name}}
 			</td>
 			
-			<td style="border-left-width:0px" width ="5%"  onclick="select(this)">
+			<td title="Click vào đây để chọn học sinh được gửi tin nhắn" style="border-left-width:0px" width ="5%"  onclick="select(this)">
 			{{ p.first_name }} 			
 			</td>
-			<td onclick="select(this)" >
+			<td title="Click vào đây để chọn học sinh được gửi tin nhắn" onclick="select(this)" >
 			{{ p.birthday.day}}/{{ p.birthday.month}}/{{ p.birthday.year}} 
 			</td>
 
@@ -382,24 +382,24 @@
 		<tr >
 			{% if enableSendSMS %}
 			<td align="center" onclick="select(this)" style="border-right-width:0px" > 
-			 <input type="checkbox" id="{{forloop.counter}}00" > 	
+			 <input title="Có thể click vào cột họ tên và ngày sinh để chọn cho nhanh hơn" type="checkbox" id="{{forloop.counter}}00" > 	
 			</td>
 			{% endif %}
 			
-			<td align="center" onclick="select(this)" style="border-left-width:0px" >
+			<td title="Click vào đây để chọn học sinh được gửi tin nhắn" align="center" onclick="select(this)" style="border-left-width:0px" >
 			 {{forloop.counter}}	
 			</td>
 		
-			<td style="border-right-width:0px" width ="15%" onclick="select(this)" >
+			<td title="Click vào đây để chọn học sinh được gửi tin nhắn" style="border-right-width:0px" width ="15%" onclick="select(this)" >
 			 {{p.last_name}}
 			</td>
 			
-			<td style="border-left-width:0px" width ="5%"  onclick="select(this)" >
+			<td title="Click vào đây để chọn học sinh được gửi tin nhắn" style="border-left-width:0px" width ="5%"  onclick="select(this)" >
 			{{ p.first_name }} 			
 			</td>
 			
 			
-			<td onclick="select(this)" >
+			<td title="Click vào đây để chọn học sinh được gửi tin nhắn" onclick="select(this)" >
 			{{ p.birthday.day}}/{{ p.birthday.month}}/{{ p.birthday.year}} 
 			</td>
 
@@ -657,22 +657,22 @@
 		<tr>
 			{% if enableSendSMS %}
 			<td align="center" onclick="select(this)" style="border-right-width:0px" > 
-			 <input type="checkbox" id="{{forloop.counter}}00" > 	
+			 <input title="Có thể click vào cột họ tên và ngày sinh để chọn cho nhanh hơn" type="checkbox" id="{{forloop.counter}}00" > 	
 			</td>
 			{% endif %}
-			<td align="center" onclick="select(this)" style="border-left-width:0px" >
+			<td title="Click vào đây để chọn học sinh được gửi tin nhắn" align="center" onclick="select(this)" style="border-left-width:0px" >
 			 {{forloop.counter}}	
 			</td>
 
-			<td style="border-right-width:0px" width ="15%" onclick="select(this)">
+			<td title="Click vào đây để chọn học sinh được gửi tin nhắn" style="border-right-width:0px" width ="15%" onclick="select(this)">
 			 {{p.last_name}}
 			</td>
 			
-			<td style="border-left-width:0px" width ="5%" onclick="select(this)" >
+			<td title="Click vào đây để chọn học sinh được gửi tin nhắn" style="border-left-width:0px" width ="5%" onclick="select(this)" >
 			{{ p.first_name }} 			
 			</td>
 
-			<td onclick="select(this)">
+			<td title="Click vào đây để chọn học sinh được gửi tin nhắn" onclick="select(this)">
 			{{ p.birthday.day}}/{{ p.birthday.month}}/{{ p.birthday.year}} 
 			</td>
 
@@ -753,7 +753,7 @@
 		<tr>
 			{% if enableSendSMS %}		
 			<td align="center" onclick="select(this)" style="border-right-width:0px" > 
-			 <input type="checkbox" id="{{forloop.counter}}00" > 	
+			 <input title="Có thể click vào cột họ tên và ngày sinh để chọn cho nhanh hơn" type="checkbox" id="{{forloop.counter}}00" > 	
 			</td>
 			{% endif %}
 		

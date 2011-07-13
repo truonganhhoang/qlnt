@@ -416,7 +416,7 @@ window.onload = function() { document.onkeypress = catchEnter; };
 		<table border=0 width="100%">
 			<tr>
 				<td width="90%"> 
-				<button id="sendSelect" onclick="sendSelected();" >Gửi SMS <img src="/static/images/message3.png" >  </button>
+				<button  title="Click vào đây để gửi tin cho những học sinh đã chọn" id="sendSelect" onclick="sendSelected();" >Gửi SMS <img src="/static/images/message3.png" >  </button>
 				<br>
 				<div id="messageSMS"  > </div> 
 				</td width="10%">
@@ -427,7 +427,7 @@ window.onload = function() { document.onkeypress = catchEnter; };
 		</table>
 	{% else %} 
 	{% if enableSendSMS %}
-	<button id="sendSelect" onclick="sendSelected();" >Gửi SMS <img src="/static/images/message3.png" >  </button>
+	<button title="Click vào đây để gửi tin cho những học sinh đã chọn" id="sendSelect" onclick="sendSelected();" >Gửi SMS <img src="/static/images/message3.png" >  </button>
 	<br>
 	<div id="messageSMS"  > </div> 
 	{% endif %}
