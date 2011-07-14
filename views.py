@@ -17,7 +17,7 @@ def index(request):
     if not request.user.is_authenticated():
         return render_to_response("index.html", context_instance=RequestContext(request)) 
     elif request.user.is_superuser or request.user.get_profile().position in OVER_SCHOOL :
-        return render_to_response("index.html", context_instance=RequestContext(request)) 
+        return render_to_response("index.html", context_instance=RequestContext(request))
     else:
         return HttpResponseRedirect(reverse('school_index'))
 

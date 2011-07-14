@@ -15,20 +15,20 @@ ADMINS = (
 MANAGERS = ADMINS
 
 DATABASES = {
-#    'default': {
-#        'ENGINE': 'django.db.backends.mysql',
-#        'NAME': 'qlnt',
-#        'USER': 'root',
-#        'PASSWORD':'admin',
-#    },
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': os.path.join(os.path.dirname(__file__), 'sqlite3.db'), # Or path to database file if using sqlite3.
-        'USER': '', # Not used with sqlite3.
-        'PASSWORD': '', # Not used with sqlite3.
-        'HOST': '', # Set to empty string for localhost. Not used with sqlite3.
-        'PORT': '', # Set to empty string for default. Not used with sqlite3.
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'qlnt',
+        'USER': 'root',
+        'PASSWORD':'freeschool',
     },
+#    'default': {
+#        'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
+#        'NAME': os.path.join(os.path.dirname(__file__), 'sqlite3.db'), # Or path to database file if using sqlite3.
+#        'USER': '', # Not used with sqlite3.
+#        'PASSWORD': '', # Not used with sqlite3.
+#        'HOST': '', # Set to empty string for localhost. Not used with sqlite3.
+#        'PORT': '', # Set to empty string for default. Not used with sqlite3.
+#    },
 }
 
 # uncomment following line to use auto multiple db router.
@@ -60,10 +60,13 @@ DECIMAL_SEPARATOR = ','
 
 SITE_ID = 1
 
+SITE_ROOT = os.path.dirname(os.path.realpath(__file__))
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/media/"
-MEDIA_ROOT = os.path.normpath(os.path.join(os.path.dirname(__file__), 'static/'))
+#MEDIA_ROOT = os.path.normpath(os.path.join(os.path.dirname(__file__), 'static/'))
+MEDIA_ROOT = os.path.join(SITE_ROOT, 'static')
+
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
