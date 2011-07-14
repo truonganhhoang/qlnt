@@ -224,10 +224,10 @@ class Pupil(BasicPersonInfo):
     current_status = models.CharField("Tình trạng", max_length = 200, blank = True, null = True, default = 'OK')
     disable = models.BooleanField("Không còn trong trường", default = False)
     
-    user_id = models.OneToOneField(User, verbose_name = "Tài khoản", null = True, blank = True) # nullable is temporary 
-    start_year_id = models.ForeignKey(StartYear, verbose_name = "Khóa")
-    class_id = models.ForeignKey(Class, verbose_name = "Lớp", null = True, blank = True)
-    school_id = models.ForeignKey(Organization, verbose_name = "Trường", null = True, blank = True)
+    user_id = models.OneToOneField(User, verbose_name = "tài khoản", null = True, blank = True) # nullable is temporary 
+    start_year_id = models.ForeignKey(StartYear, verbose_name = "khóa")
+    class_id = models.ForeignKey(Class, verbose_name = "lớp", null = True, blank = True)
+    school_id = models.ForeignKey(Organization, verbose_name = "trường", null = True, blank = True)
     
     class Meta:
         verbose_name = "Học sinh"

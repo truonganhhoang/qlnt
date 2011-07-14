@@ -52,8 +52,8 @@ class PupilForm(forms.ModelForm):
         super(PupilForm, self).__init__(*args, **kwargs)
         school = Organization.objects.get(id = school_id)
         year_id = school.year_set.latest('time').id
-        self.fields['start_year_id'] = forms.ModelChoiceField(queryset = StartYear.objects.filter(school_id = school_id))
-        self.fields['class_id'] = forms.ModelChoiceField(queryset = Class.objects.filter(year_id = year_id))
+        self.fields['start_year_id'] = forms.ModelChoiceField(queryset = StartYear.objects.filter(school_id = school_id),label='Khóa')
+        self.fields['class_id'] = forms.ModelChoiceField(queryset = Class.objects.filter(year_id = year_id),label='Lớp')
 
 class SchoolForm(forms.Form):
     def __init__(self, *args, **kwargs):
@@ -101,7 +101,7 @@ class KhenThuongForm(forms.ModelForm)        :
         exclude = ('student_id', 'term_id')
         field = ('time', 'noi_dung')
         widgets = {
-            'time' : SelectDateWidget(years = range( this_year() ,this_year()-100, -1)),
+            'time' : SelectDateWidget(years = range( this_year() ,this_year()-2, -1)),
             'noi_dung': forms.Textarea(attrs = {'cols': 50, 'rows': 10}),
         }
         
@@ -111,7 +111,7 @@ class KiLuatForm(forms.ModelForm):
         exclude = ('student_id', 'term_id')
         field = ('time', 'noi_dung')
         widgets = {
-            'time' : SelectDateWidget(years = range( this_year() ,this_year()-100,-1)),
+            'time' : SelectDateWidget(years = range( this_year() ,this_year()-2,-1)),
             'noi_dung': forms.Textarea(attrs = {'cols': 50, 'rows': 10}),
         }
 
