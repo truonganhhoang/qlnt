@@ -4,7 +4,9 @@
 {% if message != None %}
 {{message}}
 {% endif %}
+
 <script language="JavaScript" type="text/javascript" >
+	idTeacher = -1;
 	var temp = "{{enableChangeMark}}";
 	if (temp=="True") enableChangeMark=true;
 	else enableChangeMark=false;
@@ -13,6 +15,11 @@
 	if (temp=="True") enableSendSMS=1;
 	else enableSendSMS=0;
 
+	//window.addeventListener('keydown', function(e) {
+	//if ((e.keyCode==38) || (e.keyCode==38))
+	//	e.preventDefault()
+	//}, false);
+	
 function catchEnter(e)
 
 {
@@ -148,12 +155,13 @@ window.onload = function() { document.onkeypress = catchEnter; };
 			cel.focus();
 		}					
 	}
-	
 	function controlDirection(tb,event)
 	{
+		//ert("ttt");
 		var keycode=event.keyCode;
 		var name=tb.id;
 		var nameNumber=parseInt(name);
+		var lengthList={{lengthList}};		
 		
 		if ((keycode==32) | (keycode==13))
 		{
@@ -170,8 +178,15 @@ window.onload = function() { document.onkeypress = catchEnter; };
 		else	
 		if ((keycode==40))
 		{
+			//alert(lengthList);
+			if (parseInt(nameNumber/100)==lengthList)
+				nameNumber=nameNumber % 100;
+			//ert(parseInt(nameNumber/100));
+				
 			var temp=nameNumber+100;
+			
 			var tempName=temp.toString();
+			
 			var cel=document.getElementById(tempName);
 			if (cel)
 				cel.focus();
@@ -179,6 +194,8 @@ window.onload = function() { document.onkeypress = catchEnter; };
 		else
 		if (keycode==38)
 		{
+			if (parseInt(nameNumber/100)==1)
+				nameNumber=lengthList*100+nameNumber % 100+100;
 			var temp=nameNumber-100;
 			var tempName=temp.toString();
 			var cel=document.getElementById(tempName);
@@ -187,8 +204,10 @@ window.onload = function() { document.onkeypress = catchEnter; };
 		}
 		else
 		if (keycode==37)
-		{
+		{	
 			var temp=nameNumber-1;
+			if ((temp % 100)==0) 
+					temp+=1;
 			var tempName=temp.toString();
 			var cel=document.getElementById(tempName);
 			if (cel)
@@ -204,6 +223,7 @@ window.onload = function() { document.onkeypress = catchEnter; };
 				cel.focus();
 		}
 	}
+	
 
 
 
@@ -317,7 +337,6 @@ window.onload = function() { document.onkeypress = catchEnter; };
 	function  control(tb,event)
 	{
 		acceptDigits(tb);
-		controlDirection(tb,event);				
 	}
 	
 	var length={{lengthList}} + 1;
@@ -563,8 +582,15 @@ window.onload = function() { document.onkeypress = catchEnter; };
 				value=value.replace(exp1,'.');		
 				if ((value=="") || (value==" "))
 					newAr[i][j]=-1;
-				else	
+				else
 					newAr[i][j]=parseFloat(value);
+					if ((!isNaN(newAr[i][j])) && (newAr[i][j]>10))
+					{
+						var tb=document.getElementById(id.toString()); 
+						acceptDigits(tb);
+						tb=document.getElementById(id.toString()); 
+						newAr[i][j]=parseFloat(tb.value);
+					}	
 			}		
 	}
 	function viewAverage()
@@ -671,7 +697,7 @@ window.onload = function() { document.onkeypress = catchEnter; };
 		if (str!="")
 		{
 			document.getElementById("messageChanging").innerHTML="Đang lưu";
-			sendToServer(str);
+			sendToServer(idTeacher+str);
 		}
 		//writeOld();	
 		for(var i=1;i<length;i++)
@@ -860,9 +886,6 @@ window.onload = function() { document.onkeypress = catchEnter; };
 				document.getElementById(name).checked=value;
 		}
 	}
-</script>
-
-
 </script>
 
 
