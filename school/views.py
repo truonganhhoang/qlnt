@@ -840,11 +840,20 @@ def viewClassDetail(request, class_id, sort_type=1, sort_status=0, page=1):
             first_name = ''
         print request.POST['birthday_year']
         if (int(request.POST['birthday_year']) and int(request.POST['birthday_month']) and int(request.POST['birthday_day'])):
-            birthday = date(int(request.POST['birthday_year']), int(request.POST['birthday_month']), int(request.POST['birthday_day']))
+            try :
+                birthday = date(int(request.POST['birthday_year']), int(request.POST['birthday_month']), int(request.POST['birthday_day']))
+            except ValueError:
+                birthday = None
         else:
             birthday = None
+            
         if (request.POST['school_join_date_year'] and request.POST['school_join_date_month'] and request.POST['school_join_date_day']):
-            school_join_date = date(int(request.POST['school_join_date_year']), int(request.POST['school_join_date_month']), int(request.POST['school_join_date_day']))
+            try:
+                school_join_date = date(int(request.POST['school_join_date_year']), int(request.POST['school_join_date_month']), int(request.POST['school_join_date_day']))
+            except ValueError:
+                school_join_date=None
+        else:
+            school_join_date = None
         data = {'first_name':first_name, 'last_name':last_name, 'birthday':birthday, 'class_id':class_id, 'sex':request.POST['sex'], 'ban_dk':request.POST['ban_dk'], 'school_join_date':school_join_date, 'start_year_id':request.POST['start_year_id']}
         form = PupilForm(school.id, data)
         if form.is_valid():
@@ -856,7 +865,8 @@ def viewClassDetail(request, class_id, sort_type=1, sort_status=0, page=1):
             form = PupilForm(school.id)
         else:
             if data['first_name'] != '':
-                form['first_name']=form['last_name'] + ' ' + data['first_name']
+                data['first_name']=data['last_name'] + ' ' + data['first_name']
+                form=PupilForm(school.id, data)
             message = 'Bạn vui lòng sửa một số lỗi sai dưới đây'
     if int(sort_type) == 1:
         if int(sort_status) == 0:
