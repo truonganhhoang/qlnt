@@ -31,7 +31,7 @@ class TeacherForm(forms.ModelForm):
         exclude = ('school_id', 'user_id')
         field = ('birthday')
         widgets = {
-            'birthday' : SelectDateWidget(years = range( this_year()-15 ,this_year()-100, -1)),
+            'birthday' : SelectDateWidget(years = range( this_year()-18 ,this_year()-65, -1)),
         }
         
 class PupilForm(forms.ModelForm):
@@ -40,13 +40,13 @@ class PupilForm(forms.ModelForm):
         exclude = ('school_id','user_id')
         field = ('birthday', 'school_join_date', 'ngay_vao_doan', 'ngay_vao_doi', 'ngay_vao_dang', 'father_birthday', 'mother_birthday')
         widgets = {
-            'birthday' : SelectDateWidget(years = range( this_year() ,this_year()-100, -1)),
-            'school_join_date' : SelectDateWidget(years = range( this_year() ,this_year()-100, -1)),
-            'ngay_vao_doan': SelectDateWidget(years = range( this_year() ,this_year()-100, -1)),
-            'ngay_vao_doi': SelectDateWidget(years = range( this_year() ,this_year()-100, -1)),
-            'ngay_vao_dang': SelectDateWidget(years = range( this_year() ,this_year()-100, -1)),
-            'father_birthday': SelectDateWidget(years = range( this_year() ,this_year()-100, -1)),
-            'mother_birthday': SelectDateWidget(years = range( this_year() ,this_year()-100, -1)),
+            'birthday' : SelectDateWidget(years = range( this_year()-6 ,this_year()-60, -1)),
+            'school_join_date' : SelectDateWidget(years = range( this_year() ,this_year()-2, -1)),
+            'ngay_vao_doan': SelectDateWidget(years = range( this_year() ,this_year()-60, -1)),
+            'ngay_vao_doi': SelectDateWidget(years = range( this_year() ,this_year()-60, -1)),
+            'ngay_vao_dang': SelectDateWidget(years = range( this_year() ,this_year()-60, -1)),
+            'father_birthday': SelectDateWidget(years = range( this_year()-20 ,this_year()-80, -1)),
+            'mother_birthday': SelectDateWidget(years = range( this_year()-20 ,this_year()-80, -1)),
         }
     def __init__(self, school_id, *args, **kwargs):
         super(PupilForm, self).__init__(*args, **kwargs)

@@ -928,7 +928,10 @@ def teachers(request, sort_type=1, sort_status=0, page=1):
             first_name = ''
 
         if (int(request.POST['birthday_year']) and int(request.POST['birthday_month']) and int(request.POST['birthday_day'])):
-            birthday = date(int(request.POST['birthday_year']), int(request.POST['birthday_month']), int(request.POST['birthday_day']))
+            try :
+                birthday = date(int(request.POST['birthday_year']), int(request.POST['birthday_month']), int(request.POST['birthday_day']))
+            except ValueError:
+                birthday = None
         else:
             birthday = None
         data = {'first_name':first_name, 'last_name':last_name, 'birthday':birthday, 'sex':request.POST['sex'], 'school_id':school.id, 'birth_place':request.POST['birth_place'].strip()}
@@ -939,7 +942,8 @@ def teachers(request, sort_type=1, sort_status=0, page=1):
             form = TeacherForm()
         else:
             if data['first_name'] != '':
-                form['first_name']=form['last_name'] + ' ' + data['first_name']
+                data['first_name'] = data['last_name'] + ' ' + data['first_name']
+                form = TeacherForm(data)
             message = 'Bạn vui lòng sửa một số lỗi sai dưới đây'
 			
     if int(sort_type) == 1:
