@@ -1,38 +1,86 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h2>Giới thiệu</h2>
-    <p>
-    Đây là dịch vụ phần mềm quản lý nhà trường phổ thông được Viettel và ĐHQG Hà Nội hợp tác phát triển và cung cấp miễn phí.<br/> 
+  <h2>Giới thiệu</h2>
+  <p>
+    Đây là dịch vụ phần mềm quản lý nhà trường phổ thông được Viettel và ĐHQG Hà Nội hợp tác phát triển và cung cấp miễn
+    phí.<br/>
     Sau khi đăng ký sử dụng, nhà trường sẽ quản lý được các thông tin về như hồ sơ học sinh, giáo viên, điểm, hạnh kiểm,
-      điểm danh, lịch học, lớp học, thời khóa biểu, và nhà trường có thể iên lạc với phụ huynh qua tin nhắn (điểm, bỏ học, kỷ luật, thông báo).
-    </p>
-    <h3>Đối tượng người sử dụng</h3>
-    <p>
-    Hiệu trưởng, Hiệu phó, giáo viên, học sinh, phụ huynh học sinh và cán bộ cấp Sở, Phòng Giáo dục.<br />
-    </p>
-    
-    <h3>Phiên bản</h3>
-    <p>
-    Phiên bản 0.1, ngày 15/7/2011: gồm các chức năng cơ bản, ban đầu nhà trường cần thiết lập như khai báo lớp học, giáo viên, học sinh, và nhập điểm, điểm danh.<br />
-    </p>
+    điểm danh, lịch học, lớp học, thời khóa biểu, và nhà trường có thể iên lạc với phụ huynh qua tin nhắn (điểm, bỏ học,
+    kỷ luật, thông báo).
+  </p>
+  <h3>Đối tượng người sử dụng</h3>
+  <p>
+    Hiệu trưởng, Hiệu phó, giáo viên, học sinh, phụ huynh học sinh và cán bộ cấp Sở, Phòng Giáo dục.<br/>
+  </p>
 
-    <h3>Góp ý</h3>
-    <p>
+  <h3>Phiên bản</h3>
+  <p>
+    Phiên bản 0.1, ngày 15/7/2011: gồm các chức năng cơ bản, ban đầu nhà trường cần thiết lập như khai báo lớp học, giáo
+    viên, học sinh, và nhập điểm, điểm danh.<br/>
+  </p>
+
+  <h3>Góp ý</h3>
+  <p>
     Phần mềm đang được phát triển và thử nghiệm nên rất mong nhận được các góp ý, thông báo lỗi về hệ thống.
     Xin vui lòng điền giúp góp ý theo mẫu <a href="/app/contact">ở đây</a>.
-    </p>
-
-    <h3>Hướng dẫn sử dụng phần mềm</h3>
-    <p>
-    Phần mềm cố gắng có giao diện tự nhiên để người sử dụng hiểu nghiệp vụ có thể sử dụng được ngay.
-      Hiện tại hướng dẫn sử dụng cho người sử dụng chưa có nghiệp vụ đang được hoàn thành.
-      Nhóm phát triển rất mong nhận được phản hồi và góp ý của người sử dụng về giao diện của hệ thống.
-      Xin xem mục Liên hệ ở trên để gửi góp ý cho chúng tôi.
-    </p>
     <br/>
-    <p> <i>
-    Xin trân thành cảm ơn.
-    </i></p>
+    <p><i>Xin trân thành cảm ơn!</i></p>
+  </p>
+
+  <br/><br/>
+  <h2>Hướng dẫn sử dụng phần mềm</h2>
+  <p>
+    Phần mềm cố gắng có giao diện tự nhiên để người sử dụng hiểu nghiệp vụ có thể sử dụng được ngay.
+    Hiện tại hướng dẫn sử dụng cho người sử dụng chưa có nghiệp vụ đang được hoàn thành.
+    Nhóm phát triển rất mong nhận được phản hồi và góp ý của người sử dụng về giao diện của hệ thống.
+    Xin xem mục Liên hệ ở trên để gửi góp ý cho chúng tôi.
+  </p>
+  <h3>Các chức năng chính</h3>
+  Các chức năng được tổ chức theo ngữ cảnh dữ liệu đang hiển thị.
+  Ví dụ trên màn hình đang hiển thị danh sách lớp học thì có các chức năng liên quan đến lớp học được hiển thị.
+  Nếu trên màn hình là danh sách học sinh thì các chức năng của học sinh sẽ được hiển thị. Một số khối chức năng chính được liệt kê trong bảng sau:
+  <table class="styleA">
+  <col width="150px"/>
+    <tr>
+      <th>Chức năng</th>
+      <th>Mô tả</th>
+    </tr>
+    <tr>
+      <td><a href={% url school.views.classes %}>Lớp học</a></td>
+      <td>Liệt kê các lớp học của trường. Chọn tiếp vào các lớp này sẽ
+        cho phép xem danh sách học sinh và các chức năng liên quan đến lớp: Nhập điểm danh, điểm, hạnh kiểm, v.v.
+        Khi người sử dụng chọn học sinh thì hồ sơ học sinh sẽ hiện lên để cập nhật.
+      </td>
+    </tr>
+    <tr>
+      <td><a href={% url school.views.teachers %}>Giáo viên</a></td>
+      <td>Xem danh sách giáo viên và chỉnh sửa hồ sơ giáo viên.</td>
+    </tr>
+    <tr>
+      <td><a href="/school/sms/">Nhắn tin</a></td>
+      <td>Đây là chức năng cho phép gửi thông tin trưc tiếp cho phụ huynh hoặc các cán bộ trong trường.
+        Chức năng nhắn tin này cũng có sẵn trong một số phần khác của hệ thống, như khi nhập điểm, điểm danh của học sinh.</td>
+    </tr>
+  </table>
+
+  <h3>Các chức năng phụ</h3>
+  Bên trái là các chức năng ít được sử dụng thường xuyên như sau:
+  <table class="styleA">
+    <col width="150px"/>
+    <tr>
+      <th>Chức năng</th>
+      <th>Mô tả</th>
+    </tr>
+    <tr>
+      <td><a href="/school/start_year/import">Nhập học sinh</a></td>
+      <td>Nhập thông sinh trúng tuyển từ file hoặc nhập trực tiếp.
+      </td>
+    </tr>
+    <tr>
+      <td>...</td>
+      <td>Đang hoàn thiện...</td>
+    </tr>
+  </table>
 {% endblock %}
 
