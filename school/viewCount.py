@@ -318,7 +318,7 @@ def countLearningInClassInTerm(class_id,term_id):
     sum=0.0
     string=['G','K','TB','Y','Kem',None]
     for i in range(string.__len__()):
-        slList[i]=TBHocKy.objects.filter(term_id=term_id,hl_hk=string[i]).count()
+        slList[i]=TBHocKy.objects.filter(term_id=term_id,hl_hk=string[i],student_id__class_id=class_id).count()
         sum+=slList[i]
     if sum!=0:    
         for i in range(string.__len__()):
