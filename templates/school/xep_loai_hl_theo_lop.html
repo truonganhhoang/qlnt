@@ -1,56 +1,51 @@
 ﻿{% extends "base.html"%}
 {% block content %}
-<script language="javascript">
-	function submitTerm()
-	{	
-		if (document.info.term.value!={{termChoice}})
-			document.info.submit();
-	}
-</script>
-<table border="0" width=100% >
-<form action="/school/xepLoaiHlTheoLop/{{class_id}}"  name="info" method="post" id='myform' 
-	>{% csrf_token %}
-	<input type="hidden" name="termChoice" value="">	
 
-	<tr>
-		<td align="center"  style="font-size:25px" >
-			<b>Bảng điểm tổng kết </b>
+	<table border="0" width=100% >
+
+	<tr >
+		<td align="center"  style="font-size:25px" colspan=3>
+			<b>Bảng điểm tổng kết <br> <br>
+			
+			{% ifequal number "1" %}
+				Học kỳ I
+			{% else %}
+			{% ifequal number "2" %}
+				Học kỳ II
+			{% else %}
+				Cả năm
+			{% endifequal %}	
+			{% endifequal %}	
+			năm học:{{yearString}} 
+			</b>
+			
 		</td>
 	</tr>
-	<tr>
-	<td>Lớp :&nbsp {{selectedClass.name}}</td>
+	
+	<tr >
+	<td colspan=3>Lớp :&nbsp {{selectedClass.name}}</td>
+	</tr>
+	<tr >
+	<td colspan=3>&nbsp</td>
 	</tr>
 	
-	
-	<tr>								
-		
-		<td width ="50%" title="Chọn học kỳ hoặc chọn cả năm" > Học kỳ &nbsp&nbsp:  
-		<select name="term" onclick="submitTerm();" >				
-			{% for term in termList %}
-					<option   value={{ term.id }} selected> {{ term}} </option>	
-			{% endfor %}	
-			
-			{% ifnotequal currentTerm.number 1 %}
-				<option value=-2 > Cả năm </option>
-			{% endifnotequal %}	
-			
-		</select>
-		</td>					
-	</tr>
-
-	<tr>
-	<td>&nbsp </td>
+	<tr colspan=3>
+		<td width="33%" > <a title="Tự động xếp loại cả năm của lớp"
+			 href="{%url school.views.school_index  %}xepLoaiHlTheoLop/{{selectedClass.id}}/1">Học kỳ I</a>
+		</td>
+		<td width="33%"> <a title="Tự động xếp loại cả năm của lớp"
+			 href="{%url school.views.school_index  %}xepLoaiHlTheoLop/{{selectedClass.id}}/2">Học kỳ II</a>
+		</td>
+		<td width="33%"> <a title="Tự động xếp loại cả năm của lớp"
+			 href="{%url school.views.school_index  %}xepLoaiHlTheoLop/{{selectedClass.id}}/3">Cả năm</a>
+		</td>
 	</tr>
 	
-<script type="text/javascript" >
-	if ({{termChoice}}>0)
-		document.info.term.value={{termChoice}};
-	else	
-		document.info.term.value=-2;
-</script>		
-	<tr>
-	<td>
-		<table class="styleA" width="100%">
+	</table>
+	
+	<br>
+	<br>
+	<table class="styleA" width="100%">
 		<tr>
 			<td  align="center" width="1%">
 				Stt
@@ -58,7 +53,7 @@
 			<td  align="center" width="18%">
 				Họ và tên
 			</td>	
-			<td align="center" width="10%">			
+			<td align="center" width="1%">			
 				Ngày sinh
 			</td>	
 			{% for s in subjectList %}
@@ -96,11 +91,9 @@
 				
 			</tr>
 		{% endfor %}
-		</table>
-	</td>	
-	</tr>	
-</form>	
-</table>
+	</table>
+
+
 
 
 {% endblock %}
