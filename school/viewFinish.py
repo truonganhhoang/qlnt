@@ -48,7 +48,7 @@ def defineHl(tb,monChuyen,monToan,monVan,minMark):
     e=0.0000001
     if monChuyen:
         firstMark=monChuyen.tb+e
-    elif monToan.tb>monVan.tb:
+    elif monToan.tb<monVan.tb:
         firstMark=monVan.tb+e
     else:
         firstMark=monToan.tb+e                
@@ -242,7 +242,7 @@ def convertHlToVietnamese(x):
     else:
         return u'Chưa đủ điểm'    
                                                              
-def xepLoaiHlTheoLop(request,class_id):
+def xepLoaiHlTheoLop(request,class_id,number):
 
     user = request.user
     if not user.is_authenticated():
@@ -269,51 +269,23 @@ def xepLoaiHlTheoLop(request,class_id):
         return HttpResponseRedirect('/school')
 
 
-    message=None    
-    yearChoice  =selectedClass.year_id.id
-          
-    currentTerm=get_current_term(request)
-    termChoice= currentTerm.id
-    
-    if (currentTerm.number==2):    
-        termList= Term.objects.filter(year_id=selectedClass.year_id,number__lt=3).order_by('number')
-    else:    
-        termList= Term.objects.filter(year_id=selectedClass.year_id,number=1).order_by('number')
+    message=None
         
-    subjectList=selectedClass.subject_set.all().order_by("-hs")
-    pupilList  =Pupil.objects.filter(class_id=class_id)
+    selectedYear  =selectedClass.year_id
+    subjectList   =selectedClass.subject_set.all()
+    pupilList     =Pupil.objects.filter(class_id=class_id).order_by('first_name', 'last_name','birthday')
     
-    selectedTerm=currentTerm
-    selectedYear=None
-    
-    message = calculateOverallMarkTerm(class_id,currentTerm.number)
-    
-    if request.method == 'POST':
-        termChoice =int(request.POST['term'])
-        if termChoice>0:
-            termNumber=Term.objects.get(id=termChoice).number
-            message = calculateOverallMarkTerm(class_id,termNumber)
-        else: 
-            message = calculateOverallMarkYear(class_id)
-                  
-        if termChoice>0:
-            selectedTerm=Term.objects.get(id=termChoice)
-        else:   
-            ttt=termChoice         
-            selectedTerm=None
-                
+    yearString = str(selectedYear.time)+"-"+str(selectedYear.time+1)
     markList=[]
-
     list=[]
-    # hoc ky 1
-    if selectedTerm!=None:
-        termNumber=term_id__number=selectedTerm.number
+    # neu la hk1 hoac hk2
+    if number<3:
+        idTerm = selectedYear.term_set.get(number=number).id   
+                     
         for p in pupilList:
             markOfAPupil=[]    
             for s in subjectList:
-                m=s.mark_set.get(student_id=p.id,term_id__number=termNumber)
-
-
+                m=s.mark_set.get(student_id=p.id,term_id=idTerm)
                 if s.hs!=0:                                        
                     if m.tb!=None:                                    
                         markOfAPupil.append(m.tb)
@@ -322,15 +294,12 @@ def xepLoaiHlTheoLop(request,class_id):
                 else:
                     markOfAPupil.append(convertMarkToCharacter(m.tb))    
             
-            tbHocKy=p.tbhocky_set.get(term_id__number=termNumber)
-
- 
+            tbHocKy=p.tbhocky_set.get(term_id=idTerm)
             if tbHocKy.tb_hk==None:
                 markOfAPupil.append('')
             else:    
                 markOfAPupil.append(tbHocKy.tb_hk)    
-            markOfAPupil.append(convertHlToVietnamese(tbHocKy.hl_hk))
-                            
+            markOfAPupil.append(convertHlToVietnamese(tbHocKy.hl_hk))                            
             markList.append(markOfAPupil)    
         list=zip(pupilList,markList)    
     else:
@@ -346,7 +315,8 @@ def xepLoaiHlTheoLop(request,class_id):
                 else:
                     markOfAPupil.append(convertMarkToCharacter(m.tb_nam))    
             
-            tbCaNam=p.tbnam_set.get(year_id=yearChoice)
+            tbCaNam=p.tbnam_set.get(year_id=selectedYear.id)
+            
             if tbCaNam.tb_nam==None:
                 markOfAPupil.append('')
             else:        
@@ -361,14 +331,11 @@ def xepLoaiHlTheoLop(request,class_id):
     t = loader.get_template(os.path.join('school','xep_loai_hl_theo_lop.html'))
     
     c = RequestContext(request, {"message":message, 
-                                 "termList":termList,
                                  "subjectList":subjectList,
                                  "list":list,
                                  "selectedClass":selectedClass,
-                                 "termChoice":termChoice,
-                                 "selectedTerm":selectedTerm,
-                                 "class_id":class_id,
-                                 "currentTerm":currentTerm,
+                                 "number":number,
+                                 "yearString":yearString,
                                 }
                        )
     

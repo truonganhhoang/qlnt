@@ -20,7 +20,7 @@ urlpatterns = patterns('',
     url(r'sendSMSMark$','school.viewMark.sendSMSMark'),
     
 	# xep loai hoc luc theo lop, gom co xep loai k1, k2 va ca nam
-    url(r'xepLoaiHlTheoLop/(?P<class_id>\w+)','school.viewFinish.xepLoaiHlTheoLop'),	
+    url(r'xepLoaiHlTheoLop/(?P<class_id>\w+)/(?P<number>\w+)','school.viewFinish.xepLoaiHlTheoLop'),	
     url(r'xlCaNamTheoLop/(?P<class_id>\w+)','school.viewFinish.xlCaNamTheoLop'),		
 	# tinh diem tong ket hoc luc toan truong	
 	# tong ket hoc ky, tinh toan bo hoc luc cua hoc sinh trong toan truong
