@@ -335,7 +335,7 @@ class KiLuat(models.Model):
 class HanhKiem(models.Model):
     student_id = models.ForeignKey(Pupil, verbose_name = "Học sinh")
     term_id = models.ForeignKey(Term, verbose_name = "Kì")    
-    loai = models.CharField("Hạnh kiểm",default=u'T', max_length = 2, choices = HK_CHOICES, null=True,blank=True)
+    loai = models.CharField("Hạnh kiểm",max_length = 2, choices = HK_CHOICES, null=True,blank=True)
     
     class Meta:
         verbose_name = "Hạnh kiểm"
@@ -347,6 +347,10 @@ class HanhKiem(models.Model):
 class TBHocKy(models.Model):
     student_id = models.ForeignKey(Pupil, verbose_name = "Học sinh")
     term_id = models.ForeignKey(Term, verbose_name = "Kì")
+
+    numberSubject=models.SmallIntegerField("số lượng môn",null=True,blank=True)
+    numberFinish =models.SmallIntegerField("số lượng môn chưa tổng kết xong",default=0)
+    
     
     tb_hk = models.FloatField("Trung bình học kì", validators = [validate_mark], null = True, blank = True)        
     hl_hk = models.CharField("Học lực", max_length = 3, choices = HL_CHOICES, null = True, blank = True)
@@ -363,10 +367,13 @@ class TBNam(models.Model):
     student_id = models.ForeignKey(Pupil, verbose_name = "Học sinh")
     year_id = models.ForeignKey(Year, verbose_name = "Năm học")
     
+    numberSubject=models.SmallIntegerField("số lượng môn",null=True,blank=True)
+    numberFinish =models.SmallIntegerField("số lượng môn chưa tổng kết xong",default=0)
+    
     tb_nam = models.FloatField("Trung bình năm", validators = [validate_mark], null = True, blank = True)
     hl_nam=models.CharField("Học lực", max_length = 3, choices = HL_CHOICES, null = True, blank = True)
     #hanh kiem nam
-    hk_nam=models.CharField("Hạnh kiểm", default=u'T', max_length = 2, choices = HK_CHOICES, null = True, blank = True)
+    hk_nam=models.CharField("Hạnh kiểm",max_length = 2, choices = HK_CHOICES, null = True, blank = True)
     tong_so_ngay_nghi=models.SmallIntegerField("Số ngày nghỉ", null = True, blank = True)
     #ghi danh hieu ma hoc sinh dat dc trong hoc ky    
     danh_hieu_nam=models.CharField("Danh hiệu", max_length = 2, choices = DH_CHOICES,null=True,blank=True)
