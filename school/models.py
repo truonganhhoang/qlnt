@@ -281,6 +281,70 @@ class Mark(models.Model):
     def __unicode__(self):
         return self.subject_id.name + " " + str(self.term_id.number) + self.student_id.first_name
 
+class MarkTime(models.Model):
+    
+    mieng_1 = models.DateTimeField("Thời gian cập nhật điểm miệng 1", null = True, blank = True)
+    mieng_2 = models.DateTimeField("Thời gian cập nhật điểm miệng 2", null = True, blank = True)
+    mieng_3 = models.DateTimeField("Thời gian cập nhật điểm miệng 3", null = True, blank = True)
+
+    mieng_4 = models.DateTimeField("Thời gian cập nhật điểm miệng 4", null = True, blank = True)
+    mieng_5 = models.DateTimeField("Thời gian cập nhật điểm miệng 5", null = True, blank = True)
+    mlam_1 = models.DateTimeField("Thời gian cập nhật điểm 15' 1", null = True, blank = True)
+    mlam_2 = models.DateTimeField("Thời gian cập nhật điểm 15' 2", null = True, blank = True)
+    mlam_3 = models.DateTimeField("Thời gian cập nhật điểm 15' 3", null = True, blank = True)
+    mlam_4 = models.DateTimeField("Thời gian cập nhật điểm 15' 4", null = True, blank = True)
+    mlam_5 = models.DateTimeField("Thời gian cập nhật điểm 15' 5", null = True, blank = True)
+    
+    mot_tiet_1 = models.DateTimeField("Thời gian cập nhật điểm 1 tiết 1", null = True, blank = True)
+    mot_tiet_2 = models.DateTimeField("Thời gian cập nhật điểm 1 tiết 2", null = True, blank = True)
+    mot_tiet_3 = models.DateTimeField("Thời gian cập nhật điểm 1 tiết 3", null = True, blank = True)
+    mot_tiet_4 = models.DateTimeField("Thời gian cập nhật điểm 1 tiết 4", null = True, blank = True)
+    mot_tiet_5 = models.DateTimeField("Thời gian cập nhật điểm 1 tiết 5", null = True, blank = True)
+    
+    ck = models.DateTimeField("Thời gian cập nhật điểm thi cuối kì", null = True, blank = True)
+    tb = models.DateTimeField("Thời gian cập nhật điểm trung bình", null = True, blank = True)
+    
+    mark_id = models.OneToOneField(Mark, verbose_name = "Điểm")
+    
+    class Meta:
+        verbose_name = "Bảng thời gian cập nhật điểm"
+        verbose_name_plural = "Bảng thời gian cập nhật điểm"
+
+    def __unicode__(self):
+        return self.subject_id.name + " " + str(self.term_id.number) + self.student_id.first_name
+
+class SentMark(models.Model):
+    
+    mieng_1 = models.BooleanField("Đã gửi đểm miệng 1", default = False)
+    mieng_2 = models.BooleanField("Đã gửi điểm miệng 2", default = False)
+    mieng_3 = models.BooleanField("Đã gửi điểm miệng 3", default = False)
+    mieng_4 = models.BooleanField("Đã gửi điểm miệng 4", default = False)
+    mieng_5 = models.BooleanField("Đã gửi điểm miệng 5", default = False)
+    mlam_1 = models.BooleanField("Đã gửi điểm 15' 1", default = False)
+    mlam_2 = models.BooleanField("Đã gửi điểm 15' 2", default = False)
+    mlam_3 = models.BooleanField("Đã gửi điểm 15' 3", default = False)
+    mlam_4 = models.BooleanField("Đã gửi điểm 15' 4", default = False)
+    mlam_5 = models.BooleanField("Đã gửi điểm 15' 5", default = False)
+    
+    mot_tiet_1 = models.BooleanField("Đã gửi điểm 1 tiết 1", default = False)
+    mot_tiet_2 = models.BooleanField("Đã gửi điểm 1 tiết 2", default = False)
+    mot_tiet_3 = models.BooleanField("Đã gửi điểm 1 tiết 3", default = False)
+    mot_tiet_4 = models.BooleanField("Đã gửi điểm 1 tiết 4", default = False)
+    mot_tiet_5 = models.BooleanField("Đã gửi điểm 1 tiết 5", default = False)
+    
+    ck = models.BooleanField("Đã gửi điểm thi cuối kì", default = False)
+    tb = models.BooleanField("Đã gửi điểm trung bình", default = False)
+    
+    mark_id = models.OneToOneField(Mark, verbose_name = "Điểm")
+    
+    class Meta:
+        verbose_name = "Bảng thời gian cập nhật điểm"
+        verbose_name_plural = "Bảng thời gian cập nhật điểm"
+
+    def __unicode__(self):
+        return self.subject_id.name + " " + str(self.term_id.number) + self.student_id.first_name
+
+
 class TKMon(models.Model):    
     tb_nam = models.FloatField("Trung bình năm", null = True, blank = True, validators = [validate_mark])
     #danh dau xem mon nay co dc phep thi lai hay ko

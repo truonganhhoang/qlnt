@@ -243,6 +243,7 @@ def add_student( student = None, start_year = None , year = None,
             tb_nam.year_id = year
             tb_nam.save()
             
+            
             if _class:        
                 subjects = _class.subject_set.all()
                 for subject in subjects:
