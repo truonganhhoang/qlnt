@@ -1552,7 +1552,7 @@ def deleteClass(request, class_id):
         return HttpResponseRedirect('/')
     if (get_position(request) < 4):
         return HttpResponseRedirect('/')
-    s.delete()
+    completely_del_subject(s)
     return HttpResponseRedirect('/school/classes')
 
 def deleteStudentInClass(request, student_id):
