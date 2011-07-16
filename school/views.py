@@ -1515,7 +1515,7 @@ def deleteSubject(request, subject_id):
     class_id = sub.class_id    
     if in_school(request, class_id.block_id.school_id) == False:
         return HttpResponseRedirect('/')
-    sub.delete()
+    completely_del_subject(sub)
     url = '/school/subjectPerClass/' + str(class_id.id)
     return HttpResponseRedirect(url)
 
@@ -1552,7 +1552,7 @@ def deleteClass(request, class_id):
         return HttpResponseRedirect('/')
     if (get_position(request) < 4):
         return HttpResponseRedirect('/')
-    completely_del_subject(s)
+    s.delete()
     return HttpResponseRedirect('/school/classes')
 
 def deleteStudentInClass(request, student_id):
