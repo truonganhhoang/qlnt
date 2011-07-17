@@ -200,6 +200,10 @@ def getMark(class_id,subjectChoice,selectedTerm):
     if selectedTerm.number==1:            
         i=1    
         for p in pupilList:
+            print p
+            print subjectChoice
+            print selectedTerm.id
+            print p.mark_set.all()
             m = p.mark_set.get(subject_id=subjectChoice,term_id=selectedTerm.id)
             
             markList.append(m)

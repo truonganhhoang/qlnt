@@ -237,6 +237,8 @@ class Pupil(BasicPersonInfo):
 class Subject(models.Model):    
     name = models.CharField("Tên môn học(*)", max_length = 45) # can't be null
     hs = models.FloatField("Hệ số(*)", validators = [validate_hs])
+    
+    primary = models.BooleanField("Tính vào cuối năm", default = True)
 
     class_id = models.ForeignKey(Class, verbose_name = "Lớp(*)")    
     teacher_id = models.ForeignKey(Teacher, verbose_name = "Giáo viên(*)", null= True, blank = True) # field nay de cung cap permission cho giao vien de nhap diem
@@ -244,6 +246,9 @@ class Subject(models.Model):
     class Meta:
         verbose_name = "Môn"
         verbose_name_plural = "Môn"
+    
+    def is_primary(self):
+        return primary
     
     def __unicode__(self):
         return self.name
@@ -412,8 +417,8 @@ class TBHocKy(models.Model):
     student_id = models.ForeignKey(Pupil, verbose_name = "Học sinh")
     term_id = models.ForeignKey(Term, verbose_name = "Kì")
 
-    numberSubject=models.SmallIntegerField("số lượng môn",null=True,blank=True)
-    numberFinish =models.SmallIntegerField("số lượng môn chưa tổng kết xong",default=0)
+    number_subject=models.SmallIntegerField("số lượng môn",null=True,blank=True, default=0)
+    number_finish =models.SmallIntegerField("số lượng môn đã tổng kết xong", default=0)
     
     
     tb_hk = models.FloatField("Trung bình học kì", validators = [validate_mark], null = True, blank = True)        
@@ -431,8 +436,8 @@ class TBNam(models.Model):
     student_id = models.ForeignKey(Pupil, verbose_name = "Học sinh")
     year_id = models.ForeignKey(Year, verbose_name = "Năm học")
     
-    numberSubject=models.SmallIntegerField("số lượng môn",null=True,blank=True)
-    numberFinish =models.SmallIntegerField("số lượng môn chưa tổng kết xong",default=0)
+    number_subject=models.SmallIntegerField("số lượng môn",null=True,blank=True, default=0)
+    number_finish =models.SmallIntegerField("số lượng môn chưa tổng kết xong", default=0)
     
     tb_nam = models.FloatField("Trung bình năm", validators = [validate_mark], null = True, blank = True)
     hl_nam=models.CharField("Học lực", max_length = 3, choices = HL_CHOICES, null = True, blank = True)

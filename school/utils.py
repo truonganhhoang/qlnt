@@ -187,8 +187,13 @@ def add_student( student = None, start_year = None , year = None,
         find = start_year.pupil_set.filter( first_name__exact = first_name)\
                                    .filter(last_name__exact = last_name)\
                                    .filter(birthday__exact = birthday)
+        # count primary subjects
+        number_subject = 0
+        if _class:
+            number_subject = _class.subject_set.filter( primary = True).count()
         if find: # the student exists:
             find = find[0]
+            print "student exists", find
             find.class_id = _class
             if _class is not find.class_id:
                 move_student( find, find.class_id, _class)
@@ -230,6 +235,7 @@ def add_student( student = None, start_year = None , year = None,
                
                 tb_hoc_ky = TBHocKy()
                 tb_hoc_ky.student_id = st
+                tb_hoc_ky.number_subject = number_subject
                 tb_hoc_ky.term_id = term1
                 tb_hoc_ky.save()
               
@@ -240,6 +246,7 @@ def add_student( student = None, start_year = None , year = None,
                         
             tb_nam = TBNam()
             tb_nam.student_id = st
+            tb_nam.number_subject = number_subject
             tb_nam.year_id = year
             tb_nam.save()
             
@@ -271,7 +278,7 @@ def del_student( student):
     student.save()    
     
 def completely_del_student( student):
-    student.delete()
+    student.user_id.delete()
 
 def add_teacher( first_name = None, last_name = None, full_name = None, school = None,
                  birthday = None, sex = 'N', birthplace = None):
@@ -304,8 +311,13 @@ def del_teacher( teacher):
     teacher.user_id.delete()
     #teacher.delete()    
 # subject_name: string, teacher : Teacher object, _class : Class object
-def add_subject( subject_name = None, hs = 1, teacher = None, _class = None, term = None):
+def add_subject( subject_name = None, hs = 1, teacher = None, _class = None):
     find = _class.subject_set.filter( name__exact = subject_name)
+    try:
+        term = _class.year_id.term_set.get(number = _class.year_id.school_id.status)
+    except Exception as e:
+        print e
+        raise Exception("TermDoesNotExist")
     if find:
         raise Exception("SubjectExist")
     else:
@@ -328,8 +340,93 @@ def add_subject( subject_name = None, hs = 1, teacher = None, _class = None, ter
             tkmon.student_id = student
             tkmon.subject_id = subject
             tkmon.save()
+            
+            # get TBHocKy
+            school = _class.year_id.school_id
+            current_term = _class.year_id.term_set.get( number = school.status )
+            print current_term
+            try:
+                tbhocky = student.tbhocky_set.get( term_id = current_term)
+                print tbhocky
+                tbhocky.number_subject += 1
+                tbhocky.save()
+            except Exception as e:
+                print e
+            
+            # get TBNam
+            try:
+                tbnam = student.tbnam_set.get( year_id = _class.year_id)
+                print tbnam
+                tbnam.number_subject += 1
+                tbnam.save()
+            except Exception as e:
+                print e
+
+def change_primary( subject, primary):
+    if subject.primary != primary:
+        _class = subject.class_id
+        students = _class.pupil_set.all()
+        if subject.is_primary():
+            for student in students:
+                # get tbHocKy
+                school = _class.year_id.school_id
+                current_term = _class.year_id.term_set.get( number = school.status)
+                print current_term
+                try:
+                    tbhocky = student.tbhocky_set.get( term_id = current_term)
+                    print tbhocky
+                    if primary:
+                        tbhocky.number_subject += 1
+                    else:
+                        tbhocky.number_subject -= 1
+                    if tbhocky.number_subject < 0: raise Exception("TBHocKy.number_subject<0")
+                    tbhocky.save()
+                except Exception as e:
+                    print e
+                
+                # get TBNam
+                try:
+                    tbnam = student.tbnam_set.get( year_id = _class.year_id)
+                    print tbnam
+                    if primary:
+                        tbnam.number_subject += 1
+                    else:
+                        tbnam.number_subject -= 1
+                    if tbnam.number_subject < 0: raise Exception("TBNam.number_subject<0")
+                    tbnam.save()
+                except Exception as e:
+                    print e 
+        subject.primary = primary
+        subject.save()   
 
 def completely_del_subject( subject):
+    _class = subject.class_id
+    students = _class.pupil_set.all()
+    if subject.is_primary():
+        for student in students:
+            # get tbHocKy
+            school = _class.year_id.school_id
+            current_term = _class.year_id.term_set.get( number = school.status)
+            print current_term
+            try:
+                tbhocky = student.tbhocky_set.get( term_id = current_term)
+                print tbhocky
+                tbhocky.number_subject -= 1
+                if tbhocky.number_subject < 0: raise Exception("TBHocKy.number_subject<0")
+                tbhocky.save()
+            except Exception as e:
+                print e
+            
+            # get TBNam
+            try:
+                tbnam = student.tbnam_set.get( year_id = _class.year_id)
+                print tbnam
+                tbnam.number_subject -= 1
+                if tbnam.number_subject < 0: raise Exception("TBNam.number_subject<0")
+                tbnam.save()
+            except Exception as e:
+                print e
+
     subject.delete()                
             
 def get_school(request):

@@ -341,11 +341,7 @@ def b1(request):
                 _class.year_id = year
                 _class.save()
                 for mon in ds_mon_hoc:
-                    subject = Subject()
-                    subject.name = mon
-                    subject.hs = 1
-                    subject.class_id = _class
-                    subject.save()
+                    add_subject( mon, 1, None, _class)
         # -- day cac hoc sinh len lop        
         last_year = school.year_set.filter(time__exact=current_year -1)
         if last_year:
