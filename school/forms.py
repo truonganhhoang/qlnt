@@ -142,6 +142,16 @@ class MarkForm(forms.ModelForm):
 class DateForm(forms.Form):
     date = forms.DateField(label = '', widget = SelectDateWidget(years = range( this_year(), this_year()-2 , -1)), initial = date.today())
 
+        
+class DateAndClassForm(forms.Form):
+    date = forms.DateField(label = '', widget = SelectDateWidget(years = range( this_year(), this_year()-2 , -1)), initial = date.today())
+    class_id = forms.ModelChoiceField(queryset = Class)
+    
+    def __init__(self, year_id, *args, **kwargs):
+        print 'abc'
+        super(DateAndClassForm, self).__init__(*args, **kwargs)
+        self.fields['class_id'] = forms.ModelChoiceField(queryset = Class.objects.filter(year_id = year_id), label = u'Lớp')
+    
 class UploadImportFileForm(forms.Form):
     def __init__(self, * args, ** kwargs):
         print "Access __init___" 

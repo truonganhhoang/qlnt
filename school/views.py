@@ -1382,6 +1382,31 @@ def time_select(request, class_id):
     c = RequestContext(request, {'form':form, 'class_id':class_id, 'message':message})
     return HttpResponse(t.render(c))
 
+def tnc_select(request):
+    year_id = get_current_year(request).id
+    user = request.user
+    if not user.is_authenticated():
+        return HttpResponseRedirect(reverse('login'))
+    pos = get_position(request)
+    if (pos < 2):
+        return HttpResponseRedirect('/')
+    message = 'Hãy chọn ngày và lớp học bạn muốn điểm danh'
+    form = DateAndClassForm(year_id)
+    if request.method == 'POST':
+        form = DateAndClassForm(year_id,request.POST)
+        if form.is_valid():
+            class_id = str(request.POST['class_id'])
+            day = str(request.POST['date_day'])
+            month = str(request.POST['date_month'])
+            year = str(request.POST['date_year'])
+            url = '/school/diemdanh/' + str(class_id) + '/' + str(day) + '/' + str(month) + '/' + str(year)
+            return HttpResponseRedirect(url)
+        else:
+            message = 'Hãy sửa những lỗi sai dưới đây'
+    t = loader.get_template(os.path.join('school', 'time_class_select.html'))
+    c = RequestContext(request, {'form':form, 'message':message})
+    return HttpResponse(t.render(c))
+    
 def ds_nghi(request, class_id, day, month, year):
     pos = get_position(request)
     cl  = Class.objects.get(id=class_id)
