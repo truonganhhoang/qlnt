@@ -1839,3 +1839,33 @@ def hanh_kiem(request, class_id, term_number = 1, sort_type = 1, sort_status = 0
                                     'year' : year,
                                     'pos':pos})
     return HttpResponse(t.render(c))
+
+def viewSubjectDetail (request, subject_id):
+    user = request.user
+    if not user.is_authenticated():
+        return HttpResponseRedirect(reverse('login'))
+    if (get_position(request) < 4):
+        return HttpResponseRedirect('/')
+    sub = Subject.objects.get(id=subject_id)        
+    class_id = sub.class_id    
+    if in_school(request, class_id.block_id.school_id) == False:
+        return HttpResponseRedirect('/')
+    
+    form = SubjectForm (class_id.block_id.school_id.id, instance = sub)
+    message = None
+    if request.method == 'POST':
+        data = request.POST        
+        form = SubjectForm(class_id.block_id.school_id.id, data, instance = sub)
+        if form.is_valid():
+            form.save()
+            message = 'Bạn đã cập nhật thành công'
+        else:
+            message = 'Bạn vui lòng sửa một số lỗi sai dưới đây'
+            
+    t = loader.get_template(os.path.join('school', 'subject_detail.html'))
+    c = RequestContext(request, {   'form':form, 
+                                    'message':message,
+                                    'id': subject_id,
+                                    'class_id' : sub.class_id.id
+                                    })
+    return HttpResponse(t.render(c))

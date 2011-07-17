@@ -4,35 +4,20 @@
 {% if message != None %}
 	{{message}} <br>
 {% endif %}
+
+<script>
+function confirmCancel()
+{
+    return confirm("Bạn có chắc chắn muốn hủy cập nhật?");
+}
+</script>
+
 <form action="/school/viewSubjectDetail/{{id}}" method="post">{% csrf_token %}
     {{ form.non_field_errors }}
-            <td align="center" width="20%">
-                    {{ form.name.errors }}
-					<p><label for="id_brithday">Tên Môn học:</label>
-                    {{ form.name }}</p>
-            </td>
-            
-            <td align="center" width="10%">
-                    {{form.hs.errors }}
-					<p><label for="id_hs">Hệ số:</label>
-                    {{ form.hs }}</p>
-            </td>
-
-            <td align="center" width="25%">
-                    {{ form.teacher_id.errors }}
-					<p><label for="id_teacher_id">Giáo viên:</label>
-                    {{ form.teacher_id }}</p>
-            </td>
-			
-			<td align="center" width="25%">
-                    {{ form.class_id.errors }}
-					<p><label for="id_class_id">Lớp:</label>
-                    {{ form.class_id }}</p>
-            </td>
-    
-   {% if message != None %}
-	{{message}} <br>
-	{% endif %}
-	<input type ="submit" value="Cập nhật"/>
+    <table class="styleA styleDetail">
+	    {{ form.as_table }}
+	 </table>
+    <input type ="submit" value="Cập nhật"/>
+    <a title ="Hủy mọi thao tác và quay về quản lý môn học" href="{%url school.views.school_index  %}subjectPerClass/{{class_id}}" onclick="return confirmCancel();"><input type = "button" value = "Hủy"></a>
 </form>
 {% endblock %}

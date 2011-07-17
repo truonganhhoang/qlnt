@@ -30,11 +30,12 @@ function confirmDelete()
         {% for ss,f in list %}
         <tr>
             <td width="5%">{{forloop.counter}} </td>
-            <td align="center" width="20%"> {{ss.name}}</td>
             {%if pos > 3%}
+                <td align="center" width="20%"> <a title="Chỉnh sửa thông tin môn học" href="{%url school.views.school_index  %}viewSubjectDetail/{{ss.id}}">{{ss.name}}</a></td>
                 <td align="center" width="10%"> {{f.hs}} </td>
                 <td align="center" width="25%"> {{f.teacher_id}}</td>
             {%else%}
+                <td align="center" width="20%"> {{ss.name}}</td>
                 <td align="center" width="10%"> {{ss.hs}} </td>
                 <td align="center" width="25%"> {{ss.teacher_id}}</td>
             {%endif%}
