@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<h2 align = center>Hạnh kiểm lớp {{class}} năm {{year}}</h2>
+<h2>Hạnh kiểm lớp {{class}} năm {{year}}</h2>
 
 
 <form action="/school/hanhkiem/{{class.id}}/{{term}}" method="post">{% csrf_token %}       

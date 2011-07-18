@@ -782,7 +782,7 @@ def classes(request, sort_type=1, sort_status=0, page=1):
 
 
 #User: loi.luuthe@gmail.com
-#This function recieves a form from template, then imediately it creates new class with the information of form
+#This function receives a form from template, and immediately creates new class with from the form information
 def addClass(request):
     user = request.user
     if not user.is_authenticated():
@@ -1328,7 +1328,7 @@ def diem_danh(request, class_id, day, month, year):
             form.append(DiemDanhForm())
     listdh = zip(pupilList, form)
     if request.method == 'POST':
-        message = 'Cập nhật thành công danh sách điểm danh lớp ' + str(Class.objects.get(id=class_id)) + '. Ngày ' + str(time)
+        message = 'Điểm danh lớp ' + str(Class.objects.get(id=class_id)) + '. Ngày ' + str(time) + "đã xong."
         list = request.POST.getlist('loai')
         i = 0
         for p in pupilList:
@@ -1362,7 +1362,7 @@ def time_select(request, class_id):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
-    message = 'Hãy chọn 1 ngày'
+    message = 'Chọn ngày điểm danh'
     try:
         cl = Class.objects.get(id__exact=class_id)
         term = get_current_term(request)
