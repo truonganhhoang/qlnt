@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+    {%if message != None %}
+        <br>
+        {{message}}
+        <form action="" method="post">{% csrf_token %}
+            {{form.as_p}}
+            <td><input type ="submit" value="Chọn"/></td>
+        </form>
+    {% endif %}
+{% endblock %}
