@@ -1091,6 +1091,8 @@ def subjectPerClass(request, class_id, sort_type=1, sort_status=0):
         else:
             subjectList = cl.subject_set.order_by('-teacher_id__first_name')
     sfl = []
+    year = get_current_year(request)
+    classList = year.class_set.all()
     for s in subjectList:
         sfl.append(SubjectForm(school_id, instance=s))
     list = zip(subjectList, sfl)
@@ -1105,6 +1107,7 @@ def subjectPerClass(request, class_id, sort_type=1, sort_status=0):
                                     'sort_status':sort_status, 
                                     'next_status':1-int(sort_status), 
                                     'term':term,
+                                    'classList':classList,
                                     'pos':pos})
     return HttpResponse(t.render(c))
 
@@ -1823,7 +1826,7 @@ def hanh_kiem(request, class_id, sort_type = 1, sort_status = 0):
             form[i] = HanhKiemForm(data, instance=hk)
             form[i].save()        
             i = i + 1            
-    
+    classList = year.class_set.all()
     listdh = zip(pupilList, form, all)
     t = loader.get_template(os.path.join('school', 'hanh_kiem.html'))
     c = RequestContext(request, {   'form':form,                                     
@@ -1835,6 +1838,7 @@ def hanh_kiem(request, class_id, sort_type = 1, sort_status = 0):
                                     'next_status':1-int(sort_status),                                     
                                     'year' : year,
                                     'term' : term,
+                                    'classList':classList,
                                     'pos':pos})
     return HttpResponse(t.render(c))
 

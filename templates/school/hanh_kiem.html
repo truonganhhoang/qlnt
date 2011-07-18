@@ -1,10 +1,27 @@
 ﻿{% extends "base.html" %}
 
 {% block content %}
+<script language="JavaScript" type="text/javascript" >
+function submitClass(){
+        if (document.info.class.value!={{class.id}})
+        if (document.info.class.value!=-1)
+        {	
+            window.location = "{%url school.views.school_index  %}hanhkiem/"+document.info.class.value;
+        }	
+}
+</script>
 
 <h2>Hạnh kiểm lớp {{class}} năm {{year}}</h2>
 
-
+<form action="/school/hanhkiem/{{class.id}}" name = "info" method = post">{% csrf_token %}       
+    <select name="class" onchange="submitClass()">       
+        <option value = -1> Chọn lớp khác </option>
+        {% for cl in classList %}
+            <option  value={{cl.id }}> Lớp {{cl}}</option>		
+        {% endfor %}		
+    </select>
+</form>
+    
 <form action="/school/hanhkiem/{{class.id}}" method="post">{% csrf_token %}       
 <table class="styleA" width = "75%">
 
@@ -19,9 +36,8 @@
     </tr>
     {% if message != None %}
     {{message}}
-    {% endif %}
-    
-    {{tmp.term1}}
+    {% endif %}    
+        
         {% for p,f, v in list %}
             <tr>
                 <td align="center" width="5%">

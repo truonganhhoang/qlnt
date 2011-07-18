@@ -2,13 +2,31 @@
 
 {% block content %}
 
-<script>
+<script language="JavaScript" type="text/javascript" >
+function submitClass(){
+        if (document.info.class.value!={{class_id}})
+        if (document.info.class.value!=-1)
+        {	
+            window.location = "{%url school.views.school_index  %}subjectPerClass/"+ document.info.class.value;
+        }	
+}
 function confirmDelete()
 {
     return confirm("Bạn có chắc chắn xóa không?");
 }
+
 </script>
 <h1>Danh sách môn học lớp {{cl}} học kì {{term}}</h1>
+
+<form action="" name = "info" method = post">{% csrf_token %}       
+    <select name="class" onchange="submitClass()">       
+        <option value = -1> Chọn lớp khác </option>
+        {% for cl in classList %}
+            <option  value={{cl.id }}> Lớp {{cl}}</option>		
+        {% endfor %}		
+    </select>
+</form>
+
 <table class="styleA" width = "75%" align = "left">
     <tr>
 		<th width="5%"> STT </td>
