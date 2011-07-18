@@ -47,4 +47,4 @@ admin.site.register(TKDiemDanh)
 admin.site.register(TKMon)
 admin.site.register(DanhSachLoaiLop)
 admin.site.register(MarkTime)
-admin.site.register(SentMark)
+
