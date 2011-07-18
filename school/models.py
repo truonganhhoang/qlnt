@@ -403,8 +403,10 @@ class KiLuat(models.Model):
         
 class HanhKiem(models.Model):
     student_id = models.ForeignKey(Pupil, verbose_name = "Học sinh")
-    term_id = models.ForeignKey(Term, verbose_name = "Kì")    
-    loai = models.CharField("Hạnh kiểm",max_length = 2, choices = HK_CHOICES, null=True,blank=True)
+    year_id = models.ForeignKey(Year, verbose_name = "Năm học")    
+    term1 = models.CharField("Kì 1",max_length = 2, choices = HK_CHOICES, null=True,blank=True)
+    term2 = models.CharField("Kì 2",max_length = 2, choices = HK_CHOICES, null=True,blank=True)
+    year = models.CharField("Cả năm",max_length = 2, choices = HK_CHOICES, null=True,blank=True)
     
     class Meta:
         verbose_name = "Hạnh kiểm"

@@ -226,13 +226,13 @@ def add_student( student = None, start_year = None , year = None,
             st.user_id = user
             st.save()
             
+            hk = HanhKiem()
+            hk.year_id=year
+            hk.student_id=st
+            hk.save()
             for i in range(1,3):
-                term1 = year.term_set.get( number__exact = i)
-                hk = HanhKiem()
-                hk.student_id = st
-                hk.term_id = term1               
-                hk.save()
-               
+                term1 = year.term_set.get( number__exact = i)                
+                
                 tb_hoc_ky = TBHocKy()
                 tb_hoc_ky.student_id = st
                 tb_hoc_ky.number_subject = number_subject

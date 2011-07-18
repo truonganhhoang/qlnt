@@ -1,28 +1,21 @@
 ﻿{% extends "base.html" %}
 
 {% block content %}
-<br>
-{%if term < 3%}
-<h1 align = center>Hạnh kiểm lớp {{class}} kì {{term}} năm {{year}}</h1>
-{% else %}
-<h1 align = center>Hạnh kiểm lớp {{class}} năm {{year}}</h1>
-{% endif %}
-<table border = 0 width = "90%" align="center">
-	<tr>
-		<td width = "30%"><a href="{%url school.views.school_index  %}hanhkiem/{{class.id}}/1">Hạnh kiểm kì 1</a></td>        
-		<td width = "30%"><a href="{%url school.views.school_index  %}hanhkiem/{{class.id}}/2">Hạnh kiểm kì 2</a></td>
-		<td width = "30%"><a href="{%url school.views.school_index  %}hanhkiem/{{class.id}}/3">Hạnh kiểm cả năm</a></td>       
-	</tr>	
-</table>
+
+<h2 align = center>Hạnh kiểm lớp {{class}} năm {{year}}</h2>
+
+
 <form action="/school/hanhkiem/{{class.id}}/{{term}}" method="post">{% csrf_token %}       
-<table class="styleA" width = "85%">
+<table class="styleA" width = "75%">
 
     <tr>
         <th align="center" width="5%"> STT </th>
-        <th align="center" width="20%"> <a href="{%url school.views.school_index  %}hanhkiem/{{class.id}}/{{term}}/1/{{next_status}}">Họ & Tên </a></th>
-        <th align="center" width="20%"> <a href="{%url school.views.school_index  %}hanhkiem/{{class.id}}/{{term}}/2/{{next_status}}">Ngày sinh</a></th>
-        <th align="center" width="20%"> <a href="{%url school.views.school_index  %}hanhkiem/{{class.id}}/{{term}}/3/{{next_status}}">Giới tính </a></th>
-        <th align="center" width="20%"> Hạnh Kiểm </th>
+        <th align="center" width="20%"> <a href="{%url school.views.school_index  %}hanhkiem/{{class.id}}/1/{{next_status}}">Họ tên </a></th>
+        <th align="center" width="10%"> <a href="{%url school.views.school_index  %}hanhkiem/{{class.id}}/2/{{next_status}}">Ngày sinh</a></th>
+        <th align="center" width="10%"> <a href="{%url school.views.school_index  %}hanhkiem/{{class.id}}/3/{{next_status}}">Giới tính </a></th>
+        <th align="center" width="10%"> Kì 1 </th>
+        <th align="center" width="10%"> Kì 2 </th>
+        <th align="center" width="10%"> Cả năm </th>
     </tr>
     {% if message != None %}
     {{message}}
@@ -39,22 +32,26 @@
                     <p>{{ p.last_name }} {{p.first_name}}</p>
                 </td>
 
-                <td align="center" width="20%">
+                <td align="center" width="10%">
                     <p>{{ p.birthday|date:"SHORT_DATE_FORMAT"}}</p>
                 </td>
 
-                <td align="center" width="20%">
+                <td align="center" width="10%">
                     <p>{{ p.sex }}</p>
                 </td>
                 {%if pos > 3 %}
-                <td align="center" width="20%">
-                    {{ f.loai.errors }}
-                    <p>{{ f.loai }}</p>
+                <td align="center" width="10%">
+                    {{ f.term1.errors }}
+                    <p>{{ f.term1 }}</p>
                 </td>
-                {%else%}
-                <td align="center" width="20%">                    
-                    <p>{{ p.loai }}</p>
+                <td align="center" width="10%">
+                    {{ f.term2.errors }}
+                    <p>{{ f.term2 }}</p>
                 </td>
+                <td align="center" width="10%">
+                    {{ f.year.errors }}
+                    <p>{{ f.year }}</p>
+                </td>                
                 {%endif%}
             </tr>
         {% endfor %}        
