@@ -282,6 +282,14 @@ class Mark(models.Model):
     class Meta:
         verbose_name = "Bảng điểm"
         verbose_name_plural = "Bảng điểm"
+        
+    def save(self):
+        new = self.id is None
+        super(Mark, self).save()
+        if new:
+            MarkTime.objects.create( mark_id = self)
+            SentMark.objects.create( mark_id = self)    
+     
 
     def __unicode__(self):
         return self.subject_id.name + " " + str(self.term_id.number) + self.student_id.first_name
@@ -316,7 +324,7 @@ class MarkTime(models.Model):
         verbose_name_plural = "Bảng thời gian cập nhật điểm"
 
     def __unicode__(self):
-        return self.subject_id.name + " " + str(self.term_id.number) + self.student_id.first_name
+        return self.mark_id.subject_id.name + " " + str(self.mark_id.term_id.number) + self.mark_id.student_id.first_name
 
 class SentMark(models.Model):
     
@@ -343,11 +351,11 @@ class SentMark(models.Model):
     mark_id = models.OneToOneField(Mark, verbose_name = "Điểm")
     
     class Meta:
-        verbose_name = "Bảng thời gian cập nhật điểm"
-        verbose_name_plural = "Bảng thời gian cập nhật điểm"
+        verbose_name = "Các điểm đã gửi"
+        verbose_name_plural = "Các điểm đã gửi"
 
     def __unicode__(self):
-        return self.subject_id.name + " " + str(self.term_id.number) + self.student_id.first_name
+        return self.mark_id.subject_id.name + " " + str(self.mark_id.term_id.number) + self.mark_id.student_id.first_name
 
 
 class TKMon(models.Model):    

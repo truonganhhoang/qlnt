@@ -193,7 +193,6 @@ def add_student( student = None, start_year = None , year = None,
             number_subject = _class.subject_set.filter( primary = True).count()
         if find: # the student exists:
             find = find[0]
-            print "student exists", find
             find.class_id = _class
             if _class is not find.class_id:
                 move_student( find, find.class_id, _class)

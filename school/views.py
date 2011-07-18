@@ -693,13 +693,12 @@ def danh_sach_trung_tuyen(request):
             message = u'Bạn vừa nhập thành công danh sách học sinh trúng tuyển.'
             student_list = []
             request.session['student_list'] = student_list
+            return HttpResponseRedirect('/school/viewClassDetail/'+ str(chosen_class.id))
         elif request.POST['clickedButton'] == 'add':
             print "button add has been clicked"
             
             diem = float(request.POST['diem_hs_trung_tuyen'])
-            print "diem: ", diem
             ns = to_date(request.POST['ns_hs_trung_tuyen'])
-            print "ngay sinh: ", ns
             element = {'ten': request.POST['name_hs_trung_tuyen'],
                 'ngay_sinh': ns,
                 'nguyen_vong': request.POST['nv_hs_trung_tuyen'],
