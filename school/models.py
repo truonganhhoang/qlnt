@@ -275,6 +275,8 @@ class Mark(models.Model):
     ck = models.FloatField("Điểm thi cuối kì", null = True, blank = True, validators = [validate_mark])
     tb = models.FloatField("Điểm trung bình", null = True, blank = True, validators = [validate_mark])
     
+    sent_mark=models.CharField("đánh dấu đã gửi tin nhắn",max_length=19,default="0000000000000000000")
+    
     subject_id = models.ForeignKey(Subject, verbose_name = "Môn")
     student_id = models.ForeignKey(Pupil, verbose_name = "Học sinh", null = True, blank = True)        
     term_id    = models.ForeignKey(Term, verbose_name = "Kì")
@@ -288,7 +290,7 @@ class Mark(models.Model):
         super(Mark, self).save()
         if new:
             MarkTime.objects.create( mark_id = self)
-            SentMark.objects.create( mark_id = self)    
+            #SentMark.objects.create( mark_id = self)    
      
 
     def __unicode__(self):
@@ -324,40 +326,7 @@ class MarkTime(models.Model):
         verbose_name_plural = "Bảng thời gian cập nhật điểm"
 
     def __unicode__(self):
-        return self.mark_id.subject_id.name + " " + str(self.mark_id.term_id.number) + self.mark_id.student_id.first_name
-
-class SentMark(models.Model):
-    
-    mieng_1 = models.BooleanField("Đã gửi đểm miệng 1", default = False)
-    mieng_2 = models.BooleanField("Đã gửi điểm miệng 2", default = False)
-    mieng_3 = models.BooleanField("Đã gửi điểm miệng 3", default = False)
-    mieng_4 = models.BooleanField("Đã gửi điểm miệng 4", default = False)
-    mieng_5 = models.BooleanField("Đã gửi điểm miệng 5", default = False)
-    mlam_1 = models.BooleanField("Đã gửi điểm 15' 1", default = False)
-    mlam_2 = models.BooleanField("Đã gửi điểm 15' 2", default = False)
-    mlam_3 = models.BooleanField("Đã gửi điểm 15' 3", default = False)
-    mlam_4 = models.BooleanField("Đã gửi điểm 15' 4", default = False)
-    mlam_5 = models.BooleanField("Đã gửi điểm 15' 5", default = False)
-    
-    mot_tiet_1 = models.BooleanField("Đã gửi điểm 1 tiết 1", default = False)
-    mot_tiet_2 = models.BooleanField("Đã gửi điểm 1 tiết 2", default = False)
-    mot_tiet_3 = models.BooleanField("Đã gửi điểm 1 tiết 3", default = False)
-    mot_tiet_4 = models.BooleanField("Đã gửi điểm 1 tiết 4", default = False)
-    mot_tiet_5 = models.BooleanField("Đã gửi điểm 1 tiết 5", default = False)
-    
-    ck = models.BooleanField("Đã gửi điểm thi cuối kì", default = False)
-    tb = models.BooleanField("Đã gửi điểm trung bình", default = False)
-    
-    mark_id = models.OneToOneField(Mark, verbose_name = "Điểm")
-    
-    class Meta:
-        verbose_name = "Các điểm đã gửi"
-        verbose_name_plural = "Các điểm đã gửi"
-
-    def __unicode__(self):
-        return self.mark_id.subject_id.name + " " + str(self.mark_id.term_id.number) + self.mark_id.student_id.first_name
-
-
+        return self.mark_id.__unicode__() 
 class TKMon(models.Model):    
     tb_nam = models.FloatField("Trung bình năm", null = True, blank = True, validators = [validate_mark])
     #danh dau xem mon nay co dc phep thi lai hay ko
