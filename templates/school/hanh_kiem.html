@@ -5,7 +5,7 @@
 <h2>Hạnh kiểm lớp {{class}} năm {{year}}</h2>
 
 
-<form action="/school/hanhkiem/{{class.id}}/{{term}}" method="post">{% csrf_token %}       
+<form action="/school/hanhkiem/{{class.id}}" method="post">{% csrf_token %}       
 <table class="styleA" width = "75%">
 
     <tr>
@@ -21,8 +21,8 @@
     {{message}}
     {% endif %}
     
-
-        {% for p,f in list %}
+    {{tmp.term1}}
+        {% for p,f, v in list %}
             <tr>
                 <td align="center" width="5%">
                     <p>{{ forloop.counter}}</p>
@@ -40,18 +40,27 @@
                     <p>{{ p.sex }}</p>
                 </td>
                 {%if pos > 3 %}
-                <td align="center" width="10%">
-                    {{ f.term1.errors }}
-                    <p>{{ f.term1 }}</p>
-                </td>
-                <td align="center" width="10%">
-                    {{ f.term2.errors }}
-                    <p>{{ f.term2 }}</p>
-                </td>
-                <td align="center" width="10%">
-                    {{ f.year.errors }}
-                    <p>{{ f.year }}</p>
-                </td>                
+                    {%if term.number == 1%}
+                        <td align="center" width="10%">
+                            {{ f.term1.errors }}
+                            <p>{{ f.term1 }}</p>
+                        </td>
+                        <td align="center" width="10%">
+                        <td align="center" width="10%">
+                    {%else%}
+                        <td align="center" width="10%">                        
+                            <p>{{ v.term1 }}</p>
+                        </td>
+                        
+                        <td align="center" width="10%">
+                            {{ f.term2.errors }}
+                            <p>{{ f.term2 }}</p>
+                        </td>
+                        <td align="center" width="10%">
+                            {{ f.year.errors }}
+                            <p>{{ f.year }}</p>
+                        </td>                
+                    {%endif%}
                 {%endif%}
             </tr>
         {% endfor %}        

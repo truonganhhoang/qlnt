@@ -407,7 +407,9 @@ class HanhKiem(models.Model):
     term1 = models.CharField("Kì 1",max_length = 2, choices = HK_CHOICES, null=True,blank=True)
     term2 = models.CharField("Kì 2",max_length = 2, choices = HK_CHOICES, null=True,blank=True)
     year = models.CharField("Cả năm",max_length = 2, choices = HK_CHOICES, null=True,blank=True)
-    
+    #danh dau ren luyen lai trong giai doan he
+    ren_luyen_lai=models.NullBooleanField("Rèn luyện lại", blank = True, null = True)
+    hk_ren_luyen_lai=models.CharField("Hạnh kiểm rèn luyện lại", null=True, blank=True, max_length = 2, choices = HK_CHOICES)
     class Meta:
         verbose_name = "Hạnh kiểm"
         verbose_name_plural = "Hạnh kiểm"
@@ -454,9 +456,7 @@ class TBNam(models.Model):
     thi_lai = models.NullBooleanField("Thi lại", null=True,blank=True)
     tb_thi_lai=models.FloatField("Trung bình thi lại", null = True, blank = True, validators = [validate_mark])
     hl_thi_lai=models.CharField("Học lực thi lại", null = True, blank=True, max_length = 3, choices = HL_CHOICES)
-    #danh dau ren luyen lai trong giai doan he
-    ren_luyen_lai=models.NullBooleanField("Rèn luyện lại", blank = True, null = True)
-    hk_ren_luyen_lai=models.CharField("Hạnh kiểm rèn luyện lại", null=True, blank=True, max_length = 2, choices = HK_CHOICES)
+    
     #len_lop_sau_he=models.NullBooleanField(null=True,blank = True,choices =LENLOP_CHOICES)
     
     class Meta:
