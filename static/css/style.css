@@ -481,5 +481,10 @@ dd {
 }
 
 #sitemap ul li a:hover{
+    width: 390px;
+    height: 30px;
+    text-decoration:none;
     background-color: #4d94d7;
+    color: #ffffff;
+    padding: 3px 0px 3px;
 }

@@ -10,20 +10,20 @@
     <col width="20%"/>
     <tr aligh="top">
       <td>
-        <h3>Lớp học</h3>
+        <h3>Hàng ngày</h3>
         <ul>
-          <li><a href="{%  url school.views.classes %}">Danh sách lớp học</a></li>
-          <li><a href="">Hạnh kiểm</a></li>
-          <li><a href="">Môn học</a></li>
-          <li><a href="">Tổng kết</a></li>
-          <li><a href="{% url school.views.addClass %}">Thêm lớp học</a></li>
+        <li><a href="/school/diemdanh/1">Điểm danh</a></li>
+        <li><a href="/school/markTable/1">Nhập điểm</a></li>
+        <li><a href="/school/hanhkiem/1">Hạnh kiểm</a></li>
         </ul>
       </td>
       <td>
-        <h3>Hàng ngày</h3>
+        <h3>Lớp học</h3>
         <ul>
-        <li><a href="#">Điểm danh</a></li>
-        <li><a href="">Nhập điểm</a></li>
+          <li><a href="{%  url school.views.classes %}">Danh sách lớp học</a></li>
+          <li><a href="">Môn học</a></li>
+          <li><a href="">Tổng kết</a></li>
+          <li><a href="{% url school.views.addClass %}">Thêm lớp học</a></li>
         </ul>
       </td>
       <td>
@@ -40,8 +40,8 @@
       <td>
         <h3>Học sinh</h3>
         <ul>
-          <li><a href="{%  url school.views.manual_adding %}">Nhập trực tiếp</a></li>
           <li><a href="{%  url school.views.nhap_danh_sach_trung_tuyen %}">Nhập từ file Excel</a></li>
+          <li><a href="{%  url school.views.manual_adding %}">Nhập trực tiếp</a></li>
         </ul>
       </td>
       <td>

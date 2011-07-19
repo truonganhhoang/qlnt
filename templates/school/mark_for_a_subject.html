@@ -402,7 +402,7 @@ window.onload = function() { document.onkeypress = catchEnter; };
 		<td width ="25%" >
 			Dịch chuyển: <br >
 			<p title="Sau khi nhập xong sẽ tự động nhảy đến đúng cột mà cột ở trên cũng có điểm">
-				<input type="radio" name="move" id="ngang1" value="ngang1" checked  > Ngang theo điểm hàng trên
+				<input type="radio" name="move" id="ngang1" value="ngang1" checked> Ngang theo điểm hàng trên
 				<br>
 			</p>
 			
@@ -435,10 +435,10 @@ window.onload = function() { document.onkeypress = catchEnter; };
 		<table border=0 width="100%">
 			<tr>
 				<td width="90%"> 
-				<button  title="Click vào đây để gửi tin cho những học sinh đã chọn" id="sendSelect" onclick="sendSelected();" >Gửi SMS <img src="/static/images/message3.png" >  </button>
+				<button  title="Gửi tin nhắn cho những học sinh đã chọn" id="sendSelect" onclick="sendSelected();" >Gửi SMS <img src="/static/images/message3.png" >  </button>
 				<br>
-				<div id="messageSMS"  > </div> 
-				</td width="10%">
+				<div id="messageSMS"> </div>
+				</td>
 				
 				<td> <img src="/static/images/save1.png" > <div id="messageChanging"  >  </div>   
 				</td>
@@ -446,7 +446,8 @@ window.onload = function() { document.onkeypress = catchEnter; };
 		</table>
 	{% else %} 
 	{% if enableSendSMS %}
-	<button title="Click vào đây để gửi tin cho những học sinh đã chọn" id="sendSelect" onclick="sendSelected();" >Gửi SMS <img src="/static/images/message3.png" >  </button>
+	<button title="Gửi tin nhắn cho những học sinh đã chọn" id="sendSelect" onclick="sendSelected();" >Gửi SMS
+    <img src="/static/images/message3.png" >  </button>
 	<br>
 	<div id="messageSMS"  > </div> 
 	{% endif %}
