@@ -1101,8 +1101,7 @@ def subjectPerClass(request, class_id, sort_type=1, sort_status=0):
                                     'form': form, 
                                     'message': message, 
                                     'subjectList': subjectList, 
-                                    'class_id': class_id, 
-                                    'cl':cl,
+                                    'class': cl,                                     
                                     'sort_type': sort_type, 
                                     'sort_status':sort_status, 
                                     'next_status':1-int(sort_status), 
@@ -1856,10 +1855,13 @@ def viewSubjectDetail (request, subject_id):
     form = SubjectForm (class_id.block_id.school_id.id, instance = sub)
     message = None
     if request.method == 'POST':
-        data = request.POST        
+        data = request.POST
+        print data
         form = SubjectForm(class_id.block_id.school_id.id, data, instance = sub)
         if form.is_valid():
-            form.save()
+            primary = request.POST.get('primary', False)
+            change_primary(sub, primary)
+            form.save()                        
             message = 'Bạn đã cập nhật thành công'
         else:
             message = 'Bạn vui lòng sửa một số lỗi sai dưới đây'

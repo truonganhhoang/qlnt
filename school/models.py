@@ -248,7 +248,7 @@ class Subject(models.Model):
         verbose_name_plural = "Môn"
     
     def is_primary(self):
-        return primary
+        return self.primary
     
     def __unicode__(self):
         return self.name

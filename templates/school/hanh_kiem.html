@@ -11,17 +11,20 @@ function submitClass(){
 }
 </script>
 
-<h2>Hạnh kiểm lớp {{class}} năm {{year}}</h2>
-
-<form action="/school/hanhkiem/{{class.id}}" name = "info" method = post">{% csrf_token %}       
+<form action="" name = "info" method = post">{% csrf_token %}
+    <h2> Hạnh kiểm lớp
     <select name="class" onchange="submitClass()">       
-        <option value = -1> Chọn lớp khác </option>
+        <option value = -1> {{class}} </option>
         {% for cl in classList %}
-            <option  value={{cl.id }}> Lớp {{cl}}</option>		
+            {%if cl.id != class.id%}
+            <option  value={{cl.id }}> {{cl}}</option>		
+            {%endif%}
         {% endfor %}		
     </select>
+    năm {{year}}
+    </h2>
 </form>
-    
+
 <form action="/school/hanhkiem/{{class.id}}" method="post">{% csrf_token %}       
 <table class="styleA" width = "75%">
 

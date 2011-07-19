@@ -4,7 +4,7 @@
 
 <script language="JavaScript" type="text/javascript" >
 function submitClass(){
-        if (document.info.class.value!={{class_id}})
+        if (document.info.class.value!={{class.id}})
         if (document.info.class.value!=-1)
         {	
             window.location = "{%url school.views.school_index  %}subjectPerClass/"+ document.info.class.value;
@@ -16,23 +16,26 @@ function confirmDelete()
 }
 
 </script>
-<h1>Danh sách môn học lớp {{cl}} học kì {{term}}</h1>
 
-<form action="" name = "info" method = post">{% csrf_token %}       
+<form action="" name = "info" method = post">{% csrf_token %} 
+    <h2>Danh sách môn học lớp 
     <select name="class" onchange="submitClass()">       
-        <option value = -1> Chọn lớp khác </option>
+        <option value = -1> {{class}} </option>
         {% for cl in classList %}
-            <option  value={{cl.id }}> Lớp {{cl}}</option>		
+            {%if cl.id != class.id%}
+            <option  value={{cl.id }}> {{cl}}</option>		
+            {%endif%}
         {% endfor %}		
     </select>
+    học kì {{term}}</h2>
 </form>
 
 <table class="styleA" width = "75%" align = "left">
     <tr>
 		<th width="5%"> STT </td>
-        <th align="center" width="20%"> <a href="{%url school.views.school_index  %}subjectPerClass/{{class_id}}/1/{{next_status}}">Tên Môn Học</a></th>
-        <th align="center" width="10%"> <a href="{%url school.views.school_index  %}subjectPerClass/{{class_id}}/2/{{next_status}}">Hệ số </a></th>
-        <th align="center" width="25%"> <a href="{%url school.views.school_index  %}subjectPerClass/{{class_id}}/3/{{next_status}}">Giáo viên</a></th>
+        <th align="center" width="20%"> <a href="{%url school.views.school_index  %}subjectPerClass/{{class.id}}/1/{{next_status}}">Tên Môn Học</a></th>
+        <th align="center" width="10%"> <a href="{%url school.views.school_index  %}subjectPerClass/{{class.id}}/2/{{next_status}}">Hệ số </a></th>
+        <th align="center" width="25%"> <a href="{%url school.views.school_index  %}subjectPerClass/{{class.id}}/3/{{next_status}}">Giáo viên</a></th>
 		<th align="center" width="10%"></th>
         {%if pos > 1%}
             <th width = "5%"> </th>
@@ -44,7 +47,7 @@ function confirmDelete()
     <br>
     {% endif %}
 
-    <form action="/school/subjectPerClass/{{class_id}}" method="post">{% csrf_token %}
+    <form action="/school/subjectPerClass/{{class.id}}" method="post">{% csrf_token %}
         {% for ss,f in list %}
         <tr>
             <td width="5%">{{forloop.counter}} </td>
