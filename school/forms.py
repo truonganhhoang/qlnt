@@ -10,6 +10,7 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext, loader
 from django.core.exceptions import *
 from django.db import transaction
+from django.forms.widgets import RadioSelect
 from django.forms.extras.widgets import SelectDateWidget
 from django import forms
 
@@ -17,6 +18,7 @@ from school.utils import *
 from school.models import *
 from app.models import *
 from school.school_settings import *
+from school.widgets import *
 import xlrd
     
 TEMP_FILE_LOCATION = os.path.join(os.path.dirname(__file__), 'uploaded')

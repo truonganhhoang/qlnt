@@ -80,13 +80,23 @@
         return false;
       }
       var select = function() {
-        if ($(this).hasClass('thead')) return;
-        if ($(this).hasClass('selected')) {
-          $(this).removeClass('selected');
-        } else {
-          $(this).addClass('selected');
+        if (!$(this).hasClass('thead')){
+            var id = $(this).attr('class').split(' ')[0];
+            var checkboxid = '#checkbox_' + id;
+            var checkboxall = '#checkbox_all'
+            if ($(this).hasClass('selected')) {
+                $(this).removeClass('selected');
+                $(checkboxid).prop("checked", false);
+                var n = $("input:checked").length;
+                if ( n == 1) $(checkboxall).prop("checked", false);;
+            } else {
+                $(this).addClass('selected');
+                $(checkboxid).prop("checked", true);
+                $(checkboxall).prop("checked", true);
+            };
         }
-      };
+      }
+        
       $(".sms").each(function() {
         $(this).click(sendSmS);
         note = '';
@@ -94,7 +104,25 @@
       $("tr").each(function() {
         $(this).click(select);
       });
-
+      $("#checkbox_all").click( function(){
+            var checkboxall = '#checkbox_all'
+            if($(checkboxall).is(':checked')){
+                $("tr").each( function(){
+                    var id = $(this).attr('class').split(' ')[0];
+                    var checkboxid = '#checkbox_' + id
+                    if (!$(this).hasClass('selected'))
+                        $(this).trigger('click');
+                });
+            }
+            else {
+                $("tr").each( function(){
+                    var id = $(this).attr('class').split(' ')[0];
+                    var checkboxid = '#checkbox_' + id
+                    if ($(this).hasClass('selected'))
+                        $(this).trigger('click');
+                });
+            }
+        });      
       $("#sendSelected").click(sendSelected);
 
       $("#selectAll").click(function() {
@@ -145,15 +173,21 @@
     <button id="sendSelected">Gửi SMS cho những học sinh đã chọn</button>
     <table class="styleA">
       <tr class="thead">
+        <th align="center" width="2%"> 
+                <input type="checkbox" id="checkbox_all"/>
+        </th>
         <th align="center" width="3%"> STT</th>
         <th align="center" width="15%"> Họ Tên</th>
         <th align="center" width="10%"> Ngày sinh</th>
         <th align="center" width="7%"> Giới tính</th>
-        <th align="center" width="8%"> Điểm danh</th>
-        <th align="center" width="10%" max-width="30px">&nbsp</th>
+        <th align="center" width="15%"> Điểm danh</th>
+        <th align="center" width="5%" max-width="30px">&nbsp</th>
       </tr>
       {% for p,f in list %}
         <tr class="{{p.id}}">
+            <td align="center" width="2%">
+                <input type="checkbox" id="checkbox_{{p.id}}"/>
+            </td>
           <td align="center" width="5%">
             <p>{{ forloop.counter }}</p>
           </td>
