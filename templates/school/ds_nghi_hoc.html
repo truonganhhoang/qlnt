@@ -3,140 +3,161 @@
 {% block content %}
 
 <script>
+    $(document).ready(function() {
+      var note = '';
+      $.ajaxSetup({
+        beforeSend: function(xhr, settings) {
+          function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie != '') {
+              var cookies = document.cookie.split(';');
+              for (var i = 0; i < cookies.length; i++) {
+                var cookie = jQuery.trim(cookies[i]);
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                  cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                  break;
+                }
+              }
+            }
+            return cookieValue;
+          }
 
-$(document).ready(function(){
-	var note = '';	
-	$.ajaxSetup({ 
-     beforeSend: function(xhr, settings) {
-         function getCookie(name) {
-             var cookieValue = null;
-             if (document.cookie && document.cookie != '') {
-                 var cookies = document.cookie.split(';');
-                 for (var i = 0; i < cookies.length; i++) {
-                     var cookie = jQuery.trim(cookies[i]);
-                     // Does this cookie string begin with the name we want?
-                 if (cookie.substring(0, name.length + 1) == (name + '=')) {
-                     cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                     break;
-                 }
-             }
-         }
-         return cookieValue;
-         }
-         if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
-             // Only send the token to relative URLs i.e. locally.
-             xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
-         }
-     } 
-	});
+          if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+            // Only send the token to relative URLs i.e. locally.
+            xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+          }
+        }
+      });
 
-	var done = function(json){
-		if (json.message != null)		
-			$.fancybox({
-				'title': "Những tin nhắn đã gửi",
-				'content': json.message		
-			});
-		else 
-			$.fancybox({
-				'title': "Thông báo",
-				'content': 'Bạn chưa chọn học sinh nào.'		
-			});
-		$(".selected").each( select);
-		$("#selectAll").text("Chọn cả lớp");
-	};	
-	var sendSmS = function(){
-		var id = $(this).attr('name');
-		var select = "tr." + id + " > td:has(select) > select ";
-		var loai = $(select).val();
-		var data = id + '-' + loai;		
-		//alert(window.location.pathname);
-		var arg ={ type:"POST", 
-					  url:"", 
-					  data:{data: data, request_type:'sms'}, 
-					  datatype:"json", 
-					  success:done
-	   }; 
-      $.ajax( arg);		
-		return false;
-	};
-   
-   var sendSelected = function(){
-		
-		var data = '';
-		$(".selected").each(function(){		
-			var id = $(this).attr('class').split(' ')[0];
-			var select = "tr." + id + " > td:has(select) > select ";
-			var loai = $(select).val();
-			var element = id + '-' + loai;
-			data = data + ':' + element;
-		});		
-		
-		var arg ={ type:"POST", 
-					  url:"", 
-					  data:{data: data, request_type:'sms'}, 
-					  datatype:"json", 
-					  success:done
-	   }; 
-      $.ajax( arg);
-      return false;		  
-   }
-	var select = function(){
-		if ($(this).hasClass('thead')) return;
-		if ($(this).hasClass('selected')){
-			$(this).removeClass('selected');		
-		} else {
-			$(this).addClass('selected');
-		}	
-	};
-	$(".sms").each(function(){
-		$(this).click( sendSmS );
-		note='';
-	});
-	$("tr").each(function(){
-		$(this).click( select );
-	});
-	
-	$("#sendSelected").click( sendSelected );
-	
-	$("#selectAll").click( function(){
-		$("tr").each( select );
-		if ($(this).text() == "Chọn tất cả")		
-			$(this).text("Bỏ chọn tất cả");
-		else
-			$(this).text("Chọn tất cả");
-		return false;		
-	});
-	
-	$("select[name=loai]").each( function(){
-		$(this).change(function(){
-			var id = $(this).parents("tr").attr('class').split(' ')[0];
-			var loai = $(this).val();
-			var data = { id: id, loai:loai, request_type:'update'}
-			var arg ={ type:"POST", 
-					  url:"", 
-					  data: data, 
-					  datatype:"json" 
-					  //success: 
-					  //function(json){
-					  //		$.fancybox({
-					  //		content: json.message,
-					  //		title: "Updated successfully"	
-					//		});								  
-					//  }
-	   	};
-	   	
-	   	$.ajax(arg);
-			
-		});	
-	});	
-	
-	
-});
+      var done = function(json) {
+        if (json.message != null)
+          $.fancybox({
+            'title': "Các tin nhắn đã gửi",
+            'content': json.message
+          });
+        else
+          $.fancybox({
+            'title': "Thông báo",
+            'content': 'Bạn chưa chọn học sinh nào.'
+          });
+        $(".selected").each(select);
+        $("#selectAll").text("Chọn cả lớp");
+      };
+      var sendSmS = function() {
+        var id = $(this).attr('name');
+        var select = "tr." + id + " > td:has(select) > select ";
+        var loai = $(select).val();
+        var data = id + '-' + loai;
+        //alert(window.location.pathname);
+        var arg = { type:"POST",
+          url:"",
+          data:{data: data, request_type:'sms'},
+          datatype:"json",
+          success:done
+        };
+        $.ajax(arg);
+        return false;
+      };
+
+      var sendSelected = function() {
+
+        var data = '';
+        $(".selected").each(function() {
+          var id = $(this).attr('class').split(' ')[0];
+          var select = "tr." + id + " > td:has(select) > select ";
+          var loai = $(select).val();
+          var element = id + '-' + loai;
+          data = data + ':' + element;
+        });
+
+        var arg = { type:"POST",
+          url:"",
+          data:{data: data, request_type:'sms'},
+          datatype:"json",
+          success:done
+        };
+        $.ajax(arg);
+        return false;
+      }
+      var select = function() {
+        if (!$(this).hasClass('thead')){
+            var id = $(this).attr('class').split(' ')[0];
+            var checkboxid = '#checkbox_' + id;
+            var checkboxall = '#checkbox_all'
+            if ($(this).hasClass('selected')) {
+                $(this).removeClass('selected');
+                $(checkboxid).prop("checked", false);
+                var n = $("input:checked").length;
+                if ( n == 1) $(checkboxall).prop("checked", false);;
+            } else {
+                $(this).addClass('selected');
+                $(checkboxid).prop("checked", true);
+                $(checkboxall).prop("checked", true);
+            };
+        }
+      }
+        
+      $(".sms").each(function() {
+        $(this).click(sendSmS);
+        note = '';
+      });
+      $("tr").each(function() {
+        $(this).click(select);
+      });
+      $("#checkbox_all").click( function(){
+            var checkboxall = '#checkbox_all'
+            if($(checkboxall).is(':checked')){
+                $("tr").each( function(){
+                    var id = $(this).attr('class').split(' ')[0];
+                    var checkboxid = '#checkbox_' + id
+                    if (!$(this).hasClass('selected'))
+                        $(this).trigger('click');
+                });
+            }
+            else {
+                $("tr").each( function(){
+                    var id = $(this).attr('class').split(' ')[0];
+                    var checkboxid = '#checkbox_' + id
+                    if ($(this).hasClass('selected'))
+                        $(this).trigger('click');
+                });
+            }
+        });      
+      $("#sendSelected").click(sendSelected);
+
+      $("#selectAll").click(function() {
+        $("tr").each(select);
+        return false;
+      });
+
+      $("select[name=loai]").each(function() {
+        $(this).change(function() {
+          var id = $(this).parents("tr").attr('class').split(' ')[0];
+          var loai = $(this).val();
+          var data = { id: id, loai:loai, request_type:'update'}
+          var arg = { type:"POST",
+            url:"",
+            data: data,
+            datatype:"json"
+            //success:
+            //function(json){
+            //		$.fancybox({
+            //		content: json.message,
+            //		title: "Updated successfully"
+            //		});
+            //  }
+          };
+
+          $.ajax(arg);
+
+        });
+      });
+
+
+    });
 
 </script>
-
-
-
 
 <h1>Danh sách học sinh lớp {{cl}} nghỉ học ngày {{day}}/{{month}}/{{year}}</h1>
 <br>
@@ -147,12 +168,17 @@ $(document).ready(function(){
 {% endif %}
 <br>
 {% if pos > 1%}
-<button id="selectAll">Chọn tất cả</button>
+<button id="selectAll">Đảo chọn</button>
 <button id="sendSelected">Gửi SMS cho những học sinh đã chọn</button>
 {% endif %}
 <table class="styleA" >
 
     <tr class="thead">
+        {% if pos > 1%}
+            <th align="center" width="2%"> 
+                <input type="checkbox" id="checkbox_all"/>
+            </th>
+        {% endif %}    
         <th align="center" width="3%"> STT </th>
         <th align="center" width="15%"> Họ Tên </th>
         <th align="center" width="10%"> Ngày sinh</th>
@@ -164,6 +190,11 @@ $(document).ready(function(){
     </tr>
         {% for p,f in list %}
             <tr class="{{p.id}}">
+                {% if pos > 1%}
+                    <td align="center" width="2%">
+                        <input type="checkbox" id="checkbox_{{p.id}}"/>
+                    </td>
+                {% endif %}
                 <td align="center" width="5%">
                     <p>{{forloop.counter}}</p>
                 </td>

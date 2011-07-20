@@ -161,12 +161,12 @@
   <form action="/school/diemdanh/{{class_id}}/{{day}}/{{month}}/{{year}}" method="post">{% csrf_token %}
     {% if message != None %}
       {{ message }}
-      {% if message == 'Bạn đã cập nhật thành công' %}
-      {% endif %}
     {% endif %}
     <br>
     <button id="selectAll">Đảo chọn</button>
     <button id="sendSelected">Gửi SMS cho những học sinh đã chọn</button>
+    <a href="{%url school.views.school_index  %}dsnghi/{{class_id}}/{{day}}/{{month}}/{{year}}"> <input type="button" value = "Danh sách nghỉ" > </input> </a>
+    <input align="right" type="submit" value="Cập nhật"/>
     <table class="styleA">
       <tr class="thead">
         <th align="center" width="2%"> 
