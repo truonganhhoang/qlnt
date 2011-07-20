@@ -3,7 +3,7 @@
 {% block content %}
 <br>
 
-<h1>Những buổi nghỉ của {{pupil}} học kì {{term}}</h1>
+<h2>Những buổi nghỉ của {{pupil}} học kì {{term}}</h2>
 
 <form action="/school/diemdanhhs/{{student_id}}" method="post">{% csrf_token %}
         <tr>
@@ -12,9 +12,9 @@
 <table class="styleA" >
 
     <tr>
-        <td align="center" width="5%"> STT </td>
-        <td align="center" width="15%"> Ngày</td>
-        <td align="center" width="8%"> Điểm danh </td>
+        <th align="center" width="5%"> STT </th>
+        <th align="center" width="15%"> Ngày</th>
+        <th align="center" width="8%"> Điểm danh </th>
     </tr>
     {% if message != None %}
     {{message}}

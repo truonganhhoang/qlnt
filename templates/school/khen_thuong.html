@@ -7,18 +7,18 @@ function confirmDelete()
     return confirm("Bạn có muốn xóa khen thưởng này không");
 }
 </script>
-<h1>Những khen thưởng của {{pupil}}</h1>
+<h2>Những khen thưởng của {{pupil}}</h2>
 
-<table border=1 width = "100%" >
+<table class="styleA"  width = "100%" >
     <tr>
-		<td align="center" width="5%"> STT </td>
-        <td align="center" width="15%"> Thời gian</td>
-        <td align="center" width="25%"> Hình thức</td>
-        <td align="center" width="15%"> Địa điểm </td>
-        <td align="center" width="30%"> Nội dung </td>
+		<th align="center" width="5%"> STT </th>
+        <th align="center" width="15%"> Thời gian</th>
+        <th align="center" width="25%"> Hình thức</th>
+        <th align="center" width="15%"> Địa điểm </th>
+        <th align="center" width="30%"> Nội dung </th>
         {%if pos > 1%}
-        <td width = "5%"></td>
-        <td width = "5%"></td>
+        <th width = "5%"></th>
+        <th width = "5%"></th>
         {%endif%}
     </tr>
 
