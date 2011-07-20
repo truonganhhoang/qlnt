@@ -715,6 +715,7 @@ def classes(request, sort_type=1, sort_status=0, page=1):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
+        
     try:
         school = get_school(request)
     except Exception as e:
@@ -832,7 +833,10 @@ def viewClassDetail(request, class_id, sort_type=1, sort_status=0, page=1):
     pos = get_position(request)
     if (pos == 0):
         return HttpResponseRedirect('/')
-    cl = Class.objects.get(id=class_id)
+    try:
+        cl = Class.objects.get(id=class_id)    
+    except Class.DoesNotExist:
+        return HttpResponseRedirect('/school/classes')
     cn=gvcn(request, class_id)
     inCl=inClass(request, class_id)
     print inCl
@@ -840,6 +844,8 @@ def viewClassDetail(request, class_id, sort_type=1, sort_status=0, page=1):
         return HttpResponseRedirect('/')   
     message = None
     school = cl.block_id.school_id
+    cyear = get_current_year(request)
+    classList = cyear.class_set.all()
     form = PupilForm(school.id)
 			
     if request.method == 'POST':
@@ -919,6 +925,7 @@ def viewClassDetail(request, class_id, sort_type=1, sort_status=0, page=1):
                                     'message': message, 
                                     'studentList': student_list, 
                                     'class': cl, 
+                                    'cl':classList,
                                     'sort_type':int(sort_type), 
                                     'sort_status':int(sort_status), 
                                     'next_status':1-int(sort_status), 

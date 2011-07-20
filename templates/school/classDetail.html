@@ -1,12 +1,30 @@
 {% extends "base.html" %}
 {% block content %}
   <script>
+    function submitClass(){
+        if (document.info.class.value!={{class.id}})
+        if (document.info.class.value!=-1)
+        {	
+            window.location = "{%url school.views.school_index  %}viewClassDetail/"+ document.info.class.value;
+        }	
+    }
+
     function confirmDelete() {
       return confirm("Bạn có chắc chắn xóa toàn bộ thông tin của học sinh không?");
     }
   </script>
-
-  <h2>Lớp <b>{{ class.name }}</b> năm học {{ class.year_id }}</h2>
+  <form action="" name = "info" method = post">{% csrf_token %} 
+    <h2>Lớp
+    <select name="class" onchange="submitClass()">       
+        <option value = -1> {{class}} </option>
+        {% for c in cl %}
+            {%if c.id != class.id%}
+            <option  value={{c.id }}> {{c}}</option>		
+            {%endif%}
+        {% endfor %}		
+    </select>
+    năm học {{ class.year_id }}</h2>
+</form>  
 
   <table border=0 align="left" width="80%">
     <tr>
@@ -140,11 +158,11 @@
             {{ form.start_year_id.errors }}
             <p>{{ form.start_year_id }}</p>
           </td>
+          <td align="center"><input type="submit" value="Thêm"/></td>
         </tr>
       </table>
       <table width="80%">
-        <tr>
-          <td width="5%" align="left"><input type="submit" value="Thêm"/></td>
+        <tr>         
           <td align="right"><a href="" id="import"> Nhập từ Excel </a>|<a href="" id="export"> Xuất ra Excel </a></td>
           </form>
         </tr>
@@ -161,7 +179,7 @@
             {% endif %}
 
             <span class="current">
-				Trang {{ studentList.number }} trên {{ studentList.paginator.num_pages }}.
+				Trang {{ studentList.number }}/{{ studentList.paginator.num_pages }}.
 			</span>
 
             {% if studentList.has_next %}
