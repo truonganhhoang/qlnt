@@ -127,10 +127,6 @@
 
       $("#selectAll").click(function() {
         $("tr").each(select);
-        if ($(this).text() == "Chọn cả lớp")
-          $(this).text("Bỏ chọn cả lớp");
-        else
-          $(this).text("Chọn cả lớp");
         return false;
       });
 
@@ -169,7 +165,7 @@
       {% endif %}
     {% endif %}
     <br>
-    <button id="selectAll">Chọn cả lớp</button>
+    <button id="selectAll">Đảo chọn</button>
     <button id="sendSelected">Gửi SMS cho những học sinh đã chọn</button>
     <table class="styleA">
       <tr class="thead">
