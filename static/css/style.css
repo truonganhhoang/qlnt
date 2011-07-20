@@ -19,6 +19,11 @@ div, p, ul, h2, h3, img {
     margin: 0px;
 }
 
+#popupDiv{
+   margin: 20px;   
+}
+
+
 ul {
     list-style-type: none;
 }

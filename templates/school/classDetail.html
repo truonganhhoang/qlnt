@@ -1,6 +1,47 @@
 {% extends "base.html" %}
 {% block content %}
   <script>
+    $(document).ready(function(){
+      $("#import").fancybox({
+           'data': 'temp', 
+	        'scrolling'		: 'no',
+	        'titleShow'		: false,
+	        'onClosed'      : function(){
+               window.location.href = window.location.href;	        
+	        }
+         });
+      
+         
+      var done_upload = function(id, fileName, responseJSON){
+               
+      };   
+      function IsNumeric(input){
+         return (input - 0) == input && input.length > 0;
+      };
+      
+      var id = window.location.pathname.split('/');
+      var i = 0;
+      for ( i=0; i < id.length; i++){
+         if (IsNumeric(id[i])){
+            id = id[i];
+            break;         
+         }      
+      };    
+      
+      var uploader = new qq.FileUploader({
+            action: '/school/start_year/import/student/' + id,
+            element: $('#upload_file')[0],
+            multiple: false,
+            onComplete: done_upload,
+            onAllComplete: function( uploads ) {},
+            params: { 'csrf_token': '{{ csrf_token }}',
+                      'csrf_name': 'csrfmiddlewaretoken',
+                       'csrf_xname': 'X-CSRFToken',
+                    },
+       }) ;
+         
+    });      
+    
     function submitClass(){
         if (document.info.class.value!={{class.id}})
         if (document.info.class.value!=-1)
@@ -12,8 +53,10 @@
     function confirmDelete() {
       return confirm("Bạn có chắc chắn xóa toàn bộ thông tin của học sinh không?");
     }
+    
+    
   </script>
-  <form action="" name = "info" method = post">{% csrf_token %} 
+  <form action="" name = "info" method = "post">{% csrf_token %} 
     <h2>Lớp
     <select name="class" onchange="submitClass()">       
         <option value = -1> {{class}} </option>
@@ -163,7 +206,7 @@
       </table>
       <table width="80%">
         <tr>         
-          <td align="right"><a href="" id="import"> Nhập từ Excel </a>|<a href="" id="export"> Xuất ra Excel </a></td>
+          <td align="right"><a href="#popupDiv" id="import"> Nhập từ Excel </a>|<a href="" id="export"> Xuất ra Excel </a></td>
           </form>
         </tr>
       </table>
@@ -191,5 +234,19 @@
       </td>
     </tr>
   </table>
+<div  style="display:none" >
+<div id="popupDiv">
+<h2>Nhập học sinh từ file Excel</h2>
+<br>
+<br>
+<form name="form" action="school/start_year/import/student" method="POST" enctype="multipart/form-data">{% csrf_token %}
+<div id="upload_file">
+</div>
+<p>
 
+      Chú ý: Phải dùng file Excel theo <a href="{{ MEDIA_URL }}template_files/student_template.xls">mẫu này</a>.
+    </p>
+</form> 
+</div>
+</div>
 {% endblock %}

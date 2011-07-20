@@ -9,6 +9,7 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import render_to_response
 from django.template import RequestContext, loader
 from django.core.exceptions import *
+from django.middleware.csrf import get_token
 from django.db import transaction
 from django.utils import simplejson
 from django.utils.datastructures import MultiValueDictKeyError
@@ -515,6 +516,105 @@ def process_file(file_name, task):
     else: task == ""
     
     return None
+    
+def save_upload( uploaded, filename, raw_data ):
+    ''' 
+    raw_data: if True, uploaded is an HttpRequest object with the file being
+              the raw post data 
+              if False, uploaded has been submitted via the basic form
+              submission and is a regular Django UploadedFile in request.FILES
+    '''
+    try:
+        from io import FileIO, BufferedWriter
+        with BufferedWriter( FileIO( filename, "wb" ) ) as dest:
+        # if the "advanced" upload, read directly from the HTTP request 
+        # with the Django 1.3 functionality
+            if raw_data:
+                foo = uploaded.read( 1024 )
+                while foo:
+                    dest.write( foo )
+                    foo = uploaded.read( 1024 ) 
+         # if not raw, it was a form upload so read in the normal Django chunks fashion
+            else:
+                for c in uploaded.chunks( ):
+                    dest.write( c )
+            # got through saving the upload, report success
+            return True
+    except IOError:
+        # could not open the file most likely
+        pass
+    return False
+
+@transaction.commit_manually 
+def student_import( request, class_id ):
+    try:
+        school = get_school(request)
+    except Exception as e:
+        return HttpResponseRedirect(reverse('index'))
+    
+    permission = get_permission(request)
+    if not permission in [u'HIEU_TRUONG',u'HIEU_PHO']:
+        return HttpResponseRedirect(reverse('school_index'))
+        
+    if request.method == "POST":    
+        if request.is_ajax( ):
+            # the file is stored raw in the request
+            upload = request
+            is_raw = True
+            # AJAX Upload will pass the filename in the querystring if it is the "advanced" ajax upload
+            try:
+                filename = '_'.join([request.session.session_key, request.GET[ 'qqfile' ]])
+                filename = os.path.join( TEMP_FILE_LOCATION, filename)
+            except KeyError: 
+                return HttpResponseBadRequest( "AJAX request not valid" )
+            # not an ajax upload, so it was the "basic" iframe version with submission via form
+        else:
+            is_raw = False
+            if len( request.FILES ) == 1:
+            # FILES is a dictionary in Django but Ajax Upload gives the uploaded file an
+            # ID based on a random number, so it cannot be guessed here in the code.
+            # Rather than editing Ajax Upload to pass the ID in the querystring,
+            # observer that each upload is a separate request,
+            # so FILES should only have one entry.
+            # Thus, we can just grab the first (and only) value in the dict.
+                upload = request.FILES.values( )[ 0 ]
+            else:
+                raise Http404( "Bad Upload" )
+            filename = '_'.join([request.session.session_key,upload.name])
+    else:
+        return HttpResponseRedirect( reverse('school_index')) 
+    # save the file
+    success = save_upload( upload, filename, is_raw )
+    message = None
+    result = process_file( filename, "Nhap danh sach trung tuyen")
+    if 'error' in result:
+        success = False
+        message = result['error']
+    else:
+        chosen_class = Class.objects.get( id = int(class_id) )
+        print chosen_class
+        year = school.startyear_set.get(time=datetime.date.today().year)
+        print year
+        current_year = school.year_set.latest('time')
+        print current_year
+        term = get_current_term( request)
+        print term
+        try:
+            for student in result:
+                data = {'full_name': student['ten'], 'birthday':student['ngay_sinh'],
+                        'ban':student['nguyen_vong'], }
+                print data
+                add_student(student=data, _class=chosen_class,
+                            start_year=year, year=current_year,
+                            term=term, school=school)
+            transaction.commit()
+        except Exception as e:
+            print e
+            transaction.roll_back()
+            message = u'Lỗi trong quá trình lưu cơ sở dữ liệu'
+    # let Ajax Upload know whether we saved it or not
+    data = { 'success': success, 'message': message }
+    return HttpResponse( simplejson.dumps( data ) )    
 
 def nhap_danh_sach_trung_tuyen(request):
     try:
@@ -847,7 +947,7 @@ def viewClassDetail(request, class_id, sort_type=1, sort_status=0, page=1):
     cyear = get_current_year(request)
     classList = cyear.class_set.all()
     form = PupilForm(school.id)
-			
+    		
     if request.method == 'POST':
         if (request.POST['first_name']):
             name = request.POST['first_name'].split()
@@ -921,7 +1021,8 @@ def viewClassDetail(request, class_id, sort_type=1, sort_status=0, page=1):
     if (tmp):
         id = tmp.id
     t = loader.get_template(os.path.join('school', 'classDetail.html'))
-    c = RequestContext(request, {   'form': form, 
+    c = RequestContext(request, {   'form': form,
+                                    'csrf_token': get_token(request), 
                                     'message': message, 
                                     'studentList': student_list, 
                                     'class': cl, 
@@ -1321,9 +1422,8 @@ def diem_danh(request, class_id, day, month, year):
             pass
     print "is_ajax:", request.is_ajax()
     if request.is_ajax():
-        if request.method == 'POST':       
+        if request.method == 'POST':
             request_type = request.POST[u'request_type']
-            print 'request_type', request_type
             if request_type == u'update':
                 id = request.POST[u'id']
                 loai = request.POST[u'loai']
@@ -1351,6 +1451,7 @@ def diem_danh(request, class_id, day, month, year):
                         print 11
                         diemdanh.loai = loai
                         diemdanh.save()
+                
                 message = student.full_name() + ': updated.'
                 data = simplejson.dumps({'message': message})
                 return HttpResponse( data, mimetype = 'json')    
@@ -1708,6 +1809,7 @@ def deleteStudentInSchool(request, student_id):
 #    message = "Đã xóa xong."
     sub = Pupil.objects.get(id=student_id)
     if in_school(request, sub.class_id.block_id.school_id) == False:
+
         return HttpResponseRedirect('/')
     if (get_position(request) < 4):
         return HttpResponseRedirect('/')

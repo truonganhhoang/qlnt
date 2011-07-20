@@ -179,6 +179,21 @@ class ClassifyForm(forms.Form):
             label += u'[' + str(student.birthday.day ) + '-' + str(student.birthday.month) + '-' + str(student.birthday.year)+']'
             self.fields[str(student.id)] = forms.ChoiceField(label = label, choices=classes, required=False)
 CONTENT_TYPES = ['application/vnd.ms-excel']            
+
+class uploadFileExcel(forms.Form):
+    file  = forms.FileField(label=u'Chọn file Excel:')
+    
+    def is_valid():
+        if not file.content_type in CONTENT_TYPES:
+            os.remove(filepath)
+            raise forms.ValidationError(u'Bạn chỉ được phép tải lên file Excel.')
+        elif os.path.getsize(filepath) == 0:
+            raise forms.ValidationError(u'File của bạn rỗng.')
+        elif xlrd.open_workbook(filepath).sheet_by_index(0).nrows == 0:
+            raise forms.ValidationError(u'File của bạn rỗng.')
+        else:
+            return super(uploadFileExcel, self).is_valid()
+    
             
 class smsFromExcelForm(forms.Form):
     file  = forms.Field(label="Chọn file Excel:",
