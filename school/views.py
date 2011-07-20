@@ -11,7 +11,7 @@ from django.template import RequestContext, loader
 from django.core.exceptions import *
 from django.db import transaction
 from django.utils import simplejson
-
+from django.utils.datastructures import MultiValueDictKeyError
 from school.utils import *
 from school.models import *
 from school.forms import *
@@ -1302,26 +1302,35 @@ def diem_danh(request, class_id, day, month, year):
     message = ''
     listdh = None
     term = None
+    dncdata = {'date':date(int(year),int(month),int(day)),'class_id':class_id}
+    year_id = get_current_year(request).id
+    dncform = DateAndClassForm(year_id,dncdata)
+
+    if request.method == 'POST':
+        try:
+            if (request.POST[u'date_day'] or request.POST[u'date_month'] or request.POST[u'date_year'] or request.POST[u'class_id']):
+                dncform = DateAndClassForm(year_id,request.POST)
+                if dncform.is_valid():
+                    class_id = int(request.POST[u'class_id'])
+                    day = int(request.POST[u'date_day'])
+                    month = int(request.POST[u'date_month'])
+                    year = int(request.POST[u'date_year'])
+                    url = '/school/diemdanh/' + str(class_id) + '/' + str(day) + '/' + str(month) + '/' + str(year)
+                    return HttpResponseRedirect(url)
+        except MultiValueDictKeyError:
+            pass
     print "is_ajax:", request.is_ajax()
     if request.is_ajax():
-        if request.method == 'POST':
-            print request.POST
+        if request.method == 'POST':       
             request_type = request.POST[u'request_type']
             print 'request_type', request_type
             if request_type == u'update':
                 id = request.POST[u'id']
                 loai = request.POST[u'loai']
-                print 'id, loai:',id,loai
-                
-                print 'loai != k'
                 student = Pupil.objects.get( id = int(id))
-                print student
                 time = date(int(year), int(month), int(day))
-                print 'time',time
                 diemdanh = student.diemdanh_set.filter( student_id__exact = student)\
                                                 .filter( time__exact = time)
-                print diemdanh
-                
                 if not diemdanh:
                     
                     diemdanh = DiemDanh()
@@ -1342,14 +1351,9 @@ def diem_danh(request, class_id, day, month, year):
                         print 11
                         diemdanh.loai = loai
                         diemdanh.save()
-                
-                print u'almost done'
-                print student.full_name()
                 message = student.full_name() + ': updated.'
-                print 'message', message
                 data = simplejson.dumps({'message': message})
                 return HttpResponse( data, mimetype = 'json')    
-                 
             data = request.POST[u'data']
             sms_message = ''
             data = data.split(':')
@@ -1368,7 +1372,6 @@ def diem_danh(request, class_id, day, month, year):
                         loai = u'nghỉ học có phép'
                     else:
                         loai = u'nghỉ học không phép'
-                
                     name = ' '.join([student.last_name,student.first_name])
                     time = '/'.join([str(day),str(month),str(year)])
                     sms_message = u'Em '+name+u' đã ' + loai + u'.\n Ngày: ' + time + '.'
@@ -1417,7 +1420,7 @@ def diem_danh(request, class_id, day, month, year):
                 i = i + 1
     listdh = zip(pupilList, form)
     t = loader.get_template(os.path.join('school', 'diem_danh.html'))
-    c = RequestContext(request, {'form':form, 'pupilList': pupilList, 'time': time, 'message':message, 'class_id':class_id, 'time':time, 'list':listdh,
+    c = RequestContext(request, {'dncform':dncform, 'form':form, 'pupilList': pupilList, 'time': time, 'message':message, 'class_id':class_id, 'time':time, 'list':listdh,
                        'day':day, 'month':month, 'year':year, 'cl':cl})
     return HttpResponse(t.render(c))
     
@@ -1439,7 +1442,6 @@ def time_select(request, class_id):
             month = int(request.POST['date_month'])
             year = int(request.POST['date_year'])
             url = '/school/diemdanh/' + str(class_id) + '/' + str(day) + '/' + str(month) + '/' + str(year)
-            #url = os.path.join('','school','diemdanh', str(class_id), str(day), str(month), str(year),'')
             return HttpResponseRedirect(url)
     t = loader.get_template(os.path.join('school', 'time_select.html'))
     c = RequestContext(request, {'form':form, 'class_id':class_id, 'message':message})

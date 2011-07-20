@@ -158,6 +158,10 @@
 
   </script>
   <h2>Điểm danh lớp <b>{{ cl }}</b> ngày {{ day }}/{{ month }}/{{ year }}</h2>
+    <form action="" method="post">{% csrf_token %}
+            {{dncform}}
+            <td><input type ="submit" value="Chọn"/></td>
+    </form>
   <form action="/school/diemdanh/{{class_id}}/{{day}}/{{month}}/{{year}}" method="post">{% csrf_token %}
     {% if message != None %}
       {{ message }}
