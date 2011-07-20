@@ -1022,7 +1022,10 @@ def viewTeacherDetail(request, teacher_id):
         return HttpResponseRedirect(reverse('index'))
     
     message = None
-    teacher = Teacher.objects.get(id=teacher_id)
+    try:
+        teacher = Teacher.objects.get(id=teacher_id)
+    except Teacher.DoesNotExist:
+        return HttpResponseRedirect('/school/teachers')
     if in_school(request, teacher.school_id) == False:
         return HttpResponseRedirect('/')
     pos = get_position(request)
@@ -1591,7 +1594,11 @@ def deleteSubject(request, subject_id):
     
     if (get_position(request) < 4):
         return HttpResponseRedirect('/')
-    sub = Subject.objects.get(id=subject_id)
+    try:
+        sub = Subject.objects.get(id=subject_id)
+    except Subject.DoesNotExist:
+        return HttpResponseRedirect('/')
+        
     class_id = sub.class_id    
     if in_school(request, class_id.block_id.school_id) == False:
         return HttpResponseRedirect('/')
@@ -1611,9 +1618,13 @@ def deleteTeacher(request, teacher_id):
     
     message = "Đã xóa xong."
     school = get_school(request)
-    s = Teacher.objects.get(id = teacher_id)
-    if in_school(request, s.school_id) == False:
+    try:
+        s = Teacher.objects.get(id = teacher_id)
+    except Teacher.DoesNotExist:
         return HttpResponseRedirect('/')
+    
+    if in_school(request, s.school_id) == False:
+        return HttpResponseRedirect('/school/teachers')
     if (get_position(request) < 4):
         return HttpResponseRedirect('/')
     cl = Subject.objects.filter(teacher_id = s.id)
@@ -1639,7 +1650,11 @@ def deleteClass(request, class_id):
         return HttpResponseRedirect(reverse('index'))
     
     message = "Đã xóa xong."
-    s = Class.objects.get(id=class_id)
+    try:
+        s = Class.objects.get(id=class_id)
+    except Class.DoesNotExist:
+        return HttpResponseRedirect('/school/classes')
+    
     if in_school(request, s.block_id.school_id) == False:
         return HttpResponseRedirect('/')
     if (get_position(request) < 4):
@@ -1658,7 +1673,11 @@ def deleteStudentInClass(request, student_id):
         return HttpResponseRedirect(reverse('index'))
     
     message = "Đã xóa xong."
-    student = Pupil.objects.get(id=student_id)
+    try:
+        student = Pupil.objects.get(id=student_id)
+    except Pupil.DoesNotExist:
+        return HttpResponseRedirect('/')
+        
     class_id = student.class_id
     if in_school(request, class_id.block_id.school_id) == False:
         return HttpResponseRedirect('/')
