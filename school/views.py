@@ -715,6 +715,11 @@ def classes(request, sort_type=1, sort_status=0, page=1):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
+    try:
+        school = get_school(request)
+    except Exception as e:
+        return HttpResponseRedirect(reverse('index'))
+    
     pos = get_position(request)
     if (pos == 1):
         url = '/school/viewClassDetail/' + str(get_student(request).class_id.id)
@@ -786,6 +791,12 @@ def addClass(request):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
+    
+    try:
+        school = get_school(request)
+    except Exception as e:
+        return HttpResponseRedirect(reverse('index'))
+    
     if (get_position(request) < 4):
         return HttpResponseRedirect('/')
     school = user.userprofile.organization
@@ -812,6 +823,12 @@ def viewClassDetail(request, class_id, sort_type=1, sort_status=0, page=1):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
+    
+    try:
+        school = get_school(request)
+    except Exception as e:
+        return HttpResponseRedirect(reverse('index'))
+    
     pos = get_position(request)
     if (pos == 0):
         return HttpResponseRedirect('/')
@@ -918,6 +935,12 @@ def teachers(request, sort_type=1, sort_status=0, page=1):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
+    
+    try:
+        school = get_school(request)
+    except Exception as e:
+        return HttpResponseRedirect(reverse('index'))
+    
     pos = get_position(request)
     message = None
     form = TeacherForm()
@@ -992,6 +1015,12 @@ def viewTeacherDetail(request, teacher_id):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
+    
+    try:
+        school = get_school(request)
+    except Exception as e:
+        return HttpResponseRedirect(reverse('index'))
+    
     message = None
     teacher = Teacher.objects.get(id=teacher_id)
     if in_school(request, teacher.school_id) == False:
@@ -1020,6 +1049,11 @@ def subjectPerClass(request, class_id, sort_type=1, sort_status=0):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
+    try:
+        school = get_school(request)
+    except Exception as e:
+        return HttpResponseRedirect(reverse('index'))
+    
     pos = get_position(request)
     if (pos == 0):
         return HttpResponseRedirect('/')
@@ -1114,6 +1148,12 @@ def students(request, sort_type=1, sort_status=1, page=1):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
+        
+    try:
+        school = get_school(request)
+    except Exception as e:
+        return HttpResponseRedirect(reverse('index'))
+    
     if (get_position(request) < 4):
         return HttpResponseRedirect('/')
     message = None
@@ -1196,6 +1236,12 @@ def viewStudentDetail(request, student_id):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
+        
+    try:
+        school = get_school(request)
+    except Exception as e:
+        return HttpResponseRedirect(reverse('index'))
+    
     pos = get_position(request)
     if (pos==1) and (get_student(request).id==int(student_id)):
         pos = 4
@@ -1231,6 +1277,12 @@ def diem_danh(request, class_id, day, month, year):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
+        
+    try:
+        school = get_school(request)
+    except Exception as e:
+        return HttpResponseRedirect(reverse('index'))
+    
     cl = Class.objects.get(id__exact=class_id)
     if in_school(request, cl.block_id.school_id) == False:
         return HttpResponseRedirect('/')
@@ -1531,6 +1583,12 @@ def deleteSubject(request, subject_id):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
+    
+    try:
+        school = get_school(request)
+    except Exception as e:
+        return HttpResponseRedirect(reverse('index'))
+    
     if (get_position(request) < 4):
         return HttpResponseRedirect('/')
     sub = Subject.objects.get(id=subject_id)
@@ -1545,6 +1603,12 @@ def deleteTeacher(request, teacher_id):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
+    
+    try:
+        school = get_school(request)
+    except Exception as e:
+        return HttpResponseRedirect(reverse('index'))
+    
     message = "Đã xóa xong."
     school = get_school(request)
     s = Teacher.objects.get(id = teacher_id)
@@ -1568,6 +1632,12 @@ def deleteClass(request, class_id):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
+        
+    try:
+        school = get_school(request)
+    except Exception as e:
+        return HttpResponseRedirect(reverse('index'))
+    
     message = "Đã xóa xong."
     s = Class.objects.get(id=class_id)
     if in_school(request, s.block_id.school_id) == False:
@@ -1581,6 +1651,12 @@ def deleteStudentInClass(request, student_id):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
+        
+    try:
+        school = get_school(request)
+    except Exception as e:
+        return HttpResponseRedirect(reverse('index'))
+    
     message = "Đã xóa xong."
     student = Pupil.objects.get(id=student_id)
     class_id = student.class_id
@@ -1595,6 +1671,12 @@ def deleteStudentInSchool(request, student_id):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
+        
+    try:
+        school = get_school(request)
+    except Exception as e:
+        return HttpResponseRedirect(reverse('index'))
+    
 #    message = "Đã xóa xong."
     sub = Pupil.objects.get(id=student_id)
     if in_school(request, sub.class_id.block_id.school_id) == False:
@@ -1608,6 +1690,12 @@ def khen_thuong(request, student_id):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
+        
+    try:
+        school = get_school(request)
+    except Exception as e:
+        return HttpResponseRedirect(reverse('index'))
+    
     sub = Pupil.objects.get(id=student_id)
     if in_school(request, sub.class_id.block_id.school_id) == False:
         return HttpResponseRedirect('/')
@@ -1624,6 +1712,12 @@ def add_khen_thuong(request, student_id):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
+        
+    try:
+        school = get_school(request)
+    except Exception as e:
+        return HttpResponseRedirect(reverse('index'))
+    
     form = KhenThuongForm()
     pupil = Pupil.objects.get(id=student_id)
     if in_school(request, pupil.class_id.block_id.school_id) == False:
@@ -1649,6 +1743,12 @@ def delete_khen_thuong(request, kt_id):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
+    
+    try:
+        school = get_school(request)
+    except Exception as e:
+        return HttpResponseRedirect(reverse('index'))
+    
     kt = KhenThuong.objects.get(id=kt_id)
     student = kt.student_id    
     if in_school(request, student.class_id.block_id.school_id) == False:
@@ -1663,6 +1763,12 @@ def edit_khen_thuong(request, kt_id):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
+        
+    try:
+        school = get_school(request)
+    except Exception as e:
+        return HttpResponseRedirect(reverse('index'))
+    
     kt = KhenThuong.objects.get(id=kt_id)
     pupil = kt.student_id
     if in_school(request, pupil.class_id.block_id.school_id) == False:
@@ -1688,6 +1794,12 @@ def ki_luat(request, student_id):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
+        
+    try:
+        school = get_school(request)
+    except Exception as e:
+        return HttpResponseRedirect(reverse('index'))
+    
     student = Pupil.objects.get(id=student_id)
     if in_school(request, student.class_id.block_id.school_id) == False:
         return HttpResponseRedirect('/')
@@ -1704,6 +1816,12 @@ def add_ki_luat(request, student_id):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
+        
+    try:
+        school = get_school(request)
+    except Exception as e:
+        return HttpResponseRedirect(reverse('index'))
+    
     form = KiLuatForm()
     pupil = Pupil.objects.get(id=student_id)
     if in_school(request, pupil.class_id.block_id.school_id) == False:
@@ -1729,6 +1847,12 @@ def delete_ki_luat(request, kt_id):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
+        
+    try:
+        school = get_school(request)
+    except Exception as e:
+        return HttpResponseRedirect(reverse('index'))
+    
     kt = KiLuat.objects.get(id=kt_id)
     student = kt.student_id
     if in_school(request, student.class_id.block_id.school_id) == False:
@@ -1743,6 +1867,12 @@ def edit_ki_luat(request, kt_id):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
+    
+    try:
+        school = get_school(request)
+    except Exception as e:
+        return HttpResponseRedirect(reverse('index'))
+    
     kt = KiLuat.objects.get(id=kt_id)
 
     pupil = kt.student_id
@@ -1769,9 +1899,15 @@ def hanh_kiem(request, class_id, sort_type = 1, sort_status = 0):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
+    try:
+        school = get_school(request)
+    except Exception as e:
+        return HttpResponseRedirect(reverse('index'))
+    
     c = Class.objects.get(id__exact=class_id)
     if in_school(request, c.block_id.school_id) == False:
-        return HttpResponseRedirect('/')
+        return HttpResponseRedirect('/')           
+    
     pos=get_position(request)
     if (pos < 1):
         return HttpResponseRedirect('/')
@@ -1845,6 +1981,11 @@ def viewSubjectDetail (request, subject_id):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
+    try:
+        school = get_school(request)
+    except Exception as e:
+        return HttpResponseRedirect(reverse('index'))
+    
     if (get_position(request) < 4):
         return HttpResponseRedirect('/')
     sub = Subject.objects.get(id=subject_id)        
