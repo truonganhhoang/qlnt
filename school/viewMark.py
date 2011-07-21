@@ -9,11 +9,28 @@ from school.utils import *
 from django.core.urlresolvers import reverse
 from django.utils import simplejson
 from school.sms_views import sendSMS
+#from django.db import transaction
 
 import os.path 
+import time 
+import datetime
 LOCK_MARK =False
 ENABLE_CHANGE_MARK=True
+
+"""
 def thu(request):
+
+    list = Mark.objects.all()
+    for m in list:
+        mt=MarkTime()
+        mt.mark_id=m
+        mt.save()
+        
+        sm=SentMark()
+        sm.mark_id=m
+        sm.save()
+        
+        
                
     t = loader.get_template(os.path.join('school','thu.html'))
     
@@ -24,7 +41,25 @@ def thu(request):
 
     return HttpResponse(t.render(c))
 
-            
+"""
+
+
+def thu(request):
+
+    t1=time.time()
+    for i in range(20000000):
+        j=1
+    t2=time.time()    
+    print (t2-t1)
+    t = loader.get_template(os.path.join('school','thu.html'))
+    
+    c = RequestContext(request, {
+                                }
+                       )
+    
+
+    return HttpResponse(t.render(c))
+                        
 class MarkID:
     def __init__(self,d1,d2,d3,d4,d5,d6,d7,d8,d9,d10,d11,d12,d13,d14,d15,d16,d17,d18,d19):
         self.d1=d1
@@ -46,6 +81,25 @@ class MarkID:
         self.d17=d17
         self.d18=d18
         self.d19=d19
+        
+class Editable:
+    def __init__(self,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16):
+        self.a1=a1
+        self.a2=a2
+        self.a3=a3
+        self.a4=a4
+        self.a5=a5
+        self.a6=a6
+        self.a7=a7
+        self.a8=a8
+        self.a9=a9
+        self.a10=a10
+        self.a11=a11
+        self.a12=a12
+        self.a13=a13
+        self.a14=a14
+        self.a15=a15
+        self.a16=a16
         
 def checkChangeMark(class_id):
     return (not LOCK_MARK) and ENABLE_CHANGE_MARK
@@ -190,47 +244,272 @@ def saveMarkHasComment(request,selectedTerm,markList,idList,tbhk1ListObjects,tbn
                 i=i+1    
 #cac chuc nang:
 #hien thu bang diem cua mot lop, cho edit roi save lai
-def getMark(class_id,subjectChoice,selectedTerm):
-    pupilList=Pupil.objects.filter(class_id=class_id).order_by('first_name', 'last_name','birthday')                
-    markList=[]
-    idList=[]    
-    tbhk1ListObjects=[]
-    tbnamListObjects=[]
 
+def defineEdit(mt,timeToEdit):
+    timeNow =datetime.datetime.now()
+    print timeNow
+    if mt==None:
+        return Editable(0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0 ,0)
+    else:
+        if mt.mieng_1!=None:
+            if (timeNow-mt.mieng_1).total_seconds()/60 > timeToEdit: a1=0
+            else: a1=1
+        else: a1=1
+            
+        if mt.mieng_2!=None:
+            if (timeNow-mt.mieng_2).total_seconds()/60 > timeToEdit: a2=0
+            else: a2=1
+        else: a2=1
+
+        if mt.mieng_3!=None:
+            if (timeNow-mt.mieng_3).total_seconds()/60 > timeToEdit: a3=0
+            else: a3=1
+        else: a3=1    
+            
+        if mt.mieng_4!=None:
+            if (timeNow-mt.mieng_4).total_seconds()/60 > timeToEdit: a4=0
+            else: a4=1
+        else: a4=1    
+
+        if mt.mieng_5!=None:
+            if (timeNow-mt.mieng_5).total_seconds()/60 > timeToEdit: a5=0
+            else: a5=1
+        else: a5=1
+        ###########################################################    
+            
+        if mt.mlam_1!=None:
+            if (timeNow-mt.mlam_1).total_seconds()/60 > timeToEdit: a6=0
+            else: a6=1
+        else: a6=1
+            
+        if mt.mlam_2!=None:
+            if (timeNow-mt.mlam_2).total_seconds()/60 > timeToEdit: a7=0
+            else: a7=1
+        else: a7=1
+
+        if mt.mlam_3!=None:
+            if (timeNow-mt.mlam_3).total_seconds()/60 > timeToEdit: a8=0
+            else: a8=1
+        else: a8=1    
+            
+        if mt.mlam_4!=None:
+            if (timeNow-mt.mlam_4).total_seconds()/60 > timeToEdit: a9=0
+            else: a9=1
+        else: a9=1    
+
+        if mt.mlam_5!=None:
+            if (timeNow-mt.mlam_5).total_seconds()/60 > timeToEdit: a10=0
+            else: a10=1
+        else: a10=1
+        ###########################################################    
+        if mt.mot_tiet_1!=None:
+            if (timeNow-mt.mot_tiet_1).total_seconds()/60 > timeToEdit: a11=0
+            else: a11=1
+        else: a11=1
+            
+        if mt.mot_tiet_2!=None:
+            if (timeNow-mt.mot_tiet_2).total_seconds()/60 > timeToEdit: a12=0
+            else: a12=1
+        else: a12=1
+
+        if mt.mot_tiet_3!=None:
+            if (timeNow-mt.mot_tiet_3).total_seconds()/60 > timeToEdit: a13=0
+            else: a13=1
+        else: a13=1    
+            
+        if mt.mot_tiet_4!=None:
+            if (timeNow-mt.mot_tiet_4).total_seconds()/60 > timeToEdit: a14=0
+            else: a14=1
+        else: a14=1    
+
+        if mt.mot_tiet_5!=None:
+            if (timeNow-mt.mot_tiet_5).total_seconds()/60 > timeToEdit: a15=0
+            else: a15=1
+        else: a15=1
+        
+        if mt.ck!=None:
+            if (timeNow-mt.ck).total_seconds()/60 > timeToEdit: a16=0
+            else: a16=1
+        else: a16=1
+        
+        return Editable(a1,a2,a3,a4,a5, a6,a7,a8,a9,a10, a11,a12,a13,a14,a15 ,a16)
+        ###########################################################    
+    
+        
+        
+        
+        
+def getMark(class_id,subjectChoice,selectedTerm):
+    timeToEdit = 0
+    
+    pupilList=Pupil.objects.filter(class_id=class_id).order_by('first_name','last_name','birthday')                
+    markList=[]
+    editList=[]    
+    idList=[]    
+    tbhk1List=[]
+    tbnamList=[]
+    list=[]
     if selectedTerm.number==1:            
         i=1    
         for p in pupilList:
-            print p
-            print subjectChoice
-            print selectedTerm.id
-            print p.mark_set.all()
             m = p.mark_set.get(subject_id=subjectChoice,term_id=selectedTerm.id)
-            
             markList.append(m)
+
+            mt = m.marktime
+            ea=defineEdit(mt,timeToEdit)            
+            editList.append(ea)        
         
             k=i*100
             id=MarkID(k+1,k+2,k+3,k+4,k+5,k+6,k+7,k+8,k+9,k+10,k+11,k+12,k+13,k+14,k+15,k+16,k+17,k+18,k+19)
             idList.append(id)
             i=i+1
-            
+        list=zip(pupilList,markList,editList,idList)  
+                 
     else:
         i=1
         beforeTerm = Term.objects.get(year_id=selectedTerm.year_id,number=1)
         for p in pupilList:
             m = p.mark_set.get(subject_id=subjectChoice,term_id=selectedTerm.id)                
-            markList.append(m)              
-            hk1=p.mark_set.get(subject_id=subjectChoice,term_id=beforeTerm)                
-
-            tbhk1ListObjects.append(hk1)                                                       
+            markList.append(m)
+              
+            mt = m.marktime
+            
+            ea=defineEdit(mt,timeToEdit)                
+            editList.append(ea)                                
+            hk1=p.mark_set.get(subject_id=subjectChoice,term_id=beforeTerm)
+                            
+            tbhk1List.append(hk1)
+                                                                   
             k=i*100
             id=MarkID(k+1,k+2,k+3,k+4,k+5,k+6,k+7,k+8,k+9,k+10,k+11,k+12,k+13,k+14,k+15,k+16,k+17,k+18,k+19)
             idList.append(id)
             i=i+1
                             
             tbnam=p.tkmon_set.get(subject_id=subjectChoice)                    
-            tbnamListObjects.append(tbnam)
-    return   pupilList,markList,tbhk1ListObjects,tbnamListObjects,idList
+            tbnamList.append(tbnam)
+            
+        list=zip(pupilList,markList,editList,tbhk1List,tbnamList,idList)    
+    return   list
 
+    
+def markForASubject(request,subject_id):
+    
+    user = request.user
+    if not user.is_authenticated():
+        return HttpResponseRedirect( reverse('login'))
+
+    selectedSubject = Subject.objects.get(id=subject_id)
+    try:
+        if in_school(request,selectedSubject.class_id.year_id.school_id) == False:
+            return HttpResponseRedirect('/school')
+
+    except Exception as e:
+        return HttpResponseRedirect(reverse('index'))
+
+    ok=False        
+    position = get_position(request)
+    """
+    if position ==4: ok=True
+    #kiem tra xem giao vien nay co phai day lop nay khong ?
+    if position ==3:
+        if selectedSubject.teacher_id != None:
+            if selectedSubject.teacher_id.user_id.id == request.user.id:
+                ok=True
+                                
+    if (not ok):
+        return HttpResponseRedirect('/school')
+
+    """
+    enableChangeMark=2
+    enableSendSMS   =True
+    if    position ==4: pass
+    elif position == 3:
+        # kiem tra giao vien chu nhiem
+        enableChangeMark=0
+        enableSendSMS   =False
+        if selectedSubject.class_id.teacher_id:
+            if selectedSubject.class_id.teacher_id.user_id.id == request.user.id:
+                enableChangeMark=0
+                enableSendSMS   =True
+          
+        if selectedSubject.teacher_id != None:
+            if selectedSubject.teacher_id.user_id.id == request.user.id:
+                enableChangeMark=1
+                enableSendSMS   =True
+    elif position == 1:
+        enableChangeMark=0
+        enableSendSMS   =False
+    #enableChangeMark=checkChangeMark(subject_id)
+    
+    print "fffffffffffffffff",enableChangeMark
+    message = None                
+    subjectChoice=subject_id
+    hsSubject=-1    
+        
+    markList=[]
+    editList=[]    
+    tbnamList=[]
+    
+    tbhk1List=[]
+    tbhk1ListObjects=[]
+    tbnamListObjects=[]
+    list=None
+    idList=[]
+    move=None    
+    selectedClass=Class.objects.get(id=selectedSubject.class_id.id)    
+    yearChoice=selectedClass.year_id.id
+    
+    #selectedClass.year_id.school_id.status=2
+        
+    selectedTerm=get_current_term(request)    
+    termChoice  =selectedTerm.id    
+    termList= Term.objects.filter(year_id=yearChoice,number__lt=3).order_by('number')
+    
+    
+    hsSubject=int(Subject.objects.get(id=subjectChoice).hs)    
+    
+
+    if request.method == 'POST':        
+        if request.POST.get('move'):
+             move=request.POST['move']          
+        termChoice =int(request.POST['term'])
+        selectedTerm=Term.objects.get(id=termChoice)
+        list=getMark(selectedSubject.class_id.id,subjectChoice,selectedTerm)
+
+        if (request.POST['submitChoice']=="luulai") & (hsSubject==0):
+            saveMarkHasComment(request,selectedTerm,markList,idList,tbhk1ListObjects,tbnamListObjects)
+                
+
+    else:
+        list=getMark(selectedSubject.class_id.id,subjectChoice,selectedTerm)
+        
+                        
+    if list!=None:        
+        lengthList=list.__len__() 
+         
+    t = loader.get_template(os.path.join('school','mark_for_a_subject.html'))
+    
+    c = RequestContext(request, { 
+                                'message' : message,
+                                'enableChangeMark':enableChangeMark,
+                                'enableSendSMS':enableSendSMS,
+                                'selectedClass':selectedClass,
+
+                                'termList':termList,
+                                'list':list,
+                                                                  
+                                'termChoice':termChoice,                              
+                                'subjectChoice':subjectChoice,
+                                'selectedTerm':selectedTerm,
+                                'selectedSubject':selectedSubject,
+                                'hsSubject':hsSubject,
+                                'lengthList':lengthList,
+                                'move':move,
+                                }
+                       )
+    
+
+    return HttpResponse(t.render(c))
           
 def markTable(request,class_id):
     
@@ -297,7 +576,7 @@ def markTable(request,class_id):
         selectedTerm=Term.objects.get(id=termChoice)
         hsSubject=int(Subject.objects.get(id=subjectChoice).hs)    
 
-        pupilList,markList,tbhk1ListObjects,tbnamListObjects,idList=getMark(class_id,subjectChoice,selectedTerm)
+        list=getMark(class_id,subjectChoice,selectedTerm)
     
         if (request.POST['submitChoice']=="luulai") & (hsSubject==0):
             saveMarkHasComment(request,selectedTerm,markList,idList,tbhk1ListObjects,tbnamListObjects)
@@ -305,18 +584,10 @@ def markTable(request,class_id):
         if (request.POST['submitChoice']=="luulai") & (hsSubject>0):
             saveMarkNoComment(request,selectedTerm,markList,idList,tbhk1ListObjects,tbnamListObjects)
     
-        if selectedTerm.number==1:
-            list=zip(pupilList,markList,idList)
-        else:
-            length=pupilList.__len__()            
-            for i in range(length):                
-                tbhk1List.append(tbhk1ListObjects[i].tb)                
-                tbnamList.append(tbnamListObjects[i].tb_nam)
-            list=zip(pupilList,markList,tbhk1List,tbnamList,idList)
             
     lengthList=0            
-    if pupilList!=None:        
-        lengthList=pupilList.__len__()  
+    if list!=None:        
+        lengthList=list.__len__()  
           
     t = loader.get_template(os.path.join('school','mark_table.html'))
     
@@ -453,136 +724,6 @@ def markForAStudent(request,class_id,student_id):
     return HttpResponse(t.render(c))
 
 # diem cho 1 mon
-def markForASubject(request,subject_id):
-    
-    user = request.user
-    if not user.is_authenticated():
-        return HttpResponseRedirect( reverse('login'))
-
-    selectedSubject = Subject.objects.get(id=subject_id)
-    try:
-        if in_school(request,selectedSubject.class_id.year_id.school_id) == False:
-            return HttpResponseRedirect('/school')
-
-    except Exception as e:
-        return HttpResponseRedirect(reverse('index'))
-
-    ok=False        
-    position = get_position(request)
-    """
-    if position ==4: ok=True
-    #kiem tra xem giao vien nay co phai day lop nay khong ?
-    if position ==3:
-        if selectedSubject.teacher_id != None:
-            if selectedSubject.teacher_id.user_id.id == request.user.id:
-                ok=True
-                                
-    if (not ok):
-        return HttpResponseRedirect('/school')
-
-    """
-    enableChangeMark=True
-    enableSendSMS   =True
-    if    position ==4: pass
-    elif position == 3:
-        # kiem tra giao vien chu nhiem
-        enableChangeMark=False
-        enableSendSMS   =False
-        if selectedSubject.class_id.teacher_id:
-            if selectedSubject.class_id.teacher_id.user_id.id == request.user.id:
-                enableChangeMark=False
-                enableSendSMS   =True
-          
-        if selectedSubject.teacher_id != None:
-            if selectedSubject.teacher_id.user_id.id == request.user.id:
-                enableChangeMark=True
-                enableSendSMS   =True
-    elif position == 1:
-        enableChangeMark=False
-        enableSendSMS   =False
-    #enableChangeMark=checkChangeMark(subject_id)
-    
-    message = None            
-    
-    subjectChoice=subject_id
-    hsSubject=-1    
-    
-    pupilList=None    
-    markList=[]
-    tbnamList=[]
-    tbhk1List=[]
-    tbhk1ListObjects=[]
-    tbnamListObjects=[]
-    list=None
-    idList=[]
-    move=None    
-    selectedClass=Class.objects.get(id=selectedSubject.class_id.id)    
-    yearChoice=selectedClass.year_id.id
-    
-    #selectedClass.year_id.school_id.status=2
-        
-    selectedTerm=get_current_term(request)    
-    termChoice  =selectedTerm.id    
-    termList= Term.objects.filter(year_id=yearChoice,number__lt=3).order_by('number')
-    
-    
-    hsSubject=int(Subject.objects.get(id=subjectChoice).hs)    
-    
-
-    if request.method == 'POST':        
-        if request.POST.get('move'):
-             move=request.POST['move']          
-        termChoice =int(request.POST['term'])
-        selectedTerm=Term.objects.get(id=termChoice)
-        pupilList,markList,tbhk1ListObjects,tbnamListObjects,idList=getMark(selectedSubject.class_id.id,subjectChoice,selectedTerm)
-
-        if (request.POST['submitChoice']=="luulai") & (hsSubject==0):
-            saveMarkHasComment(request,selectedTerm,markList,idList,tbhk1ListObjects,tbnamListObjects)
-                
-        if (request.POST['submitChoice']=="luulai") & (hsSubject>0):
-            saveMarkNoComment(request,selectedTerm,markList,idList,tbhk1ListObjects,tbnamListObjects)
-
-    else:
-        pupilList,markList,tbhk1ListObjects,tbnamListObjects,idList=getMark(selectedSubject.class_id.id,subjectChoice,selectedTerm)
-        
-    
-    
-    if selectedTerm.number==1:
-        list=zip(pupilList,markList,idList)
-    else:
-        length=pupilList.__len__()            
-        for i in range(length):                
-            tbhk1List.append(tbhk1ListObjects[i].tb)                
-            tbnamList.append(tbnamListObjects[i].tb_nam)
-        list=zip(pupilList,markList,tbhk1List,tbnamList,idList)
-            
-    lengthList=0            
-    if pupilList!=None:        
-        lengthList=pupilList.__len__()  
-          
-    t = loader.get_template(os.path.join('school','mark_for_a_subject.html'))
-    
-    c = RequestContext(request, { 
-                                'message' : message,
-                                'enableChangeMark':enableChangeMark,
-                                'enableSendSMS':enableSendSMS,
-                                'selectedClass':selectedClass,
-
-                                'termList':termList,
-                                'list':list,
-                                                                  
-                                'termChoice':termChoice,                              
-                                'subjectChoice':subjectChoice,
-                                'selectedTerm':selectedTerm,
-                                'selectedSubject':selectedSubject,
-                                'hsSubject':hsSubject,
-                                'lengthList':lengthList,
-                                'move':move,
-                                }
-                       )
-    
-
-    return HttpResponse(t.render(c))
 
 def update(s):
     strings=s.split(':')
@@ -591,51 +732,100 @@ def update(s):
     setOfValue  =strings[2].split('*')    
     length = len(setOfNumber)
     
+    timeNow = datetime.datetime.now()
+    
     m = Mark.objects.get(id=idMark)
-        
+    mt= m.marktime    
+    number=0
     for i in range(length-1):
         
-        if setOfValue[i]=="NaN":
-            print "oooooooooooooooooooooooooooooooooooooooooooo" 
-            continue
-         
         number= int(setOfNumber[i])
-        value = float(setOfValue[i].replace(',','.',1))
-        
-        if value==-1    : value = None
-        
-        print number
-        print value
-        
-        if   number ==1 :  m.mieng_1=value
-        elif number ==2 :  m.mieng_2=value
-        elif number ==3 :  m.mieng_3=value
-        elif number ==4 :  m.mieng_4=value
-        elif number ==5 :  m.mieng_5=value
-        
-        elif number ==6 :  m.mlam_1=value
-        elif number ==7 :  m.mlam_2=value
-        elif number ==8 :  m.mlam_3=value
-        elif number ==9 :  m.mlam_4=value
-        elif number ==10:  m.mlam_5=value
-        
-        elif number ==11:  m.mot_tiet_1=value
-        elif number ==12:  m.mot_tiet_2=value
-        elif number ==13:  m.mot_tiet_3=value
-        elif number ==14:  m.mot_tiet_4=value
-        elif number ==15:  m.mot_tiet_5=value
-        elif number ==16:  m.ck        =value
-    print m.ck    
+        value = float(setOfValue[i])
+                    
+        if value==-1    : 
+            value = None
+            time  = None
+        else: time=timeNow    
+        """
+        if number ==1   :
+            if (m.mieng_1==None) or (value==None):
+                mt.mieng_1=time                                
+            m.mieng_1 =value
+        """    
+        if number ==1   :
+            mt.mieng_1=time                                
+            m.mieng_1 =value
+                                
+        elif number ==2 :  
+            mt.mieng_2=time                                
+            m.mieng_2 =value
+            
+        elif number ==3 : 
+            mt.mieng_3=time 
+            m.mieng_3=value
+            
+        elif number ==4 :  
+            mt.mieng_4=time                                
+            m.mieng_4=value
+            
+        elif number ==5 :  
+            mt.mieng_5=time                                
+            m.mieng_5=value
+                    
+
+        elif number ==6 :  
+            mt.mlam_1=time                                
+            m.mlam_1=value
+            
+        elif number ==7 :  
+            mt.mlam_2=time                                
+            m.mlam_2=value
+            
+        elif number ==8 :  
+            mt.mlam_3=time                                
+            m.mlam_3=value
+            
+        elif number ==9 :  
+            mt.mlam_4=time                                
+            m.mlam_4 =value
+            
+        elif number ==10:  
+            mt.mlam_5=time                                
+            m.mlam_5 =value
+            
+                    
+        elif number ==11:  
+            mt.mot_tiet_1=time                                
+            m.mot_tiet_1 =value
+            
+        elif number ==12:  
+            mt.mot_tiet_2=time                                
+            m.mot_tiet_2 =value
+            
+        elif number ==13:  
+            mt.mot_tiet_3=time                                
+            m.mot_tiet_3 =value
+            
+        elif number ==14:  
+            mt.mot_tiet_4=time                                
+            m.mot_tiet_4 =value
+            
+        elif number ==15:  
+            mt.mot_tiet_5=time                                
+            m.mot_tiet_5 =value
+            
+        elif number ==16:  
+            mt.ck=time                                
+            m.ck  =value
     if m.ck==None:
-        subject_id = m.subject_id
-        student_id = m.student_id
-        print "ok3"
-        tbcn=TKMon.objects.get(subject_id=subject_id.id,student_id=student_id.id)
-        print "ok4"
-        tbcn.tb_nam = None
-        m.tb        = None  
-        tbcn.save()
-        print "ok5"
+        # nếu như điểm cuối cùng là điểm cuối kỳ 
+        if number==16:
+            subject_id = m.subject_id
+            student_id = m.student_id
+            tbcn=TKMon.objects.get(subject_id=subject_id.id,student_id=student_id.id)
+            tbcn.tb_nam = None
+            m.tb        = None  
+            tbcn.save()
                 
     else :   
             sum=m.ck*3
@@ -687,16 +877,13 @@ def update(s):
             if m.mot_tiet_5 != None: 
                 sum=sum+m.mot_tiet_5*2
                 factor=factor+2
-            print sum
-            print factor    
             e=0.00000001    
             m.tb = round(sum/factor + e,1)
             
-            print m.term_id.number
             if m.term_id.number==2:
                 subject_id = m.subject_id
                 student_id = m.student_id
-                print "ok3"
+                #print "ok3"
                 tbk1=Mark.objects.get(subject_id=subject_id.id,student_id=student_id.id,term_id__number=1)
                 if tbk1.ck!=None:
                     tbcn=TKMon.objects.get(subject_id=subject_id.id,student_id=student_id.id)
@@ -704,17 +891,20 @@ def update(s):
                     #print "ooooooooooooooooooooooooooooooooo"
                     #print tbcn.tb_nam
                     tbcn.save()
-    print "ok2"                                     
-    m.save()    
+    #print "ok2"                                     
+    m.save()  
+    mt.save()  
     
 def saveMark(request):
+    
+    t1=time.time()
     message = 'hello'
-
+    #print "hello"
     if request.method == 'POST':
         str = request.POST['str']
         strs=str.split('/')        
         position = get_position(request)
-        
+        #print str
         if   position ==4 :pass
         elif position ==3 :
             idTeacher= int(strs[0])
@@ -729,12 +919,16 @@ def saveMark(request):
         for i in range(1,length):
                 update(strs[i])     
         message='ok'
+        
         data = simplejson.dumps({'message': message})
+        t2=time.time()
+        print (t2-t1)
         return HttpResponse( data, mimetype = 'json')    
                  
 def sendSMSForAPupil(s,user):
     #print s
     strings=s.split(':')
+    
     idMark=int(strings[0])    
     setOfNumber =strings[1].split('*')
     setOfValue  =strings[2].split('*')    
@@ -742,7 +936,7 @@ def sendSMSForAPupil(s,user):
     length = len(setOfNumber)
     
     m = Mark.objects.get(id=idMark)
-    
+    termNumber = m.term_id.number
     markStr1="" 
     markStr2="" 
     markStr3="" 
@@ -750,11 +944,13 @@ def sendSMSForAPupil(s,user):
     markStr5=""
     markStr6=""
     markStr7=""
-        
     for i in range(length-1):                 
         number= int(setOfNumber[i])
-        value = setOfValue[i].replace(',','.',1)
-        
+        value = setOfValue[i]
+        m.sent_mark=m.sent_mark[:number-1]+'1'+m.sent_mark[number:]
+                
+        if  (termNumber==2) & (number==17) : number=18
+        elif (termNumber==2) & (number==18): number=17  
         if   number <6  : markStr1+=value+" "
         elif number <11 : markStr2+=value+" " 
         elif number <16 : markStr3+=value+" " 
@@ -762,7 +958,7 @@ def sendSMSForAPupil(s,user):
         elif number ==17: markStr5+=value+" " 
         elif number ==18: markStr6+=value+" " 
         elif number ==19: markStr7+=value+" "
-    
+        
     smsString=u'Diem mon '+to_en1(m.subject_id.name)+ u' cua hs '
     smsString+=to_en1(m.student_id.last_name)+" "+to_en1(m.student_id.first_name)+" nhu sau: "    
     termNumber = m.term_id.number
@@ -783,7 +979,7 @@ def sendSMSForAPupil(s,user):
     
     if m.student_id.sms_phone != None:
         sendSMS(m.student_id.sms_phone,smsString,user)
-    print "ok1"    
+    m.save()    
     print smsString    
     print len(smsString)
     print user
