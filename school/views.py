@@ -1494,31 +1494,34 @@ def diem_danh(request, class_id, day, month, year):
         except ObjectDoesNotExist:
             form.append(DiemDanhForm())
     listdh = zip(pupilList, form)
-    if request.method == 'POST':
-        message = 'Điểm danh lớp ' + str(Class.objects.get(id=class_id)) + '. Ngày ' + str(time) + "đã xong."
-        list = request.POST.getlist('loai')
-        i = 0
-        for p in pupilList:
-            try:
-                dd = DiemDanh.objects.get(time__exact=time, student_id__exact=p.id, term_id__exact=term.id)
-                if list[i] != 'k':
-                    data = {'student_id':p.id, 'time':time, 'loai':list[i], 'term_id':term.id}
-                    of = form[i]
-                    form[i] = DiemDanhForm(data, instance=dd)
-                    if str(of) != str(form[i]):
+    try:
+        if request.method == 'POST':
+            message = 'Điểm danh lớp ' + str(Class.objects.get(id=class_id)) + '. Ngày ' + str(time) + "đã xong."
+            list = request.POST.getlist('loai')
+            i = 0
+            for p in pupilList:
+                try:
+                    dd = DiemDanh.objects.get(time__exact=time, student_id__exact=p.id, term_id__exact=term.id)
+                    if list[i] != 'k':
+                        data = {'student_id':p.id, 'time':time, 'loai':list[i], 'term_id':term.id}
+                        of = form[i]
+                        form[i] = DiemDanhForm(data, instance=dd)
+                        if str(of) != str(form[i]):
+                            if form[i].is_valid():
+                                form[i].save()
+                    else:
+                        form[i] = DiemDanhForm()
+                        dd.delete()
+                    i = i + 1
+                except ObjectDoesNotExist:
+                    if list[i] != 'k':
+                        data = {'student_id':p.id, 'time':time, 'loai':list[i], 'term_id':term.id}
+                        form[i] = DiemDanhForm(data)
                         if form[i].is_valid():
                             form[i].save()
-                else:
-                    form[i] = DiemDanhForm()
-                    dd.delete()
-                i = i + 1
-            except ObjectDoesNotExist:
-                if list[i] != 'k':
-                    data = {'student_id':p.id, 'time':time, 'loai':list[i], 'term_id':term.id}
-                    form[i] = DiemDanhForm(data)
-                    if form[i].is_valid():
-                        form[i].save()
-                i = i + 1
+                    i = i + 1
+    except IndexError:
+        message = None
     listdh = zip(pupilList, form)
     t = loader.get_template(os.path.join('school', 'diem_danh.html'))
     c = RequestContext(request, {'dncform':dncform, 'form':form, 'pupilList': pupilList, 'time': time, 'message':message, 'class_id':class_id, 'time':time, 'list':listdh,
