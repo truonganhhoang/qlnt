@@ -174,15 +174,15 @@
     });
 
   </script>
-  
-    <form action="" method="post">{% csrf_token %}
-            <h2>Điểm danh {{dncform}}
-            <td><input type ="submit" value="Chọn"/></td> </h2>
-    </form>
-  
+
+  <form action="" method="post">{% csrf_token %}
+          <h2>Điểm danh {{dncform}}
+          <td><input type ="submit" value="Chọn"/></td> </h2>
+  </form>
+
   <form action="/school/diemdanh/{{class_id}}/{{day}}/{{month}}/{{year}}" method="post">{% csrf_token %}
     {% if message != None %}
-      <h2>{{ message }} </h2>
+      {{ message }}
     {% endif %}
     <br>
     <button id="selectAll">Đảo chọn</button>
