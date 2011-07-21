@@ -592,13 +592,9 @@ def student_import( request, class_id ):
         message = result['error']
     else:
         chosen_class = Class.objects.get( id = int(class_id) )
-        print chosen_class
         year = school.startyear_set.get(time=datetime.date.today().year)
-        print year
         current_year = school.year_set.latest('time')
-        print current_year
         term = get_current_term( request)
-        print term
         try:
             for student in result:
                 data = {'full_name': student['ten'], 'birthday':student['ngay_sinh'],

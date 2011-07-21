@@ -158,6 +158,24 @@
 <footer>
   <p class="copyright">©2011 by Viettel and VNU Hanoi. <a href="/app/contact">Liên hệ</a></p>
 </footer>
+<script type="text/javascript" >
+$("#notify").ajaxStart( function(){
+         $(this).text("Đang lưu dữ liệu lên server...");
+         $(this).fadeIn('fast');      
+      });
+      
+$("#notify").ajaxSuccess( function(event, request, settings){
+         $(this).text("Đã lưu.");
+         $(this).delay(1000).fadeOut('fast');      
+      });      
 
+$("#notify").ajaxError( function(event, request, settings){
+         $(this).text("Gặp lỗi khi gửi dữ liệu tới server");
+         $(this).delay(1000).fadeOut('fast');      
+               
+      });      
+            
+      
+</script>
 </body>
 </html>
