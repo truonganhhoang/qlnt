@@ -39,4 +39,7 @@ urlpatterns = patterns('',
     
     (r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
     (r'^favicon\.ico$', 'django.views.generic.simple.redirect_to', {'url': '/static/images/favicon.ico'}),
+
+    #urls for django-sentry
+    (r'^sentry/', include('sentry.web.urls')),
 )

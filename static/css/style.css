@@ -1,4 +1,10 @@
 /* CSS Document */
+
+* {
+    margin:0;
+    padding:0
+}
+
 html {
     width: 100%;
     min-width: 1024px;
@@ -10,19 +16,18 @@ body {
     padding: 0 0 0 0;
     margin: 0 0 0 0;
     color: #595959;
-    font: 14px/18px Arial, Helvetica, sans-serif;
+    /*font: 14px/18px Arial, Helvetica, verdana, sans-serif;*/
+    font: 14px/16px "Lucida Grande", "Lucida Sans", verdana, sans-serif;
 }
 
-
-div, p, ul, h2, h3, img {
-    padding: 0px;
-    margin: 0px;
+article, aside, canvas, figure, figure img, figcaption, hgroup,
+footer, header, nav, section, audio, video {
+	display: block;
 }
 
 #popupDiv{
    margin: 20px;   
 }
-
 div.notify-widget-pane{
    text-align: center;
    position: fixed;
@@ -50,6 +55,7 @@ div.notify{
    
 }
 
+
 ul {
     list-style-type: none;
 }
@@ -68,10 +74,6 @@ table.styleB th {
     border: 1px solid #a9c6c9;
 }
 
-table.styleB tr {
-    background-color: #d4e3e5;
-    cursor: pointer;
-}
 
 table.styleB td {
     border: 1px solid #a9c6c9;
@@ -100,11 +102,17 @@ table.styleA th {
     border: 1px solid #a9c6c9;
 }
 
-table.styleA tr {
-    background-color: #d4e3e5;
-    cursor: pointer;
-    vertical-align: bottom;
-}
+/*table.styleA tr:nth-child(odd) {*/
+    /*background-color: #d4e3e5;*/
+    /*cursor: pointer;*/
+    /*vertical-align: bottom;*/
+/*}*/
+
+/*table.styleA tr:nth-child(even) {*/
+    /*background-color: #d4e3e5;*/
+    /*cursor: pointer;*/
+    /*vertical-align: bottom;*/
+/*}*/
 
 table.styleA input {
     width: 95%;
@@ -112,6 +120,16 @@ table.styleA input {
 
 table.styleDetail th {
     text-align: right;
+}
+
+table.styleA tr:nth-child(odd), table.styleB tr:nth-child(odd){
+    background-color: #d8eef1;
+    cursor: pointer;
+}
+
+table.styleA tr:nth-child(even), table.styleB tr:nth-child(even){
+    background-color: #e2edef;
+    cursor: pointer;
 }
 
 table.styleA tr.thead {
@@ -145,24 +163,22 @@ table.styleA td {
 
 /*
 |-----------------------------------------------|
-|                                     userTop   |
-|                 topMenu                       |   topPanel
+|                                                                  userTop    |   header
+|                 nav                                                            l
 |-----------------------------------------------|
-|leftMenu   | contentTop                        |
-|           |-----------------------------------|
-|           | content                           |
-|           |                                   |   bodyPanel
-|           |                                   |   
-|           |                                   |
-|           |                                   |
+|          content                                                             |
+|                                                                                  |    section main
+|                                                                                  |
+|                                                                                  |
+|                                                                                  |
 |-----------------------------------------------|
-|            footer                             |   footer
+|            footer                                                              |   footer
 |-----------------------------------------------|
 */
 
 /*----TOP PANEL----*/
-#topPanel {
-    min-width: 1024px;
+header {
+    /*min-width: 1024px;*/
     width: 100%;
     height: 80px;
     position: relative;
@@ -172,7 +188,7 @@ table.styleA td {
     padding: 0px;
 }
 
-#topPanel img.logo {
+header img.logo {
     width: 80px;
     height: 40px;
     position: absolute;
@@ -180,7 +196,7 @@ table.styleA td {
     left: 15px;
 }
 
-#topPanel p {
+header p {
     position: absolute;
     top: 5px;
     left: 120px;
@@ -189,7 +205,7 @@ table.styleA td {
     color: black
 }
 
-#topPanel p#detail {
+header p#detail {
     position: absolute;
     left: 120px;
     top: 30px;
@@ -233,25 +249,28 @@ table.styleA td {
     text-decoration: none;
 }
 
-#topMenu {
+nav {
     height: 24px;
-    position: absolute;
-    bottom: 0px;
-    left: 10px; /*background-color:red;*/
+    position: relative;
+    top: 56px;
+    /*left: 10px; *//*background-color:red;*/
+    width:auto;
+    margin-left: auto;
+    margin-right: auto;
 }
 
-#topMenu ul {
+nav ul {
     width: auto;
     height: 22px;
 }
 
-#topMenu ul li {
+nav ul li {
     width: auto;
     height: 22px;
     float: left;
 }
 
-#topMenu ul li a {
+nav ul li a {
     width: auto;
     height: 22px;
     display: block; /*background-color:blue;*/
@@ -261,78 +280,76 @@ table.styleA td {
     padding: 2px 10px 0px;
 }
 
-#topMenu ul li a:hover {
+nav ul li a:hover {
     background: #fff;
     color: #4d94d7;
     text-decoration: none;
 }
 
 /*----BODY PANEL----*/
-#bodyPanel {
-    position:relative;
-    width:100%;
-    height:100%;
-    min-height: 300px;
-    margin-top: 5px;
-}
+/*#bodyPanel {*/
+    /*position:relative;*/
+    /*width:100%;*/
+    /*height:100%;*/
+    /*min-height: 300px;*/
+    /*margin-top: 5px;*/
+/*}*/
 
-#bodyPanel h2 {
-    height: 30px;
-    color: #00111A;
-    font: 24px/24px Georgia, "Times New Roman", Times, serif;
-    margin-bottom: 10px;
-}
+/*#bodyPanel h2 {*/
+    /*height: 30px;*/
+    /*color: #00111A;*/
+    /*font: 24px/24px Georgia, "Times New Roman", Times, serif;*/
+    /*margin-bottom: 10px;*/
+/*}*/
 
-#bodyPanel p {
-    padding: 3px 0 0;
-}
+/*#bodyPanel p {*/
+    /*padding: 3px 0 0;*/
+/*}*/
 
-#bodyPanel p span {
-    background: #fff;
-    color: #046598;
-    font-weight: bold;
-}
+/*#bodyPanel p span {*/
+    /*background: #fff;*/
+    /*color: #046598;*/
+    /*font-weight: bold;*/
+/*}*/
 
-/* for content with a left menu and a right content */
-/*---- LEFT MENU ----*/
-#leftMenu {
-    background-color: #F3F3F3;
-    color: #1A1A1A;
-    min-width: 160px;
-    float: left;
-    position:relative;
-    top:10px;
-    left:5px;
-}
+/*aside {*/
+    /*background-color: #F3F3F3;*/
+    /*color: #1A1A1A;*/
+    /*min-width: 160px;*/
+    /*float: left;*/
+    /*position:relative;*/
+    /*top:10px;*/
+    /*left:5px;*/
+/*}*/
 
-#leftMenu ul {
-    width: auto;
-    margin: 0px 0px 0px 0px;
-    border: 1px solid #DADADA;
-}
+/*aside ul {*/
+    /*width: auto;*/
+    /*margin: 0px 0px 0px 0px;*/
+    /*border: 1px solid #DADADA;*/
+/*}*/
 
-#leftMenu ul li {
-    width: auto;
-    height: 32px;
-}
+/*aside ul li {*/
+    /*width: auto;*/
+    /*height: 32px;*/
+/*}*/
 
-#leftMenu ul li a {
-    width: auto;
-    height: 22px;
-    display: block;
-    background-color: #F3F3F3;
-    color: #1A1A1A;
-    text-decoration: none;
-    padding: 5px 15px 0px 15px;
-}
+/*aside ul li a {*/
+    /*width: auto;*/
+    /*height: 22px;*/
+    /*display: block;*/
+    /*background-color: #F3F3F3;*/
+    /*color: #1A1A1A;*/
+    /*text-decoration: none;*/
+    /*padding: 5px 15px 0px 15px;*/
+/*}*/
 
-#leftMenu ul li a:hover {
-    background-color: #4d94d7;
-    text-decoration: none;
-}
+/*aside ul li a:hover {*/
+    /*background-color: #4d94d7;*/
+    /*text-decoration: none;*/
+/*}*/
 
-#bodyContent {
-    margin: 10px 10px 10px 10px;
+section#main{
+    margin: 15px 10px 15px;
 }
 
 /*---- RIGHT CONTENT----*/
@@ -454,14 +471,14 @@ div.rightInfoDiv {
 }
 
 /*----FOOTER PANEL----*/
-div#footer {
+footer {
     margin:20px;
     padding: 6px 0 6px;
     border-top: thin solid #c0c0c0;
     display:block;
 }
 
-div#footer p {
+footer p {
     color:#999;
     font-size:80%;
     text-align:center
@@ -489,33 +506,40 @@ dd {
 
 
 #sitemap {
-    width:100%;
-    /*background-color:gray;*/
+    overflow:hidden;
+    backgroud-color:red;
 }
 
-#sitemap td {
-    text-align: center;
-    vertical-align:text-top;
+.thumb {
+    float: left;
+    width: 180px;
+    border: 1px solid #999;
+    margin: 0 15px 15px 0;
+    padding: 5px;
+}
+
+#sitemap h3 {
+    display:block;
+    /*background-color:black;*/
+    padding: 5px 5px 10px;
 }
 
 #sitemap ul li {
-    width: auto;
-    height: 22px;
+    height: 30px;
+    width: 170px;
+    padding: 5px 5px 10px;
 }
 
 #sitemap ul li a {
-    width: 390px;
-    height: 30px;
-    color: #1A1A1A;
-    text-decoration:none;
-    padding: 3px 0px 3px;
+    display:block;
+    padding: 5px 5px 10px;
+    text-decoration: none;
+    width: 170px;
 }
 
 #sitemap ul li a:hover{
-    width: 390px;
-    height: 30px;
-    text-decoration:none;
     background-color: #4d94d7;
     color: #ffffff;
-    padding: 3px 0px 3px;
+    width: 160px;
 }
+

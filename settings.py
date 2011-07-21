@@ -169,6 +169,14 @@ INSTALLED_APPS = (
     'report',
     'pagination',
     'profiles',
+
+    'sentry', #for logging exceptions.
+    'sentry.client', #and viewing exceptions
+
+    'south', #for database migration/upgrade
+
+    'nose', #nose must come after south.
+    
     'test_utils',
 )
 

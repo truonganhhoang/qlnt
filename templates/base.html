@@ -24,7 +24,7 @@
 </head>
 
 <body>
-<div id="topPanel">
+<header>
   <a href="{%url school.views.school_index %}"><img src="/static/css/images/logo.png" class="logo" alt="logo"
                                                     title="{{ user.userprofile.organization.name }}"/>
   </a>
@@ -58,7 +58,7 @@
     </ul>
   </div>
 
-  <div id="topMenu">
+  <nav id="navTop">
     <ul>
       {% if user.is_authenticated %}
         {% if user.is_superuser %}
@@ -78,13 +78,9 @@
           {% if user.userprofile.organization.status != 0 %}
             <!-- <li><a href="{%url school.views.years %}" title="Xem năm học khác, học kỳ khác">Các năm</a></li>  -->
             <li><a href="{%url school.views.classes %}" title="Quản lý lớp học">Lớp học</a></li>
-            <li><a href="{%url school.views.teachers %}" title="Quản lý giáo viên">Giáo viên</a></li>
+{#            <li><a href="{%url school.views.teachers %}" title="Quản lý giáo viên">Giáo viên</a></li>#}
             <li><a href="{%url school.viewCount.countInSchool %}"
                    title="Xem thông tin thống kê, báo cáo tổng hợp">Báo cáo</a></li>
-            {% if user.userprofile.position == 'GIAO_VIEN' or user.userprofile.position == 'HIEU_TRUONG' or user.userprofile.position == 'HIEU_PHO' or user.userprofile.position == 'GIAO_VU' %}
-              <li><a href="{%url school.sms_views.manual_sms %}" title="Gửi tin nhắn SMS">Nhắn tin</a></li>
-            {% endif %}
-
             {% if user.userprofile.position == 'HIEU_TRUONG'  or user.userprofile.position == 'HIEU_PHO' %}
                 {# Khi chưa khởi  tạo năm học #}
                 {% if user.userprofile.organization.status == 0  or user.userprofile.organization.status == 3 %}
@@ -94,20 +90,19 @@
                 {% endif %}
 
                 {% if user.userprofile.organization.status != 0 %}
-                  <li><a href="{%url school.views.b1  %}/import"
-                         title="Nhập danh sách học sinh từ file hoặc nhập trực tiếp">Học sinh</a></li>
+{#                  <li><a href="{%url school.views.b1  %}/import"#}
+{#                         title="Nhập danh sách học sinh từ file hoặc nhập trực tiếp">Học sinh</a></li>#}
                   {#              <li><a href="{%url school.views.classify %}" title="Phân học sinh đã nhập vào các lớp">Phân lớp</a></li>#}
                   <!-- <li><a href="" title="Phân công giáo viên dạy lớp nào, môn nào">Phân công giảng dạy</a></li>  -->
                   <li><a href="{%url school.viewFinish.finish %}"
                          title="Tính điểm tổng kết toàn trường và kết thúc học kỳ">Tổng kết</a>
                   </li>
-                  
                 {% endif %}
               {% else %}
               {% if user.userprofile.position == 'GIAO_VIEN' %}
                   <li><a href="#">Lớp chủ nhiệm</a></li>
                   <li><a href="#">Lớp giản dạy</a></li>
-                  <li><a href="#">Sổ điểm</a></li>
+                  <li><a href="#">Điểm</a></li>
                 {% else %}
                 {% if user.userprofile.position == 'HOC_SINH' %}
                     <li><a href="#">Lớp học</a></li>
@@ -121,8 +116,12 @@
                 {% endif %}
               {% endif %}
             {% endif %}
-
           {% endif %}
+
+          {% if user.userprofile.position == 'GIAO_VIEN' or user.userprofile.position == 'HIEU_TRUONG' or user.userprofile.position == 'HIEU_PHO' or user.userprofile.position == 'GIAO_VU' %}
+            <li><a href="{%url school.sms_views.manual_sms %}" title="Gửi tin nhắn SMS">Nhắn tin</a></li>
+          {% endif %}
+
         {% endif %}
       {% else %}
         {# Chưa đăng nhập vào hệ thống #}
@@ -131,22 +130,20 @@
         <li><a href="{%url app.views.feedback %}" title="Gửi thông tin về hệ thống">Liên hệ</a></li>
       {% endif %}
     </ul>
-  </div>
-</div>
+  </nav>
+</header>
 
+<section id="main">
 <div class="notify-widget-pane" >
 <div class="notify" id="notify" style="display: none;">
 Đang gửi dữ liệu lên server ...
 </div>
 </div>
-<div id="bodyPanel">
   {% block bodyPanel %}
 {#    <div id="leftMenu">#}
 {#      {% block left_menu %}#}
 {#      {% endblock %}#}
 {#    </div>#}
-
-    <div id="bodyContent">
       <div id="contentTop">
         {% block backward_link %}
         {% endblock %}
@@ -155,12 +152,12 @@
         {% block content %}
         {% endblock %}
       </div>
-    </div>
   {% endblock %}
-</div>
-<div id="footer">
+</section>
+
+<footer>
   <p class="copyright">©2011 by Viettel and VNU Hanoi. <a href="/app/contact">Liên hệ</a></p>
-</div>
+</footer>
 
 </body>
 </html>
