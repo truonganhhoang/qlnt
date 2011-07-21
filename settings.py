@@ -52,11 +52,11 @@ USE_I18N = True
 
 # If you set this to False, Django will not format dates, numbers and
 # calendars according to the current locale
-USE_L10N = True
+USE_L10N = False
 
 DATE_FORMAT = ('D/M/YY', 'DD/MM/YYYY')
 DATE_INPUT_FORMATS = ('%d-%m-%Y', '%d/%m/%Y')
-DECIMAL_SEPARATOR = ','
+DECIMAL_SEPARATOR = '.'
 
 SITE_ID = 1
 
