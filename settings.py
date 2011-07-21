@@ -6,7 +6,7 @@ import django
 from django.conf import settings
 
 DEBUG = True
-TEMPLATE_DEBUG = DEBUG
+TEMPLATE_DEBUG = True
 
 ADMINS = (
     ('admin', 'qlnt@googlegroups.com'),
