@@ -1840,9 +1840,35 @@ def deleteStudentInClass(request, student_id):
         return HttpResponseRedirect('/')
     if (get_position(request) < 4):
         return HttpResponseRedirect('/')
-    student.delete()
+    completely_del_student(student)
     return HttpResponseRedirect('/school/viewClassDetail/'+str(class_id.id))
 
+def deleteAllStudentsInClass(request, class_id):
+    user = request.user
+    if not user.is_authenticated():
+        return HttpResponseRedirect(reverse('login'))
+        
+    try:
+        school = get_school(request)
+    except Exception as e:
+        return HttpResponseRedirect(reverse('index'))
+        
+    try:
+        cl = Class.objects.get(id=class_id)
+    except Class.DoesNotExist:
+        return HttpResponseRedirect('/')
+        
+    students = cl.pupil_set.all()
+    
+    if in_school(request, cl.block_id.school_id) == False:
+        return HttpResponseRedirect('/')
+    if (get_position(request) < 4):
+        return HttpResponseRedirect('/')   
+    for student in students:
+        completely_del_student(student)
+    
+    return HttpResponseRedirect('/school/viewClassDetail/'+str(cl.id))
+    
 def deleteStudentInSchool(request, student_id):
     user = request.user
     if not user.is_authenticated():

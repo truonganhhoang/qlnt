@@ -137,7 +137,7 @@
         trường </a></th>
       <th align="center" > Năm vào trường</th>
       {% if pos > 3 %}
-        <th ></th>
+        <th><a href="{%url school.views.school_index  %}deleteAllStudentsInClass/{{class.id}}" onclick="return confirmDelete();">Xóa cả lớp</a></th>
       {% endif %}
     </tr>
 

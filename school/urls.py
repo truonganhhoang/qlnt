@@ -81,6 +81,7 @@ urlpatterns = patterns('',
     url(r'deleteStudentInSchool/(?P<student_id>\w+)', 'school.views.deleteStudentInSchool'),
     url(r'deleteStudentInClass/(?P<student_id>\w+)', 'school.views.deleteStudentInClass'),
     url(r'deleteClass/(?P<class_id>\w+)', 'school.views.deleteClass'),
+    url(r'deleteAllStudentsInClass/(?P<class_id>\w+)$','school.views.deleteAllStudentsInClass'),
     
     #top menu
     url(r'years/$', 'school.views.years', name = "years"),
