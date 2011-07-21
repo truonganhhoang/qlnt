@@ -183,12 +183,12 @@ table.styleDetail th {
     text-align: right;
 }
 
-table.styleA tr:nth-child(odd), table.styleB tr:nth-child(odd){
+table.styleA tr:nth-child(odd){
     background-color: #d8eef1;
     cursor: pointer;
 }
 
-table.styleA tr:nth-child(even), table.styleB tr:nth-child(even){
+table.styleA tr:nth-child(even){
     background-color: #e2edef;
     cursor: pointer;
 }
