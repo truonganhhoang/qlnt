@@ -1,0 +1,343 @@
+﻿<script language="JavaScript" type="text/javascript" >
+			
+	var temp = "{{enableChangeMark}}";
+	if (temp == "True") enableChangeMark = true;
+	else enableChangeMark = false;
+
+	temp = "{{enableSendSMS}}";
+	if (temp == "True") enableSendSMS = 1;
+	else enableSendSMS = 0;
+	
+	
+	if ({{selectedTerm.number}}==2)
+		isSecondTerm = 1
+	else	
+		isSecondTerm = 0; 
+
+	//window.addeventListener('keydown', function(e) {
+	//if ((e.keyCode==38) || (e.keyCode==38))
+	//	e.preventDefault()
+	//}, false);
+	
+function catchEnter(e)
+
+{
+      if (!e) e = window.event; 
+      var code = (e.keyCode) ? e.keyCode : e.which;
+
+	if (code == 13 || code == 3) 
+	{
+		return false;
+	}	
+	else return true;
+}
+window.onload = function() { document.onkeypress = catchEnter; };
+   
+
+	function acceptDigits(tb){
+		if (tb.value=="-")
+		{
+			tb.value="10";
+			return;
+		}
+			
+		var exp = /[^((\d).,)]/g;
+		tb.value=tb.value.replace(exp,'');		
+		
+		
+		value=tb.value;			
+		var exp1=/[,]/g
+		value=value.replace(exp1,'.');		
+		//kiem tra xem no co nhieu hon hai dau cham hay ko
+		
+		var countDot=0;
+		for(var i=0;i<value.length;i++)
+			if (value.charAt(i)==".") 
+				countDot++;
+				
+		if (countDot>1)
+			tb.value=value.substring(0,value.length-1);
+			
+		if (tb.value.length>3)	
+			tb.value=tb.value.substring(0,3);
+			
+		var number=parseFloat(tb.value);
+		
+			
+		if ((10<number ) && (number<100))
+		{
+			temp=number/10;
+			tb.value=temp.toString();
+		}
+		if (number>=100)
+			tb.value=tb.value.substring(0,2);				
+	}	
+	function returnMove()
+	{
+		for(var i=0;i<2;i++)
+			if (document.info.move[i].checked)
+				return i;
+	}
+		
+	function direction(nameNumber,valueOfMove)
+	{
+		var lengthList={{lengthList}};		
+		if (valueOfMove==1)			
+		while(true){
+			if (parseInt(nameNumber/100)==lengthList)
+				nameNumber=100+nameNumber % 100;
+			else					
+				nameNumber=nameNumber+100;	
+				
+			var cel=document.getElementById(nameNumber);
+			if (cel.value!=undefined)
+			{
+				cel.focus();
+				break;
+			}			
+		}		
+		else
+		if (valueOfMove==0)			
+		while(true){
+			if (nameNumber % 100==16)
+				nameNumber=parseInt(nameNumber/100)*100+101
+			else
+				nameNumber=nameNumber+1;
+				
+			var cel=document.getElementById(nameNumber);
+			if (cel.value!=undefined)
+			{
+				cel.focus();
+				break;
+			}
+		}		
+				
+	}
+	function controlDirection(tb,event)
+	{
+		//ert("ttt");
+		var keycode=event.keyCode;
+		var name=tb.id;
+		var nameNumber=parseInt(name);
+		var lengthList={{lengthList}};		
+		
+		if ((keycode==32) | (keycode==13))
+		{
+			valueOfMove=returnMove();
+			direction(nameNumber,valueOfMove);
+		}	
+		else	
+		if ((keycode==40))
+		{
+			while(true){
+				if (parseInt(nameNumber/100)==lengthList)
+					nameNumber=100+nameNumber % 100;
+				else					
+					nameNumber=nameNumber+100;					
+				var cel=document.getElementById(nameNumber);
+				if (cel.value!=undefined)
+				{
+					cel.focus();
+					break;
+				}
+			}		
+		}
+		else
+		if (keycode==38)
+		{
+			while(true){
+				if (parseInt(nameNumber/100)==1)
+					nameNumber=lengthList*100+nameNumber % 100;
+				else					
+					nameNumber=nameNumber-100;					
+				var cel=document.getElementById(nameNumber);
+				if (cel.value!=undefined)
+				{
+					cel.focus();
+					break;
+				}
+			}		
+		}
+		else
+		if (keycode==37)
+		{	
+			while(true){
+				if (nameNumber % 100==1) break;
+				else
+					nameNumber=nameNumber-1;				
+				var cel=document.getElementById(nameNumber);
+				if (cel.value!=undefined)
+				{
+					cel.focus();
+					break;
+				}
+			}		
+		}
+		else
+		if (keycode==39)
+		{
+			while(true){
+				if (nameNumber % 100==16) break;
+				else
+					nameNumber=nameNumber+1;				
+				var cel=document.getElementById(nameNumber);
+				if (cel.value!=undefined)
+				{
+					cel.focus();
+					break;
+				}
+			}		
+		}
+	}
+	
+
+	function submitTerm()
+	{
+			if (document.info.term.value!={{termChoice}})
+			{
+				document.info.submitChoice.value="hienthi";
+				document.info.submit();
+			}	
+	}
+
+	function saveMark()
+	{
+		document.info.submitChoice.value="luulai";
+			document.info.submit();
+	}
+	function saveMarkHasComment()
+	{
+		var length={{lengthList}};
+		document.getElementById("commentTable").style.visibility='hidden';
+		for(var i=1;i<=length;i++)
+			for(var j=1;j<5;j++)
+			{
+				k=i*100+j;
+				var name=k+"";
+				var t=document.getElementById(name).value.toLowerCase();
+				//alert(t);
+				var value="";
+				if (t!="")
+					if (t=="g")
+						value="9";
+					else
+					if (t=="k")
+						value="7";
+					else						
+					if ((t=="tb") ||(t=="t"))
+						value="6";
+					else						
+					if (t=="y")
+						value="4";
+					else						
+						value="1";
+						
+					document.getElementById(name).value=value;									
+				}
+		document.info.submitChoice.value="luulai";
+		document.info.submit();
+
+	}
+	function saveMarkHasComment1()
+	{
+		var length={{lengthList}};
+		document.getElementById("commentTable").style.visibility='hidden';
+		//alert(length);
+		for(var i=1;i<=length;i++)
+			for(var j=1;j<6;j++)
+			{
+				k=i*100+j;
+				var name=k+"";
+				var t=document.getElementById(name).value.toLowerCase();
+				//alert(t);
+				var value="";
+				if (t!="")
+					if (t=="g")
+						value="9";
+					else
+					if (t=="k")
+						value="7";
+					else						
+					if ((t=="tb") ||(t=="t"))
+						value="6";
+					else						
+					if (t=="y")
+						value="4";
+					else						
+						value="1";
+						
+					document.getElementById(name).value=value;									
+				}
+		document.info.submitChoice.value="luulai";
+		document.info.submit();
+
+	}
+	function validateComment(tb)
+	{
+		var value=tb.value.toLowerCase();
+		if ((value!="g") && (value!="k") &&
+		(value!="tb")&& (value!="t")&& (value!="y") &&
+		(value!="ke") && (value!="kem")
+		&& (value!="kém"))
+		{
+			tb.value="";
+		}
+	}
+	function  control(tb,event)
+	{
+		acceptDigits(tb);
+		//ntrolDirection(tb,event);				
+	}
+	
+	var length={{lengthList}} + 1;
+	var oldAr = new Array(length);
+	var newAr = new Array(length); 
+	var tempNewAr = new Array(length); 
+	
+	var sentMark  = new Array(length);
+	var tempSent  = new Array(length);
+	
+	var idAr  = new Array(length);
+	var hk1Ar = new Array(length);		
+	
+	var indexId = 0;
+	var indexHk1= 0;
+	//che do lam viec
+	activeMode = 0;
+	for(var i=1;i<length;i++)
+	{	
+		oldAr[i]     = new Array(20);
+		newAr[i] 	 = new Array(20);
+		tempNewAr[i] = new Array(20); 
+		sentMark[i]  = new Array(20);
+		tempSent[i]  = new Array(20);
+	}	
+	for(var i=1;i<length;i++)
+		for(var j=1;j<20;j++)
+			newAr[i][j]=-1;
+			
+	function setArrayId(id)
+	{
+		indexId++;
+		idAr[indexId] = id;
+	}
+	function setArrayHk1None()
+	{
+		indexHk1++;
+		hk1Ar[indexHk1] = -1;
+		newAr[indexHk1][17] = -1;
+		
+	}
+	function setArrayHk1(value)
+	{
+		indexHk1++;
+		hk1Ar[indexHk1]     = value;
+		newAr[indexHk1][17] = value;
+	}
+	function setSentMark(str)
+	{
+		for(var i=1;i<20;i++)
+			sentMark[indexId][i]=parseInt(str[i-1]);
+	}
+	
+</script>

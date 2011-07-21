@@ -1,0 +1,707 @@
+﻿<script>
+	function setBackgroundSent()
+	{
+		var table=document.getElementById("markTable");		
+		for(i=1;i<length;i++)
+			for(j=1;j<20;j++)
+				if (sentMark[i][j]==1)
+						table.rows[i+2].cells[j+4].className="sent";
+					
+	}
+	setBackgroundSent();
+    function getCookie(name) {
+    var cookieValue = null;
+        if (document.cookie && document.cookie != '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+             // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+         }
+        }
+        return cookieValue;
+    } 
+	var cookieValue = getCookie('csrftoken'); 
+	var tong=0	
+	var tong1=0
+	
+	// day la phan gui diem
+	////////////////////////////////////////////////////////////////////////////////////
+	function sendToServer(str)
+	{
+		//alert("dd");
+		var xmlhttp;
+		if (window.XMLHttpRequest)
+		{// code for IE7+, Firefox, Chrome, Opera, Safari
+			xmlhttp=new XMLHttpRequest();
+			//alert("chao");
+		}
+		else
+		{// code for IE6, IE5
+			xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+		}
+
+		xmlhttp.onreadystatechange=function()
+		{
+			if (xmlhttp.readyState==4 && xmlhttp.status==200)
+			{
+				//document.getElementById("myDiv").innerHTML=xmlhttp.responseText;
+				//alert("fdfdf fsdfffhello1");
+				//tong=tong+1
+				document.getElementById("messageChanging").innerHTML="Đã lưu";
+				updateOldAr();
+				//document.getElementById("myDiv1").innerHTML=tong;
+			}
+		}   				
+		//alert(cookieValue);
+		
+		xmlhttp.open("POST", "/school/saveMark",true);
+        xmlhttp.setRequestHeader("X-CSRFToken",cookieValue );
+		data = "str="+str;
+		xmlhttp.send(data);			
+	}
+
+
+	var exp1=/[,]/g	
+	for(var i=1;i<length;i++)
+	{
+		for(var j=1;j<17;j++)
+		{		
+			var id = i*100+j;
+ 		    //alert(enableChangeMark);
+			var value=document.getElementById(id.toString()).value;
+			if (!value)
+				value=document.getElementById(id.toString()).innerHTML;
+				
+			value=value.replace(exp1,'.');		
+			if ((value=="") || (value==" "))				
+				oldAr[i][j]=-1;
+			else	
+				oldAr[i][j]=parseFloat(value);
+		}
+	}	
+	function calculateNewArray()
+	{
+		for(var i=1;i<length;i++)
+			for(var j=1;j<17;j++)
+			{		
+				var id = i*100+j;
+				var value=document.getElementById(id.toString()).value;
+				
+				if (value==undefined)	
+					value=document.getElementById(id.toString()).innerHTML;
+
+				if ((value=="") || (value==" "))
+					newAr[i][j]=-1;
+				else
+					newAr[i][j]=parseFloat(value);
+					if ((!isNaN(newAr[i][j])) && (newAr[i][j]>10))
+					{
+						var tb=document.getElementById(id.toString()); 
+						acceptDigits(tb);
+						tb=document.getElementById(id.toString()); 
+						newAr[i][j]=parseFloat(tb.value);
+					}
+				if (isNaN(newAr[i][j]))
+					newAr[i][j]=-1;
+			}		
+	}
+	function viewAverage()
+	{
+		var termNumber = {{selectedTerm.number}};
+		calculateNewArray();
+		
+		var sum=0;
+		var factor=0
+		if (isSecondTerm) var t= 18
+		else  var t = 17;
+		
+		for(var i=1;i<length;i++)
+		{
+			var ok=true;
+			for(var j=1;j<17;j++)
+			if (isNaN(newAr[i][j]))
+			{
+				ok=false;
+				break;				
+			}
+			if (newAr[i][16]==-1) 
+				ok=false;
+			if (ok)
+			{
+				sum=newAr[i][16]*3;
+				factor=3;
+				for(j=1;j<11;j++)
+				if (newAr[i][j]!=-1)
+				{
+					sum=sum+newAr[i][j];
+					factor++;
+				}
+				for(j=11;j<16;j++)
+				if (newAr[i][j]!=-1)
+				{
+					sum=sum+newAr[i][j]*2;
+					factor=factor+2;
+				}
+				
+				
+				var name= i*100+t;
+				
+				var averageValue = Math.round(sum/factor *10+0.00000001)/10;
+				newAr[i][t]=averageValue;
+				
+				if ((averageValue-Math.floor(averageValue))<0.01)				
+					document.getElementById(name.toString()).innerHTML= averageValue+".0";
+				else	
+					document.getElementById(name.toString()).innerHTML= averageValue;
+					
+				if (termNumber==2)
+					if (hk1Ar[i]!=-1)
+					{
+						var name1= i*100+19;
+						var value= (averageValue*2+hk1Ar[i])/3; 
+							value= Math.round(value * 10+0.0000001)/10;
+							
+						if ((value-Math.floor(value))<0.01)				
+							document.getElementById(name1.toString()).innerHTML=value+".0";
+						else
+							document.getElementById(name1.toString()).innerHTML=value;						
+						newAr[i][19]=value;
+					}					
+			}
+			else
+			{
+				var name= i*100+t;
+				document.getElementById(name.toString()).innerHTML="";
+				newAr[i][t]=-1;
+				if (termNumber==2)
+				{
+					var name1= i*100+19;
+					document.getElementById(name1.toString()).innerHTML="";					
+					newAr[i][19]=-1;
+				}	
+			}	
+		}		
+	}
+	function updateOldAr()
+	{
+		for(var i=1;i<length;i++)
+			for(var j=1;j<17;j++)
+				oldAr[i][j] = tempNewAr[i][j];
+	}
+	function update()
+	{
+		//var date1 = new Date();
+		//alert("dd");
+		var str="";
+		for(var i=1;i<length;i++)
+		{
+			var ok=false;
+			for(var j=1;j<17;j++)
+				if (newAr[i][j]!=oldAr[i][j])
+				{
+					ok=true;
+					break;
+				}
+			if (ok==true)
+			{
+				var numberString="";
+				var valueString ="";
+				for(var j=1;j<17;j++)
+					if ((newAr[i][j]!=oldAr[i][j]) && (!(isNaN(newAr[i][j]))))
+					{					
+						numberString=numberString+j+"*";
+						valueString =valueString+newAr[i][j]+"*"; 
+					}
+				if (numberString!="")	
+					str=str+"/"+idAr[i]+":"+numberString+":"+valueString;					
+			}				
+		}
+		//tong1=tong1+1
+		//var str1 =document.getElementById("myDiv").innerHTML+" | "+str;
+		//document.getElementById("myDiv").innerHTML=str1;
+		
+		//alert(str);	
+		if (str!="")
+		{
+			document.getElementById("messageChanging").innerHTML="Đang lưu";
+			sendToServer(idTeacher+str);
+		}
+		//writeOld();	
+		for(var i=1;i<length;i++)
+			for(var j=1;j<17;j++)
+				tempNewAr[i][j] = newAr[i][j];
+		
+		
+		//var date2 = new Date();
+		//var difference=date2.getTime()-date1.getTime();
+		//document.getElementById("myDiv6").innerHTML="abc"+difference;
+		//alert(difference);
+		
+		//writeNew();	
+	}
+	function writeOld()
+	{
+		var str=""
+		for(var i=1;i<length;i++)
+		{
+			for(var j=0;j<17;j++)
+			{
+				str=str+oldAr[i][j]+" ";
+			}		
+			str=str+"<p>"
+		}	
+		document.getElementById("myDiv2").innerHTML = str;
+	}	
+	function writeNew()
+	{
+		var str=""
+		for(var i=1;i<length;i++)
+		{
+			for(var j=1;j<20;j++)
+			{
+				str=str+newAr[i][j]+" ";
+			}		
+			str=str+"<p>"
+		}	
+		document.getElementById("myDiv3").innerHTML = str;
+		
+	}	
+	</script>
+		
+	{% if enableChangeMark %}
+	<script>
+		var myTimer;
+		var myTimer1;
+		myTimer  = setInterval("update()", 2000);
+		myTimer1 = setInterval("viewAverage()", 1001);
+		//clearInterval(myTimer);
+   
+	</script>
+    {% endif %}
+	
+	<script>
+	///////////////////////////////////////////////////////////
+	//			the functions for sending sms
+	///////////////////////////////////////////////////////////
+	function showMessageTable()
+	{	
+		if (document.getElementById("messageTable").style.display=="")
+		{
+			cancelAll();
+			document.getElementById("messageTable").style.display="none";
+			activeMode = 0;
+			for(var i=1;i<length;i++)
+			{
+				var name= i*100;
+				document.getElementById(name).style.display="none";				
+			}
+			for(var i=1;i<20;i++)
+			{
+				var name="checkbox"+i;
+				if (document.getElementById(name))
+					document.getElementById(name).style.display="none";				
+			}
+			document.getElementById("checkAllRow").style.display="none";
+		}
+		else
+		{	
+			document.getElementById("messageTable").style.display="";			
+			activeMode = 1;
+			for(var i=1;i<length;i++)
+			{
+				var name= i*100;
+				document.getElementById(name).style.display="";				
+			}
+			for(var i=1;i<20;i++)
+			{
+				var name="checkbox"+i;
+				if (document.getElementById(name))
+					document.getElementById(name).style.display="";				
+			}
+			document.getElementById("checkAllRow").style.display="";
+		}				
+	}
+	function selectAllToSend()
+	{
+		var table=document.getElementById("markTable");
+		var name=0;
+		for(var i=1;i<length;i++)
+			for(var j=1;j<20;j++)
+				if (newAr[i][j]!=-1)
+				{
+					table.rows[i+2].cells[j+4].className="selected";
+					name = i*100+j;
+					if (document.getElementById(name).value!=undefined)
+						document.getElementById(name).className="selected";
+				}
+		for(var i=1;i<length;i++)
+		{
+			table.rows[i+2].className="selected";
+			var name=i*100;
+			document.getElementById(name).checked=true;
+		}	
+		for(var i=1;i<20;i++)
+		{
+			var name="checkbox"+i;
+			if (document.getElementById(name))
+				document.getElementById(name).checked=true;	
+			var number=-(100+i);
+			if (document.getElementById(number))
+				document.getElementById(number).className="selected";	
+			number = number-100;	
+			if (document.getElementById(number))
+				document.getElementById(number).className="selected";					
+		}	
+		document.getElementById("checkAllRow").checked=true;	
+	}	
+	function cancelAll()
+	{
+		var table=document.getElementById("markTable");
+		for(var i=1;i<length;i++)
+			for(var j=1;j<20;j++)
+				if (newAr[i][j]!=-1)
+					if (sentMark[i][j]==1)
+					{
+						//alert(i+" "+j);
+						table.rows[i+2].cells[j+4].className="sent";
+						var name = i*100+j;
+						if (document.getElementById(name).value!=undefined)
+							document.getElementById(name).className="mark";
+					}
+					else
+					{
+						var name = i*100+j;
+						if (document.getElementById(name).value!=undefined)
+						{
+							document.getElementById(name).className="mark";
+							table.rows[i+2].cells[j+4].className="normal";
+						}
+						else
+							table.rows[i+2].cells[j+4].className="";						
+					}			
+		for(var i=1;i<length;i++)
+		{
+			table.rows[i+2].className="";
+			var name=i*100;
+			document.getElementById(name).checked=false;
+		}	
+		for(var i=1;i<20;i++)
+		{
+			var name="checkbox"+i;
+			if (document.getElementById(name))
+				document.getElementById(name).checked=false;
+			var number=-(100+i);
+			if (document.getElementById(number))
+				document.getElementById(number).className="";	
+			number = number-100;	
+			if (document.getElementById(number))
+				document.getElementById(number).className="";					
+		}		
+		document.getElementById("checkAllRow").checked=false;			
+	}
+	function selectNoSent()
+	{
+		cancelAll();
+		var table=document.getElementById("markTable");
+		for(var i=1;i<length;i++)
+			for(var j=1;j<20;j++)
+			{
+				if ((newAr[i][j]!=-1) && (sentMark[i][j]==0))
+				{
+					table.rows[i+2].cells[j+4].className="selected";
+					name=i*100+j;
+					if (document.getElementById(name).value!=undefined)
+						document.getElementById(name).className="selected";
+					
+				}
+			}	
+	}
+	
+	function checkToSend(tb)
+	{
+		var rowIndex =tb.parentNode.rowIndex;
+		var cellIndex=tb.cellIndex;
+		var name=(rowIndex-2)*100+(cellIndex-4);
+		var temp = document.getElementById(name).value;		
+		if (temp!=undefined)
+			document.getElementById(name).focus();
+		
+		if ((activeMode==1) && (newAr[rowIndex-2][cellIndex-4]!=-1))					
+		{
+			if (tb.className!="selected")
+			{	
+				if (temp==undefined)
+					tb.className="selected";
+				else
+				if (temp!="")
+				{
+					tb.className="selected";
+					document.getElementById(name).className="selected";
+				}	
+			}	
+			else
+			{
+				if (temp!=undefined)
+				{	
+					document.getElementById(name).className="mark";
+					if (sentMark[rowIndex-2][cellIndex-4]==1)
+						tb.className="sent";
+					else
+						tb.className="normal";					
+				}
+				else				
+				if (sentMark[rowIndex-2][cellIndex-4]==1)
+					tb.className="sent";
+				else
+					tb.className="noedit";					
+			}	
+		}				
+	}
+		
+	function sendToServer1(str)
+	{
+		var xmlhttp;
+		if (window.XMLHttpRequest)
+		{// code for IE7+, Firefox, Chrome, Opera, Safari
+			xmlhttp=new XMLHttpRequest();
+			//alert("chao");
+		}
+		else
+		{// code for IE6, IE5
+			xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+		}
+
+		xmlhttp.onreadystatechange=function()
+		{
+			if (xmlhttp.readyState==4 && xmlhttp.status==200)
+			{
+				//document.getElementById("myDiv").innerHTML=xmlhttp.responseText;
+				//alert("fdfdf fsdfffhello1");
+				//tong=tong+1
+				//document.getElementById("myDiv1").innerHTML=tong;
+				document.getElementById("messageSMS").innerHTML="Đã gửi thành công";
+				for(var i=1;i<length;i++)
+					for(var j=1;j<20;j++)
+					if (tempSent[i][j]==1)
+						sentMark[i][j]=1;
+				cancelAll();
+				
+				activeMode=0;
+				for(var i=1;i<length;i++)
+				{
+					var name= i*100;
+					document.getElementById(name).style.display="none";				
+				}
+				for(var i=1;i<20;i++)
+				{
+					var name="checkbox"+i;
+					if (document.getElementById(name))
+						document.getElementById(name).style.display="none";				
+				}
+				document.getElementById("checkAllRow").style.display="none";
+				document.getElementById("messageTable").style.display="none";
+				
+			}
+		}   				
+		//alert(str);
+		//cookieValue=getCookie('csrftoken'); 
+		xmlhttp.open("POST", "/school/sendSMSMark",true);
+        xmlhttp.setRequestHeader("X-CSRFToken",cookieValue );
+		data = "str="+str;
+		xmlhttp.send(data);			
+	}
+	function emptyTempSent()
+	{
+		for(var i=1;i<length;i++)
+			for (var j=1;j<20;j++)
+				tempSent[i][j]=0;
+	}
+	///////////////////////////////////
+	function sendSMS()
+	{
+		viewAverage();
+		document.getElementById("messageSMS").innerHTML="Đang gửi";
+		var table=document.getElementById("markTable");
+		var str=""		
+		
+		emptyTempSent();
+		
+		for(var i=1;i<length;i++)
+		{				
+			
+			var number="";
+			var value ="";
+			var ok=false;
+			for(var j=1;j<20;j++)
+			if (newAr[i][j]!=-1)
+			if (table.rows[i+2].cells[j+4].className=="selected") 
+			{							
+				ok=true;
+				number=number+j+"*";
+				value =value +newAr[i][j]+"*";
+				tempSent[i][j]=1;
+			}
+			if (ok)
+				str=str+"/"+idAr[i]+":"+number+":"+value;						
+		}
+		//alert(str);
+		if (str!="")
+			sendToServer1(str);
+		else
+			document.getElementById("messageSMS").innerHTML="Chưa có điểm nào để gửi";
+		
+	}	
+	
+	function select(tb)
+	{
+		if (activeMode==0) return;
+		var table=document.getElementById("markTable");
+		if (tb.parentNode.className=="selected")
+		{
+			tb.parentNode.className="";
+			var number=tb.parentNode.rowIndex;
+			var name =(number-2)*100;
+			document.getElementById(name).checked=false;			
+			
+			var i=number-2;
+			for (var j=1;j<20;j++)
+				if (newAr[i][j]!=-1)
+					if (sentMark[i][j]==1)
+					{
+						table.rows[i+2].cells[j+4].className="sent";
+						var name = i*100+j;
+						if (document.getElementById(name).value!=undefined)
+							document.getElementById(name).className="mark";
+					}
+					else
+					{
+						var name = i*100+j;
+						if (document.getElementById(name).value!=undefined)
+						{
+							document.getElementById(name).className="mark";
+							table.rows[i+2].cells[j+4].className="normal";
+						}
+						else
+							table.rows[i+2].cells[j+4].className="noedit";
+						
+					}			
+				
+			//alert(number);
+		}		
+		else				
+		{
+			tb.parentNode.className="selected";
+			var number=tb.parentNode.rowIndex;
+			var name=(number-2)*100;
+			document.getElementById(name).checked=true;
+
+			var i=number-2;
+			for(var j=1;j<20;j++)
+			if (newAr[i][j]!=-1)
+				{
+					table.rows[i+2].cells[j+4].className="selected";
+					name = i*100+j;
+					if (document.getElementById(name).value!=undefined)
+						document.getElementById(name).className="selected";
+				}
+			
+			//alert(number);
+		}	
+	}
+	function checkCol(tb,rowIndex)
+	{
+		if (activeMode==0) return;
+		
+		var number = (-parseInt(tb.id)) % 100;
+		var boxName="checkbox"+number;
+		var table=document.getElementById("markTable");		
+		var temp = document.getElementById(boxName)
+		
+		if (tb.className=="selected")
+		{
+			tb.className="";
+			temp.checked=false;			
+			if (rowIndex==1)
+				var name=-(200+number);
+			else
+				var name=-(100+number);
+			document.getElementById(name).className="";
+		}
+		else
+		{
+			tb.className="selected";
+			temp.checked=true;
+			if (rowIndex==1)
+				var name=-(200+number);
+			else
+				var name=-(100+number);
+			document.getElementById(name).className="selected";
+		}		
+				
+			
+		if (temp.checked==true)
+		{
+			for(var i=1;i<length;i++)
+			if (newAr[i][number]!=-1)
+			{
+				var name=i*100+number;
+				table.rows[i+2].cells[number+4].className="selected";
+				if (document.getElementById(name).value!=undefined)
+					document.getElementById(name).className="selected";										
+			}			    	
+		}	
+		else
+			for(var i=1;i<length;i++)
+				if (newAr[i][number]!=-1)
+					cancelCell(i,number);
+									
+	}
+
+	function checkCell(x,y)
+	{
+		var name=x*100+y;
+		document.getElementById("markTable").rows[x+2].cells[y+4].className="selected";
+		if (document.getElementById(name).value!=undefined)
+			document.getElementById(name).className="selected";												
+	}	
+	function cancelCell(x,y)
+	{
+		var name=x*100+y;
+		var cellInput=document.getElementById(name);
+		var tb=document.getElementById("markTable").rows[x+2].cells[y+4];		
+		
+		if (cellInput.value!=undefined)
+		{	
+			cellInput.className="mark";			
+			if (sentMark[x][y]==1)
+				tb.className="sent";
+			else
+				tb.className="normal";									
+		}		
+		else				
+		if (sentMark[x][y]==1)
+			tb.className="sent";
+		else
+			tb.className="noedit";					
+	}
+	
+	function checkAll(tb)
+	{
+		if (tb.checked==false)
+			cancelAll()
+		else
+			selectAllToSend();
+	}
+	function reverse(tb)
+	{
+		alert("alo");
+		tb.checked= !tb.checked;
+	}
+	function ttt(tb)
+	{
+	}
+</script>
