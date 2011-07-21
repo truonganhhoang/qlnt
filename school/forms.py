@@ -146,13 +146,13 @@ class DateForm(forms.Form):
 
         
 class DateAndClassForm(forms.Form):
-    date = forms.DateField(label = '', widget = SelectDateWidget(years = range( this_year(), this_year()-2 , -1)), initial = date.today())
     class_id = forms.ModelChoiceField(queryset = Class)
+    date = forms.DateField(label = '', widget = SelectDateWidget(years = range( this_year(), this_year()-2 , -1)), initial = date.today())    
     
     def __init__(self, year_id, *args, **kwargs):
         print 'abc'
         super(DateAndClassForm, self).__init__(*args, **kwargs)
-        self.fields['class_id'] = forms.ModelChoiceField(queryset = Class.objects.filter(year_id = year_id), label = u'Lớp')
+        self.fields['class_id'] = forms.ModelChoiceField(queryset = Class.objects.filter(year_id = year_id), label = u'')
     
 class UploadImportFileForm(forms.Form):
     def __init__(self, * args, ** kwargs):
