@@ -23,6 +23,32 @@ div, p, ul, h2, h3, img {
    margin: 20px;   
 }
 
+div.notify-widget-pane{
+   text-align: center;
+   position: fixed;
+   display: block;
+   top: 0px;
+   left: 0px;
+   width: 100%;
+}
+
+div.notify{
+   font-size: 12px;
+   font-weight: bold;
+   text-align: center;   
+   padding: 2px 10px;
+   background: #FFF1A8;
+   border-color: #fff1bb;
+   color: black;
+   width: auto;
+   display: inline-block;
+   border: 3px solid transparent;
+   border-radius: 3px;
+   visibility: visible;
+   -moz-border-radius: 3px; /*firefox*/ 
+   -webkit-border-radius: 3px; /*chrome*/
+   
+}
 
 ul {
     list-style-type: none;
