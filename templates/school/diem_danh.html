@@ -4,23 +4,7 @@
   <script>
     $(document).ready(function() {
       var note = '';
-      /*
-      $("#notify").ajaxStart( function(){
-         $(this).text("Đang lưu dữ liệu lên server...");
-         $(this).fadeIn('fast');      
-      });
-      
-      $("#notify").ajaxSuccess( function(event, request, settings){
-         $(this).text("Đã lưu.");
-         $(this).delay(1800).fadeOut('fast');      
-      });      
-
-      $("#notify").ajaxError( function(event, request, settings){
-         $(this).text("Gặp lỗi khi gửi dữ liệu tới server");
-         $(this).delay(1800).fadeOut('fast');      
-               
-      });      
-      */      
+            
       $.ajaxSetup({
         beforeSend: function(xhr, settings) {
           function getCookie(name) {
@@ -47,7 +31,7 @@
       });
       
       var done = function(json) {
-        if (json.message != null)
+        if (json.message != null && json.message !='')
           $.fancybox({
             'title': "Các tin nhắn đã gửi",
             'content': json.message

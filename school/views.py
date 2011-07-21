@@ -1580,6 +1580,43 @@ def ds_nghi(request, class_id, day, month, year):
     term = get_current_term(request)
     hs_nghi = []
     stt = []
+    message = ''
+    if request.is_ajax():
+        if request.method == 'POST':
+            data = request.POST[u'data']
+            sms_message = ''
+            data = data.split(':')
+            for element in data:
+                if element:
+                    element = element.split('-')
+                    id = element[0]
+                    loai = element[1]
+                    # send sms
+                    student = Pupil.objects.get( id = id)
+                    phone_number = student.sms_phone
+                    
+                    loai = loai.strip()
+                    if loai == 'k':
+                        loai = u'đi học'
+                    elif loai == u'Có phép':
+                        loai = u'nghỉ học có phép'
+                    else:
+                        loai = u'nghỉ học không phép'
+                    print loai
+                    name = ' '.join([student.last_name,student.first_name])
+                    time = '/'.join([str(day),str(month),str(year)])
+                    print 'tag1'
+                    sms_message = u'Em '+name+u' đã ' + loai + u'.\n Ngày: ' + time + '.'
+                    print 'tag2', phone_number , 'tag3'
+                    message = message + u'---> ' + str(phone_number) + u': ' + sms_message + u'<br>'
+                    print phone_number
+                    if phone_number:
+                        sendSMS(phone_number, sms_message, user)
+            data = simplejson.dumps({'message':message})
+            return HttpResponse(data, mimetype = 'json')
+        else:
+            raise Exception("StrangeRequestMethod")
+    #end if request.is_ajax()
     for p in pupilList:
         try:
             dd = DiemDanh.objects.get(time__exact=time, student_id__exact=p.id, term_id__exact=term.id)

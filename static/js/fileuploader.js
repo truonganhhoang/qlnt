@@ -501,6 +501,7 @@ qq.FileUploader = function(o){
                 '<span class="qq-upload-spinner"></span>' +
                 '<span class="qq-upload-size"></span>' +
                 '<a class="qq-upload-cancel" href="#">Dừng lại</a>' +
+                '<span class="qq-upload-success-text">Nhập dữ liệu thành công</span>'+
                 '<span class="qq-upload-failed-text">Nhập dữ liệu không thành công</span>' +
             '</li>',        
         
@@ -572,7 +573,7 @@ qq.extend(qq.FileUploader.prototype, {
                 dropArea.style.display = 'none';
                 qq.removeClass(dropArea, self._classes.dropActive);
                 if( !self.multiple && e.dataTransfer.files.length > 1 )
-                    alert( "Multiple file uploads are disabled." ) ;
+                    alert( "Bạn chỉ được phép tải lên 1 file." ) ;
                 else
                     self._uploadFileList(e.dataTransfer.files);    
             }

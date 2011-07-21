@@ -46,8 +46,8 @@
       };
       var sendSmS = function() {
         var id = $(this).attr('name');
-        var select = "tr." + id + " > td:has(select) > select ";
-        var loai = $(select).val();
+        var select = "#f_" + id;
+        var loai = $(select).text();
         var data = id + '-' + loai;
         //alert(window.location.pathname);
         var arg = { type:"POST",
@@ -65,8 +65,8 @@
         var data = '';
         $(".selected").each(function() {
           var id = $(this).attr('class').split(' ')[0];
-          var select = "tr." + id + " > td:has(select) > select ";
-          var loai = $(select).val();
+          var select = "#f_" + id;
+          var loai = $(select).text();
           var element = id + '-' + loai;
           data = data + ':' + element;
         });
@@ -140,13 +140,7 @@
             url:"",
             data: data,
             datatype:"json"
-            //success:
-            //function(json){
-            //		$.fancybox({
-            //		content: json.message,
-            //		title: "Updated successfully"
-            //		});
-            //  }
+            
           };
 
           $.ajax(arg);
@@ -211,9 +205,7 @@
                     <p>{{ p.sex }}</p>
                 </td>
 
-                <td align="center" width="8%">
-                    {{ f }}
-                </td>
+                <td align="center" id="f_{{p.id}}" width="8%">{{f}}</td>
                 {% if pos > 1%}
                 <td align="center" width="20px">
 						  <input type="submit" value="sms" name="{{p.id}}" class="sms" />                
