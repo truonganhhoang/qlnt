@@ -150,15 +150,12 @@ class DateAndClassForm(forms.Form):
     date = forms.DateField(label = u'ngày', widget = SelectDateWidget(years = range( this_year(), this_year()-2 , -1)), initial = date.today())
     
     def __init__(self, year_id, *args, **kwargs):
-        print 'abc'
         super(DateAndClassForm, self).__init__(*args, **kwargs)
         self.fields['class_id'] = forms.ModelChoiceField(queryset = Class.objects.filter(year_id = year_id), label = u'lớp')
     
 class UploadImportFileForm(forms.Form):
     def __init__(self, * args, ** kwargs):
-        print "Access __init___" 
         class_list = kwargs.pop('class_list')
-        print "in form: ", class_list
         super(UploadImportFileForm, self).__init__(*args, ** kwargs)
         self.fields['the_class'] = forms.ChoiceField(label=u'Nhập vào lớp:', choices=class_list, required=False)
         self.fields['import_file'] = forms.FileField(label=u'Chọn file Excel:')

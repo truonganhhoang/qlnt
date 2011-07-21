@@ -6,6 +6,8 @@
   <br/><br/>
   <form enctype="multipart/form-data" action="{% url school.views.nhap_danh_sach_trung_tuyen %}"
         method="POST">{% csrf_token %}
+    <p>{{message}}</p>
+    <br>    
     <table class="styleA styleDetail">
       {{ form.as_table }}
     </table>

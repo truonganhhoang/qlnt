@@ -462,8 +462,11 @@ def process_file(file_name, task):
         filepath = os.path.join(TEMP_FILE_LOCATION, file_name)
         if not os.path.isfile(filepath):
             raise NameError, "%s is not a valid filename" % file_name
-        book = xlrd.open_workbook(filepath)
-        sheet = book.sheet_by_index(0)
+        try:
+            book = xlrd.open_workbook(filepath)
+            sheet = book.sheet_by_index(0)
+        except Exception as e:
+            return {'error': u'File tải lên không phải file Excel'}
         
         start_row = -1
         for c in range(0, sheet.ncols):
@@ -622,7 +625,7 @@ def nhap_danh_sach_trung_tuyen(request):
     if not permission in [u'HIEU_TRUONG',u'HIEU_PHO']:
         return HttpResponseRedirect(reverse('school_index'))
     
-        
+    message = ''    
     _class_list = [(u'0', u'---')]
     try:
         this_year = school.year_set.latest('time')
@@ -637,19 +640,27 @@ def nhap_danh_sach_trung_tuyen(request):
         form = UploadImportFileForm(request.POST, request.FILES, class_list=_class_list)
         if form.is_valid():
             save_file_name = save_file(form.cleaned_data['import_file'], request.session)
-            chosen_class = form.cleaned_data['the_class']
             print save_file_name
-            request.session['save_file_name'] = save_file_name
-            request.session['chosen_class'] = chosen_class
-            student_list = process_file(file_name=save_file_name, \
-                                        task="Nhap danh sach trung tuyen")
-
-            #print student_list
-            request.session['student_list'] = student_list
-            return HttpResponseRedirect(reverse('imported_list'))
-    else:
-        form = UploadImportFileForm(class_list=_class_list)
-    context = RequestContext(request, {'form':form, })
+            chosen_class = form.cleaned_data['the_class']
+            if chosen_class:
+                request.session['save_file_name'] = save_file_name
+                request.session['chosen_class'] = chosen_class
+                student_list = process_file(file_name=save_file_name, \
+                                            task="Nhap danh sach trung tuyen")
+                print student_list
+                if 'error' in student_list:
+                    message = student_list['error']   
+                    print message 
+                else:
+                    #print student_list
+                    request.session['student_list'] = student_list
+                    return HttpResponseRedirect(reverse('imported_list'))
+            # end if error in save_file_name
+        else:
+            message = u'Gặp lỗi trong quá trình tải file lên server'
+            print message
+    form = UploadImportFileForm(class_list=_class_list)
+    context = RequestContext(request, {'form':form, 'message': message})
     return render_to_response(NHAP_DANH_SACH_TRUNG_TUYEN, context_instance=context)
 
 @transaction.commit_on_success  
