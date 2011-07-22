@@ -392,7 +392,7 @@ class HanhKiem(models.Model):
         verbose_name_plural = "Hạnh kiểm"
     
     def __unicode__(self):
-        return str(self.loai)
+        return unicode(self.student_id) + '-' + unicode(self.year_id)
         
 class TBHocKy(models.Model):
     student_id = models.ForeignKey(Pupil, verbose_name = "Học sinh")
@@ -435,6 +435,7 @@ class TBNam(models.Model):
     hl_thi_lai=models.CharField("Học lực thi lại", null = True, blank=True, max_length = 3, choices = HL_CHOICES)
     
     #len_lop_sau_he=models.NullBooleanField(null=True,blank = True,choices =LENLOP_CHOICES)
+
     
     class Meta:
         verbose_name = "Trung bình năm"
