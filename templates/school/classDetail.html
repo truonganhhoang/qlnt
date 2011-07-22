@@ -116,7 +116,11 @@
       {% endif %}
     </tr>
   </table>
-
+<br>
+{% if message != None %}      
+<a align="left">{{ message }}</a>
+{% endif %}
+    
   <table class="styleA" >
     <tr>
       <th align="center" > STT</th>
@@ -141,9 +145,7 @@
       {% endif %}
     </tr>
 
-    {% if message != None %}
-      {{ message }}
-    {% endif %}
+    
 
     {% for ss in studentList.object_list %}
       <tr>

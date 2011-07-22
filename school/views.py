@@ -991,7 +991,7 @@ def viewClassDetail(request, class_id, sort_type=1, sort_status=0, page=1):
             if data['first_name'] != '':
                 data['first_name']=data['last_name'] + ' ' + data['first_name']
                 form=PupilForm(school.id, data)
-            message = 'Bạn vui lòng sửa một số lỗi sai dưới đây'
+                
     if int(sort_type) == 1:
         if int(sort_status) == 0:
             studentList = cl.pupil_set.order_by('first_name', 'last_name','birthday')
@@ -1086,7 +1086,7 @@ def teachers(request, sort_type=1, sort_status=0, page=1):
             if data['first_name'] != '':
                 data['first_name'] = data['last_name'] + ' ' + data['first_name']
                 form = TeacherForm(data)
-            message = 'Bạn vui lòng sửa một số lỗi sai dưới đây'
+            
 			
     if int(sort_type) == 1:
         if int(sort_status) == 0:
@@ -1152,9 +1152,8 @@ def viewTeacherDetail(request, teacher_id):
         form = TeacherForm(request.POST, instance=teacher)
         if form.is_valid():
             form.save()
-            message = 'Bạn vừa cập nhật thành công'
-        else:
-            message = 'Bạn vui lòng sửa một số lỗi sai dưới đây'
+            message = 'Bạn vừa cập nhật thành công'        
+            
     
     t = loader.get_template(os.path.join('school', 'teacher_detail.html'))
     c = RequestContext(request, {   'form': form, 'message': message,
@@ -1225,7 +1224,7 @@ def subjectPerClass(request, class_id, sort_type=1, sort_status=0):
                     form = SubjectForm(school_id)
                 message = 'Môn học mới đã được thêm.'
             else:
-                message = 'Bạn vui lòng sửa một số lỗi sai dưới đây.'
+                message = None
     if int(sort_type) == 1:
         if int(sort_status) == 0:
             subjectList = cl.subject_set.order_by('name')
@@ -1306,7 +1305,7 @@ def students(request, sort_type=1, sort_status=1, page=1):
         else:
             data['first_name'] = data['last_name'] + ' ' + data['first_name']
             form = PupilForm(school.id, data)
-            message = 'Bạn vui lòng sửa một số lỗi sai dưới đây'
+            
 	
     if int(sort_type) == 1:
         if int(sort_status) == 0:
@@ -1376,9 +1375,8 @@ def viewStudentDetail(request, student_id):
         form = PupilForm(school_id, data, instance=pupil)
         if form.is_valid():
             form.save()
-            message = 'Bạn đã cập nhật thành công'
-        else:
-            message = 'Bạn vui lòng sửa một số lỗi sai dưới đây'
+            message = 'Bạn đã cập nhật thành công'        
+            
 
     t = loader.get_template(os.path.join('school', 'student_detail.html'))
     c = RequestContext(request, {   'form': form, 
@@ -2205,9 +2203,7 @@ def viewSubjectDetail (request, subject_id):
             primary = request.POST.get('primary', False)
             change_primary(sub, primary)
             form.save()                        
-            message = 'Bạn đã cập nhật thành công'
-        else:
-            message = 'Bạn vui lòng sửa một số lỗi sai dưới đây'
+            message = 'Bạn đã cập nhật thành công'        
             
     t = loader.get_template(os.path.join('school', 'subject_detail.html'))
     c = RequestContext(request, {   'form':form, 
