@@ -102,8 +102,36 @@
         $(this).click(sendSmS);
         note = '';
       });
+      
+
+      $("select[name=loai]").each(function() {
+        $(this).change(function() {
+          var id = $(this).parents("tr").attr('class').split(' ')[0];
+          var loai = $(this).val();
+          var data = { id: id, loai:loai, request_type:'update'}
+          var arg = { type:"POST",
+            url:"",
+            data: data,
+            datatype:"json"
+            //success:
+            //function(json){
+            //		$.fancybox({
+            //		content: json.message,
+            //		title: "Updated successfully"
+            //		});
+            //  }
+          };
+
+          $.ajax(arg);
+          return false;
+
+        });
+      });
       $("tr").each(function() {
         $(this).click(select);
+      });
+      $("td:has(select)").click( function (){
+        return false;
       });
       $("#checkbox_all").click( function(){
             var checkboxall = '#checkbox_all'
@@ -129,29 +157,6 @@
       $("#selectAll").click(function() {
         $("tr").each(select);
         return false;
-      });
-
-      $("select[name=loai]").each(function() {
-        $(this).change(function() {
-          var id = $(this).parents("tr").attr('class').split(' ')[0];
-          var loai = $(this).val();
-          var data = { id: id, loai:loai, request_type:'update'}
-          var arg = { type:"POST",
-            url:"",
-            data: data,
-            datatype:"json"
-            //success:
-            //function(json){
-            //		$.fancybox({
-            //		content: json.message,
-            //		title: "Updated successfully"
-            //		});
-            //  }
-          };
-
-          $.ajax(arg);
-
-        });
       });
 
 
