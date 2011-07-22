@@ -24,7 +24,6 @@ NHAP_DANH_SACH_TRUNG_TUYEN = os.path.join('school', 'import', 'nhap_danh_sach_tr
 DANH_SACH_TRUNG_TUYEN = os.path.join('school', 'import', 'danh_sach_trung_tuyen.html')
 START_YEAR = os.path.join('school', 'start_year.html')
 NHAP_BANG_TAY = os.path.join('school', 'import', 'manual_adding.html')
-TEMP_FILE_LOCATION = os.path.join(os.path.dirname(__file__), 'uploaded')
 SCHOOL = os.path.join('school', 'school.html')
 YEARS = os.path.join('school', 'years.html')
 CLASS_LABEL = os.path.join('school', 'class_labels.html')

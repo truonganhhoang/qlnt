@@ -6,7 +6,6 @@ from django.contrib.auth.models import User
 from django.contrib.auth.models import get_hexdigest
 from django.core.exceptions import *
 
-TEMP_FILE_LOCATION = os.path.join(os.path.dirname(__file__), 'uploaded')
 
 # date-month-year => time object
 def to_date(value):

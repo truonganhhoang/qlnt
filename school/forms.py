@@ -21,7 +21,6 @@ from school.school_settings import *
 from school.widgets import *
 import xlrd
     
-TEMP_FILE_LOCATION = os.path.join(os.path.dirname(__file__), 'uploaded')
 
 class BlockForm(forms.ModelForm):
     class Meta:

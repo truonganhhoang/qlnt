@@ -219,6 +219,9 @@ COVERAGE_REPORT_HTML_OUTPUT_DIR = (
     os.path.join(os.path.dirname(__file__), 'coverage_report')
 )
 
+
+TEMP_FILE_LOCATION = os.path.join(os.path.dirname(__file__), 'uploaded')
+
 #Email
 EMAIL_HOST = 'smtp.gmail.com'
 
