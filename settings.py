@@ -59,7 +59,7 @@ TIME_FORMAT = 'H:i:s'
 DATETIME_FORMAT = r'H:i:s \N\gà\y d \t\há\n\g n \nă\m Y'
 YEAR_MONTH_FORMAT = 'F Y'
 MONTH_DAY_FORMAT = 'j F'
-SHORT_DATE_FORMAT = 'd-m-Y'
+SHORT_DATE_FORMAT = 'd/m/Y'
 SHORT_DATETIME_FORMAT = 'H:i:s d-m-Y'
 # FIRST_DAY_OF_WEEK = 
 
