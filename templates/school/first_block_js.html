@@ -25,7 +25,7 @@ function catchEnter(e)
       if (!e) e = window.event; 
       var code = (e.keyCode) ? e.keyCode : e.which;
 
-	if (code == 13 || code == 3) 
+	if ((code == 13) || (code == 3) || (code==9) ) 
 	{
 		return false;
 	}	
@@ -121,8 +121,8 @@ window.onload = function() { document.onkeypress = catchEnter; };
 		var name=tb.id;
 		var nameNumber=parseInt(name);
 		var lengthList={{lengthList}};		
-		
-		if ((keycode==32) | (keycode==13))
+		//alert(keycode);
+		if ((keycode==32) | (keycode==13) | (keycode==9))
 		{
 			valueOfMove=returnMove();
 			direction(nameNumber,valueOfMove);
