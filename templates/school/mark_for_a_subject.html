@@ -1,8 +1,6 @@
 {% extends "base.html"%}
+
 {% block content %}
-{% if message != None %}
-{{message}}
-{% endif %}
 
 {% if selectedSubject.teacher_id %}
 	<script>
@@ -13,104 +11,37 @@
 		var idTeacher = -1;
 	</script>
 {% endif %}	
+
    	
 {% include  "school/first_block_js.html" %}	
 
 <form action="/school/markForASubject/{{selectedSubject.id}}"  name="info" method="post" id='myform' 
 	onsubmit="return false" >{% csrf_token %}
-<table border="0" width=100% >
 	<input type="hidden" name="submitChoice" value="">	
 	
 	<div id="myDiv"> </div>  	
 	<div id="myDiv2"> </div>  	
 	<div id="myDiv3"> </div>  	
 	<div id="myDiv1"> </div>  	
-	<tr>
-		<td align="left" colspan =4 style="font-size:25px" >		
-		<h2>Bảng điểm lớp <b>{{ selectedClass.name }}</b>
-             môn {{selectedSubject.name}}
-			 
-		</h2>
-		
-		</td>
-	</tr>
-	
-	<tr>										
-		<td width ="20%"> Học kỳ &nbsp&nbsp:  
-		<select name="term" onchange="submitTerm();" >				
+	<h2>Bảng điểm lớp <b>{{ selectedClass.name }}</b>
+            môn {{selectedSubject.name}}&nbsp
+			học kỳ&nbsp
+		<select name="term" onchange="submitTerm();">				
 			{% for term in termList %}
 					<option   value={{ term.id }} selected> {{ term}} </option>	
-			{% endfor %}	
-			
+			{% endfor %}				
 		</select>
-		</td>
-	{% if enableChangeMark %}	
-	{%ifnotequal hsSubject 0 %}
-		<td width ="25%" >
-			Dịch chuyển:
-				<input type="radio" name="move" id="ngang2" value="ngang2" 
-					title="Chuyển sang cột tiếp theo bằng ENTER, dấu cách hoặc phím mũi tên">
-					Ngang
-				</input>
+	</h2>
+	
+	<script type="text/javascript" >
+		document.info.term.value={{termChoice}}	
+	</script>		
 
-				<input type="radio" name="move" id="doc" value="doc" checked
-					title="Chuyển xuống hàng tiếp theo bằng ENTER, dấu cách hoặc phím mũi tên">
-					Dọc
-				</input>
-			
-		</td>	
-		<td width ="35%">
-			Gõ tắt: ví dụ 75 sẽ thành 7,5 hoặc dấu - sẽ thành 10, ấn enter hoặc dấu cách để sang ô tiếp theo.		
-			</ul>
-		</td>	
-	 {% endifnotequal %}		
-	{% endif %}	
-	</tr>	
-</table>
-	{% if  enableChangeMark %}
-		<table border=0 width="100%">
-			<tr>
-				<td width="90%"> 
-				<div id="messageSMS"  > </div> 
-				<button  id="sendSelect" onclick="showMessageTable();" >Gửi SMS <img src="/static/images/message3.png" > <img src="/static/images/muiten.png" >  </button>
-				<br>
-				</td width="10%">
-				
-				<td> <img src="/static/images/save1.png" > <div id="messageChanging"  >  </div>   
-				</td>
-			</tr>			
-		</table>
-	{% else %} 
-	{% if enableSendSMS %}
-	<button title="Click vào đây để gửi tin cho những học sinh đã chọn" id="sendSelect" onclick="sendSelected();" >Gửi SMS <img src="/static/images/message3.png" >  </button>
-	<br>
-	<div id="messageSMS"  > </div> 
-	{% endif %}
-	{% endif %}
+	{% include  "school/third_block.html" %}
 	
-	<table class="styleC" id="messageTable" style="display:none">
-		<tr> <td onclick="selectNoSent()">Chọn những điểm chưa nhắn </td></tr>
-		<tr> <td onclick="selectAllToSend()" >Chọn tất cả </td> </tr>
-		<tr> <td onclick="cancelAll()">Bỏ tất cả </td>   </tr>
-        <tr> <td onclick="sendSMS()">Gửi       </td>   </tr> 						 
-	</table>
-
-	
-	<br>
-<script type="text/javascript" >
-	document.info.term.value={{termChoice}}
-	m=document.getElementById("{{move}}")
-	if (m) m.checked=true;
-	
-</script>		
-		
 	{% include  "school/mark_for_headmaster.html" %}
 	
 </form>	
-
-
 	{% include  "school/second_block_js.html" %}
-
-
 {% endblock %}
     

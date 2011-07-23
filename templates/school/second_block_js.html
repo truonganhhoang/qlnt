@@ -93,12 +93,16 @@
 				
 				if (value==undefined)	
 					value=document.getElementById(id.toString()).innerHTML;
+					
+				var exp1=/[,]/g
+				value=value.replace(exp1,'.');		
 
 				if ((value=="") || (value==" "))
 					newAr[i][j]=-1;
 				else
 					newAr[i][j]=parseFloat(value);
-					if ((!isNaN(newAr[i][j])) && (newAr[i][j]>10))
+					
+				if ((!isNaN(newAr[i][j])) && (newAr[i][j]>10))
 					{
 						var tb=document.getElementById(id.toString()); 
 						acceptDigits(tb);
