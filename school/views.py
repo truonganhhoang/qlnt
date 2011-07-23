@@ -547,7 +547,6 @@ def save_upload( uploaded, filename, raw_data ):
         pass
     return False
 
-@transaction.commit_manually 
 def student_import( request, class_id ):
     try:
         school = get_school(request)
@@ -589,6 +588,7 @@ def student_import( request, class_id ):
     success = save_upload( upload, filename, is_raw )
     message = None
     result = process_file( filename, "Nhap danh sach trung tuyen")
+    print result
     if 'error' in result:
         success = False
         message = result['error']
@@ -598,17 +598,23 @@ def student_import( request, class_id ):
         current_year = school.year_set.latest('time')
         term = get_current_term( request)
         try:
+            c = datetime.datetime.now()
+            add_many_students(student_list = result, _class = chosen_class, 
+                              start_year = year, year = current_year,
+                              term = term, school=school)
+            '''
             for student in result:
                 data = {'full_name': student['ten'], 'birthday':student['ngay_sinh'],
                         'ban':student['nguyen_vong'], }
-                print data
                 add_student(student=data, _class=chosen_class,
                             start_year=year, year=current_year,
                             term=term, school=school)
-            transaction.commit()
+            '''
+            a = datetime.datetime.now()
+            print 'for in:',a - c
+            
         except Exception as e:
             print e
-            transaction.roll_back()
             message = u'Lỗi trong quá trình lưu cơ sở dữ liệu'
     # let Ajax Upload know whether we saved it or not
     data = { 'success': success, 'message': message }
@@ -1301,6 +1307,7 @@ def students(request, sort_type=1, sort_status=1, page=1):
             data['ban'] = data['ban_dk']
             add_student(student=data, start_year=start_year, year=get_current_year(request), _class=_class, term=get_current_term(request), school=get_school(request), school_join_date=school_join_date)
             message = 'Bạn vừa thêm một học sinh mới'
+
             form = PupilForm(school.id)
         else:
             data['first_name'] = data['last_name'] + ' ' + data['first_name']
@@ -1840,6 +1847,7 @@ def deleteStudentInClass(request, student_id):
     completely_del_student(student)
     return HttpResponseRedirect('/school/viewClassDetail/'+str(class_id.id))
 
+@transaction.commit_manually
 def deleteAllStudentsInClass(request, class_id):
     user = request.user
     if not user.is_authenticated():
@@ -1861,9 +1869,10 @@ def deleteAllStudentsInClass(request, class_id):
         return HttpResponseRedirect('/')
     if (get_position(request) < 4):
         return HttpResponseRedirect('/')   
+    
     for student in students:
         completely_del_student(student)
-    
+    transaction.commit()
     return HttpResponseRedirect('/school/viewClassDetail/'+str(cl.id))
     
 def deleteStudentInSchool(request, student_id):
