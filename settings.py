@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Django settings for qlnt project
 
 # open path for template folder
@@ -18,7 +19,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'freeschool',
-        'USER': 'freeschool',
+        'USER': 'fresschool',
         'PASSWORD':'freeschool',
     },
    # 'default': {
@@ -52,11 +53,28 @@ USE_I18N = True
 
 # If you set this to False, Django will not format dates, numbers and
 # calendars according to the current locale
-USE_L10N = True
+USE_L10N = False
+DATE_FORMAT = r'\N\gà\y d \t\há\n\g n \nă\m Y'
+TIME_FORMAT = 'H:i:s'
+DATETIME_FORMAT = r'H:i:s \N\gà\y d \t\há\n\g n \nă\m Y'
+YEAR_MONTH_FORMAT = 'F Y'
+MONTH_DAY_FORMAT = 'j F'
+SHORT_DATE_FORMAT = 'd-m-Y'
+SHORT_DATETIME_FORMAT = 'H:i:s d-m-Y'
+# FIRST_DAY_OF_WEEK = 
 
-DATE_FORMAT = ('D/M/YY', 'DD/MM/YYYY')
-DATE_INPUT_FORMATS = ('%d-%m-%Y', '%d/%m/%Y')
+# The *_INPUT_FORMATS strings use the Python strftime format syntax,
+# see http://docs.python.org/library/datetime.html#strftime-strptime-behavior
+# DATE_INPUT_FORMATS = 
+# TIME_INPUT_FORMATS = 
+# DATETIME_INPUT_FORMATS = 
 DECIMAL_SEPARATOR = '.'
+#THOUSAND_SEPARATOR = '.'
+
+
+#DATE_FORMAT = ('D/M/YY', 'DD/MM/YYYY')
+#DATE_INPUT_FORMATS = ('%d-%m-%Y', '%d/%m/%Y')
+#DECIMAL_SEPARATOR = '.'
 
 SITE_ID = 1
 
