@@ -130,7 +130,7 @@
       $("tr").each(function() {
         $(this).click(select);
       });
-      $("td:has(select)").click( function (){
+      $("select[name=loai]").click( function (){
         return false;
       });
       $("#checkbox_all").click( function(){
