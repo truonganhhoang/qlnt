@@ -73,8 +73,8 @@ def make_username( first_name = None, last_name = None, full_name = None, start_
         names = full_name.split(" ")
         last_name = ' '.join(names[:len(names)-1])
         first_name = names[len(names)-1]
-    last_name = unicodedata.normalize('NFKD', last_name).encode('ascii','ignore')
-    last_name = unicodedata.normalize('NFKD', first_name).encode('ascii','ignore')
+    last_name = unicodedata.normalize('NFKD', last_name).encode('ascii','ignore').lower()
+    last_name = unicodedata.normalize('NFKD', first_name).encode('ascii','ignore').lower()
     
     username = first_name
     if last_name and last_name.strip() != '':
