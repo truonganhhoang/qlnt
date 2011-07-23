@@ -19,7 +19,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'freeschool',
-        'USER': 'fresschool',
+        'USER': 'freeschool',
         'PASSWORD':'freeschool',
     },
    # 'default': {
