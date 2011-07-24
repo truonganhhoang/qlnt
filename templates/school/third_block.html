@@ -1,4 +1,8 @@
-﻿    <div style="text-align:right;font-size:90%">
+﻿	<div class="notify-widget-paneB" >
+	<button   style="padding: 2px 2px;width: 70px;display:none" id="buttonSave" onclick="update()"  > <div id="messageChanging"  >  </div>  </button>
+	</div>
+
+    <div style="text-align:right;font-size:90%">
 		Dịch chuyển:
         <input type="radio" name="move" id="ngang2" value="ngang2" 
                title="Chuyển sang cột tiếp theo bằng ENTER,TAB  hoặc phím mũi tên">
@@ -20,18 +24,10 @@
 		
 	
 	{% if  enableChangeMark %}
-		<table border=0 width="100%">
-			<tr>
-				<td width="90%"> 
-				<div id="messageSMS"  > </div> 
-				<button  id="sendSelect" onclick="showMessageTable();" >Gửi SMS <img src="/static/images/message3.png" > <img src="/static/images/muiten.png" >  </button>
+				<div id="messageSMS"  > </div>
+				<button  id="sendSelect" onclick="showMessageTable();" >Gửi SMS <img src="/static/images/message3.png" > <img src="/static/images/muiten.png" id="messageImage">  </button>
 				<br>
-				</td width="10%">
 				
-				<td> <img src="/static/images/save1.png" > <div id="messageChanging"  >  </div>   
-				</td>
-			</tr>			
-		</table>
 	{% else %} 
 	{% if enableSendSMS %}
 	<button title="Click vào đây để gửi tin cho những học sinh đã chọn" id="sendSelect" onclick="sendSelected();" >Gửi SMS <img src="/static/images/message3.png" >  </button>

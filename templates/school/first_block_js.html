@@ -18,6 +18,37 @@
 	//if ((e.keyCode==38) || (e.keyCode==38))
 	//	e.preventDefault()
 	//}, false);
+
+	var length={{lengthList}} + 1;
+	var oldAr = new Array(length);
+	var newAr = new Array(length); 
+	var tempNewAr = new Array(length); 
+	
+	var sentMark  = new Array(length);
+	var tempSent  = new Array(length);
+	
+	var idAr  = new Array(length);
+	var hk1Ar = new Array(length);		
+	
+	var indexId = 0;
+	var indexHk1= 0;
+	var latestTime =0;
+	var isHeadmaster =1;
+	//che do lam viec
+	activeMode = 0;
+	for(var i=1;i<length;i++)
+	{	
+		oldAr[i]     = new Array(20);
+		newAr[i] 	 = new Array(20);
+		tempNewAr[i] = new Array(20); 
+		sentMark[i]  = new Array(20);
+		tempSent[i]  = new Array(20);
+	}	
+	for(var i=1;i<length;i++)
+		for(var j=1;j<20;j++)
+			newAr[i][j]=-1;
+
+
 	
 function catchEnter(e)
 
@@ -25,7 +56,7 @@ function catchEnter(e)
       if (!e) e = window.event; 
       var code = (e.keyCode) ? e.keyCode : e.which;
 
-	if ((code == 13) || (code == 3) || (code==9) ) 
+	if ((code == 13) || (code == 3) || (code==9)) 
 	{
 		return false;
 	}	
@@ -34,13 +65,16 @@ function catchEnter(e)
 window.onload = function() { document.onkeypress = catchEnter; };
    
 
-	function acceptDigits(tb){
+	function acceptDigits(tb,keyCode)
+	{
+		var ok=true;
+		/*
 		if (tb.value=="-")
 		{
 			tb.value="10";
 			return;
 		}
-			
+		*/
 		var exp = /[^((\d).,)]/g;
 		tb.value=tb.value.replace(exp,'');		
 		
@@ -60,7 +94,10 @@ window.onload = function() { document.onkeypress = catchEnter; };
 			tb.value=value.substring(0,value.length-1);
 			
 		if (tb.value.length>3)	
+		{
 			tb.value=tb.value.substring(0,3);
+			ok=false;
+		}	
 			
 		var number=parseFloat(tb.value);
 		
@@ -71,7 +108,18 @@ window.onload = function() { document.onkeypress = catchEnter; };
 			tb.value=temp.toString();
 		}
 		if (number>=100)
+		{
 			tb.value=tb.value.substring(0,2);				
+			ok=false;
+		}	
+		if (ok)
+			if (((48<=keyCode) && (keyCode<=57)) || ((96<=keyCode) && (keyCode<=105)))
+			{
+				document.getElementById("messageChanging").innerHTML="Lưu ngay";
+				document.getElementById("buttonSave").disabled="";
+				document.getElementById("buttonSave").style.display="";
+				latestTime= (new Date()).getTime();
+			}			
 	}	
 	function returnMove()
 	{
@@ -281,36 +329,11 @@ window.onload = function() { document.onkeypress = catchEnter; };
 	}
 	function  control(tb,event)
 	{
-		acceptDigits(tb);
+		//alert(event.keyCode);
+		acceptDigits(tb,event.keyCode);
 		//ntrolDirection(tb,event);				
 	}
 	
-	var length={{lengthList}} + 1;
-	var oldAr = new Array(length);
-	var newAr = new Array(length); 
-	var tempNewAr = new Array(length); 
-	
-	var sentMark  = new Array(length);
-	var tempSent  = new Array(length);
-	
-	var idAr  = new Array(length);
-	var hk1Ar = new Array(length);		
-	
-	var indexId = 0;
-	var indexHk1= 0;
-	//che do lam viec
-	activeMode = 0;
-	for(var i=1;i<length;i++)
-	{	
-		oldAr[i]     = new Array(20);
-		newAr[i] 	 = new Array(20);
-		tempNewAr[i] = new Array(20); 
-		sentMark[i]  = new Array(20);
-		tempSent[i]  = new Array(20);
-	}	
-	for(var i=1;i<length;i++)
-		for(var j=1;j<20;j++)
-			newAr[i][j]=-1;
 			
 	function setArrayId(id)
 	{

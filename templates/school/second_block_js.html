@@ -1,14 +1,5 @@
 ﻿<script>
-	function setBackgroundSent()
-	{
-		var table=document.getElementById("markTable");		
-		for(i=1;i<length;i++)
-			for(j=1;j<20;j++)
-				if (sentMark[i][j]==1)
-						table.rows[i+2].cells[j+4].className="sent";
-					
-	}
-	setBackgroundSent();
+	
     function getCookie(name) {
     var cookieValue = null;
         if (document.cookie && document.cookie != '') {
@@ -51,8 +42,10 @@
 				//document.getElementById("myDiv").innerHTML=xmlhttp.responseText;
 				//alert("fdfdf fsdfffhello1");
 				//tong=tong+1
-				document.getElementById("messageChanging").innerHTML="Đã lưu";
+				//document.getElementById("messageChanging").innerHTML="Đã lưu";
 				updateOldAr();
+				if (document.getElementById("messageChanging").innerHTML!="Lưu ngay")
+					document.getElementById("messageChanging").innerHTML="Đã lưu";
 				//document.getElementById("myDiv1").innerHTML=tong;
 			}
 		}   				
@@ -231,9 +224,19 @@
 		//alert(str);	
 		if (str!="")
 		{
-			document.getElementById("messageChanging").innerHTML="Đang lưu";
 			sendToServer(idTeacher+str);
+			var currentTime = (new Date()).getTime();
+			if ((currentTime-latestTime)>2000)
+			{
+				document.getElementById("messageChanging").innerHTML="Đang lưu";
+				document.getElementById("buttonSave").disabled="disabled";			
+			}	
 		}
+		else
+		{
+			document.getElementById("messageChanging").innerHTML="Đã lưu";
+			document.getElementById("buttonSave").disabled="disabled";			
+		}	
 		//writeOld();	
 		for(var i=1;i<length;i++)
 			for(var j=1;j<17;j++)
@@ -280,7 +283,7 @@
 	<script>
 		var myTimer;
 		var myTimer1;
-		myTimer  = setInterval("update()", 2000);
+		myTimer  = setInterval("update()", 6000);
 		myTimer1 = setInterval("viewAverage()", 1001);
 		//clearInterval(myTimer);
    
@@ -291,12 +294,31 @@
 	///////////////////////////////////////////////////////////
 	//			the functions for sending sms
 	///////////////////////////////////////////////////////////
+	function setEmpty()
+	{
+		var table=document.getElementById("markTable");
+		for(var i=1;i<length;i++)
+			for(var j=1;j<20;j++)
+			if (newAr[i][j]!=-1)
+			{
+				var name = i*100+j;
+				if (document.getElementById(name).value!=undefined)
+				{
+					table.rows[i+2].cells[j+4].className="normal";
+					document.getElementById(name).className="mark";
+				}
+				else	
+					table.rows[i+2].cells[j+4].className="noedit";
+			}	
+	}
 	function showMessageTable()
 	{	
 		if (document.getElementById("messageTable").style.display=="")
 		{
 			cancelAll();
+			setEmpty();
 			document.getElementById("messageTable").style.display="none";
+			document.getElementById("messageImage").src="/static/images/muiten.png"
 			activeMode = 0;
 			for(var i=1;i<length;i++)
 			{
@@ -313,7 +335,9 @@
 		}
 		else
 		{	
+			cancelAll();
 			document.getElementById("messageTable").style.display="";			
+			document.getElementById("messageImage").src="/static/images/muiten1.png"
 			activeMode = 1;
 			for(var i=1;i<length;i++)
 			{
@@ -371,10 +395,16 @@
 					if (sentMark[i][j]==1)
 					{
 						//alert(i+" "+j);
+
 						table.rows[i+2].cells[j+4].className="sent";
 						var name = i*100+j;
 						if (document.getElementById(name).value!=undefined)
-							document.getElementById(name).className="mark";
+						{
+							if (isHeadmaster)
+								document.getElementById(name).className="sent";
+							else	
+								document.getElementById(name).className="mark";
+						}	
 					}
 					else
 					{
@@ -451,7 +481,11 @@
 			{
 				if (temp!=undefined)
 				{	
-					document.getElementById(name).className="mark";
+					if (isHeadmaster && sentMark[rowIndex-2][cellIndex-4])						
+						document.getElementById(name).className="sent";
+					else	
+						document.getElementById(name).className="mark";
+						
 					if (sentMark[rowIndex-2][cellIndex-4]==1)
 						tb.className="sent";
 					else
@@ -487,13 +521,16 @@
 				//alert("fdfdf fsdfffhello1");
 				//tong=tong+1
 				//document.getElementById("myDiv1").innerHTML=tong;
-				document.getElementById("messageSMS").innerHTML="Đã gửi thành công";
+				var temp = document.getElementById("notify");
+					temp.innerHTML="Đã gửi thành công";
+					$(temp).delay(2000).fadeOut('fast');      
+					
 				for(var i=1;i<length;i++)
 					for(var j=1;j<20;j++)
 					if (tempSent[i][j]==1)
 						sentMark[i][j]=1;
 				cancelAll();
-				
+				/*
 				activeMode=0;
 				for(var i=1;i<length;i++)
 				{
@@ -508,6 +545,7 @@
 				}
 				document.getElementById("checkAllRow").style.display="none";
 				document.getElementById("messageTable").style.display="none";
+				*/
 				
 			}
 		}   				
@@ -528,7 +566,6 @@
 	function sendSMS()
 	{
 		viewAverage();
-		document.getElementById("messageSMS").innerHTML="Đang gửi";
 		var table=document.getElementById("markTable");
 		var str=""		
 		
@@ -553,11 +590,19 @@
 				str=str+"/"+idAr[i]+":"+number+":"+value;						
 		}
 		//alert(str);
+		var temp=document.getElementById("notify");									
 		if (str!="")
+		{
 			sendToServer1(str);
+			temp.innerHTML="Đang gửi tin nhắn... ";
+			$(temp).fadeIn('fast');
+		}					
 		else
-			document.getElementById("messageSMS").innerHTML="Chưa có điểm nào để gửi";
-		
+		{
+			temp.innerHTML="Chưa chọn điểm nào để gửi.";
+			$(temp).fadeIn('fast');
+			$(temp).delay(2000).fadeOut('fast');
+		}						
 	}	
 	
 	function select(tb)
@@ -579,7 +624,10 @@
 						table.rows[i+2].cells[j+4].className="sent";
 						var name = i*100+j;
 						if (document.getElementById(name).value!=undefined)
-							document.getElementById(name).className="mark";
+							if (isHeadmaster)
+								document.getElementById(name).className="sent"
+							else	
+								document.getElementById(name).className="mark"
 					}
 					else
 					{
@@ -680,7 +728,10 @@
 		
 		if (cellInput.value!=undefined)
 		{	
-			cellInput.className="mark";			
+			if  (isHeadmaster && sentMark[x][y])
+				cellInput.className="sent";
+			else	
+				cellInput.className="mark";			
 			if (sentMark[x][y]==1)
 				tb.className="sent";
 			else
@@ -700,12 +751,8 @@
 		else
 			selectAllToSend();
 	}
-	function reverse(tb)
-	{
-		alert("alo");
-		tb.checked= !tb.checked;
-	}
-	function ttt(tb)
-	{
-	}
+	calculateNewArray();	
+	// (isHeadmaster)
+	//	cancelAll();
+	
 </script>

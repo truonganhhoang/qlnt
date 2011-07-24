@@ -2,73 +2,73 @@
 		<tr>
 			
 			{% if enableSendSMS %}
-			<td rowspan=2 colspan=2 align="center" width="1%" 
+			<th rowspan=2 colspan=2 align="center" width="1%" 
 				style="border-bottom-width:0px" >
 				Stt
-			</td>	
-			<td rowspan=3 colspan=2 align="center" width="20%">
+			</th>	
+			<th rowspan=3 colspan=2 align="center" width="20%">
 				Họ và tên
-			</td>	
+			</th>	
 			{% else %}
-			<td rowspan=2 colspan=1 align="center" width="1%" 
+			<th rowspan=2 colspan=1 align="center" width="1%" 
 				style="border-bottom-width:0px" >
 				Stt
-			</td>	
-			<td rowspan=2 colspan=2 align="center" width="20%">
+			</th>	
+			<th rowspan=2 colspan=2 align="center" width="20%">
 				Họ và tên
-			</td>	
+			</th>	
 			
 			{% endif %}
-			<td rowspan=3 align="center" width="5%"  >			
+			<th rowspan=3 align="center" width="5%"  >			
 				Ngày sinh
-			</td>	
-			<td colspan=5 align="center" width="20%"  >
+			</th>	
+			<th colspan=5 align="center" width="20%"  >
 				Miệng
-			</td>	
+			</th>	
 
-			<td colspan=5 align="center" width="20%" >
+			<th colspan=5 align="center" width="20%" >
 				15 phút
-			</td>	
-			<td colspan=5 align="center" width="20%" >
+			</th>	
+			<th colspan=5 align="center" width="20%" >
 				45 phút
-			</td>
+			</th>
 			
-			<td rowspan=2 align="center" width="1%" onclick="checkCol(this,1)"  id="-116" style="border-bottom-width:0px">
+			<th rowspan=2 align="center" width="1%" onclick="checkCol(this,1)"  id="-116" style="border-bottom-width:0px">
 				Thi cuối kì
-			</td>	
+			</th>	
 		{% ifequal selectedTerm.number 1 %}
-			<td rowspan=2 width="5%" id="-117" onclick="checkCol(this,1)"style="border-bottom-width:0px" >
+			<th rowspan=2 width="5%" id="-117" onclick="checkCol(this,1)"style="border-bottom-width:0px" >
 				TBHK
-			</td>	
+			</th>	
 		{% else %}
-			<td colspan=3 align="center" width="15%" >
+			<th colspan=3 align="center" width="15%" >
 				<b>ĐIỂM TRUNG BÌNH </b>
-			</td>
+			</th>
 		{% endifequal %}
 			
 			
 		</tr>
 		<tr>
-		<td width ="3%" align="center" onclick="checkCol(this,1)" id="-101" style="border-bottom-width:0px"> 1 </td>
-		<td width ="3%" align="center" onclick="checkCol(this,1)" id="-102" style="border-bottom-width:0px"> 2 </td>
-		<td width ="3%" align="center" onclick="checkCol(this,1)" id="-103" style="border-bottom-width:0px"> 3 </td>
-		<td width ="3%" align="center" onclick="checkCol(this,1)" id="-104" style="border-bottom-width:0px"> 4 </td>
-		<td width ="3%" align="center" onclick="checkCol(this,1)" id="-105" style="border-bottom-width:0px"> 5 </td>
-		<td width ="3%" align="center" onclick="checkCol(this,1)" id="-106" style="border-bottom-width:0px"> 1  </td>
-		<td width ="3%" align="center" onclick="checkCol(this,1)" id="-107" style="border-bottom-width:0px"> 2 </td>
-		<td width ="3%" align="center" onclick="checkCol(this,1)" id="-108" style="border-bottom-width:0px"> 3 </td>
-		<td width ="3%" align="center" onclick="checkCol(this,1)" id="-109" style="border-bottom-width:0px"> 4 </td>
-		<td width ="3%" align="center" onclick="checkCol(this,1)" id="-110" style="border-bottom-width:0px"> 5 </td>
-		<td width ="3%" align="center" onclick="checkCol(this,1)" id="-111" style="border-bottom-width:0px"> 1 </td>
-		<td width ="3%" align="center" onclick="checkCol(this,1)" id="-112" style="border-bottom-width:0px"> 2 </td>
-		<td width ="3%" align="center" onclick="checkCol(this,1)" id="-113" style="border-bottom-width:0px"> 3 </td>
-		<td width ="3%" align="center" onclick="checkCol(this,1)" id="-114" style="border-bottom-width:0px"> 4 </td>
-		<td width ="3%" align="center" onclick="checkCol(this,1)" id="-115" style="border-bottom-width:0px"> 5 </td>
+		<th width ="3%" align="center" onclick="checkCol(this,1)" id="-101" style="border-bottom-width:0px"> 1 </th>
+		<th width ="3%" align="center" onclick="checkCol(this,1)" id="-102" style="border-bottom-width:0px"> 2 </th>
+		<th width ="3%" align="center" onclick="checkCol(this,1)" id="-103" style="border-bottom-width:0px"> 3 </th>
+		<th width ="3%" align="center" onclick="checkCol(this,1)" id="-104" style="border-bottom-width:0px"> 4 </th>
+		<th width ="3%" align="center" onclick="checkCol(this,1)" id="-105" style="border-bottom-width:0px"> 5 </th>
+		<th width ="3%" align="center" onclick="checkCol(this,1)" id="-106" style="border-bottom-width:0px"> 1  </th>
+		<th width ="3%" align="center" onclick="checkCol(this,1)" id="-107" style="border-bottom-width:0px"> 2 </th>
+		<th width ="3%" align="center" onclick="checkCol(this,1)" id="-108" style="border-bottom-width:0px"> 3 </th>
+		<th width ="3%" align="center" onclick="checkCol(this,1)" id="-109" style="border-bottom-width:0px"> 4 </th>
+		<th width ="3%" align="center" onclick="checkCol(this,1)" id="-110" style="border-bottom-width:0px"> 5 </th>
+		<th width ="3%" align="center" onclick="checkCol(this,1)" id="-111" style="border-bottom-width:0px"> 1 </th>
+		<th width ="3%" align="center" onclick="checkCol(this,1)" id="-112" style="border-bottom-width:0px"> 2 </th>
+		<th width ="3%" align="center" onclick="checkCol(this,1)" id="-113" style="border-bottom-width:0px"> 3 </th>
+		<th width ="3%" align="center" onclick="checkCol(this,1)" id="-114" style="border-bottom-width:0px"> 4 </th>
+		<th width ="3%" align="center" onclick="checkCol(this,1)" id="-115" style="border-bottom-width:0px"> 5 </th>
 											
 		{% ifequal selectedTerm.number 2 %}
-		<td align="center" width ="5%" onclick="checkCol(this,1)" id="-117" style="border-bottom-width:0px">HK I  </td>
-		<td align="center" width ="5%" onclick="checkCol(this,1)" id="-118" style="border-bottom-width:0px">HK II </td>
-		<td align="center" width ="5%" onclick="checkCol(this,1)" id="-119" style="border-bottom-width:0px"> CK </td>
+		<th align="center" width ="5%" onclick="checkCol(this,1)" id="-117" style="border-bottom-width:0px">HK I  </th>
+		<th align="center" width ="5%" onclick="checkCol(this,1)" id="-118" style="border-bottom-width:0px">HK II </th>
+		<th align="center" width ="5%" onclick="checkCol(this,1)" id="-119" style="border-bottom-width:0px"> CK </th>
 			
 		{% endifequal %}
 		
@@ -76,36 +76,36 @@
 		
 		{% if enableSendSMS %}
 		<tr>
-		<td width ="1%" title="Click vào đây để chọn tất cả" style="border-right-width:0px; border-top-width:0px" > 
+		<th width ="1%" title="Click vào đây để chọn tất cả" style="border-right-width:0px; border-top-width:0px" > 
 			<input type="checkbox" id="checkAllRow" onclick="checkAll(this)" style="display:none">  
-		</td>
+		</th>
 		
 		
-		<td width ="1%" style="border-left-width:0px; border-top-width:0px" >&nbsp </td>
+		<th width ="1%" style="border-left-width:0px; border-top-width:0px" >&nbsp </th>
 		
 		
-		<td onclick="checkCol(this,2)" id="-201" style="border-top-width:0px" > <input title="Click vào đây để chọn điểm này để gửi tin nhắn" type="checkbox" id="checkbox1" style="display:none">  </td>
-		<td onclick="checkCol(this,2)" id="-202" style="border-top-width:0px"> <input title="Click vào đây để chọn điểm này để gửi tin nhắn" type="checkbox" id="checkbox2" style="display:none" > </td>
-		<td onclick="checkCol(this,2)" id="-203" style="border-top-width:0px"> <input title="Click vào đây để chọn điểm này để gửi tin nhắn" type="checkbox" id="checkbox3"  style="display:none">  </td>
-		<td onclick="checkCol(this,2)" id="-204" style="border-top-width:0px"> <input title="Click vào đây để chọn điểm này để gửi tin nhắn" type="checkbox" id="checkbox4" style="display:none">  </td>
-		<td onclick="checkCol(this,2)" id="-205" style="border-top-width:0px"> <input title="Click vào đây để chọn điểm này để gửi tin nhắn" type="checkbox" id="checkbox5" style="display:none">  </td>
-		<td onclick="checkCol(this,2)" id="-206" style="border-top-width:0px"> <input title="Click vào đây để chọn điểm này để gửi tin nhắn" type="checkbox" id="checkbox6" style="display:none">  </td>
-		<td onclick="checkCol(this,2)" id="-207" style="border-top-width:0px"> <input title="Click vào đây để chọn điểm này để gửi tin nhắn" type="checkbox" id="checkbox7" style="display:none">  </td>
-		<td onclick="checkCol(this,2)" id="-208" style="border-top-width:0px"> <input title="Click vào đây để chọn điểm này để gửi tin nhắn" type="checkbox" id="checkbox8" style="display:none">  </td>
-		<td onclick="checkCol(this,2)" id="-209" style="border-top-width:0px"> <input title="Click vào đây để chọn điểm này để gửi tin nhắn"type="checkbox" id="checkbox9"  style="display:none">  </td>
-		<td onclick="checkCol(this,2)" id="-210" style="border-top-width:0px"> <input title="Click vào đây để chọn điểm này để gửi tin nhắn" type="checkbox" id="checkbox10"style="display:none">  </td>
-		<td onclick="checkCol(this,2)" id="-211" style="border-top-width:0px"> <input title="Click vào đây để chọn điểm này để gửi tin nhắn" type="checkbox" id="checkbox11"style="display:none">  </td>
-		<td onclick="checkCol(this,2)" id="-212" style="border-top-width:0px"> <input title="Click vào đây để chọn điểm này để gửi tin nhắn" type="checkbox" id="checkbox12"style="display:none">  </td>
-		<td onclick="checkCol(this,2)" id="-213" style="border-top-width:0px"> <input title="Click vào đây để chọn điểm này để gửi tin nhắn" type="checkbox" id="checkbox13"style="display:none">  </td>
-		<td onclick="checkCol(this,2)" id="-214" style="border-top-width:0px"> <input title="Click vào đây để chọn điểm này để gửi tin nhắn" type="checkbox" id="checkbox14"style="display:none">  </td>
-		<td onclick="checkCol(this,2)" id="-215" style="border-top-width:0px"> <input title="Click vào đây để chọn điểm này để gửi tin nhắn" type="checkbox" id="checkbox15"style="display:none">  </td>
-		<td onclick="checkCol(this,2)" id="-216" style="border-top-width:0px"> <input title="Click vào đây để chọn điểm này để gửi tin nhắn" type="checkbox" id="checkbox16"style="display:none">  </td>
+		<th onclick="checkCol(this,2)" id="-201" style="border-top-width:0px" > <input title="Click vào đây để chọn điểm này để gửi tin nhắn" type="checkbox" id="checkbox1" style="display:none">  </th>
+		<th onclick="checkCol(this,2)" id="-202" style="border-top-width:0px"> <input title="Click vào đây để chọn điểm này để gửi tin nhắn" type="checkbox" id="checkbox2" style="display:none" > </th>
+		<th onclick="checkCol(this,2)" id="-203" style="border-top-width:0px"> <input title="Click vào đây để chọn điểm này để gửi tin nhắn" type="checkbox" id="checkbox3"  style="display:none">  </th>
+		<th onclick="checkCol(this,2)" id="-204" style="border-top-width:0px"> <input title="Click vào đây để chọn điểm này để gửi tin nhắn" type="checkbox" id="checkbox4" style="display:none">  </th>
+		<th onclick="checkCol(this,2)" id="-205" style="border-top-width:0px"> <input title="Click vào đây để chọn điểm này để gửi tin nhắn" type="checkbox" id="checkbox5" style="display:none">  </th>
+		<th onclick="checkCol(this,2)" id="-206" style="border-top-width:0px"> <input title="Click vào đây để chọn điểm này để gửi tin nhắn" type="checkbox" id="checkbox6" style="display:none">  </th>
+		<th onclick="checkCol(this,2)" id="-207" style="border-top-width:0px"> <input title="Click vào đây để chọn điểm này để gửi tin nhắn" type="checkbox" id="checkbox7" style="display:none">  </th>
+		<th onclick="checkCol(this,2)" id="-208" style="border-top-width:0px"> <input title="Click vào đây để chọn điểm này để gửi tin nhắn" type="checkbox" id="checkbox8" style="display:none">  </th>
+		<th onclick="checkCol(this,2)" id="-209" style="border-top-width:0px"> <input title="Click vào đây để chọn điểm này để gửi tin nhắn"type="checkbox" id="checkbox9"  style="display:none">  </th>
+		<th onclick="checkCol(this,2)" id="-210" style="border-top-width:0px"> <input title="Click vào đây để chọn điểm này để gửi tin nhắn" type="checkbox" id="checkbox10"style="display:none">  </th>
+		<th onclick="checkCol(this,2)" id="-211" style="border-top-width:0px"> <input title="Click vào đây để chọn điểm này để gửi tin nhắn" type="checkbox" id="checkbox11"style="display:none">  </th>
+		<th onclick="checkCol(this,2)" id="-212" style="border-top-width:0px"> <input title="Click vào đây để chọn điểm này để gửi tin nhắn" type="checkbox" id="checkbox12"style="display:none">  </th>
+		<th onclick="checkCol(this,2)" id="-213" style="border-top-width:0px"> <input title="Click vào đây để chọn điểm này để gửi tin nhắn" type="checkbox" id="checkbox13"style="display:none">  </th>
+		<th onclick="checkCol(this,2)" id="-214" style="border-top-width:0px"> <input title="Click vào đây để chọn điểm này để gửi tin nhắn" type="checkbox" id="checkbox14"style="display:none">  </th>
+		<th onclick="checkCol(this,2)" id="-215" style="border-top-width:0px"> <input title="Click vào đây để chọn điểm này để gửi tin nhắn" type="checkbox" id="checkbox15"style="display:none">  </th>
+		<th onclick="checkCol(this,2)" id="-216" style="border-top-width:0px"> <input title="Click vào đây để chọn điểm này để gửi tin nhắn" type="checkbox" id="checkbox16"style="display:none">  </th>
 		{% ifequal selectedTerm.number 2 %}
-		<td onclick="checkCol(this,2)" id="-217" style="border-top-width:0px"> <input title="Click vào đây để chọn điểm này để gửi tin nhắn" type="checkbox" id="checkbox17"style="display:none">  </td>
-		<td onclick="checkCol(this,2)" id="-218" style="border-top-width:0px"> <input title="Click vào đây để chọn điểm này để gửi tin nhắn" type="checkbox" id="checkbox18"style="display:none">  </td>
-		<td onclick="checkCol(this,2)" id="-219" style="border-top-width:0px"> <input title="Click vào đây để chọn điểm này để gửi tin nhắn" type="checkbox" id="checkbox19"style="display:none">  </td>			
+		<th onclick="checkCol(this,2)" id="-217" style="border-top-width:0px"> <input title="Click vào đây để chọn điểm này để gửi tin nhắn" type="checkbox" id="checkbox17"style="display:none">  </th>
+		<th onclick="checkCol(this,2)" id="-218" style="border-top-width:0px"> <input title="Click vào đây để chọn điểm này để gửi tin nhắn" type="checkbox" id="checkbox18"style="display:none">  </th>
+		<th onclick="checkCol(this,2)" id="-219" style="border-top-width:0px"> <input title="Click vào đây để chọn điểm này để gửi tin nhắn" type="checkbox" id="checkbox19"style="display:none">  </th>			
 		{% else %}
-		<td onclick="checkCol(this,2)" id="-217" style="border-top-width:0px"> <input title="Click vào đây để chọn điểm này để gửi tin nhắn" type="checkbox" id="checkbox17"style="display:none" >  </td>			
+		<th onclick="checkCol(this,2)" id="-217" style="border-top-width:0px"> <input title="Click vào đây để chọn điểm này để gửi tin nhắn" type="checkbox" id="checkbox17"style="display:none" >  </th>			
 		{% endifequal %}
 		
 		</tr>
@@ -135,7 +135,7 @@
 			{{ p.first_name }} 			
 			</td>
 			<td title="Click vào đây để chọn học sinh được gửi tin nhắn" onclick="select(this)" >
-			{{ p.birthday.day}}/{{ p.month}}/{{ p.birthday.year}} 
+			{{ p.birthday|date:"SHORT_DATE_FORMAT" }} 
 			</td>
 
 			
