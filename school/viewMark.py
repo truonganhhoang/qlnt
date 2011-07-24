@@ -511,45 +511,47 @@ def markForASubject(request,subject_id):
 
     return HttpResponse(t.render(c))
           
-def markTable(request,class_id):
+def markTable(request,class_id=-1,subject_id=-1,term_id=-1):
     
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect( reverse('login'))
 
-    selectedClass = Class.objects.get(id__exact = class_id)
-    
+    """
     try:        
         if in_school(request,selectedClass.year_id.school_id) == False:
             return HttpResponseRedirect('/school')
     
     except Exception as e:
         return HttpResponseRedirect(reverse('index'))
-
     if get_position(request) != 4:
        return HttpResponseRedirect('/school')
+
+    """
     
     enableChangeMark=checkChangeMark(class_id)
-    message = None            
-    subjectChoice=-1
-    hsSubject=-1    
-    
-    pupilList=None    
-    markList=[]
-    tbnamList=[]
-    tbhk1List=[]
-    tbhk1ListObjects=[]
-    tbnamListObjects=[]
-    list=None
-    idList=[]
-    move=None
-        
-    selectedClass=Class.objects.get(id=class_id)    
-    yearChoice=selectedClass.year_id.id
     enableChangeMark=True
-    enableSendSMS   =True
+    enableSendSMS   =True    
+    message = None            
+    list=None
+    move=None
+    hsSubject=-1
+    subjectList=None
+    classChoice   = class_id    
+    subjectChoice = subject_id
+    termChoice    = term_id
     
-    #selectedClass.year_id.school_id.status=2
+    if termChoice==-1:  selectedTerm=get_current_term(request)
+    else             :  selectedTerm=Term.objects.get(id=termChoice) 
+            
+    termChoice  =selectedTerm.id    
+    yearChoice=selectedTerm.year_id.id
+    
+    
+    termList= Term.objects.filter(year_id=yearChoice,number__lt=3).order_by('number')    
+    classList = Class.objects.filter(year_id=yearChoice)
+    
+    if (subjectChoice==-1): termList=None 
     """    
     if selectedClass.year_id.school_id.status==1:
         termList=Term.objects.filter(year_id=yearChoice,number=1).order_by('number')
@@ -559,32 +561,38 @@ def markTable(request,class_id):
     selectedTerm=termList[termList.__len__()-1]
     termChoice=selectedTerm.id
     """
-    selectedTerm=get_current_term(request)    
-    termChoice  =selectedTerm.id
-    
-    termList= Term.objects.filter(year_id=yearChoice,number__lt=3).order_by('number')
+    if classChoice !=-1: subjectList=Subject.objects.filter(class_id=classChoice) 
     
     
     
-    subjectList=Subject.objects.filter(class_id=class_id)
 
     if request.method == 'POST':  
         if request.POST.get('move'):
-             move=request.POST['move']          
+             move=request.POST['move']
+        
         termChoice =int(request.POST['term'])
-        subjectChoice=int(request.POST['subject'])                
         selectedTerm=Term.objects.get(id=termChoice)
-        hsSubject=int(Subject.objects.get(id=subjectChoice).hs)    
-
-        list=getMark(class_id,subjectChoice,selectedTerm)
-    
-        if (request.POST['submitChoice']=="luulai") & (hsSubject==0):
-            saveMarkHasComment(request,selectedTerm,markList,idList,tbhk1ListObjects,tbnamListObjects)
+        
+        classChoice=int(request.POST['class1'])
+                            
+        subjectList=Subject.objects.filter(class_id=classChoice)
                 
-        if (request.POST['submitChoice']=="luulai") & (hsSubject>0):
-            saveMarkNoComment(request,selectedTerm,markList,idList,tbhk1ListObjects,tbnamListObjects)
-    
+        subjectChoice=int(request.POST['subject'])
+        
+        print classChoice, subjectChoice, selectedTerm
+        if subjectChoice !=-1:                
+            hsSubject=int(Subject.objects.get(id=subjectChoice).hs)    
+            list=getMark(classChoice,subjectChoice,selectedTerm)
+        print list
+        """
+        if (request.POST['submitChoice']=="luulai") & (hsSubject==0):
+            saveMarkHasComment(request,selectedTerm,markList,idList,tbhk1ListObjects,tbnamListObjects)    
+        """
+    elif subjectChoice!=-1:
+        hsSubject=int(Subject.objects.get(id=subjectChoice).hs)    
+        list=getMark(classChoice,subjectChoice,selectedTerm)
             
+    print classChoice        
     lengthList=0            
     if list!=None:        
         lengthList=list.__len__()  
@@ -595,12 +603,13 @@ def markTable(request,class_id):
                                 'message' : message,
                                 'enableChangeMark':enableChangeMark,
                                 'enableSendSMS':enableChangeMark,
-                                'selectedClass':selectedClass,
 
-                                'termList':termList,
+                                'classList':classList,
                                 'subjectList':subjectList,
+                                'termList':termList,
                                 'list':list,
-                                  
+                                
+                                'classChoice':classChoice,
                                 'subjectChoice':subjectChoice,
                                 'termChoice':termChoice,                              
 
