@@ -1508,10 +1508,10 @@ def time_select(request, class_id):
     return HttpResponse(t.render(c))
 
 def tnc_select(request):
-    year_id = get_current_year(request).id
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
+    year_id = get_current_year(request).id
     pos = get_position(request)
     if (pos < 2):
         return HttpResponseRedirect('/')
@@ -1533,6 +1533,9 @@ def tnc_select(request):
     return HttpResponse(t.render(c))
     
 def ds_nghi(request, class_id, day, month, year):
+    user = request.user
+    if not user.is_authenticated():
+        return HttpResponseRedirect(reverse('login'))
     pos = get_position(request)
     cl  = Class.objects.get(id=class_id)
     pupilList = Pupil.objects.filter(class_id=class_id).order_by('first_name', 'last_name')
