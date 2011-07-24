@@ -613,12 +613,12 @@ dd {
 #sitemap ul li {
     height: 30px;
     width: 170px;
-    padding: 5px 5px 10px;
+    padding: 5px 5px 5px;
 }
 
 #sitemap ul li a {
     display:block;
-    padding: 5px 5px 10px;
+    padding: 5px 5px 5px;
     text-decoration: none;
     width: 170px;
 }

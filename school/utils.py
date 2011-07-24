@@ -9,6 +9,9 @@ from django.contrib.auth.models import get_hexdigest
 from django.core.exceptions import *
 from django.db import transaction
 
+from django.conf import settings
+TEMP_FILE_LOCATION = settings.TEMP_FILE_LOCATION
+
 
 # date-month-year => time object
 def to_date(value):

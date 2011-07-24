@@ -11,7 +11,6 @@ from sms.utils import *
 from school.forms import *
 from django.conf import settings
 TEMP_FILE_LOCATION = settings.TEMP_FILE_LOCATION
-EXPORTED_FILE_LOCATION = settings.EXPORTED_FILE_LOCATION
 
 
 import os
