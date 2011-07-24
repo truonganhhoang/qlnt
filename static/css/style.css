@@ -55,6 +55,15 @@ div.notify{
    
 }
 
+div.notify-widget-paneB{
+   text-align: right;
+   position: fixed;
+   display: block;
+   top: 15px;
+   left: 0px;
+   width: 100%;
+}
+
 
 ul {
     list-style-type: none;
@@ -67,6 +76,7 @@ table.styleC{
     border: 1px solid #999999;
     border-collapse: collapse;
     margin-bottom: 10px;
+	
 }
 
 
@@ -93,8 +103,15 @@ table.styleB th {
     border: 1px solid #a9c6c9;
 }
 
+table.styleB th.selected{
+    background-color: #f3f48d;
+}
+
 table.styleB tr {
     background-color: #d4e3e5;
+	padding-top:25px;
+	padding-bottom:25px;
+	
     cursor: pointer;
 }
 
@@ -142,6 +159,17 @@ input.selected {
 	margin-bottom:0px;
 	margin-left:0px;
 	background-color: #f3f48d;	
+}
+
+input.sent {
+	cursor: pointer;
+	border:0px;
+	width: 21px;
+	height: 20px;
+	margin-top:0px;
+	margin-bottom:0px;
+	margin-left:0px;
+	background-color: #B2FFDB;
 }
 
 
