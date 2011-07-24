@@ -162,8 +162,9 @@
 {% endif %}
 <br>
 {% if pos > 1%}
-<button id="selectAll">Đảo chọn</button>
-<button id="sendSelected">Gửi SMS cho những học sinh đã chọn</button>
+    <button id="selectAll">Đảo chọn</button>
+    <button id="sendSelected">Gửi SMS cho những học sinh đã chọn</button>
+    <a href="{%url school.views.school_index  %}diemdanh/{{class_id}}/{{day}}/{{month}}/{{year}}"> <input type="button" value = "Quay lại" > </input> </a>
 {% endif %}
 <table class="styleA" >
 
