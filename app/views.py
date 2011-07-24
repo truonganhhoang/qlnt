@@ -1,4 +1,4 @@
-﻿# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 import os.path
 import urlparse
 import smtplib
@@ -163,8 +163,8 @@ def login(request, template_name='app/login.html',
     return render_to_response(template_name, context,
                               context_instance=django.template.RequestContext(request))
 
-GMAIL_LOGIN = '' 
-GMAIL_PASSWORD = ''     
+GMAIL_LOGIN = 'qlnt.feedback@gmail.com' 
+GMAIL_PASSWORD = 'blah blah'     
 def send_email(subject, message, from_addr=GMAIL_LOGIN, to_addr=GMAIL_LOGIN): 
     msg = MIMEText(message) 
     msg['Subject'] = subject 
