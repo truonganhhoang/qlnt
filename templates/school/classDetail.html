@@ -2,12 +2,36 @@
 {% block content %}
   <script>
     $(document).ready(function(){
-      $("#import").fancybox({
+        $.ajaxSetup({
+            beforeSend: function(xhr, settings) {
+                function getCookie(name) {
+                    var cookieValue = null;
+                    if (document.cookie && document.cookie != '') {
+                        var cookies = document.cookie.split(';');
+                        for (var i = 0; i < cookies.length; i++) {
+                            var cookie = jQuery.trim(cookies[i]);
+                            // Does this cookie string begin with the name we want?
+                            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                            }
+                        }
+                    }   
+                    return cookieValue;
+                }
+
+                if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+                    // Only send the token to relative URLs i.e. locally.
+                    xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+                }
+            }
+        });
+        $("#import").fancybox({
             'scrolling'		: 'no',
 	        'titleShow'		: false,
 	        'hideOnOverlayClick' : false,
 	        'showCloseButton': false
-         });
+        });
       
       $("#close_fancybox").click(function(){
         $.fancybox.close();
@@ -15,23 +39,23 @@
         return false;      
       }); 
         
-      var done_upload = function(id, fileName, responseJSON){
+        var done_upload = function(id, fileName, responseJSON){
                
-      };   
-      function IsNumeric(input){
-         return (input - 0) == input && input.length > 0;
-      };
+        };   
+        function IsNumeric(input){
+            return (input - 0) == input && input.length > 0;
+        };
       
-      var id = window.location.pathname.split('/');
-      var i = 0;
-      for ( i=0; i < id.length; i++){
-         if (IsNumeric(id[i])){
-            id = id[i];
-            break;         
-         }      
-      };    
+        var id = window.location.pathname.split('/');
+        var i = 0;
+        for ( i=0; i < id.length; i++){
+            if (IsNumeric(id[i])){
+                id = id[i];
+                break;         
+            }      
+        };    
       
-      var uploader = new qq.FileUploader({
+        var uploader = new qq.FileUploader({
             action: '/school/start_year/import/student/' + id,
             element: $('#upload_file')[0],
             multiple: false,
@@ -41,7 +65,66 @@
                       'csrf_name': 'csrfmiddlewaretoken',
                        'csrf_xname': 'X-CSRFToken',
                     },
-       }) ;
+        }) ;
+        var select = function() {
+            if (!$(this).hasClass('thread')&&!$(this).hasClass('form')&&!$(this).hasClass('function')){
+                var id = $(this).attr('class').split(' ')[0];
+                var checkboxid = '#checkbox_' + id;
+                var checkboxall = '#checkbox_all'
+                if ($(this).hasClass('selected')) {
+                    $(this).removeClass('selected');
+                    $(checkboxid).prop("checked", false);
+                    var n = $("input:checked").length;
+                    if ( n == 1) $(checkboxall).prop("checked", false);;
+                } else {
+                    $(this).addClass('selected');
+                    $(checkboxid).prop("checked", true);
+                    $(checkboxall).prop("checked", true);
+                };
+            }
+        }
+        var delSelected = function(){
+            var answer = confirm('Bạn có muốn xóa những học sinh đã chọn');
+            if (!answer) return false;
+            var data = '';
+            $(".selected").each(function(){
+                data = data + $(this).attr('class').split(' ')[0] + '-' ;
+            });
+            var arg = { type:"POST",
+                url:"",
+                data: {data:data},
+                datatype:"json",
+                success:location.reload(true)
+            };
+            $.ajax(arg);
+        }
+        $("#delSelected").click(delSelected);
+        $("tr").each(function() {
+            $(this).click(select);
+        });
+        $("#checkbox_all").click( function(){
+            var checkboxall = '#checkbox_all'
+            if($(checkboxall).is(':checked')){
+                $("tr").each( function(){
+                    var id = $(this).attr('class').split(' ')[0];
+                    var checkboxid = '#checkbox_' + id
+                    if (!$(this).hasClass('selected'))
+                        $(this).trigger('click');
+                });
+            }
+            else {
+                $("tr").each( function(){
+                    var id = $(this).attr('class').split(' ')[0];
+                    var checkboxid = '#checkbox_' + id
+                    if ($(this).hasClass('selected'))
+                        $(this).trigger('click');
+                });
+            }
+        });      
+        $("#selectAll").click(function() {
+            $("tr").each(select);
+            return false;
+        });   
          
     });      
     
@@ -56,7 +139,6 @@
     function confirmDelete() {
       return confirm("Bạn có chắc chắn xóa toàn bộ thông tin của học sinh không?");
     }
-    
     
   </script>
   <form action="" name = "info" method = "post">{% csrf_token %} 
@@ -73,7 +155,7 @@
 </form>  
 
   <table border=0 align="left" width="80%">
-    <tr>
+    <tr class ="function">
       {% if pos > 0 %}
         <td width="15%" align="center"><a title="Cập nhật điểm danh theo lớp"
                                           href="{%url school.views.school_index  %}diemdanh/{{class.id}}">Điểm danh</a>
@@ -122,9 +204,14 @@
 {% if message != None %}      
 <a align="left">{{ message }}</a>
 {% endif %}
+
+<button id="delSelected" align ="left">Xóa những học sinh đã chọn</button>
     
   <table class="styleA" >
-    <tr>
+    <tr class ="thread">
+      <th align="center"> 
+              <input type="checkbox" id="checkbox_all"/>
+      </th>
       <th align="center" > STT</th>
       <th align="center" ><a
               href="{%url school.views.school_index  %}viewClassDetail/{{class.id}}/1/{{next_status}}/1">Họ tên </a>
@@ -148,7 +235,11 @@
     </tr>
 
     {% for ss in studentList.object_list %}
-      <tr>
+      <tr class="{{ss.id}}">
+      
+        <td align="center"> 
+              <input type="checkbox" id="checkbox_{{ss.id}}"/>
+        </td>
         <td align="center" > {{ forloop.counter|add:base_order }} </td>
         {% if pos > 1 or student_id == ss.id %}
           <td align="center" ><a title="Xem toàn bộ thông tin chi tiết"
@@ -170,9 +261,12 @@
     {% endfor %}
 
     {% if pos > 3 %}
+    
       <form action="/school/viewClassDetail/{{class.id}}/{{sort_type}}/{{sort_status}}/{{studentList.number}}"
             method="post">{% csrf_token %}
-        <tr>
+        <tr class = "form">
+        
+        <td align="center"> 
           {{ form.non_field_errors }}
           <td align="center" >
           <td align="center" >
