@@ -5,7 +5,7 @@ from django import forms
 from django.core.validators import RegexValidator
 import re, xlrd, os
 
-TEMP_FILE_LOCATION = os.path.join(os.path.dirname(__file__), 'uploaded')
+#TEMP_FILE_LOCATION = os.path.join(os.path.dirname(__file__), 'uploaded')
 def save_file(file):
     saved_file = open(os.path.join(TEMP_FILE_LOCATION, 'sms_input.xls'), 'wb+')
     for chunk in file.chunks():

@@ -166,7 +166,6 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 )
 
 INSTALLED_APPS = (
-#    'grappelli',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -239,7 +238,8 @@ COVERAGE_REPORT_HTML_OUTPUT_DIR = (
 )
 
 
-TEMP_FILE_LOCATION = os.path.join(os.path.dirname(__file__), 'uploaded')
+TEMP_FILE_LOCATION = os.path.join(SITE_ROOT, 'temp/uploaded')
+EXPORTED_FILE_LOCATION = os.path.join(SITE_ROOT, 'temp/exported')
 
 #Email
 EMAIL_HOST = 'smtp.gmail.com'

@@ -1523,7 +1523,7 @@ def tnc_select(request):
             url = '/school/diemdanh/' + str(class_id) + '/' + str(day) + '/' + str(month) + '/' + str(year)
             return HttpResponseRedirect(url)
         else:
-            message = 'Hãy sửa những lỗi sai dưới đây'
+            message = 'Chọn lớp và ngày chưa đúng.'
     t = loader.get_template(os.path.join('school', 'time_class_select.html'))
     c = RequestContext(request, {'form':form, 'message':message})
     return HttpResponse(t.render(c))

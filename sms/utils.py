@@ -9,7 +9,7 @@ import urllib2
 import xlrd
 import xlwt
 
-TEMP_FILE_LOCATION = os.path.join(os.path.dirname(__file__), 'uploaded')
+#TEMP_FILE_LOCATION = os.path.join(os.path.dirname(__file__), 'uploaded')
 EXPORTED_FILE_LOCATION = os.path.join(os.path.dirname(__file__), 'exported')
 
 def sendSMS(phone,content,user):

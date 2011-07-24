@@ -14,8 +14,7 @@ import urllib2
 import xlrd
 import xlwt
 
-TEMP_FILE_LOCATION = os.path.join(os.path.dirname(__file__), 'uploaded')
-EXPORTED_FILE_LOCATION = os.path.join(os.path.dirname(__file__), 'exported')
+#TEMP_FILE_LOCATION = os.path.join(os.path.dirname(__file__), 'uploaded')
 
 
 def manual_sms(request):
