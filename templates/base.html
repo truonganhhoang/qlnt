@@ -11,10 +11,12 @@
     <link href="/static/css/style.css" rel="stylesheet" type="text/css"/>
     <link rel="stylesheet" href="/static/fancybox/jquery.fancybox-1.3.4.css" type="text/css" media="screen"/>
     <link rel="stylesheet" href="/static/css/fileuploader.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="/static/css/tipTip.css" type="text/css" media="screen"/>
   {% endblock %}
 
   <script type="text/javascript" src="/static/js/jquery.js"></script>
   <script type="text/javascript" src="/static/js/fileuploader.js"></script>
+  <script type="text/javascript" src="/static/js/jquery.tipTip.minified.js"></script>
   <script type="text/javascript" src="/static/fancybox/jquery.fancybox-1.3.4.pack.js"></script>
   <script type="text/javascript" src="/static/fancybox/jquery.easing-1.3.pack.js"></script>
   <script type="text/javascript" src="/static/fancybox/jquery.mousewheel-3.0.4.pack.js"></script>
@@ -80,7 +82,9 @@
             <li><a href="{%url school.views.classes %}" title="Quản lý lớp học">Lớp học</a></li>
 {#            <li><a href="{%url school.views.teachers %}" title="Quản lý giáo viên">Giáo viên</a></li>#}
             <li><a href="{%url school.viewCount.countInSchool %}"
-                   title="Xem thông tin thống kê, báo cáo tổng hợp">Báo cáo</a></li>
+                   title="Chức năng đang trong quá trình hoàn thiện."                   
+                   title="Xem thông tin thống kê, báo cáo tổng hợp" 
+                   class="tiptipclick" >Báo cáo</a></li>
             {% if user.userprofile.position == 'HIEU_TRUONG'  or user.userprofile.position == 'HIEU_PHO' %}
                 {# Khi chưa khởi  tạo năm học #}
                 {% if user.userprofile.organization.status == 0  or user.userprofile.organization.status == 3 %}
@@ -174,7 +178,14 @@ $("#notify").ajaxError( function(event, request, settings){
          $(this).delay(1000).fadeOut('fast');      
                
       });      
-            
+ 
+$('*[class~="tiptipclick"]').tipTip({
+    activation: "click",
+    delay: 100
+ });           
+$('*[class~="tiptiphover"]').tipTip({
+    activation: "hover"
+});
       
 </script>
 </body>
