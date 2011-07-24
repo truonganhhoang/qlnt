@@ -95,7 +95,7 @@
 
       {% if pos > 3 %}
         <td width="15%" align="center"><a title="Nhập hoặc chỉnh sửa điểm của tất cả các môn trong lớp"
-                                          href="{%url school.views.school_index  %}markTable/{{class.id}}">Quản lý
+                                          href="{%url school.views.school_index  %}markTable/{{currentTerm.id}}/{{class.id}}">Quản lý
           điểm</a></td>
           {% ifequal class.year_id.school_id.status 1 %}		  
 			<td width="20%" align="center"><a title="Tự động tính trung bình học lực của cả lớp"

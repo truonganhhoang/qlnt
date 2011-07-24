@@ -975,6 +975,8 @@ def viewClassDetail(request, class_id, sort_type=1, sort_status=0, page=1):
     id = 0
     if (tmp):
         id = tmp.id
+    
+    currentTerm= get_current_term(request)    
     t = loader.get_template(os.path.join('school', 'classDetail.html'))
     c = RequestContext(request, {   'form': form,
                                     'csrf_token': get_token(request), 
@@ -988,7 +990,9 @@ def viewClassDetail(request, class_id, sort_type=1, sort_status=0, page=1):
                                     'base_order': (int(page)-1) * 20,
                                     'pos': pos,
                                     'gvcn':cn,
-                                    'student_id':id})
+                                    'student_id':id,
+                                    'currentTerm':currentTerm,                                    
+                                    })
     return HttpResponse(t.render(c))
 
 #sort_type = '1': fullname, '2': birthday, '3':'sex'
