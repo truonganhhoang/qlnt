@@ -84,7 +84,7 @@
             <li><a href="{%url school.viewCount.countInSchool %}"
                    title="Chức năng đang trong quá trình hoàn thiện."                   
                    title="Xem thông tin thống kê, báo cáo tổng hợp" 
-                   class="tiptipclick" >Báo cáo</a></li>
+                   class="tiptiphover tiptipclick" >Báo cáo</a></li>
             {% if user.userprofile.position == 'HIEU_TRUONG'  or user.userprofile.position == 'HIEU_PHO' %}
                 {# Khi chưa khởi  tạo năm học #}
                 {% if user.userprofile.organization.status == 0  or user.userprofile.organization.status == 3 %}

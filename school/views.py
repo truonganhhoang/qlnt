@@ -58,7 +58,6 @@ def is_safe(school):
 def setup(request):
     user = request.user
     message = None
-    print "tag 0"
     try:
         school = get_school(request)
     except Exception as e:
@@ -68,14 +67,10 @@ def setup(request):
         return HttpResponseRedirect(reverse('school_index'))
     
     
-    print "tag 1"
     if request.is_ajax():
         if request.method == 'POST':
-            print "sent by ajax"
             if 'update_school_detail' in request.POST:
-                print "update_school"
                 school_form = SchoolForm(request.POST, request = request)
-                print request.POST
                 if school_form.is_valid():
                     school_form.save_to_model()
                     message = u'Bạn vừa cập nhật thông tin trường học thành công.\
@@ -83,17 +78,13 @@ def setup(request):
                 
                 data = simplejson.dumps( {'message': message, 'status':'done'})
             elif 'update_class_name' in request.POST:
-                print "update_class_name"
                 message, labels, success = phase_class_label(request, school)
                 data = simplejson.dumps( {'message': message, 'status': success})
             elif 'start_year' in request.POST:
-                print 'start_year'
                 if is_safe(school): 
-                    print 'is_safe'
                     data = simplejson.dumps({'status':'done'})
                 else:
                     data = simplejson.dumps( {'message': message,'status': 'failed'} )
-            print "data", data
             return HttpResponse(data, mimetype = 'json')
         else:
             raise Exception('StrangeRequestMethod')
@@ -129,7 +120,6 @@ def info(request):
         return HttpResponseRedirect( reverse('index'))
     if request.method == 'POST':
         form = SchoolForm(request.POST, request = request)
-        print request.POST
         if form.is_valid():
             form.save_to_model()
             message = u'Bạn vừa cập nhật thông tin trường học thành công.'
@@ -160,9 +150,7 @@ def phase_class_label(request, school):
     labels = 'Nhanh: ' + labels
     success = None
     if request.method == 'POST':
-        print request.POST
         labels = request.POST['labels']
-        print labels
         if u'Nhanh:' in labels or u'nhanh:' in labels:
             try:
                 labels = labels.split(':')[1]
@@ -209,7 +197,6 @@ def phase_class_label(request, school):
                     for label in list_labels:
                         label = label.strip()
                         if label:
-                            print label, '-->', label.split(' ')
                             try:
                                 label = label.split(' ')[1]
                                 find = school.danhsachloailop_set.filter( loai__exact = label )
@@ -219,7 +206,6 @@ def phase_class_label(request, school):
                                     lb.school_id = school
                                     lb.save()
                             except Exception as e:
-                                print e
                                 message = u'Các tên lớp phải được cung cấp theo dạng [khối][dấu cách][tên lớp]. Ví dụ: 10 A'
                                 success = False
                                 return message, labels, success     
@@ -268,8 +254,6 @@ def b1(request):
         request.session['message'] = message
         transaction.commit()
         return HttpResponseRedirect( reverse('class_label'))
-    print school
-    print school.school_level
     if school.school_level == u'1':
         lower_bound = 1
         upper_bound = 5
@@ -283,7 +267,6 @@ def b1(request):
         upper_bound = 12
         ds_mon_hoc = CAP3_DS_MON
     
-    print lower_bound, upper_bound    
     if school.status == 0:
         for khoi in range(lower_bound, upper_bound+1):
             block = Block()
@@ -331,7 +314,6 @@ def b1(request):
             else:
                 raise Exception(u'Khối' + str(khoi) + u'chưa đc tạo')
                 
-            print block
             loai_lop = school.danhsachloailop_set.all()
             for class_name in loai_lop:
                 _class = Class()
@@ -366,7 +348,6 @@ def b1(request):
                             if (student.tbnam_set.get(year_id=last_year).len_lop):
                                 new_block = year.block_set.get(number=block.number + 1)
                                 new_class_name = str(new_block.number) + ' ' + student.class_id.name.split()[1]
-                                print new_class_name
                                 new_class = new_block.class_set.get(name=new_class_name)
                                 student.class_id = new_class
                                 student.save()
@@ -417,10 +398,8 @@ def classify(request):
             message = u'Không còn học sinh nào cần được phân lớp.'
             nothing = True    
     else:
-        print 1
         form = ClassifyForm( request.POST, student_list = student_list, class_list = _class_list)
         if form.is_valid():
-            print 11
             count =0
             for student in student_list:
                 _class = form.cleaned_data[str(student.id)]
@@ -493,18 +472,12 @@ def process_file(file_name, task):
             elif (value == u'Nguyện vọng'):
                 c_nguyen_vong = c
         
-        print "ten ", c_ten
-        print "ngay sinh ", c_ngay_sinh
-        print "tong diem ", c_tong_diem
-        print "nv ", c_nguyen_vong
         for r in range(start_row + 1, sheet.nrows):
             name = sheet.cell_value(r, c_ten)
-            print "->", sheet.cell(r, c_ngay_sinh).value
             birthday = sheet.cell(r, c_ngay_sinh).value
             nv = sheet.cell_value( r, c_nguyen_vong)
             tong_diem = sheet.cell_value( r, c_tong_diem)
             if ( name == "" or birthday =="" ):
-                print "co 1 cell empty or blank"
                 continue
             if nv.strip() == "": nv = "CB"
             if str(tong_diem).strip()=="": tong_diem = "0"
@@ -588,7 +561,6 @@ def student_import( request, class_id ):
     success = save_upload( upload, filename, is_raw )
     message = None
     result = process_file( filename, "Nhap danh sach trung tuyen")
-    print result
     if 'error' in result:
         success = False
         message = result['error']
@@ -611,10 +583,8 @@ def student_import( request, class_id ):
                             term=term, school=school)
             '''
             a = datetime.datetime.now()
-            print 'for in:',a - c
             
         except Exception as e:
-            print e
             message = u'Lỗi trong quá trình lưu cơ sở dữ liệu'
     # let Ajax Upload know whether we saved it or not
     data = { 'success': success, 'message': message }
@@ -640,23 +610,19 @@ def nhap_danh_sach_trung_tuyen(request):
     except Exception as e:
         print e
         _class_list = None
-    print _class_list
     if request.method == 'POST':
         form = UploadImportFileForm(request.POST, request.FILES, class_list=_class_list)
         if form.is_valid():
             save_file_name = save_file(form.cleaned_data['import_file'], request.session)
-            print save_file_name
             chosen_class = form.cleaned_data['the_class']
             if chosen_class:
                 request.session['save_file_name'] = save_file_name
                 request.session['chosen_class'] = chosen_class
                 student_list = process_file(file_name=save_file_name, \
                                             task="Nhap danh sach trung tuyen")
-                print student_list
                 if 'error' in student_list:
                     message = student_list['error']   
                 else:
-                    #print student_list
                     request.session['student_list'] = student_list
                     return HttpResponseRedirect(reverse('imported_list'))
             # end if error in save_file_name
@@ -709,12 +675,6 @@ def manual_adding(request):
                     data = {'full_name': student['ten'], 'birthday':student['ngay_sinh'],
                         'ban':student['nguyen_vong'], }
                     
-                    print "data", data
-                    print "_class", _class
-                    print "start_year", year
-                    print "year", this_year
-                    print "term", term
-                    print "school", school
                     add_student(student=data, _class=chosen_class,
                                 start_year=year, year=this_year,
                                 term=term, school=school)
@@ -724,17 +684,14 @@ def manual_adding(request):
                 student_list = []
                 request.session['student_list'] = student_list
             elif request.POST['clickedButton'] == 'add':
-                print "button add has been clicked"
                 try:
                     diem = float(request.POST['diem_hs_trung_tuyen'])
                 except Exception as e:
                     diem = 0
-                print "diem: ", diem
                 if not request.POST['name_hs_trung_tuyen'].strip():
                     name_error = True    
                 try:
                     ns = to_date(request.POST['ns_hs_trung_tuyen'])
-                    print "ngay sinh: ", ns
                     if request.POST['name_hs_trung_tuyen'].strip():
                         element = { 'ten': request.POST['name_hs_trung_tuyen'],
                                 'ngay_sinh': ns,
@@ -752,12 +709,7 @@ def manual_adding(request):
         student_list = []
         request.session['student_list'] = student_list
         form = ManualAddingForm(class_list=_class_list)
-        print 'tag 1'
-        
-    print 'tag 2'
     context = RequestContext(request, {'student_list': student_list})    
-    print name_error, ns_error, ns_entered, form
-    print 'tag 3'
     return render_to_response(NHAP_BANG_TAY, {'form':form, 
                                               'name_error':name_error, 
                                               'ns_error':ns_error, 
@@ -783,13 +735,10 @@ def danh_sach_trung_tuyen(request):
         chosen_class = school.year_set.latest('time').class_set.get(id=chosen_class)
     else:
         chosen_class = None
-    print "chosen_class: ", chosen_class
     message = None
    
     if request.method == 'POST':
-        print ">>>", request.POST['clickedButton']
         if request.POST['clickedButton'] == 'save':
-            print "button save has been clicked "
             year = school.startyear_set.get(time=datetime.date.today().year)
             today = datetime.date.today()   
             for student in student_list:
@@ -805,7 +754,6 @@ def danh_sach_trung_tuyen(request):
             request.session['student_list'] = student_list
             return HttpResponseRedirect('/school/viewClassDetail/'+ str(chosen_class.id))
         elif request.POST['clickedButton'] == 'add':
-            print "button add has been clicked"
             
             diem = float(request.POST['diem_hs_trung_tuyen'])
             ns = to_date(request.POST['ns_hs_trung_tuyen'])
@@ -838,7 +786,6 @@ def classes(request, sort_type=1, sort_status=0, page=1):
     message = None
     school_id = get_school(request).id
     form = ClassForm(school_id)
-    print get_current_year(request)
     cyear = get_current_year(request)
     if int(sort_type) == 1:
         if int(sort_status) == 0:
@@ -949,7 +896,6 @@ def viewClassDetail(request, class_id, sort_type=1, sort_status=0, page=1):
         return HttpResponseRedirect('/school/classes')
     cn=gvcn(request, class_id)
     inCl=inClass(request, class_id)
-    print inCl
     if in_school(request, cl.block_id.school_id) == False:
         return HttpResponseRedirect('/')   
     message = None
@@ -966,7 +912,6 @@ def viewClassDetail(request, class_id, sort_type=1, sort_status=0, page=1):
         else:
             last_name = ''
             first_name = ''
-        print request.POST['birthday_year']
         if (int(request.POST['birthday_year']) and int(request.POST['birthday_month']) and int(request.POST['birthday_day'])):
             try :
                 birthday = date(int(request.POST['birthday_year']), int(request.POST['birthday_month']), int(request.POST['birthday_day']))
@@ -1289,7 +1234,6 @@ def students(request, sort_type=1, sort_status=1, page=1):
         else:
             last_name = None
             first_name = None
-        print request.POST['birthday_year']
         if (int(request.POST['birthday_year']) and int(request.POST['birthday_month']) and int(request.POST['birthday_day'])):
             birthday = date(int(request.POST['birthday_year']), int(request.POST['birthday_month']), int(request.POST['birthday_day']))
         else:
@@ -1429,7 +1373,6 @@ def diem_danh(request, class_id, day, month, year):
                     return HttpResponseRedirect(url)
         except MultiValueDictKeyError:
             pass
-    print "is_ajax:", request.is_ajax()
     if request.is_ajax():
         if request.method == 'POST':
             request_type = request.POST[u'request_type']
@@ -1615,14 +1558,10 @@ def ds_nghi(request, class_id, day, month, year):
                         loai = u'nghỉ học có phép'
                     else:
                         loai = u'nghỉ học không phép'
-                    print loai
                     name = ' '.join([student.last_name,student.first_name])
                     time = '/'.join([str(day),str(month),str(year)])
-                    print 'tag1'
                     sms_message = u'Em '+name+u' đã ' + loai + u'.\n Ngày: ' + time + '.'
-                    print 'tag2', phone_number , 'tag3'
                     message = message + u'---> ' + str(phone_number) + u': ' + sms_message + u'<br>'
-                    print phone_number
                     if phone_number:
                         sendSMS(phone_number, sms_message, user)
             data = simplejson.dumps({'message':message})
@@ -2204,7 +2143,6 @@ def viewSubjectDetail (request, subject_id):
     message = None
     if request.method == 'POST':
         data = request.POST
-        print data
         form = SubjectForm(class_id.block_id.school_id.id, data, instance = sub)
         if form.is_valid():
             primary = request.POST.get('primary', False)
