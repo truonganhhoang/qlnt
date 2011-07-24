@@ -108,10 +108,7 @@ table.styleB th.selected{
 }
 
 table.styleB tr {
-    background-color: #d4e3e5;
-	padding-top:25px;
-	padding-bottom:25px;
-	
+    background-color: #d4e3e5;	
     cursor: pointer;
 }
 
