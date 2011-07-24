@@ -56,7 +56,7 @@ div.notify{
 }
 
 div.notify-widget-paneB{
-   text-align: right;
+   text-align: center;
    position: fixed;
    display: block;
    top: 15px;
