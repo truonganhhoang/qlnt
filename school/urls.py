@@ -15,9 +15,9 @@ urlpatterns = patterns('',
     url(r'createAllInfoInTerm/(?P<term_id>\w+)','school.viewMark.createAllInfoInTerm'),
 
     url(r'markTable$','school.viewMark.markTable'),
-    url(r'markTable/(?P<class_id>\w+)$','school.viewMark.markTable'),
-    url(r'markTable/(?P<class_id>\w+)/(?P<subject_id>\w+)$','school.viewMark.markTable'),
-    url(r'markTable/(?P<class_id>\w+)/(?P<subject_id>\w+)/(?P<term_id>\w+)$','school.viewMark.markTable'),
+    url(r'markTable/(?P<term_id>\w+)$','school.viewMark.markTable'),
+    url(r'markTable/(?P<term_id>\w+)/(?P<class_id>\w+)$','school.viewMark.markTable'),
+    url(r'markTable/(?P<term_id>\w+)/(?P<class_id>\w+)/(?P<subject_id>\w+)$','school.viewMark.markTable'),
     
     url(r'markForAStudent/(?P<class_id>\w+)/(?P<student_id>\w+)$','school.viewMark.markForAStudent'),
     url(r'markForASubject/(?P<subject_id>\w+)','school.viewMark.markForASubject'),

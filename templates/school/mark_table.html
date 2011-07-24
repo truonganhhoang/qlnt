@@ -5,7 +5,7 @@
 	{
 		if (document.info.subject.value != -1) 
 			//document.info.submit();
-			window.location.href="/school/markTable/"+{{classChoice}}+"/"+document.info.subject.value;
+			window.location.href="/school/markTable/"+{{termChoice}}+"/"+{{classChoice}}+"/"+document.info.subject.value;
 	}
 	function submitClass()
 	{
@@ -13,12 +13,12 @@
 		{	
 			document.info.subject.value =-1;
 			//document.info.submit();
-			window.location.href="/school/markTable/"+document.info.class1.value;
+			window.location.href="/school/markTable/"+{{termChoice}}+"/"+document.info.class1.value;
 		}	
 	}
 	function submitTerm()
 	{
-		window.location.href="/school/markTable/"+{{classChoice}}+"/"+{{subjectChoice}}+"/"+document.info.term.value;
+		window.location.href="/school/markTable/"+document.info.term.value;
 	}
 	
 	
@@ -31,7 +31,15 @@
     onsubmit="return false">{% csrf_token %}
 	<input type="hidden" name="submitChoice" value="">
 		
-    <h2>Bảng điểm lớp 
+    <h2>Bảng điểm 
+	
+	   học kỳ
+		<select name="term" onchange="submitTerm();">
+        {% for term in termList %}
+			<option value={{ term.id }} selected> {{ term }} </option>
+        {% endfor %}
+		</select>
+		lớp 
 		<select name="class1" onchange="submitClass()">
 				<option value="-1" selected> Chọn lớp </option>
 			{% for class in classList %}
@@ -45,12 +53,6 @@
 			{% for subject in subjectList %}
 				<option value={{ subject.id }}> {{ subject.name }} </option>
 			{% endfor %}
-		</select>
-	   học kỳ
-		<select name="term" onchange="submitTerm();">
-        {% for term in termList %}
-			<option value={{ term.id }} selected> {{ term }} </option>
-        {% endfor %}
 		</select>
     </h2>
 	

@@ -511,7 +511,7 @@ def markForASubject(request,subject_id):
 
     return HttpResponse(t.render(c))
           
-def markTable(request,class_id=-1,subject_id=-1,term_id=-1):
+def markTable(request,term_id=-1,class_id=-1,subject_id=-1):
     
     user = request.user
     if not user.is_authenticated():
@@ -537,21 +537,21 @@ def markTable(request,class_id=-1,subject_id=-1,term_id=-1):
     move=None
     hsSubject=-1
     subjectList=None
+    
+    termChoice    = term_id
     classChoice   = class_id    
     subjectChoice = subject_id
-    termChoice    = term_id
     
     if termChoice==-1:  selectedTerm=get_current_term(request)
     else             :  selectedTerm=Term.objects.get(id=termChoice) 
             
-    termChoice  =selectedTerm.id    
-    yearChoice=selectedTerm.year_id.id
-    
-    
+    termChoice = selectedTerm.id    
+    yearChoice = selectedTerm.year_id.id
+            
     termList= Term.objects.filter(year_id=yearChoice,number__lt=3).order_by('number')    
+    print termList
     classList = Class.objects.filter(year_id=yearChoice)
     
-    if (subjectChoice==-1): termList=None 
     """    
     if selectedClass.year_id.school_id.status==1:
         termList=Term.objects.filter(year_id=yearChoice,number=1).order_by('number')
