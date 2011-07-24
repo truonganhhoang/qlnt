@@ -1,32 +1,52 @@
 {% extends "base.html" %}
 {% block content %}
   <script language="JavaScript" type="text/javascript">
-    function submitSubject() {
-    if (document.info.subject.value !={{subjectChoice}})
-      if (document.info.subject.value != -1) {
-        document.info.submitChoice.value = "hienthi";
-        document.info.submit();
-      }
-  }
+    function submitSubject() 
+	{
+		if (document.info.subject.value != -1) 
+			//document.info.submit();
+			window.location.href="/school/markTable/"+{{classChoice}}+"/"+document.info.subject.value;
+	}
+	function submitClass()
+	{
+        if (document.info.class1.value != -1)
+		{	
+			document.info.subject.value =-1;
+			//document.info.submit();
+			window.location.href="/school/markTable/"+document.info.class1.value;
+		}	
+	}
+	function submitTerm()
+	{
+		window.location.href="/school/markTable/"+{{classChoice}}+"/"+{{subjectChoice}}+"/"+document.info.term.value;
+	}
+	
+	
   idTeacher = -1;
   </script>
   
     {% include  "school/first_block_js.html" %}
 	
-<form action="/school/markTable/{{class_id}}" name="info" method="post" id='myform'
+<form action="/school/markTable" name="info" method="post" id='myform'
     onsubmit="return false">{% csrf_token %}
 	<input type="hidden" name="submitChoice" value="">
 		
-    <h2>Bảng điểm
-		lớp <b>{{ selectedClass.name }}</b>
-		môn 
+    <h2>Bảng điểm lớp 
+		<select name="class1" onchange="submitClass()">
+				<option value="-1" selected> Chọn lớp </option>
+			{% for class in classList %}
+				<option value={{ class.id }}> {{ class.name }} </option>
+			{% endfor %}
+		</select>
+		
+	   môn  
 		<select name="subject" onchange="submitSubject()">
 				<option value=-1 selected>Chọn môn </option>
 			{% for subject in subjectList %}
-				<option value={{ subject.id }}>{{ subject.name }}</option>
+				<option value={{ subject.id }}> {{ subject.name }} </option>
 			{% endfor %}
 		</select>
-		học kỳ		
+	   học kỳ
 		<select name="term" onchange="submitTerm();">
         {% for term in termList %}
 			<option value={{ term.id }} selected> {{ term }} </option>
@@ -35,7 +55,8 @@
     </h2>
 	
     <script type="text/javascript">
-		document.info.term.value = {{termChoice}}
+		document.info.class1.value = {{classChoice}};
+		document.info.term.value = {{termChoice}};
 		document.info.subject.value ={{subjectChoice}};
     </script>
 	 
