@@ -1,6 +1,8 @@
 ﻿# -*- coding: utf-8 -*-
 import os.path
 import urlparse
+import smtplib
+from email.MIMEText import MIMEText
 from django.conf import settings
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.models import User
@@ -161,9 +163,37 @@ def login(request, template_name='app/login.html',
     return render_to_response(template_name, context,
                               context_instance=django.template.RequestContext(request))
 
+GMAIL_LOGIN = '' 
+GMAIL_PASSWORD = ''     
+def send_email(subject, message, from_addr=GMAIL_LOGIN, to_addr=GMAIL_LOGIN): 
+    msg = MIMEText(message) 
+    msg['Subject'] = subject 
+    msg['From'] = from_addr 
+    msg['To'] = to_addr   
+    server = smtplib.SMTP('smtp.gmail.com',587) #port 465 or 587 
+    server.ehlo() 
+    server.starttls() 
+    server.ehlo() 
+    server.login(GMAIL_LOGIN,GMAIL_PASSWORD) 
+    server.sendmail(from_addr, to_addr, msg.as_string()) 
+    server.close()
+
 def feedback(request):
 #hainhh
+    print 0
     if request.method == 'POST': # If the form has been submitted...
+        if request.is_ajax():
+            print 1
+            url = request.POST['feedback_url']
+            content = request.POST['content']
+            print 2
+            subject = u'[qlnt] User feedback'
+            message = url + '\n' + content
+            print 3
+            send_email( subject = subject, message = message, to_addr= 'vu.tran54@gmail.com')
+            send_email( subject = subject, message = message, to_addr= 'truonganhhoang@gmail.com')
+            
+        
         form = FeedbackForm(request.POST) # A form bound to the POST data
         if form.is_valid():
             c = Feedback(fullname = form.cleaned_data['fullname'] ,

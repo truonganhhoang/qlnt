@@ -13,7 +13,6 @@
     <link rel="stylesheet" href="/static/css/fileuploader.css" type="text/css" media="screen"/>
     <link rel="stylesheet" href="/static/css/tipTip.css" type="text/css" media="screen"/>
   {% endblock %}
-
   <script type="text/javascript" src="/static/js/jquery.js"></script>
   <script type="text/javascript" src="/static/js/fileuploader.js"></script>
   <script type="text/javascript" src="/static/js/jquery.tipTip.minified.js"></script>
@@ -133,8 +132,10 @@
         <li><a href="/help" title="Xem hướng dẫn sử dụng">Trợ giúp</a></li>
         <li><a href="{%url app.views.feedback %}" title="Gửi thông tin về hệ thống">Liên hệ</a></li>
       {% endif %}
-		  <li><a class="color:yellow;" href="#" title="Góp ý hoặc thông báo lỗi về hệ thống">Góp ý</a></li>
-
+		  <li><a class="color:yellow; tiptiphover" 
+		         href="#feedbackDiv"
+		         id="feedback" 
+		         title="Góp ý hoặc thông báo lỗi về hệ thống">Góp ý</a></li>
     </ul>
   </nav>
 </header>
@@ -155,6 +156,22 @@
       </div>
   {% endblock %}
 </section>
+<div style="display: none;">
+<div class="feedback" id="feedbackDiv">
+
+<p class="errorlist" id="feedback_message"></p>
+<br>
+<br>
+<label for="feedback_content">Nội dung góp ý:</label>
+<br>
+<br>
+<textarea name="feedback_content" id="feedback_content" rows="15" cols="50"></textarea>   
+<div style="width: 100%; text-align: right;">
+<input type="button" id="close_fancybox" value="Đóng lại"/>
+<input type="submit" id="submit_feedback" value="Gửi"/>
+</div> 
+</div>
+</div>
 <div class="notify-widget-pane" >
 <div class="notify" id="notify" style="display: none;">
 Đang gửi dữ liệu lên server ...
@@ -189,6 +206,66 @@ $('*[class~="tiptiphover"]').tipTip({
     activation: "hover",
     delay: 100
 });
+
+$.ajaxSetup({
+    beforeSend: function(xhr, settings) {
+      function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie != '') {
+          var cookies = document.cookie.split(';');
+          for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+              cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+              break;
+            }
+          }
+        }
+        return cookieValue;
+      }
+
+      if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+        // Only send the token to relative URLs i.e. locally.
+        xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+      }
+    }
+});
+
+$("#feedback").fancybox({
+               'scrolling'		: 'no',
+	           'titleShow'		: false,
+	           'showCloseButton': false
+ });
+
+$("#close_fancybox"). click(function(){
+    $.fancybox.close();
+    return false;
+});
+
+var done = function(){
+    $.fancybox.close();
+};
+
+$("#submit_feedback").click(function(){
+       
+        var data = $("#feedback_content").val();
+        if ( data == ''){
+            $("#feedback_message").text("Bạn vui lòng điền nội dung để góp ý.");        
+        } else {        
+            var feedback_url = window.location.href;
+            var arg = { type:"POST",
+                        url:"/app/feedback/",
+                        data:{content: data, feedback_url: feedback_url},
+                        datatype:"json",
+                        success: done
+                        };
+            alert(arg);
+            $.ajax(arg);
+        }    
+        return false;
+});
+
       
 </script>
 </body>
