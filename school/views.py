@@ -655,7 +655,6 @@ def nhap_danh_sach_trung_tuyen(request):
                 print student_list
                 if 'error' in student_list:
                     message = student_list['error']   
-                    print message 
                 else:
                     #print student_list
                     request.session['student_list'] = student_list
@@ -663,7 +662,6 @@ def nhap_danh_sach_trung_tuyen(request):
             # end if error in save_file_name
         else:
             message = u'Gặp lỗi trong quá trình tải file lên server'
-            print message
     form = UploadImportFileForm(class_list=_class_list)
     context = RequestContext(request, {'form':form, 'message': message})
     return render_to_response(NHAP_DANH_SACH_TRUNG_TUYEN, context_instance=context)
