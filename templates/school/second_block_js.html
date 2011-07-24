@@ -1,4 +1,21 @@
 ﻿<script>
+	// ngan chan khi dang luu diem hoac chua luu diem	
+	var needToConfirm = false;
+	window.onbeforeunload = function confirmExit()
+	{
+		if (document.getElementById("buttonSave").style.display=="")
+		{
+			if (document.getElementById("messageChanging").innerHTML!="Đã lưu")
+				needToConfirm=true;
+			else	needToConfirm=false;
+		}		
+		else	needToConfirm=false;
+		
+		if (needToConfirm)
+			return "Đang lưu điểm. Xin vui lòng ấn cancel(ở lại trang này) để lưu nốt.";
+			
+	}
+
 	
     function getCookie(name) {
     var cookieValue = null;
@@ -226,7 +243,7 @@
 		{
 			sendToServer(idTeacher+str);
 			var currentTime = (new Date()).getTime();
-			if ((currentTime-latestTime)>2000)
+			if ((currentTime-latestTime)>1500)
 			{
 				document.getElementById("messageChanging").innerHTML="Đang lưu";
 				document.getElementById("buttonSave").disabled="disabled";			
