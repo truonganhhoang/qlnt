@@ -9,8 +9,8 @@ import urllib2
 import xlrd
 import xlwt
 
-#TEMP_FILE_LOCATION = os.path.join(os.path.dirname(__file__), 'uploaded')
-EXPORTED_FILE_LOCATION = os.path.join(os.path.dirname(__file__), 'exported')
+from django.conf import settings
+TEMP_FILE_LOCATION = settings.TEMP_FILE_LOCATION
 
 def sendSMS(phone,content,user):
     open = urllib2.build_opener(urllib2.HTTPCookieProcessor())

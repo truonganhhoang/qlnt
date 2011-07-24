@@ -1,6 +1,4 @@
 # -*- coding: utf-8 -*-
-
-
 import os.path
 import datetime
 from django.core.paginator import *
@@ -21,6 +19,9 @@ from school.school_settings import *
 from school.widgets import *
 import xlrd
     
+from django.conf import settings
+TEMP_FILE_LOCATION = settings.TEMP_FILE_LOCATION
+EXPORTED_FILE_LOCATION = settings.EXPORTED_FILE_LOCATION
 
 class BlockForm(forms.ModelForm):
     class Meta:

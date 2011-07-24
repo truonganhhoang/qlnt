@@ -9,7 +9,9 @@ from django.views.generic.list import ListView
 from sms.models import sms
 from sms.utils import *
 from school.forms import *
-
+from django.conf import settings
+TEMP_FILE_LOCATION = settings.TEMP_FILE_LOCATION
+EXPORTED_FILE_LOCATION = settings.EXPORTED_FILE_LOCATION
 
 
 import os
@@ -18,8 +20,6 @@ import urllib2
 import xlrd
 import xlwt
 
-#TEMP_FILE_LOCATION = os.path.join(os.path.dirname(__file__), 'uploaded')
-EXPORTED_FILE_LOCATION = os.path.join(os.path.dirname(__file__), 'exported')
 
 def sendSMS(phone,content,user):
     """
