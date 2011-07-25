@@ -103,5 +103,5 @@ urlpatterns = patterns('',
     #url(r'^school/test$','school.views.test'), 
     
     #help
-    url(r'recover/$', 'school.helptools.recover_marktime', name = "recover_marktime"),
+    #url(r'recover/$', 'school.helptools.recover_marktime', name = "recover_marktime"),
 	)
