@@ -17,22 +17,19 @@ import datetime
 LOCK_MARK =False
 ENABLE_CHANGE_MARK=True
 
-"""
+
 def thu(request):
 
     list = Mark.objects.all()
     for m in list:
-        mt=MarkTime()
-        mt.mark_id=m
-        mt.save()
-        
-        sm=SentMark()
-        sm.mark_id=m
-        sm.save()
+        if m.marktime==None:
+            mt=MarkTime()
+            mt.mark_id=m
+            mt.save()
         
         
                
-    t = loader.get_template(os.path.join('school','thu.html'))
+    t = loader.get_template(os.path.join('school','ll.html'))
     
     c = RequestContext(request, {
                                 }
@@ -81,7 +78,7 @@ class MarkID:
         self.d17=d17
         self.d18=d18
         self.d19=d19
-        
+"""        
 class Editable:
     def __init__(self,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16):
         self.a1=a1
