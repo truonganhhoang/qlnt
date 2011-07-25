@@ -558,6 +558,7 @@ def student_import( request, class_id ):
     else:
         return HttpResponseRedirect( reverse('school_index')) 
     # save the file
+    
     success = save_upload( upload, filename, is_raw )
     message = None
     result = process_file( filename, "Nhap danh sach trung tuyen")
@@ -569,6 +570,7 @@ def student_import( request, class_id ):
         year = school.startyear_set.get(time=datetime.date.today().year)
         current_year = school.year_set.latest('time')
         term = get_current_term( request)
+        print "tag 4"
         try:
             c = datetime.datetime.now()
             add_many_students(student_list = result, _class = chosen_class, 
