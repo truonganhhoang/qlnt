@@ -483,9 +483,9 @@ def process_file(file_name, task):
             if str(tong_diem).strip()=="": tong_diem = "0"
             date_value = xlrd.xldate_as_tuple(sheet.cell(r, c_ngay_sinh).value, book.datemode)
             birthday = date(*date_value[:3])
-            student_list.append({'ten': name, \
+            student_list.append({'ten': name.strip(), \
                                 'ngay_sinh': birthday, \
-                                'nguyen_vong': nv, \
+                                'nguyen_vong': nv.strip(), \
                                 'tong_diem': tong_diem,})
         return student_list
     else: task == ""
