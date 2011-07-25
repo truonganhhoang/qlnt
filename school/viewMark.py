@@ -56,7 +56,7 @@ def thu(request):
     
 
     return HttpResponse(t.render(c))
-                        
+"""
 class MarkID:
     def __init__(self,d1,d2,d3,d4,d5,d6,d7,d8,d9,d10,d11,d12,d13,d14,d15,d16,d17,d18,d19):
         self.d1=d1
@@ -78,7 +78,7 @@ class MarkID:
         self.d17=d17
         self.d18=d18
         self.d19=d19
-"""        
+        
 class Editable:
     def __init__(self,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16):
         self.a1=a1
