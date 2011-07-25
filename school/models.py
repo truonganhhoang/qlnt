@@ -238,7 +238,7 @@ class Subject(models.Model):
     name = models.CharField("Tên môn học(*)", max_length = 45) # can't be null
     hs = models.FloatField("Hệ số(*)", validators = [validate_hs])
     
-    primary = models.Boolean("Loại môn", default = True)
+    primary = models.BooleanField("Loại môn", default = True)
     
     class_id = models.ForeignKey(Class, verbose_name = "Lớp(*)")    
     teacher_id = models.ForeignKey(Teacher, verbose_name = "Giáo viên(*)", null= True, blank = True) # field nay de cung cap permission cho giao vien de nhap diem
