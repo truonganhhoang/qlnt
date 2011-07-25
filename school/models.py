@@ -242,7 +242,7 @@ class Subject(models.Model):
     #type=2: chi hoc ky 2
     #type=3: khong dc tinh vao ky 1 va ky 2
     
-    type = models.SmallIntegerField("Loại môn", default = 0)
+    primary = models.SmallIntegerField("Loại môn", default = 0)
 
     class_id = models.ForeignKey(Class, verbose_name = "Lớp(*)")    
     teacher_id = models.ForeignKey(Teacher, verbose_name = "Giáo viên(*)", null= True, blank = True) # field nay de cung cap permission cho giao vien de nhap diem
