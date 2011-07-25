@@ -237,13 +237,9 @@ class Pupil(BasicPersonInfo):
 class Subject(models.Model):    
     name = models.CharField("Tên môn học(*)", max_length = 45) # can't be null
     hs = models.FloatField("Hệ số(*)", validators = [validate_hs])
-    #type=0: học cả kỳ 1 và kỳ 2
-    #type=1: chi hoc ky 1
-    #type=2: chi hoc ky 2
-    #type=3: khong dc tinh vao ky 1 va ky 2
     
-    primary = models.SmallIntegerField("Loại môn", default = 0)
-
+    primary = models.Boolean("Loại môn", default = True)
+    
     class_id = models.ForeignKey(Class, verbose_name = "Lớp(*)")    
     teacher_id = models.ForeignKey(Teacher, verbose_name = "Giáo viên(*)", null= True, blank = True) # field nay de cung cap permission cho giao vien de nhap diem
     
@@ -251,8 +247,6 @@ class Subject(models.Model):
         verbose_name = "Môn"
         verbose_name_plural = "Môn"
     """
-    def is_primary(self):
-        return self.primary
     """
     def __unicode__(self):
         return self.name

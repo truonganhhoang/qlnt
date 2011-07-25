@@ -1,4 +1,4 @@
-from school import views
+from school import views, helptools
 from django.conf.urls.defaults import patterns, url 
 
 
@@ -12,7 +12,6 @@ urlpatterns = patterns('',
     # 2 ham nay dung de test, tao tat ca cac thong tin con thieu cho sinh vien
     # sau nay hoan thien, co the bo di    
 
-    url(r'thu$','school.viewMark.thu'),
     url(r'createTbNam/(?P<year_id>\w+)','school.viewMark.createTbNam'),
     url(r'createAllInfoInTerm/(?P<term_id>\w+)','school.viewMark.createAllInfoInTerm'),
 
@@ -103,4 +102,6 @@ urlpatterns = patterns('',
     url(r'classify/$', 'school.views.classify', name = "classify"),
     #url(r'^school/test$','school.views.test'), 
     
+    #help
+    url(r'recover/$', 'school.helptools.recover_marktime', name = "recover_marktime"),
 	)
