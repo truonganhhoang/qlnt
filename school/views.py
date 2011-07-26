@@ -1363,7 +1363,7 @@ def diem_danh(request, class_id, day, month, year):
         return HttpResponseRedirect(reverse('index'))
     
     cl = Class.objects.get(id__exact=class_id)
-    if in_school(request, cl.block_id.school_id) == False:
+    if not in_school(request, cl.block_id.school_id):
         return HttpResponseRedirect('/')
     url = '/school/dsnghi/' + str(class_id) + '/' + str(day) + '/' + str(month) + '/' + str(year)
     if (get_position(request) < 3):
@@ -1377,7 +1377,7 @@ def diem_danh(request, class_id, day, month, year):
 
     if request.method == 'POST':
         try:
-            if (request.POST[u'date_day'] or request.POST[u'date_month'] or request.POST[u'date_year'] or request.POST[u'class_id']):
+            if request.POST[u'date_day'] or request.POST[u'date_month'] or request.POST[u'date_year'] or request.POST[u'class_id']:
                 dncform = DateAndClassForm(year_id,request.POST)
                 if dncform.is_valid():
                     class_id = int(request.POST[u'class_id'])
@@ -1443,7 +1443,10 @@ def diem_danh(request, class_id, day, month, year):
                     name = ' '.join([student.last_name,student.first_name])
                     time = '/'.join([str(day),str(month),str(year)])
                     sms_message = u'Em '+name+u' đã ' + loai + u'.\n Ngày: ' + time + '.'
-                    message = message + u'---> ' + str(phone_number) + u': ' + sms_message + u'<br>'
+                    if phone_number:
+                        message = message + u'<li> ' + str(phone_number) + u': ' + sms_message + u'</li>'
+                    else:
+                        message = message + u'<li> ' + u'<b>Không số</b>' + u': ' + sms_message + u'</li>'
                     if phone_number:
                         sendSMS(phone_number, sms_message, user)
             data = simplejson.dumps({'message':message})

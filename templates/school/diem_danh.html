@@ -1,204 +1,208 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <script>
-    $(document).ready(function() {
-      var note = '';
-            
-      
-      var done = function(json) {
-        if (json.message != null && json.message !='')
-          $.fancybox({
-            'title': "Các tin nhắn đã gửi",
-            'content': json.message
-          });
-        else
-          $.fancybox({
-            'title': "Thông báo",
-            'content': 'Bạn chưa chọn học sinh nào.'
-          });
-        $(".selected").each(select);
-        $("#selectAll").text("Chọn cả lớp");
-      };
-      var sendSmS = function() {
-        var id = $(this).attr('name');
-        var select = "tr." + id + " > td:has(select) > select ";
-        var loai = $(select).val();
-        var data = id + '-' + loai;
-        //alert(window.location.pathname);
-        var arg = { type:"POST",
-          url:"",
-          data:{data: data, request_type:'sms'},
-          datatype:"json",
-          success:done
-        };
-        $.ajax(arg);
-        return false;
-      };
+    <script>
+        $(document).ready(function() {
+            var note = '';
 
-      var sendSelected = function() {
-
-        var data = '';
-        $(".selected").each(function() {
-          var id = $(this).attr('class').split(' ')[0];
-          var select = "tr." + id + " > td:has(select) > select ";
-          var loai = $(select).val();
-          var element = id + '-' + loai;
-          data = data + ':' + element;
-        });
-
-        var arg = { type:"POST",
-          url:"",
-          data:{data: data, request_type:'sms'},
-          datatype:"json",
-          success:done
-        };
-        $.ajax(arg);
-        return false;
-      }
-      var select = function() {
-        if (!$(this).hasClass('thead')){
-            var id = $(this).attr('class').split(' ')[0];
-            var checkboxid = '#checkbox_' + id;
-            var checkboxall = '#checkbox_all'
-            if ($(this).hasClass('selected')) {
-                $(this).removeClass('selected');
-                $(checkboxid).prop("checked", false);
-                var n = $("input:checked").length;
-                if ( n == 1) $(checkboxall).prop("checked", false);;
-            } else {
-                $(this).addClass('selected');
-                $(checkboxid).prop("checked", true);
-                $(checkboxall).prop("checked", true);
+            var done = function(json) {
+                if (json.message != null && json.message != '')$("#smsNotification").html("<ul>"+json.message+"</ul>");
+                else $("#smsNotification").html('');
+                $("#smsNotification").dialog("open");
+                $(".selected").each(select);
+                $("#selectAll").text("Chọn cả lớp");
             };
-        }
-      }
-        
-      $(".sms").each(function() {
-        $(this).click(sendSmS);
-        note = '';
-      });
-      
 
-      $("select[name=loai]").each(function() {
-        $(this).change(function() {
-          var id = $(this).parents("tr").attr('class').split(' ')[0];
-          var loai = $(this).val();
-          var data = { id: id, loai:loai, request_type:'update'}
-          var arg = { type:"POST",
-            url:"",
-            data: data,
-            datatype:"json"
-            //success:
-            //function(json){
-            //		$.fancybox({
-            //		content: json.message,
-            //		title: "Updated successfully"
-            //		});
-            //  }
-          };
+            $("#smsNotification").dialog({
+                modal : true,
+                buttons: {
+                    Đóng: function(){
+                        $(this).dialog('close');
+                    }
+                },
+                autoOpen: false,
+                width: 500,
+                height: 450,
+                maxWidth: 500,
+                maxHeight: 450,
+                title: "Những tin nhắn đã gửi"
+            })
 
-          $.ajax(arg);
-          return false;
+            var sendSmS = function() {
+                var id = $(this).attr('name');
+                var select = "tr." + id + " > td:has(select) > select ";
+                var loai = $(select).val();
+                var data = id + '-' + loai;
+                //alert(window.location.pathname);
+                var arg = { type:"POST",
+                    url:"",
+                    data:{data: data, request_type:'sms'},
+                    datatype:"json",
+                    success:done
+                };
+                $.ajax(arg);
+                return false;
+            };
+
+            var sendSelected = function() {
+
+                var data = '';
+                $(".selected").each(function() {
+                    var id = $(this).attr('class').split(' ')[0];
+                    var select = "tr." + id + " > td:has(select) > select ";
+                    var loai = $(select).val();
+                    var element = id + '-' + loai;
+                    data = data + ':' + element;
+                });
+
+                var arg = { type:"POST",
+                    url:"",
+                    data:{data: data, request_type:'sms'},
+                    datatype:"json",
+                    success:done
+                };
+                $.ajax(arg);
+                return false;
+            }
+            var select = function() {
+                if (!$(this).hasClass('thead')){
+                    var id = $(this).attr('class').split(' ')[0];
+                    var checkboxid = '#checkbox_' + id;
+                    var checkboxall = '#checkbox_all'
+                    if ($(this).hasClass('selected')) {
+                        $(this).removeClass('selected');
+                        $(checkboxid).prop("checked", false);
+                        var n = $("input:checked").length;
+                        if ( n == 1) $(checkboxall).prop("checked", false);
+                    } else {
+                        $(this).addClass('selected');
+                        $(checkboxid).prop("checked", true);
+                        $(checkboxall).prop("checked", true);
+                    };
+                }
+            }
+
+            $(".sms").each(function() {
+                $(this).click(sendSmS);
+                note = '';
+            });
+
+
+            $("select[name=loai]").each(function() {
+                $(this).change(function() {
+                    var id = $(this).parents("tr").attr('class').split(' ')[0];
+                    var loai = $(this).val();
+                    var data = { id: id, loai:loai, request_type:'update'}
+                    var arg = { type:"POST",
+                        url:"",
+                        data: data,
+                        datatype:"json"
+                    };
+
+                    $.ajax(arg);
+                    return false;
+
+                });
+            });
+            $("tr").each(function() {
+                $(this).click(select);
+            });
+            $("select[name=loai]").click( function (){
+                return false;
+            });
+            $("#checkbox_all").click( function(){
+                var checkboxall = '#checkbox_all'
+                if($(checkboxall).is(':checked')){
+                    $("tr").each( function(){
+                        var id = $(this).attr('class').split(' ')[0];
+                        var checkboxid = '#checkbox_' + id
+                        if (!$(this).hasClass('selected'))
+                            $(this).trigger('click');
+                    });
+                }
+                else {
+                    $("tr").each( function(){
+                        var id = $(this).attr('class').split(' ')[0];
+                        var checkboxid = '#checkbox_' + id
+                        if ($(this).hasClass('selected'))
+                            $(this).trigger('click');
+                    });
+                }
+            });
+            $("#sendSelected").click(sendSelected);
+
+            $("#selectAll").click(function() {
+                $("tr").each(select);
+                return false;
+            });
+
 
         });
-      });
-      $("tr").each(function() {
-        $(this).click(select);
-      });
-      $("select[name=loai]").click( function (){
-        return false;
-      });
-      $("#checkbox_all").click( function(){
-            var checkboxall = '#checkbox_all'
-            if($(checkboxall).is(':checked')){
-                $("tr").each( function(){
-                    var id = $(this).attr('class').split(' ')[0];
-                    var checkboxid = '#checkbox_' + id
-                    if (!$(this).hasClass('selected'))
-                        $(this).trigger('click');
-                });
-            }
-            else {
-                $("tr").each( function(){
-                    var id = $(this).attr('class').split(' ')[0];
-                    var checkboxid = '#checkbox_' + id
-                    if ($(this).hasClass('selected'))
-                        $(this).trigger('click');
-                });
-            }
-        });      
-      $("#sendSelected").click(sendSelected);
 
-      $("#selectAll").click(function() {
-        $("tr").each(select);
-        return false;
-      });
-
-
-    });
-
-  </script>
+    </script>
     <h2>Điểm danh lớp <b>{{ cl }}</b> ngày {{ day }}/{{ month }}/{{ year }}</h2>
-  
+
     <form action="" method="post">{% csrf_token %}
-            {{dncform}}
-            <td><input type ="submit" value="Chọn"/></td>
+        {{dncform}}
+        <td><input type ="submit" value="Chọn"/></td>
     </form>
-  
-  <form action="/school/diemdanh/{{class_id}}/{{day}}/{{month}}/{{year}}" method="post">{% csrf_token %}
-    {% if message != None %}
-      {{ message }}
-    {% endif %}
-    <br>
-    <button id="selectAll">Đảo chọn</button>
-    <button id="sendSelected">Gửi SMS cho những học sinh đã chọn</button>
-    <a href="{%url school.views.school_index  %}dsnghi/{{class_id}}/{{day}}/{{month}}/{{year}}"> <input type="button" value = "Danh sách nghỉ" > </input> </a>
-    <input align="right" type="submit" value="Cập nhật"/>
-    <table class="styleA">
-      <tr class="thead">
-        <th align="center" width="2%"> 
-                <input type="checkbox" id="checkbox_all"/>
-        </th>
-        <th align="center" width="3%"> STT</th>
-        <th align="center" width="15%"> Họ Tên</th>
-        <th align="center" width="10%"> Ngày sinh</th>
-        <th align="center" width="7%"> Giới tính</th>
-        <th align="center" width="15%"> Điểm danh</th>
-        <th align="center" width="5%" max-width="30px">&nbsp</th>
-      </tr>
-      {% for p,f in list %}
-        <tr class="{{p.id}}">
-            <td align="center" width="2%">
-                <input type="checkbox" id="checkbox_{{p.id}}"/>
-            </td>
-          <td align="center" width="5%">
-            <p>{{ forloop.counter }}</p>
-          </td>
 
-          <td align="center" width="15%">
-            <p>{{ p.last_name }}&nbsp{{ p.first_name }}</p>
-          </td>
+    <form action="/school/diemdanh/{{class_id}}/{{day}}/{{month}}/{{year}}" method="post">{% csrf_token %}
+        {% if message != None %}
+            {{ message }}
+        {% endif %}
+        <br>
+        <button id="selectAll">Đảo chọn</button>
+        <button id="sendSelected">Gửi SMS cho những học sinh đã chọn</button>
+        <a href="{%url school.views.school_index  %}dsnghi/{{class_id}}/{{day}}/{{month}}/{{year}}"> <input type="button" value = "Danh sách nghỉ" > </input> </a>
+        <input align="right" type="submit" value="Cập nhật"/>
+        <table class="styleA">
+            <tr class="thead">
+                <th align="center" width="2%">
+                    <input type="checkbox" id="checkbox_all"/>
+                </th>
+                <th align="center" width="3%"> STT</th>
+                <th align="center" width="15%"> Họ Tên</th>
+                <th align="center" width="10%"> Ngày sinh</th>
+                <th align="center" width="7%"> Giới tính</th>
+                <th align="center" width="15%"> Điểm danh</th>
+                <th align="center" width="5%" max-width="30px">&nbsp</th>
+            </tr>
+            {% for p,f in list %}
+                <tr class="{{p.id}}">
+                    <td align="center" width="2%">
+                        <input type="checkbox" id="checkbox_{{p.id}}"/>
+                    </td>
+                    <td align="center" width="5%">
+                        <p>{{ forloop.counter }}</p>
+                    </td>
 
-          <td align="center" width="10%">
-            <p>{{ p.birthday|date:"SHORT_DATE_FORMAT" }}</p>
-          </td>
+                    <td align="center" width="15%">
+                        <p>{{ p.last_name }}&nbsp{{ p.first_name }}</p>
+                    </td>
 
-          <td align="center" width="7%">
-            <p>{{ p.sex }}</p>
-          </td>
+                    <td align="center" width="10%">
+                        <p>{{ p.birthday|date:"SHORT_DATE_FORMAT" }}</p>
+                    </td>
 
-          <td align="center" width="8%">
-            {{ f.loai.errors }}
-            {{ f.loai }}
-          </td>
-          <td align="center" width="20px">
-            <input type="submit" value="sms" name="{{p.id}}" class="sms"/>
-          </td>
-        </tr>
-      {% endfor %}
-    </table>
-    <input type="submit" value="Cập nhật"/>
-  </form>
+                    <td align="center" width="7%">
+                        <p>{{ p.sex }}</p>
+                    </td>
 
+                    <td align="center" width="8%">
+                        {{ f.loai.errors }}
+                        {{ f.loai }}
+                    </td>
+                    <td align="center" width="20px">
+                        <input type="submit" value="sms" name="{{p.id}}" class="sms"/>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+        <input type="submit" value="Cập nhật"/>
+    </form>
+    <div style="display: None;">
+        <div id="smsNotification">
+        </div>
+    </div>
 {% endblock %}

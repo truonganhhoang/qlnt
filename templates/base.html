@@ -2,271 +2,268 @@
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
-  {% block title %}
-    <title>{{ user.userprofile.organization.name }}</title>
-  {% endblock %}
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+    {% block title %}
+        <title>{{ user.userprofile.organization.name }}</title>
+    {% endblock %}
 
-  {% block css %}
-    <link href="/static/css/style.css" rel="stylesheet" type="text/css"/>
-    <link rel="stylesheet" href="/static/fancybox/jquery.fancybox-1.3.4.css" type="text/css" media="screen"/>
-    <link rel="stylesheet" href="/static/css/fileuploader.css" type="text/css" media="screen"/>
-    <link rel="stylesheet" href="/static/css/tipTip.css" type="text/css" media="screen"/>
-    <link rel="stylesheet" href="/static/css/jquery-ui-1.8.14.custom.css" type="text/css" media="screen"/>
-  {% endblock %}
-  <script type="text/javascript" src="/static/js/jquery.js"></script>
-  <script type="text/javascript" src="/static/js/jquery-ui-1.8.14.custom.min.js"></script>
-  <script type="text/javascript" src="/static/js/fileuploader.js"></script>
-  <script type="text/javascript" src="/static/js/jquery.tipTip.minified.js"></script>
-  {% block js %}
-    <!-- For extra js -->
-  {% endblock %}
+    {% block css %}
+        <link href="/static/css/style.css" rel="stylesheet" type="text/css"/>
+        <link rel="stylesheet" href="/static/css/fileuploader.css" type="text/css" media="screen"/>
+        <link rel="stylesheet" href="/static/css/tipTip.css" type="text/css" media="screen"/>
+        <link rel="stylesheet" href="/static/css/jquery-ui-1.8.14.custom.css" type="text/css" media="screen"/>
+    {% endblock %}
+    <script type="text/javascript" src="/static/js/jquery.js"></script>
+    <script type="text/javascript" src="/static/js/jquery-ui-1.8.14.custom.min.js"></script>
+    <script type="text/javascript" src="/static/js/fileuploader.js"></script>
+    <script type="text/javascript" src="/static/js/jquery.tipTip.minified.js"></script>
+    {% block js %}
+        <!-- For extra js -->
+    {% endblock %}
 </head>
 
 <body>
 <header>
-  <a href="{%url school.views.school_index %}"><img src="/static/css/images/logo.png" class="logo" alt="logo"
-                                                    title="{{ user.userprofile.organization.name }}"/>
-  </a>
-  <p id="headTitle">
-    {% if user.is_authenticated %}
-      {% if user.is_superuser %}
-        Quản trị hệ thống
-      {% else %}
-        {{ user.userprofile.organization.name }}
-      {% endif %}
-    {% else %}
-      Quản lý nhà trường
-    {% endif %}
-  </p>
-  <p id="detail">
-    {% if user.userprofile.position == 'HIEU_TRUONG' or user.userprofile.position == 'HIEU_PHO' or user.userprofile.position == 'GIAO_VIEN' or user.userprofile.position == 'GIAO_VU' or user.userprofile.position == 'HOC_SINH' %}
-      {{ user.userprofile.organization.get_status }}
-    {% endif %}
-  </p>
-
-  <div id="topUser">
-    <ul>
-      {% if user.is_authenticated %}
-        <li><a href="/profiles/{{user.username}}" title="Xem hồ sơ người sử dụng"> {{ user.username }}</a></li>
-        <li><a href="{%url django.contrib.auth.views.logout %}" title="Thoát ra khỏi hệ thống">Đăng xuất</a></li>
-      {% else %}
-        <li><a href="{%url app.views.login %}" title="Đăng nhập để sử dụng hệ thống">Đăng nhập</a></li>
-      {% endif %}
-
-      <li><a href="/help" title="Xem hướng dẫn sử dụng">Trợ giúp</a></li>
-    </ul>
-  </div>
-
-  <nav id="navTop">
-    <ul>
-      {% if user.is_authenticated %}
-        {% if user.is_superuser %}
-          <li><a href="/admin" title="Mở trình quản trị sẵn có của hệ thống">Duyệt CSDL</a></li>
-          <li><a href="{%url app.views.list_org %}" title="Quản lý tổ chức của các đơn vị">Tổ chức</a></li>
-          <li><a href="{% url app.views.school_admin_add %}">Người quản trị trường</a></li>
-        {% endif %}
-
-        {% if user.userprofile.position == 'GIAM_DOC_SO' or user.userprofile.position == 'TRUONG_PHONG' %}
-          <li><a title="Xem các đơn vị trực thuộc">Đơn vị trực thuộc</a></li>
-          <li><a title="Xem thống kê báo cáo tổng hợp">Báo cáo</a></li>
-        {% endif %}
-
-        {# Người sử dụng cấp trường       #}
-        {% if user.userprofile.position == 'HIEU_TRUONG' or user.userprofile.position == 'HIEU_PHO' or user.userprofile.position == 'GIAO_VIEN' or user.userprofile.position == 'GIAO_VU' or user.userprofile.position == 'HOC_SINH' %}
-          <li><a href="{%url school.views.school_index %}" title="Trở về trang đầu">Trang chủ</a></li>
-          {% if user.userprofile.organization.status != 0 %}
-            <!-- <li><a href="{%url school.views.years %}" title="Xem năm học khác, học kỳ khác">Các năm</a></li>  -->
-            <li><a href="{%url school.views.classes %}" title="Quản lý lớp học">Lớp học</a></li>
-{#            <li><a href="{%url school.views.teachers %}" title="Quản lý giáo viên">Giáo viên</a></li>#}
-            <li><a href="{%url school.viewCount.countInSchool %}"
-                   title="Chức năng đang trong quá trình hoàn thiện."                   
-                   title="Xem thông tin thống kê, báo cáo tổng hợp" 
-                   class="tiptiphover tiptipclick" >Báo cáo</a></li>
-            {% if user.userprofile.position == 'HIEU_TRUONG'  or user.userprofile.position == 'HIEU_PHO' %}
-                {# Khi chưa khởi  tạo năm học #}
-                {% if user.userprofile.organization.status == 0  or user.userprofile.organization.status == 3 %}
-                  <li><a href="{%url school.views.setup %}"
-                         title="Khai báo thông tin trường học và tạo nhanh các lớp học">Thông tin trường học</a>
-                  </li>
-                {% endif %}
-
-                {% if user.userprofile.organization.status != 0 %}
-{#                  <li><a href="{%url school.views.b1  %}/import"#}
-{#                         title="Nhập danh sách học sinh từ file hoặc nhập trực tiếp">Học sinh</a></li>#}
-                  {#              <li><a href="{%url school.views.classify %}" title="Phân học sinh đã nhập vào các lớp">Phân lớp</a></li>#}
-                  <!-- <li><a href="" title="Phân công giáo viên dạy lớp nào, môn nào">Phân công giảng dạy</a></li>  -->
-                  <li><a href="{%url school.viewFinish.finish %}"
-                         title="Tính điểm tổng kết toàn trường và kết thúc học kỳ">Tổng kết</a>
-                  </li>
-                {% endif %}
-              {% else %}
-              {% if user.userprofile.position == 'GIAO_VIEN' %}
-                  <li><a href="#">Lớp chủ nhiệm</a></li>
-                  <li><a href="#">Lớp giản dạy</a></li>
-                  <li><a href="#">Điểm</a></li>
-                {% else %}
-                {% if user.userprofile.position == 'HOC_SINH' %}
-                    <li><a href="#">Lớp học</a></li>
-                    <li><a href="#">Điểm</a></li>
-                    <li><a href="#">Điểm danh</a></li>
-                    <li><a href="#">Khen thưởng</a></li>
-                    <li><a href="#">Kỉ luật</a></li>
-                {% else %}
-                  {% if user.userprofile.position == 'GIAO_VU' %}
-                  {% endif %}
-                {% endif %}
-              {% endif %}
+    <a href="{%url school.views.school_index %}"><img src="/static/css/images/logo.png" class="logo" alt="logo"
+                                                      title="{{ user.userprofile.organization.name }}"/>
+    </a>
+    <p id="headTitle">
+        {% if user.is_authenticated %}
+            {% if user.is_superuser %}
+                Quản trị hệ thống
+            {% else %}
+                {{ user.userprofile.organization.name }}
             {% endif %}
-          {% endif %}
-
-          {% if user.userprofile.position == 'GIAO_VIEN' or user.userprofile.position == 'HIEU_TRUONG' or user.userprofile.position == 'HIEU_PHO' or user.userprofile.position == 'GIAO_VU' %}
-            <li><a href="{%url school.sms_views.manual_sms %}" title="Gửi tin nhắn SMS">Nhắn tin</a></li>
-          {% endif %}
-
+        {% else %}
+            Quản lý nhà trường
         {% endif %}
-      {% else %}
-        {# Chưa đăng nhập vào hệ thống #}
-        <li><a href="{%url app.views.login %}" title="Đăng nhập để sử dụng hệ thống">Đăng nhập</a></li>
-        <li><a href="/help" title="Xem hướng dẫn sử dụng">Trợ giúp</a></li>
-        <li><a href="{%url app.views.feedback %}" title="Gửi thông tin về hệ thống">Liên hệ</a></li>
-      {% endif %}
-		  <li><a class="color:yellow;" 
-		         href="#feedbackDiv"
-		         id="feedback" 
-		         title="Góp ý hoặc thông báo lỗi về hệ thống">Góp ý</a></li>
-    </ul>
-  </nav>
+    </p>
+    <p id="detail">
+        {% if user.userprofile.position == 'HIEU_TRUONG' or user.userprofile.position == 'HIEU_PHO' or user.userprofile.position == 'GIAO_VIEN' or user.userprofile.position == 'GIAO_VU' or user.userprofile.position == 'HOC_SINH' %}
+            {{ user.userprofile.organization.get_status }}
+        {% endif %}
+    </p>
+
+    <div id="topUser">
+        <ul>
+            {% if user.is_authenticated %}
+                <li><a href="/profiles/{{user.username}}" title="Xem hồ sơ người sử dụng"> {{ user.username }}</a></li>
+                <li><a href="{%url django.contrib.auth.views.logout %}" title="Thoát ra khỏi hệ thống">Đăng xuất</a></li>
+            {% else %}
+                <li><a href="{%url app.views.login %}" title="Đăng nhập để sử dụng hệ thống">Đăng nhập</a></li>
+            {% endif %}
+
+            <li><a href="/help" title="Xem hướng dẫn sử dụng">Trợ giúp</a></li>
+        </ul>
+    </div>
+
+    <nav id="navTop">
+        <ul>
+            {% if user.is_authenticated %}
+                {% if user.is_superuser %}
+                    <li><a href="/admin" title="Mở trình quản trị sẵn có của hệ thống">Duyệt CSDL</a></li>
+                    <li><a href="{%url app.views.list_org %}" title="Quản lý tổ chức của các đơn vị">Tổ chức</a></li>
+                    <li><a href="{% url app.views.school_admin_add %}">Người quản trị trường</a></li>
+                {% endif %}
+
+                {% if user.userprofile.position == 'GIAM_DOC_SO' or user.userprofile.position == 'TRUONG_PHONG' %}
+                    <li><a title="Xem các đơn vị trực thuộc">Đơn vị trực thuộc</a></li>
+                    <li><a title="Xem thống kê báo cáo tổng hợp">Báo cáo</a></li>
+                {% endif %}
+
+                {# Người sử dụng cấp trường       #}
+                {% if user.userprofile.position == 'HIEU_TRUONG' or user.userprofile.position == 'HIEU_PHO' or user.userprofile.position == 'GIAO_VIEN' or user.userprofile.position == 'GIAO_VU' or user.userprofile.position == 'HOC_SINH' %}
+                    <li><a href="{%url school.views.school_index %}" title="Trở về trang đầu">Trang chủ</a></li>
+                    {% if user.userprofile.organization.status != 0 %}
+                        <!-- <li><a href="{%url school.views.years %}" title="Xem năm học khác, học kỳ khác">Các năm</a></li>  -->
+                        <li><a href="{%url school.views.classes %}" title="Quản lý lớp học">Lớp học</a></li>
+                        {#            <li><a href="{%url school.views.teachers %}" title="Quản lý giáo viên">Giáo viên</a></li>#}
+                        <li><a href="{%url school.viewCount.countInSchool %}"
+                               title="Chức năng đang trong quá trình hoàn thiện."
+                               title="Xem thông tin thống kê, báo cáo tổng hợp"
+                               class="tiptiphover tiptipclick" >Báo cáo</a></li>
+                        {% if user.userprofile.position == 'HIEU_TRUONG'  or user.userprofile.position == 'HIEU_PHO' %}
+                            {# Khi chưa khởi  tạo năm học #}
+                            {% if user.userprofile.organization.status == 0  or user.userprofile.organization.status == 3 %}
+                                <li><a href="{%url school.views.setup %}"
+                                       title="Khai báo thông tin trường học và tạo nhanh các lớp học">Thông tin trường học</a>
+                                </li>
+                            {% endif %}
+
+                            {% if user.userprofile.organization.status != 0 %}
+                                {#                  <li><a href="{%url school.views.b1  %}/import"#}
+                                {#                         title="Nhập danh sách học sinh từ file hoặc nhập trực tiếp">Học sinh</a></li>#}
+                                {#              <li><a href="{%url school.views.classify %}" title="Phân học sinh đã nhập vào các lớp">Phân lớp</a></li>#}
+                                <!-- <li><a href="" title="Phân công giáo viên dạy lớp nào, môn nào">Phân công giảng dạy</a></li>  -->
+                                <li><a href="{%url school.viewFinish.finish %}"
+                                       title="Tính điểm tổng kết toàn trường và kết thúc học kỳ">Tổng kết</a>
+                                </li>
+                            {% endif %}
+                            {% else %}
+                            {% if user.userprofile.position == 'GIAO_VIEN' %}
+                                <li><a href="#">Lớp chủ nhiệm</a></li>
+                                <li><a href="#">Lớp giản dạy</a></li>
+                                <li><a href="#">Điểm</a></li>
+                                {% else %}
+                                {% if user.userprofile.position == 'HOC_SINH' %}
+                                    <li><a href="#">Lớp học</a></li>
+                                    <li><a href="#">Điểm</a></li>
+                                    <li><a href="#">Điểm danh</a></li>
+                                    <li><a href="#">Khen thưởng</a></li>
+                                    <li><a href="#">Kỉ luật</a></li>
+                                {% else %}
+                                    {% if user.userprofile.position == 'GIAO_VU' %}
+                                    {% endif %}
+                                {% endif %}
+                            {% endif %}
+                        {% endif %}
+                    {% endif %}
+
+                    {% if user.userprofile.position == 'GIAO_VIEN' or user.userprofile.position == 'HIEU_TRUONG' or user.userprofile.position == 'HIEU_PHO' or user.userprofile.position == 'GIAO_VU' %}
+                        <li><a href="{%url school.sms_views.manual_sms %}" title="Gửi tin nhắn SMS">Nhắn tin</a></li>
+                    {% endif %}
+
+                {% endif %}
+            {% else %}
+                {# Chưa đăng nhập vào hệ thống #}
+                <li><a href="{%url app.views.login %}" title="Đăng nhập để sử dụng hệ thống">Đăng nhập</a></li>
+                <li><a href="/help" title="Xem hướng dẫn sử dụng">Trợ giúp</a></li>
+                <li><a href="{%url app.views.feedback %}" title="Gửi thông tin về hệ thống">Liên hệ</a></li>
+            {% endif %}
+            <li><a class="color:yellow;"
+                   href="#feedbackDiv"
+                   id="feedback"
+                   title="Góp ý hoặc thông báo lỗi về hệ thống">Góp ý</a></li>
+        </ul>
+    </nav>
 </header>
 
 <section id="main">
-  {% block bodyPanel %}
-{#    <div id="leftMenu">#}
-{#      {% block left_menu %}#}
-{#      {% endblock %}#}
-{#    </div>#}
-      <div id="contentTop">
-        {% block backward_link %}
-        {% endblock %}
-      </div>
-      <div id="content">
-        {% block content %}
-        {% endblock %}
-      </div>
-  {% endblock %}
+    {% block bodyPanel %}
+        {#    <div id="leftMenu">#}
+        {#      {% block left_menu %}#}
+        {#      {% endblock %}#}
+        {#    </div>#}
+        <div id="contentTop">
+            {% block backward_link %}
+            {% endblock %}
+        </div>
+        <div id="content">
+            {% block content %}
+            {% endblock %}
+        </div>
+    {% endblock %}
 </section>
 <div style="display: none;">
-<div class="feedback" id="feedbackDiv" style="resize: None;">
+    <div class="feedback" id="feedbackDiv" style="resize: None;">
 
-<p class="errorlist" id="feedback_message"></p>
-<br>
-<br>
-<label for="feedback_content">Nội dung góp ý:</label>
-<br>
-<br>
-<textarea name="feedback_content" id="feedback_content" rows="15" cols="50"></textarea>   
-</div>
+        <p class="errorlist" id="feedback_message"></p>
+        <br>
+        <label for="feedback_content">Nội dung góp ý:</label>
+        <br><br>
+        <textarea name="feedback_content" id="feedback_content" rows="15" cols="50"></textarea>
+    </div>
 </div>
 <div class="notify-widget-pane" >
-<div class="notify" id="notify" style="display: none;">
-Đang gửi dữ liệu lên server ...
-</div>
+    <div class="notify" id="notify" style="display: none;">
+        Đang gửi dữ liệu lên server ...
+    </div>
 </div>
 
 <footer>
-  <p class="copyright">©2011 by Viettel and VNU Hanoi. <a href="/app/contact">Liên hệ</a></p>
+    <p class="copyright">©2011 by Viettel and VNU Hanoi. <a href="/app/contact">Liên hệ</a></p>
 </footer>
 <script type="text/javascript" >
-$("#notify").ajaxStart( function(){
-         $(this).text("Đang lưu dữ liệu lên server...");
-         $(this).fadeIn('fast');      
-      });
-      
-$("#notify").ajaxSuccess( function(event, request, settings){
-         $(this).text("Đã lưu.");
-         $(this).delay(1000).fadeOut('fast');      
-      });      
+    $("#notify").ajaxStart( function(){
+        $(this).text("Đang lưu dữ liệu lên server...");
+        $(this).fadeIn('fast');
+    });
 
-$("#notify").ajaxError( function(event, request, settings){
-         $(this).text("Gặp lỗi khi gửi dữ liệu tới server");
-         $(this).delay(1000).fadeOut('fast');      
-               
-      });      
- 
-$('*[class~="tiptipclick"]').tipTip({
-    activation: "click",
-    delay: 100
- });           
-$('*[class~="tiptiphover"]').tipTip({
-    activation: "hover",
-    delay: 100
-});
+    $("#notify").ajaxSuccess( function(event, request, settings){
+        $(this).text("Đã lưu.");
+        $(this).delay(1000).fadeOut('fast');
+    });
 
-$.ajaxSetup({
-    beforeSend: function(xhr, settings) {
-      function getCookie(name) {
-        var cookieValue = null;
-        if (document.cookie && document.cookie != '') {
-          var cookies = document.cookie.split(';');
-          for (var i = 0; i < cookies.length; i++) {
-            var cookie = jQuery.trim(cookies[i]);
-            // Does this cookie string begin with the name we want?
-            if (cookie.substring(0, name.length + 1) == (name + '=')) {
-              cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-              break;
+    $("#notify").ajaxError( function(event, request, settings){
+        $(this).text("Gặp lỗi khi gửi dữ liệu tới server");
+        $(this).delay(1000).fadeOut('fast');
+
+    });
+
+    $('*[class~="tiptipclick"]').tipTip({
+        activation: "click",
+        delay: 100
+    });
+    $('*[class~="tiptiphover"]').tipTip({
+        activation: "hover",
+        delay: 100
+    });
+
+    $.ajaxSetup({
+        beforeSend: function(xhr, settings) {
+            function getCookie(name) {
+                var cookieValue = null;
+                if (document.cookie && document.cookie != '') {
+                    var cookies = document.cookie.split(';');
+                    for (var i = 0; i < cookies.length; i++) {
+                        var cookie = jQuery.trim(cookies[i]);
+                        // Does this cookie string begin with the name we want?
+                        if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
             }
-          }
+
+            if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+                // Only send the token to relative URLs i.e. locally.
+                xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+            }
         }
-        return cookieValue;
-      }
+    });
 
-      if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
-        // Only send the token to relative URLs i.e. locally.
-        xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
-      }
-    }
-});
+    $("#feedback").click(function(){
+        $("#feedbackDiv").dialog('open');
+    });
 
-$("#feedback").click(function(){
-    $("#feedbackDiv").dialog('open');
-});
-
-var done = function(){
-    $("#feedbackDiv").dialog('close');
-    $("#feedback_content").val('');
-};
+    var done = function(){
+        $("#feedbackDiv").dialog('close');
+        $("#feedback_content").val('');
+    };
 
 
-$("#feedbackDiv").dialog({
-    modal : true,
-    buttons: {
-        Đóng: function(){ $(this).dialog('close');},
-        Gửi: function(){
-            var data = $("#feedback_content").val();
-            if ( data == ''){
-                $("#feedback_message").text("Bạn vui lòng điền nội dung để góp ý.");        
-            } else {        
-                var feedback_url = window.location.href;
-                var arg = { type:"POST",
+    $("#feedbackDiv").dialog({
+        modal : true,
+        buttons: {
+            Đóng: function(){ $(this).dialog('close');},
+            Gửi: function(){
+                var data = $("#feedback_content").val();
+                if ( data == ''){
+                    $("#feedback_message").text("Bạn vui lòng điền nội dung để góp ý.");
+                } else {
+                    var feedback_url = window.location.href;
+                    var arg = { type:"POST",
                         url:"/app/feedback/",
                         data:{content: data, feedback_url: feedback_url},
                         datatype:"json",
                         success: done
-                        };
-                $.ajax(arg);
-            }                
-        }    
-    },
-    autoOpen: false,
-    width: 500,
-    height: 450,
-    maxWidth: 500,
-    maxHeight: 450,
-    title: "Góp ý"
-});
+                    };
+                    $.ajax(arg);
+                }
+            }
+        },
+        autoOpen: false,
+        width: 500,
+        height: 450,
+        maxWidth: 500,
+        maxHeight: 450,
+        title: "Góp ý"
+    });
 
 
-      
+
 </script>
 </body>
 </html>
