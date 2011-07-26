@@ -17,6 +17,9 @@ from django.contrib.auth import REDIRECT_FIELD_NAME, login as auth_login
 from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_protect
 
+from school.utils import *
+
+
 def user_add(request):
     if request.method == 'POST':
         form = UserForm(request.POST)
@@ -187,22 +190,26 @@ def feedback(request):
     print 0
     if request.method == 'POST': # If the form has been submitted...
         if request.is_ajax():
-            url = request.POST['feedback_url']
+            url = 'url: ' + request.POST['feedback_url']
+            user = 'user: ' + unicode(request.user)
+            school = 'school: ' + unicode(get_school(request))
             content = request.POST['content']
             subject = u'[qlnt] User feedback'
-            message = url + '\n' + content
+            message = '\n'.join([url, user, school, content])
+            print message
             send_email( subject = subject, message = message, to_addr= ['vu.tran54@gmail.com', 'truonganhhoang@gmail.com'])
-        
-        form = FeedbackForm(request.POST) # A form bound to the POST data
-        if form.is_valid():
-            c = Feedback(fullname = form.cleaned_data['fullname'] ,
+            return HttpResponse({'done': True})
+        else:
+            form = FeedbackForm(request.POST) # A form bound to the POST data
+            if form.is_valid():
+                c = Feedback(fullname = form.cleaned_data['fullname'] ,
                               phone = form.cleaned_data['phone'],
                               email = form.cleaned_data['email'],
                               title = form.cleaned_data['title'],
                               content = form.cleaned_data['content'],
                               )
-            c.save()
-            return HttpResponseRedirect('/app/contact') # Redirect after POST
+                c.save()
+                return HttpResponseRedirect('/app/contact') # Redirect after POST
     else:
         form = FeedbackForm() # An unbound form
 

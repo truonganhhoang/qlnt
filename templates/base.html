@@ -12,13 +12,12 @@
     <link rel="stylesheet" href="/static/fancybox/jquery.fancybox-1.3.4.css" type="text/css" media="screen"/>
     <link rel="stylesheet" href="/static/css/fileuploader.css" type="text/css" media="screen"/>
     <link rel="stylesheet" href="/static/css/tipTip.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="/static/css/jquery-ui-1.8.14.custom.css" type="text/css" media="screen"/>
   {% endblock %}
   <script type="text/javascript" src="/static/js/jquery.js"></script>
+  <script type="text/javascript" src="/static/js/jquery-ui-1.8.14.custom.min.js"></script>
   <script type="text/javascript" src="/static/js/fileuploader.js"></script>
   <script type="text/javascript" src="/static/js/jquery.tipTip.minified.js"></script>
-  <script type="text/javascript" src="/static/fancybox/jquery.fancybox-1.3.4.pack.js"></script>
-  <script type="text/javascript" src="/static/fancybox/jquery.easing-1.3.pack.js"></script>
-  <script type="text/javascript" src="/static/fancybox/jquery.mousewheel-3.0.4.pack.js"></script>
   {% block js %}
     <!-- For extra js -->
   {% endblock %}
@@ -157,7 +156,7 @@
   {% endblock %}
 </section>
 <div style="display: none;">
-<div class="feedback" id="feedbackDiv">
+<div class="feedback" id="feedbackDiv" style="resize: None;">
 
 <p class="errorlist" id="feedback_message"></p>
 <br>
@@ -166,10 +165,6 @@
 <br>
 <br>
 <textarea name="feedback_content" id="feedback_content" rows="15" cols="50"></textarea>   
-<div style="width: 100%; text-align: right;">
-<input type="button" id="close_fancybox" value="Đóng lại"/>
-<input type="submit" id="submit_feedback" value="Gửi"/>
-</div> 
 </div>
 </div>
 <div class="notify-widget-pane" >
@@ -232,39 +227,44 @@ $.ajaxSetup({
     }
 });
 
-$("#feedback").fancybox({
-               'scrolling'		: 'no',
-	           'titleShow'		: false,
-	           'showCloseButton': false
- });
-
-$("#close_fancybox"). click(function(){
-    $.fancybox.close();
-    return false;
+$("#feedback").click(function(){
+    $("#feedbackDiv").dialog('open');
 });
 
 var done = function(){
-    $.fancybox.close();
+    $("#feedbackDiv").dialog('close');
     $("#feedback_content").val('');
 };
 
-$("#submit_feedback").click(function(){
-       
-        var data = $("#feedback_content").val();
-        if ( data == ''){
-            $("#feedback_message").text("Bạn vui lòng điền nội dung để góp ý.");        
-        } else {        
-            var feedback_url = window.location.href;
-            var arg = { type:"POST",
+
+$("#feedbackDiv").dialog({
+    modal : true,
+    buttons: {
+        Đóng: function(){ $(this).dialog('close');},
+        Gửi: function(){
+            var data = $("#feedback_content").val();
+            if ( data == ''){
+                $("#feedback_message").text("Bạn vui lòng điền nội dung để góp ý.");        
+            } else {        
+                var feedback_url = window.location.href;
+                var arg = { type:"POST",
                         url:"/app/feedback/",
                         data:{content: data, feedback_url: feedback_url},
                         datatype:"json",
                         success: done
                         };
-            $.ajax(arg);
+                $.ajax(arg);
+            }                
         }    
-        return false;
+    },
+    autoOpen: false,
+    width: 500,
+    height: 450,
+    maxWidth: 500,
+    maxHeight: 450,
+    title: "Góp ý"
 });
+
 
       
 </script>
