@@ -1530,7 +1530,6 @@ def tnc_select(request):
         if form.is_valid():
             d = request.POST['date'].split('/')
             class_id = str(request.POST['class_id'])
-            day = str(request.POST['date_day']) '/' + str(day) + '/' + str(month) + '/' + str(year)
             day = str(d[0])
             month = str(d[1])
             year = str(d[2])
