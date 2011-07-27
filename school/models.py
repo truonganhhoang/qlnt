@@ -451,6 +451,7 @@ class DiemDanh(models.Model):
     class Meta:
         verbose_name = "Điểm danh"
         verbose_name_plural = "Điểm danh"
+        unique_together = ("student_id", "time", "term_id")
         
     def __unicode__(self):
         return self.student_id.__unicode__() + " " + str(self.time)

@@ -21,14 +21,13 @@
     {% endif %}
     
         {%if pos > 2%}
-            {% for f in form %}
+            {% for d,f in ddhs %}
                 <tr>
                     <td align="center">
                         <p>{{forloop.counter}}</p>
                     </td>
                     <td align="center">
-                        {{f.time.errors}}
-                        <p>{{ f.time }}</p>
+                        <p>{{ d.time|date:"SHORT_DATE_FORMAT" }}</p>
                     </td>
                 
                     <td align="center">

@@ -1610,42 +1610,41 @@ def diem_danh_hs(request, student_id):
         return HttpResponse(t.render(ct))
     ddl = DiemDanh.objects.filter(student_id=student_id, term_id=term.id).order_by('time')
     if (pos > 1):
-        form = []
         iform = DiemDanhForm()
+        form = []
         for dd in ddl:
             form.append(DiemDanhForm(instance=dd))
         if request.method == 'POST':
             list = request.POST.getlist('loai')
-            time_day = request.POST.getlist('time_day')
-            time_month = request.POST.getlist('time_month')
-            time_year = request.POST.getlist('time_year')
+            print list
             i = 0
             for dd in ddl:
                 if list[i] != 'k':
-                    time = date(int(time_year[i]), int(time_month[i]), int(time_day[i]))
-                    data = {'student_id':student_id, 'time':time, 'loai':list[i], 'term_id':term.id}
+                    data = {'loai':list[i]}
                     form[i] = DiemDanhForm(data, instance=dd)
                     if form[i].is_valid():
-                        form[i].save()  
-                        i = i + 1
+                        form[i].save()
+                    i = i + 1    
                 else:
-                    time_day.remove(time_day[i])
-                    time_month.remove(time_month[i])
-                    time_year.remove(time_year[i])
-                    form.remove(form[i])
-                    list.remove(list[i])
                     dd.delete()
+                    i = i + 1
             if list[i] != 'k':
-                time = date(int(time_year[i]), int(time_month[i]), int(time_day[i]))
+                d = request.POST['time'].split('/')
+                time = date(int(d[2]), int(d[1]), int(d[0]))
                 data = {'student_id':student_id, 'time':time, 'loai':list[i], 'term_id':term.id}
                 iform = DiemDanhForm(data)
                 if iform.is_valid():
                     iform.save()
                     form.append(iform)
-                    iform = DiemDanhForm  
+                    iform = DiemDanhForm()
+                    url = '/school/diemdanhhs/' + str(student_id)
+        ddl = DiemDanh.objects.filter(student_id=student_id, term_id=term.id).order_by('time')
+        for dd in ddl:
+            form.append(DiemDanhForm(instance=dd))        
+        ddhs = zip(ddl,form)                    
         t = loader.get_template(os.path.join('school', 'diem_danh_hs.html'))
-        c = RequestContext(request, {   'form': form, 
-                                        'iform': iform, 
+        c = RequestContext(request, {   'ddhs':ddhs,
+                                        'iform':iform,
                                         'pupil':pupil, 
                                         'student_id':student_id, 
                                         'term':term,
