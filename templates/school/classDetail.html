@@ -1,360 +1,341 @@
 {% extends "base.html" %}
 {% block content %}
-  <script>
-    $(document).ready(function(){
-        $.ajaxSetup({
-            beforeSend: function(xhr, settings) {
-                function getCookie(name) {
-                    var cookieValue = null;
-                    if (document.cookie && document.cookie != '') {
-                        var cookies = document.cookie.split(';');
-                        for (var i = 0; i < cookies.length; i++) {
-                            var cookie = jQuery.trim(cookies[i]);
-                            // Does this cookie string begin with the name we want?
-                            if (cookie.substring(0, name.length + 1) == (name + '=')) {
-                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                            break;
-                            }
-                        }
-                    }   
-                    return cookieValue;
-                }
+    <script>
+        $(document).ready(function(){
 
-                if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
-                    // Only send the token to relative URLs i.e. locally.
-                    xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
-                }
-            }
-        });
-        $("#import").fancybox({
-            'scrolling'		: 'no',
-	        'titleShow'		: false,
-	        'hideOnOverlayClick' : false,
-	        'showCloseButton': false
-        });
-      
-      $("#close_fancybox").click(function(){
-        $.fancybox.close();
-        window.location.href = window.location.href;        
-        return false;      
-      }); 
-        
-        var done_upload = function(id, fileName, responseJSON){
-               
-        };   
-        function IsNumeric(input){
-            return (input - 0) == input && input.length > 0;
-        };
-      
-        var id = window.location.pathname.split('/');
-        var i = 0;
-        for ( i=0; i < id.length; i++){
-            if (IsNumeric(id[i])){
-                id = id[i];
-                break;         
-            }      
-        };    
-      
-        var uploader = new qq.FileUploader({
-            action: '/school/start_year/import/student/' + id,
-            element: $('#upload_file')[0],
-            multiple: false,
-            onComplete: done_upload,
-            onAllComplete: function( uploads ) {},
-            params: { 'csrf_token': '{{ csrf_token }}',
-                      'csrf_name': 'csrfmiddlewaretoken',
-                       'csrf_xname': 'X-CSRFToken',
-                    },
-        }) ;
-        var select = function() {
-            if (!$(this).hasClass('thread')&&!$(this).hasClass('form')&&!$(this).hasClass('function')){
-                var id = $(this).attr('class').split(' ')[0];
-                var checkboxid = '#checkbox_' + id;
-                var checkboxall = '#checkbox_all'
-                if ($(this).hasClass('selected')) {
-                    $(this).removeClass('selected');
-                    $(checkboxid).prop("checked", false);
-                    var n = $("input:checked").length;
-                    if ( n == 1) $(checkboxall).prop("checked", false);;
-                } else {
-                    $(this).addClass('selected');
-                    $(checkboxid).prop("checked", true);
-                    $(checkboxall).prop("checked", true);
-                };
-            }
-        }
-        var delSelected = function(){
-            var answer = confirm('Bạn có muốn xóa những học sinh đã chọn');
-            if (!answer) return false;
-            var data = '';
-            $(".selected").each(function(){
-                data = data + $(this).attr('class').split(' ')[0] + '-' ;
+            $("#import").click(function(){
+                $("#popupDiv").dialog('open');
             });
-            var arg = { type:"POST",
-                url:"",
-                data: {data:data},
-                datatype:"json",
-                success:location.reload(true)
+
+            $("#popupDiv").dialog({
+                modal : true,
+                buttons: {
+                    Đóng: function(){
+                        location.reload('true');
+                        $(this).dialog('close');
+                    }
+                },
+                autoOpen: false,
+                width: 400,
+                height: 350,
+                maxWidth: 400,
+                maxHeight: 350,
+                title: "Nhập học sinh từ file Excel"
+            });
+
+            var done_upload = function(id, fileName, responseJSON){
+
             };
-            $.ajax(arg);
-        }
-        $("#delSelected").click(delSelected);
-        $("tr").each(function() {
-            $(this).click(select);
+            function IsNumeric(input){
+                return (input - 0) == input && input.length > 0;
+            };
+
+            var id = window.location.pathname.split('/');
+            var i = 0;
+            for ( i=0; i < id.length; i++){
+                if (IsNumeric(id[i])){
+                    id = id[i];
+                    break;
+                }
+            };
+
+            var uploader = new qq.FileUploader({
+                action: '/school/start_year/import/student/' + id,
+                element: $('#upload_file')[0],
+                multiple: false,
+                onComplete: done_upload,
+                onAllComplete: function( uploads ) {},
+                params: { 'csrf_token': '{{ csrf_token }}',
+                    'csrf_name': 'csrfmiddlewaretoken',
+                    'csrf_xname': 'X-CSRFToken'
+                }
+            }) ;
+            var select = function() {
+                if (!$(this).hasClass('thread')&&!$(this).hasClass('form')&&!$(this).hasClass('function')){
+                    var id = $(this).attr('class').split(' ')[0];
+                    var checkboxid = '#checkbox_' + id;
+                    var checkboxall = '#checkbox_all'
+                    if ($(this).hasClass('selected')) {
+                        $(this).removeClass('selected');
+                        $(checkboxid).prop("checked", false);
+                        var n = $("input:checked").length;
+                        if ( n == 1) $(checkboxall).prop("checked", false);;
+                    } else {
+                        $(this).addClass('selected');
+                        $(checkboxid).prop("checked", true);
+                        $(checkboxall).prop("checked", true);
+                    };
+                }
+            }
+            var delSelected = function(){
+                var answer = confirm('Bạn có muốn xóa những học sinh đã chọn');
+                if (!answer) return false;
+                var data = '';
+                $(".selected").each(function(){
+                    data = data + $(this).attr('class').split(' ')[0] + '-' ;
+                });
+                var arg = { type:"POST",
+                    url:"",
+                    data: {data:data},
+                    datatype:"json",
+                    success:location.reload(true)
+                };
+                $.ajax(arg);
+            }
+            $("#delSelected").click(delSelected);
+            $("tr").each(function() {
+                $(this).click(select);
+            });
+            $("#checkbox_all").click( function(){
+                var checkboxall = '#checkbox_all'
+                if($(checkboxall).is(':checked')){
+                    $("tr").each( function(){
+                        var id = $(this).attr('class').split(' ')[0];
+                        var checkboxid = '#checkbox_' + id
+                        if (!$(this).hasClass('selected'))
+                            $(this).trigger('click');
+                    });
+                }
+                else {
+                    $("tr").each( function(){
+                        var id = $(this).attr('class').split(' ')[0];
+                        var checkboxid = '#checkbox_' + id
+                        if ($(this).hasClass('selected'))
+                            $(this).trigger('click');
+                    });
+                }
+            });
+            $("#selectAll").click(function() {
+                $("tr").each(select);
+                return false;
+            });
+
         });
-        $("#checkbox_all").click( function(){
-            var checkboxall = '#checkbox_all'
-            if($(checkboxall).is(':checked')){
-                $("tr").each( function(){
-                    var id = $(this).attr('class').split(' ')[0];
-                    var checkboxid = '#checkbox_' + id
-                    if (!$(this).hasClass('selected'))
-                        $(this).trigger('click');
-                });
-            }
-            else {
-                $("tr").each( function(){
-                    var id = $(this).attr('class').split(' ')[0];
-                    var checkboxid = '#checkbox_' + id
-                    if ($(this).hasClass('selected'))
-                        $(this).trigger('click');
-                });
-            }
-        });      
-        $("#selectAll").click(function() {
-            $("tr").each(select);
-            return false;
-        });   
-         
-    });      
-    
-    function submitClass(){
-        if (document.info.class.value!={{class.id}})
-        if (document.info.class.value!=-1)
-        {	
-            window.location = "{%url school.views.school_index  %}viewClassDetail/"+ document.info.class.value;
-        }	
-    }
 
-    function confirmDelete() {
-      return confirm("Bạn có chắc chắn xóa toàn bộ thông tin của học sinh không?");
-    }
-    
-  </script>
-  <form action="" name = "info" method = "post">{% csrf_token %} 
-    <h2>Lớp
-    <select name="class" onchange="submitClass()">       
-        <option value = -1> {{class}} </option>
-        {% for c in cl %}
-            {%if c.id != class.id%}
-            <option  value={{c.id }}> {{c}}</option>		
-            {%endif%}
-        {% endfor %}		
-    </select>
-    năm học {{ class.year_id }}</h2>
-</form>  
+        function submitClass(){
+            if (document.info.class.value!={{class.id}})
+                if (document.info.class.value!=-1)
+                {
+                    window.location = "{%url school.views.school_index  %}viewClassDetail/"+ document.info.class.value;
+                }
+        }
 
-  <table border=0 align="left" width="80%">
-    <tr class ="function">
-      {% if pos > 0 %}
-        <td width="15%" align="center"><a title="Cập nhật điểm danh theo lớp"
-                                          href="{%url school.views.school_index  %}diemdanh/{{class.id}}">Điểm danh</a>
-        </td>
-      {% endif %}
+        function confirmDelete() {
+            return confirm("Bạn có chắc chắn xóa toàn bộ thông tin của học sinh không?");
+        }
 
-      {% if pos > 2 %}
-        <td width="15%" align="center"><a title="Đánh giá hạnh kiểm học sinh trong lớp"
-                                          href="{%url school.views.school_index  %}hanhkiem/{{class.id}}">Hạnh kiểm</a>
-        </td>
-      {% endif %}
+    </script>
+    <form action="" name = "info" method = "post">{% csrf_token %}
+        <h2>Lớp
+            <select name="class" onchange="submitClass()">
+                <option value = -1> {{class}} </option>
+                {% for c in cl %}
+                    {%if c.id != class.id%}
+                        <option  value={{c.id }}> {{c}}</option>
+                    {%endif%}
+                {% endfor %}
+            </select>
+            năm học {{ class.year_id }}</h2>
+    </form>
 
-      {% if pos > 0 %}
-        <td width="15%" align="center"><a title="Xem tất cả thông tin của của môn học trong lớp"
-                                          href="{%url school.views.school_index  %}subjectPerClass/{{class.id}}">Quản lý
-          môn học</a></td>
-      {% endif %}
-
-      {% if pos > 3 %}
-        <td width="15%" align="center"><a title="Nhập hoặc chỉnh sửa điểm của tất cả các môn trong lớp"
-                                          href="{%url school.views.school_index  %}markTable/{{currentTerm.id}}/{{class.id}}">Quản lý
-          điểm</a></td>
-          {% ifequal class.year_id.school_id.status 1 %}		  
-			<td width="20%" align="center"><a title="Tự động tính trung bình học lực của cả lớp"
-                                          href="{%url school.views.school_index  %}xepLoaiHlTheoLop/{{class.id}}/1">
-										  Xem điểm tổng kết </a>
-			</td>
-		  {% else %}	
-			<td width="20%" align="center"><a title="Tự động tính trung bình học lực của cả lớp"
-                                          href="{%url school.views.school_index  %}xepLoaiHlTheoLop/{{class.id}}/2">
-										  Xem điểm tổng kết </a>
-			</td>
-		  {% endifequal %}	
-										  
-        <td width="20%" align="center">
-          {% ifnotequal class.year_id.school_id.status 1 %}
-            <a title="Tự động xếp loại cả năm của lớp"
-               href="{%url school.views.school_index  %}xlCaNamTheoLop/{{class.id}}">Tổng kết cả năm</a>
-          {% else %}
-            <a title="Chức năng này đã bị vô hiệu hóa vì đang trong học kỳ I">Tổng kết cả năm</a>
-          {% endifnotequal %}</td>
-      {% endif %}
-    </tr>
-  </table>
-<br>
-{% if message != None %}      
-<a align="left">{{ message }}</a>
-{% endif %}
-
-<button id="delSelected" align ="left">Xóa những học sinh đã chọn</button>
-    
-  <table class="styleA" >
-    <tr class ="thread">
-      <th align="center"> 
-              <input type="checkbox" id="checkbox_all"/>
-      </th>
-      <th align="center" > STT</th>
-      <th align="center" ><a
-              href="{%url school.views.school_index  %}viewClassDetail/{{class.id}}/1/{{next_status}}/1">Họ tên </a>
-      </th>
-      <th align="center" ><a
-              href="{%url school.views.school_index  %}viewClassDetail/{{class.id}}/2/{{next_status}}/1">Ngày sinh</a>
-      </th>
-      <th align="center" ><a
-              href="{%url school.views.school_index  %}viewClassDetail/{{class.id}}/3/{{next_status}}/1">Giới tính</a>
-      </th>
-      <th align="center" ><a
-              href="{%url school.views.school_index  %}viewClassDetail/{{class.id}}/4/{{next_status}}/1"> Ban đăng
-        kí </a></th>
-      <th align="center" ><a
-              href="{%url school.views.school_index  %}viewClassDetail/{{class.id}}/5/{{next_status}}/1">Ngày vào
-        trường </a></th>
-      <th align="center" > Năm vào trường</th>
-      {% if pos > 3 %}
-        <th><a href="{%url school.views.school_index  %}deleteAllStudentsInClass/{{class.id}}" onclick="return confirmDelete();">Xóa cả lớp</a></th>
-      {% endif %}
-    </tr>
-
-    {% for ss in studentList.object_list %}
-      <tr class="{{ss.id}}">
-      
-        <td align="center"> 
-              <input type="checkbox" id="checkbox_{{ss.id}}"/>
-        </td>
-        <td align="center" > {{ forloop.counter|add:base_order }} </td>
-        {% if pos > 1 or student_id == ss.id %}
-          <td align="center" ><a title="Xem toàn bộ thông tin chi tiết"
-                                            href="{%url school.views.school_index  %}viewStudentDetail/{{ss.id}}">{{ ss.last_name }} {{ ss.first_name }} </a>
-          </td>
-        {% else %}
-          <td align="center" > {{ ss.last_name }} {{ ss.first_name }}</td>
-        {% endif %}
-        <td align="center" > {{ ss.birthday|date:"SHORT_DATE_FORMAT" }}</td>
-        <td align="center" > {{ ss.sex }}</td>
-        <td align="center" > {{ ss.ban_dk }} </td>
-        <td align="center" > {{ ss.school_join_date|date:"SHORT_DATE_FORMAT" }} </td>
-        <td align="center" > {{ ss.start_year_id }} </td>
-        {% if pos > 3 %}
-          <td ><a href="{%url school.views.school_index  %}deleteStudentInClass/{{ss.id}}"
-                            onclick="return confirmDelete();"> xóa</a></td>
-        {% endif %}
-      </tr>
-    {% endfor %}
-
-    {% if pos > 3 %}
-    
-      <form action="/school/viewClassDetail/{{class.id}}/{{sort_type}}/{{sort_status}}/{{studentList.number}}"
-            method="post">{% csrf_token %}
-        <tr class = "form">
-        
-        <td align="center"> 
-          {{ form.non_field_errors }}
-          <td align="center" >
-          <td align="center" >
-            {{ form.first_name.errors }}
-            <p>{{ form.first_name }}</p>
-          </td>
-
-          <td align="center" >
-            {{ form.birthday.errors }}
-            <p>{{ form.birthday }}</p>
-          </td>
-
-          <td align="center" >
-            {{ form.sex.errors }}
-            <p>{{ form.sex }}</p>
-          </td>
-
-          <td align="center" >
-            {{ form.ban_dk.errors }}
-            <p>{{ form.ban_dk }}</p>
-          </td>
-
-          <td align="center" >
-            {{ form.school_join_date.errors }}
-            <p>{{ form.school_join_date }}</p>
-          </td>
-
-          <td align="center" >
-            {{ form.start_year_id.errors }}
-            <p>{{ form.start_year_id }}</p>
-          </td>
-          <td align="center"><input type="submit" value="Thêm"/></td>
-        </tr>
-      </table>
-      <table width="80%">
-        <tr>         
-          <td align="right"><a href="#popupDiv" 
-                               id="import"> Nhập từ Excel </a>|
-                            <a class="tiptipclick tiptiphover" 
-                               title="Chức năng đang trong quá trình hoàn thiện." 
-                               href="" 
-                               id="export"> Xuất ra Excel </a></td>
-          </form>
-        </tr>
-      </table>
-    {% endif %}
-  <table border="0" width="80%">
-    <tr boder=0>
-      <td width="100%" colspan=9 align="right">
-        <div class="pagination">
-          <span class="step-links">
-            {% if studentList.has_previous %}
-              <a href="{%url school.views.school_index  %}viewClassDetail/{{class.id}}/{{sort_type}}/{{sort_status}}/{{studentList.previous_page_number}}">
-                Trang trước </a>
+    <table border=0 align="left" width="80%">
+        <tr class ="function">
+            {% if pos > 0 %}
+                <td width="15%" align="center"><a title="Cập nhật điểm danh theo lớp"
+                                                  href="{%url school.views.school_index  %}diemdanh/{{class.id}}">Điểm danh</a>
+                </td>
             {% endif %}
 
-            <span class="current">
+            {% if pos > 2 %}
+                <td width="15%" align="center"><a title="Đánh giá hạnh kiểm học sinh trong lớp"
+                                                  href="{%url school.views.school_index  %}hanhkiem/{{class.id}}">Hạnh kiểm</a>
+                </td>
+            {% endif %}
+
+            {% if pos > 0 %}
+                <td width="15%" align="center"><a title="Xem tất cả thông tin của của môn học trong lớp"
+                                                  href="{%url school.views.school_index  %}subjectPerClass/{{class.id}}">Quản lý
+                    môn học</a></td>
+            {% endif %}
+
+            {% if pos > 3 %}
+                <td width="15%" align="center"><a title="Nhập hoặc chỉnh sửa điểm của tất cả các môn trong lớp"
+                                                  href="{%url school.views.school_index  %}markTable/{{currentTerm.id}}/{{class.id}}">Quản lý
+                    điểm</a></td>
+                {% ifequal class.year_id.school_id.status 1 %}
+                    <td width="20%" align="center"><a title="Tự động tính trung bình học lực của cả lớp"
+                                                      href="{%url school.views.school_index  %}xepLoaiHlTheoLop/{{class.id}}/1">
+                        Xem điểm tổng kết </a>
+                    </td>
+                {% else %}
+                    <td width="20%" align="center"><a title="Tự động tính trung bình học lực của cả lớp"
+                                                      href="{%url school.views.school_index  %}xepLoaiHlTheoLop/{{class.id}}/2">
+                        Xem điểm tổng kết </a>
+                    </td>
+                {% endifequal %}
+
+                <td width="20%" align="center">
+                    {% ifnotequal class.year_id.school_id.status 1 %}
+                        <a title="Tự động xếp loại cả năm của lớp"
+                           href="{%url school.views.school_index  %}xlCaNamTheoLop/{{class.id}}">Tổng kết cả năm</a>
+                    {% else %}
+                        <a title="Chức năng này đã bị vô hiệu hóa vì đang trong học kỳ I">Tổng kết cả năm</a>
+                    {% endifnotequal %}</td>
+            {% endif %}
+        </tr>
+    </table>
+    <br>
+    {% if message != None %}
+        <a align="left">{{ message }}</a>
+    {% endif %}
+
+    <button id="delSelected" align ="left">Xóa những học sinh đã chọn</button>
+
+    <table class="styleA" >
+        <tr class ="thread">
+            <th align="center">
+                <input type="checkbox" id="checkbox_all"/>
+            </th>
+            <th align="center" > STT</th>
+            <th align="center" ><a
+                    href="{%url school.views.school_index  %}viewClassDetail/{{class.id}}/1/{{next_status}}/1">Họ tên </a>
+            </th>
+            <th align="center" ><a
+                    href="{%url school.views.school_index  %}viewClassDetail/{{class.id}}/2/{{next_status}}/1">Ngày sinh</a>
+            </th>
+            <th align="center" ><a
+                    href="{%url school.views.school_index  %}viewClassDetail/{{class.id}}/3/{{next_status}}/1">Giới tính</a>
+            </th>
+            <th align="center" ><a
+                    href="{%url school.views.school_index  %}viewClassDetail/{{class.id}}/4/{{next_status}}/1"> Ban đăng
+                kí </a></th>
+            <th align="center" ><a
+                    href="{%url school.views.school_index  %}viewClassDetail/{{class.id}}/5/{{next_status}}/1">Ngày vào
+                trường </a></th>
+            <th align="center" > Năm vào trường</th>
+            {% if pos > 3 %}
+                <th><a href="{%url school.views.school_index  %}deleteAllStudentsInClass/{{class.id}}" onclick="return confirmDelete();">Xóa cả lớp</a></th>
+            {% endif %}
+        </tr>
+
+        {% for ss in studentList.object_list %}
+            <tr class="{{ss.id}}">
+
+                <td align="center">
+                    <input type="checkbox" id="checkbox_{{ss.id}}"/>
+                </td>
+                <td align="center" > {{ forloop.counter|add:base_order }} </td>
+                {% if pos > 1 or student_id == ss.id %}
+                    <td align="center" ><a title="Xem toàn bộ thông tin chi tiết"
+                                           href="{%url school.views.school_index  %}viewStudentDetail/{{ss.id}}">{{ ss.last_name }} {{ ss.first_name }} </a>
+                    </td>
+                {% else %}
+                    <td align="center" > {{ ss.last_name }} {{ ss.first_name }}</td>
+                {% endif %}
+                <td align="center" > {{ ss.birthday|date:"SHORT_DATE_FORMAT" }}</td>
+                <td align="center" > {{ ss.sex }}</td>
+                <td align="center" > {{ ss.ban_dk }} </td>
+                <td align="center" > {{ ss.school_join_date|date:"SHORT_DATE_FORMAT" }} </td>
+                <td align="center" > {{ ss.start_year_id }} </td>
+                {% if pos > 3 %}
+                    <td ><a href="{%url school.views.school_index  %}deleteStudentInClass/{{ss.id}}"
+                            onclick="return confirmDelete();"> xóa</a></td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+
+        {% if pos > 3 %}
+
+            <form action="/school/viewClassDetail/{{class.id}}/{{sort_type}}/{{sort_status}}/{{studentList.number}}"
+                  method="post">{% csrf_token %}
+                <tr class = "form">
+
+                    <td align="center">
+                        {{ form.non_field_errors }}
+                    <td align="center" >
+                    <td align="center" >
+                        {{ form.first_name.errors }}
+                        <p>{{ form.first_name }}</p>
+                    </td>
+
+                    <td align="center" >
+                        {{ form.birthday.errors }}
+                        <p>{{ form.birthday }}</p>
+                    </td>
+
+                    <td align="center" >
+                        {{ form.sex.errors }}
+                        <p>{{ form.sex }}</p>
+                    </td>
+
+                    <td align="center" >
+                        {{ form.ban_dk.errors }}
+                        <p>{{ form.ban_dk }}</p>
+                    </td>
+
+                    <td align="center" >
+                        {{ form.school_join_date.errors }}
+                        <p>{{ form.school_join_date }}</p>
+                    </td>
+
+                    <td align="center" >
+                        {{ form.start_year_id.errors }}
+                        <p>{{ form.start_year_id }}</p>
+                    </td>
+                    <td align="center"><input type="submit" value="Thêm"/></td>
+                </tr>
+            </form>
+
+            </table>
+            <table width="80%">
+                <tr>
+                    <td align="right"><a href="#popupDiv"
+                                         id="import"> Nhập từ Excel </a>|
+                        <a class="tiptipclick tiptiphover"
+                           title="Chức năng đang trong quá trình hoàn thiện."
+                           href=""
+                           id="export"> Xuất ra Excel </a></td>
+
+                </tr>
+            </table>
+        {% endif %}
+    <table border="0" width="80%">
+        <tr boder=0>
+            <td width="100%" colspan=9 align="right">
+                <div class="pagination">
+                    <span class="step-links">
+                        {% if studentList.has_previous %}
+                            <a href="{%url school.views.school_index  %}viewClassDetail/{{class.id}}/{{sort_type}}/{{sort_status}}/{{studentList.previous_page_number}}">
+                                Trang trước </a>
+                        {% endif %}
+
+                        <span class="current">
 				Trang {{ studentList.number }}/{{ studentList.paginator.num_pages }}.
 			</span>
 
-            {% if studentList.has_next %}
-              <a href="{%url school.views.school_index  %}viewClassDetail/{{class.id}}/{{sort_type}}/{{sort_status}}/{{studentList.next_page_number}}">
-                Trang sau </a>
-            {% endif %}
-          </span>
-        </div>
-      </td>
-    </tr>
-  </table>
-<div  style="display:none" >
-<div id="popupDiv">
-<h2>Nhập học sinh từ file Excel</h2>
-<br>
-<br>
-<form name="form" action="school/start_year/import/student" method="POST" enctype="multipart/form-data">{% csrf_token %}
-<div id="upload_file">
-</div>
-<p>
+                        {% if studentList.has_next %}
+                            <a href="{%url school.views.school_index  %}viewClassDetail/{{class.id}}/{{sort_type}}/{{sort_status}}/{{studentList.next_page_number}}">
+                                Trang sau </a>
+                        {% endif %}
+                    </span>
+                </div>
+            </td>
+        </tr>
+    </table>
+    <div  style="display:none" >
+        <div id="popupDiv">
+            <h2>Nhập học sinh từ file Excel</h2>
+            <br>
+            <br>
+            <form name="form" action="school/start_year/import/student" method="POST" enctype="multipart/form-data">{% csrf_token %}
+                <div id="upload_file">
+                </div>
+                <p>
 
-      Chú ý: Phải dùng file Excel theo <a href="{{ MEDIA_URL }}template_files/student_template.xls">mẫu này</a>.
-    </p>
-<br>
-<br>
-<br>
-<div style="width: 100%; text-align: right;">
-<input type="button" id="close_fancybox" value="Đóng lại"/>
-</div>
-</form> 
-</div>
-</div>
+                    Chú ý: Phải dùng file Excel theo <a href="{{ MEDIA_URL }}template_files/student_template.xls">mẫu này</a>.
+                </p>
+                <br>
+            </form>
+        </div>
+    </div>
 {% endblock %}
