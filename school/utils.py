@@ -179,17 +179,17 @@ def add_student( student = None, start_year = None , year = None,
         if not ( student and start_year and term and school ):
             raise Exception("Phải có giá trị cho các trường: Student,Start_Year,Term,School.")
         if 'full_name' in student:
-            print student['full_name']
+            # print student['full_name']
             names = student['full_name'].split(" ")
             last_name = ' '.join(names[:len(names)-1])
             first_name = names[len(names)-1]
-            print last_name
-            print first_name
+            # print last_name
+            # print first_name
         else:
             last_name = student['last_name']
             first_name = student['first_name']
-            print student['first_name']
-            print last_name, first_name
+            # print student['first_name']
+            # print last_name, first_name
         if not school_join_date:
             school_join_date = datetime.date.today()
         birthday = student['birthday']
