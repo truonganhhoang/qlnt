@@ -118,7 +118,7 @@ class BasicPersonInfo(models.Model):
     sms_phone = models.CharField("Điện thoại nhận tin nhắn", max_length = 15, null = True, blank = True, validators = [validate_phone])
     current_address = models.CharField("Địa chỉ", max_length = 200, blank = True, null = True)
     email = models.EmailField("Email", null = True, blank = True)
-    
+    index = models.IntegerField("Số thứ tự", default=0)
     class Meta:
         abstract = True
     
@@ -179,8 +179,10 @@ class Class(models.Model):
     #cai nay sau cung bo di    
     #class_code = models.CharField(max_length = 20, unique = True)    
     name = models.CharField("Tên lớp(*)", max_length = 20)
+    index = models.IntegerField("Số thứ tự", default=0)
     status = models.SmallIntegerField("Tình trạng", max_length = 3, null = True, blank= True, choices = CLASS_ACTION_STATUS)
-    
+
+
     year_id = models.ForeignKey(Year, verbose_name = "Năm học(*)")
     #lop nay thuoc khoi nao
     block_id = models.ForeignKey(Block, verbose_name = "Khối(*)")
@@ -237,17 +239,23 @@ class Pupil(BasicPersonInfo):
 class Subject(models.Model):    
     name = models.CharField("Tên môn học(*)", max_length = 45) # can't be null
     hs = models.FloatField("Hệ số(*)", validators = [validate_hs])
-    
-    primary = models.BooleanField("Loại môn", default = True)
-    
+
+    primary = models.SmallIntegerField("Loại môn", default = 0)
+    '''
+    0: use for both of semester
+    1: use only for first semester
+    2: use only for second semester
+    3: not use
+    '''
+    index = models.IntegerField("Số thứ tự", default=0)
+
     class_id = models.ForeignKey(Class, verbose_name = "Lớp(*)")    
     teacher_id = models.ForeignKey(Teacher, verbose_name = "Giáo viên(*)", null= True, blank = True) # field nay de cung cap permission cho giao vien de nhap diem
     
     class Meta:
         verbose_name = "Môn"
         verbose_name_plural = "Môn"
-    """
-    """
+    
     def __unicode__(self):
         return self.name
     

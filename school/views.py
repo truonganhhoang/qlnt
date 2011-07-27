@@ -138,6 +138,34 @@ def empty(label_list):
         if l.strip(): return False
     return True
 
+
+# this following view handles all ajax request of indexing targets.
+def change_index(request, target, class_id):
+    print 'is on view'
+    if target == u'subject':
+        if request.is_ajax():
+            if request.method == 'POST':
+                data = request.POST['data']
+                print data
+                try:
+                    list = data.split('/')
+                    for element in list:
+                        if element:
+                            id = int(element.split('_')[0])
+                            index = int(element.split('_')[1])
+                            subject = Subject.objects.get(id = id)
+                            if subject.index != index:
+                                subject.index = index
+                                subject.save()
+                    response = simplejson.dumps({'success': True})
+                    return HttpResponse( response, mimetype='json')
+                except Exception as e:
+                    print e
+        else:
+            raise Exception('NotAjaxRequest')
+    else:
+        pass
+
 def phase_class_label(request, school):
     class_labels = []
     message = None
@@ -267,7 +295,7 @@ def b1(request):
         upper_bound = 12
         ds_mon_hoc = CAP3_DS_MON
     
-    if school.status == 0:
+    if not school.status:
         for khoi in range(lower_bound, upper_bound+1):
             block = Block()
             block.number = khoi
@@ -322,8 +350,10 @@ def b1(request):
                 _class.block_id = block
                 _class.year_id = year
                 _class.save()
+                i =0
                 for mon in ds_mon_hoc:
-                    add_subject( mon, 1, None, _class)
+                    add_subject( mon, 1, None, _class, index = i )
+                    i+=1
         # -- day cac hoc sinh len lop        
         last_year = school.year_set.filter(time__exact=current_year -1)
         if last_year:
@@ -570,7 +600,6 @@ def student_import( request, class_id ):
         year = school.startyear_set.get(time=datetime.date.today().year)
         current_year = school.year_set.latest('time')
         term = get_current_term( request)
-        print "tag 4"
         try:
             c = datetime.datetime.now()
             add_many_students(student_list = result, _class = chosen_class, 
@@ -1118,7 +1147,7 @@ def viewTeacherDetail(request, teacher_id):
                                     'pos': pos})
     return HttpResponse(t.render(c))
 
-def subjectPerClass(request, class_id, sort_type=1, sort_status=0):
+def subjectPerClass(request, class_id, sort_type=4, sort_status=0):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
@@ -1134,21 +1163,27 @@ def subjectPerClass(request, class_id, sort_type=1, sort_status=0):
     cl = Class.objects.get(id=class_id)
     term=get_current_term(request)
     school_id = cl.block_id.school_id.id
-    if int(sort_type) == 1:
-        if int(sort_status) == 0:
-            subjectList = cl.subject_set.order_by('name')
-        else:
-            subjectList = cl.subject_set.order_by('-name')
-    if int(sort_type) == 2:
-        if int(sort_status) == 0:
-            subjectList = cl.subject_set.order_by('hs')
-        else:
-            subjectList = cl.subject_set.order_by('-hs')
-    if int(sort_type) == 3:
-        if int(sort_status) == 0:
-            subjectList = cl.subject_set.order_by('teacher_id__first_name')
-        else:
-            subjectList = cl.subject_set.order_by('-teacher_id__first_name')
+    try:
+        if int(sort_type) == 1:
+            if int(sort_status) == 0:
+                subjectList = cl.subject_set.order_by('name')
+            else:
+                subjectList = cl.subject_set.order_by('-name')
+        if int(sort_type) == 2:
+            if int(sort_status) == 0:
+                subjectList = cl.subject_set.order_by('hs')
+            else:
+                subjectList = cl.subject_set.order_by('-hs')
+        if int(sort_type) == 3:
+            if int(sort_status) == 0:
+                subjectList = cl.subject_set.order_by('teacher_id__first_name')
+            else:
+                subjectList = cl.subject_set.order_by('-teacher_id__first_name')
+        if int(sort_type) == 4:
+            subjectList = cl.subject_set.order_by('index')
+    except Exception as e:
+        print e
+            
     form = SubjectForm(school_id)
     sfl = []
     for s in subjectList:
@@ -1197,6 +1232,9 @@ def subjectPerClass(request, class_id, sort_type=1, sort_status=0):
             subjectList = cl.subject_set.order_by('teacher_id__first_name')
         else:
             subjectList = cl.subject_set.order_by('-teacher_id__first_name')
+    if int(sort_type) == 4:
+        subjectList = cl.subject_set.order_by('index')
+        
     sfl = []
     year = get_current_year(request)
     classList = year.class_set.all()
@@ -1408,7 +1446,6 @@ def diem_danh(request, class_id, day, month, year):
                         return HttpResponse(data, mimetype = 'json')
                                     
                     if diemdanh.loai != loai:
-                        print 11
                         diemdanh.loai = loai
                         diemdanh.save()
                 

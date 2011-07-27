@@ -436,7 +436,7 @@ def del_teacher( teacher):
     teacher.user_id.delete()
     #teacher.delete()    
 # subject_name: string, teacher : Teacher object, _class : Class object
-def add_subject( subject_name = None, hs = 1, teacher = None, _class = None):
+def add_subject( subject_name = None, hs = 1, teacher = None, _class = None, index = 0):
     find = _class.subject_set.filter( name__exact = subject_name)
     try:
         term = _class.year_id.term_set.get(number = _class.year_id.school_id.status)
@@ -452,6 +452,7 @@ def add_subject( subject_name = None, hs = 1, teacher = None, _class = None):
         subject.hs = hs
         subject.teacher_id = teacher
         subject.class_id = _class
+        subject.index = index
         subject.save()
     
         students = _class.pupil_set.all()
