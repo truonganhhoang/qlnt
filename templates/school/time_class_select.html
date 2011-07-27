@@ -1,6 +1,11 @@
 {% extends "base.html" %}
 
 {% block content %}
+  <script>
+     $(document).ready(function(){
+        $("input.datepicker").datepicker();
+     });
+  </script>
   <form action="" method="post">{% csrf_token %}
     <h2>Điểm danh {{ form }}
       <input type="submit" value="Chọn"/>

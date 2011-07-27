@@ -8,7 +8,7 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext, loader
 from django.core.exceptions import *
 from django.db import transaction
-from django.forms.widgets import RadioSelect
+from django.forms.widgets import RadioSelect, DateInput
 from django.forms.extras.widgets import SelectDateWidget
 from django import forms
 
@@ -147,7 +147,7 @@ class DateForm(forms.Form):
         
 class DateAndClassForm(forms.Form):
     class_id = forms.ModelChoiceField(queryset = Class)
-    date = forms.DateField(label = u'ngày', widget = SelectDateWidget(years = range( this_year(), this_year()-2 , -1)), initial = date.today())
+    date = forms.DateField(label = u'ngày', widget = DateInput(attrs = {'class':'datepicker'}), initial= date.today)
     
     def __init__(self, year_id, *args, **kwargs):
         super(DateAndClassForm, self).__init__(*args, **kwargs)

@@ -1377,15 +1377,15 @@ def diem_danh(request, class_id, day, month, year):
 
     if request.method == 'POST':
         try:
-            if request.POST[u'date_day'] or request.POST[u'date_month'] or request.POST[u'date_year'] or request.POST[u'class_id']:
-                dncform = DateAndClassForm(year_id,request.POST)
-                if dncform.is_valid():
-                    class_id = int(request.POST[u'class_id'])
-                    day = int(request.POST[u'date_day'])
-                    month = int(request.POST[u'date_month'])
-                    year = int(request.POST[u'date_year'])
-                    url = '/school/diemdanh/' + str(class_id) + '/' + str(day) + '/' + str(month) + '/' + str(year)
-                    return HttpResponseRedirect(url)
+            dncform = DateAndClassForm(year_id,request.POST)
+            if dncform.is_valid():
+                d = request.POST['date'].split('/')
+                class_id = int(request.POST[u'class_id'])
+                day = int(d[0])
+                month = int(d[1])
+                year = int(d[2])
+                url = '/school/diemdanh/' + str(class_id) + '/' + str(day) + '/' + str(month) + '/' + str(year)
+                return HttpResponseRedirect(url)
         except MultiValueDictKeyError:
             pass
     if request.is_ajax():
@@ -1509,18 +1509,12 @@ def time_select(request, class_id):
     except ObjectDoesNotExist:
         message = None
     form = DateForm()
-    if request.method == 'POST':
-        form = DateForm(request.POST)
-        if form.is_valid():
-            day = int(request.POST['date_day'])
-            month = int(request.POST['date_month'])
-            year = int(request.POST['date_year'])
-            url = '/school/diemdanh/' + str(class_id) + '/' + str(day) + '/' + str(month) + '/' + str(year)
-            return HttpResponseRedirect(url)
-    t = loader.get_template(os.path.join('school', 'time_select.html'))
-    c = RequestContext(request, {'form':form, 'class_id':class_id, 'message':message})
-    return HttpResponse(t.render(c))
-
+    day = int(date.today().day)
+    month = int(date.today().month)
+    year = int(date.today().year)
+    url = '/school/diemdanh/' + str(class_id) + '/' + str(day) + '/' + str(month) + '/' + str(year)
+    return HttpResponseRedirect(url)
+    
 def tnc_select(request):
     user = request.user
     if not user.is_authenticated():
@@ -1534,11 +1528,13 @@ def tnc_select(request):
     if request.method == 'POST':
         form = DateAndClassForm(year_id,request.POST)
         if form.is_valid():
+            d = request.POST['date'].split('/')
             class_id = str(request.POST['class_id'])
-            day = str(request.POST['date_day'])
-            month = str(request.POST['date_month'])
-            year = str(request.POST['date_year'])
-            url = '/school/diemdanh/' + str(class_id) + '/' + str(day) + '/' + str(month) + '/' + str(year)
+            day = str(request.POST['date_day']) '/' + str(day) + '/' + str(month) + '/' + str(year)
+            day = str(d[0])
+            month = str(d[1])
+            year = str(d[2])
+            url = '/school/diemdanh/' + class_id + '/' + day + '/' + month + '/' + year
             return HttpResponseRedirect(url)
         else:
             message = 'Chọn lớp và ngày chưa đúng.'

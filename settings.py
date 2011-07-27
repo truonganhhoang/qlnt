@@ -74,7 +74,7 @@ DECIMAL_SEPARATOR = '.'
 
 
 #DATE_FORMAT = ('D/M/YY', 'DD/MM/YYYY')
-#DATE_INPUT_FORMATS = ('%d-%m-%Y', '%d/%m/%Y')
+DATE_INPUT_FORMATS = ('%d/%m/%Y', '%d-%m-%Y')
 #DECIMAL_SEPARATOR = '.'
 
 SITE_ID = 1
