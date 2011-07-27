@@ -917,7 +917,7 @@ def viewClassDetail(request, class_id, sort_type=1, sort_status=0, page=1):
                 return HttpResponseRedirect(url)
         else:        
             if (request.POST['first_name']):
-                name = request.POST['first_name'].split()
+                name = request.POST['first_name'].strip().split()
                 last_name = ' '.join(name[:len(name)-1])
                 first_name = name[len(name)-1]
             else:
@@ -1173,7 +1173,7 @@ def subjectPerClass(request, class_id, sort_type=1, sort_status=0):
                 if sfl[i].is_valid():
                     sfl[i].save()
                     message = 'Danh sách môn học đã được cập nhật.'
-            i = i + 1
+            i += 1
         if teacher_list[i] != u'' or request.POST['name'] != u'' or hs_list[i] != u'':
             data = {'name':request.POST['name'], 'hs':hs_list[i], 'class_id':class_id, 'teacher_id':teacher_list[i]}
             form = SubjectForm(school_id, data)
@@ -2166,9 +2166,7 @@ def viewSubjectDetail (request, subject_id):
         data = request.POST
         form = SubjectForm(class_id.block_id.school_id.id, data, instance = sub)
         if form.is_valid():
-            primary = request.POST.get('primary', False)
-            change_primary(sub, primary)
-            form.save()                        
+            form.save()
             message = 'Bạn đã cập nhật thành công'        
             
     t = loader.get_template(os.path.join('school', 'subject_detail.html'))

@@ -76,9 +76,9 @@ def make_username( first_name = None, last_name = None, full_name = None, start_
         names = full_name.split(" ")
         last_name = ' '.join(names[:len(names)-1])
         first_name = names[len(names)-1]
-    last_name = unicodedata.normalize('NFKD', last_name).encode('ascii','ignore').lower()
-    last_name = unicodedata.normalize('NFKD', first_name).encode('ascii','ignore').lower()
-    
+    last_name = unicodedata.normalize('NFKD', unicode(last_name)).encode('ascii','ignore').lower()
+    if first_name:
+        first_name = unicodedata.normalize('NFKD', unicode(first_name)).encode('ascii','ignore').lower()
     username = first_name
     if last_name and last_name.strip() != '':
         for word in last_name.split(" "):
@@ -179,12 +179,17 @@ def add_student( student = None, start_year = None , year = None,
         if not ( student and start_year and term and school ):
             raise Exception("Phải có giá trị cho các trường: Student,Start_Year,Term,School.")
         if 'full_name' in student:
+            print student['full_name']
             names = student['full_name'].split(" ")
             last_name = ' '.join(names[:len(names)-1])
             first_name = names[len(names)-1]
+            print last_name
+            print first_name
         else:
             last_name = student['last_name']
             first_name = student['first_name']
+            print student['first_name']
+            print last_name, first_name
         if not school_join_date:
             school_join_date = datetime.date.today()
         birthday = student['birthday']
@@ -438,6 +443,7 @@ def add_subject( subject_name = None, hs = 1, teacher = None, _class = None):
     except Exception as e:
         print e
         raise Exception("TermDoesNotExist")
+    print find
     if find:
         raise Exception("SubjectExist")
     else:
@@ -482,42 +488,6 @@ def add_subject( subject_name = None, hs = 1, teacher = None, _class = None):
             except Exception as e:
                 print e
 
-def change_primary( subject, primary):
-    if subject.primary != primary:
-        _class = subject.class_id
-        students = _class.pupil_set.all()
-        if subject.is_primary():
-            for student in students:
-                # get tbHocKy
-                school = _class.year_id.school_id
-                current_term = _class.year_id.term_set.get( number = school.status)
-                print current_term
-                try:
-                    tbhocky = student.tbhocky_set.get( term_id = current_term)
-                    print tbhocky
-                    if primary:
-                        tbhocky.number_subject += 1
-                    else:
-                        tbhocky.number_subject -= 1
-                    if tbhocky.number_subject < 0: raise Exception("TBHocKy.number_subject<0")
-                    tbhocky.save()
-                except Exception as e:
-                    print e
-                
-                # get TBNam
-                try:
-                    tbnam = student.tbnam_set.get( year_id = _class.year_id)
-                    print tbnam
-                    if primary:
-                        tbnam.number_subject += 1
-                    else:
-                        tbnam.number_subject -= 1
-                    if tbnam.number_subject < 0: raise Exception("TBNam.number_subject<0")
-                    tbnam.save()
-                except Exception as e:
-                    print e 
-        subject.primary = primary
-        subject.save()   
 
 def completely_del_subject( subject):
     _class = subject.class_id
