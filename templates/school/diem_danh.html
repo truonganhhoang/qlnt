@@ -87,7 +87,6 @@
                 note = '';
             });
 
-            $("input.datepicker").datepicker();
             $("select[name=class_id]").change(function(){
                 var class_id = $(this).val()
                 url = "/school/diemdanh/" + class_id + "/{{day}}/{{month}}/{{year}}"

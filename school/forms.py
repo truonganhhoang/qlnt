@@ -9,7 +9,6 @@ from django.template import RequestContext, loader
 from django.core.exceptions import *
 from django.db import transaction
 from django.forms.widgets import RadioSelect, DateInput
-from django.forms.extras.widgets import SelectDateWidget
 from django import forms
 
 from school.utils import *
@@ -33,7 +32,7 @@ class TeacherForm(forms.ModelForm):
         exclude = ('school_id', 'user_id')
         field = ('birthday')
         widgets = {
-            'birthday' : SelectDateWidget(years = range( this_year()-18 ,this_year()-65, -1)),
+            'birthday' : DateInput(attrs = {'class':'datepicker'}),
         }
         
 class PupilForm(forms.ModelForm):
@@ -42,13 +41,13 @@ class PupilForm(forms.ModelForm):
         exclude = ('school_id','user_id')
         field = ('birthday', 'school_join_date', 'ngay_vao_doan', 'ngay_vao_doi', 'ngay_vao_dang', 'father_birthday', 'mother_birthday')
         widgets = {
-            'birthday' : SelectDateWidget(years = range( this_year()-6 ,this_year()-60, -1)),
-            'school_join_date' : SelectDateWidget(years = range( this_year() ,this_year()-2, -1)),
-            'ngay_vao_doan': SelectDateWidget(years = range( this_year() ,this_year()-60, -1)),
-            'ngay_vao_doi': SelectDateWidget(years = range( this_year() ,this_year()-60, -1)),
-            'ngay_vao_dang': SelectDateWidget(years = range( this_year() ,this_year()-60, -1)),
-            'father_birthday': SelectDateWidget(years = range( this_year()-20 ,this_year()-80, -1)),
-            'mother_birthday': SelectDateWidget(years = range( this_year()-20 ,this_year()-80, -1)),
+            'birthday' : DateInput(attrs = {'class':'datepicker'}),
+            'school_join_date' : DateInput(attrs = {'class':'datepicker'}),
+            'ngay_vao_doan': DateInput(attrs = {'class':'datepicker'}),
+            'ngay_vao_doi': DateInput(attrs = {'class':'datepicker'}),
+            'ngay_vao_dang': DateInput(attrs = {'class':'datepicker'}),
+            'father_birthday': DateInput(attrs = {'class':'datepicker'}),
+            'mother_birthday': DateInput(attrs = {'class':'datepicker'}),
         }
     def __init__(self, school_id, *args, **kwargs):
         super(PupilForm, self).__init__(*args, **kwargs)
@@ -103,7 +102,7 @@ class KhenThuongForm(forms.ModelForm)        :
         exclude = ('student_id', 'term_id')
         field = ('time', 'noi_dung')
         widgets = {
-            'time' : SelectDateWidget(years = range( this_year() ,this_year()-2, -1)),
+            'time' : DateInput(attrs = {'class':'datepicker'}),
             'noi_dung': forms.Textarea(attrs = {'cols': 50, 'rows': 10}),
         }
         
@@ -113,7 +112,7 @@ class KiLuatForm(forms.ModelForm):
         exclude = ('student_id', 'term_id')
         field = ('time', 'noi_dung')
         widgets = {
-            'time' : SelectDateWidget(years = range( this_year() ,this_year()-2,-1)),
+            'time' : DateInput(attrs = {'class':'datepicker'}),
             'noi_dung': forms.Textarea(attrs = {'cols': 50, 'rows': 10}),
         }
 
@@ -126,7 +125,7 @@ class DiemDanhForm(forms.ModelForm):
         model = DiemDanh
         field = ('time')
         widgets = {
-            'time' : SelectDateWidget(years = range( this_year() ,this_year()-100, -1)),
+            'time' : DateInput(attrs = {'class':'datepicker'}),
         }
 
 class TKDiemDanhForm(forms.ModelForm):
@@ -142,7 +141,7 @@ class MarkForm(forms.ModelForm):
         model = Mark
         
 class DateForm(forms.Form):
-    date = forms.DateField(label = '', widget = SelectDateWidget(years = range( this_year(), this_year()-2 , -1)), initial = date.today())
+    date = forms.DateField(label = '', widget = DateInput(attrs = {'class':'datepicker'}), initial = date.today())
 
         
 class DateAndClassForm(forms.Form):

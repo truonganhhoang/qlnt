@@ -180,6 +180,7 @@
             $.datepicker.regional['vi']
         )
     );
+    $("input.datepicker").datepicker();
     $("#notify").ajaxStart( function(){
         $(this).text("Đang lưu dữ liệu lên server...");
         $(this).fadeIn('fast');

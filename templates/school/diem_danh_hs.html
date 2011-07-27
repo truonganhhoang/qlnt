@@ -12,9 +12,9 @@
 <table class="styleA" >
 
     <tr>
-        <th align="center" width="5%"> STT </th>
-        <th align="center" width="15%"> Ngày</th>
-        <th align="center" width="8%"> Điểm danh </th>
+        <th align="center"> STT </th>
+        <th align="center"> Ngày</th>
+        <th align="center"> Điểm danh </th>
     </tr>
     {% if message != None %}
     {{message}}
@@ -23,31 +23,31 @@
         {%if pos > 2%}
             {% for f in form %}
                 <tr>
-                    <td align="center" width="5%">
+                    <td align="center">
                         <p>{{forloop.counter}}</p>
                     </td>
-                    <td align="center" width="15%">
+                    <td align="center">
                         {{f.time.errors}}
                         <p>{{ f.time }}</p>
                     </td>
                 
-                    <td align="center" width="8%">
+                    <td align="center">
                         {{ f.loai.errors }}
                         <p>{{ f.loai }}</p>
                     </td>
                 </tr>
             {% endfor %}
                 <tr>
-                    <td align="center" width="5%">
+                    <td align="center">
                         <p>{{ p.id }}</p>
                     </td>
 
-                    <td align="center" width="15%">
+                    <td align="center">
                         {{iform.time.errors}}
                         <p>{{ iform.time }}</p>
                     </td>
                 
-                    <td align="center" width="8%">
+                    <td align="center">
                         {{ iform.loai.errors }}
                         <p>{{ iform.loai }}</p>
                     </td>
@@ -57,14 +57,14 @@
         {%else%}
             {% for f in form %}
                 <tr>
-                    <td align="center" width="5%">
+                    <td align="center">
                         <p>{{forloop.counter}}</p>
                     </td>
-                    <td align="center" width="15%">
+                    <td align="center">
                         <p>{{ f.time|date:"SHORT_DATE_FORMAT" }}</p>
                     </td>
                 
-                    <td align="center" width="8%">
+                    <td align="center">
                         <p>{{ f.loai }}</p>
                     </td>
                 </tr>

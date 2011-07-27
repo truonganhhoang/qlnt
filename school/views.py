@@ -923,25 +923,18 @@ def viewClassDetail(request, class_id, sort_type=1, sort_status=0, page=1):
             else:
                 last_name = ''
                 first_name = ''
-            if (int(request.POST['birthday_year']) and int(request.POST['birthday_month']) and int(request.POST['birthday_day'])):
-                try :
-                    birthday = date(int(request.POST['birthday_year']), int(request.POST['birthday_month']), int(request.POST['birthday_day']))
-                except ValueError:
-                    birthday = None
-            else:
-                birthday = None
-                
-            if (request.POST['school_join_date_year'] and request.POST['school_join_date_month'] and request.POST['school_join_date_day']):
-                try:
-                    school_join_date = date(int(request.POST['school_join_date_year']), int(request.POST['school_join_date_month']), int(request.POST['school_join_date_day']))
-                except ValueError:
-                    school_join_date=None
-            else:
-                school_join_date = None
-            data = {'first_name':first_name, 'last_name':last_name, 'birthday':birthday, 'class_id':class_id, 'sex':request.POST['sex'], 'ban_dk':request.POST['ban_dk'], 'school_join_date':school_join_date, 'start_year_id':request.POST['start_year_id']}
+            data = request.POST.copy()    
+            data['first_name'] = first_name
+            data['last_name'] = last_name
+            data['class_id'] = class_id
             form = PupilForm(school.id, data)
             if form.is_valid():
+                d = request.POST['school_join_date'].split('/')
+                school_join_date = date(int(d[2]),int(d[1]),int(d[0]))
+                d = request.POST['birthday'].split('/')
+                birthday = date(int(d[2]),int(d[1]),int(d[0]))
                 data['ban'] = data['ban_dk']
+                data['birthday'] = birthday
                 _class = Class.objects.get(id=class_id)
                 start_year = StartYear.objects.get(id=int(data['start_year_id']))
                 add_student(student=data, start_year=start_year, year=get_current_year(request), _class=_class, term=get_current_term(request), school=get_school(request), school_join_date=school_join_date)

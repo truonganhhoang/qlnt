@@ -6,10 +6,13 @@
 {% endif %}
 
 <script>
-function confirmCancel()
-{
-    return confirm("Bạn có chắc chắn muốn hủy cập nhật?");
-}
+    $(document).ready(function() {
+        $("input.datepicker").datepicker();
+    });
+    function confirmCancel()
+    {
+        return confirm("Bạn có chắc chắn muốn hủy cập nhật?");
+    }
 </script>
 <form action="/school/viewTeacherDetail/{{id}}" method="post">{% csrf_token %}
     {{ form.non_field_errors }}
