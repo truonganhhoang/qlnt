@@ -405,6 +405,7 @@ def del_student( student):
 def completely_del_student( student):
     student.user_id.delete()
 
+
 def add_teacher( first_name = None, last_name = None, full_name = None, school = None,
                  birthday = None, sex = 'N', birthplace = None):
     if full_name:
@@ -441,7 +442,7 @@ def add_subject( subject_name = None, hs = 1, teacher = None, _class = None, ind
     try:
         term = _class.year_id.term_set.get(number = _class.year_id.school_id.status)
     except Exception as e:
-        print e
+        #print e
         raise Exception("TermDoesNotExist")
     print find
     if find:
@@ -471,10 +472,10 @@ def add_subject( subject_name = None, hs = 1, teacher = None, _class = None, ind
             # get TBHocKy
             school = _class.year_id.school_id
             current_term = _class.year_id.term_set.get( number = school.status )
-            print current_term
+            #print current_term
             try:
                 tbhocky = student.tbhocky_set.get( term_id = current_term)
-                print tbhocky
+                #print tbhocky
                 tbhocky.number_subject += 1
                 tbhocky.save()
             except Exception as e:
@@ -483,7 +484,7 @@ def add_subject( subject_name = None, hs = 1, teacher = None, _class = None, ind
             # get TBNam
             try:
                 tbnam = student.tbnam_set.get( year_id = _class.year_id)
-                print tbnam
+                #print tbnam
                 tbnam.number_subject += 1
                 tbnam.save()
             except Exception as e:

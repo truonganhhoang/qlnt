@@ -1209,10 +1209,10 @@ def subjectPerClass(request, class_id, sort_type=4, sort_status=0):
                 _class = Class.objects.get(id=class_id)
                 if teacher_list[i] != u'':
                     teacher = Teacher.objects.get(id=int(data['teacher_id']))
-                    add_subject(subject_name=data['name'], hs=float(data['hs']), teacher=teacher, _class=_class, term=term)
+                    add_subject(subject_name=data['name'], hs=float(data['hs']), teacher=teacher, _class=_class)
                     form = SubjectForm(school_id)
                 else:
-                    add_subject(subject_name=data['name'], hs=float(data['hs']), teacher=None, _class=_class, term=term)
+                    add_subject(subject_name=data['name'], hs=float(data['hs']), teacher=None, _class=_class)
                     form = SubjectForm(school_id)
                 message = 'Môn học mới đã được thêm.'
             else:
