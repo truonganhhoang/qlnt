@@ -23,7 +23,7 @@ ENABLE_CHANGE_MARK=True
 def thu(request):
     t1= time.time()
     
-    list1 = TKMon.objects.all()
+    list1 = TKMon.objects.filter(student_id__class_id=1)
     for m in list1:
         m.tb_nam=random.randrange( 6,11 )
        # m.save()
