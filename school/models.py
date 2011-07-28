@@ -6,7 +6,7 @@ from datetime import date
 
 from app.models import *
 
-
+LOAI_CHOICES = ((0,u'Tính cả 2 kỳ'),(1,u'Chỉ tính kì 1'),(2,u'Chỉ tính kì 2'),(3,u'Không tính điểm'))
 GENDER_CHOICES = ((u'Nam', u'Nam'),(u'Nữ', u'Nữ'),)
 TERM_CHOICES = ((1, u'1'), (2, u'2'),(3, u'3'),)
 HK_CHOICES = ((u'T', u'Tốt'), (u'K', u'Khá'),(u'TB',u'Trung Bình'),(u'Y', u'Yếu'),)
@@ -240,13 +240,7 @@ class Subject(models.Model):
     name = models.CharField("Tên môn học(*)", max_length = 45) # can't be null
     hs = models.FloatField("Hệ số(*)", validators = [validate_hs])
 
-    primary = models.SmallIntegerField("Loại môn", default = 0)
-    '''
-    0: use for both of semester
-    1: use only for first semester
-    2: use only for second semester
-    3: not use
-    '''
+    primary = models.SmallIntegerField("Tính điểm(*)", default = 0, choices = LOAI_CHOICES)
     index = models.IntegerField("Số thứ tự", default=0)
 
     class_id = models.ForeignKey(Class, verbose_name = "Lớp(*)")    

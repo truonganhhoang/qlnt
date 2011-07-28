@@ -1180,7 +1180,10 @@ def subjectPerClass(request, class_id, sort_type=4, sort_status=0):
             else:
                 subjectList = cl.subject_set.order_by('-teacher_id__first_name')
         if int(sort_type) == 4:
-            subjectList = cl.subject_set.order_by('index')
+            if int(sort_status) == 0:
+                subjectList = cl.subject_set.order_by('index')
+            else:
+                subjectList = cl.subject_set.order_by('-index')            
     except Exception as e:
         print e
             
@@ -1203,16 +1206,17 @@ def subjectPerClass(request, class_id, sort_type=4, sort_status=0):
                     message = 'Danh sách môn học đã được cập nhật.'
             i += 1
         if teacher_list[i] != u'' or request.POST['name'] != u'' or hs_list[i] != u'':
-            data = {'name':request.POST['name'], 'hs':hs_list[i], 'class_id':class_id, 'teacher_id':teacher_list[i]}
+            index = i+1
+            data = {'name':request.POST['name'], 'hs':hs_list[i], 'class_id':class_id, 'teacher_id':teacher_list[i], 'index':index, 'primary':request.POST['primary']}
             form = SubjectForm(school_id, data)
             if form.is_valid():
                 _class = Class.objects.get(id=class_id)
                 if teacher_list[i] != u'':
                     teacher = Teacher.objects.get(id=int(data['teacher_id']))
-                    add_subject(subject_name=data['name'], hs=float(data['hs']), teacher=teacher, _class=_class)
+                    add_subject(subject_name=data['name'], hs=float(data['hs']), teacher=teacher, _class=_class, index = index)
                     form = SubjectForm(school_id)
                 else:
-                    add_subject(subject_name=data['name'], hs=float(data['hs']), teacher=None, _class=_class)
+                    add_subject(subject_name=data['name'], hs=float(data['hs']), teacher=None, _class=_class, index = index)
                     form = SubjectForm(school_id)
                 message = 'Môn học mới đã được thêm.'
             else:

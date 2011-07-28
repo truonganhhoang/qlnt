@@ -494,7 +494,7 @@ def add_subject( subject_name = None, hs = 1, teacher = None, _class = None, ind
 def completely_del_subject( subject):
     _class = subject.class_id
     students = _class.pupil_set.all()
-    if subject.is_primary():
+    if subject.primary < 3:
         for student in students:
             # get tbHocKy
             school = _class.year_id.school_id
