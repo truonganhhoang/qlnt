@@ -77,11 +77,11 @@ window.onload = function() { document.onkeypress = catchEnter; };
 		var exp = /[^((\d).,)]/g;
 		tb.value=tb.value.replace(exp,'');		
 		
-		var exp1=/[,]/g
+		var exp1 = /[,]/g;
 		tb.value=tb.value.replace(exp1,'.');		
 		
 		
-		value=tb.value;			
+		var value=tb.value;
 		//kiem tra xem no co nhieu hon hai dau cham hay ko
 		
 		var countDot=0;

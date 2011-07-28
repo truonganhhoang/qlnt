@@ -11,7 +11,7 @@ urlpatterns = patterns('',
     #-----------------------------------------------------------------------
     # 2 ham nay dung de test, tao tat ca cac thong tin con thieu cho sinh vien
     # sau nay hoan thien, co the bo di    
-
+    url(r'thu','school.viewMark.thu'),
     url(r'createTbNam/(?P<year_id>\w+)','school.viewMark.createTbNam'),
     url(r'createAllInfoInTerm/(?P<term_id>\w+)','school.viewMark.createAllInfoInTerm'),
 
@@ -26,7 +26,7 @@ urlpatterns = patterns('',
     url(r'sendSMSMark$','school.viewMark.sendSMSMark'),
     
 	# xep loai hoc luc theo lop, gom co xep loai k1, k2 va ca nam
-    url(r'xepLoaiHlTheoLop/(?P<class_id>\w+)/(?P<number>\w+)$','school.viewFinish.xepLoaiHlTheoLop'),	
+    url(r'xepLoaiHlTheoLop/(?P<class_id>\w+)/(?P<termNumber>\w+)$','school.viewFinish.xepLoaiHlTheoLop'),    
     url(r'xlCaNamTheoLop/(?P<class_id>\w+)$','school.viewFinish.xlCaNamTheoLop'),		
 	# tinh diem tong ket hoc luc toan truong	
 	# tong ket hoc ky, tinh toan bo hoc luc cua hoc sinh trong toan truong

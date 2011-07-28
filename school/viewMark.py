@@ -9,32 +9,46 @@ from school.utils import *
 from django.core.urlresolvers import reverse
 from django.utils import simplejson
 from school.sms_views import sendSMS
-#from django.db import transaction
+from django.db import transaction
 
 import os.path 
 import time 
 import datetime
+import random
+from viewFinish import *
 LOCK_MARK =False
 ENABLE_CHANGE_MARK=True
 
-
+@transaction.commit_on_success                                                              
 def thu(request):
-
-    list = Mark.objects.all()
-    for m in list:
-        if m.marktime==None:
-            mt=MarkTime()
-            mt.mark_id=m
-            mt.save()
-        
-        
-               
-    t = loader.get_template(os.path.join('school','ll.html'))
+    t1= time.time()
     
-    c = RequestContext(request, {
+    list1 = TKMon.objects.all()
+    for m in list1:
+        m.tb_nam=random.randrange( 6,11 )
+       # m.save()
+    for m in list1:
+        m.save()
+           
+    list = Mark.objects.filter(student_id__class_id=1)
+    for m in list:
+        m.tb=random.randrange( 6,11 )
+       # m.save()
+    for m in list:
+        m.save()
+           
+    t = loader.get_template(os.path.join('school','ll.html'))
+    t2=time.time()
+
+    
+    t = loader.get_template(os.path.join('school','ll.html'))
+    t2=time.time()
+    print (t2-t1)
+    c = RequestContext(request, {'list':list,
                                 }
                        )
     
+    #print (t2-t1)
 
     return HttpResponse(t.render(c))
 
@@ -351,7 +365,7 @@ def getMark(class_id,subjectChoice,selectedTerm):
         for p in pupilList:
             m = p.mark_set.get(subject_id=subjectChoice,term_id=selectedTerm.id)
             markList.append(m)
-
+#sau phai sua cho nay
             mt = m.marktime
             ea=defineEdit(mt,timeToEdit)            
             editList.append(ea)        
@@ -525,7 +539,6 @@ def markTable(request,term_id=-1,class_id=-1,subject_id=-1):
        return HttpResponseRedirect('/school')
 
     """
-    
     enableChangeMark=checkChangeMark(class_id)
     enableChangeMark=True
     enableSendSMS   =True    

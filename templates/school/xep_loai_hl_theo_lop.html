@@ -1,99 +1,143 @@
 ﻿{% extends "base.html"%}
 {% block content %}
 
-	<table border="0" width=100% >
-
-	<tr >
-		<td align="center"  style="font-size:25px" colspan=3>
-			<b>Bảng điểm tổng kết <br> <br>
+	<h2> Bảng điểm tổng kết 
+			{% ifequal number 1 %}
+				học kỳ I
+			{% else %}
+			{% ifequal number 2 %}
+				học kỳ II
+			{% else %}
+				cả năm
+			{% endifequal %}	
+			{% endifequal %}	
+			lớp 
+			{{selectedClass.name}}
 			
-			{% ifequal number "1" %}
-				Học kỳ I
-			{% else %}
-			{% ifequal number "2" %}
-				Học kỳ II
-			{% else %}
-				Cả năm
-			{% endifequal %}	
-			{% endifequal %}	
 			năm học:{{yearString}} 
-			</b>
+	</h2>
 			
-		</td>
-	</tr>
 	
-	<tr >
-	<td colspan=3>Lớp :&nbsp {{selectedClass.name}}</td>
-	</tr>
-	<tr >
-	<td colspan=3>&nbsp</td>
-	</tr>
+	<br>
 	
-	<tr colspan=3>
-		<td width="33%" > <a title="Tự động xếp loại cả năm của lớp"
-			 href="{%url school.views.school_index  %}xepLoaiHlTheoLop/{{selectedClass.id}}/1">Học kỳ I</a>
-		</td>
-		<td width="33%"> <a title="Tự động xếp loại cả năm của lớp"
-			 href="{%url school.views.school_index  %}xepLoaiHlTheoLop/{{selectedClass.id}}/2">Học kỳ II</a>
-		</td>
-		<td width="33%"> <a title="Tự động xếp loại cả năm của lớp"
-			 href="{%url school.views.school_index  %}xepLoaiHlTheoLop/{{selectedClass.id}}/3">Cả năm</a>
-		</td>
-	</tr>
-	
-	</table>
+	<a title="Tự động xếp loại cả năm của lớp"
+		href="{%url school.views.school_index  %}xepLoaiHlTheoLop/{{selectedClass.id}}/1">Học kỳ I</a>
+		&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp	
+	<a title="Tự động xếp loại cả năm của lớp"
+	    href="{%url school.views.school_index  %}xepLoaiHlTheoLop/{{selectedClass.id}}/2">Học kỳ II</a>
+		&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp	
+    <a title="Tự động xếp loại cả năm của lớp"
+	     href="{%url school.views.school_index  %}xepLoaiHlTheoLop/{{selectedClass.id}}/3">Cả năm</a>
 	
 	<br>
 	<br>
-	<table class="styleA" width="100%">
+	<form action=" " method="post">{% csrf_token %}
+		<input type="submit" value="Tính điểm trung bình" />
+	</form>
+	<br>
+	<table class="styleA">
 		<tr>
-			<td  align="center" width="1%">
+			<th  align="center" style="width:4px" class="mark">
 				Stt
-			</td>	
-			<td  align="center" width="18%">
+			</th>	
+			<th colspan=2 align="center" >
 				Họ và tên
-			</td>	
-			<td align="center" width="1%">			
+			</th>	
+			<th align="center" width="1%">			
 				Ngày sinh
-			</td>	
+			</th>	
 			{% for s in subjectList %}
-				<td width ="5%" align="center">
+				<th  align="center" class="mark">
 					{{s.name}}
-				</td>				
+				</th>				
 			{% endfor %}	
-			<td width ="7%" align="center" >
+			<th width ="" align="center" >
 			  TB			
-			</td>
-			<td width="7%" align="center">
+			</th>
+			<th width="" align="center">
 				Học lực
-			</td>
+			</th>
 		</tr>
-		{% for p,m in list %}
+		{% for p,m,tbhocky in list %}
 			<tr>
 				<td align="center">
 					{{forloop.counter}}	
 				</td>
-				<td>
-					{{ p.last_name }}&nbsp {{ p.first_name }}					
+				<td class="lastname">
+					{{ p.last_name }} 
+				</td>
+				<td class="firstname">
+					{{ p.first_name }}					
 				</td>
 				<td>
-					{{ p.birthday.day}}/{{ p.birthday.month}}/{{ p.birthday.year}} 
+					{{ p.birthday|date:"SHORT_DATE_FORMAT"}} 
 				</td>
 				{% for s in m %}
-					<td align="center">
-					{% ifequal s "" %}
-						&nbsp
-					{% else %}						
-						{{ s }}
-					{% endifequal %}	
+					<td >
+ 					{{ s }}
 					</td>
 				{% endfor %}
+				{% ifnotequal number  3 %}  
+				<td>
+					{% if tbhocky.tb_hk  %}
+						{{tbhocky.tb_hk}}
+					{% else %}	
+						&nbsp
+					{% endif %}	
+				</td>	
+				<td>
+					{% ifequal tbhocky.hl_hk "G" %}
+						Giỏi
+					{% else %} 	
+					{% ifequal tbhocky.hl_hk "K" %}
+						Khá
+					{% else %} 							
+					{% ifequal tbhocky.hl_hk "TB" %}
+						TB
+					{% else %} 							
+					{% ifequal tbhocky.hl_hk "Y" %}
+						Yếu
+					{% else %} 							
+					{% ifequal tbhocky.hl_hk "Kem" %}
+						Kém
+					{% endifequal %}	
+					{% endifequal %}	
+					{% endifequal %}	
+					{% endifequal %}	
+					{% endifequal %}	
+				</td>	
+				{% else %}
+				<td>
+					{% if tbhocky.tb_nam %}
+						{{tbhocky.tb_nam}}
+					{% else %}	
+						&nbsp
+					{% endif %}	
+				</td>	
+				<td>
+					{% ifequal tbhocky.hl_nam "G" %}
+						Giỏi
+					{% else %} 	
+					{% ifequal tbhocky.hl_nam "K" %}
+						Khá
+					{% else %} 							
+					{% ifequal tbhocky.hl_nam "TB" %}
+						TB
+					{% else %} 							
+					{% ifequal tbhocky.hl_nam "Y" %}
+						Yếu
+					{% else %} 							
+					{% ifequal tbhocky.hl_nam "Kem" %}
+						Kém
+					{% endifequal %}	
+					{% endifequal %}	
+					{% endifequal %}	
+					{% endifequal %}	
+					{% endifequal %}	
+				</td>
+				{% endifnotequal %}	
 				
 			</tr>
 		{% endfor %}
 	</table>
-
-
-
-
 {% endblock %}

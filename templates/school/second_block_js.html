@@ -70,7 +70,7 @@
 		
 		xmlhttp.open("POST", "/school/saveMark",true);
         xmlhttp.setRequestHeader("X-CSRFToken",cookieValue );
-		data = "str="+str;
+		var data = "str="+str;
 		xmlhttp.send(data);			
 	}
 
@@ -269,7 +269,7 @@
 	}
 	function writeOld()
 	{
-		var str=""
+		var str="";
 		for(var i=1;i<length;i++)
 		{
 			for(var j=0;j<17;j++)
@@ -282,7 +282,7 @@
 	}	
 	function writeNew()
 	{
-		var str=""
+		var str="";
 		for(var i=1;i<length;i++)
 		{
 			for(var j=1;j<20;j++)
@@ -335,7 +335,7 @@
 			cancelAll();
 			setEmpty();
 			document.getElementById("messageTable").style.display="none";
-			document.getElementById("messageImage").src="/static/images/muiten.png"
+			document.getElementById("messageImage").src="/static/images/muiten.png";
 			activeMode = 0;
 			for(var i=1;i<length;i++)
 			{
@@ -565,7 +565,7 @@
 				*/
 				
 			}
-		}   				
+		}
 		//alert(str);
 		//cookieValue=getCookie('csrftoken'); 
 		xmlhttp.open("POST", "/school/sendSMSMark",true);
@@ -584,7 +584,7 @@
 	{
 		viewAverage();
 		var table=document.getElementById("markTable");
-		var str=""		
+		var str="";
 		
 		emptyTempSent();
 		
