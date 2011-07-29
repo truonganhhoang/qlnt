@@ -9,9 +9,9 @@
 {% if message != None %}
 <script>
 	var temp = document.getElementById("notify1");
-	temp.innerHTML="Đã đánh giá, xếp loại xong";
+	temp.innerHTML="{{message}}";
     $(temp).fadeIn('fast');
-	$(temp).delay(2500).fadeOut('fast');      
+	$(temp).delay(7000).fadeOut('fast');      
 </script>	
 {% endif %}
 
@@ -149,7 +149,7 @@ Hãy chọn phân loại danh sách học sinh theo:
 
 				<td align="center">
 					{% ifequal tbNam.danh_hieu_nam "G" %}
-						Học sinh Giỏi
+						Học sinh giỏi
 					{% else %}	
 					{% ifequal tbNam.danh_hieu_nam "TT"  %}
 						Học sinh tiên tiến

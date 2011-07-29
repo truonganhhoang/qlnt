@@ -109,7 +109,7 @@ def calculateOverallMarkTerm(class_id,termNumber):
     subjectList=Subject.objects.filter(class_id=class_id,primary__in=[0,termNumber])    
     markList = Mark.objects.filter(subject_id__class_id=class_id,term_id__number=termNumber,subject_id__primary__in=[0,termNumber]).order_by('student_id__first_name','student_id__last_name','student_id__birthday','subject_id') 
     tbHocKyList = TBHocKy.objects.filter(student_id__class_id=class_id,term_id__number=termNumber).order_by('student_id__first_name','student_id__last_name','student_id__birthday')
-    
+    hkList      = HanhKiem.objects.filter(student_id__class_id=class_id).order_by('student_id__first_name','student_id__last_name','student_id__birthday')
     length=len(subjectList)
     i=0   
     vtMonChuyen=-1
@@ -127,6 +127,7 @@ def calculateOverallMarkTerm(class_id,termNumber):
     for tt in tbHocKyList:
         pass
 
+    
     for m in markList:
         #print i
         t= i % length
@@ -171,10 +172,27 @@ def calculateOverallMarkTerm(class_id,termNumber):
                 
             #tbHocKy.save()                    
         i+=1
+    for hk in hkList :
+        pass
+    
+    noHanhKiem = 0
+    for hk,tbHocKy in zip(hkList,tbHocKyList):
+        if termNumber==1: loaiHk=hk.term1
+        else            : loaiHk=hk.term2
+        
+        if loaiHk==None: noHanhKiem+=1
+        if (loaiHk==None) | (tbHocKy.hl_hk==None):
+            tbHocKy.danh_hieu_hk=None
+        elif (loaiHk=='T') & (tbHocKy.hl_hk=='G'): 
+            tbHocKy.danh_hieu_hk='G'
+        elif ((loaiHk=='T') | (loaiHk=='K')) & ((tbHocKy.hl_hk=='G') | (tbHocKy.hl_hk=='K')):
+            tbHocKy.danh_hieu_hk='TT'
+        else: tbHocKy.danh_hieu_hk='K'                                         
+              
     for tb in tbHocKyList:
         tb.save()                       
        
-    return pupilNoSum    
+    return pupilNoSum,noHanhKiem    
 @transaction.commit_on_success
 def calculateOverallMarkYear(class_id=7):
 
@@ -182,6 +200,7 @@ def calculateOverallMarkYear(class_id=7):
     subjectList= Subject.objects.filter(class_id=class_id,primary__in=[0,1,2])    
     markList   = TKMon.objects.filter(subject_id__class_id=class_id).order_by('student_id__first_name','student_id__last_name','student_id__birthday','subject_id') 
     tbNamList  = TBNam.objects.filter(student_id__class_id=class_id).order_by('student_id__first_name','student_id__last_name','student_id__birthday')
+    hkList      = HanhKiem.objects.filter(student_id__class_id=class_id).order_by('student_id__first_name','student_id__last_name','student_id__birthday')
 
     length = len(subjectList)
     
@@ -243,10 +262,23 @@ def calculateOverallMarkYear(class_id=7):
                 tbNam.hl_nam=None
                 pupilNoSum+=1
         i+=1
+    noHanhKiem = 0            
+    for hk,tbNam in zip(hkList,tbNamList):
+        loaiHk=hk.year
+        if loaiHk==None: noHanhKiem+=1
+        
+        if (loaiHk==None) | (tbNam.hl_nam==None):
+            tbNam.danh_hieu_nam=None
+        elif (loaiHk=='T') & (tbNam.hl_nam=='G'): 
+            tbNam.danh_hieu_nam='G'
+        elif ((loaiHk=='T') | (loaiHk=='K')) & ((tbNam.hl_nam=='G') | (tbNam.hl_nam=='K')):
+            tbNam.danh_hieu_nam='TT'
+        else: tbNam.danh_hieu_nam='K'                                         
+                
     for tb in tbNamList:
         tb.save()                       
        
-    return pupilNoSum    
+    return pupilNoSum,noHanhKiem    
 # xep loai hoc ky cua mot lop
 def convertMarkToCharacter(x):
     if x==9:
@@ -318,15 +350,34 @@ def xepLoaiHlTheoLop(request,class_id,termNumber):
     termNumber=int(termNumber)
     
     if request.method=="POST":
-        if termNumber <3 : calculateOverallMarkTerm(class_id,termNumber)
-        else         : calculateOverallMarkYear(class_id)    
+        if termNumber <3 : noHl,noHk=calculateOverallMarkTerm(class_id,termNumber)
+        else         : noHl,noHk=calculateOverallMarkYear(class_id)
+        
+        if (noHl==0) & (noHk==0):
+            message="Đã có đủ điểm và hạnh kiểm của cả lớp"
+        elif (noHl==0):
+            message="Còn "+str(noHanhKiem)+" học sinh chưa có hạnh kiểm"
+        elif (noHk==0):    
+            message="Còn "+str(noHl)+" học sinh chưa đủ điểm "
+        else:
+            message="Còn "+str(noHl)+" học sinh chưa đủ điểm và "+str(noHk)+" học sinh chưa có hạnh kiểm"
+                   
+          
         
     if termNumber<3:        
 
         subjectList=Subject.objects.filter(class_id=class_id,primary__in=[0,termNumber])    
         markList = Mark.objects.filter(subject_id__class_id=class_id,term_id__number=termNumber,subject_id__primary__in=[0,termNumber]).order_by('student_id__first_name','student_id__last_name','student_id__birthday','subject_id') 
         tbHocKyList = TBHocKy.objects.filter(student_id__class_id=class_id,term_id__number=termNumber).order_by('student_id__first_name','student_id__last_name','student_id__birthday')
-
+        hkList      = HanhKiem.objects.filter(student_id__class_id=class_id).order_by('student_id__first_name','student_id__last_name','student_id__birthday')
+        hkList1 =[]
+        if termNumber==1:
+            for hk in hkList:
+                hkList1.append(hk.term1)
+        else:
+            for hk in hkList:
+                hkList1.append(hk.term2)
+                                        
         length = len(subjectList)
 
         i=0    
@@ -343,13 +394,13 @@ def xepLoaiHlTheoLop(request,class_id,termNumber):
  
         #markOfAPupil.append(convertHlToVietnamese(tbHocKy.hl_hk))
                                     
-        list=zip(pupilList,tempList,tbHocKyList)    
+        list=zip(pupilList,tempList,tbHocKyList,hkList1)    
     else:
         idYear = selectedYear.id
         subjectList=Subject.objects.filter(class_id=class_id,primary__in=[0,1,2])    
         markList   =TKMon.objects.filter(subject_id__class_id=class_id).order_by('student_id__first_name','student_id__last_name','student_id__birthday','subject_id') 
         tbNamList = TBNam.objects.filter(student_id__class_id=class_id).order_by('student_id__first_name','student_id__last_name','student_id__birthday')
-
+        hkList      = HanhKiem.objects.filter(student_id__class_id=class_id).order_by('student_id__first_name','student_id__last_name','student_id__birthday')
         length = len(subjectList)
 
         i=0    
@@ -366,7 +417,7 @@ def xepLoaiHlTheoLop(request,class_id,termNumber):
  
         #markOfAPupil.append(convertHlToVietnamese(tbHocKy.hl_hk))
                                     
-        list=zip(pupilList,tempList,tbNamList)    
+        list=zip(pupilList,tempList,tbNamList,hkList)    
         
     
 
@@ -396,7 +447,8 @@ def xepLoaiLop(class_id):
     ddhk2List    =TKDiemDanh.objects.filter(student_id__class_id=class_id,term_id__number=2).order_by('student_id__first_name', 'student_id__last_name','student_id__birthday')
     hanhKiemList =HanhKiem.objects.filter(student_id__class_id=class_id).order_by('student_id__first_name', 'student_id__last_name','student_id__birthday')
     repr(tbNamList)
-    
+    noHk=0
+    noHl=0
     #for tt in tbNamList:
     #    pass
     i=0
@@ -405,6 +457,9 @@ def xepLoaiLop(class_id):
         
         ddhk1.tong_so=DiemDanh.objects.filter(student_id=tbNam.student_id,term_id__number=1).count()
         ddhk2.tong_so=DiemDanh.objects.filter(student_id=tbNam.student_id,term_id__number=2).count()
+        if hk.year==None     : noHk+=1
+        if tbNam.hl_nam==None: noHl+=1
+        
                         
         if (tbNam.hl_nam==None) |(hk.year==None):
             tbNam.danh_hieu_nam=None            
@@ -467,7 +522,7 @@ def xepLoaiLop(class_id):
         dd.save()
     for hk in hanhKiemList:
         hk.save()            
-        
+    return noHl,noHk    
 @transaction.commit_on_success                                                                                  
 def xlCaNamTheoLop(request,class_id,type):
     t1=time.time()
@@ -497,8 +552,15 @@ def xlCaNamTheoLop(request,class_id,type):
 
     message=None
     if request.method=="POST":
-        xepLoaiLop(class_id)
-        message="ok"
+        noHl,noHk=xepLoaiLop(class_id)
+        if (noHl==0) & (noHk==0):
+            message="Đã xếp loại xong cả lớp"
+        elif (noHl==0):
+            message="Còn "+str(noHanhKiem)+" học sinh chưa có hạnh kiểm"
+        elif (noHk==0):    
+            message="Còn "+str(noHl)+" học sinh chưa có học lực "
+        else:
+            message="Còn "+str(noHl)+" học sinh chưa có học lực và "+str(noHk)+" học sinh chưa có hạnh kiểm"
     
 
     pupilNoSum=0

@@ -1,5 +1,19 @@
 ﻿{% extends "base.html"%}
 {% block content %}
+<div class="notify-widget-pane" >
+    <div class="notify" id="notify1" style="display: none;">
+    </div>
+</div>
+
+{% if message != None %}
+<script>
+	var temp = document.getElementById("notify1");
+	temp.innerHTML="{{message}}";
+    $(temp).fadeIn('fast');
+	$(temp).delay(7000).fadeOut('fast');      
+</script>	
+{% endif %}
+
 
 	<h2> Bảng điểm tổng kết 
 			{% ifequal number 1 %}
@@ -37,28 +51,33 @@
 	<br>
 	<table class="styleA">
 		<tr>
-			<th  align="center" style="width:4px" class="mark">
+			<th rowspan=2 align="center" style="width:4px" class="mark">
 				Stt
 			</th>	
-			<th colspan=2 align="center" >
+			<th colspan=2 rowspan=2 align="center" >
 				Họ và tên
 			</th>	
-			<th align="center" width="1%">			
+			<th rowspan=2 align="center" width="1%">			
 				Ngày sinh
 			</th>	
 			{% for s in subjectList %}
-				<th  align="center" class="mark">
+				<th  rowspan=2 align="center" class="mark">
 					{{s.name}}
 				</th>				
 			{% endfor %}	
-			<th width ="" align="center" >
+			<th rowspan=2 width ="" align="center" >
 			  TB			
 			</th>
-			<th width="" align="center">
-				Học lực
+			<th colspan=3 width="" align="center">
+				Kết quả xếp loại và thi đua
 			</th>
 		</tr>
-		{% for p,m,tbhocky in list %}
+		<tr>
+			<th> HL </th>
+			<th> HK </th>
+			<th> DH </th>							
+		</tr>
+		{% for p,m,tbhocky,hk in list %}
 			<tr>
 				<td align="center">
 					{{forloop.counter}}	
@@ -73,7 +92,7 @@
 					{{ p.birthday|date:"SHORT_DATE_FORMAT"}} 
 				</td>
 				{% for s in m %}
-					<td >
+					<td style="text-align: right" >
  					{{ s }}
 					</td>
 				{% endfor %}
@@ -106,6 +125,35 @@
 					{% endifequal %}	
 					{% endifequal %}	
 				</td>	
+				<td>
+					{% ifequal hk "T"  %}
+						Tốt
+					{% else %}	
+					{% ifequal hk "K"  %}
+						Khá
+					{% else %}	
+					{% ifequal hk "TB"  %}
+						TB
+					{% else %}	
+					{% ifequal hk "Y"  %}
+						Yếu
+					{% endifequal %}	
+					{% endifequal %}	
+					{% endifequal %}	
+					{% endifequal %}	
+						
+				</td>	
+				
+				<td>
+					{% ifequal tbhocky.danh_hieu_hk "G" %}
+						HSG
+					{% else %}	
+					{% ifequal tbhocky.danh_hieu_hk "TT" %}
+						HSTT
+					{% endifequal %}	
+					{% endifequal %}	
+				</td>	
+				
 				{% else %}
 				<td>
 					{% if tbhocky.tb_nam %}
@@ -114,6 +162,7 @@
 						&nbsp
 					{% endif %}	
 				</td>	
+				
 				<td>
 					{% ifequal tbhocky.hl_nam "G" %}
 						Giỏi
@@ -135,6 +184,34 @@
 					{% endifequal %}	
 					{% endifequal %}	
 				</td>
+				<td>
+					{% ifequal hk.year "T"  %}
+						Tốt
+					{% else %}	
+					{% ifequal hk.year "K"  %}
+						Khá
+					{% else %}	
+					{% ifequal hk.year "TB"  %}
+						TB
+					{% else %}	
+					{% ifequal hk.year "Y"  %}
+						Yếu
+					{% endifequal %}	
+					{% endifequal %}	
+					{% endifequal %}	
+					{% endifequal %}	
+						
+				</td>	
+				
+				<td>
+					{% ifequal tbhocky.danh_hieu_nam "G" %}
+						HSG
+					{% else %}	
+					{% ifequal tbhocky.danh_hieu_nam "TT" %}
+						HSTT
+					{% endifequal %}	
+					{% endifequal %}	
+				</td>	
 				{% endifnotequal %}	
 				
 			</tr>
