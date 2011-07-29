@@ -939,40 +939,32 @@ def viewClassDetail(request, class_id, sort_type=1, sort_status=0, page=1):
         if (request.is_ajax()):
             data = request.POST[u'data']
             data = data.split('-')
+            print data
             for e in data:
                 std = Pupil.objects.get(id = int(e))
                 completely_del_student(std)
-                url = '/school/viewClassDetail/' + str(class_id)
-                return HttpResponseRedirect(url)
-        else:        
-            if (request.POST['first_name']):
-                name = request.POST['first_name'].strip().split()
-                last_name = ' '.join(name[:len(name)-1])
-                first_name = name[len(name)-1]
-            else:
-                last_name = ''
-                first_name = ''
-            data = request.POST.copy()    
-            data['first_name'] = first_name
-            data['last_name'] = last_name
-            data['class_id'] = class_id
+            url = '/school/viewClassDetail/' + str(class_id)
+            return HttpResponseRedirect(url)
+        else:
+            start_year = StartYear.objects.get(time = int(date.today().year), school_id = school.id)
+            data = request.POST.copy()
+            data.appendlist('school_join_date',date.today().strftime("%d/%m/%Y"))
+            data.appendlist('ban_dk',u'CB')
+            data.appendlist('quoc_tich',u'Việt Nam')
+            data.appendlist('index',cl.pupil_set.count()+1)
+            data.appendlist('class_id',class_id)
+            data.appendlist('start_year_id',start_year.id)
             form = PupilForm(school.id, data)
             if form.is_valid():
-                d = request.POST['school_join_date'].split('/')
-                school_join_date = date(int(d[2]),int(d[1]),int(d[0]))
+                school_join_date = date.today()
                 d = request.POST['birthday'].split('/')
                 birthday = date(int(d[2]),int(d[1]),int(d[0]))
                 data['ban'] = data['ban_dk']
                 data['birthday'] = birthday
                 _class = Class.objects.get(id=class_id)
-                start_year = StartYear.objects.get(id=int(data['start_year_id']))
                 add_student(student=data, start_year=start_year, year=get_current_year(request), _class=_class, term=get_current_term(request), school=get_school(request), school_join_date=school_join_date)
                 message = 'Bạn vừa thêm một học sinh mới'
                 form = PupilForm(school.id)
-            else:
-                if data['first_name'] != '':
-                    data['first_name']=data['last_name'] + ' ' + data['first_name']
-                    form=PupilForm(school.id, data)
                     
     if int(sort_type) == 1:
         if int(sort_status) == 0:

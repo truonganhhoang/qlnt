@@ -176,23 +176,17 @@ def move_student(school, student, new_class):
 @transaction.commit_manually
 def add_student( student = None, start_year = None , year = None, 
                 _class = None, term = None, school = None, school_join_date = None ):
+        print student        
         if not ( student and start_year and term and school ):
             raise Exception("Phải có giá trị cho các trường: Student,Start_Year,Term,School.")
-        if 'full_name' in student:
-            # print student['full_name']
-            names = student['full_name'].split(" ")
-            last_name = ' '.join(names[:len(names)-1])
-            first_name = names[len(names)-1]
-            # print last_name
-            # print first_name
-        else:
-            last_name = student['last_name']
-            first_name = student['first_name']
-            # print student['first_name']
-            # print last_name, first_name
+        last_name = student['last_name']
+        first_name = student['first_name']
         if not school_join_date:
             school_join_date = datetime.date.today()
         birthday = student['birthday']
+        uu_tien = student['uu_tien']
+        current_address = student['current_address']
+        birth_place = student['birth_place']
         ban = student['ban']
         find = start_year.pupil_set.filter( first_name__exact = first_name)\
                                    .filter(last_name__exact = last_name)\
@@ -218,11 +212,13 @@ def add_student( student = None, start_year = None , year = None,
             st.start_year_id = start_year
             st.class_id = _class
             st.school_id = school
+            st.uu_tien = uu_tien
+            st.current_address = current_address
+            st.birth_place = birth_place
             if 'sex' in student:
                 st.sex = student['sex']
             else: 
                 st.sex = 'Nam'
-            
             user = User()
             user.username = make_username( first_name = first_name, last_name = last_name, start_year = start_year)
             user.password = make_default_password( user.username )

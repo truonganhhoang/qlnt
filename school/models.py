@@ -35,7 +35,7 @@ DT_CHOICE = ((1,u'Kinh (Việt)'),(2,u'Tày'),(3,u'Nùng'),(4,u'Hmông (Mèo)'),
             (38,u'Lự'),(39,u'Pà Thén'),(40,u'Lô lô'),(41,u'Chứt'),(42,u'Mảng'),(43,u'Cơ lao'),(44,u'Bố y'),(45,u'La ha'),
             (46,u'Cống'),(47,u'Ngái'),(48,u'Si la'),(49,u'Pu Péo'),(50,u'Brâu'),(51,u'Rơ măm'),(52,u'Ơ đu'),(53,u'Hoa'),
             (54,u'Raglay'),(55,u'HMông'),(56,u'Pacô'),(57,u'Pahy'),(60,u'Jơ lơng'),(61,u'Rơ ngao'),(62,u'Ra dong'),
-            (63,u'Sơ rá'),(64,u'Jẻ'),(65,u'Mơ nâm'),(66,u'Hơ lăng'),(67,u'Hoa (Hán)'),(68,u'Sán chay (Cao Lan, Sán Chỉ)'),
+            (63,u'Sơ rá'),(64,u'Jẻ'),(65,u'Mơ nâm'),(66,u'Hơ lăng'),(67,u'Hoa (Hán)'),(68,u'Sán chay'),
             (69,u'CaDong'),(70,u'Chơ ro'))
 LENLOP_CHOICES=((True,u'Được lên lớp'),(False,u'Không được lên lớp'))
 SCHOOL_ACTION_STATUS=((0, u'Trường mới'),(1, u'Đang học kì 1'), (2, u'Đang học kì 2'), (3, u'Đang nghỉ hè'))
@@ -109,7 +109,7 @@ class BasicPersonInfo(models.Model):
     first_name = models.CharField("Tên(*)", max_length = 90)#vi phan nhap bang tay, ho ten se dc luu vao first_name nen max_length phai dc tang len gap doi
     birthday = models.DateField("Ngày sinh(*)", null = True, validators = [validate_birthday])
     birth_place = models.CharField("Nơi sinh", max_length = 200, null = True, blank = True)
-    dan_toc = models.IntegerField("Dân tộc", choices = DT_CHOICE, blank = True, null = True, default = 1)
+    dan_toc = models.CharField("Dân tộc", max_length = 15, blank = True, null = True, default = 'Kinh')
     ton_giao = models.CharField("Tôn giáo", max_length = 20, blank = True, null = True)
     quoc_tich = models.CharField("Quốc tịch(*)", max_length = 20, blank = True, null = True, default = 'Việt Nam')
     home_town = models.CharField("Quê quán", max_length = 100, null = True, blank = True) #nguyen quan
@@ -118,7 +118,7 @@ class BasicPersonInfo(models.Model):
     sms_phone = models.CharField("Điện thoại nhận tin nhắn", max_length = 15, null = True, blank = True, validators = [validate_phone])
     current_address = models.CharField("Địa chỉ", max_length = 200, blank = True, null = True)
     email = models.EmailField("Email", null = True, blank = True)
-    index = models.IntegerField("Số thứ tự", default=0)
+    index = models.IntegerField("Số thứ tự(*)", default=0)
     class Meta:
         abstract = True
     
@@ -212,6 +212,7 @@ class Pupil(BasicPersonInfo):
     ngay_vao_doi = models.DateField("Ngày vào đội", blank = True, null = True)
     dang = models.BooleanField("Là đảng viên", blank = True, default = False)
     ngay_vao_dang = models.DateField("Ngày vào đảng", blank = True, null = True)
+    uu_tien = models.CharField("Ưu tiên", blank = True, null = True, max_length = 100)
     
     #thong tin gia dinh
     father_name = models.CharField("Họ và tên bố", max_length = 45, blank = True, null = True)

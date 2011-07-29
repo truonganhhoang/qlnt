@@ -197,22 +197,18 @@
                 <input type="checkbox" id="checkbox_all"/>
             </th>
             <th align="center" > STT</th>
-            <th align="center" ><a
-                    href="{%url school.views.school_index  %}viewClassDetail/{{class.id}}/1/{{next_status}}/1">Họ tên </a>
-            </th>
+            <th align="center" > Họ </th>
+            <th align="center" > Tên </th>
             <th align="center" ><a
                     href="{%url school.views.school_index  %}viewClassDetail/{{class.id}}/2/{{next_status}}/1">Ngày sinh</a>
             </th>
+            <th align="center" > Nơi sinh </th>
             <th align="center" ><a
                     href="{%url school.views.school_index  %}viewClassDetail/{{class.id}}/3/{{next_status}}/1">Giới tính</a>
             </th>
-            <th align="center" ><a
-                    href="{%url school.views.school_index  %}viewClassDetail/{{class.id}}/4/{{next_status}}/1"> Ban đăng
-                kí </a></th>
-            <th align="center" ><a
-                    href="{%url school.views.school_index  %}viewClassDetail/{{class.id}}/5/{{next_status}}/1">Ngày vào
-                trường </a></th>
-            <th align="center" > Năm vào trường</th>
+            <th align="center" > Dân tộc </th>
+            <th align="center" > Ưu tiên </th>
+            <th align="center" > Chỗ ở hiện tại </th>
             {% if pos > 3 %}
                 <th><a href="{%url school.views.school_index  %}deleteAllStudentsInClass/{{class.id}}" onclick="return confirmDelete();">Xóa cả lớp</a></th>
             {% endif %}
@@ -227,16 +223,21 @@
                 <td align="center" > {{ forloop.counter|add:base_order }} </td>
                 {% if pos > 1 or student_id == ss.id %}
                     <td align="center" ><a title="Xem toàn bộ thông tin chi tiết"
-                                           href="{%url school.views.school_index  %}viewStudentDetail/{{ss.id}}">{{ ss.last_name }} {{ ss.first_name }} </a>
+                                           href="{%url school.views.school_index  %}viewStudentDetail/{{ss.id}}">{{ ss.last_name }}</a>
+                    </td>
+                    <td align="center" ><a title="Xem toàn bộ thông tin chi tiết"
+                                           href="{%url school.views.school_index  %}viewStudentDetail/{{ss.id}}">{{ ss.first_name }}</a>
                     </td>
                 {% else %}
-                    <td align="center" > {{ ss.last_name }} {{ ss.first_name }}</td>
+                    <td align="center" > {{ ss.last_name }} </td>
+                    <td align="center" > {{ ss.first_name }} </td>
                 {% endif %}
-                <td align="center" > {{ ss.birthday|date:"SHORT_DATE_FORMAT" }}</td>
-                <td align="center" > {{ ss.sex }}</td>
-                <td align="center" > {{ ss.ban_dk }} </td>
-                <td align="center" > {{ ss.school_join_date|date:"SHORT_DATE_FORMAT" }} </td>
-                <td align="center" > {{ ss.start_year_id }} </td>
+                <td align="center" > {{ ss.birthday|date:"SHORT_DATE_FORMAT" }} </td>
+                <td align="center" > {{ ss.birth_place }} </td>
+                <td align="center" > {{ ss.sex }} </td>
+                <td align="center" > {{ ss.dan_toc }} </td>
+                <td align="center" > {{ ss.uu_tien }} </td>
+                <td align="center" > {{ ss.current_address }} </td>
                 {% if pos > 3 %}
                     <td ><a href="{%url school.views.school_index  %}deleteStudentInClass/{{ss.id}}"
                             onclick="return confirmDelete();"> xóa</a></td>
@@ -250,9 +251,13 @@
                   method="post">{% csrf_token %}
                 <tr class = "form">
 
-                    <td align="center">
+                    <td align="center"> </td>
                         {{ form.non_field_errors }}
-                    <td align="center" >
+                    <td align="center" > </td>
+                    <td align="center" > 
+                        {{ form.last_name.errors }}
+                        <p>{{ form.last_name }}</p>
+                    </td>
                     <td align="center" >
                         {{ form.first_name.errors }}
                         <p>{{ form.first_name }}</p>
@@ -262,30 +267,34 @@
                         {{ form.birthday.errors }}
                         <p>{{ form.birthday }}</p>
                     </td>
-
+                    
+                    <td align="center" >
+                        {{ form.birth_place.errors }}
+                        <p>{{ form.birth_place }}</p>
+                    </td>
+                    
                     <td align="center" >
                         {{ form.sex.errors }}
                         <p>{{ form.sex }}</p>
                     </td>
 
                     <td align="center" >
-                        {{ form.ban_dk.errors }}
-                        <p>{{ form.ban_dk }}</p>
+                        {{ form.dan_toc.errors }}
+                        <p>{{ form.dan_toc }}</p>
                     </td>
 
                     <td align="center" >
-                        {{ form.school_join_date.errors }}
-                        <p>{{ form.school_join_date }}</p>
+                        {{ form.uu_tien.errors }}
+                        <p>{{ form.uu_tien }}</p>
                     </td>
 
                     <td align="center" >
-                        {{ form.start_year_id.errors }}
-                        <p>{{ form.start_year_id }}</p>
+                        {{ form.current_address.errors }}
+                        <p>{{ form.current_address }}</p>
                     </td>
                     <td align="center"><input type="submit" value="Thêm"/></td>
                 </tr>
             </form>
-
             </table>
             <table width="80%">
                 <tr>
