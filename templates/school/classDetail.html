@@ -177,7 +177,7 @@
                 <td width="20%" align="center">
                     {% ifnotequal class.year_id.school_id.status 1 %}
                         <a title="Tự động xếp loại cả năm của lớp"
-                           href="{%url school.views.school_index  %}xlCaNamTheoLop/{{class.id}}">Tổng kết cả năm</a>
+                           href="{%url school.views.school_index  %}xlCaNamTheoLop/{{class.id}}/1">Tổng kết cả năm</a>
                     {% else %}
                         <a title="Chức năng này đã bị vô hiệu hóa vì đang trong học kỳ I">Tổng kết cả năm</a>
                     {% endifnotequal %}</td>

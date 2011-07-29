@@ -19,38 +19,6 @@ from viewFinish import *
 LOCK_MARK =False
 ENABLE_CHANGE_MARK=True
 
-@transaction.commit_on_success                                                              
-def thu(request):
-    t1= time.time()
-    
-    list1 = TKMon.objects.filter(student_id__class_id=1)
-    for m in list1:
-        m.tb_nam=random.randrange( 6,11 )
-       # m.save()
-    for m in list1:
-        m.save()
-           
-    list = Mark.objects.filter(student_id__class_id=1)
-    for m in list:
-        m.tb=random.randrange( 6,11 )
-       # m.save()
-    for m in list:
-        m.save()
-           
-    t = loader.get_template(os.path.join('school','ll.html'))
-    t2=time.time()
-
-    
-    t = loader.get_template(os.path.join('school','ll.html'))
-    t2=time.time()
-    print (t2-t1)
-    c = RequestContext(request, {'list':list,
-                                }
-                       )
-    
-    #print (t2-t1)
-
-    return HttpResponse(t.render(c))
 
 """
 
@@ -523,7 +491,7 @@ def markForASubject(request,subject_id):
     return HttpResponse(t.render(c))
           
 def markTable(request,term_id=-1,class_id=-1,subject_id=-1):
-    
+    tt1=time.time()
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect( reverse('login'))
@@ -631,6 +599,8 @@ def markTable(request,term_id=-1,class_id=-1,subject_id=-1):
                                 }
                        )
     
+    tt2=time.time()
+    print (tt2-tt1)
 
     return HttpResponse(t.render(c))
 

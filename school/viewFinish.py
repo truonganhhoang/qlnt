@@ -1,16 +1,4 @@
-﻿"""
-    t1= time.time()
-    list = Mark.objects.all()
-    for m in list:
-        m.tb=9;
-        m.save()
-               
-    t = loader.get_template(os.path.join('school','ll.html'))
-    t2=time.time()
-    c = RequestContext(request, {'list':list,
-"""
-
-# author: luulethe@gmail.com 
+﻿# author: luulethe@gmail.com 
 
 # -*- coding: utf-8 -*-
 #from school.views import *
@@ -399,39 +387,90 @@ def xepLoaiHlTheoLop(request,class_id,termNumber):
 
     return HttpResponse(t.render(c))
 
-def definePass(tbNam,p):
-    try:
-        hk1_id=Term.objects.get(year_id=tbNam.year_id,number=1).id
-        hk2_id=Term.objects.get(year_id=tbNam.year_id,number=2).id
+@transaction.commit_on_success                                                              
+def xepLoaiLop(class_id):
     
-        absentSum =  p.tkdiemdanh_set.get(term_id=hk1_id).tong_so+p.tkdiemdanh_set.get(term_id=hk2_id).tong_so
-        tbNam.tong_so_ngay_nghi=absentSum
-        #hoc sinh nay truot
-        if (absentSum>45):
-            tbNam.len_lop=False
-            return
-
-    except Exception as e:
-        print e
-
-        if (tbNam.hl_nam!='Y') & (tbNam.hl_nam!='Kem') & (tbNam.hk_nam!='Y'):
-            tbNam.len_lop=True
-            return
+    
+    tbNamList    =TBNam.objects.filter(student_id__class_id=class_id).order_by('student_id__first_name', 'student_id__last_name','student_id__birthday')
+    ddhk1List    =TKDiemDanh.objects.filter(student_id__class_id=class_id,term_id__number=1).order_by('student_id__first_name', 'student_id__last_name','student_id__birthday')
+    ddhk2List    =TKDiemDanh.objects.filter(student_id__class_id=class_id,term_id__number=2).order_by('student_id__first_name', 'student_id__last_name','student_id__birthday')
+    hanhKiemList =HanhKiem.objects.filter(student_id__class_id=class_id).order_by('student_id__first_name', 'student_id__last_name','student_id__birthday')
+    repr(tbNamList)
+    
+    #for tt in tbNamList:
+    #    pass
+    i=0
+    for tbNam,ddhk1,ddhk2,hk in zip(tbNamList,ddhk1List,ddhk2List,hanhKiemList):
+        i+=1
         
-        if ((tbNam.hk_nam!='Y') & (tbNam.hl_nam=='Y')):
-            tbNam.len_lop=None
-            tbNam.thi_lai=True
-        elif  ((tbNam.hk_nam=='Y')  & (tbNam.hl_nam!='Y') & (tbNam.hl_nam!='Kem')):
-            tbNam.thi_lai=None
-            tbNam.len_lop=None
-            tbNam.ren_luyen_lai=True
+        ddhk1.tong_so=DiemDanh.objects.filter(student_id=tbNam.student_id,term_id__number=1).count()
+        ddhk2.tong_so=DiemDanh.objects.filter(student_id=tbNam.student_id,term_id__number=2).count()
+                        
+        if (tbNam.hl_nam==None) |(hk.year==None):
+            tbNam.danh_hieu_nam=None            
+            tbNam.tong_so_ngay_nghi=ddhk1.tong_so+ddhk2.tong_so
+            if tbNam.tong_so_ngay_nghi>45:
+                tbNam.len_lop=False
+                tbNam.thi_lai=None
+                hk.ren_luyen_lai=None
+            else:    
+                tbNam.len_lop=None
+                tbNam.thi_lai=None
+                hk.ren_luyen_lai=None
+                
         else:
-        # hoc sinh nay truot luon va khong cho phep thi lai
-            tbNam.len_lop=False
-              
-         
-def xlCaNamTheoLop(request,class_id):
+            if (tbNam.hl_nam=='G') & (hk.year=='T'):
+                tbNam.danh_hieu_nam='G'
+            elif ((tbNam.hl_nam=='G') | (tbNam.hl_nam=='K') ) & ((hk.year=='T') | (hk.year=='K')):
+                tbNam.danh_hieu_nam='TT'
+            else:
+                tbNam.danh_hieu_nam='K'
+        
+            tbNam.tong_so_ngay_nghi=ddhk1.tong_so+ddhk2.tong_so
+            
+            if tbNam.tong_so_ngay_nghi>45:
+                tbNam.len_lop=False
+                hk.ren_luyen_lai=None
+                tbNam.thi_lai=None
+                continue        
+
+            if (tbNam.hl_nam!='Y') & (tbNam.hl_nam!='Kem') & (hk.year!='Y'):
+                tbNam.len_lop=True
+                tbNam.thi_lai=None
+                hk.ren_luyen_lai=None
+                continue
     
+            if ((hk.year!='Y') & (tbNam.hl_nam=='Y')):
+                tbNam.len_lop=None
+                tbNam.thi_lai=True
+                hk.ren_luyen_lai=None
+            elif  ((hk.year=='Y')  & (tbNam.hl_nam!='Y') & (tbNam.hl_nam!='Kem')):
+                tbNam.thi_lai=None
+                tbNam.len_lop=None
+                hk.ren_luyen_lai=True
+                #if i==7: print "ddddee"    
+            else:
+                tbNam.len_lop=False
+                tbNam.thi_lai=None
+                hk.ren_luyen_lai=None
+    """            
+    for tb,hk1,hk2 in zip(tbNamList,ddhk1List,ddhk2List):
+        tb.save()
+        hk1.save()
+        hk2.save()
+    """
+    for tb in tbNamList:
+        tb.save()
+    for dd in ddhk1List:
+        dd.save()
+    for dd in ddhk2List:
+        dd.save()
+    for hk in hanhKiemList:
+        hk.save()            
+        
+@transaction.commit_on_success                                                                                  
+def xlCaNamTheoLop(request,class_id,type):
+    t1=time.time()
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect( reverse('login'))
@@ -456,73 +495,55 @@ def xlCaNamTheoLop(request,class_id):
     if (not ok):
         return HttpResponseRedirect('/school')
 
-    
     message=None
+    if request.method=="POST":
+        xepLoaiLop(class_id)
+        message="ok"
+    
 
     pupilNoSum=0
     
-    pupilList=Pupil.objects.filter(class_id=class_id)
-    notDefinedList=[]
-    passedList=[]
-    notPassedList=[]
-    #danh sach thi lai
-    retakenList=[]
-    allList=[]
-    # danh sach ren luyen lai
-    repractisedList=[]
-    for p in pupilList:
-        aPupil=[]
-        aPupil.append(p.last_name+" " +p.first_name)
-        aPupil.append(p.birthday)
-        
-        tbNam=p.tbnam_set.get(year_id=selectedClass.year_id)
-        
-        # xet danh hieu thi dua
-        if (tbNam.hl_nam==None) |(tbNam.hk_nam==None):
-            tbNam.danh_hieu_nam=None
-            tbNam.save()
-            aPupil.append(tbNam)
+    pupilList    =Pupil.objects.filter(class_id=class_id).order_by('first_name', 'last_name','birthday')
+    tbNamList    =TBNam.objects.filter(student_id__class_id=class_id).order_by('student_id__first_name', 'student_id__last_name','student_id__birthday')
+    hanhKiemList =HanhKiem.objects.filter(student_id__class_id=class_id).order_by('student_id__first_name', 'student_id__last_name','student_id__birthday')
+    
+    pupilList1=[]
+    tbNamList1=[]
+    hanhKiemList1=[]
+    type=int(type)
+    for p,tbNam,hk in zip(pupilList,tbNamList,hanhKiemList):
+        ok=False
+        if   type==1: ok=True
+        elif type==2:
+            if (tbNam.len_lop==None) & (tbNam.thi_lai==None) & (hk.ren_luyen_lai==None): ok=True
+        elif type==3:
+            if tbNam.danh_hieu_nam=='G': ok=True
+        elif type==4:
+            if tbNam.danh_hieu_nam=='TT': ok=True
+        elif type==5:
+            if tbNam.len_lop==True: ok=True
+        elif type==6:
+            if tbNam.len_lop==False: ok=True
+        elif type==7:
+            if tbNam.thi_lai==True: ok=True            
+        elif type==8:
+            if hk.ren_luyen_lai==True: ok=True
+        if ok:    
+            pupilList1.append(p)
+            tbNamList1.append(tbNam)
+            hanhKiemList1.append(hk)
             
-            notDefinedList.append(aPupil)
-            allList.append(aPupil)
-            continue        
-        else:
-            if (tbNam.hl_nam=='G') & (tbNam.hk_nam=='T'):
-                tbNam.danh_hieu_nam='G'
-            elif ((tbNam.hl_nam=='G') | (tbNam.hl_nam=='K') ) & ((tbNam.hk_nam=='T') | (tbNam.hk_nam=='K')):
-                tbNam.danh_hieu_nam='TT'
-            else:
-                tbNam.danh_hieu_nam='K'
-            
-            
-        # xet len lop va hoc lai    
-                
-            definePass(tbNam,p)
-            
-        tbNam.save()
-        aPupil.append(tbNam)  
-              
-        if (tbNam.len_lop==True):
-            passedList.append(aPupil)
-        elif (tbNam.len_lop==False):
-            notPassedList.append(aPupil)
-        elif (tbNam.thi_lai==True):
-            retakenList.append(aPupil)
-        else:
-            repractisedList.append(aPupil)
-        allList.append(aPupil)                
+    list= zip(pupilList1,tbNamList1,hanhKiemList1)             
+    #print list
     yearString=str(selectedClass.year_id.time)+"-"+str(selectedClass.year_id.time+1)
     t = loader.get_template(os.path.join('school','xl_ca_nam_theo_lop.html'))
+    t2=time.time()
+    print (t2-t1)
     
     c = RequestContext(request, {"message":message,
                                  "selectedClass":selectedClass,
                                  "yearString":yearString,
-                                 "notDefinedList":notDefinedList,
-                                 "passedList":passedList,
-                                 "notPassedList":notPassedList,
-                                 "retakenList":retakenList,
-                                 "repractisedList":repractisedList,
-                                 "allList":allList 
+                                 "list":list 
                                 }
                        )
     
