@@ -18,7 +18,7 @@ import random
 from viewFinish import *
 LOCK_MARK =False
 ENABLE_CHANGE_MARK=True
-
+e=0.00000001
 
 """
 
@@ -226,7 +226,6 @@ def saveMarkHasComment(request,selectedTerm,markList,idList,tbhk1ListObjects,tbn
 
 def defineEdit(mt,timeToEdit):
     timeNow =datetime.datetime.now()
-    print timeNow
     if mt==None:
         return Editable(0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0 ,0)
     else:
@@ -322,22 +321,18 @@ def getMark(class_id,subjectChoice,selectedTerm):
     timeToEdit = 0
     
     pupilList=Pupil.objects.filter(class_id=class_id).order_by('first_name','last_name','birthday')                
-    markList=[]
     editList=[]    
     idList=[]    
     tbhk1List=[]
     tbnamList=[]
-    list=[]
     if selectedTerm.number==1:            
-        i=1    
-        for p in pupilList:
-            m = p.mark_set.get(subject_id=subjectChoice,term_id=selectedTerm.id)
-            markList.append(m)
-#sau phai sua cho nay
-            mt = m.marktime
+        i=1   
+        markList     =Mark.objects.filter(term_id=selectedTerm.id,subject_id=subjectChoice).order_by('student_id__first_name','student_id__last_name','student_id__birthday')
+        markTimeList =MarkTime.objects.filter(mark_id__term_id=selectedTerm.id,mark_id__subject_id=subjectChoice).order_by('mark_id__student_id__first_name','mark_id__student_id__last_name','mark_id__student_id__birthday') 
+
+        for mt in markTimeList: 
             ea=defineEdit(mt,timeToEdit)            
-            editList.append(ea)        
-        
+            editList.append(ea)                
             k=i*100
             id=MarkID(k+1,k+2,k+3,k+4,k+5,k+6,k+7,k+8,k+9,k+10,k+11,k+12,k+13,k+14,k+15,k+16,k+17,k+18,k+19)
             idList.append(id)
@@ -346,26 +341,19 @@ def getMark(class_id,subjectChoice,selectedTerm):
                  
     else:
         i=1
-        beforeTerm = Term.objects.get(year_id=selectedTerm.year_id,number=1)
-        for p in pupilList:
-            m = p.mark_set.get(subject_id=subjectChoice,term_id=selectedTerm.id)                
-            markList.append(m)
-              
-            mt = m.marktime
-            
+        beforeTerm   =Term.objects.get(year_id=selectedTerm.year_id,number=1).id
+        markList     =Mark.objects.filter(term_id=selectedTerm.id,subject_id=subjectChoice).order_by('student_id__first_name','student_id__last_name','student_id__birthday')
+        markTimeList =MarkTime.objects.filter(mark_id__term_id=selectedTerm.id,mark_id__subject_id=subjectChoice).order_by('mark_id__student_id__first_name','mark_id__student_id__last_name','mark_id__student_id__birthday') 
+        tbhk1List    =Mark.objects.filter(term_id=beforeTerm,subject_id=subjectChoice).order_by('student_id__first_name','student_id__last_name','student_id__birthday')
+        tbnamList    =TKMon.objects.filter(subject_id=subjectChoice).order_by('student_id__first_name','student_id__last_name','student_id__birthday')
+
+        for mt in markTimeList:                      
             ea=defineEdit(mt,timeToEdit)                
-            editList.append(ea)                                
-            hk1=p.mark_set.get(subject_id=subjectChoice,term_id=beforeTerm)
-                            
-            tbhk1List.append(hk1)
-                                                                   
+            editList.append(ea)                                                                                                               
             k=i*100
             id=MarkID(k+1,k+2,k+3,k+4,k+5,k+6,k+7,k+8,k+9,k+10,k+11,k+12,k+13,k+14,k+15,k+16,k+17,k+18,k+19)
             idList.append(id)
             i=i+1
-                            
-            tbnam=p.tkmon_set.get(subject_id=subjectChoice)                    
-            tbnamList.append(tbnam)
             
         list=zip(pupilList,markList,editList,tbhk1List,tbnamList,idList)    
     return   list
@@ -489,7 +477,8 @@ def markForASubject(request,subject_id):
     
 
     return HttpResponse(t.render(c))
-          
+
+#@transaction.commit_on_success          
 def markTable(request,term_id=-1,class_id=-1,subject_id=-1):
     tt1=time.time()
     user = request.user
@@ -527,7 +516,6 @@ def markTable(request,term_id=-1,class_id=-1,subject_id=-1):
     yearChoice = selectedTerm.year_id.id
             
     termList= Term.objects.filter(year_id=yearChoice,number__lt=3).order_by('number')    
-    print termList
     classList = Class.objects.filter(year_id=yearChoice)
     
     """    
@@ -539,11 +527,8 @@ def markTable(request,term_id=-1,class_id=-1,subject_id=-1):
     selectedTerm=termList[termList.__len__()-1]
     termChoice=selectedTerm.id
     """
-    if classChoice !=-1: subjectList=Subject.objects.filter(class_id=classChoice) 
-    
-    
-    
-
+    if classChoice !=-1: subjectList=Subject.objects.filter(class_id=classChoice,primary__in=[0,selectedTerm.number,3]) 
+    selectedSubject=None
     if request.method == 'POST':  
         if request.POST.get('move'):
              move=request.POST['move']
@@ -553,24 +538,18 @@ def markTable(request,term_id=-1,class_id=-1,subject_id=-1):
         
         classChoice=int(request.POST['class1'])
                             
-        subjectList=Subject.objects.filter(class_id=classChoice)
+        subjectList=Subject.objects.filter(class_id=classChoice,primary__in=[0,selectedTerm.number,3])
                 
         subjectChoice=int(request.POST['subject'])
         
-        print classChoice, subjectChoice, selectedTerm
         if subjectChoice !=-1:                
-            hsSubject=int(Subject.objects.get(id=subjectChoice).hs)    
+            selectedSubject=Subject.objects.get(id=subjectChoice)    
             list=getMark(classChoice,subjectChoice,selectedTerm)
-        print list
-        """
-        if (request.POST['submitChoice']=="luulai") & (hsSubject==0):
-            saveMarkHasComment(request,selectedTerm,markList,idList,tbhk1ListObjects,tbnamListObjects)    
-        """
+            
     elif subjectChoice!=-1:
-        hsSubject=int(Subject.objects.get(id=subjectChoice).hs)    
+        selectedSubject=Subject.objects.get(id=subjectChoice)    
         list=getMark(classChoice,subjectChoice,selectedTerm)
             
-    print classChoice        
     lengthList=0            
     if list!=None:        
         lengthList=list.__len__()  
@@ -589,11 +568,12 @@ def markTable(request,term_id=-1,class_id=-1,subject_id=-1):
                                 
                                 'classChoice':classChoice,
                                 'subjectChoice':subjectChoice,
-                                'termChoice':termChoice,                              
-
+                                'termChoice':termChoice,            
+                                                  
+                                'selectedSubject':selectedSubject,
                                 'selectedTerm':selectedTerm,
                                 'class_id':class_id,
-                                'hsSubject':hsSubject,
+                                
                                 'lengthList':lengthList,
                                 'move':move,
                                 }
@@ -714,7 +694,7 @@ def markForAStudent(request,class_id,student_id):
 
 # diem cho 1 mon
 
-def update(s):
+def update(s,primary):
     strings=s.split(':')
     idMark=int(strings[0])    
     setOfNumber =strings[1].split('*')
@@ -866,21 +846,27 @@ def update(s):
             if m.mot_tiet_5 != None: 
                 sum=sum+m.mot_tiet_5*2
                 factor=factor+2
-            e=0.00000001    
+                
             m.tb = round(sum/factor + e,1)
             
-            if m.term_id.number==2:
+            if (m.term_id.number==2) & ((primary==0)| (primary==3)):
                 subject_id = m.subject_id
                 student_id = m.student_id
-                #print "ok3"
                 tbk1=Mark.objects.get(subject_id=subject_id.id,student_id=student_id.id,term_id__number=1)
-                if tbk1.ck!=None:
+
+                if tbk1.tb!=None:
                     tbcn=TKMon.objects.get(subject_id=subject_id.id,student_id=student_id.id)
                     tbcn.tb_nam = round((m.tb*2 + tbk1.tb+e)/3 , 1)
-                    #print "ooooooooooooooooooooooooooooooooo"
-                    #print tbcn.tb_nam
                     tbcn.save()
-    #print "ok2"                                     
+                    
+            elif (primary==1) | (primary==2) :                
+                subject_id = m.subject_id
+                student_id = m.student_id
+                tbcn=TKMon.objects.get(subject_id=subject_id.id,student_id=student_id.id)
+                tbcn.tb_nam = m.tb
+                tbcn.save()
+            
+                    
     m.save()  
     mt.save()  
     
@@ -893,7 +879,7 @@ def saveMark(request):
         str = request.POST['str']
         strs=str.split('/')        
         position = get_position(request)
-        #print str
+        
         if   position ==4 :pass
         elif position ==3 :
             idTeacher= int(strs[0])
@@ -902,11 +888,12 @@ def saveMark(request):
                 teacher= Teacher.objects.get(id=idTeacher)
                 if request.user.id!=teacher.user_id.id: return
         else: return
-                
-        #print str
-        length= len(strs)
-        for i in range(1,length):
-                update(strs[i])     
+        print str        
+        length = len(strs)
+        primary= int(strs[1])
+        print str 
+        for i in range(2,length):
+                update(strs[i],primary)     
         message='ok'
         
         data = simplejson.dumps({'message': message})

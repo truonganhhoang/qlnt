@@ -241,7 +241,7 @@
 		//alert(str);	
 		if (str!="")
 		{
-			sendToServer(idTeacher+str);
+			sendToServer(idTeacher+"/"+primary+str);
 			var currentTime = (new Date()).getTime();
 			if ((currentTime-latestTime)>1500)
 			{
