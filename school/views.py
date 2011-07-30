@@ -944,9 +944,7 @@ def viewClassDetail(request, class_id, sort_type=1, sort_status=0, page=1):
                     std = Pupil.objects.get(id__exact = int(e))
                     completely_del_student(std)
                 except:
-                    pass
-            url = '/school/viewClassDetail/' + str(class_id)
-            return HttpResponseRedirect(url)
+                    pass        
         else:
             start_year = StartYear.objects.get(time = int(date.today().year), school_id = school.id)
             data = request.POST.copy()

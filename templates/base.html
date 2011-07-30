@@ -180,7 +180,11 @@
             $.datepicker.regional['vi']
         )
     );
-    $("input.datepicker").datepicker();
+    $("input.datepicker").datepicker({
+        changeMonth: true,
+		changeYear: true,
+        yearRange: 'c-60:c'
+    });
     $("#notify").ajaxStart( function(){
         $(this).text("Đang lưu dữ liệu lên server...");
         $(this).fadeIn('fast');
