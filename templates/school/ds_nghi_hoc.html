@@ -2,135 +2,162 @@
 
 {% block content %}
 
-<script>
-    $(document).ready(function() {
-      var note = '';
-      var done = function(json) {
-        if (json.message != null)
-          $.fancybox({
-            'title': "Các tin nhắn đã gửi",
-            'content': json.message
-          });
-        else
-          $.fancybox({
-            'title': "Thông báo",
-            'content': 'Bạn chưa chọn học sinh nào.'
-          });
-        $(".selected").each(select);
-        $("#selectAll").text("Chọn cả lớp");
-      };
-      var sendSmS = function() {
-        var id = $(this).attr('name');
-        var select = "#f_" + id;
-        var loai = $(select).text();
-        var data = id + '-' + loai;
-        //alert(window.location.pathname);
-        var arg = { type:"POST",
-          url:"",
-          data:{data: data, request_type:'sms'},
-          datatype:"json",
-          success:done
-        };
-        $.ajax(arg);
-        return false;
-      };
+    <script>
+        $(document).ready(function() {
+            var note = '';
 
-      var sendSelected = function() {
-
-        var data = '';
-        $(".selected").each(function() {
-          var id = $(this).attr('class').split(' ')[0];
-          var select = "#f_" + id;
-          var loai = $(select).text();
-          var element = id + '-' + loai;
-          data = data + ':' + element;
-        });
-
-        var arg = { type:"POST",
-          url:"",
-          data:{data: data, request_type:'sms'},
-          datatype:"json",
-          success:done
-        };
-        $.ajax(arg);
-        return false;
-      }
-      var select = function() {
-        if (!$(this).hasClass('thead')){
-            var id = $(this).attr('class').split(' ')[0];
-            var checkboxid = '#checkbox_' + id;
-            var checkboxall = '#checkbox_all'
-            if ($(this).hasClass('selected')) {
-                $(this).removeClass('selected');
-                $(checkboxid).prop("checked", false);
-                var n = $("input:checked").length;
-                if ( n == 1) $(checkboxall).prop("checked", false);;
-            } else {
-                $(this).addClass('selected');
-                $(checkboxid).prop("checked", true);
-                $(checkboxall).prop("checked", true);
+            var done = function(json) {
+                if (json.message != null && json.message != '')$("#smsNotification").html("<ul>"+json.message+"</ul>");
+                else $("#smsNotification").html('');
+                $("#smsNotification").dialog("open");
+                $(".selected").each(select);
+                $("#selectAll").text("Chọn cả lớp");
             };
-        }
-      }
-        
-      $(".sms").each(function() {
-        $(this).click(sendSmS);
-        note = '';
-      });
-      $("tr").each(function() {
-        $(this).click(select);
-      });
-      $("#checkbox_all").click( function(){
-            var checkboxall = '#checkbox_all'
-            if($(checkboxall).is(':checked')){
-                $("tr").each( function(){
+
+            $("#smsNotification").dialog({
+                modal : true,
+                buttons: {
+                    Đóng: function(){
+                        $(this).dialog('close');
+                    }
+                },
+                autoOpen: false,
+                width: 500,
+                height: 450,
+                maxWidth: 500,
+                maxHeight: 450,
+                title: "Những tin nhắn đã gửi"
+            })
+
+            var sendSmS = function() {
+                var id = $(this).attr('name');
+                var select = "tr." + id + " > td:has(select) > select ";
+                var loai = $(select).val();
+                var data = id + '-' + loai;
+                //alert(window.location.pathname);
+                var arg = { type:"POST",
+                    url:"",
+                    data:{data: data, request_type:'sms'},
+                    datatype:"json",
+                    success:done
+                };
+                $.ajax(arg);
+                return false;
+            };
+
+            var sendSelected = function() {
+
+                var data = '';
+                $(".selected").each(function() {
                     var id = $(this).attr('class').split(' ')[0];
-                    var checkboxid = '#checkbox_' + id
-                    if (!$(this).hasClass('selected'))
-                        $(this).trigger('click');
+                    var select = "tr." + id + " > td:has(select) > select ";
+                    var loai = $(select).val();
+                    var element = id + '-' + loai;
+                    data = data + ':' + element;
                 });
+
+                var arg = { type:"POST",
+                    url:"",
+                    data:{data: data, request_type:'sms'},
+                    datatype:"json",
+                    success:done
+                };
+                $.ajax(arg);
+                return false;
             }
-            else {
-                $("tr").each( function(){
+            var select = function() {
+                if (!$(this).hasClass('thead')){
                     var id = $(this).attr('class').split(' ')[0];
-                    var checkboxid = '#checkbox_' + id
-                    if ($(this).hasClass('selected'))
-                        $(this).trigger('click');
-                });
+                    var checkboxid = '#checkbox_' + id;
+                    var checkboxall = '#checkbox_all'
+                    if ($(this).hasClass('selected')) {
+                        $(this).removeClass('selected');
+                        $(checkboxid).prop("checked", false);
+                        var n = $("input:checked").length;
+                        if ( n == 1) $(checkboxall).prop("checked", false);
+                    } else {
+                        $(this).addClass('selected');
+                        $(checkboxid).prop("checked", true);
+                        $(checkboxall).prop("checked", true);
+                    };
+                }
             }
-        });      
-      $("#sendSelected").click(sendSelected);
 
-      $("#selectAll").click(function() {
-        $("tr").each(select);
-        return false;
-      });
+            $(".sms").each(function() {
+                $(this).click(sendSmS);
+                note = '';
+            });
 
-      $("select[name=loai]").each(function() {
-        $(this).change(function() {
-          var id = $(this).parents("tr").attr('class').split(' ')[0];
-          var loai = $(this).val();
-          var data = { id: id, loai:loai, request_type:'update'}
-          var arg = { type:"POST",
-            url:"",
-            data: data,
-            datatype:"json"
-            
-          };
+            $("select[name=class_id]").change(function(){
+                var class_id = $(this).val()
+                url = "/school/dsnghi/" + class_id + "/{{day}}/{{month}}/{{year}}"
+                window.location = url
+            });
+            $("input.datepicker").each(function(){
+                $(this).change(function(){
+                    var date = $(this).val()
+                    url = "/school/dsnghi/{{class_id}}/" + date
+                    window.location = url
+                });
+            });
+            $("select[name=loai]").each(function() {
+                $(this).change(function() {
+                    var id = $(this).parents("tr").attr('class').split(' ')[0];
+                    var loai = $(this).val();
+                    var data = { id: id, loai:loai, request_type:'update'}
+                    var arg = { type:"POST",
+                        url:"",
+                        data: data,
+                        datatype:"json"
+                    };
 
-          $.ajax(arg);
+                    $.ajax(arg);
+                    return false;
+
+                });
+            });
+            $("tr").each(function() {
+                $(this).click(select);
+            });
+            $("select[name=loai]").click( function (){
+                return false;
+            });
+            $("#checkbox_all").click( function(){
+                var checkboxall = '#checkbox_all'
+                if($(checkboxall).is(':checked')){
+                    $("tr").each( function(){
+                        var id = $(this).attr('class').split(' ')[0];
+                        var checkboxid = '#checkbox_' + id
+                        if (!$(this).hasClass('selected'))
+                            $(this).trigger('click');
+                    });
+                }
+                else {
+                    $("tr").each( function(){
+                        var id = $(this).attr('class').split(' ')[0];
+                        var checkboxid = '#checkbox_' + id
+                        if ($(this).hasClass('selected'))
+                            $(this).trigger('click');
+                    });
+                }
+            });
+            $("#sendSelected").click(sendSelected);
+
+            $("#selectAll").click(function() {
+                $("tr").each(select);
+                return false;
+            });
+            $("input.datepicker" ).datepicker( "option", "yearRange", 'c-1:c' );
 
         });
-      });
 
-
-    });
-
-</script>
-
-<h2>Danh sách học sinh lớp {{cl}} nghỉ học ngày {{day}}/{{month}}/{{year}}</h2>
+    </script>
+{% if pos == 4 or pos == 2 %}
+    <h2>Danh sách nghỉ học {{dncform}}</h2>
+{% else %}
+    <h2>Danh sách học sinh lớp {{cl}} nghỉ học ngày {{dncform.date}}</h2>
+{% endif %}
 <br>
-<form action="/school/diemdanh/{{class_id}}/{{day}}/{{month}}/{{year}}" method="post">{% csrf_token %}
 <br>
 {% if message != None %}
     {{message}}
@@ -190,6 +217,5 @@
             </tr>
         {% endfor %}
 </table>
-</form>
 
 {% endblock %}

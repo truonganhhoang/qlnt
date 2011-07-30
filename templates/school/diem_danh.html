@@ -151,7 +151,11 @@
         });
 
     </script>
-    <h2>Điểm danh {{dncform}}</h2>
+    {% if pos == 3 %}
+        <h2>Điểm danh lớp {{cl}} ngày {{dncform.date}}</h2>
+    {% else %}
+        <h2>Điểm danh {{dncform}}</h2>
+    {% endif %}
 
     <form action="/school/diemdanh/{{class_id}}/{{day}}/{{month}}/{{year}}" method="post">{% csrf_token %}
         {% if message != None %}

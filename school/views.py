@@ -1046,17 +1046,12 @@ def teachers(request, sort_type=1, sort_status=0, page=1):
         else:
             last_name = ''
             first_name = ''
-
-        if (int(request.POST['birthday_year']) and int(request.POST['birthday_month']) and int(request.POST['birthday_day'])):
-            try :
-                birthday = date(int(request.POST['birthday_year']), int(request.POST['birthday_month']), int(request.POST['birthday_day']))
-            except ValueError:
-                birthday = None
-        else:
-            birthday = None
-        data = {'first_name':first_name, 'last_name':last_name, 'birthday':birthday, 'sex':request.POST['sex'], 'school_id':school.id, 'birth_place':request.POST['birth_place'].strip()}
+        index = school.teacher_set.count() + 1
+        data = {'first_name':first_name, 'last_name':last_name, 'birthday':request.POST['birthday'], 'sex':request.POST['sex'], 'school_id':school.id, 'birth_place':request.POST['birth_place'].strip(), 'index':index}
         form = TeacherForm(data)
         if form.is_valid():
+            d = request.POST['birthday'].split('/')
+            birthday = date(int(d[2]),int(d[1]),int(d[0]))
             add_teacher(first_name=data['first_name'], last_name=data['last_name'], school=get_school(request), birthday=birthday, sex=data['sex'], birthplace=data['birth_place'])
             message = 'Bạn vừa thêm một giáo viên mới'
             form = TeacherForm()
@@ -1393,7 +1388,8 @@ def diem_danh(request, class_id, day, month, year):
     if not in_school(request, cl.block_id.school_id):
         return HttpResponseRedirect('/')
     url = '/school/dsnghi/' + str(class_id) + '/' + str(day) + '/' + str(month) + '/' + str(year)
-    if (get_position(request) < 3):
+    pos = get_position(request)
+    if (pos < 3):
         return HttpResponseRedirect(url)
     message = ''
     listdh = None
@@ -1521,7 +1517,7 @@ def diem_danh(request, class_id, day, month, year):
     listdh = zip(pupilList, form)
     t = loader.get_template(os.path.join('school', 'diem_danh.html'))
     c = RequestContext(request, {'dncform':dncform, 'form':form, 'pupilList': pupilList, 'time': time, 'message':message, 'class_id':class_id, 'time':time, 'list':listdh,
-                       'day':day, 'month':month, 'year':year, 'cl':cl})
+                       'day':day, 'month':month, 'year':year, 'cl':cl,'pos':pos})
     return HttpResponse(t.render(c))
     
 def time_select(request, class_id):
@@ -1576,6 +1572,9 @@ def ds_nghi(request, class_id, day, month, year):
     pupilList = Pupil.objects.filter(class_id=class_id).order_by('first_name', 'last_name')
     time = date(int(year), int(month), int(day))
     term = get_current_term(request)
+    dncdata = {'date':date(int(year),int(month),int(day)),'class_id':class_id}
+    year_id = get_current_year(request).id
+    dncform = DateAndClassForm(year_id,dncdata)
     hs_nghi = []
     stt = []
     message = ''
@@ -1620,7 +1619,7 @@ def ds_nghi(request, class_id, day, month, year):
             pass
     ds_nghi = zip(hs_nghi,stt)
     t = loader.get_template(os.path.join('school', 'ds_nghi_hoc.html'))
-    c = RequestContext(request, {'list':ds_nghi, 'class_id':class_id, 'time':time, 'day':day, 'month':month, 'year':year, 'cl':cl, 'pos':pos})
+    c = RequestContext(request, {'list':ds_nghi, 'class_id':class_id, 'time':time, 'day':day, 'month':month, 'year':year, 'cl':cl, 'pos':pos,'dncform':dncform})
     return HttpResponse(t.render(c))
     
 def diem_danh_hs(request, student_id):
