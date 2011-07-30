@@ -216,7 +216,7 @@
                         <td align="center" width="25%"> {{ss.teacher_id}}</td>
                         <td align="center" > {{ss.primary}} </td>
                     {%endif%}
-                    <td align="center" width="10%"> <a href="{%url school.views.school_index  %}markForASubject/{{ss.id}}"> Điểm </a></td>
+                    <td align="center" width="10%"> <a href="{%url school.views.school_index  %}markTable/{{term.id}}/{{class.id}}/{{ss.id}}"> Điểm </a></td>
                     {%if pos > 3%}
                         <td width = "5%"> <a href = "{%url school.views.school_index  %}deleteSubject/{{ss.id}}" onclick="return confirmDelete();">xóa</a></td>
                     {%endif%}
