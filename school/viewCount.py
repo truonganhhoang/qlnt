@@ -14,9 +14,18 @@ def countTotalPractisingInTerm(term_id):
     ptslList=[0,0,0,0,0]
     sum=0.0
     string=['T','K','TB','Y',None]
-    for i in range(string.__len__()):
-        slList[i]=HanhKiem.objects.filter(term_id=term_id,loai=string[i]).count()
-        sum+=slList[i]
+
+    selectedTerm=Term.objects.get(id=term_id)
+    year_id  = selectedTerm.year_id
+    if selectedTerm.number==1:
+        for i in range(string.__len__()):
+            slList[i]=HanhKiem.objects.filter(year_id=year_id,term1=string[i]).count()
+            sum+=slList[i]
+    else:        
+        for i in range(string.__len__()):
+            slList[i]=HanhKiem.objects.filter(year_id=year_id,term2=string[i]).count()
+            sum+=slList[i]
+
     if sum!=0:    
         for i in range(string.__len__()):
             ptslList[i]=slList[i]/sum *100
@@ -56,7 +65,7 @@ def countTotalPractisingInYear(year_id):
     sum=0.0
     string=['T','K','TB','Y',None]
     for i in range(string.__len__()):
-        slList[i]=TBNam.objects.filter(year_id=year_id,hk_nam=string[i]).count()
+        slList[i]=HanhKiem.objects.filter(year_id=year_id,year=string[i]).count()
         sum+=slList[i]
     if sum!=0:    
         for i in range(string.__len__()):
@@ -98,7 +107,7 @@ def countPassInYear(year_id):
     slList[0]=TBNam.objects.filter(year_id=year_id,len_lop=True).count()
     slList[1]=TBNam.objects.filter(year_id=year_id,len_lop=False).count()
     slList[2]=TBNam.objects.filter(year_id=year_id,thi_lai=True).count()
-    slList[3]=TBNam.objects.filter(year_id=year_id,ren_luyen_lai=True).count()
+    slList[3]=HanhKiem.objects.filter(year_id=year_id,ren_luyen_lai=True).count()
     slList[4]=TBNam.objects.filter(year_id=year_id,len_lop=None).count()
     for i in range(slList.__len__()):
         sum+=slList[i]

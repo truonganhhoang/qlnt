@@ -1,18 +1,30 @@
 ﻿ {% extends "base.html"%} 
 {% block content %}
 
+<div class="notify-widget-pane" >
+    <div class="notify" id="notify1" style="display: none;">
+    </div>
+</div>
+
+
 {% if message != None %}
-	{{message}}
+<script>
+	var temp = document.getElementById("notify1");
+	temp.innerHTML="{{message}}";
+    $(temp).fadeIn('fast');
+	$(temp).delay(5000).fadeOut('fast');      
+</script>	
 {% endif %}
-<p align=center style="font-size:25px" >
-		<b> Tổng kết học kỳ {{ selectedTerm.number}} </b>
-		<br><br>
-	    <b>    Năm học : {{yearString}}  </b>
-</p>
-<br>
-{#----------------------------------------------------#}
 
 
+<h2> Tổng kết học kỳ 
+	{%ifequal selectedTerm.number 1 %}
+		I
+	{% else %}
+		II
+	{% endifequal %}	
+       năm học {{yearString}}  
+</h2>
 
 <br>
 <form action="/school/finishTerm/{{selectedTerm.id}}"  name="info" method="post" id='myform' 
@@ -21,48 +33,51 @@
 		Thông tin học kỳ:
 		<span style="color:red;"> Đang diễn ra</span>	
 		&nbsp&nbsp&nbsp
-		<input type="submit"  name="finishTerm" value="click vào đây để kết thúc học kỳ" title="Sau khi click thì trạng thái trường sẽ chuyển sang kì tiếp theo và khóa sổ điểm đối với giáo viên ">
-     {% endifequal %}
-	 
-{#-------------------------------------------------------------------------------#}
-							{# thong ke chung  #}
-{#-------------------------------------------------------------------------------#}
+		<input class="buttonClass" type="submit"  name="finishTerm" value="click vào đây để kết thúc học kỳ" title="Sau khi click thì trạng thái trường sẽ chuyển sang kì tiếp theo và khóa sổ điểm đối với giáo viên ">
 
+		{% endifequal %}
+<br>	 
+	 {% ifnotequal selectedTerm currentTerm %}	 
+		Thông tin học kỳ:
+		<span style="color:red;"> Đã kết thúc </span>
+		&nbsp&nbsp&nbsp&nbsp
+		Nếu chưa muốn kết thúc học kỳ, bạn có thể ấn khôi phục lại học kỳ
+		<input class="buttonClass" type="submit"  name="finishTerm" value="khôi phục" title="Sau khi click, thì trạng thái trường học sẽ được chuyển về kỳ này và giáo viên có thể được sửa điểm của học sinh ở kỳ này" >
+	 {% endifnotequal %}	
+	<br>
+    <input class="buttonClass" type="submit"  name="tongKet" value="Tính tổng kết cả trường" >
+		
+</form>	
 <br>
+<h2> A.Thống kê toàn trường: </h2>
+ <h3>  &nbsp&nbsp I.Hạnh kiểm: </h3> 
 <br>
-<span style="font-size:18px" > <b> <u>A.THỐNG KÊ TOÀN TRƯỜNG: </u> </b> </span><br>
-<br>
-
-{#--------------------------------------------------------------------------#}
-<br>
-&nbsp &nbsp<b>I.HẠNH KIỂM: </b> <br>
-<br>
-<table border=1 width="100%">
+<table border=1 width="100%" class="styleA" >
 	<tr> 
-		<td width="14%">
-		</td>
-		<td width="14%" align="center">
+		<th width="14%">
+		</th>
+		<th width="14%" align="center">
 			Tốt
-		</td>
-		<td width="14%" align="center">
+		</th>
+		<th width="14%" align="center">
 			Khá
-		</td>
-		<td width="14%" align="center">
+		</th>
+		<th width="14%" align="center">
 			Trung bình
-		</td>
-		<td width="28%" align="center">
+		</th>
+		<th width="28%" align="center">
 			Yếu
-		</td>
-		<td width="14%" align="center">
+		</th>
+		<th width="14%" align="center">
 			Chưa xếp loại
-		</td>		
+		</th>		
 	</tr>
 	<tr>
 		<td align="center">
 			Số lượng
 		</td>
 		{% for h in hkList %}
-		<td align="center">
+		<td align="center" style="text-align:center">
 			{{h}}
 		</td>
 		{% endfor %}
@@ -72,44 +87,44 @@
 			Phần trăm (%)
 		</td>
 		{% for h in pthkList %}
-		<td align="center">
+		<td align="center" style="text-align:center">
 			{{h|floatformat:"1"}}
 		</td>
 		{% endfor %}
 	</tr>
 </table>
 <br>
-&nbsp &nbsp<b>II.HỌC LỰC: </b> <br>
+ <h3>&nbsp &nbsp II.Học lực: </h3> 
 <br>
-<table border=1 width="100%">
+<table border=1 width="100%" class="styleA">
 	<tr> 
-		<td width="14%">
-		</td>
-		<td width="14%" align="center">
+		<th width="14%">
+		</th>
+		<th width="14%" align="center">
 			Giỏi
-		</td>
-		<td width="14%" align="center">
+		</th>
+		<th width="14%" align="center">
 			Khá
-		</td>
-		<td width="14%" align="center">
+		</th>
+		<th width="14%" align="center">
 			Trung bình
-		</td>
-		<td width="14%" align="center">
+		</th>
+		<th width="14%" align="center">
 			Yếu
-		</td>
-		<td width="14%" align="center">
+		</th>
+		<th width="14%" align="center">
 			Kém
-		</td>
-		<td width="14%" align="center">
+		</th>
+		<th width="14%" align="center">
 			Chưa xếp loại
-		</td>		
+		</th>		
 	</tr>
 	<tr>
 		<td align="center">
 			Số lượng
 		</td>
 		{% for h in hlList %}
-		<td align="center">
+		<td align="center" style="text-align:center">
 			{{h}}
 		</td>
 		{% endfor %}
@@ -119,7 +134,7 @@
 			Phần trăm (%)
 		</td>
 		{% for h in pthlList %}
-		<td align="center">
+		<td align="center" style="text-align:center">
 			{{h|floatformat:"1"}}
 		</td>
 		{% endfor %}
@@ -131,31 +146,31 @@
 {#--------------------------------------------------------------------------#}
 <br>
 <br>
-&nbsp &nbsp<b>III.DANH HIỆU: </b> <br>
+<h3> &nbsp &nbspIII.Danh hiệu: </h3> 
 <br>
-<table border=1 width="100%">
+<table border=1 width="100%" class="styleA">
 	<tr> 
-		<td width="14%">
-		</td>
-		<td width="14%" align="center">
+		<th width="14%">
+		</th>
+		<th width="14%" align="center">
 			Học sinh giỏi
-		</td>
-		<td width="15%" align="center">
+		</th>
+		<th width="15%" align="center">
 			Học sinh tiên tiến
-		</td>
-		<td width="42%" align="center">
+		</th>
+		<th width="42%" align="center">
 			Không có
-		</td>
-		<td width="14%" align="center">
+		</th>
+		<th width="14%" align="center">
 			Chưa xếp loại
-		</td>		
+		</th>		
 	</tr>
 	<tr>
 		<td align="center">
 			Số lượng
 		</td>
 		{% for h in ddList %}
-		<td align="center">
+		<td align="center" style="text-align:center">
 			{{h}}
 		</td>
 		{% endfor %}
@@ -165,7 +180,7 @@
 			Phần trăm (%)
 		</td>
 		{% for h in ptddList %}
-		<td align="center">
+		<td align="center" style="text-align:center" >
 			{{h|floatformat:"1"}}
 		</td>
 		{% endfor %}
@@ -177,13 +192,99 @@
 
 
 
+
+
+
+
+
+
+
+
+
 {#-------------------------------------------------------------------------------#}
 							{# chi tiet tung lop  #}
 {#-------------------------------------------------------------------------------#}
-<span style="font-size:18px" > <b> <u>B.CHI TIẾT TỪNG LỚP: </u> </b> </span><br>
+
+
+
+
+
+
+
+
+
+
+
+
+<h2> B.Chi tiết từng lớp: </h2>
+
+<h3>I.Hạnh kiểm: </h3> 
+<h4>&nbsp 1. Danh sách các lớp đã tổng kết xong:</h4>
+<table border="0" width="100%">
+	{% for l in finishPractising  %}
+	{% if  forloop.counter0|divisibleby:"6" %}
+		<tr> 
+	{% endif %}	
+	
+		<td>
+		  {{l}}			
+		</td>
+	{% if forloop.counter|divisibleby:"6" %}
+		</tr>
+	{% endif %}	
+	
+	{% endfor %} 
+</table>
+	<br>
+<h4>&nbsp 2. Danh sách các lớp chưa tổng kết xong:</h4>
+<table border="0" width="100%" >
+	<tr>
+		<td  width="16.6 %">
+			&nbsp &nbsp Lớp
+		</td >
+		<td width="16.6 %">
+			Số lượng 	
+		</td>
+		<td  width="16.6 %">
+		 	&nbsp Lớp
+		</td >
+		<td  width="16.6 %">
+			Số lượng 	
+		</td>
+		<td  width="16.6 %">
+			&nbsp Lớp
+		</td >
+		<td  width="16.6 %">
+			Số lượng 	
+		</td>
+	</tr>
+	{% for l,s in notFinishPractising  %}
+	{% if  forloop.counter0|divisibleby:"3" %}
+	<tr> 
+	{% endif %}	
+	
+		<td>
+		  {{l}}			
+		</td>
+		<td>
+			{{s}}
+		</td>
+	{% if forloop.counter|divisibleby:"3" %}
+	</tr>
+	{% endif %}	
+	
+	{% endfor %} 
+</table>
+
+
+{#------------------------------------------------------------#}
+
+
 <br>
-<b>I.TỔNG KẾT HỌC LỰC: </b> <br>
-<b>&nbsp 1. Danh sách các lớp đã tổng kết xong:</b>
+<br>
+<br>
+<h3> II.Học lực: </h3>
+<h4>&nbsp 1. Danh sách các lớp đã tổng kết xong: </h4>
 <table border="0" width="100%">
 	{% for l in finishLearning  %}
 	{% if  forloop.counter0|divisibleby:"6" %}
@@ -200,7 +301,7 @@
 	{% endfor %} 
 </table>
 	<br>
-<b>&nbsp 2. Danh sách các lớp chưa tổng kết xong:</b>
+<h4>&nbsp 2. Danh sách các lớp chưa tổng kết xong:</h4>
 <table border="0" width="100%">
 	<tr>
 		<td  width="16.6 %">
@@ -248,74 +349,8 @@
 <br>
 <br>
 
-<b>II.TỔNG KẾT HẠNH KIỂM: </b> <br>
-<b>&nbsp 1. Danh sách các lớp đã tổng kết xong:</b>
-<table border="0" width="100%">
-	{% for l in finishPractising  %}
-	{% if  forloop.counter0|divisibleby:"6" %}
-		<tr> 
-	{% endif %}	
-	
-		<td>
-		  {{l}}			
-		</td>
-	{% if forloop.counter|divisibleby:"6" %}
-		</tr>
-	{% endif %}	
-	
-	{% endfor %} 
-</table>
-	<br>
-<b>&nbsp 2. Danh sách các lớp chưa tổng kết xong:</b>
-<table border="0" width="100%">
-	<tr>
-		<td  width="16.6 %">
-			&nbsp &nbsp Lớp
-		</td >
-		<td width="16.6 %">
-			Số lượng 	
-		</td>
-		<td  width="16.6 %">
-		 	&nbsp Lớp
-		</td >
-		<td  width="16.6 %">
-			Số lượng 	
-		</td>
-		<td  width="16.6 %">
-			&nbsp Lớp
-		</td >
-		<td  width="16.6 %">
-			Số lượng 	
-		</td>
-	</tr>
-	{% for l,s in notFinishPractising  %}
-	{% if  forloop.counter0|divisibleby:"3" %}
-	<tr> 
-	{% endif %}	
-	
-		<td>
-		  {{l}}			
-		</td>
-		<td>
-			{{s}}
-		</td>
-	{% if forloop.counter|divisibleby:"3" %}
-	</tr>
-	{% endif %}	
-	
-	{% endfor %} 
-</table>
-
-
-{#------------------------------------------------------------#}
-
-
-<br>
-<br>
-<br>
-
-<b>III.TỔNG KẾT CHUNG: </b> <br>
-<b>&nbsp 1. Danh sách các lớp đã tổng kết xong:</b>
+<h3>III.Tổng kết chung: </h3> <br>
+<h4>&nbsp 1. Danh sách các lớp đã tổng kết xong:</h4>
 <table border="0" width="100%">
 	{% for l in finishAll  %}
 	{% if  forloop.counter0|divisibleby:"6" %}
@@ -332,7 +367,7 @@
 	{% endfor %} 
 </table>
 	<br>
-<b>&nbsp 2. Danh sách các lớp chưa tổng kết xong:</b>
+<h4>&nbsp 2. Danh sách các lớp chưa tổng kết xong:</h4>
 <table border="0" width="100%">
 	<tr>
 		<td  width="16.6 %">
@@ -372,27 +407,4 @@
 	{% endfor %} 
 </table>
 <br>
-<br>	 
-	 {% ifnotequal selectedTerm currentTerm %}	 
-		Trạng thái học kỳ:	
-		<span style="color:5197FF ; font-size:23px">
-			Đã kết thúc 
-		</span >		 
-		&nbsp&nbsp&nbsp&nbsp
-		Nếu chưa muốn kết thúc học kỳ, bạn có thể ấn khôi phục lại học kỳ
-		<input type="submit"  name="finishTerm" value="khôi phục" title="Sau khi click, thì trạng thái trường học sẽ được chuyển về kỳ này và giáo viên có thể được sửa điểm của học sinh ở kỳ này" >
-	 {% endifnotequal %}	
-
-</form>	
-
-
-
-
-
-
-
-
-
-
-
 {% endblock  %}

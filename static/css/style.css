@@ -541,6 +541,11 @@ div.rightInfoDiv {
     background: #fff;
     color: #4d94d7;
 }
+#content h4  {
+    color: #4d94d7;
+    font: 18px/18px Georgia, "Times New Roman", Times, serif;
+    padding: 15px 0 0px 0;
+}
 
 #content p {
     padding: 3px 0 0;

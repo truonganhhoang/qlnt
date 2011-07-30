@@ -64,27 +64,27 @@ def thu(request):
     
     list1 = TKMon.objects.filter(student_id__class_id=1)
     for m in list1:
-        m.tb_nam=random.randrange( 7,11 )
+        m.tb_nam=random.randrange( 3,11 )
        # m.save()
     for m in list1:
         m.save()
            
     list = Mark.objects.filter(student_id__class_id=1)
     for m in list:
-        m.tb=random.randrange( 7,11 )
+        m.tb=random.randrange( 3,11 )
        # m.save()
     for m in list:
         m.save()
            
     hanhKiemList =HanhKiem.objects.filter(student_id__class_id=1)
     for hk in hanhKiemList:
-        t =random.randrange( 1,3 )
+        t =random.randrange( 1,5 )
         if   t==1: hk.year='T'
         elif t==2: hk.year='K'
         elif t==3: hk.year='TB'
         elif t==4: hk.year='Y'
 
-        t =random.randrange( 1,3 )
+        t =random.randrange( 1,5 )
         if   t==1: hk.term1='T'
         elif t==2: hk.term1='K'
         elif t==3: hk.term1='TB'
