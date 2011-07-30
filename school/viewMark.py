@@ -479,7 +479,7 @@ def markForASubject(request,subject_id):
     return HttpResponse(t.render(c))
 
 #@transaction.commit_on_success          
-def markTable(request,term_id=-1,class_id=-1,subject_id=-1):
+def markTable(request,term_id=-1,class_id=-1,subject_id=-1,move=None):
     tt1=time.time()
     user = request.user
     if not user.is_authenticated():
@@ -501,7 +501,6 @@ def markTable(request,term_id=-1,class_id=-1,subject_id=-1):
     enableSendSMS   =True    
     message = None            
     list=None
-    move=None
     hsSubject=-1
     subjectList=None
     
@@ -518,38 +517,22 @@ def markTable(request,term_id=-1,class_id=-1,subject_id=-1):
     termList= Term.objects.filter(year_id=yearChoice,number__lt=3).order_by('number')    
     classList = Class.objects.filter(year_id=yearChoice)
     
+
     """    
     if selectedClass.year_id.school_id.status==1:
         termList=Term.objects.filter(year_id=yearChoice,number=1).order_by('number')
     else:    
-        termList=Term.objects.filter(year_id=yearChoice,number__lt=3).order_by('number')
-    
-    selectedTerm=termList[termList.__len__()-1]
-    termChoice=selectedTerm.id
+        termList=Term.objects.filter(year_id=yearChoice,number__lt=3).order_by('number')    
     """
+    
     if classChoice !=-1: subjectList=Subject.objects.filter(class_id=classChoice,primary__in=[0,selectedTerm.number,3]) 
     selectedSubject=None
-    if request.method == 'POST':  
-        if request.POST.get('move'):
-             move=request.POST['move']
-        
-        termChoice =int(request.POST['term'])
-        selectedTerm=Term.objects.get(id=termChoice)
-        
-        classChoice=int(request.POST['class1'])
-                            
-        subjectList=Subject.objects.filter(class_id=classChoice,primary__in=[0,selectedTerm.number,3])
-                
-        subjectChoice=int(request.POST['subject'])
-        
-        if subjectChoice !=-1:                
-            selectedSubject=Subject.objects.get(id=subjectChoice)    
-            list=getMark(classChoice,subjectChoice,selectedTerm)
-            
-    elif subjectChoice!=-1:
+    
+    if subjectChoice!=-1:
         selectedSubject=Subject.objects.get(id=subjectChoice)    
         list=getMark(classChoice,subjectChoice,selectedTerm)
-            
+    
+    print move        
     lengthList=0            
     if list!=None:        
         lengthList=list.__len__()  

@@ -1,6 +1,9 @@
 ﻿<script>
 	// ngan chan khi dang luu diem hoac chua luu diem	
+	
+	var primary = {{selectedSubject.primary}};	
 	var needToConfirm = false;
+	
 	window.onbeforeunload = function confirmExit()
 	{
 		if (document.getElementById("buttonSave").style.display=="")

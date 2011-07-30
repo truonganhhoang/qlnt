@@ -1,12 +1,17 @@
 {% extends "base.html" %}
 {% block content %}
+{{move}}
   <script language="JavaScript" type="text/javascript">
     function submitSubject() 
 	{
 		if (document.info.subject.value != -1) 
-			//document.info.submit();
-			window.location.href="/school/markTable/"+{{termChoice}}+"/"+{{classChoice}}+"/"+document.info.subject.value;
+			if (document.info.move && document.info.move[0].checked)
+					window.location.href="/school/markTable/"+{{termChoice}}+"/"+{{classChoice}}+"/"+document.info.subject.value+"/ngang2";
+				else	
+					window.location.href="/school/markTable/"+{{termChoice}}+"/"+{{classChoice}}+"/"+document.info.subject.value;
+				
 	}
+	
 	function submitClass()
 	{
         if (document.info.class1.value != -1)
