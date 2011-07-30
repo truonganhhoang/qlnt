@@ -142,34 +142,34 @@
     <table border=0 align="left" width="80%">
         <tr class ="function">
             {% if pos > 0 %}
-                <td width="15%" align="center"><a title="Cập nhật điểm danh theo lớp"
+                <td width="15%" align="center"><a title="Cập nhật điểm danh theo lớp" class = "tiptiphover" 
                                                   href="{%url school.views.school_index  %}diemdanh/{{class.id}}">Điểm danh</a>
                 </td>
             {% endif %}
 
             {% if pos > 2 %}
-                <td width="15%" align="center"><a title="Đánh giá hạnh kiểm học sinh trong lớp"
+                <td width="15%" align="center"><a title="Đánh giá hạnh kiểm học sinh trong lớp" class = "tiptiphover" 
                                                   href="{%url school.views.school_index  %}hanhkiem/{{class.id}}">Hạnh kiểm</a>
                 </td>
             {% endif %}
 
             {% if pos > 0 %}
-                <td width="15%" align="center"><a title="Xem tất cả thông tin của của môn học trong lớp"
+                <td width="15%" align="center"><a title="Xem tất cả thông tin của của môn học trong lớp" class = "tiptiphover" 
                                                   href="{%url school.views.school_index  %}subjectPerClass/{{class.id}}">Quản lý
                     môn học</a></td>
             {% endif %}
 
-            {% if pos > 3 %}
-                <td width="15%" align="center"><a title="Nhập hoặc chỉnh sửa điểm của tất cả các môn trong lớp"
+            {% if pos > 3 %} 
+                <td width="15%" align="center"><a title="Nhập hoặc chỉnh sửa điểm của tất cả các môn trong lớp" class = "tiptiphover" 
                                                   href="{%url school.views.school_index  %}markTable/{{currentTerm.id}}/{{class.id}}">Quản lý
                     điểm</a></td>
                 {% ifequal class.year_id.school_id.status 1 %}
-                    <td width="20%" align="center"><a title="Tự động tính trung bình học lực của cả lớp"
+                    <td width="20%" align="center"><a title="Tự động tính trung bình học lực của cả lớp" class = "tiptiphover" 
                                                       href="{%url school.views.school_index  %}xepLoaiHlTheoLop/{{class.id}}/1">
                         Xem điểm tổng kết </a>
                     </td>
                 {% else %}
-                    <td width="20%" align="center"><a title="Tự động tính trung bình học lực của cả lớp"
+                    <td width="20%" align="center"><a title="Tự động tính trung bình học lực của cả lớp" class = "tiptiphover" 
                                                       href="{%url school.views.school_index  %}xepLoaiHlTheoLop/{{class.id}}/2">
                         Xem điểm tổng kết </a>
                     </td>
@@ -177,7 +177,7 @@
 
                 <td width="20%" align="center">
                     {% ifnotequal class.year_id.school_id.status 1 %}
-                        <a title="Tự động xếp loại cả năm của lớp"
+                        <a title="Tự động xếp loại cả năm của lớp" class = "tiptiphover" 
                            href="{%url school.views.school_index  %}xlCaNamTheoLop/{{class.id}}/1">Tổng kết cả năm</a>
                     {% else %}
                         <a title="Chức năng này đã bị vô hiệu hóa vì đang trong học kỳ I">Tổng kết cả năm</a>
@@ -200,15 +200,17 @@
             <th align="center" width="30px">
                 <input type="checkbox" id="checkbox_all"/>
             </th>
-            <th align="center" > STT</th>
+            <th align="center" > <a
+                    href="{%url school.views.school_index  %}viewClassDetail/{{class.id}}/0/{{next_status}}/1" class = "tiptiphover" title="Hiển thị theo thứ tự sắp xếp"> STT </a></th>
             <th align="center" > Họ </th>
-            <th align="center" > Tên </th>
             <th align="center" ><a
-                    href="{%url school.views.school_index  %}viewClassDetail/{{class.id}}/2/{{next_status}}/1">Ngày sinh</a>
+                    href="{%url school.views.school_index  %}viewClassDetail/{{class.id}}/1/{{next_status}}/1 " class = "tiptiphover" title="Sắp xếp theo tên"> Tên </a></th>
+            <th align="center" ><a
+                    href="{%url school.views.school_index  %}viewClassDetail/{{class.id}}/2/{{next_status}}/1" class = "tiptiphover" title="Sắp xếp ngày sinh">Ngày sinh</a>
             </th>
             <th align="center" > Nơi sinh </th>
             <th align="center" ><a
-                    href="{%url school.views.school_index  %}viewClassDetail/{{class.id}}/3/{{next_status}}/1">Giới tính</a>
+                    href="{%url school.views.school_index  %}viewClassDetail/{{class.id}}/3/{{next_status}}/1" class = "tiptiphover" title="Sắp xếp giới tính">Giới tính</a>
             </th>
             <th align="center" > Dân tộc </th>
             <th align="center" > Ưu tiên </th>

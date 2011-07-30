@@ -952,7 +952,7 @@ def addClass(request):
 		
 #User: loi.luuthe@gmail.com
 #This function has class_id is an int argument. It gets the information of the class corresponding to the class_id and response to the template
-def viewClassDetail(request, class_id, sort_type=1, sort_status=0, page=1):
+def viewClassDetail(request, class_id, sort_type=0, sort_status=0, page=1):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
@@ -1016,7 +1016,11 @@ def viewClassDetail(request, class_id, sort_type=1, sort_status=0, page=1):
                             school_join_date=school_join_date)
                 message = 'Bạn vừa thêm một học sinh mới'
                 form = PupilForm(school.id)
-                    
+    if int(sort_type) == 0:
+        if int(sort_status) == 0:
+            studentList = cl.pupil_set.order_by('index','first_name', 'last_name','birthday')
+        else:
+            studentList = cl.pupil_set.order_by('index','-first_name', '-last_name','-birthday')                    
     if int(sort_type) == 1:
         if int(sort_status) == 0:
             studentList = cl.pupil_set.order_by('first_name', 'last_name','birthday')
@@ -1519,7 +1523,7 @@ def diem_danh(request, class_id, day, month, year):
             return HttpResponse(data, mimetype = 'json')
         else:
             raise Exception('StrangeRequestMethod')
-    pupilList = Pupil.objects.filter(class_id=class_id).order_by('first_name', 'last_name')
+    pupilList = Pupil.objects.filter(class_id=class_id).order_by('index','first_name', 'last_name')
     time = date(int(year), int(month), int(day))
     term = get_current_term(request)
     form = []
