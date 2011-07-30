@@ -1397,20 +1397,6 @@ def diem_danh(request, class_id, day, month, year):
     dncdata = {'date':date(int(year),int(month),int(day)),'class_id':class_id}
     year_id = get_current_year(request).id
     dncform = DateAndClassForm(year_id,dncdata)
-
-    if request.method == 'POST':
-        try:
-            dncform = DateAndClassForm(year_id,request.POST)
-            if dncform.is_valid():
-                d = request.POST['date'].split('/')
-                class_id = int(request.POST[u'class_id'])
-                day = int(d[0])
-                month = int(d[1])
-                year = int(d[2])
-                url = '/school/diemdanh/' + str(class_id) + '/' + str(day) + '/' + str(month) + '/' + str(year)
-                return HttpResponseRedirect(url)
-        except MultiValueDictKeyError:
-            pass
     if request.is_ajax():
         if request.method == 'POST':
             request_type = request.POST[u'request_type']
