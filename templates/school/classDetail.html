@@ -190,11 +190,14 @@
         <a align="left">{{ message }}</a>
     {% endif %}
 
-    <button id="delSelected" align ="left">Xóa những học sinh đã chọn</button>
 
+    <div id="submenu">
+        <a href="{% url school.views.organize_students class.id "0" %}">Sắp xếp</a>
+        <button id="delSelected" align ="left">Xóa những học sinh đã chọn</button>
+    </div>
     <table class="styleA" >
         <tr class ="thread">
-            <th align="center">
+            <th align="center" width="30px">
                 <input type="checkbox" id="checkbox_all"/>
             </th>
             <th align="center" > STT</th>

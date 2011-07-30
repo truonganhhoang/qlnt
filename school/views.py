@@ -30,6 +30,7 @@ CLASS_LABEL = os.path.join('school', 'class_labels.html')
 CLASSIFY = os.path.join('school','classify.html')
 INFO = os.path.join('school','info.html')
 SETUP = os.path.join('school','setup.html')
+ORGANIZE_STUDENTS = os.path.join('school','organize_students.html')
 
 def school_index(request):
     
@@ -43,7 +44,7 @@ def school_index(request):
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
     
-    if school.status == 0:
+    if not school.status:
         return HttpResponseRedirect(reverse('setup'))
     
     year = get_current_year(request)
@@ -140,31 +141,64 @@ def empty(label_list):
 
 
 # this following view handles all ajax request of indexing targets.
+@transaction.commit_manually
 def change_index(request, target, class_id):
     print 'is on view'
-    if target == u'subject':
-        if request.is_ajax():
-            if request.method == 'POST':
-                data = request.POST['data']
-                print data
-                try:
-                    list = data.split('/')
-                    for element in list:
-                        if element:
-                            id = int(element.split('_')[0])
-                            index = int(element.split('_')[1])
-                            subject = Subject.objects.get(id = id)
-                            if subject.index != index:
-                                subject.index = index
-                                subject.save()
-                    response = simplejson.dumps({'success': True})
-                    return HttpResponse( response, mimetype='json')
-                except Exception as e:
-                    print e
-        else:
-            raise Exception('NotAjaxRequest')
+    object = None
+    if target == u'subject': object = 'Subject'
+    elif target == u'student': object = 'Pupil'
+    elif target == u'teacher': object = 'Teacher'
+    elif target == u'class': object = 'Class'
     else:
-        pass
+        raise Exception('BadTarget')
+    if request.is_ajax():
+        if request.method == 'POST':
+            data = request.POST['data']
+            print data
+            try:
+                list = data.split('/')
+                for element in list:
+                    if element:
+                        id = int(element.split('_')[0])
+                        index = int(element.split('_')[1])
+                        exec('item = ' + object + '.objects.get(id = id)')
+                        #subject = Subject.objects.get(id = id)
+                        if item.index != index:
+                            item.index = index
+                            item.save()
+                transaction.commit()
+                response = simplejson.dumps({'success': True})
+                return HttpResponse( response, mimetype='json')
+            except Exception as e:
+                print e
+    else:
+        raise Exception('NotAjaxRequest')
+
+def organize_students(request, class_id, type = '0'):
+    try:
+        school = get_school(request)
+    except Exception as e:
+        return HttpResponseRedirect(reverse('index'))
+
+    permission = get_permission(request)
+    if not permission in [u'HIEU_TRUONG',u'HIEU_PHO']:
+        return HttpResponseRedirect(reverse('school_index'))
+
+    try:
+        _class = Class.objects.get( id = int(class_id))
+        if type=='1':
+            student_list = _class.pupil_set.order_by('first_name', 'last_name')
+        else:
+            student_list = _class.pupil_set.order_by('index')
+    except Exception as e:
+        print e
+
+    context = RequestContext(request)
+    return render_to_response(ORGANIZE_STUDENTS, {'student_list': student_list, 'class': _class},
+                              context_instance = context)
+        
+        
+    
 
 def phase_class_label(request, school):
     class_labels = []
@@ -504,6 +538,7 @@ def process_file(file_name, task):
         
         for r in range(start_row + 1, sheet.nrows):
             name = sheet.cell_value(r, c_ten)
+            name = ' '.join([i.capitalize() for i in name.split(' ')])
             birthday = sheet.cell(r, c_ngay_sinh).value
             nv = sheet.cell_value( r, c_nguyen_vong)
             tong_diem = sheet.cell_value( r, c_tong_diem)
@@ -632,7 +667,7 @@ def nhap_danh_sach_trung_tuyen(request):
         return HttpResponseRedirect(reverse('school_index'))
     
     message = ''    
-    _class_list = [(u'0', u'---')]
+    _class_list = []
     try:
         this_year = school.year_set.latest('time')
         temp = this_year.class_set.all()
@@ -674,7 +709,7 @@ def manual_adding(request):
     if not permission in [u'HIEU_TRUONG',u'HIEU_PHO']:
         return HttpResponseRedirect(reverse('school_index'))
     
-    _class_list = [(u'0', u'---')]
+    _class_list = []
     message = None
     try:
         this_year = school.year_set.latest('time')
@@ -697,19 +732,25 @@ def manual_adding(request):
             chosen_class = form.cleaned_data['the_class']
             if chosen_class != u'0':
                 chosen_class = school.year_set.latest('time').class_set.get(id=chosen_class)
+                number_of_student = chosen_class.pupil_set.count()
             else:
                 chosen_class = None
             if request.POST['clickedButton'] == 'save':
                 year = school.startyear_set.get(time=datetime.date.today().year)
-                today = datetime.date.today()   
+                today = datetime.date.today()
+                i = number_of_student
                 for student in student_list:
+                    i += 1
                     data = {'full_name': student['ten'], 'birthday':student['ngay_sinh'],
                         'ban':student['nguyen_vong'], }
-                    
-                    add_student(student=data, _class=chosen_class,
+                    print i
+                    try:
+                        add_student(student=data, _class=chosen_class,
                                 start_year=year, year=this_year,
+                                index = i,
                                 term=term, school=school)
-                    
+                    except Exception as e:
+                        print e
                 transaction.commit()
                 message = u'Bạn vừa nhập thành công danh sách học sinh trúng tuyển.'
                 student_list = []
@@ -764,6 +805,7 @@ def danh_sach_trung_tuyen(request):
     current_year = school.year_set.latest('time')
     if chosen_class != u'0':
         chosen_class = school.year_set.latest('time').class_set.get(id=chosen_class)
+        number_of_student = chosen_class.pupil_set.count();
     else:
         chosen_class = None
     message = None
@@ -771,14 +813,16 @@ def danh_sach_trung_tuyen(request):
     if request.method == 'POST':
         if request.POST['clickedButton'] == 'save':
             year = school.startyear_set.get(time=datetime.date.today().year)
-            today = datetime.date.today()   
+            today = datetime.date.today()
+            i = number_of_student
             for student in student_list:
+                i += 1
                 data = {'full_name': student['ten'], 'birthday':student['ngay_sinh'],
                     'ban':student['nguyen_vong'], }
                 
                 add_student(student=data, _class=chosen_class,
                             start_year=year, year=current_year,
-
+                            index = i,
                             term=term, school=school)
             message = u'Bạn vừa nhập thành công danh sách học sinh trúng tuyển.'
             student_list = []
@@ -962,7 +1006,14 @@ def viewClassDetail(request, class_id, sort_type=1, sort_status=0, page=1):
                 data['ban'] = data['ban_dk']
                 data['birthday'] = birthday
                 _class = Class.objects.get(id=class_id)
-                add_student(student=data, start_year=start_year, year=get_current_year(request), _class=_class, term=get_current_term(request), school=get_school(request), school_join_date=school_join_date)
+                index = _class.pupil_set.count() + 1
+                add_student(student=data, start_year=start_year,
+                            year=get_current_year(request),
+                            _class=_class,
+                            index= index,
+                            term=get_current_term(request),
+                            school=get_school(request),
+                            school_join_date=school_join_date)
                 message = 'Bạn vừa thêm một học sinh mới'
                 form = PupilForm(school.id)
                     
@@ -1284,7 +1335,14 @@ def students(request, sort_type=1, sort_status=1, page=1):
             start_year = StartYear.objects.get(id=int(data['start_year_id']))
             _class = Class.objects.get(id=data['class_id'])
             data['ban'] = data['ban_dk']
-            add_student(student=data, start_year=start_year, year=get_current_year(request), _class=_class, term=get_current_term(request), school=get_school(request), school_join_date=school_join_date)
+            index = _class.pupil_set.count() + 1
+            add_student(student=data, start_year=start_year,
+                        year=get_current_year(request),
+                        _class=_class,
+                        index = index,
+                        term=get_current_term(request),
+                        school=get_school(request),
+                        school_join_date=school_join_date)
             message = 'Bạn vừa thêm một học sinh mới'
 
             form = PupilForm(school.id)

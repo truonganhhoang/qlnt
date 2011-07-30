@@ -2,6 +2,7 @@
 import os.path
 import urlparse
 import smtplib
+import thread
 from email.mime.text import MIMEText
 from django.conf import settings
 from django.http import HttpResponse, HttpResponseRedirect
@@ -176,13 +177,10 @@ def send_email(subject, message, from_addr=GMAIL_LOGIN, to_addr= None):
     server.ehlo() 
     server.login(GMAIL_LOGIN,GMAIL_PASSWORD) 
     for to_address in to_addr:
-        try:
-            msg['Subject'] = subject 
-            msg['From'] = from_addr 
-            msg['To'] = to_address   
-            server.sendmail(from_addr, to_address, msg.as_string()) 
-        except Exception as e:
-            print e
+        msg['Subject'] = subject
+        msg['From'] = from_addr
+        msg['To'] = to_address
+        server.sendmail(from_addr, to_address, msg.as_string())
     server.close()
 
 def feedback(request):
@@ -196,8 +194,10 @@ def feedback(request):
             content = request.POST['content']
             subject = u'[qlnt] User feedback'
             message = '\n'.join([url, user, school, content])
-            print message
-            send_email( subject = subject, message = message, to_addr= ['vu.tran54@gmail.com', 'truonganhhoang@gmail.com'])
+            #print message
+            #send_email( subject = subject, message = message,
+            #                          to_addr= ['vu.tran54@gmail.com', 'truonganhhoang@gmail.com'])
+            thread.start_new_thread(send_email, (subject, message, GMAIL_LOGIN, ['vu.tran54@gmail.com', 'truonganhhoang@gmail.com']))
             return HttpResponse({'done': True})
         else:
             form = FeedbackForm(request.POST) # A form bound to the POST data
