@@ -72,7 +72,7 @@
                 if (!answer) return false;
                 var data = '';
                 $(".selected").each(function(){
-                    data = data + $(this).attr('class').split(' ')[0] + '-' ;
+                    data = data + '-' + $(this).attr('class').split(' ')[0] ;
                 });
                 var arg = { type:"POST",
                     url:"",

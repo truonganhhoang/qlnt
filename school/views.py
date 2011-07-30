@@ -939,10 +939,12 @@ def viewClassDetail(request, class_id, sort_type=1, sort_status=0, page=1):
         if (request.is_ajax()):
             data = request.POST[u'data']
             data = data.split('-')
-            print data
             for e in data:
-                std = Pupil.objects.get(id = int(e))
-                completely_del_student(std)
+                try:
+                    std = Pupil.objects.get(id__exact = int(e))
+                    completely_del_student(std)
+                except:
+                    pass
             url = '/school/viewClassDetail/' + str(class_id)
             return HttpResponseRedirect(url)
         else:
