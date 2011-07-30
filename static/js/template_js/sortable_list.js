@@ -103,7 +103,6 @@ $(document).ready(function(){
                 var prev = theSelected.prev('li.sortable');
                 if (prev.length > 0){
                     prev.before(theSelected);
-                    alert(theSelected.offset().top);
                 }
             } else if ( event.which == 40){
                 // down arrow key
