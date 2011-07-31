@@ -21,8 +21,15 @@ urlpatterns = patterns('',
     url(r'markTable/(?P<term_id>\w+)/(?P<class_id>\w+)/(?P<subject_id>\w+)$','school.viewMark.markTable'),
     url(r'markTable/(?P<term_id>\w+)/(?P<class_id>\w+)/(?P<subject_id>\w+)/(?P<move>\w+)$','school.viewMark.markTable'),
     
+    url(r'markForTeacher$','school.viewMark.markForTeacher'),
+    url(r'markForTeacher/(?P<term_id>\w+)$','school.viewMark.markForTeacher'),
+    url(r'markForTeacher/(?P<term_id>\w+)/(?P<subject_id>\w+)$','school.viewMark.markForTeacher'),
+    url(r'markForTeacher/(?P<term_id>\w+)/(?P<subject_id>\w+)/(?P<move>\w+)$','school.viewMark.markForTeacher'),
+
+    
     url(r'markForAStudent/(?P<class_id>\w+)/(?P<student_id>\w+)$','school.viewMark.markForAStudent'),
     url(r'markForASubject/(?P<subject_id>\w+)','school.viewMark.markForASubject'),
+    
     url(r'saveMark$','school.viewMark.saveMark'),
     url(r'sendSMSMark$','school.viewMark.sendSMSMark'),
     

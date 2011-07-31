@@ -114,6 +114,7 @@ table.styleB tr {
 
 table.styleB td {
     border: 1px solid #a9c6c9;
+	height:24px;
 }
 
 table.styleB td.normal {
@@ -132,6 +133,8 @@ table.styleB td.selected {
     background-color: #f3f48d;
 }
 
+
+
 table.styleB tr:hover {
     background-color: #f0f1c3;
 }
@@ -144,7 +147,7 @@ input.mark {
     cursor: pointer;
     border: 0;
     width: 21px;
-    height: 20px;
+	height:24px;
     margin-top: 0;
     margin-bottom: 0;
     margin-left: 0;
@@ -154,7 +157,7 @@ input.selected {
     cursor: pointer;
     border: 0;
     width: 21px;
-    height: 20px;
+	height:24px;
     margin-top: 0;
     margin-bottom: 0;
     margin-left: 0;
@@ -165,7 +168,7 @@ input.sent {
     cursor: pointer;
     border: 0;
     width: 21px;
-    height: 20px;
+	height:24px;
     margin-top: 0;
     margin-bottom: 0;
     margin-left: 0;
@@ -203,6 +206,14 @@ table.styleA td.lastname {
 table.styleA td.firstname {
     width: 50px;
     border-left: 0;
+}
+
+table.styleA td.sent {
+    background-color: #B2FFDB;
+}
+
+table.styleA td.selected {
+    background-color: #f3f48d;
 }
 
 #sortable tr {
@@ -712,7 +723,6 @@ dd {
 
 #sitemap {
     overflow: hidden;
-    backgroud-color: red;
 }
 
 .thumb {
