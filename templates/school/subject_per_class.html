@@ -33,9 +33,9 @@
         </select>
         học kì {{term}}</h2>
     </form>
-    <div id="submenu">
-        <input type="button" id="sort" value="Sắp xếp" />&nbsp;
-        <a id="guide" class="tiptiphover" href="" title="Dùng các phím mũi tên để chọn môn học,
+    <div id="tableFunction">
+        <input class="ggButton" type="button" id="sort" value="Sắp xếp" />&nbsp;
+        <a id="guide" class="tiptiphover ggButton" href="" title="Dùng các phím mũi tên để chọn môn học,
         sau đó Enter để thay đổi thứ tự hoặc bỏ chọn môn đó. Kết thúc bằng việc ấn 'Lưu thứ tự'.">Hướng dẫn</a>
     </div>
     <form action="/school/subjectPerClass/{{class.id}}" method="post">{% csrf_token %}

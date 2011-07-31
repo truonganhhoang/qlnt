@@ -252,61 +252,60 @@ table.styleA td {
     text-align: left;
 }
 
-.ggButton{
+.ggButton {
     background-color: #4D90FE;
-    background-image: -webkit-gradient(linear,left top,left bottom, from(#4D90FE),to(#4787ED));
-    background-image: -webkit-linear-gradient(top,#4D90FE,#4787ED);
-    background-image: -moz-linear-gradient(top,#4D90FE,#4787ED);
-    background-image: -ms-linear-gradient(top,#4D90FE,#4787ED);
-    background-image: -o-linear-gradient(top,#4D90FE,#4787ED);
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#4D90FE), to(#4787ED));
+    background-image: -webkit-linear-gradient(top, #4D90FE, #4787ED);
+    background-image: -moz-linear-gradient(top, #4D90FE, #4787ED);
+    background-image: -ms-linear-gradient(top, #4D90FE, #4787ED);
+    background-image: -o-linear-gradient(top, #4D90FE, #4787ED);
     border: 1px solid #3079ED;
     border-radius: 2px;
     -moz-border-radius: 2px;
     -webkit-border-radius: 2px;
     display: inline-block;
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorStr='#4D90FE',EndColorStr='#4787ED');
-    color:#ffffff;
-    font-size:13px;
-	font-weight:bold;
-	padding:3px 12px;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#4D90FE', EndColorStr = '#4787ED');
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: bold;
+    padding: 3px 12px;
     cursor: pointer;
-	text-decoration:none;
+    text-decoration: none;
 }
 
-.ggButton:hover{
+.ggButton:hover {
     background-color: #75a8fa;
-    background-image: -webkit-gradient(linear,left top,left bottom, from(#75a8fa),to(#4787ED));
-    background-image: -webkit-linear-gradient(top,#75a8fa,#4787ED);
-    background-image: -moz-linear-gradient(top,#75a8fa,#4787ED);
-    background-image: -ms-linear-gradient(top,#75a8fa,#4787ED);
-    background-image: -o-linear-gradient(top,#75a8fa,#4787ED);
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#75a8fa), to(#4787ED));
+    background-image: -webkit-linear-gradient(top, #75a8fa, #4787ED);
+    background-image: -moz-linear-gradient(top, #75a8fa, #4787ED);
+    background-image: -ms-linear-gradient(top, #75a8fa, #4787ED);
+    background-image: -o-linear-gradient(top, #75a8fa, #4787ED);
 
 }
 
-.ggButton:disabled{
+.ggButton:disabled {
     background-color: #c6d9f9;
-    background-image: -webkit-gradient(linear,left top,left bottom, from(#c6d9f9),to(#92abd4));
-    background-image: -webkit-linear-gradient(top,#c6d9f9,#92abd4);
-    background-image: -moz-linear-gradient(top,#c6d9f9,#92abd4);
-    background-image: -ms-linear-gradient(top,#c6d9f9,#92abd4);
-    background-image: -o-linear-gradient(top,#c6d9f9,#92abd4);
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#c6d9f9), to(#92abd4));
+    background-image: -webkit-linear-gradient(top, #c6d9f9, #92abd4);
+    background-image: -moz-linear-gradient(top, #c6d9f9, #92abd4);
+    background-image: -ms-linear-gradient(top, #c6d9f9, #92abd4);
+    background-image: -o-linear-gradient(top, #c6d9f9, #92abd4);
     color: black;
     cursor: default;
 }
 
-.ggButton.disabled{
+.ggButton.disabled {
     background-color: #c6d9f9;
-    background-image: -webkit-gradient(linear,left top,left bottom, from(#c6d9f9),to(#92abd4));
-    background-image: -webkit-linear-gradient(top,#c6d9f9,#92abd4);
-    background-image: -moz-linear-gradient(top,#c6d9f9,#92abd4);
-    background-image: -ms-linear-gradient(top,#c6d9f9,#92abd4);
-    background-image: -o-linear-gradient(top,#c6d9f9,#92abd4);
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#c6d9f9), to(#92abd4));
+    background-image: -webkit-linear-gradient(top, #c6d9f9, #92abd4);
+    background-image: -moz-linear-gradient(top, #c6d9f9, #92abd4);
+    background-image: -ms-linear-gradient(top, #c6d9f9, #92abd4);
+    background-image: -o-linear-gradient(top, #c6d9f9, #92abd4);
     color: black;
     cursor: default;
 }
 
-
-div#submenu{
+div#submenu {
     position: relative;
     text-align: left;
     padding: 10px 10px 10px 3px;
@@ -315,7 +314,7 @@ div#submenu{
     display: block;
 }
 
-div#tableFunction{
+div#tableFunction {
     position: relative;
     text-align: left;
     margin-bottom: 3px;
@@ -458,10 +457,9 @@ nav ul li a:hover {
     text-decoration: none;
 }
 
-a{
+a {
     text-decoration: none;
 }
-
 
 /*----BODY PANEL----*/
 /*#bodyPanel {*/
@@ -604,7 +602,7 @@ div#divList {
     column-gap: 4em;
 
     padding: 10px;
-    
+
     display: block;
 }
 
@@ -613,7 +611,6 @@ div#divList {
     padding: 5px;
     cursor: pointer;
 }
-
 
 #content h2 {
     color: #4d94d7;
@@ -636,7 +633,8 @@ div#divList {
     background: #fff;
     color: #4d94d7;
 }
-#content h4  {
+
+#content h4 {
     color: #4d94d7;
     font: 18px/18px Georgia, "Times New Roman", Times, serif;
     padding: 15px 0 0 0;

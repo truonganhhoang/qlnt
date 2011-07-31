@@ -6,9 +6,7 @@
 <h2>Những buổi nghỉ của {{pupil}} học kì {{term}}</h2>
 
 <form action="/school/diemdanhhs/{{student_id}}" method="post">{% csrf_token %}
-        <tr>
         
-        </tr>
 <table class="styleA" >
 
     <tr>
@@ -69,8 +67,9 @@
                 </tr>
             {% endfor %}
         {%endif%}
-	</form>
-        </tr>
+	    </tr>
 </table>
+</form>
+        
 <a href="{%url school.views.school_index  %}viewStudentDetail/{{student_id}}">Quay lại</a>
 {% endblock %}

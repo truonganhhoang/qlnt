@@ -109,7 +109,7 @@ $(document).ready(function(){
                // create extra buttons and icons.
                 var firstFocus = $("tr:eq(1)");
                 if ($("#sort").val() == "Sắp xếp"){
-                    $("#sort").after("&nbsp <input id='cancel' type='button' value='Hủy sắp xếp'/>");
+                    $("#sort").after("&nbsp <input class='ggButton' id='cancel' type='button' value='Hủy sắp xếp'/>");
                     $("#guide").show();
                     $("#subject_form").hide();
                     $("#cancel").click(function(){
