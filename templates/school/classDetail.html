@@ -139,61 +139,67 @@
             năm học {{ class.year_id }}</h2>
     </form>
 
-    <table border=0 align="left" width="80%">
-        <tr class ="function">
-            {% if pos > 0 %}
-                <td width="15%" align="center"><a title="Cập nhật điểm danh theo lớp" class = "tiptiphover" 
-                                                  href="{%url school.views.school_index  %}diemdanh/{{class.id}}">Điểm danh</a>
-                </td>
-            {% endif %}
-
-            {% if pos > 2 %}
-                <td width="15%" align="center"><a title="Đánh giá hạnh kiểm học sinh trong lớp" class = "tiptiphover" 
-                                                  href="{%url school.views.school_index  %}hanhkiem/{{class.id}}">Hạnh kiểm</a>
-                </td>
-            {% endif %}
-
-            {% if pos > 0 %}
-                <td width="15%" align="center"><a title="Xem tất cả thông tin của của môn học trong lớp" class = "tiptiphover" 
-                                                  href="{%url school.views.school_index  %}subjectPerClass/{{class.id}}">Quản lý
-                    môn học</a></td>
-            {% endif %}
-
-            {% if pos > 3 %} 
-                <td width="15%" align="center"><a title="Nhập hoặc chỉnh sửa điểm của tất cả các môn trong lớp" class = "tiptiphover" 
-                                                  href="{%url school.views.school_index  %}markTable/{{currentTerm.id}}/{{class.id}}">Quản lý
-                    điểm</a></td>
-                {% ifequal class.year_id.school_id.status 1 %}
-                    <td width="20%" align="center"><a title="Tự động tính trung bình học lực của cả lớp" class = "tiptiphover" 
-                                                      href="{%url school.views.school_index  %}xepLoaiHlTheoLop/{{class.id}}/1">
-                        Xem điểm tổng kết </a>
-                    </td>
-                {% else %}
-                    <td width="20%" align="center"><a title="Tự động tính trung bình học lực của cả lớp" class = "tiptiphover" 
-                                                      href="{%url school.views.school_index  %}xepLoaiHlTheoLop/{{class.id}}/2">
-                        Xem điểm tổng kết </a>
-                    </td>
-                {% endifequal %}
-
-                <td width="20%" align="center">
-                    {% ifnotequal class.year_id.school_id.status 1 %}
-                        <a title="Tự động xếp loại cả năm của lớp" class = "tiptiphover" 
-                           href="{%url school.views.school_index  %}xlCaNamTheoLop/{{class.id}}/1">Tổng kết cả năm</a>
-                    {% else %}
-                        <a title="Chức năng này đã bị vô hiệu hóa vì đang trong học kỳ I">Tổng kết cả năm</a>
-                    {% endifnotequal %}</td>
-            {% endif %}
-        </tr>
-    </table>
-    <br>
     {% if message != None %}
         <a align="left">{{ message }}</a>
     {% endif %}
 
 
     <div id="submenu">
-        <a href="{% url school.views.organize_students class.id "0" %}">Sắp xếp</a>
-        <button id="delSelected" align ="left">Xóa những học sinh đã chọn</button>
+        {% if pos > 0 %}
+            <a title="Cập nhật điểm danh theo lớp" class = "tiptiphover ggButton"
+               href="{%url school.views.school_index  %}diemdanh/{{class.id}}">Điểm danh</a>
+        {% endif %}
+
+        {% if pos > 2 %}
+            <a title="Đánh giá hạnh kiểm học sinh trong lớp" class = "tiptiphover ggButton"
+               href="{%url school.views.school_index  %}hanhkiem/{{class.id}}">Hạnh kiểm</a>
+
+        {% endif %}
+
+        {% if pos > 0 %}
+            <a title="Xem tất cả thông tin của của môn học trong lớp" class = "tiptiphover ggButton"
+               href="{%url school.views.school_index  %}subjectPerClass/{{class.id}}">Môn học</a>
+        {% endif %}
+
+        {% if pos > 3 %}
+            <a title="Nhập hoặc chỉnh sửa điểm của tất cả các môn trong lớp" class = "tiptiphover ggButton"
+               href="{%url school.views.school_index  %}markTable/{{currentTerm.id}}/{{class.id}}">Điểm</a>
+            {% ifequal class.year_id.school_id.status 1 %}
+                <a title="Tự động tính trung bình học lực của cả lớp" class = "tiptiphover ggButton"
+                   href="{%url school.views.school_index  %}xepLoaiHlTheoLop/{{class.id}}/1">
+                    Tổng kết </a>
+
+            {% else %}
+                <a title="Tự động tính trung bình học lực của cả lớp" class = "tiptiphover ggButton"
+                   href="{%url school.views.school_index  %}xepLoaiHlTheoLop/{{class.id}}/2">
+                    Tổng kết </a>
+
+            {% endifequal %}
+
+
+            {% ifnotequal class.year_id.school_id.status 1 %}
+                <a title="Tự động xếp loại cả năm của lớp" class = "tiptiphover ggButton"
+                   href="{%url school.views.school_index  %}xlCaNamTheoLop/{{class.id}}/1">Tổng kết cả năm</a>
+            {% else %}
+                <a title="Chức năng này đã bị vô hiệu hóa vì đang trong học kỳ I"  class="ggButton disabled">Tổng kết cả năm</a>
+            {% endifnotequal %}
+        {% endif %}
+
+        <a class="ggButton"
+           href="#popupDiv"
+           id="import"> Nhập từ Excel </a>
+        <a class="tiptipclick ggButton disabled"
+           title="Chức năng đang trong quá trình hoàn thiện."
+           href=""
+           id="export"> Xuất ra Excel </a>
+
+    </div>
+    <div id="tableFunction">
+        <a class="tiptiphover ggButton"
+           href="{% url school.views.organize_students class.id "0" %}"
+           title="Sắp xếp thứ tự học sinh trong lớp">Sắp xếp</a>
+        <button id="delSelected" class="ggButton">Xóa những học sinh đã chọn</button>
+
     </div>
     <table class="styleA" >
         <tr class ="thread">
@@ -258,9 +264,9 @@
                 <tr class = "form">
 
                     <td align="center"> </td>
-                        {{ form.non_field_errors }}
+                    {{ form.non_field_errors }}
                     <td align="center" > </td>
-                    <td align="center" > 
+                    <td align="center" >
                         {{ form.last_name.errors }}
                         <p>{{ form.last_name }}</p>
                     </td>
@@ -273,12 +279,12 @@
                         {{ form.birthday.errors }}
                         <p>{{ form.birthday }}</p>
                     </td>
-                    
+
                     <td align="center" >
                         {{ form.birth_place.errors }}
                         <p>{{ form.birth_place }}</p>
                     </td>
-                    
+
                     <td align="center" >
                         {{ form.sex.errors }}
                         <p>{{ form.sex }}</p>
@@ -302,17 +308,7 @@
                 </tr>
             </form>
             </table>
-            <table width="80%">
-                <tr>
-                    <td align="right"><a href="#popupDiv"
-                                         id="import"> Nhập từ Excel </a>|
-                        <a class="tiptipclick tiptiphover"
-                           title="Chức năng đang trong quá trình hoàn thiện."
-                           href=""
-                           id="export"> Xuất ra Excel </a></td>
 
-                </tr>
-            </table>
         {% endif %}
     <table border="0" width="80%">
         <tr boder=0>

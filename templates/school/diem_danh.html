@@ -157,15 +157,21 @@
         <h2>Điểm danh {{dncform}}</h2>
     {% endif %}
 
+
     <form action="/school/diemdanh/{{class_id}}/{{day}}/{{month}}/{{year}}" method="post">{% csrf_token %}
         {% if message != None %}
             {{ message }}
         {% endif %}
         <br>
-        <button id="selectAll">Đảo chọn</button>
-        <button id="sendSelected">Gửi SMS cho những học sinh đã chọn</button>
-        <a href="{%url school.views.school_index  %}dsnghi/{{class_id}}/{{day}}/{{month}}/{{year}}"> <input type="button" value = "Danh sách nghỉ" > </input> </a>
-        <input align="right" type="submit" value="Cập nhật"/>
+        <div id="tableFunction">
+            <button id="selectAll" class="ggButton">Đảo chọn</button>
+            <button id="sendSelected" class="ggButton">Gửi SMS cho những học sinh đã chọn</button>
+            <a href="{%url school.views.school_index  %}dsnghi/{{class_id}}/{{day}}/{{month}}/{{year}}">
+                <input type="button" class="ggButton" value = "Danh sách nghỉ" > </input> </a>
+            <input class="ggButton" align="right" type="submit" value="Cập nhật"/>
+
+        </div>
+
         <table class="styleA">
             <tr class="thead">
                 <th align="center" width="2%">
@@ -209,7 +215,7 @@
                 </tr>
             {% endfor %}
         </table>
-        <input type="submit" value="Cập nhật"/>
+        <input class="ggButton" type="submit" value="Cập nhật"/>
     </form>
     <div style="display: None;">
         <div id="smsNotification">
