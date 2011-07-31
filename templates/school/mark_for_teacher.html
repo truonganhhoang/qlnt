@@ -1,7 +1,6 @@
 ﻿	<table  class="styleB"  width = "100%" id="markTable" >
 		<tr>
 			
-			{% if enableSendSMS %}
 			<th rowspan=2 colspan=2 align="center" width="1%" 
 				style="border-bottom-width:0px" >
 				Stt
@@ -9,16 +8,6 @@
 			<th rowspan=3 colspan=2 align="center" width="20%">
 				Họ và tên
 			</th>	
-			{% else %}
-			<th rowspan=2 colspan=1 align="center" width="1%" 
-				style="border-bottom-width:0px" >
-				Stt
-			</th>	
-			<th rowspan=2 colspan=2 align="center" width="20%">
-				Họ và tên
-			</th>	
-			
-			{% endif %}
 			<th rowspan=3 align="center" width="5%"  >			
 				Ngày sinh
 			</th>	
@@ -74,7 +63,6 @@
 		
 		</tr>
 		
-		{% if enableSendSMS %}
 		<tr>
 		<th width ="1%" title="Click vào đây để chọn tất cả" style="border-right-width:0px; border-top-width:0px" > 
 			<input type="checkbox" id="checkAllRow" onclick="checkAll(this)" style="display:none">  
@@ -109,9 +97,6 @@
 		{% endifequal %}
 		
 		</tr>
-		{% endif %}
-		
-{% if enableChangeMark %}
 	{% ifequal selectedTerm.number 1 %} 
 		{% for p,m,ea,id in list %}	
 		<script>
@@ -119,11 +104,9 @@
 				setSentMark("{{m.sent_mark}}");
 		</script>	
 		<tr >
-			{% if enableSendSMS %}
 			<td align="center" onclick="select(this)" style="border-right-width:0px" > 
 			 <input title="Có thể click vào cột họ tên và ngày sinh để chọn cho nhanh hơn" type="checkbox" id="{{forloop.counter}}00" style="display:none" > 	
 			</td>
-			{% endif %}
 			<td title="Click vào đây để chọn học sinh được gửi tin nhắn" align="center" onclick="select(this)" style="border-left-width:0px" >
 			 {{forloop.counter}}	
 			</td>
@@ -472,23 +455,21 @@
 		{% endifequal %}
 
 		<tr >
-			{% if enableSendSMS %}
 			<td align="center" onclick="select(this)" style="border-right-width:0px" > 
 			 <input title="Có thể click vào cột họ tên và ngày sinh để chọn cho nhanh hơn" type="checkbox" id="{{forloop.counter}}00" style="display:none" > 	
 			</td>
-			{% endif %}
 			<td title="Click vào đây để chọn học sinh được gửi tin nhắn" align="center" onclick="select(this)" style="border-left-width:0px" >
 			 {{forloop.counter}}	
 			</td>
 			<td title="Click vào đây để chọn học sinh được gửi tin nhắn" style="border-right-width:0px" width ="15%" onclick="select(this)">
-			 {{m.student_id.last_name}}
+			 {{p.last_name}}
 			</td>
 			
 			<td title="Click vào đây để chọn học sinh được gửi tin nhắn" style="border-left-width:0px" width ="5%"  onclick="select(this)">
-			{{ m.student_id.first_name }} 			
+			{{ p.first_name }} 			
 			</td>
 			<td title="Click vào đây để chọn học sinh được gửi tin nhắn" onclick="select(this)" >
-			{{ m.student_id.birthday.day}}/{{ m.student_id.birthday.month}}/{{ m.student_id.birthday.year}} 
+			{{ p.birthday|date:"SHORT_DATE_FORMAT" }} 
 			</td>
 
 			
@@ -825,7 +806,6 @@
 		
 		{% endfor %}			
 		{% endifequal %}
-	{% endif%}	
 </table>	
 
 

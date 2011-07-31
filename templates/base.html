@@ -100,11 +100,12 @@
                                        title="Tính điểm tổng kết toàn trường và kết thúc học kỳ">Tổng kết</a>
                                 </li>
                             {% endif %}
+							
                             {% else %}
                             {% if user.userprofile.position == 'GIAO_VIEN' %}
                                 <li><a href="#">Lớp chủ nhiệm</a></li>
-                                <li><a href="#">Lớp giản dạy</a></li>
-                                <li><a href="#">Điểm</a></li>
+                                <li><a href="">Lớp giảng dạy</a></li>
+                                <li><a href="/school/markForTeacher">Điểm</a></li>
                                 {% else %}
                                 {% if user.userprofile.position == 'HOC_SINH' %}
                                     <li><a href="#">Lớp học</a></li>

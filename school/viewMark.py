@@ -317,9 +317,11 @@ def defineEdit(mt,timeToEdit):
         
         
         
-def getMark(class_id,subjectChoice,selectedTerm):
-    timeToEdit = 0
+def getMark(subjectChoice,selectedTerm):
     
+    selectedSubject = Subject.objects.get(id= subjectChoice)
+    class_id = selectedSubject.class_id.id
+    timeToEdit = 0    
     pupilList=Pupil.objects.filter(class_id=class_id).order_by('first_name','last_name','birthday')                
     editList=[]    
     idList=[]    
@@ -485,17 +487,25 @@ def markTable(request,term_id=-1,class_id=-1,subject_id=-1,move=None):
     if not user.is_authenticated():
         return HttpResponseRedirect( reverse('login'))
 
-    """
+
+    termChoice    = term_id
+    classChoice   = class_id    
+    subjectChoice = subject_id
+    if termChoice==-1:  selectedTerm=get_current_term(request)
+    else             :  selectedTerm=Term.objects.get(id=termChoice) 
+
+
     try:        
-        if in_school(request,selectedClass.year_id.school_id) == False:
+        if in_school(request,selectedTerm.year_id.school_id) == False:
             return HttpResponseRedirect('/school')
     
     except Exception as e:
         return HttpResponseRedirect(reverse('index'))
+    
     if get_position(request) != 4:
        return HttpResponseRedirect('/school')
 
-    """
+
     enableChangeMark=checkChangeMark(class_id)
     enableChangeMark=True
     enableSendSMS   =True    
@@ -504,12 +514,7 @@ def markTable(request,term_id=-1,class_id=-1,subject_id=-1,move=None):
     hsSubject=-1
     subjectList=None
     
-    termChoice    = term_id
-    classChoice   = class_id    
-    subjectChoice = subject_id
     
-    if termChoice==-1:  selectedTerm=get_current_term(request)
-    else             :  selectedTerm=Term.objects.get(id=termChoice) 
             
     termChoice = selectedTerm.id    
     yearChoice = selectedTerm.year_id.id
@@ -530,7 +535,7 @@ def markTable(request,term_id=-1,class_id=-1,subject_id=-1,move=None):
     
     if subjectChoice!=-1:
         selectedSubject=Subject.objects.get(id=subjectChoice)    
-        list=getMark(classChoice,subjectChoice,selectedTerm)
+        list=getMark(subjectChoice,selectedTerm)
     
     print move        
     lengthList=0            
@@ -567,7 +572,86 @@ def markTable(request,term_id=-1,class_id=-1,subject_id=-1,move=None):
 
     return HttpResponse(t.render(c))
 
-# diem cho mot hoc sinh tai 1 lop nao do
+def markForTeacher(request,term_id=-1,subject_id=-1,move=None):
+    tt1=time.time()
+    user = request.user
+    if not user.is_authenticated():
+        return HttpResponseRedirect( reverse('login'))
+    try:
+        idTeacher =request.user.teacher.id
+        classChoice   =-1
+        termChoice    = term_id
+        subjectChoice = subject_id     
+        selectedSubject=None
+        if subjectChoice!=-1:
+            selectedSubject=Subject.objects.get(id=subjectChoice)    
+            if idTeacher != selectedSubject.teacher_id.id:
+                return HttpResponseRedirect('/school')
+        
+    except Exception as e:
+        return HttpResponseRedirect('/school')
+        
+    
+    #enableChangeMark=checkChangeMark(class_id)
+    enableChangeMark=True
+    enableSendSMS   =True    
+    
+    message = None            
+    list=None
+    hsSubject=-1
+    subjectList=None
+    
+    currentTerm =get_current_term(request) 
+    
+    if termChoice==-1:  selectedTerm=currentTerm
+    else             :  selectedTerm=Term.objects.get(id=termChoice)
+    
+    if (selectedTerm.year_id.time<currentTerm.year_id.time) | ((selectedTerm.year_id.time==currentTerm.year_id.time) & (selectedTerm.number<currentTerm.number)):
+        enableChangeMark=False
+                    
+    termChoice = selectedTerm.id    
+    yearChoice = selectedTerm.year_id.id
+            
+    termList= Term.objects.filter(year_id=yearChoice,number__lt=3).order_by('number')    
+    
+    subjectList=Subject.objects.filter(teacher_id=idTeacher,class_id__year_id=yearChoice,primary__in=[0,selectedTerm.number,3])
+    
+    if subjectChoice!=-1:
+        list=getMark(subjectChoice,selectedTerm)    
+    lengthList=0            
+    if list!=None:        
+        lengthList=list.__len__()  
+          
+    t = loader.get_template(os.path.join('school','mark_table.html'))    
+    c = RequestContext(request, { 
+                                'message' : message,
+                                'enableChangeMark':enableChangeMark,
+                                'enableSendSMS':enableChangeMark,
+
+                                'subjectList':subjectList,
+                                'termList':termList,
+                                'list':list,
+                                
+                                'subjectChoice':subjectChoice,
+                                'termChoice':termChoice,
+                                'classChoice':classChoice,            
+                                                  
+                                'selectedSubject':selectedSubject,
+                                'selectedTerm':selectedTerm,
+                                
+                                'lengthList':lengthList,
+                                'move':move,
+                                }
+                       )
+    
+    tt2=time.time()
+    print (tt2-tt1)
+
+    return HttpResponse(t.render(c))
+
+
+
+
 def markForAStudent(request,class_id,student_id):
 
     user = request.user
@@ -852,7 +936,7 @@ def update(s,primary):
                     
     m.save()  
     mt.save()  
-    
+@transaction.commit_on_success    
 def saveMark(request):
     
     t1=time.time()
@@ -866,15 +950,13 @@ def saveMark(request):
         if   position ==4 :pass
         elif position ==3 :
             idTeacher= int(strs[0])
-            if idTeacher==-1: return 
-            else:
-                teacher= Teacher.objects.get(id=idTeacher)
-                if request.user.id!=teacher.user_id.id: return
+            teacher= Teacher.objects.get(id=idTeacher)
+            if request.user.id!=teacher.user_id.id: return
         else: return
-        print str        
         length = len(strs)
         primary= int(strs[1])
-        print str 
+        print str
+        print length
         for i in range(2,length):
                 update(strs[i],primary)     
         message='ok'

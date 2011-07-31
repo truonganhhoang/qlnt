@@ -1,5 +1,5 @@
 ﻿<script language="JavaScript" type="text/javascript" >
-			
+	
 	var temp = "{{enableChangeMark}}";
 	if (temp == "True") enableChangeMark = true;
 	else enableChangeMark = false;
@@ -34,6 +34,8 @@
 	var indexHk1= 0;
 	var latestTime =0;
 	var isHeadmaster =1;
+	var idTeacher = "{{selectedSubject.teacher_id.id}}";
+	//var position  = "{{user.userprofile.position}}";
 	//che do lam viec
 	activeMode = 0;
 	for(var i=1;i<length;i++)

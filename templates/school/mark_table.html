@@ -10,6 +10,15 @@
 					window.location.href="/school/markTable/"+{{termChoice}}+"/"+{{classChoice}}+"/"+document.info.subject.value;
 				
 	}
+    function submitSubject1() 
+	{
+		if (document.info.subject.value != -1) 
+			if (document.info.move && document.info.move[0].checked)
+					window.location.href="/school/markForTeacher/"+{{termChoice}}+"/"+document.info.subject.value+"/ngang2";
+				else	
+					window.location.href="/school/markForTeacher/"+{{termChoice}}+"/"+document.info.subject.value;
+				
+	}
 	
 	function submitClass()
 	{
@@ -22,11 +31,16 @@
 	}
 	function submitTerm()
 	{
-		window.location.href="/school/markTable/"+document.info.term.value;
+		var position  = "{{user.userprofile.position}}";
+		
+		if (position!="GIAO_VIEN")
+			window.location.href="/school/markTable/"+document.info.term.value;
+		else	
+			window.location.href="/school/markForTeacher/"+document.info.term.value;
+		
 	}
 	
 	
-  idTeacher = -1;
   </script>
   
     {% include  "school/first_block_js.html" %}
@@ -34,7 +48,10 @@
 <form action="/school/markTable" name="info" method="post" id='myform'
     onsubmit="return false">{% csrf_token %}
 	<input type="hidden" name="submitChoice" value="">
-		
+
+	<div id="myDiv2" > </div> 
+	<div id="myDiv3" > </div> 
+	
     <h2>Bảng điểm 
 	
 	   học kỳ
@@ -43,25 +60,37 @@
 			<option value={{ term.id }} selected> {{ term }} </option>
         {% endfor %}
 		</select>
-		lớp 
-		<select name="class1" onchange="submitClass()">
-				<option value="-1" selected> Chọn lớp </option>
-			{% for class in classList %}
-				<option value={{ class.id }}> {{ class.name }} </option>
-			{% endfor %}
-		</select>
+		{% if user.userprofile.position != "GIAO_VIEN" %}
+			lớp 
+			<select name="class1" onchange="submitClass()">
+					<option value="-1" selected> Chọn lớp </option>
+				{% for class in classList %}
+					<option value={{ class.id }}> {{ class.name }} </option>
+				{% endfor %}
+			</select>		
+			môn  
+			<select name="subject" onchange="submitSubject()">
+					<option value=-1 selected>Chọn môn </option>
+				{% for subject in subjectList %}
+					<option value={{ subject.id }}> {{ subject.name }} </option>
+				{% endfor %}
+			</select>
+		{% else %}
+			môn  
+			<select name="subject" onchange="submitSubject1()">
+					<option value=-1 selected>Chọn môn </option>
+				{% for subject in subjectList %}
+					<option value={{ subject.id }}> {{ subject.name }} - {{subject.class_id.name}} </option>
+				{% endfor %}
+			</select>
+		{% endif %}	
 		
-	   môn  
-		<select name="subject" onchange="submitSubject()">
-				<option value=-1 selected>Chọn môn </option>
-			{% for subject in subjectList %}
-				<option value={{ subject.id }}> {{ subject.name }} </option>
-			{% endfor %}
-		</select>
     </h2>
 	
     <script type="text/javascript">
-		document.info.class1.value = {{classChoice}};
+		var position = "{{user.userprofile.position}}";
+		if (position!="GIAO_VIEN")
+			document.info.class1.value = {{classChoice}};
 		document.info.term.value = {{termChoice}};
 		document.info.subject.value ={{subjectChoice}};
     </script>
@@ -70,9 +99,18 @@
 	
 		{% include "school/third_block.html" %}
 		
-		{% include  "school/mark_for_headmaster.html" %}
 
-		{% include  "school/second_block_js.html" %}
+		{% if user.userprofile.position == 'HIEU_TRUONG' or user.userprofile.position == 'HIEU_PHO' %} 		
+			{% include  "school/mark_for_headmaster.html" %}
+		{% else %}
+		{% if  enableChangeMark %}
+			{% include  "school/mark_for_teacher.html" %}
+		{% else %}	
+			{% include  "school/mark_only_view.html" %}
+		{% endif %}	
+		{% endif %}	
+		
+		{% include  "school/second_block_js.html" %} 
 	{% endifnotequal %}	
 
   </form>

@@ -18,20 +18,11 @@
 		m = document.getElementById("{{move}}")
 		if (m) m.checked = true;
 	</script>
-		
-	
-	{% if  enableChangeMark %}
-				<div id="messageSMS"  > </div>
-				<button  id="sendSelect" onclick="showMessageTable();" >Gửi SMS <img src="/static/images/message3.png" > <img src="/static/images/muiten.png" id="messageImage">  </button>
-				<br>
-				
-	{% else %} 
-	{% if enableSendSMS %}
-	<button title="Click vào đây để gửi tin cho những học sinh đã chọn" id="sendSelect" onclick="sendSelected();" >Gửi SMS <img src="/static/images/message3.png" >  </button>
+			
+	<div id="messageSMS"  > </div>
+	<button  id="sendSelect" onclick="showMessageTable();" >Gửi SMS <img src="/static/images/message3.png" > <img src="/static/images/muiten.png" id="messageImage">  </button>
 	<br>
-	<div id="messageSMS"  > </div> 
-	{% endif %}
-	{% endif %}
+				
 	
 	<table class="styleC" id="messageTable" style="display:none">
 		<tr> <td onclick="selectNoSent()">Chọn những điểm chưa nhắn </td></tr>

@@ -86,14 +86,12 @@
 			var id = i*100+j;
  		    //alert(enableChangeMark);
 			var value=document.getElementById(id.toString()).value;
-			if (!value)
+			if (value==undefined)
 				value=document.getElementById(id.toString()).innerHTML;
-				
 			value=value.replace(exp1,'.');		
-			if ((value=="") || (value==" "))				
+			oldAr[i][j]=parseFloat(value);
+			if (isNaN(oldAr[i][j]))
 				oldAr[i][j]=-1;
-			else	
-				oldAr[i][j]=parseFloat(value);
 		}
 	}	
 	function calculateNewArray()
@@ -110,10 +108,7 @@
 				var exp1=/[,]/g
 				value=value.replace(exp1,'.');		
 
-				if ((value=="") || (value==" "))
-					newAr[i][j]=-1;
-				else
-					newAr[i][j]=parseFloat(value);
+				newAr[i][j]=parseFloat(value);
 					
 				if ((!isNaN(newAr[i][j])) && (newAr[i][j]>10))
 					{
