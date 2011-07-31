@@ -48,10 +48,11 @@ def recover_marktime(request):
     context = RequestContext(request)
     return render_to_response( RECOVER_MARKTIME, { 'message' : message},
                                context_instance = context )
-
+@transaction.commit_on_success
 def sync_index(request):
 
     classes = Class.objects.all()
+    message = ''
     try:
         for _class in classes:
             students = _class.pupil_set.order_by('first_name', 'last_name')
@@ -59,13 +60,25 @@ def sync_index(request):
             for student in students:
                 index +=1
                 print index
+                if not student.first_name.strip():
+                    message += '\n' + student.last_name + ': wrong name'
+                    names = student.last_name.strip().split(' ')
+                    last_name = ' '.join(names[:len(names)-1])
+                    first_name = names[len(names)-1]
+                    try:
+                        student.first_name = first_name
+                        student.last_name = last_name
+                        student.save()
+                    except Exception as e:
+                        print e
                 if student.index != index:
                     student.index = index
                     student.save()
+
     except Exception as e:
         print e
 
-    message = u'Sync xong index.'
+    message += '\n' + u'Sync xong index.'
     context = RequestContext(request)
     return render_to_response( RECOVER_MARKTIME, { 'message' : message},
                                context_instance = context )
