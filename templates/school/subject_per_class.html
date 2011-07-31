@@ -34,13 +34,15 @@
         học kì {{term}}</h2>
     </form>
     <div id="tableFunction">
-        <input class="ggButton" type="button" id="sort" value="Sắp xếp" />&nbsp;
+        <input class="ggButton" type="button" id="sort" value="Sắp xếp" />
         <a id="guide" class="tiptiphover ggButton" href="" title="Dùng các phím mũi tên để chọn môn học,
         sau đó Enter để thay đổi thứ tự hoặc bỏ chọn môn đó. Kết thúc bằng việc ấn 'Lưu thứ tự'.">Hướng dẫn</a>
     </div>
     <form action="/school/subjectPerClass/{{class.id}}" method="post">{% csrf_token %}
     <table class="styleA" id="sortable" width = "75%" align = "left">
         <tr>
+            <th class="naviButton" style="display: none;"></th>
+            <th class="naviButton" style="display: none;"></th>
             <th class="arrow_header" width="5%"> <a href="{%url school.views.school_index  %}subjectPerClass/{{class.id}}/4/{{next_status}}"> STT </a></th>
             <th align="center" width="20%"> <a href="{%url school.views.school_index  %}subjectPerClass/{{class.id}}/1/{{next_status}}">Tên Môn Học</a></th>
             <th align="center" width="10%"> <a href="{%url school.views.school_index  %}subjectPerClass/{{class.id}}/2/{{next_status}}">Hệ số </a></th>
@@ -58,6 +60,15 @@
 
             {% for ss,f in list %}
                 <tr class="sortable" id="{{ ss.id }}">
+                    <th class="naviButton" style="display: none;">
+                        <button class="naviButton-up ggButton">Lên</button>
+
+                    </th>
+                    <th class="naviButton" style="display: none;">
+                        <button class="naviButton-down ggButton">Xuống</button>
+
+                    </th>
+
                     <td class="index" width="3%">
                         <span class="ui-icon ui-icon-arrowthick-2-n-s" style="display: none; float: left;"></span>
                         <p>{{ forloop.counter }}</p>

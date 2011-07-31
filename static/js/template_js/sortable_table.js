@@ -104,16 +104,51 @@ $(document).ready(function(){
                 })
             });
 
+            $(".naviButton-up").click(function(){
+                var theSelected = $(this).parents('tr.sortable');
+                $(".focused").removeClass('focused');
+                theSelected.addClass('focused');
+                var prev = theSelected.prev('tr.sortable');
+                if (prev.length > 0){
+                    var oldIndex = theSelected.children('td.index').children('p');
+                    var newIndex = prev.children('td.index').children('p');
+                    var temp = oldIndex.text();
+                    oldIndex.text(newIndex.text());
+                    newIndex.text(temp);
+                    prev.before(theSelected);
+                }
+                return false;
+            });
+            $(".naviButton-down").click(function(){
+                var theSelected = $(this).parents('tr.sortable');
+                $(".focused").removeClass('focused');
+                theSelected.addClass('focused');
+                var next = theSelected.next('tr.sortable');
+                if (next.length>0){
+                    var oldIndex = theSelected.children('td.index').children('p');
+                    var newIndex = next.children('td.index').children('p');
+                    var temp = oldIndex.text();
+                    oldIndex.text(newIndex.text());
+                    newIndex.text(temp);
+                    next.after(theSelected);
+                }
+                return false;
+            });
 
             $("#sort").click(function(){
                // create extra buttons and icons.
                 var firstFocus = $("tr:eq(1)");
                 if ($("#sort").val() == "Sắp xếp"){
-                    $("#sort").after("&nbsp <input class='ggButton' id='cancel' type='button' value='Hủy sắp xếp'/>");
+                    $("#sort").after("<input class='ggButton' id='cancel' type='button' value='Hủy sắp xếp'/>");
                     $("#guide").show();
                     $("#subject_form").hide();
                     $("#cancel").click(function(){
                         document.location.replace($("#redirect_link").text());
+                    });
+                    $(".naviButton").each(function(){
+                        $(this).show();
+                        $(this).attr['display'] = 'inline-block';
+
                     });
                     $("#sort").val("Lưu thứ tự");
                     firstFocus.addClass('focused');
@@ -142,6 +177,10 @@ $(document).ready(function(){
                             });
                             $(".selected").removeClass('selected');
                             $(".focused").removeClass('focused');
+                            $(".naviButton").each(function(){
+                                $(this).hide();
+                            });
+
                         }
                     };
                     $.ajax(arg);

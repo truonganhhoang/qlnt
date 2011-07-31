@@ -302,9 +302,9 @@ def add_many_students( student_list = None, start_year = None , year = None,
                 _class = None, term = None, school = None, school_join_date = None ):
         if not ( student_list and start_year and term and school ):
             raise Exception("Phải có giá trị cho các trường: Student,Start_Year,Term,School.")
-        i =0
+        index =0
         for student in student_list:
-            i += 1
+            index += 1
             data = {'full_name': student['ten'], 'birthday':student['ngay_sinh'],
                         'ban':student['nguyen_vong'], }
             student = data        
@@ -340,7 +340,7 @@ def add_many_students( student_list = None, start_year = None , year = None,
                            school_join_date = school_join_date,
                            start_year_id = start_year,
                            class_id = _class,
-                           index = i,
+                           index = index,
                            school_id = school)
                 if 'sex' in student:
                     st.sex = student['sex']

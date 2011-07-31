@@ -269,6 +269,7 @@ table.styleA td {
     font-size: 13px;
     font-weight: bold;
     padding: 3px 12px;
+    margin-right: 3px;
     cursor: pointer;
     text-decoration: none;
 }

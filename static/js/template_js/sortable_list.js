@@ -34,7 +34,7 @@ $(document).ready(function(){
         $(this).dblclick(function(){
             if ($(".ui-state-active").length >0){
                 var oldSelected = $(".ui-state-active");
-                oldSelected.children('span').hide();
+                oldSelected.children('span.icon').hide();
                 oldSelected.removeClass('ui-state-active');
                 $("#sortableList").append("<li id='tempNode'> </li>");
                 var temp = $("#tempNode");
@@ -43,7 +43,7 @@ $(document).ready(function(){
                 temp.before($(this));
                 temp.remove();
             } else {
-                $(this).children('span').show();
+                $(this).children('span.icon').show();
                 $(this).addClass('ui-state-active');
             }
         });
@@ -75,7 +75,7 @@ $(document).ready(function(){
             $(this).dblclick(function(){
                 if ($(".ui-state-active").length >0){
                     var oldSelected = $(".ui-state-active");
-                    oldSelected.children('span').hide();
+                    oldSelected.children('span.icon').hide();
                     oldSelected.removeClass('ui-state-active');
                     $("#sortableList").append("<li id='tempNode'> </li>");
                     var temp = $("#tempNode");
@@ -84,7 +84,7 @@ $(document).ready(function(){
                     temp.before($(this));
                     temp.remove();
                 } else {
-                    $(this).children('span').show();
+                    $(this).children('span.icon').show();
                     $(this).addClass('ui-state-active');
                 }
             });
@@ -110,7 +110,7 @@ $(document).ready(function(){
                 if (next.length >0) next.after(theSelected);
             } else if ( event.which == 13){
                 theSelected.removeClass('ui-state-active');
-                theSelected.children('span').hide();
+                theSelected.children('span.icon').hide();
             }
         } else {
             theFocus = $(".ui-state-focus");
@@ -127,7 +127,7 @@ $(document).ready(function(){
                     theFocus.removeClass('ui-state-focus');
                 }
             } else if ( event.which == 13){
-                theFocus.children('span').show();
+                theFocus.children('span.icon').show();
                 theFocus.addClass('ui-state-active');
             }
         }
@@ -140,7 +140,7 @@ $(document).ready(function(){
         var data = "";
         $("#sortableList > li").each(function(){
             var id = $(this).attr('id');
-            var index = $(this).parents().children().index($(this));
+            var index = $(this).parents().children().index($(this)) + 1;
             data = data + id + '_' + index + '/';
         });
 
