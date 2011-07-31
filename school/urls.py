@@ -107,4 +107,6 @@ urlpatterns = patterns('',
     
     #help
     #url(r'recover/$', 'school.helptools.recover_marktime', name = "recover_marktime"),
+    url(r'sync_index/$', 'school.helptools.sync_index', name = "sync_index"),
+
 	)
