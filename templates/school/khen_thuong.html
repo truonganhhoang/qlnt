@@ -36,14 +36,14 @@ function confirmDelete()
         {%if pos > 1%}
         <td width="5%"><a href = "/school/khenthuong/{{kt.id}}/delete" onclick="return confirmDelete();"> Xóa</a></td>
         <td width="5%"><a href = "/school/khenthuong/{{kt.id}}/edit" > Sửa</a></td>
-        {%endif%}
+        {% endif %}
     </tr>
     {% endfor %}
     {%if pos > 1%}
     <form action="/school/khenthuong/{{student_id}}/add">
         <td width = "5%" align = "left"><input type ="submit" value="Thêm"/></td>
 	</form>
-    {%endif%}
+    {% endif %}
 </table>
 <a href="{%url school.views.school_index  %}viewStudentDetail/{{student_id}}">Quay lại</a>
 {% endblock %}

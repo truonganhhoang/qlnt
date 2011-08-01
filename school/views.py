@@ -936,7 +936,8 @@ def addClass(request):
     if school.status != 0:
         form = ClassForm(school.id)
         if request.method == 'POST':
-            data = {'name':request.POST['name'], 'year_id':request.POST['year_id'], 'block_id':request.POST['block_id'], 'teacher_id':request.POST['teacher_id'], 'status':school.status,}
+            index = get_current_year(request).class_set.count()
+            data = {'name':request.POST['name'], 'year_id':request.POST['year_id'], 'block_id':request.POST['block_id'], 'teacher_id':request.POST['teacher_id'], 'status':school.status,'index':index}
             form = ClassForm(school.id,data)
             if form.is_valid():
                 form.save()
@@ -1837,7 +1838,7 @@ def deleteClass(request, class_id):
     
     message = "Đã xóa xong."
     try:
-        s = Class.objects.get(id=class_id)
+        s = get_current_year(request).class_set.get(id=class_id)
     except Class.DoesNotExist:
         return HttpResponseRedirect('/school/classes')
     
@@ -1937,7 +1938,7 @@ def khen_thuong(request, student_id):
     if (get_position(request) < 1):
         return HttpResponseRedirect('/')
     message = ''
-    ktl = KhenThuong.objects.filter(student_id=student_id).order_by('time')
+    ktl = sub.khenthuong_set.order_by('time')
     t = loader.get_template(os.path.join('school', 'khen_thuong.html'))
     c = RequestContext(request, {'ktl': ktl, 'message':message, 'student_id':student_id,'pupil':sub, 'pos':pos})
     return HttpResponse(t.render(c))
@@ -2041,7 +2042,7 @@ def ki_luat(request, student_id):
     if (get_position(request) < 1):
         return HttpResponseRedirect('/')
     message = ''
-    ktl = KiLuat.objects.filter(student_id=student_id).order_by('time')
+    ktl = student.kiluat_set.order_by('time')
     t = loader.get_template(os.path.join('school', 'ki_luat.html'))
     c = RequestContext(request, {'ktl': ktl, 'message':message, 'student_id':student_id, 'pupil':student, 'pos':pos})
     return HttpResponse(t.render(c))

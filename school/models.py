@@ -367,7 +367,7 @@ class KiLuat(models.Model):
     term_id = models.ForeignKey(Term, verbose_name = "Kì")
     
     time = models.DateField("Thời gian(*)", blank = True)
-    hinh_thuc = models.CharField("Hình thức(*)", max_length = 30, choices = KL_CHOICES)
+    hinh_thuc = models.CharField("Hình thức(*)", max_length = 35, choices = KL_CHOICES)
     dia_diem= models.CharField("Địa điểm", max_length = 100, blank = True, null = True)
     noi_dung = models.CharField("Nội dung", max_length = 400, blank = True, null = True) # description
     luu_hoc_ba = models.BooleanField("Lưu học bạ", blank = True, default = False)
