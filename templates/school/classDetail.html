@@ -230,13 +230,13 @@
             {% endif %}
         </tr>
 
-        {% for ss in studentList.object_list %}
+        {% for ss in studentList %}
             <tr class="{{ss.id}}">
 
                 <td align="center">
                     <input type="checkbox" id="checkbox_{{ss.id}}"/>
                 </td>
-                <td align="center" > {{ forloop.counter|add:base_order }} </td>
+                <td align="center" > {{ forloop.counter}} </td>
                 {% if pos > 1 or student_id == ss.id %}
                     <td align="center" ><a title="Xem toàn bộ thông tin chi tiết"
                                            href="{%url school.views.school_index  %}viewStudentDetail/{{ss.id}}">{{ ss.last_name }}</a>
@@ -263,7 +263,7 @@
 
         {% if pos > 3 %}
 
-            <form action="/school/viewClassDetail/{{class.id}}/{{sort_type}}/{{sort_status}}/{{studentList.number}}"
+            <form action="/school/viewClassDetail/{{class.id}}/{{sort_type}}/{{sort_status}}"
                   method="post">{% csrf_token %}
                 <tr class = "form">
 
@@ -308,35 +308,13 @@
                         {{ form.current_address.errors }}
                         <p>{{ form.current_address }}</p>
                     </td>
-                    <td align="center"><input type="submit" value="Thêm"/></td>
+                    <td align="center"><input class="ggButton" type="submit" value="Thêm"/></td>
                 </tr>
             </form>
             </table>
 
         {% endif %}
-    <table border="0" width="80%">
-        <tr boder=0>
-            <td width="100%" colspan=9 align="right">
-                <div class="pagination">
-                    <span class="step-links">
-                        {% if studentList.has_previous %}
-                            <a href="{%url school.views.school_index  %}viewClassDetail/{{class.id}}/{{sort_type}}/{{sort_status}}/{{studentList.previous_page_number}}">
-                                Trang trước </a>
-                        {% endif %}
 
-                        <span class="current">
-				Trang {{ studentList.number }}/{{ studentList.paginator.num_pages }}.
-			</span>
-
-                        {% if studentList.has_next %}
-                            <a href="{%url school.views.school_index  %}viewClassDetail/{{class.id}}/{{sort_type}}/{{sort_status}}/{{studentList.next_page_number}}">
-                                Trang sau </a>
-                        {% endif %}
-                    </span>
-                </div>
-            </td>
-        </tr>
-    </table>
     <div  style="display:none" >
         <div id="popupDiv">
             <h2>Nhập học sinh từ file Excel</h2>

@@ -11,7 +11,7 @@ function submitClass(){
 }
 </script>
 
-<form action="" name = "info" method = post">{% csrf_token %}
+<form action="" name = "info" method = "post">{% csrf_token %}
     <h2> Hạnh kiểm lớp
     <select name="class" onchange="submitClass()">       
         <option value = -1> {{class}} </option>

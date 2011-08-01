@@ -953,7 +953,7 @@ def addClass(request):
 		
 #User: loi.luuthe@gmail.com
 #This function has class_id is an int argument. It gets the information of the class corresponding to the class_id and response to the template
-def viewClassDetail(request, class_id, sort_type=0, sort_status=0, page=1):
+def viewClassDetail(request, class_id, sort_type=0, sort_status=0):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
@@ -1047,11 +1047,7 @@ def viewClassDetail(request, class_id, sort_type=0, sort_status=0, page=1):
             studentList = cl.pupil_set.order_by('school_join_date')
         else:
             studentList = cl.pupil_set.order_by('-school_join_date')
-    paginator = Paginator (studentList, 20)
-    try:
-        student_list = paginator.page(page)
-    except (EmptyPage, InvalidPage):
-        student_list = paginator.page(paginator.num_pages)
+    
     tmp = get_student(request)
     id = 0
     if (tmp):
@@ -1062,13 +1058,12 @@ def viewClassDetail(request, class_id, sort_type=0, sort_status=0, page=1):
     c = RequestContext(request, {   'form': form,
                                     'csrf_token': get_token(request), 
                                     'message': message, 
-                                    'studentList': student_list, 
+                                    'studentList': studentList, 
                                     'class': cl, 
                                     'cl':classList,
                                     'sort_type':int(sort_type), 
                                     'sort_status':int(sort_status), 
-                                    'next_status':1-int(sort_status), 
-                                    'base_order': (int(page)-1) * 20,
+                                    'next_status':1-int(sort_status),
                                     'pos': pos,
                                     'gvcn':cn,
                                     'student_id':id,
