@@ -108,15 +108,15 @@ class BasicPersonInfo(models.Model):
     last_name = models.CharField("Họ(*)", max_length = 45, blank = True) # tach ra first_name and last_name de sort va import from excel file
     first_name = models.CharField("Tên(*)", max_length = 90)#vi phan nhap bang tay, ho ten se dc luu vao first_name nen max_length phai dc tang len gap doi
     birthday = models.DateField("Ngày sinh(*)", null = True, validators = [validate_birthday])
-    birth_place = models.CharField("Nơi sinh", max_length = 200, null = True, blank = True)
-    dan_toc = models.CharField("Dân tộc", max_length = 15, blank = True, null = True, default = 'Kinh')
-    ton_giao = models.CharField("Tôn giáo", max_length = 20, blank = True, null = True)
-    quoc_tich = models.CharField("Quốc tịch(*)", max_length = 20, blank = True, null = True, default = 'Việt Nam')
-    home_town = models.CharField("Quê quán", max_length = 100, null = True, blank = True) #nguyen quan
-    sex = models.CharField("Giới tính(*)", max_length = 3, choices = GENDER_CHOICES, blank = True, null = True, default = 'Nam')
-    phone = models.CharField("Điện thoại", max_length = 15, null = True, blank = True, validators = [validate_phone])
-    sms_phone = models.CharField("Điện thoại nhận tin nhắn", max_length = 15, null = True, blank = True, validators = [validate_phone])
-    current_address = models.CharField("Địa chỉ", max_length = 200, blank = True, null = True)
+    birth_place = models.CharField("Nơi sinh", max_length = 200, blank = True)
+    dan_toc = models.CharField("Dân tộc", max_length = 15, blank = True, default = 'Kinh')
+    ton_giao = models.CharField("Tôn giáo", max_length = 20, blank = True,)
+    quoc_tich = models.CharField("Quốc tịch(*)", max_length = 20, blank = True, default = 'Việt Nam')
+    home_town = models.CharField("Quê quán", max_length = 100, blank = True) #nguyen quan
+    sex = models.CharField("Giới tính(*)", max_length = 3, choices = GENDER_CHOICES, blank = True, default = 'Nam')
+    phone = models.CharField("Điện thoại", max_length = 15, blank = True, validators = [validate_phone])
+    sms_phone = models.CharField("Điện thoại nhận tin nhắn", max_length = 15, blank = True, validators = [validate_phone])
+    current_address = models.CharField("Địa chỉ", max_length = 200, blank = True)
     email = models.EmailField("Email", null = True, blank = True)
     index = models.IntegerField("Số thứ tự(*)", default=0)
     class Meta:
@@ -205,7 +205,7 @@ class Pupil(BasicPersonInfo):
     ban_dk = models.CharField("Ban đăng kí(*)", max_length = 5, choices = BAN_CHOICE, default = u'CB')
     school_join_mark = models.IntegerField("Điểm tuyển sinh", null = True, blank = True)
     #thong tin ca nhan
-    khu_vuc = models.CharField("Khu vực", max_length = 3, choices = KV_CHOICE, blank = True, null = True)
+    khu_vuc = models.CharField("Khu vực", max_length = 3, choices = KV_CHOICE, blank = True)
     doan = models.BooleanField("Là đoàn viên", blank = True, default = False)
     ngay_vao_doan = models.DateField("Ngày vào đoàn", blank = True, null = True)
     doi = models.BooleanField("Là đội viên", blank = True, default = False)
@@ -215,13 +215,13 @@ class Pupil(BasicPersonInfo):
     uu_tien = models.CharField("Ưu tiên", blank = True, null = True, max_length = 100)
     
     #thong tin gia dinh
-    father_name = models.CharField("Họ và tên bố", max_length = 45, blank = True, null = True)
+    father_name = models.CharField("Họ và tên bố", max_length = 45, blank = True)
     father_birthday = models.DateField("Ngày sinh của bố", null = True, blank = True)
     father_phone = models.CharField("Điện thoại của bố", max_length = 15, null = True, blank = True, validators = [validate_phone])
-    father_job = models.CharField("Nghê nghiệp của bố", max_length = 100, null = True, blank = True)
-    mother_name = models.CharField("Họ và tên mẹ", max_length = 45, blank = True, null = True)
+    father_job = models.CharField("Nghê nghiệp của bố", max_length = 100, blank = True)
+    mother_name = models.CharField("Họ và tên mẹ", max_length = 45, blank = True)
     mother_birthday = models.DateField("Ngày sinh của mẹ", null = True, blank = True)
-    mother_job = models.CharField("Nghê nghiệp của mẹ", max_length = 100, null = True, blank = True)    
+    mother_job = models.CharField("Nghê nghiệp của mẹ", max_length = 100, blank = True)    
     mother_phone = models.CharField("Điện thoại của mẹ", max_length = 15, null = True, blank = True, validators = [validate_phone])
     
     current_status = models.CharField("Tình trạng", max_length = 200, blank = True, null = True, default = 'OK')
