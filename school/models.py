@@ -202,7 +202,7 @@ class Pupil(BasicPersonInfo):
     year = models.IntegerField("Năm học lớp 1", validators = [validate_year], blank = True, null = True) #year that pupil go to class 1
 
     school_join_date = models.DateField("Ngày nhập trường(*)", default = date.today(),validators=[validate_join_date])
-    ban_dk = models.CharField("Ban đăng kí(*)", max_length = 5, choices = BAN_CHOICE)
+    ban_dk = models.CharField("Ban đăng kí(*)", max_length = 5, choices = BAN_CHOICE, default = u'CB')
     school_join_mark = models.IntegerField("Điểm tuyển sinh", null = True, blank = True)
     #thong tin ca nhan
     khu_vuc = models.CharField("Khu vực", max_length = 3, choices = KV_CHOICE, blank = True, null = True)
