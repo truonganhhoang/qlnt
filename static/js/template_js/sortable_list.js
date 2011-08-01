@@ -7,6 +7,10 @@
  */
 $(document).ready(function(){
 
+    var windowHeight = $(window).height();
+
+    //$(document).scrollTop(0);
+    //$(document).animate({scrollTop: 500},'slow');
 
     $("#sortableList").sortable({
         placeholder: 'ui-state-highlight'
@@ -93,6 +97,15 @@ $(document).ready(function(){
         return false;
     })
 
+    function scrollPage( theFocus, extra ){
+        var offset = theFocus.offset().top;
+        if (!extra) extra = 0;
+        if (offset - $(document).scrollTop() >= windowHeight ||
+            offset - $(document).scrollTop() < 0){
+            // scroll the document
+            $('html,body').animate({scrollTop: offset + extra}, 500);
+        }
+    }
 
     $(document).keydown( function(event){
         var theSelected = $(".ui-state-active");
@@ -103,11 +116,15 @@ $(document).ready(function(){
                 var prev = theSelected.prev('li.sortable');
                 if (prev.length > 0){
                     prev.before(theSelected);
+                    scrollPage(prev, -windowHeight/2);
                 }
             } else if ( event.which == 40){
                 // down arrow key
                 var next = theSelected.next('li.sortable');
-                if (next.length >0) next.after(theSelected);
+                if (next.length >0) {
+                    next.after(theSelected);
+                    scrollPage(next, -windowHeight/2);
+                }
             } else if ( event.which == 13){
                 theSelected.removeClass('ui-state-active');
                 theSelected.children('span.icon').hide();
@@ -119,20 +136,23 @@ $(document).ready(function(){
                 if ( prev.length > 0){
                     prev.addClass('ui-state-focus');
                     theFocus.removeClass('ui-state-focus');
+                    scrollPage(prev, -windowHeight/2);
                 }
             } else if ( event.which == 40){
                 var next = theFocus.next('li.sortable');
                 if ( next.length > 0) {
                     next.addClass('ui-state-focus');
                     theFocus.removeClass('ui-state-focus');
+                    scrollPage(next, -windowHeight/2);
                 }
+
             } else if ( event.which == 13){
                 theFocus.children('span.icon').show();
                 theFocus.addClass('ui-state-active');
             }
         }
 
-        //return false;
+        return false;
     });
 
     // save button
