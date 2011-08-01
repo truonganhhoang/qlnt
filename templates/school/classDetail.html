@@ -68,6 +68,10 @@
                 }
             }
             var delSelected = function(){
+                if(!$("#checkbox_all").is(':checked')){
+                    alert("Bạn chưa chọn học sinh nào để xóa");
+                    return false;
+                }
                 var answer = confirm('Bạn có muốn xóa những học sinh đã chọn');
                 if (!answer) return false;
                 var data = '';
