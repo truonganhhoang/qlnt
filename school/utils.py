@@ -528,8 +528,7 @@ def completely_del_subject( subject):
                 tbnam.save()
             except Exception as e:
                 print e
-
-    subject.delete()                
+    subject.delete()
             
 def get_school(request):
     if not request.user.is_authenticated():

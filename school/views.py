@@ -1236,11 +1236,13 @@ def subjectPerClass(request, class_id, sort_type=4, sort_status=0):
         sfl.append(SubjectForm(school_id, instance=s))
     list = zip(subjectList, sfl)
     if request.method == 'POST':
+        print request.POST
         hs_list = request.POST.getlist('hs')
         teacher_list = request.POST.getlist('teacher_id')
+        p_list = request.POST.getlist('primary')
         i = 0
         for s in subjectList:
-            data = {'name':s.name, 'hs':hs_list[i], 'class_id':class_id, 'teacher_id':teacher_list[i]}
+            data = {'name':s.name, 'hs':hs_list[i], 'class_id':class_id, 'teacher_id':teacher_list[i], 'index':i, 'primary':p_list[i]}
             of = sfl[i]
             sfl[i] = SubjectForm(school_id, data, instance=s)
             if str(of) != str(sfl[i]):
@@ -1250,7 +1252,7 @@ def subjectPerClass(request, class_id, sort_type=4, sort_status=0):
             i += 1
         if teacher_list[i] != u'' or request.POST['name'] != u'' or hs_list[i] != u'':
             index = i+1
-            data = {'name':request.POST['name'], 'hs':hs_list[i], 'class_id':class_id, 'teacher_id':teacher_list[i], 'index':index, 'primary':request.POST['primary']}
+            data = {'name':request.POST['name'], 'hs':hs_list[i], 'class_id':class_id, 'teacher_id':teacher_list[i], 'index':index, 'primary':p_list[i]}
             form = SubjectForm(school_id, data)
             if form.is_valid():
                 _class = Class.objects.get(id=class_id)
