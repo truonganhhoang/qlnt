@@ -20,10 +20,10 @@
 	    {{ form.as_table }}
 	 </table>
     {%if pos > 3%}
-   <input type ="submit" value="Cập nhật"/>
-   <a title="Hủy cập nhật và quay về danh sách giáo viên" href="{%url school.views.school_index  %}teachers" onclick="return confirmCancel();"><input type = "button" value ="Hủy"/></a>
+   <input type ="submit" class="ggButton"  value="Cập nhật"/>
+   <a title="Hủy cập nhật và quay về danh sách giáo viên" href="{%url school.views.school_index  %}teachers" onclick="return confirmCancel();"><input type = "button" class="ggButton" value ="Hủy"/></a>
    {%else%}    
-   <a title="Quay về danh sách giáo viên" href="{%url school.views.school_index  %}teachers">Quay lại</a>
+   <a title="Quay về danh sách giáo viên" href="{%url school.views.school_index  %}teachers"><input type="button" class="ggButton" >Quay lại</a>
    {%endif%}
 </form>
 {% endblock %}

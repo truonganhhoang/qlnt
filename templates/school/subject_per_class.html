@@ -36,10 +36,12 @@
 
     <form action="/school/subjectPerClass/{{class.id}}" method="post">{% csrf_token %}
     <div id="tableFunction">
+        <a href="{%url school.views.school_index  %}viewClassDetail/{{ class.id }}"><input class="ggButton" type ="button" value="Quay lại"/>
         <input class="ggButton" type="button" id="sort" value="Sắp xếp" />
         <a id="guide" class="tiptiphover ggButton" href="" title="Dùng các phím mũi tên để chọn môn học,
         sau đó Enter để thay đổi thứ tự hoặc bỏ chọn môn đó. Kết thúc bằng việc ấn 'Lưu thứ tự'.">Hướng dẫn</a>
         <input class="ggButton" type ="submit" value="Lưu"/>
+
     </div>
 
     <table class="styleA" id="sortable" width = "75%" align = "left">

@@ -26,7 +26,11 @@ function submitClass(){
 </form>
 
 <form action="/school/hanhkiem/{{class.id}}" method="post">{% csrf_token %}       
-<table class="styleA" width = "75%">
+{%if pos > 3%}
+<input type ="submit" class="ggButton" value="Cập nhật"/>
+{%endif%}
+<a href="{%url school.views.school_index  %}viewClassDetail/{{class.id}}" title ="Hủy mọi thao tác và quay về danh sách lớp"> <input class="ggButton" type ="button" value="Quay lại"/></a>
+    <table class="styleA" width = "75%">
 
     <tr>
         <th align="center" width="5%"> STT </th>
@@ -38,6 +42,7 @@ function submitClass(){
         <th align="center" width="10%"> Cả năm </th>
     </tr>
     {% if message != None %}
+    <br>
     {{message}}
     {% endif %}    
         
@@ -85,8 +90,8 @@ function submitClass(){
         {% endfor %}        
 </table>
 {%if pos > 3%}
-<input type ="submit" value="Cập nhật"/>
+<input class="ggButton" type ="submit" value="Cập nhật"/>
 {%endif%}
-<a href="{%url school.views.school_index  %}viewClassDetail/{{class.id}}" title ="Hủy mọi thao tác và quay về danh sách lớp"> <input type ="button" value="Quay lại"/></a>
+<a href="{%url school.views.school_index  %}viewClassDetail/{{class.id}}" title ="Hủy mọi thao tác và quay về danh sách lớp"> <input class="ggButton" type ="button" value="Quay lại"/></a>
 	</form>
 {% endblock %}
