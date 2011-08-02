@@ -21,7 +21,7 @@ from sms.views import *
 import xlrd
 
 RECOVER_MARKTIME = os.path.join('helptool','recover_marktime.html')
-
+SYNC_SUBJECT = os.path.join('helptool','sync_subject.html')
 
 def recover_marktime(request):
     
@@ -77,8 +77,43 @@ def sync_index(request):
 
     except Exception as e:
         print e
-
     message += '\n' + u'Sync xong index.'
     context = RequestContext(request)
     return render_to_response( RECOVER_MARKTIME, { 'message' : message},
                                context_instance = context )
+
+@transaction.commit_on_success
+def sync_subject(request):
+    classes = Class.objects.all()
+    print classes
+    message = ''
+    number = 0
+    try:
+        school = get_school(request)
+        if school.school_level == '1': ds_mon_hoc = CAP1_DS_MON
+        elif school.school_level == '2': ds_mon_hoc = CAP2_DS_MON
+        elif school.school_level == '3': ds_mon_hoc = CAP3_DS_MON
+        else: raise Exception('SchoolLevelInvalid')
+        if request.method == 'GET':
+            print 'get'
+            for _class in classes:
+                if not _class.subject_set.count():
+                    number+=1
+            print 'message'
+            message = u'Have ' + str(number) + ' classes those have no subject.'
+        elif  request.method == 'POST':
+            if 'sync' in request.POST:
+                for _class in classes:
+                    if not _class.subject_set.count():
+                        index = 0
+                        for mon in ds_mon_hoc:
+                            index +=1
+                            add_subject(mon, 1, None, _class, index)
+                message = 'Syncing subject from all classes: Done'
+                
+        context = RequestContext(request)
+        return render_to_response(SYNC_SUBJECT, {'message': message, 'number': number},
+                                  context_instance = context)
+    except Exception as e:
+        print e
+        

@@ -324,10 +324,12 @@ def b1(request):
         lower_bound = 6
         upper_bound = 9
         ds_mon_hoc = CAP2_DS_MON
-    else:
+    elif school.school_level == u'3':
         lower_bound = 10
         upper_bound = 12
         ds_mon_hoc = CAP3_DS_MON
+    else:
+        raise Exception('SchoolLevelInvalid')
     
     if not school.status:
         for khoi in range(lower_bound, upper_bound+1):
@@ -940,7 +942,16 @@ def addClass(request):
             data = {'name':request.POST['name'], 'year_id':request.POST['year_id'], 'block_id':request.POST['block_id'], 'teacher_id':request.POST['teacher_id'], 'status':school.status,'index':index}
             form = ClassForm(school.id,data)
             if form.is_valid():
-                form.save()
+                _class = form.save()
+                print school.school_level
+                if school.school_level == '1': ds_mon_hoc = CAP1_DS_MON
+                elif school.school_level == '2': ds_mon_hoc = CAP2_DS_MON
+                elif school.school_level == '3': ds_mon_hoc = CAP3_DS_MON
+                else: raise Exception('SchoolLevelInvalid')
+                index = 0
+                for mon in ds_mon_hoc:
+                    index +=1
+                    add_subject( mon, 1, None, _class, index = index )
                 return HttpResponseRedirect('/school/classes')
         
         t = loader.get_template(os.path.join('school', 'add_class.html'))
@@ -988,8 +999,11 @@ def viewClassDetail(request, class_id, sort_type=0, sort_status=0):
                 try:
                     std = Pupil.objects.get(id__exact = int(e))
                     completely_del_student(std)
-                except:
-                    pass        
+                except Exception as e:
+                    print e
+            data = simplejson.dumps({success: 'success'})
+            print data
+            return HttpResponse(data, mimetype= 'json')
         else:
             start_year = StartYear.objects.get(time = int(date.today().year), school_id = school.id)
             data = request.POST.copy()
