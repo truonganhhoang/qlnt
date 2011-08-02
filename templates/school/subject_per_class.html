@@ -33,12 +33,15 @@
         </select>
         học kì {{term}}</h2>
     </form>
+
+    <form action="/school/subjectPerClass/{{class.id}}" method="post">{% csrf_token %}
     <div id="tableFunction">
         <input class="ggButton" type="button" id="sort" value="Sắp xếp" />
         <a id="guide" class="tiptiphover ggButton" href="" title="Dùng các phím mũi tên để chọn môn học,
         sau đó Enter để thay đổi thứ tự hoặc bỏ chọn môn đó. Kết thúc bằng việc ấn 'Lưu thứ tự'.">Hướng dẫn</a>
+        <input class="ggButton" type ="submit" value="Lưu"/>
     </div>
-    <form action="/school/subjectPerClass/{{class.id}}" method="post">{% csrf_token %}
+
     <table class="styleA" id="sortable" width = "75%" align = "left">
         <tr>
             <th class="naviButton" style="display: none;"></th>
@@ -112,7 +115,7 @@
                         {{form.primary.errors}}
                         <p>{{form.primary}} </p> 
                     </td>
-                    <td width="10%"><input type ="submit" value="Lưu"/></td>
+                    <td width="10%"><input type ="submit" value="Thêm"/></td>
                     <td width = "5%" align = "left"></td>
                 </tr>
             {%endif%}

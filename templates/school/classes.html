@@ -11,46 +11,189 @@ function confirmDelete()
 {
     return confirm("Bạn có chắc chắn xóa không?");
 }
+
+$(document).ready(function(){
+    $("a.tab").click(function () {
+        $(".active").removeClass("active");
+        $(this).addClass("active");
+        $(".content").slideUp();
+        var content_show = $(this).attr("title");
+        $("#"+content_show).slideDown();
+    });
+});
 </script>
 
-<table class="styleA" width = "100%" align = "center">
-	<tr>
-		<th align="center"> STT</th>
-		<th align="center"><a href="{%url school.views.school_index  %}classes/1/{{next_status}}/1"> Tên Lớp </a></th>
-		<th align="center"><a href="{%url school.views.school_index  %}classes/2/{{next_status}}/1"> Khối </a></th>
-		<th align="center"><a href="{%url school.views.school_index  %}classes/3/{{next_status}}/1">Giáo Viên Chủ Nhiệm</a></th>
-		<th align="center"><a href="{%url school.views.school_index  %}classes/4/{{next_status}}/1"> Năm </a></th>
+<div id="tabbed_box_1" class="tabbed_box">
+    <div class="tabbed_area">
+
+    <ul class="tabs">
+        <li><a href="#" title="all" class="tab active">Cả trường</a></li>
+        <li><a href="#" title="block10" class="tab">Khối 10</a></li>
+        <li><a href="#" title="block11" class="tab">Khối 11</a></li>
+        <li><a href="#" title="block12" class="tab">Khối 12</a></li>
+    </ul>
+
+    <div style="display: block;" id="all" class="content">
+        <table class="styleA" width = "100%" align = "center">
+            <tr>
+                <th align="center"> STT</th>
+                <th align="center"><a href="{%url school.views.school_index  %}classes/1/{{next_status}}"> Tên Lớp </a></th>
+                <th align="center"><a href="{%url school.views.school_index  %}classes/2/{{next_status}}"> Khối </a></th>
+                <th align="center"><a href="{%url school.views.school_index  %}classes/3/{{next_status}}">Giáo Viên Chủ Nhiệm</a></th>
+                <th align="center"><a href="{%url school.views.school_index  %}classes/4/{{next_status}}"> Năm </a></th>
+                {%if pos >= 4 %}
+                    <th align="center"></th>
+                {% endif %}
+            </tr>
+            <form action="/school/classes/{{sort_type}}/{{sort_status}}" method="post">{% csrf_token %}
+            {% for class, f, n in list %}
+            <tr>
+                <td align="center"> {{forloop.counter}}</td>
+                <td align="center"><a href="{%url school.views.school_index  %}viewClassDetail/{{class.id}}" >{{class.name}} </a></td>
+                <td align="center"> {{class.block_id}} </td>
+                {%if pos >= 4 %}
+                    <td align="center"> {{f.teacher_id}} </td>
+                {% else %}
+                    <td align="center"> {{class.teacher_id}} </td>
+                {% endif %}
+                <td align="center"> {{class.year_id}} </td>
+                {%if pos >= 4 %}
+                    {% ifequal n  0 %}
+                        <td align="center"> <a href="{%url school.views.school_index  %}deleteClass/{{class.id}}" onclick="return confirmDelete();"> xóa </a></td>
+                    {% else %}
+                        <td align="center"> <a href="" onclick="alert( 'Lớp vẫn còn học sinh, vui lòng xóa hết học sinh trước' );"> xóa </a></td>
+                    {% endifequal %}
+                {% endif %}
+            </tr>
+            {% endfor %}
+
+        </table>
         {%if pos >= 4 %}
-            <th align="center"></th>
+            <p><input type="submit" value="Cập nhật" /></p>
         {% endif %}
-	</tr>
-	<form action="/school/classes/{{sort_type}}/{{sort_status}}" method="post">{% csrf_token %}
-	{% for class, f, n in list %}
-	<tr>
-		<td align="center"> {{forloop.counter}}</td>
-		<td align="center"><a href="{%url school.views.school_index  %}viewClassDetail/{{class.id}}" >{{class.name}} </a></td>
-		<td align="center"> {{class.block_id}} </td>
-		{%if pos >= 4 %}
-            <td align="center"> {{f.teacher_id}} </td>
-        {% else %}        
-            <td align="center"> {{class.teacher_id}} </td>
-        {% endif %}
-		<td align="center"> {{class.year_id}} </td>
-        {%if pos >= 4 %}
-            {% ifequal n  0 %}
-                <td align="center"> <a href="{%url school.views.school_index  %}deleteClass/{{class.id}}" onclick="return confirmDelete();"> xóa </a></td>
-            {% else %}
-                <td align="center"> <a href="" onclick="alert( 'Lớp vẫn còn học sinh, vui lòng xóa hết học sinh trước' );"> xóa </a></td>
+        </form>
+    </div>
+
+
+    <div style="display: none;" id="block10" class="content">
+        <table class="styleA" width = "100%" align = "center">
+            <tr>
+                <th align="center"> STT</th>
+                <th align="center">Tên Lớp </a></th>
+                <th align="center">Giáo Viên Chủ Nhiệm</a></th>
+                <th align="center"> Năm </a></th>
+                {%if pos >= 4 %}
+                    <th align="center"></th>
+                {% endif %}
+            </tr>
+            <form action="/school/classes/{{sort_type}}/{{sort_status}}" method="post">{% csrf_token %}
+            {% for class, f, n in list %}
+            <tr>
+            {% ifequal class.block_id.number 10 %}
+                <td align="center"> {{forloop.counter}}</td>
+                <td align="center"><a href="{%url school.views.school_index  %}viewClassDetail/{{class.id}}" >{{class.name}} </a></td>
+                <td align="center"> {{class.teacher_id}} </td>
+                <td align="center"> {{class.year_id}} </td>
+                {%if pos >= 4 %}
+                    {% ifequal n  0 %}
+                        <td align="center"> <a href="{%url school.views.school_index  %}deleteClass/{{class.id}}" onclick="return confirmDelete();"> xóa </a></td>
+                    {% else %}
+                        <td align="center"> <a href="" onclick="alert( 'Lớp vẫn còn học sinh, vui lòng xóa hết học sinh trước' );"> xóa </a></td>
+                    {% endifequal %}
+                {% endif %}
             {% endifequal %}
+            </tr>
+
+            {% endfor %}
+
+        </table>
+        {%if pos >= 4 %}
+            <p><input type="submit" value="Cập nhật" /></p>
         {% endif %}
-	</tr>
-	{% endfor %}
-	
-</table>
+        </form>
+    </div>
+
+    <div style="display: none;" id="block11" class="content">
+        <table class="styleA" width = "100%" align = "center">
+            <tr>
+                <th align="center"> STT</th>
+                <th align="center">Tên Lớp </a></th>
+                <th align="center">Giáo Viên Chủ Nhiệm</a></th>
+                <th align="center">Năm </a></th>
+                {%if pos >= 4 %}
+                    <th align="center"></th>
+                {% endif %}
+            </tr>
+            <form action="/school/classes/{{sort_type}}/{{sort_status}}" method="post">{% csrf_token %}
+            {% for class, f, n in list %}
+            {% ifequal class.block_id.number 11 %}
+            <tr>
+                <td align="center"> {{forloop.counter}}</td>
+                <td align="center"><a href="{%url school.views.school_index  %}viewClassDetail/{{class.id}}" >{{class.name}} </a></td>
+
+                <td align="center"> {{class.teacher_id}} </td>
+                <td align="center"> {{class.year_id}} </td>
+                {%if pos >= 4 %}
+                    {% ifequal n  0 %}
+                        <td align="center"> <a href="{%url school.views.school_index  %}deleteClass/{{class.id}}" onclick="return confirmDelete();"> xóa </a></td>
+                    {% else %}
+                        <td align="center"> <a href="" onclick="alert( 'Lớp vẫn còn học sinh, vui lòng xóa hết học sinh trước' );"> xóa </a></td>
+                    {% endifequal %}
+                {% endif %}
+            </tr>
+            {% endifequal %}
+            {% endfor %}
+
+        </table>
+        {%if pos >= 4 %}
+            <p><input type="submit" value="Cập nhật" /></p>
+        {% endif %}
+        </form>
+    </div>
+
+    <div style="display: none;" id="block12" class="content">
+        <table class="styleA" width = "100%" align = "center">
+            <tr>
+                <th align="center"> STT</th>
+                <th align="center">Tên Lớp </a></th>
+                <th align="center">Giáo Viên Chủ Nhiệm</a></th>
+                <th align="center">Năm </a></th>
+                {%if pos >= 4 %}
+                    <th align="center"></th>
+                {% endif %}
+            </tr>
+            <form action="/school/classes/{{sort_type}}/{{sort_status}}" method="post">{% csrf_token %}
+            {% for class, f, n in list %}
+            {% ifequal class.block_id.number 12 %}
+            <tr>
+                <td align="center"> {{forloop.counter}}</td>
+                <td align="center"><a href="{%url school.views.school_index  %}viewClassDetail/{{class.id}}" >{{class.name}} </a></td>
+                <td align="center"> {{class.teacher_id}} </td>
+
+                <td align="center"> {{class.year_id}} </td>
+                {%if pos >= 4 %}
+                    {% ifequal n  0 %}
+                        <td align="center"> <a href="{%url school.views.school_index  %}deleteClass/{{class.id}}" onclick="return confirmDelete();"> xóa </a></td>
+                    {% else %}
+                        <td align="center"> <a href="" onclick="alert( 'Lớp vẫn còn học sinh, vui lòng xóa hết học sinh trước' );"> xóa </a></td>
+                    {% endifequal %}
+                {% endif %}
+            </tr>
+            {% endifequal %}
+            {% endfor %}
+
+        </table>
+        {%if pos >= 4 %}
+            <p><input type="submit" value="Cập nhật" /></p>
+        {% endif %}
+        </form>
+    </div>
+
+    </div>
+</div>
 {%if pos >= 4 %}
-    <p><input type="submit" value="Cập nhật" /></p>
     <a href = "{%url school.views.school_index %}addclass">Thêm lớp học</a>
 {% endif %}
-</form>
+
 
 {% endblock %}

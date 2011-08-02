@@ -908,7 +908,7 @@ def classes(request, sort_type=1, sort_status=0, page=1):
                     cfl[i].save()
                 message = 'Thông tin lớp đã được cập nhật.'
             i = i + 1
-        cfl.append(ClassForm(school_id, instance=c))		
+        cfl.append(ClassForm(school_id, instance=c))
     list = zip(classList, cfl, num)
     t = loader.get_template(os.path.join('school', 'classes.html'))
     c = RequestContext(request, {   'list': list, 
