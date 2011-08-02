@@ -38,8 +38,7 @@ class TeacherForm(forms.ModelForm):
 class PupilForm(forms.ModelForm):
     class Meta:
         model = Pupil
-        exclude = ('school_id','user_id')
-        field = ('birthday', 'school_join_date', 'ngay_vao_doan', 'ngay_vao_doi', 'ngay_vao_dang', 'father_birthday', 'mother_birthday')
+        exclude = ('school_id','user_id','index')
         widgets = {
             'birthday' : DateInput(attrs = {'class':'datepicker'}),
             'school_join_date' : DateInput(attrs = {'class':'datepicker'}),
@@ -56,6 +55,45 @@ class PupilForm(forms.ModelForm):
         self.fields['start_year_id'] = forms.ModelChoiceField(queryset = StartYear.objects.filter(school_id = school_id),label='Khóa')
         self.fields['class_id'] = forms.ModelChoiceField(queryset = Class.objects.filter(year_id = year_id),label='Lớp')
 
+class ThongTinCaNhanForm(forms.ModelForm):
+    class Meta:
+        model = Pupil
+        fields = ('last_name','first_name','birthday','sex','class_id','start_year_id','birth_place','dan_toc','ton_giao','uu_tien','quoc_tich','home_town','ban_dk','school_join_date','school_join_mark')
+        widgets = {
+            'birthday' : DateInput(attrs = {'class':'datepicker'}),
+        }
+        
+    def __init__(self, school_id, *args, **kwargs):
+        super(ThongTinCaNhanForm, self).__init__(*args, **kwargs)
+        school = Organization.objects.get(id = school_id)
+        year_id = school.year_set.latest('time').id
+        self.fields['start_year_id'] = forms.ModelChoiceField(queryset = StartYear.objects.filter(school_id = school_id),label='Khóa')
+        self.fields['class_id'] = forms.ModelChoiceField(queryset = Class.objects.filter(year_id = year_id),label='Lớp')
+
+class ThongTinLienLacForm(forms.ModelForm):
+    class Meta:
+        model = Pupil
+        fields = ('current_address','phone','father_phone','mother_phone','sms_phone','email')
+
+class ThongTinGiaDinhForm(forms.ModelForm):
+    class Meta:
+        model = Pupil
+        fields = ('father_name','father_birthday','father_job','mother_name','mother_birthday','mother_job')
+        widgets = {
+            'father_birthday': DateInput(attrs = {'class':'datepicker'}),
+            'mother_birthday': DateInput(attrs = {'class':'datepicker'}),
+        }
+        
+class ThongTinDoanDoiForm(forms.ModelForm):
+    class Meta:
+        model = Pupil
+        fields = {'doi','ngay_vao_doi','doan','ngay_vao_doan','dang','ngay_vao_dang'}
+        widgets = {
+            'ngay_vao_doi': DateInput(attrs = {'class':'datepicker'}),
+            'ngay_vao_doan': DateInput(attrs = {'class':'datepicker'}),
+            'ngay_vao_dang': DateInput(attrs = {'class':'datepicker'}),
+        }
+        
 class SchoolForm(forms.Form):
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop('request')

@@ -206,10 +206,10 @@ class Pupil(BasicPersonInfo):
     school_join_mark = models.IntegerField("Điểm tuyển sinh", null = True, blank = True)
     #thong tin ca nhan
     khu_vuc = models.CharField("Khu vực", max_length = 3, choices = KV_CHOICE, blank = True)
-    doan = models.BooleanField("Là đoàn viên", blank = True, default = False)
-    ngay_vao_doan = models.DateField("Ngày vào đoàn", blank = True, null = True)
     doi = models.BooleanField("Là đội viên", blank = True, default = False)
     ngay_vao_doi = models.DateField("Ngày vào đội", blank = True, null = True)
+    doan = models.BooleanField("Là đoàn viên", blank = True, default = False)
+    ngay_vao_doan = models.DateField("Ngày vào đoàn", blank = True, null = True)
     dang = models.BooleanField("Là đảng viên", blank = True, default = False)
     ngay_vao_dang = models.DateField("Ngày vào đảng", blank = True, null = True)
     uu_tien = models.CharField("Ưu tiên", blank = True, max_length = 100)

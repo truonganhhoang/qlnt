@@ -82,7 +82,7 @@
                     url:"",
                     data: {data:data},
                     datatype:"json",
-                    success:location.reload(true)
+                    success: window.location = window.location.href,
                 };
                 $.ajax(arg);
             }

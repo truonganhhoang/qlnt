@@ -1431,17 +1431,25 @@ def viewStudentDetail(request, student_id):
     if in_school(request, pupil.class_id.block_id.school_id) == False:
         return HttpResponseRedirect('/')
     form = PupilForm (school_id, instance=pupil)
+    ttcnform = ThongTinCaNhanForm(school_id, instance=pupil)
+    ttllform = ThongTinLienLacForm(instance=pupil)
+    ttgdform = ThongTinGiaDinhForm(instance=pupil)
+    ttddform = ThongTinDoanDoiForm(instance=pupil)
     if request.method == 'POST':
-        data = request.POST.copy()
-        data.appendlist('school_id', school_id)
-        form = PupilForm(school_id, data, instance=pupil)
+        form = PupilForm(school_id, request.POST, instance=pupil)
         if form.is_valid():
-            form.save()
-            message = 'Bạn đã cập nhật thành công'        
-            
-
+            form.save()            
+            ttcnform = ThongTinCaNhanForm(school_id, instance=pupil)
+            ttllform = ThongTinLienLacForm(instance=pupil)
+            ttgdform = ThongTinGiaDinhForm(instance=pupil)
+            ttddform = ThongTinDoanDoiForm(instance=pupil)
+            message = 'Bạn đã cập nhật thành công'
     t = loader.get_template(os.path.join('school', 'student_detail.html'))
     c = RequestContext(request, {   'form': form, 
+                                    'ttcnform': ttcnform,
+                                    'ttllform': ttllform,
+                                    'ttgdform': ttgdform,
+                                    'ttddform': ttddform,
                                     'message': message, 
                                     'id': student_id,
                                     'class_id':pupil.class_id.id,

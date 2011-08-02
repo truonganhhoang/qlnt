@@ -2,6 +2,10 @@
 
 {% block content %}
 <script>
+	$(document).ready(function() {
+		$( "#tabs" ).tabs({
+        });
+	});
     function confirmCancel()
     {
         return confirm("Bạn có chắc chắn muốn hủy cập nhật?");
@@ -22,15 +26,37 @@
 {% if message != None %}
 	{{message}} <br>
 {% endif %}
-	
 <form action="/school/viewStudentDetail/{{id}}" method="post">{% csrf_token %}
-    {{ form.non_field_errors }}
-    <table class="styleA styleDetail">
-	    {{ form.as_table }}
-	 </table>
-    {%if pos > 3%}
-   <input type ="submit" value="Cập nhật"/>
-   {%endif%}
+
+    <div id = "tabs">
+        <ul>
+            <li><a href="#tabs-1">Thông tin cá nhân</a></li>
+            <li><a href="#tabs-2">Thông tin liên lạc</a></li>
+            <li><a href="#tabs-3">Thông tin gia đình</a></li>
+            <li><a href="#tabs-4">Thông tin khác</a></li>
+        </ul>
+        <div id = "tabs-1">
+            <table class = "styleA" >
+            {{ ttcnform.as_table }}
+            </table>
+        </div>
+        <div id = "tabs-2">
+            <table class = "styleA">
+            {{ ttllform.as_table }}
+            </table>
+        </div>
+        <div id = "tabs-3">
+            <table class = "styleA">
+            {{ ttgdform.as_table }}
+            </table>
+        </div>
+        <div id = "tabs-4">
+            <table class = "styleA">
+            {{ ttddform.as_table }}
+            </table>
+        </div>         
+    </div>
+    <input class="ggButton" type="submit" value="Cập nhật"/>
    <a title ="Hủy mọi thao tác và quay về danh sách lớp" href="{%url school.views.school_index  %}viewClassDetail/{{class_id}}" onclick="return confirmCancel();">Hủy</a>
 </form>
 {% endblock %}
