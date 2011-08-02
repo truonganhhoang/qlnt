@@ -847,6 +847,9 @@ def danh_sach_trung_tuyen(request):
 #------------------------------------------------------------------------------------
                                       
 def classes(request, sort_type=1, sort_status=0, page=1):
+    """
+
+    """
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
@@ -866,47 +869,47 @@ def classes(request, sort_type=1, sort_status=0, page=1):
     cyear = get_current_year(request)
     if int(sort_type) == 1:
         if int(sort_status) == 0:
-            class_List = cyear.class_set.order_by('name')
+            classList = cyear.class_set.order_by('name')
         else:
-            class_List = cyear.class_set.order_by('-name')
+            classList = cyear.class_set.order_by('-name')
     if int(sort_type) == 2:
         if int(sort_status) == 0:
-            class_List = cyear.class_set.order_by('block_id__number')
+            classList = cyear.class_set.order_by('block_id__number')
         else:
-            class_List = cyear.class_set.order_by('-block_id__number')
+            classList = cyear.class_set.order_by('-block_id__number')
     if int(sort_type) == 3:
         if int(sort_status) == 0:
-            class_List = cyear.class_set.order_by('teacher_id__first_name')
+            classList = cyear.class_set.order_by('teacher_id__first_name')
         else:
-            class_List = cyear.class_set.order_by('-teacher_id__first_name')
+            classList = cyear.class_set.order_by('-teacher_id__first_name')
     if int(sort_type) == 4:
         if int(sort_status) == 0:
-            class_List = cyear.class_set.order_by('year_id__time')
+            classList = cyear.class_set.order_by('year_id__time')
         else:
-            class_List = cyear.class_set.order_by('-year_id__time')
-    paginator = Paginator(class_List, 20)
-    try:
-        classList = paginator.page(page)
-    except (EmptyPage, InvalidPage):
-        classList = paginator.page(paginator.num_pages)
+            classList = cyear.class_set.order_by('-year_id__time')
+
     cfl = []
-    for c in classList.object_list:
+    num = []
+    for c in classList:
         cfl.append(ClassForm(school_id, instance=c))
-	list = zip(classList.object_list, cfl)
+        num.append(c.pupil_set.count())
+
+	list = zip(classList, cfl, num)
+    print num
     if request.method == 'POST':
         teacher_list = request.POST.getlist('teacher_id')
         i = 0
-        for c in classList.object_list:
+        for c in classList:
             data = {'name':c.name, 'year_id':c.year_id.id, 'block_id':c.block_id.id, 'teacher_id':teacher_list[i]}
             of = cfl[i]
             cfl[i] = ClassForm(school_id, data, instance=c)
-            if str(of) != str(cfl[i]): 
+            if str(of) != str(cfl[i]):
                 if cfl[i].is_valid():
                     cfl[i].save()
                 message = 'Thông tin lớp đã được cập nhật.'
             i = i + 1
         cfl.append(ClassForm(school_id, instance=c))		
-    list = zip(classList.object_list, cfl)
+    list = zip(classList, cfl, num)
     t = loader.get_template(os.path.join('school', 'classes.html'))
     c = RequestContext(request, {   'list': list, 
                                     'form': form, 
@@ -914,8 +917,7 @@ def classes(request, sort_type=1, sort_status=0, page=1):
                                     'classList': classList, 
                                     'sort_type':sort_type, 
                                     'sort_status':sort_status, 
-                                    'next_status':1-int(sort_status), 
-                                    'base_order': (int(page)-1) * 20,
+                                    'next_status':1-int(sort_status),
                                     'pos':pos,})
     return HttpResponse(t.render(c))
 
