@@ -212,7 +212,7 @@ class Pupil(BasicPersonInfo):
     ngay_vao_doi = models.DateField("Ngày vào đội", blank = True, null = True)
     dang = models.BooleanField("Là đảng viên", blank = True, default = False)
     ngay_vao_dang = models.DateField("Ngày vào đảng", blank = True, null = True)
-    uu_tien = models.CharField("Ưu tiên", blank = True, null = True, max_length = 100)
+    uu_tien = models.CharField("Ưu tiên", blank = True, max_length = 100)
     
     #thong tin gia dinh
     father_name = models.CharField("Họ và tên bố", max_length = 45, blank = True)

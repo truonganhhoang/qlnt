@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block content %}
+{{ message }}
+{% if number != 0 %}
+    <form action="{% url school.helptools.sync_subject %}" method="POST">{% csrf_token %}
+        <input type="submit" value="Sync" name="sync"/>
+    </form>
+{% endif %}
+{% endblock %}
