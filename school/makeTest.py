@@ -4,15 +4,12 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext, loader
 from school.utils import *
 from django.core.urlresolvers import reverse
-from django.utils import simplejson
-from school.sms_views import sendSMS
 from django.db import transaction
 
 import os.path 
 import time 
 import datetime
 import random
-from viewFinish import *
 LOCK_MARK =False
 ENABLE_CHANGE_MARK=True
 
@@ -61,17 +58,17 @@ def thu1(request):
 @transaction.commit_on_success                                                              
 def thu(request):
     t1= time.time()
-    
+    """
     list1 = TKMon.objects.filter(student_id__class_id=1)
     for m in list1:
-        m.tb_nam=random.randrange( 3,11 )
+        m.tb_nam=random.randrange( 6,11 )
        # m.save()
     for m in list1:
         m.save()
            
     list = Mark.objects.filter(student_id__class_id=1)
     for m in list:
-        m.tb=random.randrange( 3,11 )
+        m.tb=random.randrange( 7,11 )
        # m.save()
     for m in list:
         m.save()
@@ -98,14 +95,13 @@ def thu(request):
         
         hk.save()
     
-    
+    """
     t = loader.get_template(os.path.join('school','ll.html'))
     t2=time.time()
     print (t2-t1)
     c = RequestContext(request, {'list':list,
                                 }
                        )
-    
-    #print (t2-t1)
 
+    #print (t2-t1)
     return HttpResponse(t.render(c))

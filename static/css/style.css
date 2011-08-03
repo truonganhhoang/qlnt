@@ -86,13 +86,12 @@ table.styleC tr {
 }
 
 table.styleC tr:hover {
-    background-color: #FFFF8C;
+    background-color:  #BFFFFF;
 }
 
 table.styleB {
     font-family: Arial, Helvetica, sans-serif;
     font-size: 14px;
-    color: #333333;
     border: 1px solid #999999;
     border-collapse: collapse;
 }
@@ -107,8 +106,13 @@ table.styleB th.selected {
     background-color: #f3f48d;
 }
 
-table.styleB tr {
-    background-color: #d4e3e5;
+table.styleB tr:nth-child(odd) {
+    background-color: #FFFFFF;
+    cursor: pointer;
+}
+
+table.styleB tr:nth-child(even) {
+    background-color: #e2edef;
     cursor: pointer;
 }
 
@@ -122,7 +126,7 @@ table.styleB td.normal {
 }
 
 table.styleB td.noedit {
-    background-color: #d4e3e5;
+    background-color:  #F4F4F4 ;
 }
 
 table.styleB td.sent {
@@ -133,30 +137,52 @@ table.styleB td.selected {
     background-color: #f3f48d;
 }
 
-
-
-table.styleB tr:hover {
-    background-color: #f0f1c3;
+table.styleB td.highLight {
+    background-color:  #D9FFF0;
 }
 
 table.styleB tr.selected {
     background-color: #f3f48d;
 }
+table.styleB tr.highLight {
+	background-color:  #D9FFF0;
+}
+input.highLight {
+    cursor: pointer;
+    border: 0;
+    width: 100%;
+	height:24px;
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+	background-color:  #D9FFF0;
+}
 
 input.mark {
     cursor: pointer;
     border: 0;
-    width: 21px;
+    width: 100%;
 	height:24px;
     margin-top: 0;
     margin-bottom: 0;
     margin-left: 0;
 }
 
+input.mark1 {
+    cursor: pointer;
+    border: 0;
+    width: 100%;
+	height:24px;
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    background-color: #e2edef;
+}
+
 input.selected {
     cursor: pointer;
     border: 0;
-    width: 21px;
+    width: 100%;
 	height:24px;
     margin-top: 0;
     margin-bottom: 0;
@@ -167,7 +193,7 @@ input.selected {
 input.sent {
     cursor: pointer;
     border: 0;
-    width: 21px;
+    width: 100%;
 	height:24px;
     margin-top: 0;
     margin-bottom: 0;

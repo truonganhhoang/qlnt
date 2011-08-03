@@ -319,8 +319,11 @@
 				var name = i*100+j;
 				if (document.getElementById(name).value!=undefined)
 				{
-					table.rows[i+2].cells[j+4].className="normal";
-					document.getElementById(name).className="mark";
+					table.rows[i+2].cells[j+4].className="";
+					if (i% 2 ==1)
+						document.getElementById(name).className="mark1";
+					else 	
+						document.getElementById(name).className="mark";
 				}
 				else	
 					table.rows[i+2].cells[j+4].className="noedit";
@@ -414,23 +417,17 @@
 						table.rows[i+2].cells[j+4].className="sent";
 						var name = i*100+j;
 						if (document.getElementById(name).value!=undefined)
-						{
-							if (isHeadmaster)
-								document.getElementById(name).className="sent";
-							else	
-								document.getElementById(name).className="mark";
-						}	
+							document.getElementById(name).className="sent";
 					}
 					else
 					{
+						table.rows[i+2].cells[j+4].className="noedit";						
 						var name = i*100+j;
 						if (document.getElementById(name).value!=undefined)
-						{
-							document.getElementById(name).className="mark";
-							table.rows[i+2].cells[j+4].className="normal";
-						}
-						else
-							table.rows[i+2].cells[j+4].className="";						
+							if (i% 2==1)
+								document.getElementById(name).className="mark1";
+							else	
+								document.getElementById(name).className="mark";
 					}			
 		for(var i=1;i<length;i++)
 		{
@@ -478,7 +475,6 @@
 		var temp = document.getElementById(name).value;		
 		if (temp!=undefined)
 			document.getElementById(name).focus();
-		
 		if ((activeMode==1) && (newAr[rowIndex-2][cellIndex-4]!=-1))					
 		{
 			if (tb.className!="selected")
@@ -488,23 +484,25 @@
 				else
 				if (temp!="")
 				{
-					tb.className="selected";
 					document.getElementById(name).className="selected";
+					tb.className="selected";
 				}	
 			}	
 			else
 			{
 				if (temp!=undefined)
 				{	
-					if (isHeadmaster && sentMark[rowIndex-2][cellIndex-4])						
-						document.getElementById(name).className="sent";
-					else	
-						document.getElementById(name).className="mark";
+					tb.className="noedit";
+					if (sentMark[rowIndex-2][cellIndex-4])	
 						
-					if (sentMark[rowIndex-2][cellIndex-4]==1)
-						tb.className="sent";
+						document.getElementById(name).className="sent";
 					else
-						tb.className="normal";					
+					{	
+						if (rowIndex % 2==1)
+							document.getElementById(name).className="mark1";
+						else
+							document.getElementById(name).className="mark";						
+					}		
 				}
 				else				
 				if (sentMark[rowIndex-2][cellIndex-4]==1)
@@ -639,18 +637,18 @@
 						table.rows[i+2].cells[j+4].className="sent";
 						var name = i*100+j;
 						if (document.getElementById(name).value!=undefined)
-							if (isHeadmaster)
-								document.getElementById(name).className="sent"
-							else	
-								document.getElementById(name).className="mark"
+							document.getElementById(name).className="sent"
 					}
 					else
 					{
 						var name = i*100+j;
 						if (document.getElementById(name).value!=undefined)
 						{
-							document.getElementById(name).className="mark";
-							table.rows[i+2].cells[j+4].className="normal";
+							table.rows[i+2].cells[j+4].className="noedit";
+							if (i % 2==1)
+								document.getElementById(name).className="mark1";
+							else 	
+								document.getElementById(name).className="mark";
 						}
 						else
 							table.rows[i+2].cells[j+4].className="noedit";
@@ -743,14 +741,18 @@
 		
 		if (cellInput.value!=undefined)
 		{	
-			if  (isHeadmaster && sentMark[x][y])
+			if  (sentMark[x][y])
 				cellInput.className="sent";
 			else	
-				cellInput.className="mark";			
+				if (x % 2==1)
+					cellInput.className="mark1";
+				else		
+					cellInput.className="mark";
+					
 			if (sentMark[x][y]==1)
 				tb.className="sent";
 			else
-				tb.className="normal";									
+				tb.className="";									
 		}		
 		else				
 		if (sentMark[x][y]==1)
@@ -766,8 +768,41 @@
 		else
 			selectAllToSend();
 	}
-	calculateNewArray();	
-	// (isHeadmaster)
-	//	cancelAll();
+	for (var i=1;i<length;i++)
+		if (i % 2==1)
+		{
+			for (var j=1;j<20;j++)
+			{
+				var name =  i*100+j;
+				var temp = document.getElementById(name);
+				if (temp)
+					if (temp.value!=undefined)
+						temp.className="mark1";
+			}
+		}	
 	
+	for (var i=1;i<length;i++)
+		for (var j=1;j<17;j++)
+			{
+				var name= i*100+j;
+				var temp = document.getElementById(name);
+				if (temp.value ==undefined)
+					temp.className ="noedit";										
+			}
+			
+	$(document).ready(function() {
+		$('input').focus(function() {
+			highLight(this);
+		}
+	);
+
+    $('input').blur(function() {
+			loseHighLight(this);
+      }
+    );
+	
+  }
+);
+    </script>		
+	viewAverage();
 </script>

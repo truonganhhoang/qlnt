@@ -11,7 +11,7 @@ urlpatterns = patterns('',
     #-----------------------------------------------------------------------
     # 2 ham nay dung de test, tao tat ca cac thong tin con thieu cho sinh vien
     # sau nay hoan thien, co the bo di    
-    url(r'thu','school.makeTest.thu'),
+    url(r'thu$','school.makeTest.thu'),
     url(r'createTbNam/(?P<year_id>\w+)','school.viewMark.createTbNam'),
     url(r'createAllInfoInTerm/(?P<term_id>\w+)','school.viewMark.createAllInfoInTerm'),
 
@@ -73,15 +73,18 @@ urlpatterns = patterns('',
     url(r'subjectPerClass/(?P<class_id>\w+)', 'school.views.subjectPerClass'),
     url(r'viewSubjectDetail/(?P<subject_id>\w+)', 'school.views.viewSubjectDetail'),
     url(r'start_year$','school.views.b1', name = "start_year"),
-    url(r'khenthuong/(?P<student_id>\w+)/add', 'school.views.add_khen_thuong'),
-    url(r'khenthuong/(?P<kt_id>\w+)/delete', 'school.views.delete_khen_thuong'),    
-    url(r'khenthuong/(?P<kt_id>\w+)/edit', 'school.views.edit_khen_thuong'),    
-    url(r'khenthuong/(?P<student_id>\w+)', 'school.views.khen_thuong'),
-    url(r'kiluat/(?P<student_id>\w+)/add', 'school.views.add_ki_luat'),
-    url(r'kiluat/(?P<kt_id>\w+)/edit', 'school.views.edit_ki_luat'),
-    url(r'kiluat/(?P<kt_id>\w+)/delete', 'school.views.delete_ki_luat'),    
-    url(r'kiluat/(?P<student_id>\w+)', 'school.views.ki_luat'),
-    url(r'diemdanhhs/(?P<student_id>\w+)', 'school.views.diem_danh_hs'),
+
+   
+    url(r'khenthuong/(?P<student_id>\w+)/add$', 'school.views.add_khen_thuong'),
+    url(r'khenthuong/(?P<kt_id>\w+)/delete$', 'school.views.delete_khen_thuong'),    
+    url(r'khenthuong/(?P<kt_id>\w+)/edit$', 'school.views.edit_khen_thuong'),    
+    url(r'khenthuong/(?P<student_id>\w+)$', 'school.views.khen_thuong'),
+    
+    url(r'kiluat/(?P<student_id>\w+)/add$', 'school.views.add_ki_luat'),
+    url(r'kiluat/(?P<kt_id>\w+)/edit$', 'school.views.edit_ki_luat'),
+    url(r'kiluat/(?P<kt_id>\w+)/delete$', 'school.views.delete_ki_luat'),    
+    url(r'kiluat/(?P<student_id>\w+)$', 'school.views.ki_luat'),
+    url(r'diemdanhhs/(?P<student_id>\w+)$', 'school.views.diem_danh_hs'),
     url(r'dsnghi/(?P<class_id>\w+)/(?P<day>\w+)/(?P<month>\w+)/(?P<year>\w+)$', 'school.views.ds_nghi'),
     url(r'diemdanh/(?P<class_id>\w+)/(?P<day>\w+)/(?P<month>\w+)/(?P<year>\w+)$', 'school.views.diem_danh'),
     url(r'diemdanh/(?P<class_id>\w+)$', 'school.views.time_select'),

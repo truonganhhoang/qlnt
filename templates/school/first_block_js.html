@@ -33,7 +33,6 @@
 	var indexId = 0;
 	var indexHk1= 0;
 	var latestTime =0;
-	var isHeadmaster =1;
 	var idTeacher = "{{selectedSubject.teacher_id.id}}";
 	//var position  = "{{user.userprofile.position}}";
 	//che do lam viec
@@ -54,16 +53,17 @@
 function catchEnter(e)
 
 {
+
       if (!e) e = window.event; 
       var code = (e.keyCode) ? e.keyCode : e.which;
-
+		
 	if ((code == 13) || (code == 3) || (code==9)) 
 	{
 		return false;
 	}	
 	else return true;
 }
-window.onload = function() { document.onkeypress = catchEnter; };
+window.onload = function() { document.onkeydown = catchEnter; };
    
 
 	function acceptDigits(tb,keyCode)
@@ -128,7 +128,50 @@ window.onload = function() { document.onkeypress = catchEnter; };
 			if (document.info.move[i].checked)
 				return i;
 	}
-		
+	function highLight(tb)
+	{
+		if (activeMode==1) return;
+		var number = parseInt(tb.id/100);	
+		var table =document.getElementById("markTable");
+		//alert(number+"cccc");	
+		table.rows[number+2].className="highLight";
+		for(var i=1;i<20;i++)
+		{
+			var name = number*100+i;
+			var temp = document.getElementById(name);
+			if (temp)
+				temp.className = "highLight";
+		}	
+	}	
+	function loseHighLight(tb)
+	{
+		if (activeMode==1) return;
+		var number = parseInt(tb.id/100);	
+		//alert(number+"ff");	
+		var table =document.getElementById("markTable");
+		table.rows[number+2].className="";
+		for(var i=1;i<20;i++)
+		{
+			var name = number*100+i;
+			var temp = document.getElementById(name);
+			if (sentMark[number][i]==1 &&  activeMode==1) 
+				temp.className="sent"
+			else	
+			if (temp.value==undefined)
+			{				
+				if (i<17)
+				
+					temp.className = "noedit";
+				else	
+					temp.className = "";
+			}	
+			else
+			if (number % 2==1)
+				temp.className = "mark1";
+			else	
+				temp.className = "mark";				
+		}	
+	}
 	function direction(nameNumber,valueOfMove)
 	{
 		var lengthList={{lengthList}};		
@@ -181,9 +224,11 @@ window.onload = function() { document.onkeypress = catchEnter; };
 		{
 			while(true){
 				if (parseInt(nameNumber/100)==lengthList)
-					nameNumber=100+nameNumber % 100;
+					break;
 				else					
+				{
 					nameNumber=nameNumber+100;					
+				}	
 				var cel=document.getElementById(nameNumber);
 				if (cel.value!=undefined)
 				{
@@ -197,9 +242,11 @@ window.onload = function() { document.onkeypress = catchEnter; };
 		{
 			while(true){
 				if (parseInt(nameNumber/100)==1)
-					nameNumber=lengthList*100+nameNumber % 100;
-				else					
+					break;
+				else		
+				{	
 					nameNumber=nameNumber-100;					
+				}	
 				var cel=document.getElementById(nameNumber);
 				if (cel.value!=undefined)
 				{
@@ -214,7 +261,9 @@ window.onload = function() { document.onkeypress = catchEnter; };
 			while(true){
 				if (nameNumber % 100==1) break;
 				else
+				{
 					nameNumber=nameNumber-1;				
+				}	
 				var cel=document.getElementById(nameNumber);
 				if (cel.value!=undefined)
 				{
@@ -229,7 +278,9 @@ window.onload = function() { document.onkeypress = catchEnter; };
 			while(true){
 				if (nameNumber % 100==16) break;
 				else
+				{
 					nameNumber=nameNumber+1;				
+				}	
 				var cel=document.getElementById(nameNumber);
 				if (cel.value!=undefined)
 				{
