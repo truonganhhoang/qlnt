@@ -23,8 +23,10 @@ from SOAPpy import WSDL
 
 import xlrd
 
-RECOVER_MARKTIME = os.path.join('helptool','recover_marktime.html')
+SYNC_RESULT = os.path.join('helptool','recover_marktime.html')
 SYNC_SUBJECT = os.path.join('helptool','sync_subject.html')
+
+
 
 def recover_marktime(request):
     
@@ -49,7 +51,7 @@ def recover_marktime(request):
                 number_of_defect += 1
         message = u'Thiếu ' + str(number_of_defect) + u'MarkTime records'
     context = RequestContext(request)
-    return render_to_response( RECOVER_MARKTIME, { 'message' : message},
+    return render_to_response( SYNC_RESULT, { 'message' : message},
                                context_instance = context )
 @transaction.commit_on_success
 def sync_index(request):
@@ -82,7 +84,7 @@ def sync_index(request):
         print e
     message += '\n' + u'Sync xong index.'
     context = RequestContext(request)
-    return render_to_response( RECOVER_MARKTIME, { 'message' : message},
+    return render_to_response( SYNC_RESULT, { 'message' : message},
                                context_instance = context )
 
 @transaction.commit_on_success
@@ -119,6 +121,18 @@ def sync_subject(request):
                                   context_instance = context)
     except Exception as e:
         print e
+
+@transaction.commit_on_success
+def sync_subject_primary(request):
+    subjects = Subject.objects.all()
+    for subject in subjects:
+        if subject.primary:
+            subject.primary = 0
+            subject.save()
+    message = "Syncing subject's primary is done"
+    context = RequestContext(request)
+    return render_to_response( SYNC_RESULT, { 'message' : message},
+                               context_instance = context )
 
 
 #def test():

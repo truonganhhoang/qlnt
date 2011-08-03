@@ -4,7 +4,7 @@ from models import sms
 import os
 import urllib
 import urllib2
-from SOAPpy import SOAPProxy, HTTPTransport, Config
+#from SOAPpy import SOAPProxy, HTTPTransport, Config
 
 from django.conf import settings
 TEMP_FILE_LOCATION = settings.TEMP_FILE_LOCATION

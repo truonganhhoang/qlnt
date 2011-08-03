@@ -997,12 +997,13 @@ def viewClassDetail(request, class_id, sort_type=0, sort_status=0):
         if (request.is_ajax()):
             data = request.POST[u'data']
             data = data.split('-')
+            print data
             for e in data:
-                try:
+                if e.strip():
+                    print e
                     std = Pupil.objects.get(id__exact = int(e))
                     completely_del_student(std)
-                except Exception as e:
-                    print e
+                    
             data = simplejson.dumps({success: 'success'})
             print data
             return HttpResponse(data, mimetype= 'json')
