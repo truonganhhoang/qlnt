@@ -326,7 +326,10 @@
 						document.getElementById(name).className="mark";
 				}
 				else	
+				if (j<17)
 					table.rows[i+2].cells[j+4].className="noedit";
+				else	
+					table.rows[i+2].cells[j+4].className="";
 			}	
 	}
 	function showMessageTable()
@@ -421,7 +424,11 @@
 					}
 					else
 					{
-						table.rows[i+2].cells[j+4].className="noedit";						
+						if (j<17)
+							table.rows[i+2].cells[j+4].className="noedit";
+						else	
+							table.rows[i+2].cells[j+4].className="";
+					
 						var name = i*100+j;
 						if (document.getElementById(name).value!=undefined)
 							if (i% 2==1)
@@ -492,7 +499,10 @@
 			{
 				if (temp!=undefined)
 				{	
-					tb.className="noedit";
+					if (cellIndex-4<17)
+						tb.className="noedit";
+					else 	
+						tb.className="";
 					if (sentMark[rowIndex-2][cellIndex-4])	
 						
 						document.getElementById(name).className="sent";
@@ -508,7 +518,10 @@
 				if (sentMark[rowIndex-2][cellIndex-4]==1)
 					tb.className="sent";
 				else
-					tb.className="noedit";					
+				if (cellIndex-4<17)
+					tb.className="noedit";
+				else 	
+					tb.className="";
 			}	
 		}				
 	}
@@ -644,7 +657,11 @@
 						var name = i*100+j;
 						if (document.getElementById(name).value!=undefined)
 						{
-							table.rows[i+2].cells[j+4].className="noedit";
+							if (j<17)
+								table.rows[i+2].cells[j+4].className="noedit";
+							else	
+								table.rows[i+2].cells[j+4].className="";
+								
 							if (i % 2==1)
 								document.getElementById(name).className="mark1";
 							else 	
@@ -758,7 +775,10 @@
 		if (sentMark[x][y]==1)
 			tb.className="sent";
 		else
+		if (y<17)
 			tb.className="noedit";					
+		else
+			tb.className="";					
 	}
 	
 	function checkAll(tb)
