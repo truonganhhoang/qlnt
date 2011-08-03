@@ -78,7 +78,6 @@
                 $(".selected").each(function(){
                     data = data + $(this).attr('class').split(' ')[0] + '-' ;
                 });
-                alert(data)
                 var arg = { type:"POST",
                     url:"",
                     data: {data:data},

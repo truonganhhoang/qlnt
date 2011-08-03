@@ -992,17 +992,12 @@ def viewClassDetail(request, class_id, sort_type=0, sort_status=0):
             data = data.split('-')
             for e in data:
                 if e.strip():
-                    print e
                     std = Pupil.objects.get(id__exact = int(e))
                     completely_del_student(std)
-                    print 'done', e
                     
             data = simplejson.dumps({'success': True})
-            print data
-            try:
-                return HttpResponse(data, mimetype='json')
-            except Exception as e:
-                print e
+
+            return HttpResponse(data, mimetype='json')
 
         else:
             start_year = StartYear.objects.get(time = int(date.today().year), school_id = school.id)
