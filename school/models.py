@@ -6,7 +6,7 @@ from datetime import date
 
 from app.models import *
 
-LOAI_CHOICES = ((0,u'Tính cả 2 kỳ'),(1,u'Chỉ tính kì 1'),(2,u'Chỉ tính kì 2'),(3,u'Không tính điểm'))
+LOAI_CHOICES = ((0,u'Tính cả 2 kỳ'),(1,u'Chỉ tính kì 1'),(2,u'Chỉ tính kì 2'),(3,u'Cộng vào điểm TB(NN2)'),(4,u'Không tính điểm'))
 GENDER_CHOICES = ((u'Nam', u'Nam'),(u'Nữ', u'Nữ'),)
 TERM_CHOICES = ((1, u'1'), (2, u'2'),(3, u'3'),)
 HK_CHOICES = ((u'T', u'Tốt'), (u'K', u'Khá'),(u'TB',u'Trung Bình'),(u'Y', u'Yếu'),)

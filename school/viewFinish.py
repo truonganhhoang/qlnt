@@ -171,7 +171,14 @@ def calculateOverallMarkTerm(class_id,termNumber):
                 pupilNoSum+=1
                 
             #tbHocKy.save()                    
-        i+=1
+        i+=1        
+    NN2List = Mark.objects.filter(subject_id__class_id=class_id,term_id__number=termNumber,subject_id__primary=3).order_by('student_id__first_name','student_id__last_name','student_id__birthday','subject_id')
+    if len(NN2List)>0:
+        for nn2,tbHocKy in zip(NN2List,tbHocKyList):
+            if    nn2.tb+e>=8  : tbHocKy.tb_hk+=0.3
+            elif  nn2.tb+e>=6.5: tbHocKy.tb_hk+=0.2
+            elif  nn2.tb+e>=5  : tbHocKy.tb_hk+=0.1
+    
     for hk in hkList :
         pass
     
@@ -188,6 +195,9 @@ def calculateOverallMarkTerm(class_id,termNumber):
         elif ((loaiHk=='T') | (loaiHk=='K')) & ((tbHocKy.hl_hk=='G') | (tbHocKy.hl_hk=='K')):
             tbHocKy.danh_hieu_hk='TT'
         else: tbHocKy.danh_hieu_hk='K'                                         
+    
+    
+    
               
     for tb in tbHocKyList:
         tb.save()                       
@@ -261,6 +271,13 @@ def calculateOverallMarkYear(class_id=7):
                 tbNam.hl_nam=None
                 pupilNoSum+=1
         i+=1
+    NN2List= TKMon.objects.filter(subject_id__class_id=class_id,subject_id__primary=3).order_by('student_id__first_name','student_id__last_name','student_id__birthday','subject_id') 
+    if len(NN2List)>0:
+        for nn2,tbNam in zip(NN2List,tbNamList):
+            if    nn2.tb_nam+e>=8  : tbNam.tb_nam+=0.3
+            elif  nn2.tb_nam+e>=6.5: tbNam.tb_nam+=0.2
+            elif  nn2.tb_nam+e>=5  : tbNam.tb_nam+=0.1
+        
     noHanhKiem = 0            
     for hk,tbNam in zip(hkList,tbNamList):
         loaiHk=hk.year
@@ -365,8 +382,8 @@ def xepLoaiHlTheoLop(request,class_id,termNumber):
         
     if termNumber<3:        
 
-        subjectList=Subject.objects.filter(class_id=class_id,primary__in=[0,termNumber])    
-        markList = Mark.objects.filter(subject_id__class_id=class_id,term_id__number=termNumber,subject_id__primary__in=[0,termNumber]).order_by('student_id__first_name','student_id__last_name','student_id__birthday','subject_id') 
+        subjectList=Subject.objects.filter(class_id=class_id,primary__in=[0,termNumber,3])    
+        markList = Mark.objects.filter(subject_id__class_id=class_id,term_id__number=termNumber,subject_id__primary__in=[0,termNumber,3]).order_by('student_id__first_name','student_id__last_name','student_id__birthday','subject_id') 
         tbHocKyList = TBHocKy.objects.filter(student_id__class_id=class_id,term_id__number=termNumber).order_by('student_id__first_name','student_id__last_name','student_id__birthday')
         hkList      = HanhKiem.objects.filter(student_id__class_id=class_id).order_by('student_id__first_name','student_id__last_name','student_id__birthday')
         hkList1 =[]

@@ -701,7 +701,6 @@
 		var boxName="checkbox"+number;
 		var table=document.getElementById("markTable");		
 		var temp = document.getElementById(boxName)
-		
 		if (tb.className=="selected")
 		{
 			tb.className="";
@@ -736,10 +735,11 @@
 			}			    	
 		}	
 		else
+		{
 			for(var i=1;i<length;i++)
 				if (newAr[i][number]!=-1)
 					cancelCell(i,number);
-									
+		}							
 	}
 
 	function checkCell(x,y)
@@ -770,12 +770,12 @@
 			else
 				tb.className="";									
 		}		
-		else				
+		else	
 		if (sentMark[x][y]==1)
 			tb.className="sent";
 		else
 		if (y<17)
-			tb.className="noedit";					
+			tb.className="noedit";	
 		else
 			tb.className="";					
 	}
