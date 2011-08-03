@@ -18,7 +18,7 @@ from school.models import *
 from school.forms import *
 from school.school_settings import *
 from sms.views import *
-from SOAPpy import WSDL
+#from SOAPpy import WSDL
 
 
 import xlrd
