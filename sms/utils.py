@@ -1,16 +1,29 @@
 # -*- coding: utf-8 -*-
 from django.contrib.auth.models import User
-from django.core.files import File
-from django.views.generic.list import ListView
-from models import sms, smsFromExcelForm
+from models import sms
 import os
 import urllib
 import urllib2
-import xlrd
-import xlwt
+from SOAPpy import SOAPProxy, HTTPTransport, Config
 
 from django.conf import settings
 TEMP_FILE_LOCATION = settings.TEMP_FILE_LOCATION
+
+class myHTTPTransport(HTTPTransport):
+    username = None
+    password = None
+    @classmethod
+    def setAuthen(cls, u, p):
+        cls.username = u
+        cls.password = p
+    def call(self, addr, data, namespace, soapaction=None,
+             encoding=None, http_proxy=None, config=Config, timeout=None):
+        if not isinstance(addr, SOAPAddress):
+            addr=SOAPAddress(addr, config)
+        if self.username != None:
+            addr.user = self.username + ':' + self.password
+        return HTTPTransport.call(self, addr, data, namespace, soapaction, encoding, http_proxy, config, timeout)
+
 
 def sendSMS(phone,content,user):
     open = urllib2.build_opener(urllib2.HTTPCookieProcessor())

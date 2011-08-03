@@ -18,6 +18,9 @@ from school.models import *
 from school.forms import *
 from school.school_settings import *
 from sms.views import *
+from SOAPpy import WSDL
+
+
 import xlrd
 
 RECOVER_MARKTIME = os.path.join('helptool','recover_marktime.html')
@@ -116,4 +119,24 @@ def sync_subject(request):
                                   context_instance = context)
     except Exception as e:
         print e
-        
+
+
+#def test():
+    from SOAPpy import SOAPProxy
+
+
+
+#class myHTTPTransport(HTTPTransport):
+#    username = None
+#    password = None
+#    @classmethod
+#    def setAuthen(cls, u, p):
+#        cls.username = u
+#        cls.password = p
+#    def call(self, addr, data, namespace, soapaction=None,
+#             encoding=None, http_proxy=None, config=Config, timeout=None):
+#        if not isinstance(addr, SOAPAddress):
+#            addr=SOAPAddress(addr, config)
+#        if self.username != None:
+#            addr.user = self.username + ':' + self.password
+#        return HTTPTransport.call(self, addr, data, namespace, soapaction, encoding, http_proxy, config, timeout)
