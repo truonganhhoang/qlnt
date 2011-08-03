@@ -494,12 +494,6 @@ nav ul li a:hover {
     text-decoration: none;
 }
 
-a {
-    text-decoration: none;
-}
-a:hover{
-    text-decoration: underline;
-}
 
 /*----BODY PANEL----*/
 /*#bodyPanel {*/
@@ -779,6 +773,9 @@ dd {
     padding: 5px 5px 5px;
     text-decoration: none;
     width: 170px;
+}
+#sitemap a{
+    color: #000000;
 }
 
 #sitemap ul li a:hover {

@@ -76,15 +76,19 @@
                 if (!answer) return false;
                 var data = '';
                 $(".selected").each(function(){
-                    data = data + '-' + $(this).attr('class').split(' ')[0] ;
+                    data = data + $(this).attr('class').split(' ')[0] + '-' ;
                 });
+                alert(data)
                 var arg = { type:"POST",
                     url:"",
                     data: {data:data},
                     datatype:"json",
-                    success: window.location = window.location.href,
+                    success: function(){
+                        window.location = window.location.href;
+                    }
                 };
                 $.ajax(arg);
+                return false;
             }
             $("#delSelected").click(delSelected);
             $("tr").each(function() {

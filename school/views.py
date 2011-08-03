@@ -642,14 +642,7 @@ def student_import( request, class_id ):
             add_many_students(student_list = result, _class = chosen_class, 
                               start_year = year, year = current_year,
                               term = term, school=school)
-            '''
-            for student in result:
-                data = {'full_name': student['ten'], 'birthday':student['ngay_sinh'],
-                        'ban':student['nguyen_vong'], }
-                add_student(student=data, _class=chosen_class,
-                            start_year=year, year=current_year,
-                            term=term, school=school)
-            '''
+            
             a = datetime.datetime.now()
             
         except Exception as e:
@@ -994,19 +987,23 @@ def viewClassDetail(request, class_id, sort_type=0, sort_status=0):
     form = PupilForm(school.id)
     		
     if request.method == 'POST':
-        if (request.is_ajax()):
+        if request.is_ajax():
             data = request.POST[u'data']
             data = data.split('-')
-            print data
             for e in data:
                 if e.strip():
                     print e
                     std = Pupil.objects.get(id__exact = int(e))
                     completely_del_student(std)
+                    print 'done', e
                     
-            data = simplejson.dumps({success: 'success'})
+            data = simplejson.dumps({'success': True})
             print data
-            return HttpResponse(data, mimetype= 'json')
+            try:
+                return HttpResponse(data, mimetype='json')
+            except Exception as e:
+                print e
+
         else:
             start_year = StartYear.objects.get(time = int(date.today().year), school_id = school.id)
             data = request.POST.copy()
