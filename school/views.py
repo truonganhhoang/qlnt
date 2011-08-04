@@ -847,9 +847,6 @@ def danh_sach_trung_tuyen(request):
 #------------------------------------------------------------------------------------
                                       
 def classes(request, sort_type=1, sort_status=0, page=1):
-    """
-
-    """
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
@@ -865,7 +862,8 @@ def classes(request, sort_type=1, sort_status=0, page=1):
         return HttpResponseRedirect(url)
     message = None
     school = get_school(request)
-    form = ClassForm(school.id)
+    school_id = school.id
+    form = ClassForm(school_id)
     cyear = get_current_year(request)
     if int(sort_type) == 1:
         if not int(sort_status):
@@ -891,30 +889,40 @@ def classes(request, sort_type=1, sort_status=0, page=1):
     cfl = []
     num = []
     for c in classList:
-        cfl.append(ClassForm(school.id, instance=c))
+        cfl.append(ClassForm(school_id, instance=c))
         num.append(c.pupil_set.count())
-
 	list = zip(classList, cfl, num)
-    print num
-    if request.method == 'POST':
+    if request.is_ajax():
+        print request.POST
+        class_id = request.POST['id']
+        c = classList.get(id = int(class_id))
+        if request.POST['teacher_id'] != u'':
+            teacher_id = request.POST['teacher_id']
+            teacher = school.teacher_set.get(id = int(teacher_id))
+        else:
+            teacher_id = None
+        data = {'name':c.name, 'year_id':c.year_id.id, 'block_id':c.block_id.id, 'teacher_id':teacher_id,'status':c.status,'index':c.index}
+        form = ClassForm(school_id, data, instance=c)
+        if form.is_valid():
+            form.save()
+    elif request.method == 'POST':
         teacher_list = request.POST.getlist('teacher_id')
         i = 0
         for c in classList:
-            data = {'name':c.name, 'year_id':c.year_id.id, 'block_id':c.block_id.id, 'teacher_id':teacher_list[i]}
+            data = {'name':c.name, 'year_id':c.year_id.id, 'block_id':c.block_id.id, 'teacher_id':teacher_list[i],'status':c.status,'index':c.index}
             of = cfl[i]
-            cfl[i] = ClassForm(school.id, data, instance=c)
+            cfl[i] = ClassForm(school_id, data, instance=c)
             if str(of) != str(cfl[i]):
                 if cfl[i].is_valid():
                     cfl[i].save()
                 message = 'Thông tin lớp đã được cập nhật.'
             i += 1
-        cfl.append(ClassForm(school_id, instance=c))
+        cfl.append(ClassForm(school_id, instance=c))		
     list = zip(classList, cfl, num)
     t = loader.get_template(os.path.join('school', 'classes.html'))
     c = RequestContext(request, {   'list': list, 
                                     'form': form, 
-                                    'message': message,
-                                    'level':school.school_level,
+                                    'message': message, 
                                     'classList': classList, 
                                     'sort_type':sort_type, 
                                     'sort_status':sort_status, 
@@ -1990,7 +1998,7 @@ def add_khen_thuong(request, student_id):
             kt.student_id = pupil
             kt.term_id = term
             kt.save()
-            url = '/school/khenthuong/' + str(student_id)
+            url = '/school/viewStudentDetail/' + str(student_id)
             return HttpResponseRedirect(url)
     t = loader.get_template(os.path.join('school', 'khen_thuong_detail.html'))
     c = RequestContext(request, {'form': form, 'p': pupil, 'student_id':student_id, 'term':term})
@@ -2013,7 +2021,7 @@ def delete_khen_thuong(request, kt_id):
     if (get_position(request) < 4):
         return HttpResponseRedirect('/')
     kt.delete()
-    url = '/school/khenthuong/' + str(student.id)
+    url = '/school/viewStudentDetail/' + str(student.id)
     return HttpResponseRedirect(url)
     
 def edit_khen_thuong(request, kt_id):
@@ -2041,7 +2049,7 @@ def edit_khen_thuong(request, kt_id):
             kt.student_id = pupil
             kt.term_id = term
             kt.save()
-            url = '/school/khenthuong/' + str(pupil.id)
+            url = '/school/viewStudentDetail/' + str(pupil.id)
             return HttpResponseRedirect(url)
     t = loader.get_template(os.path.join('school', 'khen_thuong_detail.html'))
     c = RequestContext(request, {'form': form, 'p': pupil, 'student_id':pupil.id, 'term':term})
@@ -2094,7 +2102,7 @@ def add_ki_luat(request, student_id):
             kt.student_id = pupil
             kt.term_id = term
             kt.save()
-            url = '/school/kiluat/' + str(student_id)
+            url = '/school/viewStudentDetail/' + str(student_id)
             return HttpResponseRedirect(url)
     t = loader.get_template(os.path.join('school', 'ki_luat_detail.html'))
     c = RequestContext(request, {'form': form, 'p': pupil, 'student_id':student_id, 'term':term})
@@ -2117,7 +2125,7 @@ def delete_ki_luat(request, kt_id):
     if get_position(request) < 4:
         return HttpResponseRedirect('/')
     kt.delete()
-    url = '/school/khenthuong/' + str(student.id)
+    url = '/school/viewStudentDetail/' + str(student.id)
     return HttpResponseRedirect(url)
 
 def edit_ki_luat(request, kt_id):
@@ -2146,7 +2154,7 @@ def edit_ki_luat(request, kt_id):
             kt.student_id = pupil
             kt.term_id = term
             kt.save()
-            url = '/school/khenthuong/' + str(pupil.id)
+            url = '/school/viewStudentDetail/' + str(pupil.id)
             return HttpResponseRedirect(url)
     t = loader.get_template(os.path.join('school', 'ki_luat_detail.html'))
     c = RequestContext(request, {'form': form, 'p': pupil, 'student_id':pupil.id, 'term':term})

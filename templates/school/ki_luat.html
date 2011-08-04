@@ -1,5 +1,4 @@
-﻿{% extends "base.html" %}
-{% block content %}
+﻿{% block content %}
 
 <script>
 function confirmDelete()
@@ -39,11 +38,5 @@ function confirmDelete()
         {% endif %}
     </tr>
     {% endfor %}
-    {%if pos > 1%}
-        <form action="/school/kiluat/{{student_id}}/add">
-            <td width = "5%" align = "left"><input type ="submit" value="Thêm"/></td>
-        </form>
-    {% endif %}
 </table>
-<a href="{%url school.views.school_index  %}viewStudentDetail/{{student_id}}">Quay lại</a>
 {% endblock %}
