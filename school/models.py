@@ -431,7 +431,7 @@ class TBNam(models.Model):
     tb_nam = models.FloatField("Trung bình năm", validators = [validate_mark], null = True, blank = True)
     hl_nam=models.CharField("Học lực", max_length = 3, choices = HL_CHOICES, null = True, blank = True)
     #hanh kiem nam
-    hk_nam=models.CharField("Hạnh kiểm",max_length = 2, choices = HK_CHOICES, null = True, blank = True)
+    #hk_nam=models.CharField("Hạnh kiểm",max_length = 2, choices = HK_CHOICES, null = True, blank = True)
     tong_so_ngay_nghi=models.SmallIntegerField("Số ngày nghỉ", null = True, blank = True)
     #ghi danh hieu ma hoc sinh dat dc trong hoc ky    
     danh_hieu_nam=models.CharField("Danh hiệu", max_length = 2, choices = DH_CHOICES,null=True,blank=True)
