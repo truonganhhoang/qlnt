@@ -191,7 +191,14 @@ class Class(models.Model):
     
     def __unicode__(self):
         return self.name
-        
+
+    def number_of_pupils(self):
+        try:
+            return self.pupil_set.count()
+        except Exception as e:
+            print e
+            return 0
+
     class Meta:
         verbose_name = "Lớp"
         verbose_name_plural = "Lớp"

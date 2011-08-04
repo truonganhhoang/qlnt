@@ -574,6 +574,7 @@ section#main {
 #content {
     width: 100%;
     position: relative;
+    display: block;
 }
 
 div.infoContent {
@@ -656,7 +657,7 @@ div#divList {
     background: #fff;
     color: #4d94d7;
 }
-
+/*
 #content h3 {
     color: #4d94d7;
     font: 20px/20px Georgia, "Times New Roman", Times, serif;
@@ -668,6 +669,7 @@ div#divList {
     color: #4d94d7;
 }
 
+*/
 #content h4 {
     color: #4d94d7;
     font: 18px/18px Georgia, "Times New Roman", Times, serif;
@@ -712,9 +714,13 @@ div#tabs ul li{
 
 /*----FOOTER PANEL----*/
 footer {
-    margin: 20px;
+    position: absolute;
+    top: 500px;
+    margin-top: 20px;
     padding: 6px 0 6px;
     border-top: thin solid #c0c0c0;
+    min-width: 1024px;
+    height: 20px;
     display: block;
 }
 
@@ -745,14 +751,35 @@ dd {
 }
 
 #sitemap {
+    position: relative;
     overflow: hidden;
+    float: left;
+    width: 40%;
+}
+
+div#classes{
+    position: relative;
+    float: left;
+    width: 60%;
+    display: block;
+}
+
+div#classes .classDiv{
+    float: left;
+    width: 150px;
+    margin: 5px 10px 10px 10px;
+    padding: 5px;
+}
+
+div#classes h3{
+    padding: 5px 10px;
 }
 
 .thumb {
     float: left;
     width: 180px;
     border: 1px solid #999;
-    margin: 0 15px 15px 0;
+    margin: 5px 10px 10px 10px;
     padding: 5px;
 }
 

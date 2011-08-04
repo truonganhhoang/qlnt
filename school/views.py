@@ -46,11 +46,15 @@ def school_index(request):
     
     if not school.status:
         return HttpResponseRedirect(reverse('setup'))
+    try:
+        year = get_current_year(request)
+    except Exception as e:
+        print e
+        return HttpResponseRedirect(reverse('setup'))
     
-    year = get_current_year(request)
-    request.session['year'] = year
+    classes = year.class_set.all()
     context = RequestContext(request)
-    return render_to_response(SCHOOL, context_instance=context)
+    return render_to_response(SCHOOL,{'classes': classes }, context_instance=context)
 
 def is_safe(school):
     if school.danhsachloailop_set.all(): return True
