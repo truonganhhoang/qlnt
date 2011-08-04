@@ -108,7 +108,7 @@ table.styleB tr:nth-child(odd) {
 }
 
 table.styleB tr:nth-child(even) {
-    background-color: #e2edef;
+    background-color:  #EAF2F3;
     cursor: pointer;
 }
 
@@ -172,7 +172,7 @@ input.mark1 {
     margin-top: 0;
     margin-bottom: 0;
     margin-left: 0;
-    background-color: #e2edef;
+    background-color: #EBF3F4;
 }
 
 input.selected {
