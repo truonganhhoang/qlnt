@@ -861,8 +861,8 @@ def classes(request, sort_type=1, sort_status=0, page=1):
         url = '/school/viewClassDetail/' + str(get_student(request).class_id.id)
         return HttpResponseRedirect(url)
     message = None
-    school_id = get_school(request).id
-    form = ClassForm(school_id)
+    school = get_school(request)
+    form = ClassForm(school.id)
     cyear = get_current_year(request)
     if int(sort_type) == 1:
         if int(sort_status) == 0:
@@ -888,7 +888,7 @@ def classes(request, sort_type=1, sort_status=0, page=1):
     cfl = []
     num = []
     for c in classList:
-        cfl.append(ClassForm(school_id, instance=c))
+        cfl.append(ClassForm(school.id, instance=c))
         num.append(c.pupil_set.count())
 
 	list = zip(classList, cfl, num)
@@ -899,7 +899,7 @@ def classes(request, sort_type=1, sort_status=0, page=1):
         for c in classList:
             data = {'name':c.name, 'year_id':c.year_id.id, 'block_id':c.block_id.id, 'teacher_id':teacher_list[i]}
             of = cfl[i]
-            cfl[i] = ClassForm(school_id, data, instance=c)
+            cfl[i] = ClassForm(school.id, data, instance=c)
             if str(of) != str(cfl[i]):
                 if cfl[i].is_valid():
                     cfl[i].save()
@@ -910,7 +910,8 @@ def classes(request, sort_type=1, sort_status=0, page=1):
     t = loader.get_template(os.path.join('school', 'classes.html'))
     c = RequestContext(request, {   'list': list, 
                                     'form': form, 
-                                    'message': message, 
+                                    'message': message,
+                                    'level':school.school_level,
                                     'classList': classList, 
                                     'sort_type':sort_type, 
                                     'sort_status':sort_status, 
