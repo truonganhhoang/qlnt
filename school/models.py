@@ -1,6 +1,4 @@
 # -*- coding: utf-8 -*-
-from django.db import models
-from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from datetime import date
 
@@ -292,7 +290,7 @@ class Mark(models.Model):
     class Meta:
         verbose_name = "Bảng điểm"
         verbose_name_plural = "Bảng điểm"
-        
+
     def save(self):
         new = self.id is None
         super(Mark, self).save()

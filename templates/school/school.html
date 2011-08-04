@@ -58,15 +58,21 @@
             <div id="classes">
                 <h2>Danh sách lớp học</h2>
 
-                {% for class in classes %}
-                    <div class="classDiv ui-widget-content ui-corner-all" id="{{ class.id }}">
-                        <h3 class="ui-widget-header ui-corner-all">
-                            <a href="{% url school.views.viewClassDetail class.id %}">
-                            {{ class.name }}
-                            </a>
-                        </h3>
-                        <h4>Sĩ số: {{ class.number_of_pupils }}</h4>
-                    </div>
+                {% for grade in grades %}
+
+                    <h3 style="clear: both;">Khối {{ grade.number }}</h3>
+                    {% for class in classes %}
+                        {% if class.block_id == grade %}
+                        <div class="classDiv ui-widget-content ui-corner-all" id="{{ class.id }}">
+                            <h3 class="ui-widget-header ui-corner-all">
+                                <a href="{% url school.views.viewClassDetail class.id %}">
+                                {{ class.name }}
+                                </a>
+                            </h3>
+                            <h4>Sĩ số: {{ class.number_of_pupils }}</h4>
+                        </div>
+                        {% endif %}
+                    {% endfor %}
                 {% endfor %}
             </div>
         {% endif %}

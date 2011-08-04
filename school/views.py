@@ -51,10 +51,12 @@ def school_index(request):
     except Exception as e:
         print e
         return HttpResponseRedirect(reverse('setup'))
-    
+
+    grades = school.block_set.all()
     classes = year.class_set.all()
     context = RequestContext(request)
-    return render_to_response(SCHOOL,{'classes': classes }, context_instance=context)
+    return render_to_response(SCHOOL,{'classes': classes,
+                                      'grades': grades}, context_instance=context)
 
 def is_safe(school):
     if school.danhsachloailop_set.all(): return True
@@ -337,10 +339,11 @@ def b1(request):
     
     if not school.status:
         for khoi in range(lower_bound, upper_bound+1):
-            block = Block()
-            block.number = khoi
-            block.school_id = school
-            block.save()
+            if not school.block_set.filter(number = khoi):
+                block = Block()
+                block.number = khoi
+                block.school_id = school
+                block.save()
         school.status = 1
         school.save()
     # tao nam hoc moi
@@ -415,7 +418,7 @@ def b1(request):
                     for _class in classes:
                         students = _class.pupil_set.all()
                         for student in students:
-                            if (student.tbnam_set.get(year_id=last_year).len_lop):
+                            if student.tbnam_set.get(year_id=last_year).len_lop:
                                 new_block = year.block_set.get(number=block.number + 1)
                                 new_class_name = str(new_block.number) + ' ' + student.class_id.name.split()[1]
                                 new_class = new_block.class_set.get(name=new_class_name)
@@ -520,7 +523,7 @@ def process_file(file_name, task):
         for c in range(0, sheet.ncols):
             flag = False
             for r in range(0, sheet.nrows):
-                if (sheet.cell_value(r, c) == u'Tên'):
+                if sheet.cell_value(r, c) == u'Tên':
                     start_row = r
                     flag = True
                     break
@@ -554,9 +557,9 @@ def process_file(file_name, task):
             if str(tong_diem).strip()=="": tong_diem = "0"
             date_value = xlrd.xldate_as_tuple(sheet.cell(r, c_ngay_sinh).value, book.datemode)
             birthday = date(*date_value[:3])
-            student_list.append({'ten': name.strip(), \
-                                'ngay_sinh': birthday, \
-                                'nguyen_vong': nv.strip(), \
+            student_list.append({'ten': name.strip(),
+                                'ngay_sinh': birthday,
+                                'nguyen_vong': nv.strip(),
                                 'tong_diem': tong_diem,})
         return student_list
     else: task == ""
@@ -857,7 +860,7 @@ def classes(request, sort_type=1, sort_status=0, page=1):
         return HttpResponseRedirect(reverse('index'))
     
     pos = get_position(request)
-    if (pos == 1):
+    if pos == 1:
         url = '/school/viewClassDetail/' + str(get_student(request).class_id.id)
         return HttpResponseRedirect(url)
     message = None
@@ -865,22 +868,22 @@ def classes(request, sort_type=1, sort_status=0, page=1):
     form = ClassForm(school.id)
     cyear = get_current_year(request)
     if int(sort_type) == 1:
-        if int(sort_status) == 0:
+        if not int(sort_status):
             classList = cyear.class_set.order_by('name')
         else:
             classList = cyear.class_set.order_by('-name')
     if int(sort_type) == 2:
-        if int(sort_status) == 0:
+        if not int(sort_status):
             classList = cyear.class_set.order_by('block_id__number')
         else:
             classList = cyear.class_set.order_by('-block_id__number')
     if int(sort_type) == 3:
-        if int(sort_status) == 0:
+        if not int(sort_status):
             classList = cyear.class_set.order_by('teacher_id__first_name')
         else:
             classList = cyear.class_set.order_by('-teacher_id__first_name')
     if int(sort_type) == 4:
-        if int(sort_status) == 0:
+        if not int(sort_status):
             classList = cyear.class_set.order_by('year_id__time')
         else:
             classList = cyear.class_set.order_by('-year_id__time')
@@ -904,7 +907,7 @@ def classes(request, sort_type=1, sort_status=0, page=1):
                 if cfl[i].is_valid():
                     cfl[i].save()
                 message = 'Thông tin lớp đã được cập nhật.'
-            i = i + 1
+            i += 1
         cfl.append(ClassForm(school_id, instance=c))
     list = zip(classList, cfl, num)
     t = loader.get_template(os.path.join('school', 'classes.html'))
@@ -975,7 +978,7 @@ def viewClassDetail(request, class_id, sort_type=0, sort_status=0):
         return HttpResponseRedirect(reverse('index'))
     
     pos = get_position(request)
-    if (pos == 0):
+    if not pos:
         return HttpResponseRedirect('/')
     try:
         cl = Class.objects.get(id=class_id)    
@@ -983,7 +986,7 @@ def viewClassDetail(request, class_id, sort_type=0, sort_status=0):
         return HttpResponseRedirect('/school/classes')
     cn=gvcn(request, class_id)
     inCl=inClass(request, class_id)
-    if in_school(request, cl.block_id.school_id) == False:
+    if not in_school(request, cl.block_id.school_id):
         return HttpResponseRedirect('/')   
     message = None
     school = cl.block_id.school_id
@@ -1426,7 +1429,7 @@ def viewStudentDetail(request, student_id):
     message = None
     pupil = Pupil.objects.get(id=student_id)
     school_id = pupil.school_id.id
-    if in_school(request, pupil.class_id.block_id.school_id) == False:
+    if not in_school(request, pupil.class_id.block_id.school_id):
         return HttpResponseRedirect('/')
     form = PupilForm (school_id, instance=pupil)
     ttcnform = ThongTinCaNhanForm(school_id, instance=pupil)
@@ -1572,14 +1575,14 @@ def diem_danh(request, class_id, day, month, year):
                     else:
                         form[i] = DiemDanhForm()
                         dd.delete()
-                    i = i + 1
+                    i += 1
                 except ObjectDoesNotExist:
                     if list[i] != 'k':
                         data = {'student_id':p.id, 'time':time, 'loai':list[i], 'term_id':term.id}
                         form[i] = DiemDanhForm(data)
                         if form[i].is_valid():
                             form[i].save()
-                    i = i + 1
+                    i += 1
     except IndexError:
         message = None
     listdh = zip(pupilList, form)
@@ -1724,10 +1727,10 @@ def diem_danh_hs(request, student_id):
                     form[i] = DiemDanhForm(data, instance=dd)
                     if form[i].is_valid():
                         form[i].save()
-                    i = i + 1    
+                    i += 1    
                 else:
                     dd.delete()
-                    i = i + 1
+                    i += 1
             if list[i] != 'k':
                 d = request.POST['time'].split('/')
                 time = date(int(d[2]), int(d[1]), int(d[0]))
@@ -1798,7 +1801,7 @@ def deleteSubject(request, subject_id):
     except Exception as e:
         return HttpResponseRedirect(reverse('index'))
     
-    if (get_position(request) < 4):
+    if get_position(request) < 4:
         return HttpResponseRedirect('/')
     try:
         sub = Subject.objects.get(id=subject_id)
@@ -1806,7 +1809,7 @@ def deleteSubject(request, subject_id):
         return HttpResponseRedirect('/')
         
     class_id = sub.class_id    
-    if in_school(request, class_id.block_id.school_id) == False:
+    if not in_school(request, class_id.block_id.school_id):
         return HttpResponseRedirect('/')
     completely_del_subject(sub)
     url = '/school/subjectPerClass/' + str(class_id.id)
@@ -1829,9 +1832,9 @@ def deleteTeacher(request, teacher_id):
     except Teacher.DoesNotExist:
         return HttpResponseRedirect('/')
     
-    if in_school(request, s.school_id) == False:
+    if not in_school(request, s.school_id):
         return HttpResponseRedirect('/school/teachers')
-    if (get_position(request) < 4):
+    if get_position(request) < 4:
         return HttpResponseRedirect('/')
     cl = Subject.objects.filter(teacher_id = s.id)
     for sj in cl:
@@ -1861,9 +1864,9 @@ def deleteClass(request, class_id):
     except Class.DoesNotExist:
         return HttpResponseRedirect('/school/classes')
     
-    if in_school(request, s.block_id.school_id) == False:
+    if not in_school(request, s.block_id.school_id):
         return HttpResponseRedirect('/')
-    if (get_position(request) < 4):
+    if get_position(request) < 4:
         return HttpResponseRedirect('/')
     s.delete()
     return HttpResponseRedirect('/school/classes')
@@ -1885,9 +1888,9 @@ def deleteStudentInClass(request, student_id):
         return HttpResponseRedirect('/')
         
     class_id = student.class_id
-    if in_school(request, class_id.block_id.school_id) == False:
+    if not in_school(request, class_id.block_id.school_id):
         return HttpResponseRedirect('/')
-    if (get_position(request) < 4):
+    if get_position(request) < 4:
         return HttpResponseRedirect('/')
     completely_del_student(student)
     return HttpResponseRedirect('/school/viewClassDetail/'+str(class_id.id))
@@ -1910,9 +1913,9 @@ def deleteAllStudentsInClass(request, class_id):
         
     students = cl.pupil_set.all()
     
-    if in_school(request, cl.block_id.school_id) == False:
+    if not in_school(request, cl.block_id.school_id):
         return HttpResponseRedirect('/')
-    if (get_position(request) < 4):
+    if get_position(request) < 4:
         return HttpResponseRedirect('/')   
     
     for student in students:
@@ -1932,10 +1935,10 @@ def deleteStudentInSchool(request, student_id):
     
 #    message = "Đã xóa xong."
     sub = Pupil.objects.get(id=student_id)
-    if in_school(request, sub.class_id.block_id.school_id) == False:
+    if not in_school(request, sub.class_id.block_id.school_id):
 
         return HttpResponseRedirect('/')
-    if (get_position(request) < 4):
+    if get_position(request) < 4:
         return HttpResponseRedirect('/')
     sub.delete()
     return HttpResponseRedirect ('/school/students')
@@ -1951,10 +1954,10 @@ def khen_thuong(request, student_id):
         return HttpResponseRedirect(reverse('index'))
     
     sub = Pupil.objects.get(id=student_id)
-    if in_school(request, sub.class_id.block_id.school_id) == False:
+    if not in_school(request, sub.class_id.block_id.school_id):
         return HttpResponseRedirect('/')
     pos = get_position(request)
-    if (get_position(request) < 1):
+    if get_position(request) < 1:
         return HttpResponseRedirect('/')
     message = ''
     ktl = sub.khenthuong_set.order_by('time')
@@ -1974,9 +1977,9 @@ def add_khen_thuong(request, student_id):
     
     form = KhenThuongForm()
     pupil = Pupil.objects.get(id=student_id)
-    if in_school(request, pupil.class_id.block_id.school_id) == False:
+    if not in_school(request, pupil.class_id.block_id.school_id):
         return HttpResponseRedirect('/')
-    if (get_position(request) < 4):
+    if get_position(request) < 4:
         return HttpResponseRedirect('/')
     cl = Class.objects.get(id__exact=pupil.class_id.id)
     term = get_current_term(request)
@@ -2005,7 +2008,7 @@ def delete_khen_thuong(request, kt_id):
     
     kt = KhenThuong.objects.get(id=kt_id)
     student = kt.student_id    
-    if in_school(request, student.class_id.block_id.school_id) == False:
+    if not in_school(request, student.class_id.block_id.school_id):
         return HttpResponseRedirect('/')
     if (get_position(request) < 4):
         return HttpResponseRedirect('/')
@@ -2025,7 +2028,7 @@ def edit_khen_thuong(request, kt_id):
     
     kt = KhenThuong.objects.get(id=kt_id)
     pupil = kt.student_id
-    if in_school(request, pupil.class_id.block_id.school_id) == False:
+    if not in_school(request, pupil.class_id.block_id.school_id):
         return HttpResponseRedirect('/')
     if (get_position(request) < 4):
         return HttpResponseRedirect('/')
@@ -2055,10 +2058,10 @@ def ki_luat(request, student_id):
         return HttpResponseRedirect(reverse('index'))
     
     student = Pupil.objects.get(id=student_id)
-    if in_school(request, student.class_id.block_id.school_id) == False:
+    if not in_school(request, student.class_id.block_id.school_id):
         return HttpResponseRedirect('/')
     pos = get_position(request)
-    if (get_position(request) < 1):
+    if get_position(request) < 1:
         return HttpResponseRedirect('/')
     message = ''
     ktl = student.kiluat_set.order_by('time')
@@ -2078,9 +2081,9 @@ def add_ki_luat(request, student_id):
     
     form = KiLuatForm()
     pupil = Pupil.objects.get(id=student_id)
-    if in_school(request, pupil.class_id.block_id.school_id) == False:
+    if not in_school(request, pupil.class_id.block_id.school_id):
         return HttpResponseRedirect('/')
-    if (get_position(request) < 2):
+    if get_position(request) < 2:
         return HttpResponseRedirect('/')
     cl = Class.objects.get(id__exact=pupil.class_id.id)
     term = get_current_term(request)
@@ -2109,9 +2112,9 @@ def delete_ki_luat(request, kt_id):
     
     kt = KiLuat.objects.get(id=kt_id)
     student = kt.student_id
-    if in_school(request, student.class_id.block_id.school_id) == False:
+    if not in_school(request, student.class_id.block_id.school_id):
         return HttpResponseRedirect('/')
-    if (get_position(request) < 4):
+    if get_position(request) < 4:
         return HttpResponseRedirect('/')
     kt.delete()
     url = '/school/khenthuong/' + str(student.id)
@@ -2130,9 +2133,9 @@ def edit_ki_luat(request, kt_id):
     kt = KiLuat.objects.get(id=kt_id)
 
     pupil = kt.student_id
-    if in_school(request, pupil.class_id.block_id.school_id) == False:
+    if not in_school(request, pupil.class_id.block_id.school_id):
         return HttpResponseRedirect('/')
-    if (get_position(request) < 4):
+    if get_position(request) < 4:
         return HttpResponseRedirect('/')
     term = kt.term_id
     form = KiLuatForm(instance=kt)
@@ -2159,13 +2162,13 @@ def hanh_kiem(request, class_id, sort_type = 1, sort_status = 0):
         return HttpResponseRedirect(reverse('index'))
     
     c = Class.objects.get(id__exact=class_id)
-    if in_school(request, c.block_id.school_id) == False:
+    if not in_school(request, c.block_id.school_id):
         return HttpResponseRedirect('/')           
     
     pos=get_position(request)
-    if (pos < 1):
+    if pos < 1:
         return HttpResponseRedirect('/')
-    if (gvcn(request, class_id) == 1):
+    if gvcn(request, class_id) == 1:
         pos = 4
     message = None
     listdh = None    
@@ -2173,17 +2176,17 @@ def hanh_kiem(request, class_id, sort_type = 1, sort_status = 0):
     year = get_current_year(request)
     term = get_current_term(request)
     if int(sort_type) == 1:
-        if int(sort_status) == 0:
+        if not int(sort_status):
             pupilList = c.pupil_set.order_by('first_name', 'last_name')
         else:
             pupilList = c.pupil_set.order_by('-first_name', '-last_name')
     if int(sort_type) == 2:
-        if int(sort_status) == 0:
+        if not int(sort_status):
             pupilList = c.pupil_set.order_by('birthday')
         else:
             pupilList = c.pupil_set.order_by('-birthday')
     if int(sort_type) == 3:
-        if int(sort_status) == 0:
+        if not int(sort_status):
             pupilList = c.pupil_set.order_by('sex')
         else:
             pupilList = c.pupil_set.order_by('-sex')    
@@ -2198,7 +2201,7 @@ def hanh_kiem(request, class_id, sort_type = 1, sort_status = 0):
         hk = p.hanhkiem_set.get(year_id__exact=year.id)
         all[i] = hk
         form[i] = HanhKiemForm(instance=hk)
-        i = i + 1    
+        i += 1
         
     if request.method == 'POST':
         message = 'Cập nhật thành công hạnh kiểm lớp ' + str(Class.objects.get(id=class_id))
@@ -2208,13 +2211,13 @@ def hanh_kiem(request, class_id, sort_type = 1, sort_status = 0):
         i = 0
         for p in pupilList:            
             hk = p.hanhkiem_set.get(year_id__exact=year.id)
-            if (term.number == 1):
+            if term.number == 1:
                 data = {'student_id':p.id, 'term1':term1[i], 'year_id':year.id}
             else:
                 data = {'student_id':p.id, 'term1':hk.term1, 'term2':term2[i], 'year':y[i], 'year_id':year.id}
             form[i] = HanhKiemForm(data, instance=hk)
             form[i].save()        
-            i = i + 1            
+            i += 1
     classList = year.class_set.all()
     listdh = zip(pupilList, form, all)
     t = loader.get_template(os.path.join('school', 'hanh_kiem.html'))
@@ -2240,11 +2243,11 @@ def viewSubjectDetail (request, subject_id):
     except Exception as e:
         return HttpResponseRedirect(reverse('index'))
     
-    if (get_position(request) < 4):
+    if get_position(request) < 4:
         return HttpResponseRedirect('/')
     sub = Subject.objects.get(id=subject_id)        
     class_id = sub.class_id    
-    if in_school(request, class_id.block_id.school_id) == False:
+    if not in_school(request, class_id.block_id.school_id):
         return HttpResponseRedirect('/')
     
     form = SubjectForm (class_id.block_id.school_id.id, instance = sub)
