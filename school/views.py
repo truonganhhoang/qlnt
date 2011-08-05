@@ -892,19 +892,31 @@ def classes(request, sort_type=1, sort_status=0, page=1):
         cfl.append(ClassForm(school_id, instance=c))
         num.append(c.pupil_set.count())
 	list = zip(classList, cfl, num)
-    if request.is_ajax():
+    if request.method == 'POST':
         print request.POST
+    if request.is_ajax():
         class_id = request.POST['id']
         c = classList.get(id = int(class_id))
+        tc = None
+        teacher_id = None
         if request.POST['teacher_id'] != u'':
             teacher_id = request.POST['teacher_id']
             teacher = school.teacher_set.get(id = int(teacher_id))
+            try:
+                tc = cyear.class_set.get(teacher_id__exact = teacher.id)
+            except ObjectDoesNotExist:
+                pass
         else:
             teacher_id = None
-        data = {'name':c.name, 'year_id':c.year_id.id, 'block_id':c.block_id.id, 'teacher_id':teacher_id,'status':c.status,'index':c.index}
-        form = ClassForm(school_id, data, instance=c)
-        if form.is_valid():
-            form.save()
+        if teacher_id == None or tc == None:
+            data = {'name':c.name, 'year_id':c.year_id.id, 'block_id':c.block_id.id, 'teacher_id':teacher_id,'status':c.status,'index':c.index}
+            form = ClassForm(school_id, data, instance=c)
+            if form.is_valid():
+                form.save()
+        else:
+            message = 'Giáo viên đã có lớp chủ nhiệm'
+            data = simplejson.dumps({'message':message})
+            return HttpResponse(data, mimetype = 'json')
     elif request.method == 'POST':
         teacher_list = request.POST.getlist('teacher_id')
         i = 0

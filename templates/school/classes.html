@@ -8,6 +8,28 @@
 
 <script>
     $(document).ready(function(){
+        var note = '';
+        var done = function(json) {
+            if (json.message != null && json.message != ''){
+                $("#errors").html("<ul>"+json.message+"</ul>");
+                $("#errors").dialog("open");
+            }
+        };
+        $("#errors").dialog({
+            modal : true,
+            buttons: {
+                Đóng: function(){
+                    window.location = window.location.href;
+                    $(this).dialog('close');
+                }
+            },
+            autoOpen: false,
+            width: 500,
+            height: 200,
+            maxWidth: 500,
+            maxHeight: 450,
+            title: "Có lỗi xảy ra"
+        })
         $("select[name=teacher_id]").each(function() {
             $(this).change(function() {
                 var id = $(this).parents("tr").attr('class').split(' ')[0];
@@ -16,7 +38,8 @@
                 var arg = { type:"POST",
                     url:"",
                     data: data,
-                    datatype:"json"
+                    datatype:"json",
+                    success:done
                 };
                 $.ajax(arg);
                 return false;
@@ -57,7 +80,7 @@ function confirmDelete()
             {% ifequal n  0 %}
                 <td align="center"> <a href="{%url school.views.school_index  %}deleteClass/{{class.id}}" onclick="return confirmDelete();"> xóa </a></td>
             {% else %}
-                <td align="center"> <a href="" onclick="alert( 'Lớp vẫn còn học sinh, vui lòng xóa hết học sinh trước' );"> xóa </a></td>
+                <td align="center"> <a onclick="alert( 'Lớp vẫn còn học sinh, vui lòng xóa hết học sinh trước' );"> xóa </a></td>
             {% endifequal %}
         {% endif %}
 	</tr>
@@ -69,5 +92,7 @@ function confirmDelete()
     <a href = "{%url school.views.school_index %}addclass" class = "ggButton">Thêm lớp học</a>
 {% endif %}
 </form>
-
+    <div style="display: None;">
+        <div id="errors">
+    </div>
 {% endblock %}

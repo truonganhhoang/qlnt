@@ -56,5 +56,6 @@
         </div>
     </div>
     <input class="ggButton" type="submit" value="Cập nhật"/>
+   <a title ="Hủy mọi thao tác và quay về danh sách lớp" href="{%url school.views.school_index  %}viewClassDetail/{{class_id}}" onclick="return confirmCancel();">Hủy</a>
 </form>
 {% endblock %}
