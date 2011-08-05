@@ -4,7 +4,7 @@
 <br>
 
 <h2>Những buổi nghỉ của {{pupil}} học kì {{term}}</h2>
-
+<br>
 <form action="/school/diemdanhhs/{{student_id}}" method="post">{% csrf_token %}
         
 <table class="styleA" >
@@ -50,7 +50,7 @@
                     </td>
                 </tr>
             <tr>
-            <td><input type ="submit" value="Cập nhật"/></td>
+            <td> <input type ="submit" class="ggButton" value="Cập nhật"/> </td>
         {%else%}
             {% for f in form %}
                 <tr>
@@ -67,9 +67,9 @@
                 </tr>
             {% endfor %}
         {%endif%}
+            <td> <a href="{%url school.views.school_index  %}viewStudentDetail/{{student_id}}" class="ggButton">Quay lại</a> </td>
 	    </tr>
 </table>
 </form>
         
-<a href="{%url school.views.school_index  %}viewStudentDetail/{{student_id}}">Quay lại</a>
 {% endblock %}

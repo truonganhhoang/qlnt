@@ -4,8 +4,8 @@
 <table border = 0 align = "center" width = "100%">
 </table>
 <br>
-<h1>Kỉ luật học sinh {{p}} </h1>
-
+<h2>Kỉ luật học sinh {{p}} </h2>
+<br>
 <form action="" method="post">{% csrf_token %}
     {{ form.non_field_errors }}
     <table class="styleA">
@@ -14,6 +14,7 @@
    {% if message != None %}
 	{{message}} <br>
 	{% endif %}
-	<input type ="submit" value="Cập nhật"/>
+	<input type ="submit" class="ggButton" value="Cập nhật"/>
+    <a href="/school/viewStudentDetail/{{p.id}}" class="ggButton">Quay lại</a>
 </form>
 {% endblock %}
