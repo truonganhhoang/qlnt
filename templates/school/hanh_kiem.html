@@ -9,6 +9,56 @@ function submitClass(){
             window.location = "{%url school.views.school_index  %}hanhkiem/"+document.info.class.value;
         }	
 }
+
+$(document).ready(function(){
+        $("select[name=term1]").each(function() {
+            $(this).change(function() {
+                var id = $(this).parents("tr").attr('class').split(' ')[0];
+                var term1 = $(this).val();
+                var data = { id: id, term1:term1, request_type:'term1'}
+                var arg = { type:"POST",
+                    url:"",
+                    data: data,
+                    datatype:"json"
+                };
+                $.ajax(arg);
+                return false;
+
+            });
+        });
+
+        $("select[name=term2]").each(function() {
+            $(this).change(function() {
+                var id = $(this).parents("tr").attr('class').split(' ')[0];
+                var term2 = $(this).val();
+                var data = { id: id, term2:term2, request_type:'term2'}
+                var arg = { type:"POST",
+                    url:"",
+                    data: data,
+                    datatype:"json"
+                };
+                $.ajax(arg);
+                return false;
+
+            });
+        });
+
+        $("select[name=year]").each(function() {
+            $(this).change(function() {
+                var id = $(this).parents("tr").attr('class').split(' ')[0];
+                var y = $(this).val();
+                var data = { id: id, year:year, request_type:'year'}
+                var arg = { type:"POST",
+                    url:"",
+                    data: data,
+                    datatype:"json"
+                };
+                $.ajax(arg);
+                return false;
+
+            });
+        });
+    });
 </script>
 
 <form action="" name = "info" method = "post">{% csrf_token %}
@@ -47,7 +97,7 @@ function submitClass(){
     {% endif %}    
         
         {% for p,f, v in list %}
-            <tr>
+            <tr class = "{{p.id}}">
                 <td align="center" width="5%">
                     <p>{{ forloop.counter}}</p>
                 </td>

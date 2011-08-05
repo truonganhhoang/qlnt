@@ -2209,8 +2209,8 @@ def hanh_kiem(request, class_id, sort_type = 1, sort_status = 0):
         if not int(sort_status):
             pupilList = c.pupil_set.order_by('sex')
         else:
-            pupilList = c.pupil_set.order_by('-sex')    
-    
+            pupilList = c.pupil_set.order_by('-sex')
+            
     #tk_dd_lop(class_id, term.id)
     form = []
     all = []
@@ -2222,8 +2222,38 @@ def hanh_kiem(request, class_id, sort_type = 1, sort_status = 0):
         all[i] = hk
         form[i] = HanhKiemForm(instance=hk)
         i += 1
-        
-    if request.method == 'POST':
+
+    if request.is_ajax():
+        p_id = request.POST['id']
+        p = c.pupil_set.get(id = int(p_id))
+        hk = p.hanhkiem_set.get(year_id__exact=year.id)
+        if request.POST['request_type'] == u'term1':
+            if request.POST['term1'] != u'':
+                term1 = request.POST['term1']
+            else:
+                term1 = None
+            data = {'student_id':p_id, 'term1':term1, 'year_id':year.id}
+
+
+        elif request.POST['request_type'] == u'term2':
+            if request.POST['term2'] != u'':
+                term2 = request.POST['term2']
+            else:
+                term2 = None
+            data = {'student_id':p_id, 'term1':hk.term1, 'term2':term2, 'year_id':year.id}
+
+        elif request.POST['request_type'] == u'year':
+            if request.POST['year'] != u'':
+                y = request.POST['year']
+            else:
+                y = None
+            data = {'student_id':p_id, 'term1':hk.term1, 'term2': hk.term2, 'year':y, 'year_id':year.id}
+
+        form = HanhKiemForm(data, instance=hk)
+        if form.is_valid():
+            form.save()
+
+    elif request.method == 'POST':
         message = 'Cập nhật thành công hạnh kiểm lớp ' + str(Class.objects.get(id=class_id))
         term1 = request.POST.getlist('term1')
         term2 = request.POST.getlist('term2')
