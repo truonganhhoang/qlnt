@@ -78,9 +78,9 @@ function confirmDelete()
 		<td align="center"> {{class.year_id}} </td>
         {%if pos >= 4 %}
             {% ifequal n  0 %}
-                <td align="center"> <a href="{%url school.views.school_index  %}deleteClass/{{class.id}}" onclick="return confirmDelete();"> xóa </a></td>
+                <td align="center"> <a class = "ggButton"  href="{%url school.views.school_index  %}deleteClass/{{class.id}}" onclick="return confirmDelete();"> xóa </a></td>
             {% else %}
-                <td align="center"> <a onclick="alert( 'Lớp vẫn còn học sinh, vui lòng xóa hết học sinh trước' );"> xóa </a></td>
+                <td align="center"> <a class = "ggButton"  onclick="alert( 'Lớp vẫn còn học sinh, vui lòng xóa hết học sinh trước' );"> xóa </a></td>
             {% endifequal %}
         {% endif %}
 	</tr>

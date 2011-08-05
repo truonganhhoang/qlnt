@@ -892,8 +892,6 @@ def classes(request, sort_type=1, sort_status=0, page=1):
         cfl.append(ClassForm(school_id, instance=c))
         num.append(c.pupil_set.count())
 	list = zip(classList, cfl, num)
-    if request.method == 'POST':
-        print request.POST
     if request.is_ajax():
         class_id = request.POST['id']
         c = classList.get(id = int(class_id))
@@ -966,7 +964,6 @@ def addClass(request):
             form = ClassForm(school.id,data)
             if form.is_valid():
                 _class = form.save()
-                print school.school_level
                 if school.school_level == '1': ds_mon_hoc = CAP1_DS_MON
                 elif school.school_level == '2': ds_mon_hoc = CAP2_DS_MON
                 elif school.school_level == '3': ds_mon_hoc = CAP3_DS_MON
