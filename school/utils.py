@@ -550,6 +550,15 @@ def get_lower_bound(school):
         return 10
     else:
         raise Exception('SchoolLevelIsNotProvied')
+def get_upper_bound(school):
+    if school.school_level == '1':
+        return 6
+    elif school.school_level == '2':
+        return 10
+    elif school.school_level == '3':
+        return 13
+    else:
+        raise Exception('SchoolLevelIsNotProvied')
 def get_position(request):
     if request.user.userprofile.position == 'HOC_SINH':
         return 1

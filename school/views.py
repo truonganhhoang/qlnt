@@ -86,7 +86,18 @@ def setup(request):
                 data = simplejson.dumps( {'message': message, 'status':'done'})
             elif 'update_class_name' in request.POST:
                 message, labels, success = phase_class_label(request, school)
-                data = simplejson.dumps( {'message': message, 'status': success})
+                labels = None
+                grades = None
+                if success:
+                    labels = '-'.join([label.loai for label in school.danhsachloailop_set.all()])
+                    lower_bound = get_lower_bound(school)
+                    upper_bound = get_upper_bound(school)
+                    print lower_bound, upper_bound
+                    grades = '-'.join([str(grade) for grade in range(lower_bound, upper_bound)])
+                    print grades
+                data = simplejson.dumps( {'message': message, 'status': success,
+                                          'labels': labels, 'grades': grades})
+                print data
             elif 'start_year' in request.POST:
                 if is_safe(school): 
                     data = simplejson.dumps({'status':'done'})
@@ -219,18 +230,22 @@ def phase_class_label(request, school):
     success = None
     if request.method == 'POST':
         labels = request.POST['labels']
+        print labels
         if u'Nhanh:' in labels or u'nhanh:' in labels:
             try:
                 labels = labels.split(':')[1]
                 labels = labels.strip()
             except Exception as e:
                 message = u'Bạn cần nhập ít nhất một tên lớp.'
-                success = False            
+                success = False
+
+            print labels
             if ',' in labels:
                 list_labels = labels.split(',')
             else:
                 list_labels = labels.split(' ')
-        
+
+            print list_labels
             if empty(list_labels):
                 message = u'Bạn cần nhập ít nhất một tên lớp.'
                 success = False
@@ -255,7 +270,7 @@ def phase_class_label(request, school):
             if ',' in labels:
                 list_labels = labels.split(',')
                 # draft version
-                if len(list_labels) == 0:
+                if not list_labels:
                     message = u'Bạn cần nhập ít nhất một tên lớp'
                     success = False
                 else:
@@ -419,7 +434,7 @@ def b1(request):
                         students = _class.pupil_set.all()
                         for student in students:
                             if student.tbnam_set.get(year_id=last_year).len_lop:
-                                new_block = year.block_set.get(number=block.number + 1)
+                                new_block = school.block_set.get(number=block.number + 1)
                                 new_class_name = str(new_block.number) + ' ' + student.class_id.name.split()[1]
                                 new_class = new_block.class_set.get(name=new_class_name)
                                 student.class_id = new_class

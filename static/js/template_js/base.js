@@ -6,6 +6,8 @@
  * 
  */
 
+
+
 $(document).ready(function(){
     // setting up css to render page in the right way
     $("footer").css('top', $(document).height() - $("footer").height());
@@ -48,11 +50,11 @@ $(document).ready(function(){
 
     });
 
-    function showNotice(msg){
+    $.fn.showNotification = function(msg){
         $("#notify").text(msg);
         $("#notify").fadeIn('fast');
         $("#notify").delay(1000).fadeOut('fast');
-    }
+    };
 
     $('*[class~="tiptipclick"]').tipTip({
         activation: "click",
