@@ -1,3631 +1,412 @@
 [
   {
-    "model": "school.School",
+    "model": "app.Organization",
     "pk": 1,
     "fields": {
-        "school_code": "NT",
-        "name": "THPT NT",
-        "address": "Hai Duong",
+        "name": "Demo 1",
+        "email": "qlnt@googlegroups.com",
+        "level": "T",
+        "address": "ABC",
+        "manager_name": "Demo 1",
         "school_level": 3,
-        "status" : 1
+        "status" : 0
     }
   },
   {
-    "model": "school.DanhSachLoaiLop",
-    "pk": 1,
-    "fields": {
-        "loai": "A",
-        "school_id": 1
-    }
-  },
-  {
-    "model": "school.DanhSachLoaiLop",
+    "model": "app.Organization",
     "pk": 2,
     "fields": {
-        "loai": "B",
-        "school_id": 1
+        "name": "Demo 2",
+        "email": "qlnt@googlegroups.com",
+        "level": "T",
+        "address": "ABC",
+        "manager_name": "Demo 2",
+        "school_level": 3,
+        "status" : 0
     }
   },
   {
-    "model": "school.DanhSachLoaiLop",
+    "model": "app.Organization",
     "pk": 3,
     "fields": {
-        "loai": "C",
-        "school_id": 1
+        "name": "Demo 3",
+        "email": "qlnt@googlegroups.com",
+        "level": "T",
+        "address": "ABC",
+        "manager_name": "Demo 3",
+        "school_level": 3,
+        "status" : 0
     }
   },
   {
-    "model": "school.DanhSachLoaiLop",
+    "model": "app.Organization",
     "pk": 4,
     "fields": {
-        "loai": "D",
-        "school_id": 1
+        "name": "Demo 4",
+        "email": "qlnt@googlegroups.com",
+        "level": "T",
+        "address": "ABC",
+        "manager_name": "Demo 4",
+        "school_level": 3,
+        "status" : 0
     }
   },
   {
-    "model": "school.DanhSachLoaiLop",
+    "model": "app.Organization",
     "pk": 5,
     "fields": {
-        "loai": "E",
-        "school_id": 1
+        "name": "Demo 5",
+        "email": "qlnt@googlegroups.com",
+        "level": "T",
+        "address": "ABC",
+        "manager_name": "Demo 5",
+        "school_level": 3,
+        "status" : 0
     }
   },
   {
-    "model": "school.DanhSachLoaiLop",
+    "model": "app.Organization",
     "pk": 6,
     "fields": {
-        "loai": "F",
-        "school_id": 1
+        "name": "Demo 6",
+        "email": "qlnt@googlegroups.com",
+        "level": "T",
+        "address": "ABC",
+        "manager_name": "Demo 6",
+        "school_level": 3,
+        "status" : 0
     }
   },
   {
-    "model": "school.DanhSachLoaiLop",
+    "model": "app.Organization",
     "pk": 7,
     "fields": {
-        "loai": "G",
-        "school_id": 1
+        "name": "Demo 7",
+        "email": "qlnt@googlegroups.com",
+        "level": "T",
+        "address": "ABC",
+        "manager_name": "Demo 7",
+        "school_level": 3,
+        "status" : 0
     }
   },
   {
-    "model": "school.DanhSachLoaiLop",
+    "model": "app.Organization",
     "pk": 8,
     "fields": {
-        "loai": "H",
-        "school_id": 1
+        "name": "Demo 8",
+        "email": "qlnt@googlegroups.com",
+        "level": "T",
+        "address": "ABC",
+        "manager_name": "Demo 8",
+        "school_level": 3,
+        "status" : 0
     }
   },
   {
-    "model": "school.DanhSachLoaiLop",
+    "model": "app.Organization",
     "pk": 9,
     "fields": {
-        "loai": "I",
-        "school_id": 1
+        "name": "Demo 9",
+        "email": "qlnt@googlegroups.com",
+        "level": "T",
+        "address": "ABC",
+        "manager_name": "Demo 9",
+        "school_level": 3,
+        "status" : 0
     }
   },
   {
-    "model": "school.DanhSachLoaiLop",
+    "model": "app.Organization",
     "pk": 10,
     "fields": {
-        "loai": "J",
-        "school_id": 1
+        "name": "Demo 10",
+        "email": "qlnt@googlegroups.com",
+        "level": "T",
+        "address": "ABC",
+        "manager_name": "Demo 10",
+        "school_level": 3,
+        "status" : 0
     }
   },
   {
-    "model": "school.DanhSachLoaiLop",
-    "pk": 11,
-    "fields": {
-        "loai": "K",
-        "school_id": 1
-    }
-  },
-  {
-    "model": "school.DanhSachLoaiLop",
-    "pk": 12,
-    "fields": {
-        "loai": "L",
-        "school_id": 1
-    }
-  },
-  {
-    "model": "school.DanhSachLoaiLop",
-    "pk": 13,
-    "fields": {
-        "loai": "M",
-        "school_id": 1
-    }
-  },
-  {
-    "model": "school.DanhSachLoaiLop",
-    "pk": 14,
-    "fields": {
-        "loai": "N",
-        "school_id": 1
-    }
-  },
-  {
-    "model": "school.DanhSachLoaiLop",
-    "pk": 15,
-    "fields": {
-        "loai": "O",
-        "school_id": 1
-    }
-  },
-  {
-    "model": "school.DanhSachLoaiLop",
-    "pk": 16,
-    "fields": {
-        "loai": "P",
-        "school_id": 1
-    }
-  },
-  {
-    "model": "school.DanhSachLoaiLop",
-    "pk": 18,
-    "fields": {
-        "loai": "Q",
-        "school_id": 1
-    }
-  },
-  {
-    "model": "school.Teacher",
-    "pk": 1,
-    "fields": {
-        "first_name": "Anh",
-        "last_name": "Nguyen Tuan",
-        "birthday": "1972-05-14",
-        "school_id": 1
-    }
-  },
-  {
-    "model": "school.Teacher",
     "pk": 2,
+    "model": "auth.user",
     "fields": {
-        "first_name": "Quang",
-        "last_name": "Tran Xuan",
-        "birthday": "1977-11-25",
-        "school_id": 1
+        "username": "demo1",
+        "first_name": "",
+        "last_name": "",
+        "is_active": true,
+        "is_superuser": false,
+        "is_staff": false,
+        "last_login": "2011-05-23 19:41:09",
+        "groups": [],
+        "user_permissions": [],
+        "password": "sha1$88f6c$143036e77241a932f95658b923608d83cc63c01f",
+        "email": "", "date_joined": "2011-05-23 19:40:55"
     }
   },
   {
-    "model": "school.Year",
-    "pk": 1,
-    "fields": {
-        "time": 2011,
-        "school_id" : 1
-    }
-  },
-  {
-    "model": "school.StartYear",
-    "pk": 1,
-    "fields": {
-        "time": 2011,
-        "school_id" : 1
-    }
-  },
-  {
-    "model": "school.Term",
-    "pk": 1,
-    "fields": {
-        "number": 1,
-        "year_id" : 1,
-        "active": true
-    }
-  },
-  {
-    "model": "school.Term",
-    "pk": 2,
-    "fields": {
-        "number": 1,
-        "year_id" : 1,
-        "active": false
-    }
-  },
-  {
-    "model": "school.Block",
-    "pk": 1,
-    "fields": {
-        "number": 10,
-        "school_id" : 1
-    }
-  },
-  {
-    "model": "school.Class",
-    "pk": 1,
-    "fields": {
-        "name": "10A",
-        "year_id": 1,
-        "block_id": 1,
-        "teacher_id" : 1
-    }
-  },
-  {
-    "model": "school.Class",
-    "pk": 2,
-    "fields": {
-        "name": "10B",
-        "year_id": 1,
-        "block_id": 1,
-        "teacher_id" : 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 1,
-    "fields": {
-        "first_name": "A01",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id" : 1
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 2,
-    "fields": {
-        "first_name": "A02",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id" : 1
-    }
-  },
-  {
-    "model": "school.Pupil",
     "pk": 3,
+    "model": "auth.user",
     "fields": {
-        "first_name": "A03",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id" : 1
+        "username": "demo2",
+        "first_name": "",
+        "last_name": "",
+        "is_active": true,
+        "is_superuser": false,
+        "is_staff": false,
+        "last_login": "2011-05-23 19:41:09",
+        "groups": [],
+        "user_permissions": [],
+        "password": "sha1$3ddef$fd78b8955c4b6470f3abcdbe104beab1dc3661ee",
+        "email": "", "date_joined": "2011-05-23 19:40:55"
     }
   },
   {
-    "model": "school.Pupil",
     "pk": 4,
+    "model": "auth.user",
     "fields": {
-        "first_name": "A04",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id" : 1
+        "username": "demo3",
+        "first_name": "",
+        "last_name": "",
+        "is_active": true,
+        "is_superuser": false,
+        "is_staff": false,
+        "last_login": "2011-05-23 19:41:09",
+        "groups": [],
+        "user_permissions": [],
+        "password": "sha1$85033$cd65d71cf679a852d3d3700709196d5e7ae0cbb9",
+        "email": "", "date_joined": "2011-05-23 19:40:55"
     }
   },
   {
-    "model": "school.Pupil",
     "pk": 5,
+    "model": "auth.user",
     "fields": {
-        "first_name": "A05",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id" : 1
+        "username": "demo4",
+        "first_name": "",
+        "last_name": "",
+        "is_active": true,
+        "is_superuser": false,
+        "is_staff": false,
+        "last_login": "2011-05-23 19:41:09",
+        "groups": [],
+        "user_permissions": [],
+        "password": "sha1$6a962$31b982fc4e9cf4f5e192678e963ca4d958d86e38",
+        "email": "", "date_joined": "2011-05-23 19:40:55"
     }
   },
   {
-    "model": "school.Pupil",
     "pk": 6,
+    "model": "auth.user",
     "fields": {
-        "first_name": "A06",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id" : 1
+        "username": "demo5",
+        "first_name": "",
+        "last_name": "",
+        "is_active": true,
+        "is_superuser": false,
+        "is_staff": false,
+        "last_login": "2011-05-23 19:41:09",
+        "groups": [],
+        "user_permissions": [],
+        "password": "sha1$16ee1$8b9cddb650522630bd7b56c652e3f0d63f4ea834",
+        "email": "", "date_joined": "2011-05-23 19:40:55"
     }
   },
   {
-    "model": "school.Pupil",
     "pk": 7,
+    "model": "auth.user",
     "fields": {
-        "first_name": "A07",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id" : 1
+        "username": "demo6",
+        "first_name": "",
+        "last_name": "",
+        "is_active": true,
+        "is_superuser": false,
+        "is_staff": false,
+        "last_login": "2011-05-23 19:41:09",
+        "groups": [],
+        "user_permissions": [],
+        "password": "sha1$80d80$2d6a144b4b4257ee8487c4cb6d5e2d872d53804b",
+        "email": "", "date_joined": "2011-05-23 19:40:55"
     }
   },
   {
-    "model": "school.Pupil",
     "pk": 8,
+    "model": "auth.user",
     "fields": {
-        "first_name": "A08",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id" : 1
+        "username": "demo7",
+        "first_name": "",
+        "last_name": "",
+        "is_active": true,
+        "is_superuser": false,
+        "is_staff": false,
+        "last_login": "2011-05-23 19:41:09",
+        "groups": [],
+        "user_permissions": [],
+        "password": "sha1$7cf26$8f6cf630a528584c531de0e71c877cb425f38794",
+        "email": "", "date_joined": "2011-05-23 19:40:55"
     }
   },
   {
-    "model": "school.Pupil",
     "pk": 9,
+    "model": "auth.user",
     "fields": {
-        "first_name": "A09",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id" : 1
+        "username": "demo8",
+        "first_name": "",
+        "last_name": "",
+        "is_active": true,
+        "is_superuser": false,
+        "is_staff": false,
+        "last_login": "2011-05-23 19:41:09",
+        "groups": [],
+        "user_permissions": [],
+        "password": "sha1$37f15$82b863cf37740b90b3ae066106d984a27a1f3bc6",
+        "email": "", "date_joined": "2011-05-23 19:40:55"
     }
   },
   {
-    "model": "school.Pupil",
     "pk": 10,
+    "model": "auth.user",
     "fields": {
-        "first_name": "A10",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id" : 1
+        "username": "demo9",
+        "first_name": "",
+        "last_name": "",
+        "is_active": true,
+        "is_superuser": false,
+        "is_staff": false,
+        "last_login": "2011-05-23 19:41:09",
+        "groups": [],
+        "user_permissions": [],
+        "password": "sha1$04f11$d848be9dfcd5a113409d438759c9935d3cafec76",
+        "email": "", "date_joined": "2011-05-23 19:40:55"
     }
   },
   {
-    "model": "school.Pupil",
     "pk": 11,
+    "model": "auth.user",
     "fields": {
-        "first_name": "A11",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id" : 1
+        "username": "demo10",
+        "first_name": "",
+        "last_name": "",
+        "is_active": true,
+        "is_superuser": false,
+        "is_staff": false,
+        "last_login": "2011-05-23 19:41:09",
+        "groups": [],
+        "user_permissions": [],
+        "password": "9c0a821a4e682ce4d2ae9fdafa083ae98fb7e9db",
+        "email": "", "date_joined": "2011-05-23 19:40:55"
     }
   },
   {
-    "model": "school.Pupil",
-    "pk": 12,
+    "pk": 1,
+    "model": "app.userprofile",
     "fields": {
-        "first_name": "A12",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id" : 1
+        "organization": 1,
+        "notes": "",
+        "user": 2,
+        "phone": "",
+        "position": "HIEU_TRUONG"
     }
   },
   {
-    "model": "school.Pupil",
-    "pk": 13,
+    "pk": 2,
+    "model": "app.userprofile",
     "fields": {
-        "first_name": "A13",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id" : 1
+        "organization": 2,
+        "notes": "",
+        "user": 3,
+        "phone": "",
+        "position": "HIEU_TRUONG"
     }
   },
   {
-    "model": "school.Pupil",
-    "pk": 14,
+    "pk": 3,
+    "model": "app.userprofile",
     "fields": {
-        "first_name": "A14",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id" : 1
+        "organization": 3,
+        "notes": "",
+        "user": 4,
+        "phone": "",
+        "position": "HIEU_TRUONG"
     }
   },
   {
-    "model": "school.Pupil",
-    "pk": 15,
+    "pk": 4,
+    "model": "app.userprofile",
     "fields": {
-        "first_name": "A15",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id" : 1
+        "organization": 4,
+        "notes": "",
+        "user": 5,
+        "phone": "",
+        "position": "HIEU_TRUONG"
     }
   },
   {
-    "model": "school.Pupil",
-    "pk": 16,
+    "pk": 5,
+    "model": "app.userprofile",
     "fields": {
-        "first_name": "A16",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id" : 1
+        "organization": 5,
+        "notes": "",
+        "user": 6,
+        "phone": "",
+        "position": "HIEU_TRUONG"
     }
   },
   {
-    "model": "school.Pupil",
-    "pk": 17,
+    "pk": 6,
+    "model": "app.userprofile",
     "fields": {
-        "first_name": "A17",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id" : 1
+        "organization": 6,
+        "notes": "",
+        "user": 7,
+        "phone": "",
+        "position": "HIEU_TRUONG"
     }
   },
   {
-    "model": "school.Pupil",
-    "pk": 18,
+    "pk": 7,
+    "model": "app.userprofile",
     "fields": {
-        "first_name": "A18",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id" : 1
+        "organization": 7,
+        "notes": "",
+        "user": 8,
+        "phone": "",
+        "position": "HIEU_TRUONG"
     }
   },
   {
-    "model": "school.Pupil",
-    "pk": 19,
+    "pk": 8,
+    "model": "app.userprofile",
     "fields": {
-        "first_name": "A19",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id" : 1
+        "organization": 8,
+        "notes": "",
+        "user": 9,
+        "phone": "",
+        "position": "HIEU_TRUONG"
     }
   },
   {
-    "model": "school.Pupil",
-    "pk": 20,
+    "pk": 9,
+    "model": "app.userprofile",
     "fields": {
-        "first_name": "A20",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id" : 1
+        "organization": 9,
+        "notes": "",
+        "user": 10,
+        "phone": "",
+        "position": "HIEU_TRUONG"
     }
   },
   {
-    "model": "school.Pupil",
-    "pk": 21,
+    "pk": 10,
+    "model": "app.userprofile",
     "fields": {
-        "first_name": "A21",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id" : 1
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 22,
-    "fields": {
-        "first_name": "A22",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id" : 1
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 23,
-    "fields": {
-        "first_name": "A23",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id" : 1
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 24,
-    "fields": {
-        "first_name": "A24",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id" : 1
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 25,
-    "fields": {
-        "first_name": "A25",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id" : 1
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 26,
-    "fields": {
-        "first_name": "A26",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id" : 1
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 27,
-    "fields": {
-        "first_name": "A27",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id" : 1
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 28,
-    "fields": {
-        "first_name": "A28",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id" : 1
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 29,
-    "fields": {
-        "first_name": "A29",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id" : 1
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 30,
-    "fields": {
-        "first_name": "A30",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id" : 1
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 31,
-    "fields": {
-        "first_name": "A31",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id" : 1
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 32,
-    "fields": {
-        "first_name": "A32",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id" : 1
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 33,
-    "fields": {
-        "first_name": "A33",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id" : 1
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 34,
-    "fields": {
-        "first_name": "A34",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id" : 1
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 35,
-    "fields": {
-        "first_name": "A35",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id" : 1
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 36,
-    "fields": {
-        "first_name": "A36",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id" : 1
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 37,
-    "fields": {
-        "first_name": "A37",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id" : 1
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 38,
-    "fields": {
-        "first_name": "A38",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id" : 1
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 39,
-    "fields": {
-        "first_name": "A39",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id" : 1
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 40,
-    "fields": {
-        "first_name": "A40",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id" : 1
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 41,
-    "fields": {
-        "first_name": "A41",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id" : 1
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 42,
-    "fields": {
-        "first_name": "A42",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id" : 1
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 43,
-    "fields": {
-        "first_name": "A43",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id" : 1
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 44,
-    "fields": {
-        "first_name": "A44",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id" : 1
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 45,
-    "fields": {
-        "first_name": "A45",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id" : 1
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 46,
-    "fields": {
-        "first_name": "A46",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id" : 1
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 47,
-    "fields": {
-        "first_name": "A47",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id" : 1
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 48,
-    "fields": {
-        "first_name": "A48",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id" : 1
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 49,
-    "fields": {
-        "first_name": "A49",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id" : 1
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 50,
-    "fields": {
-        "first_name": "A50",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id" : 1
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 51,
-    "fields": {
-        "first_name": "A51",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id" : 1
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 52,
-    "fields": {
-        "first_name": "A52",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id" : 1
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 53,
-    "fields": {
-        "first_name": "A53",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id" : 1
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 54,
-    "fields": {
-        "first_name": "A54",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id" : 1
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 55,
-    "fields": {
-        "first_name": "A55",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id" : 1
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 56,
-    "fields": {
-        "first_name": "A56",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id" : 1
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 57,
-    "fields": {
-        "first_name": "A57",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id" : 1
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 58,
-    "fields": {
-        "first_name": "A58",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id" : 1
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 59,
-    "fields": {
-        "first_name": "A59",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id" : 1
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 60,
-    "fields": {
-        "first_name": "A60",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id" : 1
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 61,
-    "fields": {
-        "first_name": "A61",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id" : 1
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 62,
-    "fields": {
-        "first_name": "A62",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id" : 1
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 63,
-    "fields": {
-        "first_name": "A63",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id" : 1
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 64,
-    "fields": {
-        "first_name": "A64",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id" : 1
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 65,
-    "fields": {
-        "first_name": "A65",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id" : 1
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 66,
-    "fields": {
-        "first_name": "A66",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id" : 1
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 67,
-    "fields": {
-        "first_name": "A67",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id" : 1
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 68,
-    "fields": {
-        "first_name": "A68",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id" : 1
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 69,
-    "fields": {
-        "first_name": "A69",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id" : 1
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 70,
-    "fields": {
-        "first_name": "A70",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id" : 1
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 71,
-    "fields": {
-        "first_name": "A71",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id" : 1
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 72,
-    "fields": {
-        "first_name": "A72",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id" : 1
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 73,
-    "fields": {
-        "first_name": "A73",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id" : 1
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 74,
-    "fields": {
-        "first_name": "A74",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id" : 1
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 75,
-    "fields": {
-        "first_name": "A75",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id" : 1
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 76,
-    "fields": {
-        "first_name": "A76",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id" : 1
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 77,
-    "fields": {
-        "first_name": "A77",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id" : 1
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 78,
-    "fields": {
-        "first_name": "A78",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id" : 1
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 79,
-    "fields": {
-        "first_name": "A79",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id" : 1
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 80,
-    "fields": {
-        "first_name": "A70",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id" : 1
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 81,
-    "fields": {
-        "first_name": "A81",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id" : 1
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 82,
-    "fields": {
-        "first_name": "A82",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id" : 1
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 83,
-    "fields": {
-        "first_name": "A83",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id" : 1
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 84,
-    "fields": {
-        "first_name": "A84",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id" : 1
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 85,
-    "fields": {
-        "first_name": "A85",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id" : 1
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 86,
-    "fields": {
-        "first_name": "A86",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id" : 1
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 87,
-    "fields": {
-        "first_name": "A87",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id" : 1
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 88,
-    "fields": {
-        "first_name": "A88",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id" : 1
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 89,
-    "fields": {
-        "first_name": "A89",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id" : 1
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 90,
-    "fields": {
-        "first_name": "A90",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id" : 1
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 91,
-    "fields": {
-        "first_name": "A91",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id" : 1
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 92,
-    "fields": {
-        "first_name": "A92",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id" : 1
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 93,
-    "fields": {
-        "first_name": "A93",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id" : 1
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 94,
-    "fields": {
-        "first_name": "A94",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id" : 1
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 95,
-    "fields": {
-        "first_name": "A95",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id" : 1
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 96,
-    "fields": {
-        "first_name": "A96",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id" : 1
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 97,
-    "fields": {
-        "first_name": "A97",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id" : 1
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 98,
-    "fields": {
-        "first_name": "A98",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id" : 1
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 99,
-    "fields": {
-        "first_name": "A99",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id" : 1
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 100,
-    "fields": {
-        "first_name": "B00",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 101,
-    "fields": {
-        "first_name": "B01",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 102,
-    "fields": {
-        "first_name": "B02",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 103,
-    "fields": {
-        "first_name": "B03",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 104,
-    "fields": {
-        "first_name": "B04",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 105,
-    "fields": {
-        "first_name": "B05",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 106,
-    "fields": {
-        "first_name": "B06",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 107,
-    "fields": {
-        "first_name": "B07",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 108,
-    "fields": {
-        "first_name": "B08",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 109,
-    "fields": {
-        "first_name": "B09",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 110,
-    "fields": {
-        "first_name": "B10",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 111,
-    "fields": {
-        "first_name": "B11",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 112,
-    "fields": {
-        "first_name": "B12",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 113,
-    "fields": {
-        "first_name": "B13",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 114,
-    "fields": {
-        "first_name": "B14",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 115,
-    "fields": {
-        "first_name": "B15",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 116,
-    "fields": {
-        "first_name": "B16",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 117,
-    "fields": {
-        "first_name": "B17",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 118,
-    "fields": {
-        "first_name": "B18",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 119,
-    "fields": {
-        "first_name": "B19",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 120,
-    "fields": {
-        "first_name": "B20",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 121,
-    "fields": {
-        "first_name": "B21",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 122,
-    "fields": {
-        "first_name": "B22",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 123,
-    "fields": {
-        "first_name": "B23",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 124,
-    "fields": {
-        "first_name": "B24",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 125,
-    "fields": {
-        "first_name": "B25",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 126,
-    "fields": {
-        "first_name": "B26",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 127,
-    "fields": {
-        "first_name": "B27",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 128,
-    "fields": {
-        "first_name": "B28",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 129,
-    "fields": {
-        "first_name": "B29",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 130,
-    "fields": {
-        "first_name": "B30",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 131,
-    "fields": {
-        "first_name": "B31",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 132,
-    "fields": {
-        "first_name": "B32",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 133,
-    "fields": {
-        "first_name": "B33",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 134,
-    "fields": {
-        "first_name": "B34",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 135,
-    "fields": {
-        "first_name": "B35",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 136,
-    "fields": {
-        "first_name": "B36",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 137,
-    "fields": {
-        "first_name": "B37",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 138,
-    "fields": {
-        "first_name": "B38",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 139,
-    "fields": {
-        "first_name": "B39",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 140,
-    "fields": {
-        "first_name": "B40",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 141,
-    "fields": {
-        "first_name": "B41",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 142,
-    "fields": {
-        "first_name": "B42",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 143,
-    "fields": {
-        "first_name": "B43",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 144,
-    "fields": {
-        "first_name": "B44",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 145,
-    "fields": {
-        "first_name": "B45",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 146,
-    "fields": {
-        "first_name": "B46",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 147,
-    "fields": {
-        "first_name": "B47",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 148,
-    "fields": {
-        "first_name": "B48",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 149,
-    "fields": {
-        "first_name": "B49",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 150,
-    "fields": {
-        "first_name": "B50",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 151,
-    "fields": {
-        "first_name": "B51",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 152,
-    "fields": {
-        "first_name": "B52",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 153,
-    "fields": {
-        "first_name": "B53",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 154,
-    "fields": {
-        "first_name": "B54",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 155,
-    "fields": {
-        "first_name": "B55",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 156,
-    "fields": {
-        "first_name": "B56",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 157,
-    "fields": {
-        "first_name": "B57",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 158,
-    "fields": {
-        "first_name": "B58",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 159,
-    "fields": {
-        "first_name": "B59",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 160,
-    "fields": {
-        "first_name": "B60",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 161,
-    "fields": {
-        "first_name": "B61",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 162,
-    "fields": {
-        "first_name": "B62",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 163,
-    "fields": {
-        "first_name": "B63",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 164,
-    "fields": {
-        "first_name": "B64",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 165,
-    "fields": {
-        "first_name": "B65",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 166,
-    "fields": {
-        "first_name": "B66",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 167,
-    "fields": {
-        "first_name": "B67",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 168,
-    "fields": {
-        "first_name": "B68",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 169,
-    "fields": {
-        "first_name": "B69",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 170,
-    "fields": {
-        "first_name": "B70",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 171,
-    "fields": {
-        "first_name": "B71",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 172,
-    "fields": {
-        "first_name": "B72",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 173,
-    "fields": {
-        "first_name": "B73",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 174,
-    "fields": {
-        "first_name": "B74",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 175,
-    "fields": {
-        "first_name": "B75",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 176,
-    "fields": {
-        "first_name": "B76",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 177,
-    "fields": {
-        "first_name": "B77",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 178,
-    "fields": {
-        "first_name": "B78",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 179,
-    "fields": {
-        "first_name": "B79",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 180,
-    "fields": {
-        "first_name": "B80",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 181,
-    "fields": {
-        "first_name": "B81",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 182,
-    "fields": {
-        "first_name": "B82",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 183,
-    "fields": {
-        "first_name": "B83",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 184,
-    "fields": {
-        "first_name": "B84",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 185,
-    "fields": {
-        "first_name": "B85",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 186,
-    "fields": {
-        "first_name": "B86",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 187,
-    "fields": {
-        "first_name": "B87",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 188,
-    "fields": {
-        "first_name": "B88",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 189,
-    "fields": {
-        "first_name": "B89",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 190,
-    "fields": {
-        "first_name": "B90",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 191,
-    "fields": {
-        "first_name": "B91",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 192,
-    "fields": {
-        "first_name": "B92",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 193,
-    "fields": {
-        "first_name": "B93",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 194,
-    "fields": {
-        "first_name": "B94",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 195,
-    "fields": {
-        "first_name": "B95",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 196,
-    "fields": {
-        "first_name": "B96",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 197,
-    "fields": {
-        "first_name": "B97",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 198,
-    "fields": {
-        "first_name": "B98",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 199,
-    "fields": {
-        "first_name": "B99",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
-    }
-  },
-  {
-    "model": "school.Pupil",
-    "pk": 200,
-    "fields": {
-        "first_name": "B100",
-        "last_name": "Nguyen Van",
-        "birthday": "2000-11-25",
-        "school_join_date": "2010-09-05",
-        "ban_dk" : 1,
-        "doan": true,
-        "doi": true,
-        "dang": false,
-        "disable": false,
-        "start_year_id" : 1,
-        "class_id": 2
+        "organization": 10,
+        "notes": "",
+        "user": 11,
+        "phone": "",
+        "position": "HIEU_TRUONG"
     }
   }
 ]
