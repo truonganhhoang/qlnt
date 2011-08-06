@@ -869,7 +869,7 @@ def thilai(request,class_id):
     tbMonList=[]
     aTKMonList=[]
     for tbNam in tbNamList:
-        aTKMonList = TKMon.objects.filter(subject_id__class_id=class_id,student_id=tbNam.student_id)
+        aTKMonList = TKMon.objects.filter(subject_id__class_id=class_id,student_id=tbNam.student_id,subject_id__primary__in=[0,1,2])
         for tbMon in aTKMonList:
             if tbMon.tb_nam==None: message="Chưa tổng kết xong điểm của cả lớp"
             
@@ -985,4 +985,84 @@ def saveHocLai(request):
                                                             
         message='ok'
         data = simplejson.dumps({'message': message})
-        return HttpResponse( data, mimetype = 'json')    
+        return HttpResponse( data, mimetype = 'json')   
+
+def renluyenthem(request,class_id):
+    t1=time.time()
+    user = request.user
+    if not user.is_authenticated():
+        return HttpResponseRedirect( reverse('login'))
+
+    selectedClass = Class.objects.get(id__exact = class_id)
+    try:
+        if in_school(request,selectedClass.year_id.school_id) == False:
+            return HttpResponseRedirect('/school')
+
+    except Exception as e:
+        return HttpResponseRedirect(reverse('index'))
+
+    ok=False
+    position = get_position(request)
+    if position ==4: ok=True
+    #kiem tra xem giao vien nay co phai chu nhiem lop nay khong
+    if position ==3:
+        if selectedClass.teacher_id != None:
+            if selectedClass.teacher_id.user_id.id == request.user.id:
+                ok=True
+                 
+    if (not ok):
+        return HttpResponseRedirect('/school')
+
+
+    message=None
+    hkList=HanhKiem.objects.filter(student_id__class_id=class_id,ren_luyen_lai=True).order_by('student_id__first_name', 'student_id__last_name','student_id__birthday')
+    
+    lengthList = len(hkList)
+    if lengthList==0:
+        message="Lớp chưa có hạnh kiểm cuối năm hoặc không có học sinh nào phải rèn luyện thêm"
+    
+    yearString=str(selectedClass.year_id.time)+"-"+str(selectedClass.year_id.time+1)
+    
+    print message
+    t = loader.get_template(os.path.join('school','ren_luyen_them.html'))
+    t2=time.time()
+    print (t2-t1)
+    
+    c = RequestContext(request, {"message":message,
+                                 "selectedClass":selectedClass,
+                                 "yearString":yearString,
+                                 'lengthList':lengthList,
+                                 "hkList":hkList,
+                                }
+                       )
+    
+
+    return HttpResponse(t.render(c))
+def saveRenLuyenThem(request):
+    message = 'hello'
+    if request.method == 'POST':
+
+        str  = request.POST['str']
+        strs =str.split(':')
+        print str
+        id = int(strs[0])
+        
+        hk = HanhKiem.objects.get(id=id)
+        if strs[1]!='No':
+            hk.hk_ren_luyen_lai= strs[1]
+        else:     
+            hk.hk_ren_luyen_lai= None
+        
+        tbNam = TBNam.objects.get(year_id=hk.year_id, student_id=hk.student_id)
+        if strs[1]=='No':
+            tbNam.len_lop=None
+        elif strs[1]=='Y':
+            tbNam.len_lop=False
+        else:
+            tbNam.len_lop=True       
+            
+        hk.save()
+        tbNam.save()                                                         
+        message='ok'
+        data = simplejson.dumps({'message': message})
+        return HttpResponse( data, mimetype = 'json')   

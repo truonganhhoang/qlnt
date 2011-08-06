@@ -33,11 +33,13 @@ urlpatterns = patterns('',
     url(r'saveMark$','school.viewMark.saveMark'),
     url(r'sendSMSMark$','school.viewMark.sendSMSMark'),
     url(r'saveHocLai$','school.viewFinish.saveHocLai'),
+    url(r'saveRenLuyenThem$','school.viewFinish.saveRenLuyenThem'),
     
 	# xep loai hoc luc theo lop, gom co xep loai k1, k2 va ca nam
     url(r'xepLoaiHlTheoLop/(?P<class_id>\w+)/(?P<termNumber>\w+)$','school.viewFinish.xepLoaiHlTheoLop'),    
     url(r'xlCaNamTheoLop/(?P<class_id>\w+)/(?P<type>\w+)$','school.viewFinish.xlCaNamTheoLop'),
     url(r'thilai/(?P<class_id>\w+)$','school.viewFinish.thilai'),
+    url(r'renluyenthem/(?P<class_id>\w+)$','school.viewFinish.renluyenthem'),
     		
 	# tinh diem tong ket hoc luc toan truong	
 	# tong ket hoc ky, tinh toan bo hoc luc cua hoc sinh trong toan truong
