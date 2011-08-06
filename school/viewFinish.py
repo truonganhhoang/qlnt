@@ -11,6 +11,7 @@ from school.viewCount import *
 from school.utils import *
 from django.core.urlresolvers import reverse
 from django.db import transaction
+from django.utils import simplejson
 import time
 import os.path 
 ENABLE_CHANGE_MARK=True
@@ -836,3 +837,152 @@ def finishYear(request,year_id):
                                 }
                        )
     return HttpResponse(t.render(c))
+
+def thilai(request,class_id):
+    t1=time.time()
+    user = request.user
+    if not user.is_authenticated():
+        return HttpResponseRedirect( reverse('login'))
+
+    selectedClass = Class.objects.get(id__exact = class_id)
+    try:
+        if in_school(request,selectedClass.year_id.school_id) == False:
+            return HttpResponseRedirect('/school')
+
+    except Exception as e:
+        return HttpResponseRedirect(reverse('index'))
+
+    ok=False
+    position = get_position(request)
+    if position ==4: ok=True
+    #kiem tra xem giao vien nay co phai chu nhiem lop nay khong
+    if position ==3:
+        if selectedClass.teacher_id != None:
+            if selectedClass.teacher_id.user_id.id == request.user.id:
+                ok=True
+                 
+    if (not ok):
+        return HttpResponseRedirect('/school')
+
+    message=None
+    tbNamList=TBNam.objects.filter(student_id__class_id=class_id,thi_lai=True).order_by('student_id__first_name', 'student_id__last_name','student_id__birthday')
+    tbMonList=[]
+    aTKMonList=[]
+    for tbNam in tbNamList:
+        aTKMonList = TKMon.objects.filter(subject_id__class_id=class_id,student_id=tbNam.student_id)
+        for tbMon in aTKMonList:
+            if tbMon.tb_nam==None: message="Chưa tổng kết xong điểm của cả lớp"
+            
+            elif tbMon.tb_nam <5   : tbMon.thi_lai=True
+            
+        tbMonList.append(aTKMonList)
+        print tbNam.hl_thi_lai
+        
+        if   tbNam.hl_thi_lai=='G'  : tbNam.hl_thi_lai='Giỏi'
+        elif tbNam.hl_thi_lai=='K'  : tbNam.hl_thi_lai='Khá'
+        elif tbNam.hl_thi_lai=='TB' : tbNam.hl_thi_lai='TB'
+        elif tbNam.hl_thi_lai=='Y'  : tbNam.hl_thi_lai=u'Yếu'
+        elif tbNam.hl_thi_lai=='Kem' : tbNam.hl_thi_lai='Kém'
+        
+        
+        
+    vtMonChuyen = -1
+    vtMonToan   = -1
+    vtMonVan    = -1
+
+    
+    i=0    
+    for tkMon in aTKMonList:
+        if tkMon.subject_id.hs==3: vtMonChuyen =i
+        if    tkMon.subject_id.name.lower().__contains__(u'toán'):
+            vtMonToan=i
+        elif  tkMon.subject_id.name.lower().__contains__(u'văn'):
+            vtMonVan=i   
+        i+=1     
+
+    
+    list= zip(tbMonList,tbNamList)
+    lengthList = len(list)
+    if lengthList==0:
+        message="Lớp chưa tổng kết xong hoặc không có học sinh nào phải thi lại"
+    numberSubject= len(aTKMonList)
+    
+    yearString=str(selectedClass.year_id.time)+"-"+str(selectedClass.year_id.time+1)
+    
+    print message
+    t = loader.get_template(os.path.join('school','thi_lai.html'))
+    t2=time.time()
+    print (t2-t1)
+    
+    c = RequestContext(request, {"message":message,
+                                 "selectedClass":selectedClass,
+                                 "yearString":yearString,
+                                 'lengthList':lengthList,
+                                 'numberSubject':numberSubject,
+                                 'aTKMonList':aTKMonList,
+                                 'vtMonChuyen':vtMonChuyen,
+                                 'vtMonToan':vtMonToan,
+                                 'vtMonVan':vtMonVan,
+                                 "list":list,
+                                }
+                       )
+    
+
+    return HttpResponse(t.render(c))
+def updateHocLai(str):
+    strs = str.split('*')
+    if   (strs[0]=='0'):
+        print "f1"
+        id = int(strs[1])
+        tkMon = TKMon.objects.get(id=id)
+        
+        if strs[2]!='-1':
+            tkMon.thi_lai=True        
+            tkMon.diem_thi_lai = float(strs[2])
+        else:
+            tkMon.thi_lai=False        
+            tkMon.diem_thi_lai = None
+                
+        tkMon.save()
+        
+    elif (strs[0]=='1'):
+        print "f2"
+        id = int(strs[1])
+        tbNam = TBNam.objects.get(id=id)
+        
+        if strs[2]!='-1':
+            tbNam.tb_thi_lai=float(strs[2])
+        else:  
+            tbNam.tb_thi_lai=None    
+        tbNam.save()
+    else:    
+        print "f3"
+        id = int(strs[1])
+        tbNam = TBNam.objects.get(id=id)
+
+        if strs[2]!='-1':
+            tbNam.hl_thi_lai=strs[2]
+            if (strs[2]!='Y') & (strs[2]!='Kem'): 
+                tbNam.len_lop=True
+            else:                                 
+                tbNam.len_lop=False
+        else:
+            tbNam.hl_thi_lai=None
+            tbNam.len_lop=None
+                 
+        tbNam.save()
+                                 
+def saveHocLai(request):
+    message = 'hello'
+    if request.method == 'POST':
+
+        str = request.POST['str']
+        strs=str.split(':')
+        print str
+        length = len(strs)
+        for i in range(1,length):
+            updateHocLai(strs[i])
+                                                            
+        message='ok'
+        data = simplejson.dumps({'message': message})
+        return HttpResponse( data, mimetype = 'json')    

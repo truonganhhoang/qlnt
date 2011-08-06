@@ -187,8 +187,12 @@
             {% ifnotequal class.year_id.school_id.status 1 %}
                 <a title="Tự động xếp loại cả năm của lớp" class = "tiptiphover ggButton"
                    href="{%url school.views.school_index  %}xlCaNamTheoLop/{{class.id}}/1">Tổng kết cả năm</a>
-            {% else %}
+                <a title="Cập nhập thi lại" class = "tiptiphover ggButton"
+                   href="{%url school.views.school_index  %}thilai/{{class.id}}">Thi lại</a>
+
+		   {% else %}
                 <a title="Chức năng này đã bị vô hiệu hóa vì đang trong học kỳ I"  class="ggButton disabled">Tổng kết cả năm</a>
+                <a title="Chức năng này đã bị vô hiệu hóa vì đang trong học kỳ I"  class="ggButton disabled">Thi lại</a>
             {% endifnotequal %}
         {% endif %}
 

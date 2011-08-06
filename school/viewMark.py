@@ -348,7 +348,7 @@ def getMark(subjectChoice,selectedTerm):
         markTimeList =MarkTime.objects.filter(mark_id__term_id=selectedTerm.id,mark_id__subject_id=subjectChoice).order_by('mark_id__student_id__first_name','mark_id__student_id__last_name','mark_id__student_id__birthday') 
         tbhk1List    =Mark.objects.filter(term_id=beforeTerm,subject_id=subjectChoice).order_by('student_id__first_name','student_id__last_name','student_id__birthday')
         tbnamList    =TKMon.objects.filter(subject_id=subjectChoice).order_by('student_id__first_name','student_id__last_name','student_id__birthday')
-
+        
         for mt in markTimeList:                      
             ea=defineEdit(mt,timeToEdit)                
             editList.append(ea)                                                                                                               
@@ -357,7 +357,7 @@ def getMark(subjectChoice,selectedTerm):
             idList.append(id)
             i=i+1
             
-        list=zip(pupilList,markList,editList,tbhk1List,tbnamList,idList)    
+        list=zip(pupilList,markList,editList,tbhk1List,tbnamList,idList)
     return   list
 
     
@@ -537,7 +537,6 @@ def markTable(request,term_id=-1,class_id=-1,subject_id=-1,move=None):
         selectedSubject=Subject.objects.get(id=subjectChoice)    
         list=getMark(subjectChoice,selectedTerm)
     
-    print move        
     lengthList=0            
     if list!=None:        
         lengthList=list.__len__()  
