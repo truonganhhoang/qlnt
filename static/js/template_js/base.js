@@ -24,6 +24,22 @@ $(document).ready(function(){
     });
 
     // end setting up
+    // jquery global function
+    $.fn.disableNotification = function(){
+        $(".notify-widget-pane").hide();
+    };
+    $.fn.enabelNotification = function(){
+        $(".notify-widget-pane").show();
+    };
+    $.fn.showNotification = function(msg){
+        $("#notify").enabelNotification();
+        $("#notify").text(msg);
+        $("#notify").fadeIn('fast');
+        $("#notify").delay(1000).fadeOut('fast');
+    };
+    // end jquery global function
+
+    // local functions.
     $.datepicker.setDefaults(
         $.extend(
             $.datepicker.regional['vi']
@@ -50,11 +66,6 @@ $(document).ready(function(){
 
     });
 
-    $.fn.showNotification = function(msg){
-        $("#notify").text(msg);
-        $("#notify").fadeIn('fast');
-        $("#notify").delay(1000).fadeOut('fast');
-    };
 
     $('*[class~="tiptipclick"]').tipTip({
         activation: "click",
