@@ -13,7 +13,7 @@ $(document).ready(function(){
     $("footer").css('top', $(document).height() - $("footer").height());
     $("footer").css('width',$(document).width());
 
-    var maxHeight = 0
+    var maxHeight = 0;
     $(".thumb").each(function(){
         if ($(this).height() > maxHeight){
             maxHeight = $(this).height();

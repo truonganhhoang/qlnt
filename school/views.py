@@ -19,6 +19,7 @@ from school.forms import *
 from school.school_settings import *
 from sms.views import *
 import xlrd
+from xlrd import cellname
 
 NHAP_DANH_SACH_TRUNG_TUYEN = os.path.join('school', 'import', 'nhap_danh_sach_trung_tuyen.html')
 DANH_SACH_TRUNG_TUYEN = os.path.join('school', 'import', 'danh_sach_trung_tuyen.html')
@@ -523,7 +524,8 @@ def save_file(import_file, session):
     return save_file_name
 
 def process_file(file_name, task):
-    if task == "Nhap danh sach trung tuyen":
+    message = '<ul>'
+    if task == "import_student":
         student_list = []
         filepath = os.path.join(TEMP_FILE_LOCATION, file_name)
         if not os.path.isfile(filepath):
@@ -532,51 +534,117 @@ def process_file(file_name, task):
             book = xlrd.open_workbook(filepath)
             sheet = book.sheet_by_index(0)
         except Exception as e:
+            print e
             return {'error': u'File tải lên không phải file Excel'}
         
         start_row = -1
         for c in range(0, sheet.ncols):
             flag = False
             for r in range(0, sheet.nrows):
-                if sheet.cell_value(r, c) == u'Tên':
+                if sheet.cell_value(r, c) == u'Họ và Tên':
                     start_row = r
                     flag = True
                     break
             if flag: break
         #                                                             CHUA BIEN LUAN TRUONG HOP: start_row = -1, ko co cot ten: Mã học sinh
+        if start_row == -1:
+            return {'error': u'File tải lên không đúng mẫu.'}
         # start_row != 0
         c_ten = -1
         c_ngay_sinh = -1
-        c_tong_diem = -1
+        c_gioi_tinh = -1
+        c_noi_sinh = -1
+        c_dan_toc = -1
+        c_cho_o_ht = -1
+        c_ten_bo = -1
+        c_ten_me = -1
+        c_so_dt_bo = -1
+        c_so_dt_me = -1
         c_nguyen_vong = -1
         for c in range(0, sheet.ncols):
             value = sheet.cell_value(start_row, c)
-            if (value == u'Tên'):
+
+            if value == u'Họ và Tên':
                 c_ten = c
-            elif (value == u'Ngày sinh'):
+            elif value == u'Ngày sinh':
                 c_ngay_sinh = c
-            elif (value == u'Tổng điểm'):
-                c_tong_diem = c
-            elif (value == u'Nguyện vọng'):
+            elif value == u'Giới tính':
+                c_gioi_tinh = c
+            elif value == u'Nơi sinh':
+                c_noi_sinh = c
+            elif value == u'Dân tộc':
+                c_dan_toc = c
+            elif value == u'Chỗ ở hiện tại':
+                c_cho_o_ht = c
+            elif value == u'Họ tên bố':
+                c_ten_bo = c
+            elif value == u'Số điện thoại của bố':
+                c_so_dt_bo = c
+            elif value == u'Họ tên mẹ':
+                c_ten_me = c
+            elif value == u'Số điện thoại của mẹ':
+                c_so_dt_me = c
+            elif value == u'Ban đăng ký':
                 c_nguyen_vong = c
-        
+
+
         for r in range(start_row + 1, sheet.nrows):
-            name = sheet.cell_value(r, c_ten)
+            name = ''
+            birthday =''
+            gt=''
+            dan_toc=''
+            noi_sinh=''
+            cho_o_ht=''
+            ten_bo=''
+            dt_bo=''
+            ten_me=''
+            dt_me=''
+            ban_dk = ''
+            name = sheet.cell(r, c_ten).value.strip()
             name = ' '.join([i.capitalize() for i in name.split(' ')])
-            birthday = sheet.cell(r, c_ngay_sinh).value
-            nv = sheet.cell_value( r, c_nguyen_vong)
-            tong_diem = sheet.cell_value( r, c_tong_diem)
-            if ( name == "" or birthday =="" ):
+            if not name.strip():
+                message += '<li>' + cellname(r, c_ten) + ':rỗng ' + '</li>'
                 continue
-            if nv.strip() == "": nv = "CB"
-            if str(tong_diem).strip()=="": tong_diem = "0"
+            birthday = sheet.cell(r, c_ngay_sinh).value
+            if not birthday:
+                message += '<li>' + cellname(r, c_ngay_sinh) + ':rỗng ' + '</li>'
+                continue
+            if c_gioi_tinh>-1:
+                gt = sheet.cell(r, c_gioi_tinh).value.strip()
+                if not gt: gt = 'Nam'
+            if c_noi_sinh>-1:
+                noi_sinh = sheet.cell(r, c_noi_sinh).value.strip()
+            if c_dan_toc>-1:
+                dan_toc = sheet.cell(r, c_dan_toc).value.strip()
+                if not dan_toc.strip(): dan_toc = 'Kinh'
+            if c_cho_o_ht>-1:
+                cho_o_ht = sheet.cell(r, c_cho_o_ht).value.strip()
+            if c_ten_bo>-1:
+                ten_bo = sheet.cell(r, c_ten_bo).value.strip()
+            if c_so_dt_bo>-1:
+                dt_bo = sheet.cell(r, c_so_dt_bo).value.strip()
+            if c_ten_me>-1:
+                ten_me = sheet.cell(r, c_ten_me).value.strip()
+            if c_so_dt_me>-1:
+                dt_me = sheet.cell(r, c_so_dt_me).value.strip()
+            if c_nguyen_vong>-1:
+                ban_dk = sheet.cell( r, c_nguyen_vong).value.strip()
+                if not ban_dk.strip(): ban_dk = 'CB'
             date_value = xlrd.xldate_as_tuple(sheet.cell(r, c_ngay_sinh).value, book.datemode)
             birthday = date(*date_value[:3])
-            student_list.append({'ten': name.strip(),
-                                'ngay_sinh': birthday,
-                                'nguyen_vong': nv.strip(),
-                                'tong_diem': tong_diem,})
-        return student_list
+            data = {'fullname': name,
+                    'birthday': birthday,
+                    'sex': gt,
+                    'dan_toc': dan_toc,
+                    'birth_place': noi_sinh,
+                    'current_address': cho_o_ht,
+                    'father_name': ten_bo,
+                    'father_phone': dt_bo,
+                    'mother_name': ten_me,
+                    'mother_phone': dt_me,
+                    'ban_dk': ban_dk}
+            student_list.append(data)
+        return student_list, message
     else: task == ""
     
     return None
@@ -650,7 +718,7 @@ def student_import( request, class_id ):
     
     success = save_upload( upload, filename, is_raw )
     message = None
-    result = process_file( filename, "Nhap danh sach trung tuyen")
+    result, process_file_message = process_file( filename, "import_student")
     if 'error' in result:
         success = False
         message = result['error']
@@ -701,8 +769,7 @@ def nhap_danh_sach_trung_tuyen(request):
             if chosen_class:
                 request.session['save_file_name'] = save_file_name
                 request.session['chosen_class'] = chosen_class
-                student_list = process_file(file_name=save_file_name, \
-                                            task="Nhap danh sach trung tuyen")
+                student_list, process_file_message = process_file(file_name=save_file_name, task="import_student")
                 if 'error' in student_list:
                     message = student_list['error']   
                 else:
@@ -820,6 +887,7 @@ def danh_sach_trung_tuyen(request):
     term = school.year_set.latest('time').term_set.latest('number')
     chosen_class = request.session['chosen_class']
     current_year = school.year_set.latest('time')
+    number_of_student = 0
     if chosen_class != u'0':
         chosen_class = school.year_set.latest('time').class_set.get(id=chosen_class)
         number_of_student = chosen_class.pupil_set.count();
@@ -906,7 +974,7 @@ def classes(request, sort_type=1, sort_status=0, page=1):
     for c in classList:
         cfl.append(ClassForm(school_id, instance=c))
         num.append(c.pupil_set.count())
-	list = zip(classList, cfl, num)
+    list = zip(classList, cfl, num)
     if request.is_ajax():
         class_id = request.POST['id']
         c = classList.get(id = int(class_id))
@@ -1053,7 +1121,7 @@ def viewClassDetail(request, class_id, sort_type=0, sort_status=0):
                 school_join_date = date.today()
                 d = request.POST['birthday'].split('/')
                 birthday = date(int(d[2]),int(d[1]),int(d[0]))
-                data['ban'] = data['ban_dk']
+                #data['ban'] = data['ban_dk']
                 data['birthday'] = birthday
                 _class = Class.objects.get(id=class_id)
                 index = _class.pupil_set.count() + 1

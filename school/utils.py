@@ -181,8 +181,8 @@ def add_student( student = None, index = 0, start_year = None , year = None,
         print student        
         if not ( student and start_year and term and school ):
             raise Exception("Phải có giá trị cho các trường: Student,Start_Year,Term,School.")
-        if 'full_name' in student:
-            names = student['full_name'].split(" ")
+        if 'fullname' in student:
+            names = student['fullname'].split(" ")
             last_name = ' '.join(names[:len(names)-1])
             first_name = names[len(names)-1]
         else:
@@ -194,15 +194,15 @@ def add_student( student = None, index = 0, start_year = None , year = None,
         birthday = student['birthday']
         if 'uu_tien' in student:
             uu_tien = student['uu_tien']
-        else: uu_tien = None
+        else: uu_tien = ''
         if 'current_address' in student:
             current_address = student['current_address']
         else: current_address = None
         if 'birth_place' in student:
             birth_place = student['birth_place']
         else: birth_place = None
-        if 'ban' in student:
-            ban = student['ban']
+        if 'ban_dk' in student:
+            ban = student['ban_dk']
         else: ban = None
         find = start_year.pupil_set.filter( first_name__exact = first_name)\
                                    .filter(last_name__exact = last_name)\
@@ -232,8 +232,15 @@ def add_student( student = None, index = 0, start_year = None , year = None,
                 st.index = index
                 st.school_id = school
                 st.uu_tien = uu_tien
-                st.current_address = current_address
-                st.birth_place = birth_place
+                if 'dan_toc' in student: st.dan_toc = student['dan_toc']
+                if 'birth_place' in student: st.birth_place = student['birth_place']
+                if 'current_address' in student: st.current_address = student['current_address']
+                if 'father_name' in student: st.father_name = student['father_name']
+                if 'father_phone' in student: st.father_phone = student['father_phone']
+                if 'mother_name' in student: st.mother_name = student['mother_name']
+                if 'mother_phone' in student: st.mother_phone = student['mother_phone']
+
+                print 'tag 1'
                 if 'sex' in student:
                     st.sex = student['sex']
                 else:
@@ -286,11 +293,9 @@ def add_student( student = None, index = 0, start_year = None , year = None,
                             the_mark.term_id = term1
                             the_mark.save()
 
-                        tkmon = TKMon()
-                        tkmon.student_id = st
-                        tkmon.subject_id = subject
+                    for subject in subjects:
+                        tkmon = TKMon(student_id = st, subject_id = subject)
                         tkmon.save()
-
             except Exception as e:
                 print e
                 
@@ -303,22 +308,35 @@ def add_many_students( student_list = None, start_year = None , year = None,
         if not ( student_list and start_year and term and school ):
             raise Exception("Phải có giá trị cho các trường: Student,Start_Year,Term,School.")
         index =0
+        print 'add_many_students'
         for student in student_list:
             index += 1
-            data = {'full_name': student['ten'], 'birthday':student['ngay_sinh'],
-                        'ban':student['nguyen_vong'], }
-            student = data        
-            if 'full_name' in student:
-                names = student['full_name'].split(" ")
+            
+#            data = {'full_name':student['ten'],
+#                    'birthday':student['ngay_sinh'],
+#                    'ban':student['nguyen_vong'],
+#                    'sex':student['gioi_tinh'],
+#                    'dan_toc':student['dan_toc'],
+#                    'noi_sinh':student['noi_sinh'],
+#                    'cho_o_ht':student['cho_o_ht'],
+#                    'ten_bo':student['ten_bo'],
+#                    'dt_bo':student['dt_bo'],
+#                    'ten_me':student['ten_me'],
+#                    'dt_me':student['dt_me']
+#                    }
+#            student = data
+            if 'fullname' in student:
+                names = student['fullname'].split(" ")
                 last_name = ' '.join(names[:len(names)-1])
                 first_name = names[len(names)-1]
             else:
                 last_name = student['last_name']
                 first_name = student['first_name']
+                
             if not school_join_date:
                 school_join_date = datetime.date.today()
             birthday = student['birthday']
-            ban = student['ban']
+            ban = student['ban_dk']
             find = start_year.pupil_set.filter( first_name__exact = first_name)\
                                        .filter(last_name__exact = last_name)\
                                        .filter(birthday__exact = birthday)
@@ -335,8 +353,10 @@ def add_many_students( student_list = None, start_year = None , year = None,
                 else:
                     pass
             else:    # the student does not exist
-                st = Pupil(first_name = first_name, last_name = last_name,
-                           birthday = birthday, ban_dk = ban, 
+                st = Pupil(first_name = first_name,
+                           last_name = last_name,
+                           birthday = birthday,
+                           ban_dk = ban,
                            school_join_date = school_join_date,
                            start_year_id = start_year,
                            class_id = _class,
@@ -346,8 +366,14 @@ def add_many_students( student_list = None, start_year = None , year = None,
                     st.sex = student['sex']
                 else: 
                     st.sex = 'Nam'
-                
-                
+
+                if 'dan_toc' in student: st.dan_toc = student['dan_toc']
+                if 'birth_place' in student: st.birth_place = student['birth_place']
+                if 'current_address' in student: st.current_address = student['current_address']
+                if 'father_name' in student: st.father_name = student['father_name']
+                if 'father_phone' in student: st.father_phone = student['father_phone']
+                if 'mother_name' in student: st.mother_name = student['mother_name']
+                if 'mother_phone' in student: st.mother_phone = student['mother_phone']
                 user = User()
                 user.username = make_username( first_name = first_name, last_name = last_name, start_year = start_year)
                 user.password = make_default_password( user.username )
