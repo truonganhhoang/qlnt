@@ -1505,8 +1505,8 @@ def diem_danh(request, class_id, day, month, year):
     if not in_school(request, cl.block_id.school_id):
         return HttpResponseRedirect('/')
     url = '/school/dsnghi/' + str(class_id) + '/' + str(day) + '/' + str(month) + '/' + str(year)
-    pos = get_position(request)
-    if (pos < 3):
+    pos = get_position(request) 
+    if (pos < 3 or (pos == 3 and not gvcn(request,class_id))):
         return HttpResponseRedirect(url)
     message = ''
     listdh = None
@@ -1644,10 +1644,18 @@ def tnc_select(request):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
-    year_id = get_current_year(request).id
+    y = get_current_year(request)
+    year_id = y.id
     pos = get_position(request)
-    if (pos < 2):
+    if (pos < 2 and pos !=3):
         return HttpResponseRedirect('/')
+    elif (pos == 3):
+        try:
+            tc = y.class_set.get(teacher_id__exact = request.user.teacher.id)
+            url = '/school/diemdanh/' + str(tc.id) + '/' + str(date.today().day) + '/' + str(date.today().month) + '/' + str(date.today().year)
+            return HttpResponseRedirect(url)
+        except ObjectDoesNotExist:
+            return HttpResponseRedirect('/')
     message = 'Hãy chọn ngày và lớp học bạn muốn điểm danh'
     form = DateAndClassForm(year_id)
     if request.method == 'POST':

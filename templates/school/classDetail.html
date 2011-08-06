@@ -230,8 +230,9 @@
                     href="{%url school.views.school_index  %}viewClassDetail/{{class.id}}/3/{{next_status}}" class = "tiptiphover" title="Sắp xếp giới tính">Giới tính</a>
             </th>
             <th align="center" > Dân tộc </th>
-            <th align="center" > Ưu tiên </th>
             <th align="center" > Chỗ ở hiện tại </th>
+            <th align="center" > Họ tên bố </th>
+            <th align="center" > Họ tên mẹ </th>
             {% if pos > 3 %}
                 <th><a href="{%url school.views.school_index  %}deleteAllStudentsInClass/{{class.id}}" onclick="return confirmDelete();">Xóa cả lớp</a></th>
             {% endif %}
@@ -259,8 +260,9 @@
                 <td align="center" > {{ ss.birth_place }} </td>
                 <td align="center" > {{ ss.sex }} </td>
                 <td align="center" > {{ ss.dan_toc }} </td>
-                <td align="center" > {{ ss.uu_tien }} </td>
                 <td align="center" > {{ ss.current_address }} </td>
+                <td align="center" > {{ ss.father_name }} </td>
+                <td align="center" > {{ ss.mother_name }} </td>
                 {% if pos > 3 %}
                     <td ><a href="{%url school.views.school_index  %}deleteStudentInClass/{{ss.id}}"
                             onclick="return confirmDelete();"> xóa</a></td>
@@ -307,13 +309,18 @@
                     </td>
 
                     <td align="center" >
-                        {{ form.uu_tien.errors }}
-                        <p>{{ form.uu_tien }}</p>
-                    </td>
-
-                    <td align="center" >
                         {{ form.current_address.errors }}
                         <p>{{ form.current_address }}</p>
+                    </td>
+                    
+                    <td align="center" >
+                        {{ form.father_name.errors }}
+                        <p>{{ form.father_name }}</p>
+                    </td>
+                    
+                    <td align="center" >
+                        {{ form.mother_name.errors }}
+                        <p>{{ form.mother_name }}</p>
                     </td>
                     <td align="center"><input class="ggButton" type="submit" value="Thêm"/></td>
                 </tr>
