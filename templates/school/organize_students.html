@@ -35,7 +35,7 @@
             {% for student in student_list %}
                 <li class="sortable tiptiphover_delay ui-state-default selected" title="{{ student.birthday }}" id="{{ student.id }}">
                     <span class="ui-icon ui-icon-arrowthick-2-n-s icon" style="display: none; float: left;"></span>
-                    <span style="margin-left: 4px;">{{ student.index }}</span>
+                    <span id="index" style="margin-left: 4px;">{{ student.index }}</span>
                     {{ student.last_name }} {{ student.first_name }}
                 </li>
             {% endfor %}

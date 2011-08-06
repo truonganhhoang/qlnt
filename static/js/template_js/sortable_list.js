@@ -171,6 +171,10 @@ $(document).ready(function(){
             success: function(){
                 // restore original state of table
                 saveState = $("#sortableList").html();
+                $('span#index').each(function(){
+                    var theLi = $(this).parents('li');
+                    $(this).text(theLi.parents().children().index(theLi) +1 );
+                });
             }
         };
         $.ajax(arg);
