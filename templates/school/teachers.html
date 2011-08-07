@@ -11,12 +11,12 @@
     <table class="styleA" width="100%">
         <tr>
             <th align="center" width="5%"> STT</th>
-            <th align="center" width="25%"><a href="{%url school.views.school_index  %}teachers/1/{{next_status}}/1">Họ
-                và tên </a></th>
-            <th align="center" width="25%"><a href="{%url school.views.school_index  %}teachers/2/{{next_status}}/1">Ngày
+            <th align="center" width="25%"><a href="{%url school.views.school_index  %}teachers/1/{{next_status}}/1" class = "tiptiphover" title="Sắp xếp theo tên">Họ
+                tên </a></th>
+            <th align="center" width="25%"><a href="{%url school.views.school_index  %}teachers/2/{{next_status}}/1" class = "tiptiphover" title="Sắp xếp theo ngày sinh">Ngày
                 sinh</a></th>
             <th align="center" width="25%"> Nơi sinh</th>
-            <th align="center" width="10%"><a href="{%url school.views.school_index  %}teachers/3/{{next_status}}/1">Giới
+            <th align="center" width="10%"><a href="{%url school.views.school_index  %}teachers/3/{{next_status}}/1" class = "tiptiphover" title="Sắp xếp giới tính">Giới
                 tính </a></th>
             {%if pos > 3%}
             <th width="10%"></th>
@@ -40,7 +40,7 @@
                 <td align="center" width="25%"> {{ ss.birth_place }}</td>
                 <td align="center" width="10%"> {{ ss.sex }} </td>
                 {%if pos > 3%}
-                <td align="center" width="10%"><a href="{%url school.views.school_index  %}deleteTeacher/{{ss.id}}"
+                <td align="center" width="10%"><a href="{%url school.views.school_index  %}deleteTeacher/{{ss.id}}" class="ggButton"
                                                   onclick="return confirmDelete();"> xóa </a></td>
                 {%endif%}
             </tr>
