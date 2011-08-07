@@ -40,7 +40,7 @@
                 <td align="center" width="25%"> {{ ss.birth_place }}</td>
                 <td align="center" width="10%"> {{ ss.sex }} </td>
                 {%if pos > 3%}
-                <td align="center" width="10%"><a href="{%url school.views.school_index  %}deleteTeacher/{{ss.id}}" class="ggButton"
+                <td align="center" width="10%"><a href="{%url school.views.school_index  %}deleteTeacher/{{ss.id}}" title ="XÓa giáo viên"class="ggButton"
                                                   onclick="return confirmDelete();"> xóa </a></td>
                 {%endif%}
             </tr>

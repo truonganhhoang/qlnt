@@ -255,6 +255,7 @@ class Subject(models.Model):
     class Meta:
         verbose_name = "Môn"
         verbose_name_plural = "Môn"
+        unique_together = ("name", "class_id")
     
     def __unicode__(self):
         return self.name
