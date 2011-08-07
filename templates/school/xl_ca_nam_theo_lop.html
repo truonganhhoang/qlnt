@@ -35,10 +35,21 @@ Hãy chọn phân loại danh sách học sinh theo:
 	</tr>
 </table>
 <br>	
-
+<table border=0 width="100%">
+<tr>
+	<td>	
 	<form action="/school/xlCaNamTheoLop/{{selectedClass.id}}/1" method="post">{% csrf_token %}
-		<input class="buttonClass" type="submit" value="Đánh giá, xếp loại học sinh" />
+		<input class = "tiptiphover ggButton" title="Xếp loại của cả lớp" type="submit" value="Đánh giá, xếp loại học sinh" />
 	</form>
+	</td>
+	<td align="right">
+    <a title="Cập nhập thi lại" class = "tiptiphover ggButton"
+        href="{%url school.views.school_index  %}thilai/{{selectedClass.id}}">Nhập điểm thi lại</a>
+	&nbsp&nbsp&nbsp&nbsp&nbsp		
+    <a title="Cập nhập rèn luyện thêm trong hè" class = "tiptiphover ggButton"
+        href="{%url school.views.school_index  %}renluyenthem/{{selectedClass.id}}">Nhập hạnh kiểm rèn luyện thêm</a>
+	</td>	
+<table>	
 <br>
 	{#----------------------------------------------------------------------#}
 	{# tat ca danh sach #}

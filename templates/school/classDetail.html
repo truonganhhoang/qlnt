@@ -169,12 +169,12 @@
 
         {% if pos > 3 %}
             {% ifequal class.year_id.school_id.status 1 %}
-                <a title="Tự động tính trung bình học lực của cả lớp" class = "tiptiphover ggButton"
+                <a title="Tính trung bình học lực của cả lớp" class = "tiptiphover ggButton"
                    href="{%url school.views.school_index  %}xepLoaiHlTheoLop/{{class.id}}/1">
                     Tổng kết </a>
 
             {% else %}
-                <a title="Tự động tính trung bình học lực của cả lớp" class = "tiptiphover ggButton"
+                <a title="Tính trung bình học lực của cả lớp" class = "tiptiphover ggButton"
                    href="{%url school.views.school_index  %}xepLoaiHlTheoLop/{{class.id}}/2">
                     Tổng kết </a>
 
@@ -182,17 +182,10 @@
 
 
             {% ifnotequal class.year_id.school_id.status 1 %}
-                <a title="Tự động xếp loại cả năm của lớp" class = "tiptiphover ggButton"
-                   href="{%url school.views.school_index  %}xlCaNamTheoLop/{{class.id}}/1">Tổng kết cả năm</a>
-                <a title="Cập nhập thi lại" class = "tiptiphover ggButton"
-                   href="{%url school.views.school_index  %}thilai/{{class.id}}">Thi lại</a>
-                <a title="Cập nhập rèn luyện thêm trong hè" class = "tiptiphover ggButton"
-                   href="{%url school.views.school_index  %}renluyenthem/{{class.id}}">Rèn luyện thêm</a>
-
+                <a title="Xếp loại, xét lên lớp, ở lại lớp, kiểm tra lại, rèn luyện thêm trong hè" class = "tiptiphover ggButton"
+                   href="{%url school.views.school_index  %}xlCaNamTheoLop/{{class.id}}/1">Xếp loại</a>
 		   {% else %}
                 <a title="Chức năng này đã bị vô hiệu hóa vì đang trong học kỳ I"  class="ggButton disabled">Tổng kết cả năm</a>
-                <a title="Chức năng này đã bị vô hiệu hóa vì đang trong học kỳ I"  class="ggButton disabled">Thi lại</a>
-                <a title="Chức năng này đã bị vô hiệu hóa vì đang trong học kỳ I"  class="ggButton disabled">Rèn luyện thêm</a>
             {% endifnotequal %}
         {% endif %}
 
