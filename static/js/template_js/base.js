@@ -118,7 +118,6 @@ $(document).ready(function(){
     $("#feedbackDiv").dialog({
         modal : true,
         buttons: {
-            Đóng: function(){ $(this).dialog('close');},
             Gửi: function(){
                 var data = $("#feedback_content").val();
                 if ( data == ''){
@@ -134,11 +133,12 @@ $(document).ready(function(){
                     $.ajax(arg);
 
                 }
-            }
+            },
+            Đóng: function(){ $(this).dialog('close');},
         },
         autoOpen: false,
-        width: 500,
-        height: 450,
+        width: 440,
+        height: 370,
         maxWidth: 500,
         maxHeight: 450,
         title: "Góp ý"

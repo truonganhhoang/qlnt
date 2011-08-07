@@ -802,19 +802,24 @@ div#classes .classDiv{
     float: left;
     width: 150px;
     margin: 5px 10px 10px 10px;
-    padding: 5px;
+/*    padding: 5px;*/
 }
 
 div#classes h3{
     padding: 5px 10px;
 }
 
+div#classes p{
+    padding: 5px 10px;
+}
+
+
 .thumb {
     float: left;
     width: 180px;
     border: 1px solid #999;
     margin: 5px 10px 10px 10px;
-    padding: 5px;
+/*    padding: 5px;*/
 }
 
 #sitemap h3 {
