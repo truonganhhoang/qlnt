@@ -932,7 +932,6 @@ def update(s,primary):
                 tbcn.tb_nam = m.tb
                 tbcn.save()
             
-                    
     m.save()  
     mt.save()  
 @transaction.commit_on_success    

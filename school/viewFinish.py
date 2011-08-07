@@ -203,15 +203,42 @@ def calculateOverallMarkTerm(class_id,termNumber):
     for tb in tbHocKyList:
         tb.save()                       
        
-    return pupilNoSum,noHanhKiem    
+    return pupilNoSum,noHanhKiem
+@transaction.commit_on_success
+def calculateTKMon(class_id):
+    
+    cnList = TKMon.objects.filter(subject_id__class_id=class_id,subject_id__primary=1).order_by('student_id__first_name','student_id__last_name','student_id__birthday','subject_id') 
+    hk1List = Mark.objects.filter(subject_id__class_id=class_id,term_id__number=1,subject_id__primary=1).order_by('student_id__first_name','student_id__last_name','student_id__birthday','subject_id') 
+
+    #print cnList
+    for hk1,cn in zip(hk1List,cnList):
+        cn.tb_nam = hk1.tb
+
+    cn1List = TKMon.objects.filter(subject_id__class_id=class_id,subject_id__primary=2).order_by('student_id__first_name','student_id__last_name','student_id__birthday','subject_id') 
+    hk2List = Mark.objects.filter(subject_id__class_id=class_id,term_id__number=2,subject_id__primary=2).order_by('student_id__first_name','student_id__last_name','student_id__birthday','subject_id') 
+
+    #print cn1List
+    for hk2,cn in zip(hk2List,cn1List):
+        cn.tb_nam = hk2.tb
+
+        
+    for cn in cnList:
+        cn.save()
+
+    for cn in cn1List:
+        cn.save()
+
+          
 @transaction.commit_on_success
 def calculateOverallMarkYear(class_id=7):
 
     pupilNoSum =0
-    subjectList= Subject.objects.filter(class_id=class_id,primary__in=[0,1,2])    
+    subjectList= Subject.objects.filter(class_id=class_id,primary__in=[0,1,2]).order_by("id")    
     markList   = TKMon.objects.filter(subject_id__class_id=class_id,subject_id__primary__in=[0,1,2]).order_by('student_id__first_name','student_id__last_name','student_id__birthday','subject_id') 
     tbNamList  = TBNam.objects.filter(student_id__class_id=class_id).order_by('student_id__first_name','student_id__last_name','student_id__birthday')
     hkList     = HanhKiem.objects.filter(student_id__class_id=class_id).order_by('student_id__first_name','student_id__last_name','student_id__birthday')
+
+    #calculateTKMon(class_id)
 
     length = len(subjectList)
     print length
@@ -273,11 +300,13 @@ def calculateOverallMarkYear(class_id=7):
                 pupilNoSum+=1
         i+=1
     NN2List= TKMon.objects.filter(subject_id__class_id=class_id,subject_id__primary=3).order_by('student_id__first_name','student_id__last_name','student_id__birthday','subject_id') 
+
     if len(NN2List)>0:
         for nn2,tbNam in zip(NN2List,tbNamList):
-            if    nn2.tb_nam+e>=8  : tbNam.tb_nam+=0.3
-            elif  nn2.tb_nam+e>=6.5: tbNam.tb_nam+=0.2
-            elif  nn2.tb_nam+e>=5  : tbNam.tb_nam+=0.1
+            if (nn2.tb_nam!=None) & (tbNam.tb_nam!=None): 
+                if  nn2.tb_nam+e>=8    : tbNam.tb_nam+=0.3
+                elif  nn2.tb_nam+e>=6.5: tbNam.tb_nam+=0.2
+                elif  nn2.tb_nam+e>=5  : tbNam.tb_nam+=0.1
         
     noHanhKiem = 0            
     for hk,tbNam in zip(hkList,tbNamList):
@@ -413,6 +442,7 @@ def xepLoaiHlTheoLop(request,class_id,termNumber):
                                     
         list=zip(pupilList,tempList,tbHocKyList,hkList1)    
     else:
+        calculateTKMon(class_id)
         idYear = selectedYear.id
         subjectList=Subject.objects.filter(class_id=class_id)    
         markList   =TKMon.objects.filter(subject_id__class_id=class_id).order_by('student_id__first_name','student_id__last_name','student_id__birthday','subject_id') 

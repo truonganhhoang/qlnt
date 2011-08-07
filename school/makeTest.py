@@ -58,24 +58,23 @@ def thu1(request):
 @transaction.commit_on_success                                                              
 def thu(request):
     t1= time.time()
-    """
-    list1 = TKMon.objects.filter(student_id__class_id=1)
+    list1 = TKMon.objects.filter(student_id__class_id=2)
     for m in list1:
-        m.tb_nam=random.randrange( 6,11 )
+        m.tb_nam=random.randrange( 4,8 )
        # m.save()
     for m in list1:
         m.save()
            
-    list = Mark.objects.filter(student_id__class_id=1)
+    list = Mark.objects.filter(student_id__class_id=2)
     for m in list:
-        m.tb=random.randrange( 7,11 )
+        m.tb=random.randrange( 5,11 )
        # m.save()
     for m in list:
         m.save()
            
-    hanhKiemList =HanhKiem.objects.filter(student_id__class_id=1)
+    hanhKiemList =HanhKiem.objects.filter(student_id__class_id=2)
     for hk in hanhKiemList:
-        t =random.randrange( 1,5 )
+        t =random.randrange( 1,3 )
         if   t==1: hk.year='T'
         elif t==2: hk.year='K'
         elif t==3: hk.year='TB'
@@ -95,7 +94,6 @@ def thu(request):
         
         hk.save()
     
-    """
     t = loader.get_template(os.path.join('school','ll.html'))
     t2=time.time()
     print (t2-t1)

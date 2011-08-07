@@ -78,11 +78,13 @@ ul {
     border-collapse: collapse;
 	position:absolute; 
     margin-top: 0px;
+    cursor: pointer;
 	z-index:200; 
 }
 
 .messageTable li:hover {
     background-color:  #BFFFFF;
+    cursor: pointer;
 }
 
 table.styleC {
