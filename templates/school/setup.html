@@ -32,7 +32,6 @@
 
                 if ( school_email.indexOf('@') == -1 || school_email.indexOf('.')==-1 ){
                     $("notify").showNotification('Email bạn vừa nhập không tồn tại.');
-                    alert();
                 } else {
                     var para = {
                         type:"POST",
@@ -51,13 +50,17 @@
                     $("#message").text('');
                     var grades = json.grades.split('-');
                     var labels = json.labels.split('-');
-                    var text = '<ul>';
-                    for ( var i =0; i < grades.length; i++)
+                    var text = '';
+                    for ( var i =0; i < grades.length; i++){
+                        text += '<div style="float: left; margin: 15px;"><ul>'
                         for ( var j=0; j< labels.length; j++)
                             text = text + '<li>' + grades[i] + ' ' + labels[j] + '</li>'
-                    text += '</ul>';
+                        text += '</ul></div>';
+                    }
+                    text +='<div style="clear: both;"></div>'
                     $("#classReview").html(text);
-                    $(".confirmation").show(300);
+                    $(".rightInfoDiv").hide();
+                    $(".confirmation").fadeIn(300);
                 } else {
                     $("#notify").showNotification(json.message);
                 }
@@ -73,7 +76,6 @@
                     $("#notify").showNotification('Danh sách lớp học để trống.');
                 }
                 else {
-                    $(".confirmation").fadeIn(300);
                     $("#labels").attr('readonly', 'readonly');
                     $(this).attr('disabled','disabled');
 
@@ -103,6 +105,7 @@
                 $(".confirmation").fadeOut(200);
                 $("#labels").removeAttr('readonly');
                 $("#update_class_name").removeAttr('disabled');
+                $(".rightInfoDiv").fadeIn(300);
                 return false;
             });
 

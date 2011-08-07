@@ -161,7 +161,6 @@ def empty(label_list):
 # this following view handles all ajax request of indexing targets.
 @transaction.commit_manually
 def change_index(request, target, class_id):
-    print 'is on view'
     object = None
     if target == u'subject': object = 'Subject'
     elif target == u'student': object = 'Pupil'
@@ -172,7 +171,6 @@ def change_index(request, target, class_id):
     if request.is_ajax():
         if request.method == 'POST':
             data = request.POST['data']
-            print data
             try:
                 list = data.split('/')
                 for element in list:
@@ -650,12 +648,12 @@ def process_file(file_name, task):
     return None
     
 def save_upload( uploaded, filename, raw_data ):
-    ''' 
-    raw_data: if True, uploaded is an HttpRequest object with the file being
-              the raw post data 
-              if False, uploaded has been submitted via the basic form
-              submission and is a regular Django UploadedFile in request.FILES
-    '''
+
+#    raw_data: if True, uploaded is an HttpRequest object with the file being
+#              the raw post data
+#              if False, uploaded has been submitted via the basic form
+#              submission and is a regular Django UploadedFile in request.FILES
+#
     try:
         from io import FileIO, BufferedWriter
         with BufferedWriter( FileIO( filename, "wb" ) ) as dest:
