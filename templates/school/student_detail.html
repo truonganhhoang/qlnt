@@ -3,9 +3,24 @@
 {% block content %}
 <script>
 	$(document).ready(function() {
-		$( "#tabs" ).tabs({
+        $("#notify").ajaxStart( function(){
+            $(this).text("Đang lấy dữ liệu từ server...");
+            $(this).fadeIn('fast');
         });
-	});
+
+        $("#notify").ajaxSuccess( function(event, request, settings){
+            $(this).text("Xong");
+            $(this).delay(1000).fadeOut('fast');
+        });
+
+        $("#notify").ajaxError( function(event, request, settings){
+            $(this).text("Gặp lỗi khi lấy dữ liệu từ server");
+            $(this).delay(1000).fadeOut('fast');
+
+        });    
+        $( "#tabs" ).tabs({
+        });
+    });
     function confirmDelete()
     {
         return confirm("Bạn có muốn xóa kỉ luật này không");
