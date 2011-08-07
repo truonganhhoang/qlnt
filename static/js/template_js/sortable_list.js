@@ -9,9 +9,7 @@ $(document).ready(function(){
 
     var windowHeight = $(window).height();
 
-    //$(document).scrollTop(0);
-    //$(document).animate({scrollTop: 500},'slow');
-
+    
     $("#sortableList").sortable({
         placeholder: 'ui-state-highlight'
     });
@@ -55,6 +53,7 @@ $(document).ready(function(){
 
     var theFocus = $("#sortableList > li:first").addClass('ui-state-focus');
     var saveState = $("#sortableList").html();
+
 
     $("#cancel_list_sorting").click(function(){
         $("#sortableList").html(saveState);
@@ -174,6 +173,7 @@ $(document).ready(function(){
                 $('span#index').each(function(){
                     var theLi = $(this).parents('li');
                     $(this).text(theLi.parents().children().index(theLi) +1 );
+                    saveState = $("#sortableList").html();
                 });
             }
         };

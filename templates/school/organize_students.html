@@ -31,7 +31,14 @@
         sau đó Enter để chọn học sinh được trỏ, sau khi chọn sử dụng các phím mũi tên để thay đổi vị trí. Kết thúc bằng việc ấn 'Lưu thứ tự'.">Hướng dẫn</a>
     </div>
     <div id="divList">
-        <ul id="sortableList">
+        <ul style="float: left;">
+            {% for student in student_list %}
+                <li class="sortable tiptiphover_delay ui-state-default selected" title="{{ student.birthday }}" id="{{ student.id }}">
+                    {{ forloop.counter }}
+                </li>
+            {% endfor %}
+        </ul>
+        <ul id="sortableList" style="float: left;">
             {% for student in student_list %}
                 <li class="sortable tiptiphover_delay ui-state-default selected" title="{{ student.birthday }}" id="{{ student.id }}">
                     <span class="ui-icon ui-icon-arrowthick-2-n-s icon" style="display: none; float: left;"></span>
@@ -40,6 +47,7 @@
                 </li>
             {% endfor %}
         </ul>
+
 
     </div>
     <p id="ajax_to" style="display: none;">{%  url school.views.change_index 'student' class.id %}</p>
