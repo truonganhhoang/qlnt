@@ -1,4 +1,16 @@
 {% extends "base.html" %} 
+
+{% block backward_link %}
+	<a href="/school/classes"> Toàn trường  </a> > 
+	{% if selectedClass %}
+		<a href="/school/viewClassDetail/{{selectedClass.id}}"> {{selectedClass.name}}  </a> > 
+	{% endif %}
+	{% if selectedSubject %}
+		{{selectedSubject.name}}  
+	{% endif %}
+	
+{% endblock %} 
+
 {% block content %}
   <script language="JavaScript" type="text/javascript">
     function submitSubject() 
