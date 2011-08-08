@@ -322,15 +322,15 @@ def getMark(subjectChoice,selectedTerm):
     selectedSubject = Subject.objects.get(id= subjectChoice)
     class_id = selectedSubject.class_id.id
     timeToEdit = 0    
-    pupilList=Pupil.objects.filter(class_id=class_id).order_by('first_name','last_name','birthday')                
+    pupilList=Pupil.objects.filter(class_id=class_id).order_by('index')                
     editList=[]    
     idList=[]    
     tbhk1List=[]
     tbnamList=[]
     if selectedTerm.number==1:            
         i=1   
-        markList     =Mark.objects.filter(term_id=selectedTerm.id,subject_id=subjectChoice).order_by('student_id__first_name','student_id__last_name','student_id__birthday')
-        markTimeList =MarkTime.objects.filter(mark_id__term_id=selectedTerm.id,mark_id__subject_id=subjectChoice).order_by('mark_id__student_id__first_name','mark_id__student_id__last_name','mark_id__student_id__birthday') 
+        markList     =Mark.objects.filter(term_id=selectedTerm.id,subject_id=subjectChoice).order_by('student_id__index')
+        markTimeList =MarkTime.objects.filter(mark_id__term_id=selectedTerm.id,mark_id__subject_id=subjectChoice).order_by('mark_id__student_id__index') 
 
         for mt in markTimeList: 
             ea=defineEdit(mt,timeToEdit)            
@@ -344,10 +344,10 @@ def getMark(subjectChoice,selectedTerm):
     else:
         i=1
         beforeTerm   =Term.objects.get(year_id=selectedTerm.year_id,number=1).id
-        markList     =Mark.objects.filter(term_id=selectedTerm.id,subject_id=subjectChoice).order_by('student_id__first_name','student_id__last_name','student_id__birthday')
-        markTimeList =MarkTime.objects.filter(mark_id__term_id=selectedTerm.id,mark_id__subject_id=subjectChoice).order_by('mark_id__student_id__first_name','mark_id__student_id__last_name','mark_id__student_id__birthday') 
-        tbhk1List    =Mark.objects.filter(term_id=beforeTerm,subject_id=subjectChoice).order_by('student_id__first_name','student_id__last_name','student_id__birthday')
-        tbnamList    =TKMon.objects.filter(subject_id=subjectChoice).order_by('student_id__first_name','student_id__last_name','student_id__birthday')
+        markList     =Mark.objects.filter(term_id=selectedTerm.id,subject_id=subjectChoice).order_by('student_id__index')
+        markTimeList =MarkTime.objects.filter(mark_id__term_id=selectedTerm.id,mark_id__subject_id=subjectChoice).order_by('mark_id__student_id__index') 
+        tbhk1List    =Mark.objects.filter(term_id=beforeTerm,subject_id=subjectChoice).order_by('student_id__index')
+        tbnamList    =TKMon.objects.filter(subject_id=subjectChoice).order_by('student_id__index')
         
         for mt in markTimeList:                      
             ea=defineEdit(mt,timeToEdit)                
