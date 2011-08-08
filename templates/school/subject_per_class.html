@@ -54,20 +54,13 @@
                     }
                 });
             });
-
-            $("select[name=hs]").each(function() {
-                var old;
-                $(this).focus(function() {
-                    old = $(this).val();
-                    alert(old);
-                });
-                $(this).focusout(function() {
+            $("input[name=hs]").each(function() {
+                $(this).change(function() {
                     var attr = $(this).parents("tr").attr('id');
                     if (typeof attr !== 'undefined' && attr !== false && attr !== 'subject_form'){
                         var id = $(this).parents("tr").attr('id').split(' ')[0];
-                        var newval = $(this).val();
-                        if (newval !== old){
-                            var data = { id: id, hs: newval, request_type:'hs'}
+                        var val = $(this).val();
+                            var data = { id: id, hs: val, request_type:'hs'}
                             var arg = { type:"POST",
                                 url:"",
                                 data: data,
@@ -75,7 +68,6 @@
                             };
                             $.ajax(arg);
                             return false;
-                        }
                     }
                 });
             });
