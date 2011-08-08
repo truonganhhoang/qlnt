@@ -29,12 +29,13 @@ SCHOOL_ACTION_STATUS = ((0, u'Trường mới'),
 
 STATUS = [u'Chưa thiết lập', u'Học kì I', u'Học kì II', u'Học kì hè']
 
-CONTACT_CHOICES = (('GY', u'Góp ý xây dựng'),
-                       ('HT', u'Hỗ trợ'),
-                       ('BL', u'Báo lỗi'),
-                       ('LH', 'Liên hệ hợp tác'))
-CC_CHOICES = (('True', u'Có'),
-                  ('False', u'Không'))
+#CONTACT_CHOICES = (('GY', u'Góp ý xây dựng'),
+#                       ('HT', u'Hỗ trợ'),
+#                       ('BL', u'Báo lỗi'),
+#                       ('LH', 'Liên hệ hợp tác'))
+#CC_CHOICES = (('True', u'Có'),
+#                  ('False', u'Không'))
+
 class Organization(models.Model):
     ''' Thông tin về sơ đồ tổ chức của các sở, phòng và các trường '''
     name = models.CharField(u'Tên tổ chức', max_length=100) #tên đơn vị. tổ chức

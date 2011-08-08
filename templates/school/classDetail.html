@@ -327,18 +327,13 @@
 
         {% endif %}
 
-    <div  style="display:none" >
+    <div style="display:none" >
         <div id="popupDiv">
-            <h2>Nhập học sinh từ file Excel</h2>
-            <br>
+            <p>Chọn file Excel (theo <a href="{{ MEDIA_URL }}template_files/student_template.xls">mẫu này</a>)</p>
             <br>
             <form name="form" action="school/start_year/import/student" method="POST" enctype="multipart/form-data">{% csrf_token %}
                 <div id="upload_file">
                 </div>
-                <p>
-
-                    Chú ý: Phải dùng file Excel theo <a href="{{ MEDIA_URL }}template_files/student_template.xls">mẫu này</a>.
-                </p>
                 <br>
             </form>
         </div>

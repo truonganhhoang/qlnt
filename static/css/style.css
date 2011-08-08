@@ -624,7 +624,7 @@ div#divList {
 #content h2 {
     color: #4d94d7;
     font: 24px/24px Georgia, "Times New Roman", Times, serif;
-    padding: 5px;
+    padding: 3px;
 	
 }
 
@@ -678,7 +678,6 @@ div#divList {
 }
 
 #content ul li a:hover {
-    height: 20px;
 }
 
 div#tabs ul li{
@@ -725,13 +724,6 @@ dd {
     float: left;
 }
 
-#sitemap {
-    position: relative;
-    overflow: hidden;
-    float: left;
-    width: 40%;
-}
-
 div#classes{
     position: relative;
     float: left;
@@ -742,37 +734,54 @@ div#classes{
 div#classes .classDiv{
     float: left;
     width: 150px;
-    margin: 5px 10px 10px 10px;
+    margin: 3px 6px;
 /*    padding: 5px;*/
 }
 
+div#classes a{
+    text-decoration: none;
+}
+
+div#classes a:hover{
+    background-color: #75a8fa;
+    text-decoration: none;
+    background-image: none;
+}
+
 div#classes h3{
-    padding: 5px 10px;
+    clear: both;
+    padding: 10px 6px 0px;
 }
 
 div#classes p{
     padding: 5px 10px;
 }
 
+#sitemap {
+    position: relative;
+    overflow: hidden;
+    float: left;
+    width: 40%;
+}
 
 .thumb {
     float: left;
     width: 180px;
     border: 1px solid #999;
-    margin: 5px;
+    margin: 3px;
 /*    padding: 5px;*/
 }
 
 #sitemap h3 {
     display: block;
     /*background-color:black;*/
-    padding: 5px;
+    padding: 3px;
 }
 
 #sitemap ul li {
     height: 30px;
     width: 170px;
-    padding: 5px 5px;
+    padding: 3px 3px;
 }
 
 #sitemap ul li a {
@@ -790,7 +799,6 @@ div#classes p{
     color: #ffffff;
     width: 160px;
 }
-
 
 div#help {
 text-align: justify;
