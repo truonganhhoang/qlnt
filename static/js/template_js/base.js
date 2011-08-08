@@ -134,7 +134,7 @@ $(document).ready(function(){
 
                 }
             },
-            Đóng: function(){ $(this).dialog('close');},
+            Đóng: function(){ $(this).dialog('close');}
         },
         autoOpen: false,
         width: 440,

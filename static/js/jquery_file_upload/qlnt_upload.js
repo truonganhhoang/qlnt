@@ -32,7 +32,15 @@ $(function () {
     // Initialize the jQuery File Upload widget:
     $('#fileupload').fileupload({
         url: '/school/start_year/import/student/' + id,
-        acceptFileTypes: /(\.|\/)(xls)$/i    
+        acceptFileTypes: /(\.|\/)(xls)$/i,
+        maxNumberOfFiles: 1,
+
+    });
+
+    $("#fileupload").bind('fileuploaddone', function(e, data){
+            $("#notify").text("Đã lưu.");
+            $("#notify").delay(1000).fadeOut('fast');
+
     });
 
     // Load existing files:
