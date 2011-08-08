@@ -6,7 +6,7 @@
 
 {% block content %}
 
-    <script language="JavaScript" type="text/javascript" >
+    <script>
         function submitClass(){
             if (document.info.class.value!={{class.id}})
                 if (document.info.class.value!=-1)
@@ -18,7 +18,68 @@
         {
             return confirm("Bạn có chắc chắn xóa không?");
         }
+        $(document).ready(function(){
+            $("select[name=teacher_id]").each(function() {
+                $(this).change(function() {
+                    var attr = $(this).parents("tr").attr('id');
+                    if (typeof attr !== 'undefined' && attr !== false && attr !== 'subject_form'){
+                        var id = $(this).parents("tr").attr('id').split(' ')[0];
+                        var teacher = $(this).val();
+                        var data = { id: id, teacher: teacher, request_type:'teacher'}
+                        var arg = { type:"POST",
+                            url:"",
+                            data: data,
+                            datatype:"json"
+                        };
+                        $.ajax(arg);
+                        return false;
+                    }
+                });
+            });
 
+            $("select[name=primary]").each(function() {
+                $(this).change(function() {
+                    var attr = $(this).parents("tr").attr('id');
+                    if (typeof attr !== 'undefined' && attr !== false && attr !== 'subject_form'){
+                        var id = $(this).parents("tr").attr('id').split(' ')[0];
+                        var primary = $(this).val();
+                        var data = { id: id, primary: primary, request_type:'primary'}
+                        var arg = { type:"POST",
+                            url:"",
+                            data: data,
+                            datatype:"json"
+                        };
+                        $.ajax(arg);
+                        return false;
+                    }
+                });
+            });
+
+            $("select[name=hs]").each(function() {
+                var old;
+                $(this).focus(function() {
+                    old = $(this).val();
+                    alert(old);
+                });
+                $(this).focusout(function() {
+                    var attr = $(this).parents("tr").attr('id');
+                    if (typeof attr !== 'undefined' && attr !== false && attr !== 'subject_form'){
+                        var id = $(this).parents("tr").attr('id').split(' ')[0];
+                        var newval = $(this).val();
+                        if (newval !== old){
+                            var data = { id: id, hs: newval, request_type:'hs'}
+                            var arg = { type:"POST",
+                                url:"",
+                                data: data,
+                                datatype:"json"
+                            };
+                            $.ajax(arg);
+                            return false;
+                        }
+                    }
+                });
+            });
+        });
     </script>
 
     <form action="" name = "info" method = "post">{% csrf_token %}

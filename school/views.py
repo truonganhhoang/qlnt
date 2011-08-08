@@ -1339,13 +1339,45 @@ def subjectPerClass(request, class_id, sort_type=4, sort_status=0):
                 subjectList = cl.subject_set.order_by('-index')            
     except Exception as e:
         print e
-            
+
     form = SubjectForm(school_id)
     sfl = []
     for s in subjectList:
         sfl.append(SubjectForm(school_id, instance=s))
     list = zip(subjectList, sfl)
-    if request.method == 'POST':
+    if request.is_ajax():
+        sid = request.POST['id']
+        sub = cl.subject_set.get(id = sid)
+        if request.POST['request_type'] == u'teacher':
+            if request.POST['teacher'] != u'':
+                shs = int(request.POST['teacher'])
+            else:
+                shs = None
+            data = {'name' : sub.name, 'hs' : sub.hs, 'class_id':class_id, 'teacher_id':shs, 'index':sub.index, 'primary':sub.primary}
+            form = SubjectForm(school_id, data, instance=sub)
+            if form.is_valid():
+                form.save()
+        elif request.POST['request_type'] == u'primary':
+            shs = request.POST['primary']
+            if sub.teacher_id:
+                teacher=sub.teacher_id.id
+            else:
+                teacher=None
+            data = {'name' : sub.name, 'hs' : sub.hs, 'class_id':class_id, 'teacher_id':teacher, 'index':sub.index, 'primary':shs}
+            form = SubjectForm(school_id, data, instance=sub)
+            if form.is_valid():
+                form.save()
+        elif request.POST['request_type'] == u'hs':
+            shs = float(request.POST['hs'])
+            if sub.teacher_id:
+                teacher=sub.teacher_id.id
+            else:
+                teacher=None
+            data = {'name' : sub.name, 'hs' : shs, 'class_id':class_id, 'teacher_id':teacher, 'index':sub.index, 'primary':sub.primary}
+            form = SubjectForm(school_id, data, instance=sub)
+            if form.is_valid():
+                form.save()
+    elif request.method == 'POST':
         print request.POST
         hs_list = request.POST.getlist('hs')
         teacher_list = request.POST.getlist('teacher_id')
