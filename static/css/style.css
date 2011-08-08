@@ -766,21 +766,23 @@ div#classes p{
 
 .thumb {
     float: left;
-    width: 180px;
-    border: 1px solid #999;
-    margin: 3px;
-/*    padding: 5px;*/
+    width: 172px;
+    margin: 6px 6px;
 }
 
 #sitemap h3 {
+    font-size: 12;
     display: block;
-    /*background-color:black;*/
-    padding: 3px;
+    margin: 0px 0px;
+}
+
+#sitemap ul{
+    width: 170px;
+    margin: 0px 0px;
 }
 
 #sitemap ul li {
     height: 30px;
-    width: 170px;
     padding: 3px 3px;
 }
 
@@ -788,8 +790,9 @@ div#classes p{
     display: block;
     padding: 5px 5px;
     text-decoration: none;
-    width: 170px;
+    width: 150px;
 }
+
 #sitemap a{
     color: #000000;
 }
@@ -797,17 +800,21 @@ div#classes p{
 #sitemap ul li a:hover {
     background-color: #4d94d7;
     color: #ffffff;
-    width: 160px;
+    width: 154px;
 }
 
+
+
+
+/* HELP page */
 div#help {
-text-align: justify;
--moz-column-count: 2;
--moz-column-gap: 1.5em;
--moz-column-rule: 1px solid #C7B5A7;
--webkit-column-count: 2;
--webkit-column-gap: 1.5em;
--webkit-column-rule: 1px solid #C7B5A7;
+    text-align: justify;
+    -moz-column-count: 2;
+    -moz-column-gap: 1.5em;
+    -moz-column-rule: 1px solid #C7B5A7;
+    -webkit-column-count: 2;
+    -webkit-column-gap: 1.5em;
+    -webkit-column-rule: 1px solid #C7B5A7;
 }
 
 div#help p, h3 {
