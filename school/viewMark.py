@@ -529,8 +529,11 @@ def markTable(request,term_id=-1,class_id=-1,subject_id=-1,move=None):
     else:    
         termList=Term.objects.filter(year_id=yearChoice,number__lt=3).order_by('number')    
     """
-    
-    if classChoice !=-1: subjectList=Subject.objects.filter(class_id=classChoice,primary__in=[0,selectedTerm.number,3]) 
+    selectedClass=None
+    if classChoice !=-1: 
+        subjectList=Subject.objects.filter(class_id=classChoice,primary__in=[0,selectedTerm.number,3])
+        selectedClass=Class.objects.get(id=classChoice)   
+   
     selectedSubject=None
     
     if subjectChoice!=-1:
@@ -557,8 +560,9 @@ def markTable(request,term_id=-1,class_id=-1,subject_id=-1,move=None):
                                 'subjectChoice':subjectChoice,
                                 'termChoice':termChoice,            
                                                   
-                                'selectedSubject':selectedSubject,
                                 'selectedTerm':selectedTerm,
+                                'selectedClass':selectedClass,
+                                'selectedSubject':selectedSubject,
                                 'class_id':class_id,
                                 
                                 'lengthList':lengthList,
