@@ -32,8 +32,7 @@ $(function () {
     // Initialize the jQuery File Upload widget:
     $('#fileupload').fileupload({
         url: '/school/start_year/import/student/' + id,
-        acceptFileTypes: /(\.|\/)(xls)$/i,
-        maxNumberOfFiles: 1,
+        acceptFileTypes: /(\.|\/)(xls)$/i
 
     });
 
