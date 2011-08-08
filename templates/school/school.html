@@ -59,7 +59,7 @@
                 <h2>Danh sách lớp học</h2>
 
                 {% for grade in grades %}
-                    <h3>Khối {{ grade.number }}</h3>
+                    <h3 >Khối {{ grade.number }}</h3>
                     {% for class in classes %}
                         {% if class.block_id == grade %}
                         <a class="classDiv ui-widget-content ui-corner-all"

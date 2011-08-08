@@ -642,38 +642,12 @@ def process_file(file_name, task):
                     'mother_phone': dt_me,
                     'ban_dk': ban_dk}
             student_list.append(data)
+        message += '</ul>'
         return student_list, message
     else: task == ""
     
     return None
     
-def save_upload( uploaded, filename, raw_data ):
-
-#    raw_data: if True, uploaded is an HttpRequest object with the file being
-#              the raw post data
-#              if False, uploaded has been submitted via the basic form
-#              submission and is a regular Django UploadedFile in request.FILES
-#
-    try:
-        from io import FileIO, BufferedWriter
-        with BufferedWriter( FileIO( filename, "wb" ) ) as dest:
-        # if the "advanced" upload, read directly from the HTTP request 
-        # with the Django 1.3 functionality
-            if raw_data:
-                foo = uploaded.read( 1024 )
-                while foo:
-                    dest.write( foo )
-                    foo = uploaded.read( 1024 ) 
-         # if not raw, it was a form upload so read in the normal Django chunks fashion
-            else:
-                for c in uploaded.chunks( ):
-                    dest.write( c )
-            # got through saving the upload, report success
-            return True
-    except IOError:
-        # could not open the file most likely
-        pass
-    return False
 
 def student_import( request, class_id ):
     try:
@@ -684,16 +658,18 @@ def student_import( request, class_id ):
     permission = get_permission(request)
     if not permission in [u'HIEU_TRUONG',u'HIEU_PHO']:
         return HttpResponseRedirect(reverse('school_index'))
-        
+
+    file = None
     if request.method == "POST":    
         if request.is_ajax( ):
             # the file is stored raw in the request
+            print 'is ajax'
             upload = request
             is_raw = True
             # AJAX Upload will pass the filename in the querystring if it is the "advanced" ajax upload
             try:
-                filename = '_'.join([request.session.session_key, request.GET[ 'qqfile' ]])
-                filename = os.path.join( TEMP_FILE_LOCATION, filename)
+                file = request.FILES.get('file')
+                print file
             except KeyError: 
                 return HttpResponseBadRequest( "AJAX request not valid" )
             # not an ajax upload, so it was the "basic" iframe version with submission via form
@@ -714,9 +690,14 @@ def student_import( request, class_id ):
         return HttpResponseRedirect( reverse('school_index')) 
     # save the file
     
-    success = save_upload( upload, filename, is_raw )
+    filename = save_file(request.FILES.get('file'), request.session)
     message = None
-    result, process_file_message = process_file( filename, "import_student")
+    try:
+        result, process_file_message = process_file( filename, "import_student")
+    except Exception as e:
+        print e
+        data = [{'name': file.name, 'url': filename, 'error': u'File excel không đúng định dạng'}]
+        return HttpResponse( simplejson.dumps( data ) )
     if 'error' in result:
         success = False
         message = result['error']
@@ -736,8 +717,8 @@ def student_import( request, class_id ):
         except Exception as e:
             message = u'Lỗi trong quá trình lưu cơ sở dữ liệu'
     # let Ajax Upload know whether we saved it or not
-    data = { 'success': success, 'message': message }
-    return HttpResponse( simplejson.dumps( data ) )    
+    data = [{'name': file.name, 'url': filename, 'message': 'Nhập dữ liệu thành công'}]
+    return HttpResponse( simplejson.dumps( data ) )
 
 def nhap_danh_sach_trung_tuyen(request):
     try:

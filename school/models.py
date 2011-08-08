@@ -108,7 +108,7 @@ class BasicPersonInfo(models.Model):
     birthday = models.DateField("Ngày sinh(*)", null = True, validators = [validate_birthday])
     birth_place = models.CharField("Nơi sinh", max_length = 200, blank = True)
     dan_toc = models.CharField("Dân tộc", max_length = 15, blank = True, default = 'Kinh')
-    ton_giao = models.CharField("Tôn giáo", max_length = 20, blank = True,)
+    ton_giao = models.CharField("Tôn giáo", max_length = 20, blank = True)
     quoc_tich = models.CharField("Quốc tịch(*)", max_length = 20, blank = True, default = 'Việt Nam')
     home_town = models.CharField("Quê quán", max_length = 100, blank = True) #nguyen quan
     sex = models.CharField("Giới tính(*)", max_length = 3, choices = GENDER_CHOICES, blank = True, default = 'Nam')

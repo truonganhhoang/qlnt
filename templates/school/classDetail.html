@@ -1,13 +1,15 @@
 {% extends "base.html" %}
+{% load upload_tags %}
+
 {% block content %}
     <script>
         $(document).ready(function(){
 
             $("#import").click(function(){
-                $("#popupDiv").dialog('open');
+                $("#fileupload").dialog('open');
             });
 
-            $("#popupDiv").dialog({
+            $("#fileupload").dialog({
                 modal : true,
                 buttons: {
                     Đóng: function(){
@@ -16,40 +18,17 @@
                     }
                 },
                 autoOpen: false,
-                width: 400,
-                height: 350,
-                maxWidth: 400,
-                maxHeight: 350,
+                width: 700,
+                height: 400,
+                maxWidth: 700,
+                maxHeight: 400,
                 title: "Nhập học sinh từ file Excel"
             });
 
-            var done_upload = function(id, fileName, responseJSON){
-
-            };
             function IsNumeric(input){
                 return (input - 0) == input && input.length > 0;
             };
 
-            var id = window.location.pathname.split('/');
-            var i = 0;
-            for ( i=0; i < id.length; i++){
-                if (IsNumeric(id[i])){
-                    id = id[i];
-                    break;
-                }
-            };
-
-            var uploader = new qq.FileUploader({
-                action: '/school/start_year/import/student/' + id,
-                element: $('#upload_file')[0],
-                multiple: false,
-                onComplete: done_upload,
-                onAllComplete: function( uploads ) {},
-                params: { 'csrf_token': '{{ csrf_token }}',
-                    'csrf_name': 'csrfmiddlewaretoken',
-                    'csrf_xname': 'X-CSRFToken'
-                }
-            }) ;
             var select = function() {
                 if (!$(this).hasClass('thread')&&!$(this).hasClass('form')&&!$(this).hasClass('function')){
                     var id = $(this).attr('class').split(' ')[0];
@@ -327,15 +306,31 @@
 
         {% endif %}
 
-    <div style="display:none" >
-        <div id="popupDiv">
-            <p>Chọn file Excel (theo <a href="{{ MEDIA_URL }}template_files/student_template.xls">mẫu này</a>)</p>
-            <br>
-            <form name="form" action="school/start_year/import/student" method="POST" enctype="multipart/form-data">{% csrf_token %}
-                <div id="upload_file">
+    <div style="display: none;">
+        <div id="fileupload">
+            <form method="post" action="" enctype="multipart/form-data">
+                <div class="fileupload-buttonbar">
+                    {% csrf_token %}
+                    <label class="fileinput-button">
+                        <span>Chọn file...</span>
+                        <input type="file" name="file" multiple>
+                    </label>
+                    <button type="submit" class="start">Tải file lên</button>
+                    <button type="reset" class="cancel">Dừng lại</button>
                 </div>
-                <br>
             </form>
+            <div class="fileupload-content">
+                <table class="files"></table>
+                <div class="fileupload-progressbar"></div>
+            </div>
+            <div class="hint">
+                <p>
+                    Chú ý: Phải dùng file Excel theo <a href="{{ MEDIA_URL }}template_files/student_template.xls">mẫu này</a>.
+                </p>
+            </div>
         </div>
     </div>
+    {% upload_js %}
+    <script type="text/javascript" src="/static/js/jquery_file_upload/qlnt_upload.js"></script>
+
 {% endblock %}

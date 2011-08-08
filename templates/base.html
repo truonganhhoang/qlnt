@@ -9,16 +9,20 @@
 
     {% block css %}
         <link href="/static/css/style.css" rel="stylesheet" type="text/css"/>
-        <link rel="stylesheet" href="/static/css/fileuploader.css" type="text/css" media="screen"/>
         <link rel="stylesheet" href="/static/css/tipTip.css" type="text/css" media="screen"/>
         <link rel="stylesheet" href="/static/css/jquery-ui-1.8.14.custom.css" type="text/css" media="screen"/>
+        <link rel="stylesheet" href="/static/css/jquery_file_upload/jquery.fileupload-ui.css" type="text/css" media="screen"/>
+
     {% endblock %}
     <script type="text/javascript" src="/static/js/jquery.js"></script>
     <script type="text/javascript" src="/static/js/jquery-ui-1.8.14.custom.min.js"></script>
-    <script type="text/javascript" src="/static/js/fileuploader.js"></script>
     <script type="text/javascript" src="/static/js/jquery.tipTip.minified.js"></script>
     <script type="text/javascript" src="/static/js/jquery.ui.datepicker-vi.js"></script>
     <script type="text/javascript" src="/static/js/template_js/base.js"></script>
+    <script type="text/javascript" src="/static/js/jquery_file_upload/jquery.fileupload.js"></script>
+    <script type="text/javascript" src="/static/js/jquery_file_upload/jquery.fileupload-ui.js"></script>
+    <script type="text/javascript" src="/static/js/jquery_file_upload/jquery.iframe-transport.js"></script>
+    <script type="text/javascript" src="/static/js/jquery_file_upload/jquery.tmpl.min.js"></script>
 
     {% block js %}
         <!-- For extra js -->
@@ -102,7 +106,7 @@
                                        title="Tính điểm tổng kết toàn trường và kết thúc học kỳ">Tổng kết</a>
                                 </li>
                             {% endif %}
-							
+
                             {% else %}
                             {% if user.userprofile.position == 'GIAO_VIEN' %}
                                 <li><a href="#">Lớp chủ nhiệm</a></li>
@@ -163,7 +167,7 @@
         <br>
         <label for="feedback_content">Nội dung góp ý:</label>
         <br>
-		<br>
+        <br>
         <p class="errorlist" id="feedback_message"></p>
         <textarea name="feedback_content" id="feedback_content" rows="10" cols="40"></textarea>
     </div>
@@ -177,9 +181,5 @@
 <footer>
     <p class="copyright">©2011 by Viettel and VNU Hanoi. <a href="/app/contact">Liên hệ</a></p>
 </footer>
-<script type="text/javascript" >
-
-
-</script>
 </body>
 </html>
