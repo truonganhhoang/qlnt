@@ -1,4 +1,16 @@
 ﻿{% extends "base.html" %} 
+
+{% block backward_link %}
+	<a href="/school/classes"> Toàn trường  </a> > 
+	<a href="/school/viewClassDetail/{{selectedClass.id}}"> {{selectedClass.name}}  </a> > 
+
+	<a href="/school/xlCaNamTheoLop/{{selectedClass.id}}/1"> Xếp loại lớp  </a> > 
+	Rèn luyện thêm
+	
+		
+{% endblock %} 
+
+
 {% block content %}
 {% if message %}
 	{{message}}
