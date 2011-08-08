@@ -178,7 +178,6 @@ def move_student(school, student, new_class):
 @transaction.commit_manually
 def add_student( student = None, index = 0, start_year = None , year = None,
                 _class = None, term = None, school = None, school_join_date = None ):
-        print student        
         if not ( student and start_year and term and school ):
             raise Exception("Phải có giá trị cho các trường: Student,Start_Year,Term,School.")
         if 'fullname' in student:
@@ -188,7 +187,6 @@ def add_student( student = None, index = 0, start_year = None , year = None,
         else:
             last_name = student['last_name']
             first_name = student['first_name']
-        print first_name, last_name
         if not school_join_date:
             school_join_date = datetime.date.today()
         birthday = student['birthday']
