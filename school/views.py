@@ -1819,7 +1819,7 @@ def ds_nghi(request, class_id, day, month, year):
     c = RequestContext(request, {'list':ds_nghi, 'class_id':class_id, 'time':time, 'day':day, 'month':month, 'year':year, 'cl':cl, 'pos':pos,'dncform':dncform})
     return HttpResponse(t.render(c))
     
-def diem_danh_hs(request, student_id):
+def diem_danh_hs(request, student_id, view_type = 0):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
@@ -1838,7 +1838,8 @@ def diem_danh_hs(request, student_id):
         ct = RequestContext(request, {'class_id':c.id, 'message':message})
         return HttpResponse(t.render(ct))
     ddl = DiemDanh.objects.filter(student_id=student_id, term_id=term.id).order_by('time')
-    if (pos > 1):
+    count = ddl.count()
+    if (pos > 1 and view_type != 0):
         iform = DiemDanhForm()
         form = []
         for dd in ddl:
@@ -1871,13 +1872,14 @@ def diem_danh_hs(request, student_id):
         for dd in ddl:
             form.append(DiemDanhForm(instance=dd))        
         ddhs = zip(ddl,form)                    
-        t = loader.get_template(os.path.join('school', 'diem_danh_hs.html'))
+        t = loader.get_template(os.path.join('school', 'diem_danh_hs_edit.html'))
         c = RequestContext(request, {   'ddhs':ddhs,
                                         'iform':iform,
                                         'pupil':pupil, 
                                         'student_id':student_id, 
                                         'term':term,
-                                        'pos':pos})
+                                        'pos':pos,
+                                        'count':count})
         return HttpResponse(t.render(c))
     else:
         t = loader.get_template(os.path.join('school', 'diem_danh_hs.html'))
@@ -1885,7 +1887,8 @@ def diem_danh_hs(request, student_id):
                                         'pupil':pupil, 
                                         'student_id':student_id, 
                                         'term':term,
-                                        'pos':pos})
+                                        'pos':pos,
+                                        'count':count})
         return HttpResponse(t.render(c))
     
 def tk_dd_lop(class_id, term_id):

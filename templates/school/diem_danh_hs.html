@@ -1,6 +1,4 @@
-﻿{% extends "base.html" %}
-
-{% block content %}
+﻿{% block content %}
 <br>
 
 <h2>Những buổi nghỉ của {{pupil}} học kì {{term}}</h2>
@@ -9,67 +7,31 @@
         
 <table class="styleA" >
 
-    <tr>
-        <th align="center"> STT </th>
-        <th align="center"> Ngày</th>
-        <th align="center"> Điểm danh </th>
-    </tr>
-    {% if message != None %}
-    {{message}}
-    {% endif %}
-    
-        {%if pos > 2%}
-            {% for d,f in ddhs %}
-                <tr>
-                    <td align="center">
-                        <p>{{forloop.counter}}</p>
-                    </td>
-                    <td align="center">
-                        <p>{{ d.time|date:"SHORT_DATE_FORMAT" }}</p>
-                    </td>
-                
-                    <td align="center">
-                        {{ f.loai.errors }}
-                        <p>{{ f.loai }}</p>
-                    </td>
-                </tr>
-            {% endfor %}
-                <tr>
-                    <td align="center">
-                        <p>{{ p.id }}</p>
-                    </td>
+    {% if count > 0 %}
 
-                    <td align="center">
-                        {{iform.time.errors}}
-                        <p>{{ iform.time }}</p>
-                    </td>
-                
-                    <td align="center">
-                        {{ iform.loai.errors }}
-                        <p>{{ iform.loai }}</p>
-                    </td>
-                </tr>
+        <tr>
+            <th align="center"> STT </th>
+            <th align="center"> Ngày</th>
+            <th align="center"> Loại </th>
+        </tr>
+        {% for f in form %}
             <tr>
-            <td> <input type ="submit" class="ggButton" value="Cập nhật"/> </td>
-        {%else%}
-            {% for f in form %}
-                <tr>
-                    <td align="center">
-                        <p>{{forloop.counter}}</p>
-                    </td>
-                    <td align="center">
-                        <p>{{ f.time|date:"SHORT_DATE_FORMAT" }}</p>
-                    </td>
-                
-                    <td align="center">
-                        <p>{{ f.loai }}</p>
-                    </td>
-                </tr>
-            {% endfor %}
-        {%endif%}
-            <td> <a href="{%url school.views.school_index  %}viewStudentDetail/{{student_id}}" class="ggButton">Quay lại</a> </td>
-	    </tr>
-</table>
+                <td align="center">
+                    <p>{{forloop.counter}}</p>
+                </td>
+                <td align="center">
+                    <p>{{ f.time|date:"SHORT_DATE_FORMAT" }}</p>
+                </td>
+
+                <td align="center">
+                    <p>{{ f.loai }}</p>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+        <p>Học sinh hiện chưa nghỉ buổi nào</p>
+    {% endif %}
 </form>
         
 {% endblock %}
