@@ -15,7 +15,7 @@ $(document).ready(function(){
             $(this).change(function() {
                 var id = $(this).parents("tr").attr('class').split(' ')[0];
                 var term1 = $(this).val();
-                var data = { id: id, term1:term1, request_type:'term1'}
+                var data = { id: id, term1:term1, request_type:'term1'};
                 var arg = { type:"POST",
                     url:"",
                     data: data,
@@ -31,7 +31,7 @@ $(document).ready(function(){
             $(this).change(function() {
                 var id = $(this).parents("tr").attr('class').split(' ')[0];
                 var term2 = $(this).val();
-                var data = { id: id, term2:term2, request_type:'term2'}
+                var data = { id: id, term2:term2, request_type:'term2'};
                 var arg = { type:"POST",
                     url:"",
                     data: data,
@@ -47,7 +47,7 @@ $(document).ready(function(){
             $(this).change(function() {
                 var id = $(this).parents("tr").attr('class').split(' ')[0];
                 var y = $(this).val();
-                var data = { id: id, year:year, request_type:'year'}
+                var data = { id: id, year:y, request_type:'year'};
                 var arg = { type:"POST",
                     url:"",
                     data: data,

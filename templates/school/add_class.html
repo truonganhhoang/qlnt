@@ -5,7 +5,8 @@
 {% if message != None %}
 	{{message}} <br>
 {% endif %}
-	
+
+
 <form action="/school/addclass" method="post">{% csrf_token %}
     {{ form.non_field_errors }}
     <table class="styleA styleDetail" >
@@ -42,6 +43,7 @@
       </tr>  
 	</table>
    <br> 
-   <input type ="submit" value="Thêm"/>
+   <input class = "ggButton" type = "submit"  title =""value="Thêm"/>
+   <a href="{%url school.views.school_index  %}classes" title="Quay lại danh sách lớp"> <input class="ggButton" type="button"value ="Quay lại"></a>
 </form>
 {% endblock %}

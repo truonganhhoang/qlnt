@@ -1035,7 +1035,7 @@ def addClass(request):
                     index +=1
                     add_subject( mon, 1, None, _class, index = index )
                 return HttpResponseRedirect('/school/classes')
-        
+
         t = loader.get_template(os.path.join('school', 'add_class.html'))
         c = RequestContext(request, {'form': form})
         return HttpResponse(t.render(c))
