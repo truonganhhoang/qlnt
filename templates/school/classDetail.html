@@ -210,9 +210,6 @@
             <th align="center" > Chỗ ở hiện tại </th>
             <th align="center" > Họ tên bố </th>
             <th align="center" > Họ tên mẹ </th>
-            {% if pos > 3 %}
-                <th><a href="{%url school.views.school_index  %}deleteAllStudentsInClass/{{class.id}}" onclick="return confirmDelete();">Xóa cả lớp</a></th>
-            {% endif %}
         </tr>
 
         {% for ss in studentList %}
@@ -240,10 +237,6 @@
                 <td align="center" > {{ ss.current_address }} </td>
                 <td align="center" > {{ ss.father_name }} </td>
                 <td align="center" > {{ ss.mother_name }} </td>
-                {% if pos > 3 %}
-                    <td ><a href="{%url school.views.school_index  %}deleteStudentInClass/{{ss.id}}"
-                            onclick="return confirmDelete();"> xóa</a></td>
-                {% endif %}
             </tr>
         {% endfor %}
 
@@ -299,11 +292,10 @@
                         {{ form.mother_name.errors }}
                         <p>{{ form.mother_name }}</p>
                     </td>
-                    <td align="center"><input class="ggButton" type="submit" value="Thêm"/></td>
                 </tr>
-            </form>
             </table>
-
+            <input class="ggButton" type="submit" value="Thêm"/>
+            </form>
         {% endif %}
 
     <div style="display: none;">

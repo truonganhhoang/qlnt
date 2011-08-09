@@ -1100,7 +1100,6 @@ def viewClassDetail(request, class_id, sort_type=0, sort_status=0):
                 school_join_date = date.today()
                 d = request.POST['birthday'].split('/')
                 birthday = date(int(d[2]),int(d[1]),int(d[0]))
-                #data['ban'] = data['ban_dk']
                 data['birthday'] = birthday
                 _class = Class.objects.get(id=class_id)
                 index = _class.pupil_set.count() + 1
