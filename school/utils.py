@@ -237,6 +237,7 @@ def add_student( student = None, index = 0, start_year = None , year = None,
                 if 'father_phone' in student: st.father_phone = student['father_phone']
                 if 'mother_name' in student: st.mother_name = student['mother_name']
                 if 'mother_phone' in student: st.mother_phone = student['mother_phone']
+                if 'phone' in student: st.phone = student['phone']
 
                 print 'tag 1'
                 if 'sex' in student:

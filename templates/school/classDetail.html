@@ -210,6 +210,7 @@
             <th align="center" > Chỗ ở hiện tại </th>
             <th align="center" > Họ tên bố </th>
             <th align="center" > Họ tên mẹ </th>
+            <th align="center" > Số điện thoại </th>
         </tr>
 
         {% for ss in studentList %}
@@ -237,6 +238,7 @@
                 <td align="center" > {{ ss.current_address }} </td>
                 <td align="center" > {{ ss.father_name }} </td>
                 <td align="center" > {{ ss.mother_name }} </td>
+                <td align="center" > {{ ss.phone }}</td>
             </tr>
         {% endfor %}
 
@@ -292,10 +294,15 @@
                         {{ form.mother_name.errors }}
                         <p>{{ form.mother_name }}</p>
                     </td>
+                    <td align="center">
+                        {{ form.phone.errors }}
+                        <p>{{ form.phone }}</p>
+                    </td>
                 </tr>
             </table>
             <input class="ggButton" type="submit" value="Thêm"/>
             </form>
+
         {% endif %}
 
     <div style="display: none;">

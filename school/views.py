@@ -1081,7 +1081,7 @@ def viewClassDetail(request, class_id, sort_type=0, sort_status=0):
                 if e.strip():
                     std = Pupil.objects.get(id__exact = int(e))
                     completely_del_student(std)
-                    
+
             data = simplejson.dumps({'success': True})
 
             return HttpResponse(data, mimetype='json')
