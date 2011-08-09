@@ -17,8 +17,10 @@ TEMP_FILE_LOCATION = settings.TEMP_FILE_LOCATION
 def to_date(value):
     if '-' in value:
         v = value.split('-')
-    else:
+    elif '/' in value:
         v = value.split('/')
+    elif '.' in value:
+        v = value.split('.')
     result = None
     try:
         result = date(int(v[2]), int(v[1]), int(v[0]))

@@ -32,7 +32,8 @@ $(function () {
     // Initialize the jQuery File Upload widget:
     $('#fileupload').fileupload({
         url: '/school/start_year/import/student/' + id,
-        acceptFileTypes: /(\.|\/)(xls)$/i
+        acceptFileTypes: /(\.|\/)(xls)$/i,
+        maxNumberOfFiles: 10
 
     });
 
@@ -42,6 +43,10 @@ $(function () {
 
     });
 
+    //$("#startUpload").attr('disabled', 'disabled');
+    //$("#startUpload").addClass('ui-button-disabled ui-state-disabled');
+
+    
     // Load existing files:
     /*$.getJSON($('#fileupload form').prop('action'), function (files) {
         var fu = $('#fileupload').data('fileupload');

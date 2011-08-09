@@ -3,6 +3,7 @@
 # Create your views here.
 import os.path
 import datetime
+import string
 from django.core.paginator import *
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse
@@ -604,6 +605,7 @@ def process_file(file_name, task):
                 message += '<li>' + cellname(r, c_ten) + ':rỗng ' + '</li>'
                 continue
             birthday = sheet.cell(r, c_ngay_sinh).value
+            print birthday, type(birthday)
             if not birthday:
                 message += '<li>' + cellname(r, c_ngay_sinh) + ':rỗng ' + '</li>'
                 continue
@@ -628,8 +630,14 @@ def process_file(file_name, task):
             if c_nguyen_vong>-1:
                 ban_dk = sheet.cell( r, c_nguyen_vong).value.strip()
                 if not ban_dk.strip(): ban_dk = 'CB'
-            date_value = xlrd.xldate_as_tuple(sheet.cell(r, c_ngay_sinh).value, book.datemode)
-            birthday = date(*date_value[:3])
+                
+            if type(birthday) == unicode or type(birthday)== str:
+                print ('to_date')
+                birthday = to_date(birthday)
+            else:
+
+                date_value = xlrd.xldate_as_tuple(sheet.cell(r, c_ngay_sinh).value, book.datemode)
+                birthday = date(*date_value[:3])
             data = {'fullname': name,
                     'birthday': birthday,
                     'sex': gt,
