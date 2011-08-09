@@ -1839,7 +1839,7 @@ def diem_danh_hs(request, student_id, view_type = 0):
         return HttpResponse(t.render(ct))
     ddl = DiemDanh.objects.filter(student_id=student_id, term_id=term.id).order_by('time')
     count = ddl.count()
-    if (pos > 1 and view_type != 0):
+    if (pos > 1 and view_type !=0):
         iform = DiemDanhForm()
         form = []
         for dd in ddl:

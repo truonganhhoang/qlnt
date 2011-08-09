@@ -3,7 +3,6 @@
 
 <h2>Những buổi nghỉ của {{pupil}} học kì {{term}}</h2>
 <br>
-<form action="/school/diemdanhhs/{{student_id}}" method="post">{% csrf_token %}
         
 <table class="styleA" >
 
@@ -32,6 +31,5 @@
     {% else %}
         <p>Học sinh hiện chưa nghỉ buổi nào</p>
     {% endif %}
-</form>
         
 {% endblock %}

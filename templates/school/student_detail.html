@@ -31,7 +31,7 @@
 	<a title="Xem điểm các môn của học sinh" class = "tiptiphover ggButton" href="{%url school.views.school_index  %}markForAStudent/{{class_id}}/{{id}}">Điểm</a>
 {%endif%}
 {% if pos > 1 %}
-	<a title="Xem các buổi điểm danh của học sinh" class = "tiptiphover ggButton" href="{%url school.views.school_index  %}diemdanhhs/{{id}}">Điểm danh</a>
+	<a title="Xem các buổi điểm danh của học sinh" class = "tiptiphover ggButton" href="{%url school.views.school_index  %}diemdanhhs/{{id}}/1">Điểm danh</a>
     <a title="Thêm khen thưởng cho học sinh" class = "tiptiphover ggButton" href="/school/khenthuong/{{id}}/add">Thêm khen thưởng</a>
 	<a title="Thêm kỷ luật dành cho học sinh" class = "tiptiphover ggButton" href="/school/kiluat/{{id}}/add">Thêm kỉ luật</a>
 {%endif%}
