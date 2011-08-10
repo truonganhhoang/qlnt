@@ -100,8 +100,30 @@ class Block(models.Model):
         verbose_name_plural = "Khối"
 
     def __unicode__(self):
-        return str(self.number)    
-        
+        return str(self.number)
+
+class Team(models.Model):
+    name = models.CharField("Tổ", max_length= 100)
+    school_id = models.ForeignKey(Organization, verbose_name="Trường(*)")
+
+    class Meta:
+        verbose_name = "Tổ"
+        verbose_name_plural = "Tổ"
+
+    def __unicode__(self):
+        return unicode(self.name)
+
+class Group(models.Model):
+    name = models.CharField("Nhóm", max_length= 100)
+    team_id = models.ForeignKey(Organization, verbose_name="Tổ(*)")
+
+    class Meta:
+        verbose_name = "Nhóm"
+        verbose_name_plural = "Nhóm"
+
+    def __unicode__(self):
+        return unicode(self.name)
+
 class BasicPersonInfo(models.Model):
     last_name = models.CharField("Họ(*)", max_length = 45, blank = True) # tach ra first_name and last_name de sort va import from excel file
     first_name = models.CharField("Tên(*)", max_length = 90)#vi phan nhap bang tay, ho ten se dc luu vao first_name nen max_length phai dc tang len gap doi
@@ -131,7 +153,9 @@ class BasicPersonInfo(models.Model):
 class Teacher(BasicPersonInfo): 
     user_id = models.OneToOneField(User, verbose_name = "Tài khoản")
     school_id = models.ForeignKey(Organization, verbose_name = "Trường")
-    
+    group_id = models.ForeignKey(Group, null=True, blank=True, verbose_name="Nhóm")
+    team_id = models.ForeignKey(Team, null=True, blank=True, verbose_name="Tổ")
+
     class Meta:
         verbose_name = "Giáo viên"
         verbose_name_plural = "Giáo viên"
@@ -292,6 +316,7 @@ class Mark(models.Model):
         verbose_name = "Bảng điểm"
         verbose_name_plural = "Bảng điểm"
 
+    #noinspection PyMethodOverriding
     def save(self):
         new = self.id is None
         super(Mark, self).save()

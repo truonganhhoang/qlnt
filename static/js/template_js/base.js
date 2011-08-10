@@ -45,11 +45,18 @@ $(document).ready(function(){
             $.datepicker.regional['vi']
         )
     );
+
     $("input.datepicker").datepicker({
         changeMonth: true,
 		changeYear: true,
         yearRange: 'c-60:c'
     });
+
+    $("input:text").live('focus',function(){
+        $(this).select();
+        return false;
+    });
+
     $("#notify").ajaxStart( function(){
         $(this).text("Đang lưu dữ liệu lên server...");
         $(this).fadeIn('fast');

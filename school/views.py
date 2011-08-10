@@ -3,7 +3,6 @@
 # Create your views here.
 import os.path
 import datetime
-import string
 from django.core.paginator import *
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse
