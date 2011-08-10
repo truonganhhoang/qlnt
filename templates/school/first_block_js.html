@@ -374,6 +374,10 @@ window.onload = function() { document.onkeydown = catchEnter; };
 		//alert(event.keyCode);
 		acceptDigits(tb,event.keyCode);
 		//ntrolDirection(tb,event);				
+		var keyCode = event.keyCode;
+		if ((keyCode==37) || (keyCode==38)|| (keyCode==39) || (keyCode==40)
+			|| (keyCode==32) || (keyCode==13) || (keyCode==9))
+			tb.select();
 	}
 	
 			

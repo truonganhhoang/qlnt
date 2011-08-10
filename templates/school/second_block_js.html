@@ -810,17 +810,22 @@
 			}
 			
 	$(document).ready(function() {
-		$('input').focus(function() {
+		$('input[type=text]').focus(function(e) {
 			highLight(this);
 		}
 	);
 
-    $('input').blur(function() {
+    $('input[type=text]').blur(function() {
 			loseHighLight(this);
       }
     );
+	$('input[type=text]').mouseup(
+	    function(e) {
+	        e.preventDefault();
+	    }
+	);
 	
-  }
-);
+	}
+	);
 	viewAverage();
 </script>
