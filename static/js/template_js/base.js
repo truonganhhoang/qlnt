@@ -14,12 +14,12 @@ $(document).ready(function(){
     $("footer").css('width',$(document).width());
 
     var maxHeight = 0;
-    $(".thumb").each(function(){
+    $(".thumb > ul").each(function(){
         if ($(this).height() > maxHeight){
             maxHeight = $(this).height();
         }
     });
-    $(".thumb").each(function(){
+    $(".thumb > ul").each(function(){
         $(this).css('height', maxHeight);
     });
 
