@@ -72,7 +72,10 @@ def validate_year(value):
 def validate_join_date(value):
     if value < date(1990,1,1):
         raise ValidationError(u'Ngày nằm ngoài khoảng cho phép')
-        
+
+def validate_dd_date(value):
+    if value > date.today():
+        raise ValidationError(u'Ngày nẳm ngoài khoảng cho phép')
 #validate he so diem cua mon    
 def validate_hs(value):
     #he so bang 0 la cho nhung mon cham diem bang nhan xet
@@ -236,11 +239,11 @@ class Pupil(BasicPersonInfo):
     #thong tin ca nhan
     khu_vuc = models.CharField("Khu vực", max_length = 3, choices = KV_CHOICE, blank = True)
     doi = models.BooleanField("Là đội viên", blank = True, default = False)
-    ngay_vao_doi = models.DateField("Ngày vào đội", blank = True, null = True)
+    ngay_vao_doi = models.DateField("Ngày vào đội", blank = True, null = True, validators=[validate_dd_date])
     doan = models.BooleanField("Là đoàn viên", blank = True, default = False)
-    ngay_vao_doan = models.DateField("Ngày vào đoàn", blank = True, null = True)
+    ngay_vao_doan = models.DateField("Ngày vào đoàn", blank = True, null = True, validators=[validate_dd_date])
     dang = models.BooleanField("Là đảng viên", blank = True, default = False)
-    ngay_vao_dang = models.DateField("Ngày vào đảng", blank = True, null = True)
+    ngay_vao_dang = models.DateField("Ngày vào đảng", blank = True, null = True, validators=[validate_dd_date])
     uu_tien = models.CharField("Ưu tiên", blank = True, max_length = 100)
     
     #thong tin gia dinh

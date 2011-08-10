@@ -85,6 +85,10 @@ class ThongTinGiaDinhForm(forms.ModelForm):
         }
         
 class ThongTinDoanDoiForm(forms.ModelForm):
+    def __init__(self, *args, **kw):
+            super(forms.ModelForm, self).__init__(*args, **kw)
+            self.fields.keyOrder = ['doi','ngay_vao_doi','doan','ngay_vao_doan','dang','ngay_vao_dang']
+        
     class Meta:
         model = Pupil
         fields = {'doi','ngay_vao_doi','doan','ngay_vao_doan','dang','ngay_vao_dang'}
@@ -93,6 +97,7 @@ class ThongTinDoanDoiForm(forms.ModelForm):
             'ngay_vao_doan': DateInput(attrs = {'class':'datepicker'}),
             'ngay_vao_dang': DateInput(attrs = {'class':'datepicker'}),
         }
+
         
 class SchoolForm(forms.Form):
     def __init__(self, *args, **kwargs):

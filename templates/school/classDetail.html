@@ -62,7 +62,7 @@
                     data: {data:data},
                     datatype:"json",
                     success: function(){
-                        window.location = window.location.href;
+                        $("#reload").click();
                     }
                 };
                 $.ajax(arg);
@@ -330,5 +330,5 @@
     </div>
     {% upload_js %}
     <script type="text/javascript" src="/static/js/jquery_file_upload/qlnt_upload.js"></script>
-
+    <input id="reload" type="hidden" onclick="window.location = window.location.href"></input>
 {% endblock %}
