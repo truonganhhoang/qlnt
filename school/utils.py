@@ -441,7 +441,7 @@ def completely_del_student( student):
 
 
 def add_teacher( first_name = None, last_name = None, full_name = None, school = None,
-                 birthday = None, sex = 'N', birthplace = None):
+                 birthday = None, sex = 'N', birthplace = None, team_id = None, group_id = None):
     if full_name:
         names = full_name.split(" ")
         last_name = ' '.join(names[:len(names)-1])
@@ -453,6 +453,8 @@ def add_teacher( first_name = None, last_name = None, full_name = None, school =
     teacher.birthday = birthday
     teacher.sex = sex
     teacher.birth_place = birthplace
+    teacher.team_id = team_id
+    teacher.group_id = group_id
     
     user = User()
     user.username = make_username( first_name = first_name, last_name = last_name )

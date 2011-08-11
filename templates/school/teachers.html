@@ -1,111 +1,231 @@
 {% extends "base.html" %}
 
 {% block content %}
+
+    <style>
+        #tabs li .ui-icon-close {
+            float: left;
+            margin: 0.2em 0.4em 0 0;
+            cursor: pointer;
+        }
+
+    </style>
+
+    <script>
+        $(document).ready(function() {
+            var $tab_title_input = $("#tab_title"),
+                    $tab_content_input = $("#tab_content");
+            var tab_counter = 2;
+
+            // tabs init with a custom tab template and an "add" callback filling in the content
+            var $tabs = $("#tabs").tabs({
+                tabTemplate: "<li><a href='#{href}'>#{label}</a> <span class='ui-icon ui-icon-close'>Remove Tab</span></li>",
+                add: function(event, ui) {
+                    var tab_content = $tab_content_input.val() || "Tab " + tab_counter + " content.";
+                    $(ui.panel).append("<p>" + tab_content + "</p>");
+                }
+            });
+
+            // modal dialog init: custom buttons and a "close" callback reseting the form inside
+            var $dialog = $("#dialog").dialog({
+                autoOpen: false,
+                modal: true,
+                buttons: {
+                    Thêm: function() {
+                        addTab();
+                        $(this).dialog("close");
+                    },
+                    Hủy: function() {
+                        $(this).dialog("close");
+                    }
+                },
+                open: function() {
+                    $tab_title_input.focus();
+                },
+                close: function() {
+                    $form[ 0 ].reset();
+                }
+            });
+
+            // addTab form: calls addTab function on submit and closes the dialog
+            var $form = $("form", $dialog).submit(function() {
+                addTab();
+                $dialog.dialog("close");
+                return false;
+            });
+
+            // actual addTab function: adds new tab using the title input from the form above
+            function addTab() {
+                var data = { 'name' : $tab_title_input.val(), request_type:'team'};
+                var arg = { type:"POST",
+                    url:"",
+                    data: data,
+                    datatype:"json",
+                    success: function(){
+                        $("#reload").click();
+                    }
+                };
+                $.ajax(arg);
+                return false;
+            }
+
+            // addTab button: just opens the dialog
+            $("#add_tab")
+                    .button()
+                    .click(function() {
+                        $dialog.dialog("open");
+                    });
+
+        });
+    </script>
     <script>
         function confirmDelete() {
             return confirm("Bạn có chắc chắn xóa không?");
         }
     </script>
 
-    <h2>Danh sách giáo viên</h2>
-    <table class="styleA" width="100%">
-        <tr>
-            <th align="center" width="5%"> STT</th>
-            <th align="center" width="25%"><a href="{%url school.views.school_index  %}teachers/1/{{next_status}}/1" class = "tiptiphover" title="Sắp xếp theo tên">Họ
-                tên </a></th>
-            <th align="center" width="25%"><a href="{%url school.views.school_index  %}teachers/2/{{next_status}}/1" class = "tiptiphover" title="Sắp xếp theo ngày sinh">Ngày
-                sinh</a></th>
-            <th align="center" width="25%"> Nơi sinh</th>
-            <th align="center" width="10%"><a href="{%url school.views.school_index  %}teachers/3/{{next_status}}/1" class = "tiptiphover" title="Sắp xếp giới tính">Giới
-                tính </a></th>
-            {%if pos > 3%}
-            <th width="10%"></th>
-            {%endif%}
-        </tr>
-
-        {% if message != None %}
-            {{ message }}
-        {% endif %}
-
-        {% for ss in teacherList.object_list %}
-            <tr>
-                <td align="center" width="5%">{{ forloop.counter|add:base_order }}</td>
-                <td align="center" width="25%">                
-                    {% if pos > 3 or teacher_id == ss.id %}
-                    <a href="{%url school.views.school_index  %}viewTeacherDetail/{{ss.id}}">
-                    {% endif %}
-                    {{ ss.last_name }} {{ ss.first_name }} </a>
-                </td>
-                <td align="center" width="25%"> {{ ss.birthday|date:"SHORT_DATE_FORMAT" }}</td>
-                <td align="center" width="25%"> {{ ss.birth_place }}</td>
-                <td align="center" width="10%"> {{ ss.sex }} </td>
-                {%if pos > 3%}
-                <td align="center" width="10%"><a href="{%url school.views.school_index  %}deleteTeacher/{{ss.id}}" title ="XÓa giáo viên"class="ggButton"
-                                                  onclick="return confirmDelete();"> xóa </a></td>
-                {%endif%}
-            </tr>
-        {% endfor %}
-        {% if pos > 3%}
-        <form action="/school/teachers/{{sort_type}}/{{sort_status}}/{{teacherList.number}}"
-              method="post">{% csrf_token %}
-            <tr>
-                {{ form.non_field_errors }}
-
-                <td width="5%"></td>
-                <td align="center" width="25%">
-                    {{ form.first_name.errors }}
-                    <p>{{ form.first_name }}</p>
-                </td>
-
-                <td align="center" width="25%">
-                    {{ form.birthday.errors }}
-                    <p>{{ form.birthday }}</p>
-                </td>
-
-                <td align="center" width="25%">
-                    {{ form.birth_place.errors }}
-                    <p>{{ form.birth_place }}</p>
-                </td>
-
-
-                <td align="center" width="10%">
-                    {{ form.sex.errors }}
-                    <p>{{ form.sex }}</p>
-                </td>
-                <td><input type="submit" value="Thêm"/></td>
-            </tr>
+    <div id="dialog" title="Thêm tổ mới">
+        <form>
+                <label for="tab_title">Tên Tổ</label>
+                <input type="text" name="tab_title" id="tab_title" value="" class="ui-widget-content ui-corner-all"/>
         </form>
-        {%endif%}
-    </table>
+    </div>
 
+    <button id="add_tab">Thêm tổ</button>
+    <div id="tabs">
+        <ul>
+            <li><a href="#tabs-0">Tất cả</a></li>
+            {% for t in teamList %}
+                 <li><a href="school/teachers_in_team/{{ t.id }}">{{ t.name }}</a></li>
+            {% endfor %}
+        </ul>
+        <div id="tabs-0">
+            <h2>Danh sách giáo viên</h2>
+            <table class="styleA" width="100%">
+                <tr>
+                    <th align="center" width="5%"> STT</th>
+                    <th align="center" width="15%"><a
+                            href="{%url school.views.school_index  %}teachers/1/{{next_status}}/1"
+                            class="tiptiphover" title="Sắp xếp theo tên">Họ tên </a></th>
+                    <th align="center" width="10%"><a
+                            href="{%url school.views.school_index  %}teachers/2/{{next_status}}/1"
+                            class="tiptiphover" title="Sắp xếp theo ngày sinh">Ngày sinh</a></th>
+                    <th align="center" width="20%"> Nơi sinh</th>
+                    <th align="center" width="10%"><a
+                            href="{%url school.views.school_index  %}teachers/3/{{next_status}}/1"
+                            class="tiptiphover" title="Sắp xếp giới tính">Giới tính </a></th>
+                    <th align="center" width="15%"><a
+                            href="{%url school.views.school_index  %}teachers/4/{{next_status}}/1"
+                            class="tiptiphover" title="Sắp xếp theo tổ">Tổ </a></th>
+                    <th align="center" width="15%"><a
+                            href="{%url school.views.school_index  %}teachers/5/{{next_status}}/1"
+                            class="tiptiphover" title="Sắp xếp theo nhóm">Nhóm </a></th>
+                    {% if pos > 3 %}
+                        <th width="10%"></th>
+                    {% endif %}
+                </tr>
 
+                {% if message != None %}
+                    {{ message }}
+                {% endif %}
 
-    <table border="0" width="100%">
-        <tr border=0>
-            <td width="100%" colspan=6 align="right">
-                <div class="pagination">
-                    <span class="step-links">
-                        {% if teacherList.has_previous %}
-                            <a href="{%url school.views.school_index  %}teachers/{{sort_type}}/{{sort_status}}/{{teacherList.previous_page_number}}">
-                                Trang trước </a>
+                {% for ss in teacherList.object_list %}
+                    <tr>
+                        <td align="center" width="5%">{{ forloop.counter|add:base_order }}</td>
+                        <td align="center" width="15%">
+                            {% if pos > 3 or teacher_id == ss.id %}
+                                <a href="{%url school.views.school_index  %}viewTeacherDetail/{{ss.id}}">
+                            {% endif %}
+                            {{ ss.last_name }} {{ ss.first_name }} </a>
+                        </td>
+                        <td align="center" width="10%"> {{ ss.birthday|date:"SHORT_DATE_FORMAT" }}</td>
+                        <td align="center" width="20%"> {{ ss.birth_place }}</td>
+                        <td align="center" width="10%"> {{ ss.sex }} </td>
+                        <td align="center" width="15%"> {{ ss.team_id }} </td>
+                        <td align="center" width="15%"> {{ ss.group_id }} </td>
+                        {% if pos > 3 %}
+                            <td align="center" width="10%"><a
+                                    href="{%url school.views.school_index  %}deleteTeacher/{{ss.id}}"
+                                    title="XÓa giáo viên" class="ggButton"
+                                    onclick="return confirmDelete();"> xóa </a></td>
                         {% endif %}
-                        <span class="current">
+                    </tr>
+                {% endfor %}
+                {% if pos > 3 %}
+                    <form action="/school/teachers/{{sort_type}}/{{sort_status}}/{{teacherList.number}}"
+                          method="post">{% csrf_token %}
+                        <tr>
+                            {{ form.non_field_errors }}
+
+                            <td width="5%"></td>
+                            <td align="center" width="15%">
+                                {{ form.first_name.errors }}
+                                <p>{{ form.first_name }}</p>
+                            </td>
+
+                            <td align="center" width="10%">
+                                {{ form.birthday.errors }}
+                                <p>{{ form.birthday }}</p>
+                            </td>
+
+                            <td align="center" width="20%">
+                                {{ form.birth_place.errors }}
+                                <p>{{ form.birth_place }}</p>
+                            </td>
+
+
+                            <td align="center" width="10%">
+                                {{ form.sex.errors }}
+                                <p>{{ form.sex }}</p>
+                            </td>
+
+                            <td align="center" width="15%">
+                                {{ form.group_id.errors }}
+                                <p>{{ form.team_id }}</p>
+                            </td>
+
+                            <td align="center" width="15%">
+                                {{ form.team_id.errors }}
+                                <p>{{ form.group_id }}</p>
+                            </td>
+
+                            <td><input type="submit" class = "ggButton" value="Thêm"/></td>
+                        </tr>
+                    </form>
+                {% endif %}
+            </table>
+
+
+
+            <table border="0" width="100%">
+                <tr border=0>
+                    <td width="100%" colspan=6 align="right">
+                        <div class="pagination">
+                            <span class="step-links">
+                                {% if teacherList.has_previous %}
+                                    <a href="{%url school.views.school_index  %}teachers/{{sort_type}}/{{sort_status}}/{{teacherList.previous_page_number}}">
+                                        Trang trước </a>
+                                {% endif %}
+                                <span class="current">
 				            Trang {{ teacherList.number }} trên {{ teacherList.paginator.num_pages }}.
 			            </span>
 
-                        {% if teacherList.has_next %}
-                            <a href="{%url school.views.school_index  %}teachers/{{sort_type}}/{{sort_status}}/{{teacherList.next_page_number}}">
-                                Trang sau </a>
-                        {% endif %}
-                    </span>
-                </div>
-            </td>
-        </tr>
-        {%if pos > 3%}
-        <tr>
-            <td width="5%" align="left">&nbsp</td>
-            <td align="right"><a href="">Xuất ra Excel</a></td>
-        </tr>
-        {%endif%}
-    </table>
+                                {% if teacherList.has_next %}
+                                    <a href="{%url school.views.school_index  %}teachers/{{sort_type}}/{{sort_status}}/{{teacherList.next_page_number}}">
+                                        Trang sau </a>
+                                {% endif %}
+                            </span>
+                        </div>
+                    </td>
+                </tr>
+                {% if pos > 3 %}
+                    <tr>
+                        <td width="5%" align="left">&nbsp</td>
+                        <td align="right"><a href="">Xuất ra Excel</a></td>
+                    </tr>
+                {% endif %}
+            </table>
+        </div>
+        <input id="reload" type="hidden" onclick="location.replace(location.href)"></input>
+    </div>
 {% endblock %}

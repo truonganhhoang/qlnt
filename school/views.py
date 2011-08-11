@@ -1175,7 +1175,6 @@ def viewClassDetail(request, class_id, sort_type=0, sort_status=0):
 
 #sort_type = '1': fullname, '2': birthday, '3':'sex'
 #sort_status = '0':ac '1':'dec
-
 def teachers(request, sort_type=1, sort_status=0, page=1):
     user = request.user
     if not user.is_authenticated():
@@ -1191,7 +1190,14 @@ def teachers(request, sort_type=1, sort_status=0, page=1):
     form = TeacherForm()
     school = get_school(request)
     #print sort_type +' ' + sort_status
-    if request.method == 'POST':
+    if request.is_ajax():
+        if request.POST['request_type']== u'team':
+            data = {'name' : request.POST['name'], 'school_id':school.id}
+            print request.POST
+            team = TeamForm(data)
+            if team.is_valid():
+                team.save()
+    elif request.method == 'POST':
         if (request.POST['first_name'].strip()):
             name = request.POST['first_name'].split()
             last_name = ' '.join(name[:len(name)-1])
@@ -1200,12 +1206,25 @@ def teachers(request, sort_type=1, sort_status=0, page=1):
             last_name = ''
             first_name = ''
         index = school.teacher_set.count() + 1
-        data = {'first_name':first_name, 'last_name':last_name, 'birthday':request.POST['birthday'], 'sex':request.POST['sex'], 'school_id':school.id, 'birth_place':request.POST['birth_place'].strip(), 'index':index}
+
+        if request.POST['team_id']:
+            team = school.team_set.get(id = request.POST['team_id'])
+        else:
+            team = None
+        if request.POST['group_id']:
+            group = school.team_set.get(id = request.POST['group_id'])
+        else:
+            group = None
+
+        data = {'first_name':first_name, 'last_name':last_name, 'birthday':request.POST['birthday'],
+                'sex':request.POST['sex'], 'school_id':school.id, 'birth_place':request.POST['birth_place'].strip(),
+                'group_id' : request.POST['group_id'], 'team_id': request.POST['team_id'], 'index':index}
         form = TeacherForm(data)
         if form.is_valid():
             d = request.POST['birthday'].split('/')
             birthday = date(int(d[2]),int(d[1]),int(d[0]))
-            add_teacher(first_name=data['first_name'], last_name=data['last_name'], school=get_school(request), birthday=birthday, sex=data['sex'], birthplace=data['birth_place'])
+            add_teacher(first_name=data['first_name'], last_name=data['last_name'], school=get_school(request), birthday=birthday,
+                        sex=data['sex'], birthplace=data['birth_place'], group_id = group, team_id =team)
             message = 'Bạn vừa thêm một giáo viên mới'
             form = TeacherForm()
         else:
@@ -1213,7 +1232,8 @@ def teachers(request, sort_type=1, sort_status=0, page=1):
                 data['first_name'] = data['last_name'] + ' ' + data['first_name']
                 form = TeacherForm(data)
             
-			
+    teamList = school.team_set.all()
+    print teamList
     if int(sort_type) == 1:
         if int(sort_status) == 0:
             teacherList = school.teacher_set.order_by('first_name', 'last_name')
@@ -1229,6 +1249,16 @@ def teachers(request, sort_type=1, sort_status=0, page=1):
             teacherList = school.teacher_set.order_by('sex')
         else:
             teacherList = school.teacher_set.order_by('-sex')
+    if int(sort_type) == 5:
+        if int(sort_status) == 0:
+            teacherList = school.teacher_set.order_by('group_id')
+        else:
+            teacherList = school.teacher_set.order_by('-group_id')
+    if int(sort_type) == 4:
+        if int(sort_status) == 0:
+            teacherList = school.teacher_set.order_by('team_id')
+        else:
+            teacherList = school.teacher_set.order_by('-team_id')
     paginator = Paginator (teacherList, 20)
     try:
         teacher_list = paginator.page(page)
@@ -1244,9 +1274,52 @@ def teachers(request, sort_type=1, sort_status=0, page=1):
                                     'message': message,
                                     'teacherList': teacher_list,
                                     'sort_type':sort_type, 
-                                    'sort_status':sort_status, 
+                                    'sort_status':sort_status,
+                                    'teamList' : teamList,
                                     'next_status':1-int(sort_status), 
                                     'base_order':(int (page)-1) * 20,
+                                    'pos':pos,
+                                    'teacher_id':id})
+    return HttpResponse(t.render(c))
+
+def teachers_in_team(request, team_id):
+    user = request.user
+    if not user.is_authenticated():
+        return HttpResponseRedirect(reverse('login'))
+    try:
+        school = get_school(request)
+    except Exception as e:
+        return HttpResponseRedirect(reverse('index'))
+
+    pos = get_position(request)
+    school = get_school(request)
+    try:
+        if request.is_ajax():
+            print request.POST
+            if (request.method == 'POST' and request.POST['request_type'] == u'team'):
+                t = school.teacher_set.get(id = id)
+                t.team_id = request.POST['team']
+                t.save()
+                response = simplejson.dumps({'success': True})
+                return HttpResponse( response, mimetype='json')
+    except Exception as e:
+        print e
+        response = simplejson.dumps({'success': True})
+        return HttpResponse( response, mimetype='json')
+    teacherList =  school.teacher_set.filter(team_id = team_id).order_by('first_name', 'last_name')
+    flist = []
+    i = 0
+    for t in teacherList:
+        flist.append(TeacherForm())
+        flist[i] = TeacherForm(instance = t)
+        i += 1
+    list = zip(teacherList, flist)
+    t = loader.get_template(os.path.join('school', 'teachers_in_team.html'))
+    tmp = get_teacher(request)
+    id = 0
+    if (tmp):
+        id = tmp.id
+    c = RequestContext(request, {   'list': list,
                                     'pos':pos,
                                     'teacher_id':id})
     return HttpResponse(t.render(c))

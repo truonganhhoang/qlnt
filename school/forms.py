@@ -159,6 +159,14 @@ class KiLuatForm(forms.ModelForm):
             'noi_dung': forms.Textarea(attrs = {'cols': 50, 'rows': 10}),
         }
 
+class TeamForm(forms.ModelForm):
+    class Meta:
+            model = Team
+
+class GroupForm(forms.ModelForm):
+    class Meta:
+            model = Group
+
 class HanhKiemForm(forms.ModelForm):
     class Meta:
         model = HanhKiem
