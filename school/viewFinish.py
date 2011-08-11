@@ -728,7 +728,7 @@ def finishTerm(request,term_id=None):
     
     if request.method == 'POST':
         if request.POST.get('finishTerm'):
-            if request.POST['finishTerm']==u'click vào đây để kết thúc học kỳ':                
+            if request.POST['finishTerm']!=u'Khôi phục về trạng thái học kỳ trước':                
                 selectedTerm.year_id.school_id.status=selectedTerm.number+1 
             else:
                 selectedTerm.year_id.school_id.status=selectedTerm.number
@@ -836,7 +836,7 @@ def finishYear(request,year_id):
         if request.POST.get('tongKet'):
             finishYearInSchool(year_id)
             
-            message="Vừa tính tổng kết xong. Xem kết quả bên dưới để biết tình hình tổng kết ở trường bạn"
+            message="Đã tính tổng kết xong. Mời bạn xem kết quả phía dưới."
     
     yearString=str(selectedTerm.year_id.time)+"-"+str(selectedTerm.year_id.time+1)
     finishLearning,notFinishLearning,finishPractising,notFinishPractising,finishAll,notFinishAll= countDetailYear(year_id)
@@ -846,10 +846,11 @@ def finishYear(request,year_id):
     hlList,pthlList = countTotalLearningInYear(year_id)
     ddList,ptddList = countDanhHieuInYear(year_id)
     
+    currentTerm = get_current_term(request)
                     
     t = loader.get_template(os.path.join('school','finish_year.html'))    
     c = RequestContext(request, {"message":message,
-                                 "selectedTerm":selectedTerm,
+                                 "currentTerm":currentTerm,
                                  "yearString":yearString,
                                  "finishLearning":finishLearning,
                                  "notFinishLearning":notFinishLearning,

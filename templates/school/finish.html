@@ -8,13 +8,13 @@
 {% endif %}
 <a 
    title="Tính điểm tổng kết của toàn trường học kỳ I" 
-   href = "{%url school.views.school_index  %}finishTerm/{{firstTerm.id}}">Xem tổng kết học kỳ I</a>
+   href = "{%url school.views.school_index  %}finishTerm/{{firstTerm.id}}">Tính tổng kết học kỳ I</a>
 {% ifnotequal currentTerm.number 1 %}	
 &nbsp&nbsp	<a title="Tính điểm tổng kết của toàn trường học kỳ II" href = "{%url school.views.school_index  %}finishTerm/{{secondTerm.id}}">Tính tổng kết học kỳ II </a>
 &nbsp&nbsp	<a title="Tính điểm tổng kết của toàn trường cả năm học" href = "{%url school.views.school_index  %}finishYear/{{firstTerm.year_id.id}}">Tính tổng kết cả năm</a>
 {% else %}
-&nbsp&nbsp	<a title="Đang trong học kỳ I nên link này đã bị vô hiệu hóa">Xem tổng kết học kỳ II</a>
-&nbsp&nbsp	<a title="Đang trong học kỳ I nên link này sẽ bị vô hiệu hóa">Xem tổng kết cả năm</a>
+&nbsp&nbsp	<a title="Đang trong học kỳ I nên link này đã bị vô hiệu hóa">Tính tổng kết học kỳ II</a>
+&nbsp&nbsp	<a title="Đang trong học kỳ I nên link này sẽ bị vô hiệu hóa">Tính tổng kết cả năm</a>
 {% endifnotequal %}		
 
 {% endblock %}	

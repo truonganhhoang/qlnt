@@ -56,7 +56,7 @@ def thu1(request):
     return HttpResponse(t.render(c))
 
 @transaction.commit_on_success                                                              
-def thu(request):
+def thu2(request):
     t1= time.time()
     list1 = TKMon.objects.filter(student_id__class_id=2)
     for m in list1:
@@ -98,6 +98,21 @@ def thu(request):
     t2=time.time()
     print (t2-t1)
     c = RequestContext(request, {'list':list,
+                                }
+                       )
+
+    #print (t2-t1)
+    return HttpResponse(t.render(c))
+
+def thu(request):
+    t1= time.time()
+    
+    message=None
+    
+    t = loader.get_template(os.path.join('school','ll.html'))
+    t2=time.time()
+    print (t2-t1)
+    c = RequestContext(request, {'message':message,
                                 }
                        )
 

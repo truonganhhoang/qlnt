@@ -33,15 +33,16 @@
       <br>
       <input class="ggButton" type="submit" name="finishTerm" value="Khóa sổ điểm và chuyển sang kỳ tiếp theo"
              title="Khi chọn thì trường sẽ chuyển sang kì tiếp theo và khóa sổ điểm đối với giáo viên.">
+	  <input class="ggButton" type="submit" name="tongKet" value="Tính tổng kết cả trường">
     {% endifequal %}
     
     {% ifnotequal selectedTerm currentTerm %}
       <p>Thông tin học kỳ: <span style="color:red;"> Đã kết thúc </span></p>
+      <br>
       <input class="ggButton" type="submit" name="finishTerm" value="Khôi phục về trạng thái học kỳ trước"
              title="Chuyển trạng thái học kỳ về trước để giáo viên có thể chỉnh sửa điểm của học sinh ở kỳ này">
     {% endifnotequal %}
   
-    <input class="ggButton" type="submit" name="tongKet" value="Tính tổng kết cả trường">
   </form>
   <br>
   <h2> A.Thống kê toàn trường: </h2>
@@ -186,35 +187,10 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-  {#-------------------------------------------------------------------------------#}
-  {# chi tiet tung lop  #}
-  {#-------------------------------------------------------------------------------#}
-
-
-
-
-
-
-
-
-
-
-
-
   <h2> B.Chi tiết từng lớp: </h2>
 
   <h3>I.Hạnh kiểm: </h3>
-  <h4>&nbsp 1. Danh sách các lớp đã tổng kết xong:</h4>
+  <h4>&nbsp 1.Các lớp đã tổng kết xong:</h4>
   <table border="0" width="100%">
     {% for l in finishPractising %}
       {% if  forloop.counter0|divisibleby:"6" %}
@@ -231,7 +207,7 @@
     {% endfor %}
   </table>
   <br>
-  <h4>&nbsp 2. Danh sách các lớp chưa tổng kết xong:</h4>
+  <h4>&nbsp 2.Các lớp chưa tổng kết xong:</h4>
   <table border="0" width="100%">
     <tr>
       <td width="16.6 %">
@@ -279,7 +255,7 @@
   <br>
   <br>
   <h3> II.Học lực: </h3>
-  <h4>&nbsp 1. Danh sách các lớp đã tổng kết xong: </h4>
+  <h4>&nbsp 1.Các lớp đã tổng kết xong: </h4>
   <table border="0" width="100%">
     {% for l in finishLearning %}
       {% if  forloop.counter0|divisibleby:"6" %}
@@ -296,7 +272,7 @@
     {% endfor %}
   </table>
   <br>
-  <h4>&nbsp 2. Danh sách các lớp chưa tổng kết xong:</h4>
+  <h4>&nbsp 2. Các lớp chưa tổng kết xong:</h4>
   <table border="0" width="100%">
     <tr>
       <td width="16.6 %">
@@ -345,7 +321,7 @@
   <br>
 
   <h3>III.Tổng kết chung: </h3> <br>
-  <h4>&nbsp 1. Danh sách các lớp đã tổng kết xong:</h4>
+  <h4>&nbsp 1. Các lớp đã tổng kết xong:</h4>
   <table border="0" width="100%">
     {% for l in finishAll %}
       {% if  forloop.counter0|divisibleby:"6" %}
@@ -362,7 +338,7 @@
     {% endfor %}
   </table>
   <br>
-  <h4>&nbsp 2. Danh sách các lớp chưa tổng kết xong:</h4>
+  <h4>&nbsp 2. Các lớp chưa tổng kết xong:</h4>
   <table border="0" width="100%">
     <tr>
       <td width="16.6 %">

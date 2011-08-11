@@ -1,6 +1,7 @@
 ﻿ {% extends "base.html"%} 
 {% block content %}
 
+{{selecteTerm.number}}
 <div class="notify-widget-pane" >
     <div class="notify" id="notify1" style="display: none;">
     </div>
@@ -23,21 +24,21 @@
 <br>
 <form action=""  name="info" method="post" id='myform' 
 	 >{% csrf_token %}    
-	 {% ifnotequal selectedTerm.number 3 %}	 
+	 {% ifnotequal currentTerm.number 3 %}	 
 		Thông tin năm học:
 		<span style="color:red;"> Đang diễn ra</span>	
-		&nbsp&nbsp&nbsp
-		<input class="buttonClass" type="submit"  name="finishTerm" value="click vào đây để kết thúc năm học" title="Sau khi click thì trạng thái trường sẽ chuyển sang kì tiếp theo và khóa sổ điểm đối với giáo viên ">
+		<br>
+		<br>
+		<input class="ggButton" type="submit"  name="finishTerm" value="click vào đây để kết thúc năm học" title="Sau khi click thì trạng thái trường sẽ chuyển sang kì tiếp theo và khóa sổ điểm đối với giáo viên ">
+		<input class="ggButton" type="submit"  name="tongKet" value="Tính tổng kết cả trường" >
 
 	  {% else%}	
 		Thông tin năm:
 		<span style="color:red;"> Đã kết thúc </span>
-		&nbsp&nbsp&nbsp&nbsp
-		Nếu chưa muốn kết thúc học kỳ, bạn có thể ấn khôi phục lại học kỳ
-		<input class="buttonClass" type="submit"  name="finishTerm" value="khôi phục" title="Sau khi click, thì trạng thái trường học sẽ được chuyển về kỳ này và giáo viên có thể được sửa điểm của học sinh ở kỳ này" >
+		<br>
+		<br>
+		<input class="ggButton" type="submit"  name="finishTerm" value="Khôi phục về học kỳ II" title="Sau khi click, thì trạng thái trường học sẽ được chuyển về kỳ này và giáo viên có thể được sửa điểm của học sinh ở kỳ này" >
 	  {% endifnotequal %}	
-	<br>
-    <input class="buttonClass" type="submit"  name="tongKet" value="Tính tổng kết cả trường" >
 		
 </form>	
 <br>
