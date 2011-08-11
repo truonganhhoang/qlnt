@@ -3,25 +3,25 @@
         function confirmDelete() {
             return confirm("Bạn có chắc chắn xóa không?");
         }
-        $(document).ready(function(){
-                $("select[name=team_id]").each(function() {
-                    $(this).change(function() {
-                        var id = $(this).parents("tr").attr('class').split(' ')[0];
-                        var team = $(this).val();
-                        var data = { id: id, team:team, request_type:'team'};
-                        var arg = { type:"POST",
-                            url:"",
-                            data: data,
-                            datatype:"json"
-                        };
-                        $.ajax(arg);
-                        return false;
+        $(document).ready(function() {
+            $("select[name=team_id]").each(function() {
+                $(this).change(function() {
+                    var id = $(this).parents("tr").attr('class').split(' ')[0];
+                    var team = $(this).val();
+                    var data = { id: id, team:team, request_type:'team'};
+                    var arg = { type:"POST",
+                        url:"school/teachers_in_team/{{ team.id }}",
+                        data: data,
+                        datatype:"json"
+                    };
+                    $.ajax(arg);
+                    return false;
 
-                    });
                 });
+            });
         });
     </script>
-    <h2>Danh sách giáo viên tổ </h2>
+    <h2>Danh sách giáo viên {{ team }}</h2>
     <table class="styleA" width="100%">
         <tr>
             <th align="center" width="5%"> STT</th>
@@ -29,7 +29,7 @@
             <th align="center" width="10%">Ngày sinh</th>
             <th align="center" width="20%"> Nơi sinh</th>
             <th align="center" width="10%">Giới tính</th>
-            <th align="center" width="15%">Tổ </th>
+            <th align="center" width="15%">Tổ</th>
             <th align="center" width="15%">Nhóm</th>
             {% if pos > 3 %}
                 <th width="10%"></th>
@@ -41,17 +41,17 @@
         {% endif %}
 
         {% for ss, f in list %}
-            <tr class = "{{ ss.id }}">
-                <td align="center" width="5%">{{ forloop.counter}}</td>
+            <tr class="{{ ss.id }}">
+                <td align="center" width="5%">{{ forloop.counter }}</td>
                 <td align="center" width="15%">
                     {% if pos > 3 or teacher_id == ss.id %}
                         <a href="{%url school.views.school_index  %}viewTeacherDetail/{{ss.id}}">
-                        {{ ss.last_name }} {{ ss.first_name }} </a>
+                            {{ ss.last_name }} {{ ss.first_name }} </a>
                     {% else %}
                         {{ ss.last_name }} {{ ss.first_name }}
                     {% endif %}
-
                 </td>
+
                 <td align="center" width="10%"> {{ ss.birthday|date:"SHORT_DATE_FORMAT" }}</td>
                 <td align="center" width="20%"> {{ ss.birth_place }}</td>
                 <td align="center" width="10%"> {{ ss.sex }} </td>
@@ -60,11 +60,11 @@
                     <td align="center" width="15%"> {{ f.group_id }} </td>
                     <td align="center" width="10%"><a
                             href="{%url school.views.school_index  %}deleteTeacher/{{ss.id}}"
-                            title="XÓa giáo viên" class="ggButton"
+                            title="Xóa giáo viên" class="ggButton"
                             onclick="return confirmDelete();"> xóa </a></td>
                 {% else %}
-                <td align="center" width="15%"> {{ ss.team_id }} </td>
-                <td align="center" width="15%"> {{ ss.group_id }} </td>
+                    <td align="center" width="15%"> {{ ss.team_id }} </td>
+                    <td align="center" width="15%"> {{ ss.group_id }} </td>
                 {% endif %}
             </tr>
         {% endfor %}
@@ -78,6 +78,6 @@
             <td align="right"><a href="">Xuất ra Excel</a></td>
         </tr>
     {% endif %}
-    <input id="reload" type="hidden" onclick="location.replace(location.href)"></input>
+    <input id="reload" type="hidden" onclick="location.replace(location.href)"/>
     </div>
 {% endblock %}

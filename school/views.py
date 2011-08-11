@@ -1200,14 +1200,7 @@ def teachers(request, sort_type=1, sort_status=0, page=1):
     form = TeacherForm()
     school = get_school(request)
     #print sort_type +' ' + sort_status
-    if request.is_ajax():
-        if request.POST['request_type']== u'team':
-            data = {'name' : request.POST['name'], 'school_id':school.id}
-            print request.POST
-            team = TeamForm(data)
-            if team.is_valid():
-                team.save()
-    elif request.method == 'POST':
+    if request.method == 'POST':
         if (request.POST['first_name'].strip()):
             name = request.POST['first_name'].split()
             last_name = ' '.join(name[:len(name)-1])
@@ -1303,21 +1296,21 @@ def teachers_in_team(request, team_id):
 
     pos = get_position(request)
     school = get_school(request)
-    try:
-        if request.is_ajax():
-            print request.POST
-            if (request.method == 'POST' and request.POST['request_type'] == u'team'):
-                t = school.teacher_set.get(id = id)
-                t.team_id = request.POST['team']
+    if request.is_ajax():
+        print request.POST
+        if (request.method == 'POST' and request.POST['request_type'] == u'team'):
+            try:
+                t = school.teacher_set.get(id = request.POST['id'])
+                team = school.team_set.get (id = request.POST['team'])
+                t.team_id = team
                 t.save()
-                response = simplejson.dumps({'success': True})
-                return HttpResponse( response, mimetype='json')
-    except Exception as e:
-        print e
-        response = simplejson.dumps({'success': True})
-        return HttpResponse( response, mimetype='json')
+            except Exception as e:
+                print e
+            response = simplejson.dumps({'success': True})
+            return HttpResponse( response, mimetype='json')
     teacherList =  school.teacher_set.filter(team_id = team_id).order_by('first_name', 'last_name')
     flist = []
+    team = school.team_set.get(id = team_id)
     i = 0
     for t in teacherList:
         flist.append(TeacherForm())
@@ -1331,7 +1324,8 @@ def teachers_in_team(request, team_id):
         id = tmp.id
     c = RequestContext(request, {   'list': list,
                                     'pos':pos,
-                                    'teacher_id':id})
+                                    'teacher_id':id,
+                                    'team' : team})
     return HttpResponse(t.render(c))
 
 def viewTeacherDetail(request, teacher_id):

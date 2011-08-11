@@ -15,15 +15,10 @@
         $(document).ready(function() {
             var $tab_title_input = $("#tab_title"),
                     $tab_content_input = $("#tab_content");
-            var tab_counter = 2;
 
             // tabs init with a custom tab template and an "add" callback filling in the content
             var $tabs = $("#tabs").tabs({
                 tabTemplate: "<li><a href='#{href}'>#{label}</a> <span class='ui-icon ui-icon-close'>Remove Tab</span></li>",
-                add: function(event, ui) {
-                    var tab_content = $tab_content_input.val() || "Tab " + tab_counter + " content.";
-                    $(ui.panel).append("<p>" + tab_content + "</p>");
-                }
             });
 
             // modal dialog init: custom buttons and a "close" callback reseting the form inside
@@ -71,7 +66,6 @@
 
             // addTab button: just opens the dialog
             $("#add_tab")
-                    .button()
                     .click(function() {
                         $dialog.dialog("open");
                     });
@@ -91,7 +85,7 @@
         </form>
     </div>
 
-    <button id="add_tab">Thêm tổ</button>
+    <input class = "ggButton" type = "button" id="add_tab" value ="Thêm tổ">
     <div id="tabs">
         <ul>
             <li><a href="#tabs-0">Tất cả</a></li>
