@@ -31,7 +31,7 @@ function confirmDelete()
         <td align="center" width="15%"> {{kt.time|date:"SHORT_DATE_FORMAT"}}</td>
         <td align="center" width="25%"> {{kt.hinh_thuc}}</td>
         <td align="center" width="15%"> {{kt.dia_diem}} </td>
-        <td align="center" width="30%"> {{kt.noi_dung}} </a></td>
+        <td align="center" width="30%"> {{kt.noi_dung}} </td>
         {%if pos > 1%}
         <td width="5%"><a href = "/school/khenthuong/{{kt.id}}/delete" onclick="return confirmDelete();"> Xóa</a></td>
         <td width="5%"><a href = "/school/khenthuong/{{kt.id}}/edit" > Sửa</a></td>

@@ -551,51 +551,40 @@ section#main {
     display: block;
 }
 
+/*div.leftInfoDiv {*/
+    /*width: auto;*/
+    /*float: left;*/
+    /*border-right: 1px solid #DADADA;*/
+    /*padding: 10px;*/
+    /*text-align: right;*/
+
+/*}*/
+
+/*div.rightInfoDiv {*/
+    /*position: relative;*/
+    /*width: auto;*/
+    /*padding: 10px;*/
+    /*border-right: 1px solid #DADADA;*/
+    /*float: left;*/
+    /*text-align: right;*/
+/*}*/
+
 div.infoContent {
     width: 100%;
     display: inline-block;
-}
-
-div.leftInfoDiv {
-    width: auto;
-    float: left;
-    border-right: 1px solid #DADADA;
-    padding: 20px;
-    text-align: right;
-
-}
-
-div.rightInfoDiv {
-    position: relative;
-    width: auto;
-    padding: 20px;
-    border-right: 1px solid #DADADA;
-    float: left;
-    text-align: right;
 }
 
 div.rightInfoDivMain {
     text-align: left;
 }
 
-div.infoContent {
-    width: 100%;
-    display: inline-block;
-}
-
-div.leftInfoDiv {
-    width: auto;
-    float: left;
-    border-right: 1px solid #DADADA;
-    padding: 20px;
-}
-
-div.rightInfoDiv {
+div.leftInfoDiv, div.rightInfoDiv, div.confirmation, div.startYear {
     position: relative;
     width: auto;
-    padding: 20px;
+    padding: 10px;
     float: left;
 }
+
 
 div#divList {
     -webkit-column-count: 4;
@@ -689,7 +678,7 @@ div#tabs ul li{
 /*----FOOTER PANEL----*/
 footer {
     position: absolute;
-    top: 500px;
+    /*top: 300px;*/
     margin-top: 20px;
     padding: 6px 0 6px;
     border-top: thin solid #c0c0c0;
@@ -702,26 +691,6 @@ footer p {
     color: #999;
     font-size: 80%;
     text-align: center
-}
-
-/*DL, DT, DD TAGS LIST DATA*/
-dl {
-    width: 100%;
-    overflow: hidden;
-}
-
-dt {
-    float: left;
-    clear: left;
-    width: 200px; /* adjust the width; make sure the total of both is 100% */
-    background: #c3dde0;
-    font-weight: bold;
-}
-
-dd {
-    padding: 0;
-    margin: 0;
-    float: left;
 }
 
 div#classes{
@@ -804,8 +773,6 @@ div#classes p{
 }
 
 
-
-
 /* HELP page */
 div#help {
     text-align: justify;
@@ -820,3 +787,29 @@ div#help {
 div#help p, h3 {
 	padding: 5px;
 }
+
+
+table.dataform {
+    margin: 5px 5px;
+    background-color:  #e2edef;
+}
+
+table.dataform th {
+    padding: 10px;
+    background-color:  #EAF2F3;
+    font-size: 14px;
+    text-align: right;
+}
+
+table.dataform input {
+    padding: 3px;
+    font-size: 14px;
+    /*border: 1px solid #a9c6c9;*/
+    /*text-align: left;*/
+}
+
+/*table.dataform tr {*/
+    /*padding: 2px;*/
+    /*border: 1px solid #a9c6c9;*/
+/*}*/
+

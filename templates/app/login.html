@@ -1,31 +1,38 @@
 {% extends "base.html" %}
 {% load i18n %}
 
-{% block content %}	
-<div id="bodyPanel">
-<h2>Đăng nhập</h2>
-	<p>Nhập thông tin đăng nhập hoặc xem <a href="/help">Trợ giúp</a> để được hỗ trợ. </p>
-	<form action="{{ app_path }}" method="post" id="login-form">{% csrf_token %}
-		<table class="login">
-			<col width="160px">
-			<tr>
-			<td valign="bottom">Tên đăng nhập</td>
-			<td>{% if not form.this_is_the_login_form.errors %}{{ form.username.errors }}{% endif %}
-			{{ form.username }}</td>
-	    	</tr>
-	    	<tr>
-	    	<td valign="bottom">Mật khẩu</td>
-	    	<td>{% if not form.this_is_the_login_form.errors %}{{ form.password.errors }}{% endif %}
-		    {{ form.password }}</td>
-			</tr>
-			<tr>
-			<td></td>
-	    	<td><input type="submit" value="Đăng nhập" /></td>
-	    	</tr>
-	    </table>
-	</form>
-	<script type="text/javascript">
-		document.getElementById('id_username').focus()
-	</script>
-</div>
+{% block content %}
+    <h2>Đăng nhập</h2>
+    <form action="{{ app_path }}" method="post" id="login-form">{% csrf_token %}
+      <table class="dataform">
+        <col>
+        <tr>
+          <th valign="bottom">Tên đăng nhập</th>
+          <td>
+            {{ form.username }}
+          </td>
+          <td>
+          {{ form.username.errors }}
+          </td>
+        </tr>
+        <tr>
+          <th valign="bottom">Mật khẩu</th>
+          <td>
+            {{ form.password }}
+          </td>
+          <td>
+            {{ form.password.errors }}
+          </td>
+        </tr>
+        <tr>
+          <td align="center"></td>
+          <td>
+            <input type="submit" value="Đăng nhập"/>
+          </td>
+        </tr>
+      </table>
+    </form>
+    <script type="text/javascript">
+      document.getElementById('id_username').focus()
+    </script>
 {% endblock %}

@@ -1,25 +1,38 @@
 {% extends "base.html" %}
 
 {% block content %}
-	{%if user.username == profile.user.username%}
-		<h2>Thông tin tài khoản: {{user.username}}</h2>
-		{% if profile %}
-			<a href="{% url profiles_edit_profile %}">Chỉnh sửa</a></dd>
-			&nbsp &nbsp<a href="{% url app.views.change_password %}">Đổi mật khẩu </a></dd>
-				<div class="fieldWrapper">
-			        {{form.username.errors }}
-				</div>
-				<dl>
-					<dt>Họ và tên:</dt> <dd> {{ profile.user.first_name }} {{profile.user.last_name}}</dd>
-					<dt>Tổ chức:</dt> <dd> {{ profile.organization }}</dd>
-					<dt>Vị trí:</dt> <dd> {{ profile.position }}</dd>
-					<dt>Số điện thoại:</dt> <dd> {{ profile.phone }}</dd>
-					<dt>Ghi chú:</dt> <dd> {{profile.notes}}</dd>
-					<dt>Lần đăng nhập trước:</dt> <dd> {{ profile.user.last_login|date:"j F Y" }}</dd>
-				</dl>
-			</div>
-		{% else %}
-		{% endif %}
-	{% endif %}
+  {% if user.username == profile.user.username %}
+    <h2>Thông tin tài khoản: {{ user.username }}</h2>
+    {% if profile %}
+      <div id="submenu">
+        <a href="{% url profiles_edit_profile %}" class="tiptiphover ggButton">Chỉnh sửa</a>
+        <a href="{% url app.views.change_password %}" class="tiptiphover ggButton">Đổi mật khẩu </a>
+      </div>
+      <table class="dataform">
+        <tr>
+          <th>Họ và tên</th>
+          <td> {{ profile.user.first_name }} {{ profile.user.last_name }}</td>
+        </tr>
+        <tr>
+          <th>Tổ chức</th>
+          <td> {{ profile.organization }}</td>
+        </tr>
+        <tr>
+          <th>Vị trí</th>
+          <td> {{ profile.position }}</td>
+        </tr>
+        <tr>
+          <th>Điện thoại</th>
+          <td> {{ profile.phone }}</td>
+        </tr>
+        <tr>
+          <th>Ghi chú</th>
+          <td> {{ profile.notes }}</td>
+        </tr>
+      </table>
+      </div>
+    {% else %}
+    {% endif %}
+  {% endif %}
 {% endblock %}
 	

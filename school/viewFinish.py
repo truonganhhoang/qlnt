@@ -736,7 +736,7 @@ def finishTerm(request,term_id=None):
             selectedTerm.year_id.school_id.save()
         if request.POST.get('tongKet'):
             finishTermInSchool(term_id)
-            message="Vừa tính tổng kết xong. Xem kết quả bên dưới để biết tình hình tổng kết ở trường bạn"
+            message="Đã tính tổng kết xong. Mời bạn xem kết quả phía dưới."
         
     
     selectedTerm= Term.objects.get(id=term_id)

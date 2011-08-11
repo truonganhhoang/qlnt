@@ -148,7 +148,7 @@ $(document).ready(function(){
         height: 370,
         maxWidth: 500,
         maxHeight: 450,
-        title: "Góp ý"
+        title: "Góp ý",
     });
 
 });

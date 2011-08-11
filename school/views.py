@@ -1669,14 +1669,16 @@ def diem_danh(request, class_id, day, month, year):
     form = []
     for p in pupilList:
         try:
-            dd = DiemDanh.objects.get(time__exact=time, student_id__exact=p.id, term_id__exact=term.id)
+            dd = DiemDanh\
+            .objects.get(time__exact=time, student_id__exact=p.id, term_id__exact=term.id)
             form.append(DiemDanhForm(instance=dd))
         except ObjectDoesNotExist:
             form.append(DiemDanhForm())
     listdh = zip(pupilList, form)
     try:
         if request.method == 'POST':
-            message = 'Điểm danh lớp ' + str(Class.objects.get(id=class_id)) + '. Ngày ' + str(time) + "đã xong."
+#            message = 'Điểm danh lớp ' + str(Class.objects.get(id=class_id)) + ', ngày ' + str(time) + ' đã xong.'
+            message = 'Đã lưu điểm danh.'
             list = request.POST.getlist('loai')
             i = 0
             for p in pupilList:
