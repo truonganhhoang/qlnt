@@ -50,7 +50,7 @@ def to_en(string):
 def to_en1(string):
     result = ''
     uni_a = u'ăắẳẵặằâầấẩẫậàáảãạ'
-    uni_A = u'ĂẮẲẴẶẰÂẦẤẨẪẬÀÁẢÃẠ' 
+    uni_A = u'ĂẮẲẴẶẰÂẦẤẨẪẬÀÁẢÃẠ'
     uni_o = u'óòỏõọơớờởỡợôốồỗộổ'
     uni_O = u'ÓÒỎÕỌƠỚỜỞỠỢÔỐỒỖỘỔ'
     uni_i = u'ìĩịỉí'
@@ -63,14 +63,14 @@ def to_en1(string):
     uni_Y = u'ÝỲỶỸỴ'
     uni_d = u'đ'
     uni_D = u'Đ'
-    
+
     for c in string:
         for cc in ['a','o','i','u','e','d','y','A','O','I','U','E','D','Y']:
             exec("if c in uni_" + cc + ": c = " + "'" + cc + "'" )
         result += c
     return result
 
-        
+
 # make username: example: input: AA, Nguyen Van, 2006 => output: AAnv_2006
 #                         input: AA, Nguyen Van       => output: AAnv
 def make_username( first_name = None, last_name = None, full_name = None, start_year = None):
@@ -84,18 +84,18 @@ def make_username( first_name = None, last_name = None, full_name = None, start_
     username = first_name
     if last_name and last_name.strip() != '':
         for word in last_name.split(" "):
-             if word: username += word[0]
+            if word: username += word[0]
     if start_year:
         username += '_' + str(start_year.time)
-    
+
     i = 0
     username1 = username
     while User.objects.filter( username__exact = username1):
         i = i+1
         username1 = username + '_' + str(i)
-    
+
     return username1
-    
+
 def make_default_password( raw_password):
     import random
     algo = 'sha1'
@@ -104,8 +104,8 @@ def make_default_password( raw_password):
     password = '%s$%s$%s' % (algo, salt, hsh)
 
     return password
-        
-        
+
+
 
 # student: Pupil object,
 # old_class: Class object,
@@ -127,15 +127,15 @@ def move_student(school, student, new_class):
                 the_mark.subject_id = subject
                 the_mark.term_id = term1
                 the_mark.save()
-                                   
+
             tkmon = TKMon()
             tkmon.student_id = student
             tkmon.subject_id = subject
             tkmon.save()
         student.class_id = new_class
         student.index = index
-        student.save()      
-        return       
+        student.save()
+        return
     if old_class.block.number != new_class.block.number:
         raise Exception("chuyển học sinh tới lớp không cùng khối")
     else:
@@ -148,13 +148,13 @@ def move_student(school, student, new_class):
                 the_mark.save()
                 tkmon = subject.tkmon_set.filter( student_id__exact = student)
                 tkmon.subject_id = subject_in_new_class
-                tkmon.save()       
+                tkmon.save()
             else:
                 print student, "chuyển từ ", find.class_id, " sang ", _class
                 print "nhưng môn học: ", subject, " không có."
                 #raise Exception("Subject does not exist")   
     student.class_id = new_class
-    student.save()      
+    student.save()
 
 
 # This function will handle a change of students in a particular class
@@ -179,9 +179,155 @@ def move_student(school, student, new_class):
 
 @transaction.commit_manually
 def add_student( student = None, index = 0, start_year = None , year = None,
-                _class = None, term = None, school = None, school_join_date = None ):
-        if not ( student and start_year and term and school ):
-            raise Exception("Phải có giá trị cho các trường: Student,Start_Year,Term,School.")
+                 _class = None, term = None, school = None, school_join_date = None ):
+    if not ( student and start_year and term and school ):
+        raise Exception("Phải có giá trị cho các trường: Student,Start_Year,Term,School.")
+    if 'fullname' in student:
+        names = student['fullname'].split(" ")
+        last_name = ' '.join(names[:len(names)-1])
+        first_name = names[len(names)-1]
+    else:
+        last_name = student['last_name']
+        first_name = student['first_name']
+    if not school_join_date:
+        school_join_date = datetime.date.today()
+    birthday = student['birthday']
+    if 'uu_tien' in student:
+        uu_tien = student['uu_tien']
+    else: uu_tien = ''
+    if 'current_address' in student:
+        current_address = student['current_address']
+    else: current_address = None
+    if 'birth_place' in student:
+        birth_place = student['birth_place']
+    else: birth_place = None
+    if 'ban_dk' in student:
+        ban = student['ban_dk']
+    else: ban = None
+    find = start_year.pupil_set.filter( first_name__exact = first_name)\
+    .filter(last_name__exact = last_name)\
+    .filter(birthday__exact = birthday)
+    # count primary subjects
+    number_subject = 0
+    print number_subject
+    if _class:
+        number_subject = _class.subject_set.filter( primary = True).count()
+    if find: # the student exists:
+        find = find[0]
+        find.class_id = _class
+        if _class is not find.class_id:
+            move_student( find, find.class_id, _class)
+        else:
+            pass
+    else:    # the student does not exist
+        try:
+            st = Pupil()
+            st.first_name = first_name
+            st.last_name = last_name
+            st.birthday = birthday
+            st.ban_dk = ban
+            st.school_join_date = school_join_date
+            st.start_year_id = start_year
+            st.class_id = _class
+            st.index = index
+            st.school_id = school
+            st.uu_tien = uu_tien
+            if 'dan_toc' in student: st.dan_toc = student['dan_toc']
+            if 'birth_place' in student: st.birth_place = student['birth_place']
+            if 'current_address' in student: st.current_address = student['current_address']
+            if 'father_name' in student: st.father_name = student['father_name']
+            if 'father_phone' in student: st.father_phone = student['father_phone']
+            if 'mother_name' in student: st.mother_name = student['mother_name']
+            if 'mother_phone' in student: st.mother_phone = student['mother_phone']
+            if 'phone' in student: st.phone = student['phone']
+
+            print 'tag 1'
+            if 'sex' in student:
+                st.sex = student['sex']
+            else:
+                st.sex = 'Nam'
+            user = User()
+            user.username = make_username( first_name = first_name, last_name = last_name, start_year = start_year)
+            user.password = make_default_password( user.username )
+            user.save()
+            userprofile = UserProfile()
+            userprofile.user = user
+            userprofile.organization = school
+            userprofile.position = 'HOC_SINH'
+            userprofile.save()
+            st.user_id = user
+            st.save()
+
+            hk = HanhKiem()
+            hk.year_id=year
+            hk.student_id=st
+            hk.save()
+            for i in range(1,3):
+                term1 = year.term_set.get( number__exact = i)
+
+                tb_hoc_ky = TBHocKy()
+                tb_hoc_ky.student_id = st
+                tb_hoc_ky.number_subject = number_subject
+                tb_hoc_ky.term_id = term1
+                tb_hoc_ky.save()
+
+                tk_diem_danh = TKDiemDanh()
+                tk_diem_danh.student_id = st
+                tk_diem_danh.term_id = term1
+                tk_diem_danh.save()
+
+            tb_nam = TBNam()
+            tb_nam.student_id = st
+            tb_nam.number_subject = number_subject
+            tb_nam.year_id = year
+            tb_nam.save()
+
+
+            if _class:
+                subjects = _class.subject_set.all()
+                for i in range(1,3):
+                    term1 = year.term_set.get( number__exact = i)
+                    for subject in subjects:
+                        the_mark = Mark()
+                        the_mark.student_id = st
+                        the_mark.subject_id = subject
+                        the_mark.term_id = term1
+                        the_mark.save()
+
+                for subject in subjects:
+                    tkmon = TKMon(student_id = st, subject_id = subject)
+                    tkmon.save()
+        except Exception as e:
+            print e
+
+    #end for student in students
+    transaction.commit()
+
+
+# adding students to database, return list of existing students.
+@transaction.commit_manually
+def add_many_students( student_list = None, start_year = None , year = None,
+                       _class = None, term = None, school = None, school_join_date = None ):
+    if not ( student_list and start_year and term and school ):
+        raise Exception("Phải có giá trị cho các trường: Student,Start_Year,Term,School.")
+    index =0
+    existing_student = []
+    for student in student_list:
+        index += 1
+
+        #            data = {'full_name':student['ten'],
+        #                    'birthday':student['ngay_sinh'],
+        #                    'ban':student['nguyen_vong'],
+        #                    'sex':student['gioi_tinh'],
+        #                    'dan_toc':student['dan_toc'],
+        #                    'noi_sinh':student['noi_sinh'],
+        #                    'cho_o_ht':student['cho_o_ht'],
+        #                    'ten_bo':student['ten_bo'],
+        #                    'dt_bo':student['dt_bo'],
+        #                    'ten_me':student['ten_me'],
+        #                    'dt_me':student['dt_me']
+        #                    }
+        #            student = data
         if 'fullname' in student:
             names = student['fullname'].split(" ")
             last_name = ' '.join(names[:len(names)-1])
@@ -189,253 +335,111 @@ def add_student( student = None, index = 0, start_year = None , year = None,
         else:
             last_name = student['last_name']
             first_name = student['first_name']
+
         if not school_join_date:
             school_join_date = datetime.date.today()
         birthday = student['birthday']
-        if 'uu_tien' in student:
-            uu_tien = student['uu_tien']
-        else: uu_tien = ''
-        if 'current_address' in student:
-            current_address = student['current_address']
-        else: current_address = None
-        if 'birth_place' in student:
-            birth_place = student['birth_place']
-        else: birth_place = None
-        if 'ban_dk' in student:
-            ban = student['ban_dk']
-        else: ban = None
+        ban = student['ban_dk']
         find = start_year.pupil_set.filter( first_name__exact = first_name)\
-                                   .filter(last_name__exact = last_name)\
-                                   .filter(birthday__exact = birthday)
+        .filter(last_name__exact = last_name)\
+        .filter(birthday__exact = birthday)
         # count primary subjects
         number_subject = 0
-        print number_subject
         if _class:
             number_subject = _class.subject_set.filter( primary = True).count()
+
         if find: # the student exists:
-            find = find[0]
-            find.class_id = _class
-            if _class is not find.class_id:
-                move_student( find, find.class_id, _class)
-            else:
-                pass
+            existing_student.append(find)
+        #                find = find[0]
+        #                find.class_id = _class
+        #                if _class is not find.class_id:
+        #                    move_student( find, find.class_id, _class)
+        #                else:
+        #                    pass
         else:    # the student does not exist
-            try:
-                st = Pupil()
-                st.first_name = first_name
-                st.last_name = last_name
-                st.birthday = birthday
-                st.ban_dk = ban
-                st.school_join_date = school_join_date
-                st.start_year_id = start_year
-                st.class_id = _class
-                st.index = index
-                st.school_id = school
-                st.uu_tien = uu_tien
-                if 'dan_toc' in student: st.dan_toc = student['dan_toc']
-                if 'birth_place' in student: st.birth_place = student['birth_place']
-                if 'current_address' in student: st.current_address = student['current_address']
-                if 'father_name' in student: st.father_name = student['father_name']
-                if 'father_phone' in student: st.father_phone = student['father_phone']
-                if 'mother_name' in student: st.mother_name = student['mother_name']
-                if 'mother_phone' in student: st.mother_phone = student['mother_phone']
-                if 'phone' in student: st.phone = student['phone']
+            st = Pupil(first_name = first_name,
+                       last_name = last_name,
+                       birthday = birthday,
+                       ban_dk = ban,
+                       school_join_date = school_join_date,
+                       start_year_id = start_year,
+                       class_id = _class,
+                       index = index,
+                       school_id = school)
+            if 'sex' in student:
+                st.sex = student['sex']
+            else:
+                st.sex = 'Nam'
 
-                print 'tag 1'
-                if 'sex' in student:
-                    st.sex = student['sex']
-                else:
-                    st.sex = 'Nam'
-                user = User()
-                user.username = make_username( first_name = first_name, last_name = last_name, start_year = start_year)
-                user.password = make_default_password( user.username )
-                user.save()
-                userprofile = UserProfile()
-                userprofile.user = user
-                userprofile.organization = school
-                userprofile.position = 'HOC_SINH'
-                userprofile.save()
-                st.user_id = user
-                st.save()
+            if 'dan_toc' in student: st.dan_toc = student['dan_toc']
+            if 'birth_place' in student: st.birth_place = student['birth_place']
+            if 'current_address' in student: st.current_address = student['current_address']
+            if 'father_name' in student: st.father_name = student['father_name']
+            if 'father_phone' in student: st.father_phone = student['father_phone']
+            if 'mother_name' in student: st.mother_name = student['mother_name']
+            if 'mother_phone' in student: st.mother_phone = student['mother_phone']
+            user = User()
+            user.username = make_username( first_name = first_name, last_name = last_name, start_year = start_year)
+            user.password = make_default_password( user.username )
+            user.save()
+            userprofile = UserProfile()
+            userprofile.user = user
+            userprofile.organization = school
+            userprofile.position = 'HOC_SINH'
+            userprofile.save()
+            st.user_id = user
+            st.save()
 
-                hk = HanhKiem()
-                hk.year_id=year
-                hk.student_id=st
-                hk.save()
+            hk = HanhKiem( year_id = year, student_id = st)
+            hk.save()
+
+
+
+            for i in range(1,3):
+                term1 = year.term_set.get( number__exact = i)
+
+                tb_hoc_ky = TBHocKy()
+                tb_hoc_ky.student_id = st
+                tb_hoc_ky.number_subject = number_subject
+                tb_hoc_ky.term_id = term1
+                tb_hoc_ky.save()
+
+                tk_diem_danh = TKDiemDanh()
+                tk_diem_danh.student_id = st
+                tk_diem_danh.term_id = term1
+                tk_diem_danh.save()
+
+            tb_nam = TBNam()
+            tb_nam.student_id = st
+            tb_nam.number_subject = number_subject
+            tb_nam.year_id = year
+            tb_nam.save()
+
+
+
+            if _class:
+                subjects = _class.subject_set.all()
                 for i in range(1,3):
                     term1 = year.term_set.get( number__exact = i)
-
-                    tb_hoc_ky = TBHocKy()
-                    tb_hoc_ky.student_id = st
-                    tb_hoc_ky.number_subject = number_subject
-                    tb_hoc_ky.term_id = term1
-                    tb_hoc_ky.save()
-
-                    tk_diem_danh = TKDiemDanh()
-                    tk_diem_danh.student_id = st
-                    tk_diem_danh.term_id = term1
-                    tk_diem_danh.save()
-
-                tb_nam = TBNam()
-                tb_nam.student_id = st
-                tb_nam.number_subject = number_subject
-                tb_nam.year_id = year
-                tb_nam.save()
-
-
-                if _class:
-                    subjects = _class.subject_set.all()
-                    for i in range(1,3):
-                        term1 = year.term_set.get( number__exact = i)
-                        for subject in subjects:
-                            the_mark = Mark()
-                            the_mark.student_id = st
-                            the_mark.subject_id = subject
-                            the_mark.term_id = term1
-                            the_mark.save()
-
                     for subject in subjects:
-                        tkmon = TKMon(student_id = st, subject_id = subject)
-                        tkmon.save()
-            except Exception as e:
-                print e
-                
-        #end for student in students
-        transaction.commit()
+                        the_mark = Mark( student_id = st, subject_id = subject, term_id = term1)
+                        the_mark.save()
 
-@transaction.commit_manually
-def add_many_students( student_list = None, start_year = None , year = None, 
-                _class = None, term = None, school = None, school_join_date = None ):
-        if not ( student_list and start_year and term and school ):
-            raise Exception("Phải có giá trị cho các trường: Student,Start_Year,Term,School.")
-        index =0
-        print 'add_many_students'
-        for student in student_list:
-            index += 1
-            
-#            data = {'full_name':student['ten'],
-#                    'birthday':student['ngay_sinh'],
-#                    'ban':student['nguyen_vong'],
-#                    'sex':student['gioi_tinh'],
-#                    'dan_toc':student['dan_toc'],
-#                    'noi_sinh':student['noi_sinh'],
-#                    'cho_o_ht':student['cho_o_ht'],
-#                    'ten_bo':student['ten_bo'],
-#                    'dt_bo':student['dt_bo'],
-#                    'ten_me':student['ten_me'],
-#                    'dt_me':student['dt_me']
-#                    }
-#            student = data
-            if 'fullname' in student:
-                names = student['fullname'].split(" ")
-                last_name = ' '.join(names[:len(names)-1])
-                first_name = names[len(names)-1]
-            else:
-                last_name = student['last_name']
-                first_name = student['first_name']
-                
-            if not school_join_date:
-                school_join_date = datetime.date.today()
-            birthday = student['birthday']
-            ban = student['ban_dk']
-            find = start_year.pupil_set.filter( first_name__exact = first_name)\
-                                       .filter(last_name__exact = last_name)\
-                                       .filter(birthday__exact = birthday)
-            # count primary subjects
-            number_subject = 0
-            if _class:
-                number_subject = _class.subject_set.filter( primary = True).count()
-            
-            if find: # the student exists:
-                find = find[0]
-                find.class_id = _class
-                if _class is not find.class_id:
-                    move_student( find, find.class_id, _class)
-                else:
-                    pass
-            else:    # the student does not exist
-                st = Pupil(first_name = first_name,
-                           last_name = last_name,
-                           birthday = birthday,
-                           ban_dk = ban,
-                           school_join_date = school_join_date,
-                           start_year_id = start_year,
-                           class_id = _class,
-                           index = index,
-                           school_id = school)
-                if 'sex' in student:
-                    st.sex = student['sex']
-                else: 
-                    st.sex = 'Nam'
+                for subject in subjects:
+                    tkmon = TKMon(student_id = st, subject_id = subject)
+                    tkmon.save()
 
-                if 'dan_toc' in student: st.dan_toc = student['dan_toc']
-                if 'birth_place' in student: st.birth_place = student['birth_place']
-                if 'current_address' in student: st.current_address = student['current_address']
-                if 'father_name' in student: st.father_name = student['father_name']
-                if 'father_phone' in student: st.father_phone = student['father_phone']
-                if 'mother_name' in student: st.mother_name = student['mother_name']
-                if 'mother_phone' in student: st.mother_phone = student['mother_phone']
-                user = User()
-                user.username = make_username( first_name = first_name, last_name = last_name, start_year = start_year)
-                user.password = make_default_password( user.username )
-                user.save()
-                userprofile = UserProfile()
-                userprofile.user = user
-                userprofile.organization = school
-                userprofile.position = 'HOC_SINH'
-                userprofile.save() 
-                st.user_id = user
-                st.save()
-                
-                hk = HanhKiem( year_id = year, student_id = st)
-                hk.save()
-                
-                
-                
-                for i in range(1,3):
-                    term1 = year.term_set.get( number__exact = i)                
-                    
-                    tb_hoc_ky = TBHocKy()
-                    tb_hoc_ky.student_id = st
-                    tb_hoc_ky.number_subject = number_subject
-                    tb_hoc_ky.term_id = term1
-                    tb_hoc_ky.save()
-                  
-                    tk_diem_danh = TKDiemDanh()
-                    tk_diem_danh.student_id = st
-                    tk_diem_danh.term_id = term1
-                    tk_diem_danh.save()                            
-                            
-                tb_nam = TBNam()
-                tb_nam.student_id = st
-                tb_nam.number_subject = number_subject
-                tb_nam.year_id = year
-                tb_nam.save()
-                
-                
-                
-                if _class:        
-                    subjects = _class.subject_set.all()
-                    for i in range(1,3):
-                        term1 = year.term_set.get( number__exact = i)
-                        for subject in subjects:
-                            the_mark = Mark( student_id = st, subject_id = subject, term_id = term1)
-                            the_mark.save()
-                                           
-                    for subject in subjects:    
-                        tkmon = TKMon(student_id = st, subject_id = subject)
-                        tkmon.save()
-                
-                    
-        transaction.commit()
-        
+
+    transaction.commit()
+    return existing_student
+
 
 
 # student: Pupil object
 def del_student( student):
     student.disable = True
-    student.save()    
-    
+    student.save()
+
 def completely_del_student( student):
     student.user_id.delete()
 
@@ -455,7 +459,7 @@ def add_teacher( first_name = None, last_name = None, full_name = None, school =
     teacher.birth_place = birthplace
     teacher.team_id = team_id
     teacher.group_id = group_id
-    
+
     user = User()
     user.username = make_username( first_name = first_name, last_name = last_name )
     user.password = make_default_password( user.username)
@@ -464,8 +468,8 @@ def add_teacher( first_name = None, last_name = None, full_name = None, school =
     userprofile.user = user
     userprofile.organization = school
     userprofile.position = 'GIAO_VIEN'
-    userprofile.save() 
-    
+    userprofile.save()
+
     teacher.user_id = user
     teacher.save()
 
@@ -491,7 +495,7 @@ def add_subject( subject_name = None, hs = 1, teacher = None, _class = None, ind
         subject.class_id = _class
         subject.index = index
         subject.save()
-    
+
         students = _class.pupil_set.all()
         for student in students:
             mark = Mark()
@@ -499,12 +503,12 @@ def add_subject( subject_name = None, hs = 1, teacher = None, _class = None, ind
             mark.subject_id = subject
             mark.term_id = term
             mark.save()
-            
+
             tkmon = TKMon()
             tkmon.student_id = student
             tkmon.subject_id = subject
             tkmon.save()
-            
+
             # get TBHocKy
             school = _class.year_id.school_id
             current_term = _class.year_id.term_set.get( number = school.status )
@@ -517,7 +521,7 @@ def add_subject( subject_name = None, hs = 1, teacher = None, _class = None, ind
             except Exception as e:
                 transaction.rollback()
                 print e
-            
+
             # get TBNam
             try:
                 tbnam = student.tbnam_set.get( year_id = _class.year_id)
@@ -547,7 +551,7 @@ def completely_del_subject( subject):
                 tbhocky.save()
             except Exception as e:
                 print e
-            
+
             # get TBNam
             try:
                 tbnam = student.tbnam_set.get( year_id = _class.year_id)
@@ -558,10 +562,10 @@ def completely_del_subject( subject):
             except Exception as e:
                 print e
     subject.delete()
-            
+
 def get_school(request):
     if not request.user.is_authenticated():
-        raise Exception('NotAuthenticated') 
+        raise Exception('NotAuthenticated')
     if request.user.userprofile.organization.level != 'T':
         raise Exception('UserDoesNotHaveAnySchool')
     return Organization.objects.get(id=request.user.userprofile.organization.id)
@@ -601,7 +605,7 @@ def get_position(request):
         return 4
     else:
         return 0
-    
+
 def get_current_year(request):
     school = get_school(request)
     year = None
@@ -621,20 +625,20 @@ def get_latest_startyear(request):
 
 def get_startyear(request, time):
     school = get_school(request)
-    
+
     try:
         return school.startyear_set.get(time = time)
     except Exception( 'StartYearDoesNotExist'):
         return None
 
 
-		
+
 def get_current_term(request):
     school = get_school(request)
     try:
         return school.year_set.latest('time').term_set.get(number = school.status)
     except Exception( 'TermDoesNotExist'):
-        return None    
+        return None
 
 def in_school(request,school_id):
     try:
@@ -660,24 +664,24 @@ def gvcn(request, class_id):
     if cClass.teacher_id and (cClass.teacher_id.user_id == request.user):
         return 1
     return 0
-    
+
 #this function check whether the current user is the student of the class with class_id or not
 def inClass(request, class_id):
     if request.user.userprofile.position != 'HOC_SINH':
         return 0
-    st = request.user.pupil    
+    st = request.user.pupil
     if st.class_id.id == int(class_id):
         return 1
-    else:        
+    else:
         return 0
 #this function return the student ID of the current user
-    
+
 def get_teacher(request):
     if request.user.userprofile.position != 'GIAO_VIEN':
         return None
     teacher = request.user.teacher
     return teacher
-        
+
 def get_student(request):
     if request.user.userprofile.position != 'HOC_SINH':
         return None

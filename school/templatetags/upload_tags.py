@@ -59,8 +59,7 @@ def upload_js():
                     <a href="${url}"{{if thumbnail_url}} target="_blank"{{/if}}>${name}</a>
                 </td>
                 <td class="size">${sizef}</td>
-                <td colspan="2"></td>
-                <td class="message">${message}</td>
+                <td colspan="2" class="message">${message}</td>
             {{/if}}
             <td class="delete">
                 <button data-type="DELETE">Delete</button>

@@ -93,12 +93,11 @@ def setup(request):
                     labels = '-'.join([label.loai for label in school.danhsachloailop_set.all()])
                     lower_bound = get_lower_bound(school)
                     upper_bound = get_upper_bound(school)
-                    print lower_bound, upper_bound
                     grades = '-'.join([str(grade) for grade in range(lower_bound, upper_bound)])
-                    print grades
+
                 data = simplejson.dumps( {'message': message, 'status': success,
                                           'labels': labels, 'grades': grades})
-                print data
+                
             elif 'start_year' in request.POST:
                 if is_safe(school): 
                     data = simplejson.dumps({'status':'done'})
@@ -229,7 +228,6 @@ def phase_class_label(request, school):
     success = None
     if request.method == 'POST':
         labels = request.POST['labels']
-        print labels
         if u'Nhanh:' in labels or u'nhanh:' in labels:
             try:
                 labels = labels.split(':')[1]
@@ -238,13 +236,11 @@ def phase_class_label(request, school):
                 message = u'Bạn cần nhập ít nhất một tên lớp.'
                 success = False
 
-            print labels
             if ',' in labels:
                 list_labels = labels.split(',')
             else:
                 list_labels = labels.split(' ')
 
-            print list_labels
             if empty(list_labels):
                 message = u'Bạn cần nhập ít nhất một tên lớp.'
                 success = False
@@ -522,7 +518,7 @@ def save_file(import_file, session):
     return save_file_name
 
 def process_file(file_name, task):
-    message = '<ul>'
+    message = u'<ul>'
     if task == "import_student":
         student_list = []
         filepath = os.path.join(TEMP_FILE_LOCATION, file_name)
@@ -546,7 +542,7 @@ def process_file(file_name, task):
             if flag: break
         #                                                             CHUA BIEN LUAN TRUONG HOP: start_row = -1, ko co cot ten: Mã học sinh
         if start_row == -1:
-            return {'error': u'File tải lên không đúng mẫu.'}
+            return {'error': u'File tải lên phải có cột "Họ và Tên".'}, u'File tải lên phải có cột "Họ và Tên".', 0, 0
         # start_row != 0
         c_ten = -1
         c_ngay_sinh = -1
@@ -559,6 +555,8 @@ def process_file(file_name, task):
         c_so_dt_bo = -1
         c_so_dt_me = -1
         c_nguyen_vong = -1
+        number = 0
+        number_ok = 0
         for c in range(0, sheet.ncols):
             value = sheet.cell_value(start_row, c)
 
@@ -601,15 +599,15 @@ def process_file(file_name, task):
             name = sheet.cell(r, c_ten).value.strip()
             name = ' '.join([i.capitalize() for i in name.split(' ')])
             if not name.strip():
-                message += '<li>' + cellname(r, c_ten) + ':rỗng ' + '</li>'
+                message += u'<li>' + unicode(cellname(r, c_ten)) + u':Trống. </li>'
                 continue
+            number += 1
             birthday = sheet.cell(r, c_ngay_sinh).value
-            print birthday, type(birthday)
             if not birthday:
-                message += '<li>' + cellname(r, c_ngay_sinh) + ':rỗng ' + '</li>'
+                message += u'<li>' + unicode(cellname(r, c_ngay_sinh)) + u':Trống. Học sinh: ' + name + u' không đủ thông tin.</li>'
                 continue
             if c_gioi_tinh>-1:
-                gt = sheet.cell(r, c_gioi_tinh).value.strip()
+                gt = sheet.cell(r, c_gioi_tinh).value.strip().capitalize()
                 if not gt: gt = 'Nam'
             if c_noi_sinh>-1:
                 noi_sinh = sheet.cell(r, c_noi_sinh).value.strip()
@@ -619,24 +617,28 @@ def process_file(file_name, task):
             if c_cho_o_ht>-1:
                 cho_o_ht = sheet.cell(r, c_cho_o_ht).value.strip()
             if c_ten_bo>-1:
-                ten_bo = sheet.cell(r, c_ten_bo).value.strip()
+                ten_bo = sheet.cell(r, c_ten_bo).value.strip().capitalize()
             if c_so_dt_bo>-1:
                 dt_bo = sheet.cell(r, c_so_dt_bo).value.strip()
             if c_ten_me>-1:
-                ten_me = sheet.cell(r, c_ten_me).value.strip()
+                ten_me = sheet.cell(r, c_ten_me).value.strip().capitalize()
             if c_so_dt_me>-1:
                 dt_me = sheet.cell(r, c_so_dt_me).value.strip()
             if c_nguyen_vong>-1:
                 ban_dk = sheet.cell( r, c_nguyen_vong).value.strip()
                 if not ban_dk.strip(): ban_dk = 'CB'
-                
-            if type(birthday) == unicode or type(birthday)== str:
-                print ('to_date')
-                birthday = to_date(birthday)
-            else:
 
-                date_value = xlrd.xldate_as_tuple(sheet.cell(r, c_ngay_sinh).value, book.datemode)
-                birthday = date(*date_value[:3])
+            try:
+                if type(birthday) == unicode or type(birthday)== str:
+                    birthday = to_date(birthday)
+                else:
+
+                    date_value = xlrd.xldate_as_tuple(sheet.cell(r, c_ngay_sinh).value, book.datemode)
+                    birthday = date(*date_value[:3])
+            except Exception as e:
+                print e
+                message += u'<li>' + unicode(cellname(r, c_ngay_sinh)) + u':Không đúng định dạng "ngày/tháng/năm" ' + u'</li>'
+                continue
             data = {'fullname': name,
                     'birthday': birthday,
                     'sex': gt,
@@ -649,8 +651,9 @@ def process_file(file_name, task):
                     'mother_phone': dt_me,
                     'ban_dk': ban_dk}
             student_list.append(data)
-        message += '</ul>'
-        return student_list, message
+            number_ok += 1
+        message += u'</ul>'
+        return student_list, message, number, number_ok
     else: task == ""
     
     return None
@@ -670,14 +673,12 @@ def student_import( request, class_id ):
     if request.method == "POST":    
         if request.is_ajax( ):
             # the file is stored raw in the request
-            print 'is ajax'
             upload = request
             is_raw = True
             # AJAX Upload will pass the filename in the querystring if it is the "advanced" ajax upload
             try:
                 file = request.FILES.get('file')
-                print file
-            except KeyError: 
+            except KeyError:
                 return HttpResponseBadRequest( "AJAX request not valid" )
             # not an ajax upload, so it was the "basic" iframe version with submission via form
         else:
@@ -699,32 +700,45 @@ def student_import( request, class_id ):
     
     filename = save_file(request.FILES.get('file'), request.session)
     message = None
-    try:
-        result, process_file_message = process_file( filename, "import_student")
-    except Exception as e:
-        print e
-        data = [{'name': file.name, 'url': filename, 'error': u'File excel không đúng định dạng'}]
-        return HttpResponse( simplejson.dumps( data ) )
+    process_file_message = None
+
+    result, process_file_message, number, number_ok = process_file( filename, "import_student")
+    existing_student = []
     if 'error' in result:
         success = False
         message = result['error']
+        data = [{'name': file.name,
+                 'url': filename,
+                 'sizef':file.size,
+                 'process_message': process_file_message,
+                 'error': u'File excel không đúng định dạng'}]
     else:
         chosen_class = Class.objects.get( id = int(class_id) )
         year = school.startyear_set.get(time=datetime.date.today().year)
         current_year = school.year_set.latest('time')
         term = get_current_term( request)
         try:
-            c = datetime.datetime.now()
-            add_many_students(student_list = result, _class = chosen_class, 
-                              start_year = year, year = current_year,
-                              term = term, school=school)
+            existing_student= add_many_students(student_list = result, _class = chosen_class,
+                                                start_year = year, year = current_year,
+                                                term = term, school=school)
             
-            a = datetime.datetime.now()
             
         except Exception as e:
             message = u'Lỗi trong quá trình lưu cơ sở dữ liệu'
-    # let Ajax Upload know whether we saved it or not
-    data = [{'name': file.name, 'url': filename, 'message': 'Nhập dữ liệu thành công'}]
+
+        student_confliction = ''
+        if existing_student:
+            student_confliction = u'Có %s học sinh không được nhập do đã tồn tại trong hệ thống' % len(existing_student)
+        print 1
+        print existing_student
+        data = [{'name': file.name, 'url': filename,
+                 'sizef':file.size,
+                 'process_message': process_file_message,
+                 'student_confliction': student_confliction,
+                 'number': number,
+                 'number_ok': number_ok - len(existing_student),
+                 'message': 'Nhập dữ liệu thành công'}]
+        print data
     return HttpResponse( simplejson.dumps( data ) )
 
 def nhap_danh_sach_trung_tuyen(request):
@@ -813,7 +827,6 @@ def manual_adding(request):
                     i += 1
                     data = {'full_name': student['ten'], 'birthday':student['ngay_sinh'],
                         'ban':student['nguyen_vong'], }
-                    print i
                     try:
                         add_student(student=data, _class=chosen_class,
                                 start_year=year, year=this_year,
@@ -1438,7 +1451,6 @@ def subjectPerClass(request, class_id, sort_type=4, sort_status=0):
             if form.is_valid():
                 form.save()
     elif request.method == 'POST':
-        print request.POST
         hs_list = request.POST.getlist('hs')
         teacher_list = request.POST.getlist('teacher_id')
         p_list = request.POST.getlist('primary')
@@ -1920,7 +1932,6 @@ def diem_danh_hs(request, student_id, view_type = 0):
             form.append(DiemDanhForm(instance=dd))
         if request.method == 'POST':
             list = request.POST.getlist('loai')
-            print list
             i = 0
             for dd in ddl:
                 if list[i] != 'k':

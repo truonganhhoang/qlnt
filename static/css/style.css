@@ -394,11 +394,20 @@ div#tableFunction {
 }
 
 .errorlist {
-    color: red;
+    color: #CD0A0A;
 }
 
 .errorlist ul {
     width: auto;
+}
+
+div.errorDiv{
+    margin: 10px 2px;
+    border: 1px solid #CD0A0A;
+    padding: 4px;
+    border-radius: 4px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
 }
 
 .buttonClass {

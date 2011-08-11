@@ -32,6 +32,7 @@ $(function () {
     // Initialize the jQuery File Upload widget:
     $('#fileupload').fileupload({
         url: '/school/start_year/import/student/' + id,
+        dataType: 'json',
         acceptFileTypes: /(\.|\/)(xls)$/i,
         maxNumberOfFiles: 10
 
@@ -40,8 +41,23 @@ $(function () {
     $("#fileupload").bind('fileuploaddone', function(e, data){
             $("#notify").text("Đã lưu.");
             $("#notify").delay(1000).fadeOut('fast');
+            if (data.result[0].process_message.replace(/ /g,'') != ''){
+                $("#errorDetail").html(data.result[0].process_message);
+                if (data.result[0].student_confliction){
+                    $("#errorDetail > ul").append('<li>' + data.result[0].student_confliction +'</li>');
+                }
+                $("#errorDetail > ul").append('<li>' + 'Bạn đã nhập thành công '
+                                                     + data.result[0].number_ok
+                                                     + '/'
+                                                     + data.result[0].number
+                                                     +' học sinh.</li>');
 
+                $("#errorDetail").show();
+            } else {
+                $("#errorDetail").hide();
+            }
     });
+
 
     //$("#startUpload").attr('disabled', 'disabled');
     //$("#startUpload").addClass('ui-button-disabled ui-state-disabled');
