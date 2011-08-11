@@ -729,8 +729,6 @@ def student_import( request, class_id ):
         student_confliction = ''
         if existing_student:
             student_confliction = u'Có %s học sinh không được nhập do đã tồn tại trong hệ thống' % len(existing_student)
-        print 1
-        print existing_student
         data = [{'name': file.name, 'url': filename,
                  'sizef':file.size,
                  'process_message': process_file_message,
@@ -738,7 +736,6 @@ def student_import( request, class_id ):
                  'number': number,
                  'number_ok': number_ok - len(existing_student),
                  'message': 'Nhập dữ liệu thành công'}]
-        print data
     return HttpResponse( simplejson.dumps( data ) )
 
 def nhap_danh_sach_trung_tuyen(request):
@@ -769,7 +766,7 @@ def nhap_danh_sach_trung_tuyen(request):
             if chosen_class:
                 request.session['save_file_name'] = save_file_name
                 request.session['chosen_class'] = chosen_class
-                student_list, process_file_message = process_file(file_name=save_file_name, task="import_student")
+                student_list, process_file_message, number, number_ok = process_file(file_name=save_file_name, task="import_student")
                 if 'error' in student_list:
                     message = student_list['error']   
                 else:
