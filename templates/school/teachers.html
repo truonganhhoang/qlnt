@@ -77,7 +77,8 @@
                     var arg = { type:"POST",
                         url:"",
                         data: data,
-                        datatype:"json"
+                        datatype:"json",
+                        success:function(){}
                     };
                     $.ajax(arg);
                     return false;
