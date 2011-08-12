@@ -60,8 +60,9 @@ urlpatterns = patterns('',
 
     #------------------------------------------------------------------
 
-    url(r'classes/(?P<sort_type>\w+)/(?P<sort_status>\w+)$', 'school.views.classes'),
     url(r'classes$', 'school.views.classes', name = "classes"),
+    url(r'classtab/(?P<block_id>\w+)$', 'school.views.classtab'),
+    url(r'classtab$', 'school.views.classtab'),
     url(r'addclass$', 'school.views.addClass'),
     url(r'hanhkiem/(?P<class_id>\w+)/(?P<sort_type>\w+)/(?P<sort_status>\w+)$', 'school.views.hanh_kiem'),
     url(r'hanhkiem/(?P<class_id>\w+)', 'school.views.hanh_kiem'),

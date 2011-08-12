@@ -1022,7 +1022,54 @@ def danh_sach_trung_tuyen(request):
     return render_to_response(DANH_SACH_TRUNG_TUYEN, {'message':message}, context_instance=context)
 #------------------------------------------------------------------------------------
                                       
-def classes(request, sort_type=1, sort_status=0, page=1):
+def classes(request):
+    user = request.user
+    if not user.is_authenticated():
+        return HttpResponseRedirect(reverse('login'))
+    try:
+        school = get_school(request)
+    except Exception as e:
+        return HttpResponseRedirect(reverse('index'))
+    
+    pos = get_position(request)
+    if pos == 1:
+        url = '/school/viewClassDetail/' + str(get_student(request).class_id.id)
+        return HttpResponseRedirect(url)
+    message = None
+    school = get_school(request)
+    blockList = school.block_set.all()
+    if request.method == 'POST':
+        if (request.is_ajax()):
+            cyear = get_current_year(request)
+            class_id = request.POST['id']
+            c = cyear.class_set.get(id = int(class_id))
+            tc = None
+            teacher_id = None
+            if request.POST['teacher_id'] != u'':
+                teacher_id = request.POST['teacher_id']
+                teacher = school.teacher_set.get(id = int(teacher_id))
+                try:
+                    tc = cyear.class_set.get(teacher_id__exact = teacher.id)
+                except ObjectDoesNotExist:
+                    pass
+            else:
+                teacher_id = None
+            if teacher_id == None or tc == None:
+                data = {'name':c.name, 'year_id':c.year_id.id, 'block_id':c.block_id.id, 'teacher_id':teacher_id,'status':c.status,'index':c.index}
+                form = ClassForm(school.id, data, instance=c)
+                if form.is_valid():
+                    form.save()
+            else:
+                message = 'Giáo viên đã có lớp chủ nhiệm'
+                data = simplejson.dumps({'message':message})
+                return HttpResponse(data, mimetype = 'json')
+    t = loader.get_template(os.path.join('school', 'classes.html'))
+    c = RequestContext(request, {   'message': message, 
+                                    'blockList': blockList,
+                                    'pos':pos,})
+    return HttpResponse(t.render(c))
+
+def classtab(request, block_id=0):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
@@ -1041,81 +1088,65 @@ def classes(request, sort_type=1, sort_status=0, page=1):
     school_id = school.id
     form = ClassForm(school_id)
     cyear = get_current_year(request)
-    if int(sort_type) == 1:
-        if not int(sort_status):
-            classList = cyear.class_set.order_by('name')
-        else:
-            classList = cyear.class_set.order_by('-name')
-    if int(sort_type) == 2:
-        if not int(sort_status):
-            classList = cyear.class_set.order_by('block_id__number')
-        else:
-            classList = cyear.class_set.order_by('-block_id__number')
-    if int(sort_type) == 3:
-        if not int(sort_status):
-            classList = cyear.class_set.order_by('teacher_id__first_name')
-        else:
-            classList = cyear.class_set.order_by('-teacher_id__first_name')
-    if int(sort_type) == 4:
-        if not int(sort_status):
-            classList = cyear.class_set.order_by('year_id__time')
-        else:
-            classList = cyear.class_set.order_by('-year_id__time')
-
+    if int(block_id) == 0:
+        classList = cyear.class_set.order_by('name')
+    else:
+        block = school.block_set.get(id=int(block_id))
+        classList = block.class_set.order_by('name')
     cfl = []
     num = []
     for c in classList:
         cfl.append(ClassForm(school_id, instance=c))
         num.append(c.pupil_set.count())
     list = zip(classList, cfl, num)
-    if request.is_ajax():
-        class_id = request.POST['id']
-        c = classList.get(id = int(class_id))
-        tc = None
-        teacher_id = None
-        if request.POST['teacher_id'] != u'':
-            teacher_id = request.POST['teacher_id']
-            teacher = school.teacher_set.get(id = int(teacher_id))
-            try:
-                tc = cyear.class_set.get(teacher_id__exact = teacher.id)
-            except ObjectDoesNotExist:
-                pass
-        else:
+    if request.method == 'POST':
+        if (request.is_ajax()):
+            class_id = request.POST['id']
+            c = classList.get(id = int(class_id))
+            tc = None
             teacher_id = None
-        if teacher_id == None or tc == None:
-            data = {'name':c.name, 'year_id':c.year_id.id, 'block_id':c.block_id.id, 'teacher_id':teacher_id,'status':c.status,'index':c.index}
-            form = ClassForm(school_id, data, instance=c)
-            if form.is_valid():
-                form.save()
+            if request.POST['teacher_id'] != u'':
+                teacher_id = request.POST['teacher_id']
+                teacher = school.teacher_set.get(id = int(teacher_id))
+                try:
+                    tc = cyear.class_set.get(teacher_id__exact = teacher.id)
+                except ObjectDoesNotExist:
+                    pass
+            else:
+                teacher_id = None
+            if teacher_id == None or tc == None:
+                data = {'name':c.name, 'year_id':c.year_id.id, 'block_id':c.block_id.id, 'teacher_id':teacher_id,'status':c.status,'index':c.index}
+                form = ClassForm(school_id, data, instance=c)
+                if form.is_valid():
+                    form.save()
+            else:
+                message = 'Giáo viên đã có lớp chủ nhiệm'
+                data = simplejson.dumps({'message':message})
+                return HttpResponse(data, mimetype = 'json')
         else:
-            message = 'Giáo viên đã có lớp chủ nhiệm'
-            data = simplejson.dumps({'message':message})
-            return HttpResponse(data, mimetype = 'json')
-    elif request.method == 'POST':
-        teacher_list = request.POST.getlist('teacher_id')
-        i = 0
-        for c in classList:
-            data = {'name':c.name, 'year_id':c.year_id.id, 'block_id':c.block_id.id, 'teacher_id':teacher_list[i],'status':c.status,'index':c.index}
-            of = cfl[i]
-            cfl[i] = ClassForm(school_id, data, instance=c)
-            if str(of) != str(cfl[i]):
-                if cfl[i].is_valid():
-                    cfl[i].save()
-                message = 'Thông tin lớp đã được cập nhật.'
-            i += 1
-        cfl.append(ClassForm(school_id, instance=c))		
-    list = zip(classList, cfl, num)
-    t = loader.get_template(os.path.join('school', 'classes.html'))
+            teacher_list = request.POST.getlist('teacher_id')
+            i = 0
+            for c in classList:
+                data = {'name':c.name, 'year_id':c.year_id.id, 'block_id':c.block_id.id, 'teacher_id':teacher_list[i],'status':c.status,'index':c.index}
+                of = cfl[i]
+                cfl[i] = ClassForm(school_id, data, instance=c)
+                if str(of) != str(cfl[i]):
+                    if cfl[i].is_valid():
+                        cfl[i].save()
+                    message = 'Thông tin lớp đã được cập nhật.'
+                i += 1
+            cfl.append(ClassForm(school_id, instance=c))
+            url = 'school/classes'
+            return HttpResponseRedirect(url)
+        list = zip(classList, cfl, num)
+    t = loader.get_template(os.path.join('school', 'classtab.html'))
     c = RequestContext(request, {   'list': list, 
                                     'form': form, 
                                     'message': message, 
-                                    'classList': classList, 
-                                    'sort_type':sort_type, 
-                                    'sort_status':sort_status, 
-                                    'next_status':1-int(sort_status),
+                                    'classList': classList,
+                                    'block_id': block_id,
                                     'pos':pos,})
     return HttpResponse(t.render(c))
-
 
 #User: loi.luuthe@gmail.com
 #This function receives a form from template, and immediately creates new class with from the form information

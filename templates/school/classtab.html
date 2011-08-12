@@ -1,0 +1,99 @@
+
+{% block content %}
+  {% if message != None %}
+    {{ message }}
+  {% endif %}
+
+  <script>
+    $(document).ready(function() {
+      var note = '';
+      var done = function(json) {
+        if (json.message != null && json.message != '') {
+          $("#errors").html("<ul>" + json.message + "</ul>");
+          $("#errors").dialog("open");
+        }
+      };
+      $("#errors").dialog({
+        modal : true,
+        buttons: {
+          Đóng: function() {
+            window.location = window.location.href;
+            $(this).dialog('close');
+          }
+        },
+        autoOpen: false,
+        width: 500,
+        height: 200,
+        maxWidth: 500,
+        maxHeight: 450,
+        title: "Có lỗi xảy ra"
+      })
+      $("select[name=teacher_id]").each(function() {
+        $(this).change(function() {
+          var id = $(this).parents("tr").attr('class').split(' ')[0];
+          var teacher_id = $(this).val();
+          var data = { id: id, teacher_id:teacher_id, request_type:'update'}
+          var arg = { type:"POST",
+            url:"",
+            data: data,
+            datatype:"json",
+            success:done
+          };
+          $.ajax(arg);
+          return false;
+
+        });
+      });
+    });
+    function confirmDelete() {
+      return confirm("Bạn có chắc chắn xóa không?");
+    }
+  </script>
+
+    <form action="/school/classtab/{{block_id}}" method="post">{% csrf_token %}
+    <table class="styleA" width="100%">
+        <tr>
+            <th align="center"> STT </th>
+            <th align="center"> Tên Lớp </th>
+            <th align="center"> Sỹ số </th>
+            <th align="center"> Giáo Viên Chủ Nhiệm </th>
+            <th align="center"> Năm </th>
+            {% if pos >= 4 %}
+            <th align="center"></th>
+            {% endif %}
+        </tr>
+      {% for class, f, n in list %}
+        <tr class="{{class.id}}">
+          <td align="center"> {{ forloop.counter }}</td>
+          <td align="center"><a
+                  href="{%url school.views.school_index  %}viewClassDetail/{{class.id}}">{{ class.name }} </a></td>
+          <td align="center"> {{ n }} </td>
+          {% if pos >= 4 %}
+            <td align="center"> {{ f.teacher_id }} </td>
+          {% else %}
+            <td align="center"> {{ class.teacher_id }} </td>
+          {% endif %}
+          <td align="center"> {{ class.year_id }} </td>
+          {% if pos >= 4 %}
+            {% ifequal n  0 %}
+              <td align="center"><a class="ggButton" href="{%url school.views.school_index  %}deleteClass/{{class.id}}"
+                                    onclick="return confirmDelete();"> xóa </a></td>
+            {% else %}
+              <td align="center"><a class="ggButton"
+                                    onclick="alert( 'Lớp vẫn còn học sinh, vui lòng xóa hết học sinh trước' );">
+                xóa </a></td>
+            {% endifequal %}
+          {% endif %}
+        </tr>
+      {% endfor %}
+    </table>
+
+      
+  {% if pos >= 4 %}
+    <input type="submit" class="ggButton" value="Cập nhật"/>
+    <a href="{%url school.views.school_index %}addclass" class="ggButton">Thêm lớp học</a>
+  {% endif %}
+  </form>
+  <div style="display: None;"></div>
+  <div id="errors"></div>
+{% endblock %}
