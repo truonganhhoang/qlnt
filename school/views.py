@@ -1409,7 +1409,8 @@ def teachers_in_team(request, team_id):
                 t.team_id = team
                 t.save()
             except Exception as e:
-                print e
+                pass
+            print 'here'
             response = simplejson.dumps({'success': True})
             return HttpResponse( response, mimetype='json')
     teacherList =  school.teacher_set.filter(team_id = team_id).order_by('first_name', 'last_name')

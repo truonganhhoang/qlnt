@@ -8,15 +8,15 @@
                 $(this).change(function() {
                     var id = $(this).parents("tr").attr('class').split(' ')[0];
                     var team = $(this).val();
-                    var p = $(this).parents("tr")
+                    var p = $(this).parents("tr");
                     var data = { id: id, team:team, request_type:'team'};
                     var arg = { type:"POST",
                         url:"school/teachers_in_team/{{ team.id }}",
                         data: data,
                         datatype:"json",
-                        success: function(p){
-                                p.remove()
-                            }
+                        success:function(){
+                            p.empty();
+                        }
                     };
                     $.ajax(arg);
                     return false;
