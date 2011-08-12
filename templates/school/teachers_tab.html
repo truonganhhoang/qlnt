@@ -18,9 +18,25 @@
 
                 });
             });
+        
+            $("#submitform").submit(function() {
+                var d = $(this).serialize();
+                d = d +'&request_type=add';
+                var arg = {data: d,
+                    type: $(this).attr('method'),
+                    url: $(this).attr('action'),
+                    request_type: 'add',
+                    success: function(response) {
+                        $('.ui-tabs-panel:visible').html(response);
+                    }
+                };
+                $.ajax(arg);
+                return false;
+        });    
      });
     </script>
     <h2>Danh sách giáo viên</h2>
+        <form action="/school/teachers_tab" id ="submitform" method="post">{% csrf_token %}
             <table class="styleA" width="100%">
                 <tr>
                     <th align="center" width="5%"> STT</th>
@@ -71,7 +87,6 @@
                     </tr>
                 {% endfor %}
                 {% if pos > 3 %}
-                    <form action="/school/teachers_tab" method="post">{% csrf_token %}
                         <tr>
                             {{ form.non_field_errors }}
                             <td width="5%"></td>
@@ -103,9 +118,9 @@
 
                             <td><input type="submit" class="ggButton" value="Thêm"/></td>
                         </tr>
-                    </form>
                 {% endif %}
             </table>
+            </form>
 
             {% if pos > 3 %}
                 <tr>

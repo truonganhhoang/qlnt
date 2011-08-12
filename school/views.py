@@ -1361,7 +1361,9 @@ def teachers_tab(request, sort_type=1, sort_status=0):
     message = None
     form = TeacherForm()
     school = get_school(request)
+    print '1'
     if request.is_ajax():
+        print request.POST
         if (request.method == 'POST' and request.POST['request_type'] == u'team'):
             try:
                 print request.POST
@@ -1374,37 +1376,37 @@ def teachers_tab(request, sort_type=1, sort_status=0):
                 return HttpResponse(response, mimetype='json')
             except Exception as e:
                 print e
+        elif request.method == 'POST' and request.POST['request_type']==u'add':
+            if (request.POST['first_name'].strip()):
+                name = request.POST['first_name'].split()
+                last_name = ' '.join(name[:len(name)-1])
+                first_name = name[len(name)-1]
+            else:
+                last_name = ''
+                first_name = ''
+            index = school.teacher_set.count() + 1
+            teamlist = request.POST.getlist('team_id')
+            tid = teamlist.pop()
+            if tid != u'':
+                team = school.team_set.get(id = tid)
+            else:
+                team = None
 
-    elif request.method == 'POST':
-        if (request.POST['first_name'].strip()):
-            name = request.POST['first_name'].split()
-            last_name = ' '.join(name[:len(name)-1])
-            first_name = name[len(name)-1]
-        else:
-            last_name = ''
-            first_name = ''
-        index = school.teacher_set.count() + 1
-
-        if request.POST['team_id']:
-            team = school.team_set.get(id = request.POST['team_id'])
-        else:
-            team = None
-
-        data = {'first_name':first_name, 'last_name':last_name, 'birthday':request.POST['birthday'],
-                'sex':request.POST['sex'], 'school_id':school.id, 'birth_place':request.POST['birth_place'].strip(),
-                'team_id': request.POST['team_id'], 'index':index}
-        form = TeacherForm(data)
-        if form.is_valid():
-            d = request.POST['birthday'].split('/')
-            birthday = date(int(d[2]),int(d[1]),int(d[0]))
-            add_teacher(first_name=data['first_name'], last_name=data['last_name'], school=get_school(request), birthday=birthday,
-                        sex=data['sex'], birthplace=data['birth_place'], team_id =team)
-            message = 'Bạn vừa thêm một giáo viên mới'
-            form = TeacherForm()
-        else:
-            if data['first_name'] != '':
-                data['first_name'] = data['last_name'] + ' ' + data['first_name']
-                form = TeacherForm(data)
+            data = {'first_name':first_name, 'last_name':last_name, 'birthday':request.POST['birthday'],
+                    'sex':request.POST['sex'], 'school_id':school.id, 'birth_place':request.POST['birth_place'].strip(),
+                    'team_id': request.POST['team_id'], 'index':index}
+            form = TeacherForm(data)
+            if form.is_valid():
+                d = request.POST['birthday'].split('/')
+                birthday = date(int(d[2]),int(d[1]),int(d[0]))
+                add_teacher(first_name=data['first_name'], last_name=data['last_name'], school=get_school(request), birthday=birthday,
+                            sex=data['sex'], birthplace=data['birth_place'], team_id =team)
+                message = 'Bạn vừa thêm một giáo viên mới'
+                form = TeacherForm()
+            else:
+                if data['first_name'] != '':
+                    data['first_name'] = data['last_name'] + ' ' + data['first_name']
+                    form = TeacherForm(data)
 
     if int(sort_type) == 1:
         if int(sort_status) == 0:
