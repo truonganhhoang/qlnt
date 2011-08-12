@@ -12,10 +12,10 @@ $(document).ready(function(){
     // setting up css to render page in the right way
 
     $("footer").css('width',$(document).width());
-    if ($('#place_keeper').offset().top + $("footer").outerHeight() <= $(window).height()){
-        $("footer").css('position', 'fixed');
-        $("footer").css('bottom', '0');
-    }
+//    if ($('#place_keeper').offset().top + $("footer").outerHeight() <= $(window).height()){
+//        $("footer").css('position', 'fixed');
+//        $("footer").css('bottom', '0');
+//    }
 
     
     var maxHeight = 0;
