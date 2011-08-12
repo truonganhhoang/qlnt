@@ -1296,7 +1296,22 @@ def teachers(request, sort_type=1, sort_status=0):
     message = None
     form = TeacherForm()
     school = get_school(request)
-    #print sort_type +' ' + sort_status
+    if request.is_ajax():
+        if request.POST['request_type'] == u'team':
+            t = school.teacher_set.get(id=request.POST['id'])
+            team = school.team_set.get(id=request.POST['team'])
+            t.team_id = team
+            t.group_id = None
+            t.save()
+            response = simplejson.dumps({'success': True})
+            return HttpResponse(response, mimetype='json')
+        elif request.POST['request_type'] == u'addTeam':
+            data = {'name': request.POST['name'], 'school_id': school.id}
+            t = TeamForm(data)
+            if t.is_valid():
+                t.save()
+            response = simplejson.dumps({'success': True})
+            return HttpResponse(response, mimetype='json')
     if request.method == 'POST':
         if (request.POST['first_name'].strip()):
             name = request.POST['first_name'].split()
@@ -1311,20 +1326,16 @@ def teachers(request, sort_type=1, sort_status=0):
             team = school.team_set.get(id = request.POST['team_id'])
         else:
             team = None
-        if request.POST['group_id']:
-            group = school.group_set.get(id = request.POST['group_id'])
-        else:
-            group = None
 
         data = {'first_name':first_name, 'last_name':last_name, 'birthday':request.POST['birthday'],
                 'sex':request.POST['sex'], 'school_id':school.id, 'birth_place':request.POST['birth_place'].strip(),
-                'group_id' : request.POST['group_id'], 'team_id': request.POST['team_id'], 'index':index}
+                'team_id': request.POST['team_id'], 'index':index}
         form = TeacherForm(data)
         if form.is_valid():
             d = request.POST['birthday'].split('/')
             birthday = date(int(d[2]),int(d[1]),int(d[0]))
             add_teacher(first_name=data['first_name'], last_name=data['last_name'], school=get_school(request), birthday=birthday,
-                        sex=data['sex'], birthplace=data['birth_place'], group_id = group, team_id =team)
+                        sex=data['sex'], birthplace=data['birth_place'], team_id =team)
             message = 'Bạn vừa thêm một giáo viên mới'
             form = TeacherForm()
         else:
@@ -1349,18 +1360,19 @@ def teachers(request, sort_type=1, sort_status=0):
             teacherList = school.teacher_set.order_by('sex')
         else:
             teacherList = school.teacher_set.order_by('-sex')
-    if int(sort_type) == 5:
-        if int(sort_status) == 0:
-            teacherList = school.teacher_set.order_by('group_id')
-        else:
-            teacherList = school.teacher_set.order_by('-group_id')
     if int(sort_type) == 4:
         if int(sort_status) == 0:
             teacherList = school.teacher_set.order_by('team_id')
         else:
             teacherList = school.teacher_set.order_by('-team_id')
 
-
+    flist = []
+    i = 0
+    for t in teacherList:
+        flist.append(TeacherForm())
+        flist[i] = TeacherForm(instance = t)
+        i += 1
+    list = zip(teacherList, flist)
     t = loader.get_template(os.path.join('school', 'teachers.html'))
     tmp = get_teacher(request)
     id = 0
@@ -1368,7 +1380,7 @@ def teachers(request, sort_type=1, sort_status=0):
         id = tmp.id
     c = RequestContext(request, {   'form': form,
                                     'message': message,
-                                    'teacherList': teacherList,
+                                    'list': list,
                                     'sort_type':sort_type, 
                                     'sort_status':sort_status,
                                     'teamList' : teamList,
