@@ -36,13 +36,12 @@ class TeacherForm(forms.ModelForm):
         }
     def __init__(self, *args, **kwargs):
         super(TeacherForm,self).__init__(*args, **kwargs)
-        school = get_school(self.request)
-        self.fields['team_id'] = forms.ModelChoiceField(queryset= school.team_set.all(), label=u'Tổ')
-        if 'team' in args:
-            t = school.team_set.get(team_id = team)
-            self.fields['group_id'] = forms.ModelChoiceField(queryset= t.group_set.all(), label=u'Nhóm')
-        else:
-            self.fields['group_id'] = forms.ModelChoiceField(queryset=None)
+        if 'school' in args:
+            school = School.objects.get(school_id == school)
+            self.fields['team_id'] = forms.ModelChoiceField(queryset= school.team_set.all(), label=u'Tổ')
+            if 'team' in args:
+                t = school.team_set.get(team_id = team)
+                self.fields['group_id'] = forms.ModelChoiceField(queryset= t.group_set.all(), label=u'Nhóm')
 class PupilForm(forms.ModelForm):
     class Meta:
         model = Pupil
@@ -169,8 +168,8 @@ class KiLuatForm(forms.ModelForm):
 
 class TeamForm(forms.ModelForm):
     class Meta:
-            model = Team)
-
+            model = Team
+        
 class GroupForm(forms.ModelForm):
     class Meta:
             model = Group
