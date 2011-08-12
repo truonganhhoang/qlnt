@@ -503,6 +503,13 @@ def add_subject( subject_name = None, hs = 1, teacher = None, _class = None, ind
             mark.subject_id = subject
             mark.term_id = term
             mark.save()
+            if term.number == 1:
+                term1 = _class.year_id.term_set.get(number = 2)
+                mark = Mark()
+                mark.student_id = student
+                mark.subject_id = subject
+                mark.term_id = term1
+                mark.save()
 
             tkmon = TKMon()
             tkmon.student_id = student

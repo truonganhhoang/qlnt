@@ -10,9 +10,14 @@
 
 $(document).ready(function(){
     // setting up css to render page in the right way
-    $("footer").css('top', $(document).height() - $("footer").height());
-    $("footer").css('width',$(document).width());
 
+    $("footer").css('width',$(document).width());
+    if ($('#place_keeper').offset().top + $("footer").outerHeight() <= $(window).height()){
+        $("footer").css('position', 'fixed');
+        $("footer").css('bottom', '0');
+    }
+
+    
     var maxHeight = 0;
     $(".thumb > ul").each(function(){
         if ($(this).height() > maxHeight){

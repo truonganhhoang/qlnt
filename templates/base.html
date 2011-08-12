@@ -8,11 +8,11 @@
     {% endblock %}
 
     {% block css %}
-        <link href="/static/css/style.css" rel="stylesheet" type="text/css"/>
         <link rel="stylesheet" href="/static/css/tipTip.css" type="text/css" media="screen"/>
         <link rel="stylesheet" href="/static/css/jquery-ui-1.8.14.custom.css" type="text/css" media="screen"/>
         <link rel="stylesheet" href="/static/css/jquery_file_upload/jquery.fileupload-ui.css" type="text/css" media="screen"/>
-
+        <link href="/static/css/style.css" rel="stylesheet" type="text/css"/>
+                
     {% endblock %}
     <script type="text/javascript" src="/static/js/jquery.js"></script>
     <script type="text/javascript" src="/static/js/jquery-ui-1.8.14.custom.min.js"></script>
@@ -162,6 +162,7 @@
         </div>
     {% endblock %}
 </section>
+<div id="place_keeper" style="clear: both;"></div>
 <div style="display: none;">
     <div class="feedback" id="feedbackDiv" style="resize: None;">
         <br>

@@ -344,6 +344,10 @@ table.styleA td {
     text-decoration: none;
 }
 
+a.ggButton{
+    color: white;
+}
+
 .ggButton:hover {
     background-color: #75a8fa;
     background-image: -webkit-gradient(linear, left top, left bottom, from(#75a8fa), to(#4787ED));
@@ -686,7 +690,7 @@ div#tabs ul li{
 
 /*----FOOTER PANEL----*/
 footer {
-    position: absolute;
+    position: relative;
     /*top: 300px;*/
     margin-top: 20px;
     padding: 6px 0 6px;
