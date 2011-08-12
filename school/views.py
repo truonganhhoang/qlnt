@@ -1282,7 +1282,7 @@ def viewClassDetail(request, class_id, sort_type=0, sort_status=0):
 
 #sort_type = '1': fullname, '2': birthday, '3':'sex'
 #sort_status = '0':ac '1':'dec
-def teachers(request, sort_type=1, sort_status=0, page=1):
+def teachers(request, sort_type=1, sort_status=0):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
@@ -1312,7 +1312,7 @@ def teachers(request, sort_type=1, sort_status=0, page=1):
         else:
             team = None
         if request.POST['group_id']:
-            group = school.team_set.get(id = request.POST['group_id'])
+            group = school.group_set.get(id = request.POST['group_id'])
         else:
             group = None
 
@@ -1359,11 +1359,7 @@ def teachers(request, sort_type=1, sort_status=0, page=1):
             teacherList = school.teacher_set.order_by('team_id')
         else:
             teacherList = school.teacher_set.order_by('-team_id')
-    paginator = Paginator (teacherList, 20)
-    try:
-        teacher_list = paginator.page(page)
-    except (EmptyPage, InvalidPage):
-        teacher_list = paginator.page(paginator.num_pages)
+
 
     t = loader.get_template(os.path.join('school', 'teachers.html'))
     tmp = get_teacher(request)
@@ -1372,12 +1368,11 @@ def teachers(request, sort_type=1, sort_status=0, page=1):
         id = tmp.id
     c = RequestContext(request, {   'form': form,
                                     'message': message,
-                                    'teacherList': teacher_list,
+                                    'teacherList': teacherList,
                                     'sort_type':sort_type, 
                                     'sort_status':sort_status,
                                     'teamList' : teamList,
-                                    'next_status':1-int(sort_status), 
-                                    'base_order':(int (page)-1) * 20,
+                                    'next_status':1-int(sort_status),
                                     'pos':pos,
                                     'teacher_id':id})
     return HttpResponse(t.render(c))

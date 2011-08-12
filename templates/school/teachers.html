@@ -99,20 +99,20 @@
                 <tr>
                     <th align="center" width="5%"> STT</th>
                     <th align="center" width="15%"><a
-                            href="{%url school.views.school_index  %}teachers/1/{{next_status}}/1"
+                            href="{%url school.views.school_index  %}teachers/1/{{next_status}}"
                             class="tiptiphover" title="Sắp xếp theo tên">Họ tên </a></th>
                     <th align="center" width="10%"><a
-                            href="{%url school.views.school_index  %}teachers/2/{{next_status}}/1"
+                            href="{%url school.views.school_index  %}teachers/2/{{next_status}}"
                             class="tiptiphover" title="Sắp xếp theo ngày sinh">Ngày sinh</a></th>
                     <th align="center" width="20%"> Nơi sinh</th>
                     <th align="center" width="10%"><a
-                            href="{%url school.views.school_index  %}teachers/3/{{next_status}}/1"
+                            href="{%url school.views.school_index  %}teachers/3/{{next_status}}"
                             class="tiptiphover" title="Sắp xếp giới tính">Giới tính </a></th>
                     <th align="center" width="15%"><a
-                            href="{%url school.views.school_index  %}teachers/4/{{next_status}}/1"
+                            href="{%url school.views.school_index  %}teachers/4/{{next_status}}"
                             class="tiptiphover" title="Sắp xếp theo tổ">Tổ </a></th>
                     <th align="center" width="15%"><a
-                            href="{%url school.views.school_index  %}teachers/5/{{next_status}}/1"
+                            href="{%url school.views.school_index  %}teachers/5/{{next_status}}"
                             class="tiptiphover" title="Sắp xếp theo nhóm">Nhóm </a></th>
                     {% if pos > 3 %}
                         <th width="10%"></th>
@@ -123,9 +123,9 @@
                     {{ message }}
                 {% endif %}
 
-                {% for ss in teacherList.object_list %}
+                {% for ss in teacherList%}
                     <tr>
-                        <td align="center" width="5%">{{ forloop.counter|add:base_order }}</td>
+                        <td align="center" width="5%">{{ forloop.counter}}</td>
                         <td align="center" width="15%">
                             {% if pos > 3 or teacher_id == ss.id %}
                                 <a href="{%url school.views.school_index  %}viewTeacherDetail/{{ss.id}}">
@@ -146,8 +146,7 @@
                     </tr>
                 {% endfor %}
                 {% if pos > 3 %}
-                    <form action="/school/teachers/{{sort_type}}/{{sort_status}}/{{teacherList.number}}"
-                          method="post">{% csrf_token %}
+                    <form action="/school/teachers/{{sort_type}}/{{sort_status}}" method="post">{% csrf_token %}
                         <tr>
                             {{ form.non_field_errors }}
 
@@ -190,36 +189,13 @@
             </table>
 
 
-
-            <table border="0" width="100%">
-                <tr border=0>
-                    <td width="100%" colspan=6 align="right">
-                        <div class="pagination">
-                            <span class="step-links">
-                                {% if teacherList.has_previous %}
-                                    <a href="{%url school.views.school_index  %}teachers/{{sort_type}}/{{sort_status}}/{{teacherList.previous_page_number}}">
-                                        Trang trước </a>
-                                {% endif %}
-                                <span class="current">
-				            Trang {{ teacherList.number }} trên {{ teacherList.paginator.num_pages }}.
-			            </span>
-
-                                {% if teacherList.has_next %}
-                                    <a href="{%url school.views.school_index  %}teachers/{{sort_type}}/{{sort_status}}/{{teacherList.next_page_number}}">
-                                        Trang sau </a>
-                                {% endif %}
-                            </span>
-                        </div>
-                    </td>
-                </tr>
                 {% if pos > 3 %}
                     <tr>
                         <td width="5%" align="left">&nbsp</td>
                         <td align="right"><a href="">Xuất ra Excel</a></td>
                     </tr>
                 {% endif %}
-            </table>
         </div>
-        <input id="reload" type="hidden" onclick="location.replace(location.href)"></input>
+        <input id="reload" type="hidden" onclick="location.replace(location.href)"/>
     </div>
 {% endblock %}
