@@ -30,18 +30,28 @@ class TeacherForm(forms.ModelForm):
     class Meta:
         model = Teacher
         exclude = ('school_id', 'user_id')
-        field = ('birthday')
         widgets = {
             'birthday' : DateInput(attrs = {'class':'datepicker'}),
         }
-    def __init__(self, *args, **kwargs):
+    def __init__(self,school_id, *args, **kwargs):
         super(TeacherForm,self).__init__(*args, **kwargs)
-        if 'school' in args:
-            school = School.objects.get(school_id == school)
-            self.fields['team_id'] = forms.ModelChoiceField(queryset= school.team_set.all(), label=u'Tổ')
-            if 'team' in args:
-                t = school.team_set.get(team_id = team)
-                self.fields['group_id'] = forms.ModelChoiceField(queryset= t.group_set.all(), label=u'Nhóm')
+        school = Organization.objects.get(id = school_id)
+        self.fields['team_id'] = forms.ModelChoiceField(queryset= school.team_set.all(), required=False, label=u'Tổ')
+
+class TeacherITForm(forms.ModelForm):
+    class Meta:
+        model = Teacher
+        exclude = ('school_id', 'user_id')
+        widgets = {
+            'birthday' : DateInput(attrs = {'class':'datepicker'}),
+        }
+    def __init__(self,team_id, *args, **kwargs):
+        super(TeacherForm,self).__init__(*args, **kwargs)
+        team = Team.objects.get(id == team_id)
+        school = team.school
+        self.fields['team_id'] = forms.ModelChoiceField(queryset= school.team_set.all(), required=False, label=u'Tổ')
+        self.fields['group_id'] = forms.ModelChoiceField(queryset= team.group_set.all(), required=False, label=u'Nhóm')
+        
 class PupilForm(forms.ModelForm):
     class Meta:
         model = Pupil

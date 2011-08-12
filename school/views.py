@@ -1322,10 +1322,10 @@ def teachers(request,  sort_type=1, sort_status=0):
         school = get_school(request)
     except Exception as e:
         return HttpResponseRedirect(reverse('index'))
-    
+    school = get_school(request)
     pos = get_position(request)
     message = None
-    form = TeacherForm()
+    form = TeacherForm(school.id)
     school = get_school(request)
     if request.is_ajax():
         if request.POST['request_type'] == u'addTeam':
@@ -1356,12 +1356,10 @@ def teachers_tab(request, sort_type=1, sort_status=0):
         school = get_school(request)
     except Exception as e:
         return HttpResponseRedirect(reverse('index'))
-
+    school = get_school(request)
     pos = get_position(request)
     message = None
-    form = TeacherForm()
-    school = get_school(request)
-    print '1'
+    form = TeacherForm(school.id)
     if request.is_ajax():
         print request.POST
         if (request.method == 'POST' and request.POST['request_type'] == u'team'):
@@ -1395,18 +1393,18 @@ def teachers_tab(request, sort_type=1, sort_status=0):
             data = {'first_name':first_name, 'last_name':last_name, 'birthday':request.POST['birthday'],
                     'sex':request.POST['sex'], 'school_id':school.id, 'birth_place':request.POST['birth_place'].strip(),
                     'team_id': request.POST['team_id'], 'index':index}
-            form = TeacherForm(data)
+            form = TeacherForm(school.id,data)
             if form.is_valid():
                 d = request.POST['birthday'].split('/')
                 birthday = date(int(d[2]),int(d[1]),int(d[0]))
                 add_teacher(first_name=data['first_name'], last_name=data['last_name'], school=get_school(request), birthday=birthday,
                             sex=data['sex'], birthplace=data['birth_place'], team_id =team)
                 message = 'Bạn vừa thêm một giáo viên mới'
-                form = TeacherForm()
+                form = TeacherForm(school.id)
             else:
                 if data['first_name'] != '':
                     data['first_name'] = data['last_name'] + ' ' + data['first_name']
-                    form = TeacherForm(data)
+                    form = TeacherForm(school.id,data)
 
     if int(sort_type) == 1:
         if int(sort_status) == 0:
@@ -1432,8 +1430,8 @@ def teachers_tab(request, sort_type=1, sort_status=0):
     flist = []
     i = 0
     for t in teacherList:
-        flist.append(TeacherForm())
-        flist[i] = TeacherForm(instance = t)
+        flist.append(TeacherForm(school.id))
+        flist[i] = TeacherForm(school.id,instance = t)
         i += 1
     list = zip(teacherList, flist)
     t = loader.get_template(os.path.join('school', 'teachers_tab.html'))
@@ -1479,8 +1477,8 @@ def teachers_in_team(request, team_id):
     team = school.team_set.get(id = team_id)
     i = 0
     for t in teacherList:
-        flist.append(TeacherForm())
-        flist[i] = TeacherForm(instance = t)
+        flist.append(TeacherForm(school.id))
+        flist[i] = TeacherForm(school.id,instance = t)
         i += 1
     list = zip(teacherList, flist)
     t = loader.get_template(os.path.join('school', 'teachers_in_team.html'))
@@ -1512,13 +1510,14 @@ def viewTeacherDetail(request, teacher_id):
     if in_school(request, teacher.school_id) == False:
         return HttpResponseRedirect('/')
     pos = get_position(request)
+    school = get_school(request)
     if (pos==3) and (get_teacher(request).id == int(teacher_id)):
         pos = 4
     if (pos < 1):
         return HttpResponseRedirect('/')
-    form = TeacherForm (instance=teacher)
+    form = TeacherForm (school.id,instance=teacher)
     if request.method == 'POST':
-        form = TeacherForm(request.POST, instance=teacher)
+        form = TeacherForm(school.id,request.POST, instance=teacher)
         if form.is_valid():
             form.save()
             message = 'Bạn vừa cập nhật thành công'        
