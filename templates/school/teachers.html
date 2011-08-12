@@ -6,7 +6,13 @@
             var $tab_title_input = $("#tab_title");
 
             // tabs init with a custom tab template and an "add" callback filling in the content
-            var $tabs = $("#tabs").tabs({
+            var $tabs = $("#tabs").tabs({        
+                load: function(event, ui) {
+                    $("a.delete").click(function() {
+                        $(ui.panel).load(this.href);
+                        return false;
+                    });
+                },
                 tabTemplate: "<li><a href='#{href}'>#{label}</a> <span class='ui-icon ui-icon-close'>Remove Tab</span></li>",
             });
             // modal dialog init: custom buttons and a "close" callback reseting the form inside

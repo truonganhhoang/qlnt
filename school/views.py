@@ -2186,7 +2186,7 @@ def deleteSubject(request, subject_id):
     url = '/school/subjectPerClass/' + str(class_id.id)
     return HttpResponseRedirect(url)
 
-def deleteTeacher(request, teacher_id):
+def deleteTeacher(request, teacher_id, team_id = 0):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
@@ -2217,7 +2217,9 @@ def deleteTeacher(request, teacher_id):
         sj.save()   
     #s.delete()
     del_teacher(s)
-    return HttpResponseRedirect('/school/teachers')
+    if int(team_id) != 0:
+        return HttpResponseRedirect("/school/teachers_in_team/" + team_id)
+    return HttpResponseRedirect("/school/teachers_tab")
 
 def deleteClass(request, class_id, block_id):
     user = request.user

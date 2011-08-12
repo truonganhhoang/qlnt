@@ -63,8 +63,8 @@
                     <td align="center" width="15%"> {{ f.team_id }} </td>
                     <td align="center" width="15%"> {{ f.group_id }} </td>
                     <td align="center" width="10%"><a
-                            href="{%url school.views.school_index  %}deleteTeacher/{{ss.id}}"
-                            title="Xóa giáo viên" class="ggButton"
+                            href="{%url school.views.school_index  %}deleteTeacher/{{ss.id}}/{{team.id}}"
+                            title="Xóa giáo viên" class="ggButton delete"
                             onclick="return confirmDelete();"> xóa </a></td>
                 {% else %}
                     <td align="center" width="15%"> {{ ss.team_id }} </td>

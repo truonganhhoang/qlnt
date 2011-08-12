@@ -110,7 +110,7 @@ urlpatterns = patterns('',
     url(r'start_year/manual$', 'school.views.manual_adding', name = "manual_adding"),
 
 
-    url(r'deleteTeacher/(?P<teacher_id>\w+)', 'school.views.deleteTeacher'),
+    url(r'deleteTeacher/(?P<teacher_id>\w+)/(?P<team_id>\w+)$', 'school.views.deleteTeacher'),
     url(r'deleteSubject/(?P<subject_id>\w+)', 'school.views.deleteSubject'),
     url(r'deleteStudentInSchool/(?P<student_id>\w+)', 'school.views.deleteStudentInSchool'),
     url(r'deleteStudentInClass/(?P<student_id>\w+)', 'school.views.deleteStudentInClass'),
