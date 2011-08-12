@@ -112,7 +112,7 @@ urlpatterns = patterns('',
     url(r'deleteSubject/(?P<subject_id>\w+)', 'school.views.deleteSubject'),
     url(r'deleteStudentInSchool/(?P<student_id>\w+)', 'school.views.deleteStudentInSchool'),
     url(r'deleteStudentInClass/(?P<student_id>\w+)', 'school.views.deleteStudentInClass'),
-    url(r'deleteClass/(?P<class_id>\w+)', 'school.views.deleteClass'),
+    url(r'deleteClass/(?P<class_id>\w+)/(?P<block_id>\w+)$', 'school.views.deleteClass'),
     url(r'deleteAllStudentsInClass/(?P<class_id>\w+)$','school.views.deleteAllStudentsInClass'),
 
 

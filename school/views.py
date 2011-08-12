@@ -2189,7 +2189,7 @@ def deleteTeacher(request, teacher_id):
     del_teacher(s)
     return HttpResponseRedirect('/school/teachers')
 
-def deleteClass(request, class_id):
+def deleteClass(request, class_id, block_id):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
@@ -2204,13 +2204,12 @@ def deleteClass(request, class_id):
         s = get_current_year(request).class_set.get(id=class_id)
     except Class.DoesNotExist:
         return HttpResponseRedirect('/school/classes')
-    
     if not in_school(request, s.block_id.school_id):
         return HttpResponseRedirect('/')
     if get_position(request) < 4:
         return HttpResponseRedirect('/')
     s.delete()
-    return HttpResponseRedirect('/school/classes')
+    return HttpResponseRedirect('/school/classtab/'+block_id)
 
 def deleteStudentInClass(request, student_id):
     user = request.user

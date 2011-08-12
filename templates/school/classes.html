@@ -8,13 +8,16 @@
 
   <script>
     $(document).ready(function() {
-        $("#tabs").tabs({
-			ajaxOptions: {
-				error: function( xhr, status, index, anchor ) {
-					$( anchor.hash ).html(
-						"Hiện không thể load được trang này");
-				}
-			}
+        $("#notify").ajaxStart( function(){
+            $(this).hide();
+        });
+        $("#tabs").tabs({        
+            load: function(event, ui) {
+                $("a.delete").click(function() {
+                    $(ui.panel).load(this.href);
+                    return false;
+                });
+            },
         });
     });
   </script>

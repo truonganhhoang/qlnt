@@ -76,7 +76,7 @@
           <td align="center"> {{ class.year_id }} </td>
           {% if pos >= 4 %}
             {% ifequal n  0 %}
-              <td align="center"><a class="ggButton" href="{%url school.views.school_index  %}deleteClass/{{class.id}}"
+              <td align="center"><a class="ggButton delete" href="{%url school.views.school_index  %}deleteClass/{{class.id}}/{{block_id}}"
                                     onclick="return confirmDelete();"> xóa </a></td>
             {% else %}
               <td align="center"><a class="ggButton"
