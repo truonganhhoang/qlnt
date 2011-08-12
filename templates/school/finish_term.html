@@ -31,8 +31,11 @@
     {% ifequal selectedTerm currentTerm %}
       <p>Thông tin học kỳ: <span style="color:red;"> Đang diễn ra</span></p>
       <br>
-      <input class="ggButton" type="submit" name="finishTerm" value="Khóa sổ điểm và chuyển sang kỳ tiếp theo"
+
+	  {% ifequal selectedTerm.number 1 %}		
+			<input class="ggButton" type="submit" name="finishTerm" value="Khóa sổ điểm và chuyển sang kỳ tiếp theo"
              title="Khi chọn thì trường sẽ chuyển sang kì tiếp theo và khóa sổ điểm đối với giáo viên.">
+	  {% endifequal %}		
 	  <input class="ggButton" type="submit" name="tongKet" value="Tính tổng kết cả trường">
     {% endifequal %}
     

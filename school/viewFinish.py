@@ -706,7 +706,7 @@ def countDetailTerm(term_id):
         else        :  notFinishAll.append([c.name,number])
     return  finishLearning,notFinishLearning,finishPractising,notFinishPractising,finishAll,notFinishAll       
 
-@transaction.commit_on_success                                                                                  
+#@transaction.commit_on_success                                                                                  
 def finishTerm(request,term_id=None):
     t1=time.time()
     user = request.user
@@ -729,11 +729,11 @@ def finishTerm(request,term_id=None):
     if request.method == 'POST':
         if request.POST.get('finishTerm'):
             if request.POST['finishTerm']!=u'Khôi phục về trạng thái học kỳ trước':                
-                selectedTerm.year_id.school_id.status=selectedTerm.number+1 
+                request.user.userprofile.organization.status+=1 
             else:
-                selectedTerm.year_id.school_id.status=selectedTerm.number
+                request.user.userprofile.organization.status=selectedTerm.number
                 
-            selectedTerm.year_id.school_id.save()
+            request.user.userprofile.organization.save()    
         if request.POST.get('tongKet'):
             finishTermInSchool(term_id)
             message="Đã tính tổng kết xong. Mời bạn xem kết quả phía dưới."
@@ -828,11 +828,12 @@ def finishYear(request,year_id):
     message=None
     if request.method == 'POST':
         if request.POST.get('finishTerm'):
-           if request.POST['finishTerm']==u'click vào đây để kết thúc năm học':
-                selectedTerm.year_id.school_id.status=3
+           if request.POST['finishTerm']!=u'Khôi phục về học kỳ II':
+                request.user.userprofile.organization.status=3
            else:
-                selectedTerm.year_id.school_id.status=selectedTerm.number
-           selectedTerm.year_id.school_id.save()
+                request.user.userprofile.organization.status=2
+                
+           request.user.userprofile.organization.save()
         if request.POST.get('tongKet'):
             finishYearInSchool(year_id)
             
@@ -850,7 +851,7 @@ def finishYear(request,year_id):
                     
     t = loader.get_template(os.path.join('school','finish_year.html'))    
     c = RequestContext(request, {"message":message,
-                                 "currentTerm":currentTerm,
+                                     "currentTerm":currentTerm,
                                  "yearString":yearString,
                                  "finishLearning":finishLearning,
                                  "notFinishLearning":notFinishLearning,

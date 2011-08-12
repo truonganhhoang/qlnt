@@ -491,7 +491,11 @@ def markTable(request,term_id=-1,class_id=-1,subject_id=-1,move=None):
     termChoice    = term_id
     classChoice   = class_id    
     subjectChoice = subject_id
-    if termChoice==-1:  selectedTerm=get_current_term(request)
+    if termChoice==-1:
+        selectedTerm=get_current_term(request)
+        if selectedTerm.number ==3:
+            selectedTerm=Term.objects.get(year_id=selectedTerm.year_id,number=2)
+            
     else             :  selectedTerm=Term.objects.get(id=termChoice) 
 
 
@@ -606,7 +610,11 @@ def markForTeacher(request,term_id=-1,subject_id=-1,move=None):
     
     currentTerm =get_current_term(request) 
     
-    if termChoice==-1:  selectedTerm=currentTerm
+    if termChoice==-1:  
+        selectedTerm=currentTerm
+        if selectedTerm.number ==3:
+            selectedTerm=Term.objects.get(year_id=selectedTerm.year_id,number=2)
+
     else             :  selectedTerm=Term.objects.get(id=termChoice)
     
     if (selectedTerm.year_id.time<currentTerm.year_id.time) | ((selectedTerm.year_id.time==currentTerm.year_id.time) & (selectedTerm.number<currentTerm.number)):
