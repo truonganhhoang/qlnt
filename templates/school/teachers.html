@@ -1,20 +1,9 @@
 {% extends "base.html" %}
 
 {% block content %}
-
-    <style>
-        #tabs li .ui-icon-close {
-            float: left;
-            margin: 0.2em 0.4em 0 0;
-            cursor: pointer;
-        }
-
-    </style>
-
     <script>
         $(document).ready(function() {
-            var $tab_title_input = $("#tab_title"),
-                    $tab_content_input = $("#tab_content");
+            var $tab_title_input = $("#tab_title");
 
             // tabs init with a custom tab template and an "add" callback filling in the content
             var $tabs = $("#tabs").tabs({
@@ -56,7 +45,7 @@
                     url:"",
                     data: data,
                     datatype:"json",
-                    success: function(){
+                    success: function() {
                         $("#reload").click();
                     }
                 };
@@ -69,22 +58,7 @@
                     .click(function() {
                         $dialog.dialog("open");
                     });
-            $("select[name=team_id]").each(function() {
-                $(this).change(function() {
-                    var id = $(this).parents("tr").attr('class').split(' ')[0];
-                    var team = $(this).val();
-                    var data = { id: id, team:team, request_type:'team'};
-                    var arg = { type:"POST",
-                        url:"",
-                        data: data,
-                        datatype:"json",
-                        success:function(){}
-                    };
-                    $.ajax(arg);
-                    return false;
 
-                });
-            });
         });
     </script>
     <script>
@@ -95,116 +69,20 @@
 
     <div id="dialog" title="Thêm tổ mới">
         <form>
-                <label for="tab_title">Tên Tổ</label>
-                <input type="text" name="tab_title" id="tab_title" value="" class="ui-widget-content ui-corner-all"/>
+            <label for="tab_title">Tên Tổ</label>
+            <input type="text" name="tab_title" id="tab_title" value="" class="ui-widget-content ui-corner-all"/>
         </form>
     </div>
 
-    <input class = "ggButton" type = "button" id="add_tab" value ="Thêm tổ">
+    <input class="ggButton" type="button" id="add_tab" value="Thêm tổ">
     <div id="tabs">
         <ul>
-            <li><a href="#tabs-0">Tất cả</a></li>
+            <li><a href="school/teachers_tab/{{ sort_type }}/{{ sort_status }}">Tất cả</a></li>
             {% for t in teamList %}
-                 <li><a href="school/teachers_in_team/{{ t.id }}">{{ t.name }}</a></li>
+                <li><a href="school/teachers_in_team/{{ t.id }}">{{ t.name }}</a></li>
             {% endfor %}
         </ul>
-        <div id="tabs-0">
-            <h2>Danh sách giáo viên</h2>
-            <table class="styleA" width="100%">
-                <tr>
-                    <th align="center" width="5%"> STT</th>
-                    <th align="center" width="15%"><a
-                            href="{%url school.views.school_index  %}teachers/1/{{next_status}}"
-                            class="tiptiphover" title="Sắp xếp theo tên">Họ tên </a></th>
-                    <th align="center" width="10%"><a
-                            href="{%url school.views.school_index  %}teachers/2/{{next_status}}"
-                            class="tiptiphover" title="Sắp xếp theo ngày sinh">Ngày sinh</a></th>
-                    <th align="center" width="20%"> Nơi sinh</th>
-                    <th align="center" width="10%"><a
-                            href="{%url school.views.school_index  %}teachers/3/{{next_status}}"
-                            class="tiptiphover" title="Sắp xếp giới tính">Giới tính </a></th>
-                    <th align="center" width="15%"><a
-                            href="{%url school.views.school_index  %}teachers/4/{{next_status}}"
-                            class="tiptiphover" title="Sắp xếp theo tổ">Tổ </a></th>
-                    {% if pos > 3 %}
-                        <th width="10%"></th>
-                    {% endif %}
-                </tr>
 
-                {% if message != None %}
-                    {{ message }}
-                {% endif %}
-
-                {% for ss, f in list%}
-                    <tr class = "{{ss.id}}">
-                        <td align="center" width="5%">{{ forloop.counter}}</td>
-                        <td align="center" width="15%">
-                            {% if pos > 3 or teacher_id == ss.id %}
-                                <a href="{%url school.views.school_index  %}viewTeacherDetail/{{ss.id}}">
-                            {% endif %}
-                            {{ ss.last_name }} {{ ss.first_name }} </a>
-                        </td>
-                        <td align="center" width="10%"> {{ ss.birthday|date:"SHORT_DATE_FORMAT" }}</td>
-                        <td align="center" width="20%"> {{ ss.birth_place }}</td>
-                        <td align="center" width="10%"> {{ ss.sex }} </td>
-
-                        {% if pos > 3 %}
-                             <td align="center" width="15%"> {{ f.team_id }} </td>
-                            <td align="center" width="10%"><a
-                                    href="{%url school.views.school_index  %}deleteTeacher/{{ss.id}}"
-                                    title="Xóa giáo viên" class="ggButton"
-                                    onclick="return confirmDelete();"> xóa </a></td>
-                        {% else %}
-                             <td align="center" width="15%"> {{ ss.team_id }} </td>
-                        {% endif %}
-                    </tr>
-                {% endfor %}
-                {% if pos > 3 %}
-                    <form action="/school/teachers/{{sort_type}}/{{sort_status}}" method="post">{% csrf_token %}
-                        <tr>
-                            {{ form.non_field_errors }}
-
-                            <td width="5%"></td>
-                            <td align="center" width="15%">
-                                {{ form.first_name.errors }}
-                                <p>{{ form.first_name }}</p>
-                            </td>
-
-                            <td align="center" width="10%">
-                                {{ form.birthday.errors }}
-                                <p>{{ form.birthday }}</p>
-                            </td>
-
-                            <td align="center" width="20%">
-                                {{ form.birth_place.errors }}
-                                <p>{{ form.birth_place }}</p>
-                            </td>
-
-
-                            <td align="center" width="10%">
-                                {{ form.sex.errors }}
-                                <p>{{ form.sex }}</p>
-                            </td>
-
-                            <td align="center" width="15%">
-                                {{ form.group_id.errors }}
-                                <p>{{ form.team_id }}</p>
-                            </td>
-
-                            <td><input type="submit" class = "ggButton" value="Thêm"/></td>
-                        </tr>
-                    </form>
-                {% endif %}
-            </table>
-
-
-                {% if pos > 3 %}
-                    <tr>
-                        <td width="5%" align="left">&nbsp</td>
-                        <td align="right"><a href="">Xuất ra Excel</a></td>
-                    </tr>
-                {% endif %}
-        </div>
         <input id="reload" type="hidden" onclick="location.replace(location.href)"/>
     </div>
 {% endblock %}
