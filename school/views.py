@@ -20,6 +20,7 @@ from school.school_settings import *
 from sms.views import *
 import xlrd
 from xlrd import cellname
+from xlwt import Workbook, XFStyle, Borders, Font
 
 NHAP_DANH_SACH_TRUNG_TUYEN = os.path.join('school', 'import', 'nhap_danh_sach_trung_tuyen.html')
 DANH_SACH_TRUNG_TUYEN = os.path.join('school', 'import', 'danh_sach_trung_tuyen.html')
@@ -125,10 +126,8 @@ def setup(request):
     context = RequestContext(request)
     return render_to_response( SETUP, { 'form': school_form, 'message':message, 'labels':labels},
                                context_instance = context )
-    
-    
 
-    
+
 def info(request):
     user = request.user
     message = None
@@ -504,8 +503,106 @@ def classify(request):
                                    context_instance = RequestContext(request))      
         
 #----------------------------------------------------------------------------------------------------------------- 
+#----------- Exporting from Excel -------------------------------------
 
-#----------- Exporting and Importing form Excel -------------------------------------
+def class_generate(request, class_id, object):
+    try:
+        school = get_school(request)
+    except Exception as e:
+        return HttpResponseRedirect( reverse("index"))
+    try:
+        startyear = get_latest_startyear(request)
+        year = get_current_year(request)
+    except Exception as e:
+        print e
+        return HttpResponseRedirect( reverse("school_index"))
+
+    permission = get_permission(request)
+    if not permission in [u'HIEU_TRUONG',u'HIEU_PHO']:
+        return HttpResponseRedirect(reverse('school_index'))
+
+    try:
+        _class = Class.objects.get(id = class_id)
+    except Exception as e:
+        print e
+        return HttpResponse()
+    if object == 'student_list':
+        file_name = request.session.session_key + unicode(_class) + '_student_list.xls'
+        file_name = os.path.join(settings.TEMP_FILE_LOCATION, file_name)
+        student_list = _class.pupil_set.all().order_by('index')
+        book = Workbook(encoding = 'utf-8')
+        #renderring xls file
+
+        fnt = Font()
+        fnt.name = 'Arial'
+        fnt.height = 240
+
+        fnt_bold = Font()
+        fnt_bold.name = 'Arial'
+        fnt_bold.height = 240
+        fnt_bold.bold = True
+
+        borders = Borders()
+        borders.left = Borders.THICK
+        borders.right = Borders.THICK
+        borders.top = Borders.THICK
+        borders.bottom = Borders.THICK
+
+        style = XFStyle()
+        style.font = fnt
+        style.borders = borders
+
+        style_bold = XFStyle()
+        style_bold.font = fnt_bold
+        style_bold.borders = borders
+
+        sheet = book.add_sheet('Danh sách học sinh')
+        sheet.write(0,0,u'Danh sách học sinh lớp %s' % unicode(_class), style_bold)
+        sheet.row(0).height = 350
+
+
+        sheet.col(0).width = 1500
+        sheet.col(1).width = 7000
+        sheet.col(2).width = 4500
+        sheet.col(3).width = 7000
+        sheet.col(4).width = 3000
+        sheet.col(5).width = 4000
+        sheet.col(6).width = 7000
+        sheet.col(7).width = 4500
+        sheet.col(8).width = 7000
+        sheet.row(4).height = 350
+
+        sheet.write(4,0,'STT', style_bold)
+        sheet.write(4,1,'Họ và Tên', style_bold)
+        sheet.write(4,2,'Ngày sinh', style_bold)
+        sheet.write(4,3,'Nơi sinh', style_bold)
+        sheet.write(4,4,'Giới tính', style_bold)
+        sheet.write(4,5,'Dân tộc', style_bold)
+        sheet.write(4,6,'Chỗ ở hiện tại', style_bold)
+        sheet.write(4,7,'Số điện thoại', style_bold)
+        sheet.write(4,8,'Ghi chú', style_bold)
+        row = 5
+        for student in student_list:
+            sheet.row(row).height = 350
+            sheet.write(row, 0, row -4, style)
+            sheet.write(row, 1, student.last_name + ' '+student.first_name, style)
+            sheet.write(row, 2, student.birthday.strftime('%d/%d/%Y'), style)
+            sheet.write(row, 3, student.birth_place, style)
+            sheet.write(row, 4, student.sex, style)
+            sheet.write(row, 5, student.dan_toc, style)
+            sheet.write(row, 6, student.current_address, style)
+            sheet.write(row, 7, student.phone, style)
+            sheet.write(row, 8, '', style)
+            row +=1
+        #return HttpResponse
+        response = HttpResponse(mimetype='application/ms-excel')
+        response['Content-Disposition'] = u'attachment; filename=ds_hoc_sinh_%s.xls' % unicode(_class)
+        book.save(response)
+        return response
+    else:
+        raise Http404( "Page does not exist!" )
+
+#----------- Importing form Excel -------------------------------------
 
 def save_file(import_file, session):
     import_file_name = import_file.name
@@ -599,12 +696,12 @@ def process_file(file_name, task):
             name = sheet.cell(r, c_ten).value.strip()
             name = ' '.join([i.capitalize() for i in name.split(' ')])
             if not name.strip():
-                message += u'<li>' + unicode(cellname(r, c_ten)) + u':Trống. </li>'
+                message += u'<li>Ô ' + unicode(cellname(r, c_ten)) + u':Trống. </li>'
                 continue
             number += 1
             birthday = sheet.cell(r, c_ngay_sinh).value
             if not birthday:
-                message += u'<li>' + unicode(cellname(r, c_ngay_sinh)) + u':Trống. Học sinh: ' + name + u' không đủ thông tin.</li>'
+                message += u'<li>Ô ' + unicode(cellname(r, c_ngay_sinh)) + u':Trống. Học sinh: ' + name + u' không đủ thông tin.</li>'
                 continue
             if c_gioi_tinh>-1:
                 gt = sheet.cell(r, c_gioi_tinh).value.strip().capitalize()
@@ -637,7 +734,7 @@ def process_file(file_name, task):
                     birthday = date(*date_value[:3])
             except Exception as e:
                 print e
-                message += u'<li>' + unicode(cellname(r, c_ngay_sinh)) + u':Không đúng định dạng "ngày/tháng/năm" ' + u'</li>'
+                message += u'<li>Ô ' + unicode(cellname(r, c_ngay_sinh)) + u':Không đúng định dạng "ngày/tháng/năm" ' + u'</li>'
                 continue
             data = {'fullname': name,
                     'birthday': birthday,
@@ -654,7 +751,7 @@ def process_file(file_name, task):
             number_ok += 1
         message += u'</ul>'
         return student_list, message, number, number_ok
-    else: task == ""
+    else: task == "import_teacher"
     
     return None
     
@@ -1032,7 +1129,7 @@ def addClass(request):
     except Exception as e:
         return HttpResponseRedirect(reverse('index'))
     
-    if (get_position(request) < 4):
+    if get_position(request) < 4:
         return HttpResponseRedirect('/')
     school = user.userprofile.organization
     if school.status != 0:
@@ -1162,7 +1259,7 @@ def viewClassDetail(request, class_id, sort_type=0, sort_status=0):
     
     tmp = get_student(request)
     id = 0
-    if (tmp):
+    if tmp:
         id = tmp.id
     
     currentTerm= get_current_term(request)    

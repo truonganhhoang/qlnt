@@ -85,6 +85,7 @@ urlpatterns = patterns('',
     url(r'khenthuong/(?P<kt_id>\w+)/delete$', 'school.views.delete_khen_thuong'),    
     url(r'khenthuong/(?P<kt_id>\w+)/edit$', 'school.views.edit_khen_thuong'),    
     url(r'khenthuong/(?P<student_id>\w+)$', 'school.views.khen_thuong'),
+
     
     url(r'kiluat/(?P<student_id>\w+)/add$', 'school.views.add_ki_luat'),
     url(r'kiluat/(?P<kt_id>\w+)/edit$', 'school.views.edit_ki_luat'),
@@ -97,17 +98,23 @@ urlpatterns = patterns('',
     url(r'diemdanh/(?P<class_id>\w+)$', 'school.views.time_select'),
     url(r'diemdanh', 'school.views.tnc_select'),
     url(r'change_index/(?P<target>\w+)/(?P<class_id>\w+)$', 'school.views.change_index'),
+
+    url(r'generate/(?P<class_id>\w+)/(?P<object>\w+)/$','school.views.class_generate', name = 'class_generate'),
+
     url(r'start_year/import/student/(?P<class_id>\w+)$', 'school.views.student_import'),
     url(r'start_year/import$', 'school.views.nhap_danh_sach_trung_tuyen'),
     url(r'start_year/import/list$', 'school.views.danh_sach_trung_tuyen', name = "imported_list"),
     url(r'start_year/manual$', 'school.views.manual_adding', name = "manual_adding"),
+
+
     url(r'deleteTeacher/(?P<teacher_id>\w+)', 'school.views.deleteTeacher'),
     url(r'deleteSubject/(?P<subject_id>\w+)', 'school.views.deleteSubject'),
     url(r'deleteStudentInSchool/(?P<student_id>\w+)', 'school.views.deleteStudentInSchool'),
     url(r'deleteStudentInClass/(?P<student_id>\w+)', 'school.views.deleteStudentInClass'),
     url(r'deleteClass/(?P<class_id>\w+)', 'school.views.deleteClass'),
     url(r'deleteAllStudentsInClass/(?P<class_id>\w+)$','school.views.deleteAllStudentsInClass'),
-    
+
+
     #top menu
     url(r'years/$', 'school.views.years', name = "years"),
     url(r'sms/$', 'school.sms_views.manual_sms', name = "manual_sms"),

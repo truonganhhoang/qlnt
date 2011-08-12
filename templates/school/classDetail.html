@@ -178,9 +178,9 @@
         <a class="ggButton"
            href="#popupDiv"
            id="import"> Nhập từ Excel </a>
-        <a class="tiptipclick ggButton disabled"
-           title="Chức năng đang trong quá trình hoàn thiện."
-           href=""
+        <a class="tiptiphover ggButton"
+           title="Xuất danh sách học sinh ra file excel."
+           href="{% url school.views.class_generate class.id 'student_list' %}"
            id="export"> Xuất ra Excel </a>
 
     </div>
