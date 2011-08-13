@@ -1100,7 +1100,7 @@ def classtab(request, block_id=0):
         num.append(c.pupil_set.count())
     list = zip(classList, cfl, num)
     if request.method == 'POST':
-        if (request.is_ajax()):
+        if (request.is_ajax() and request.POST['request_type']=='update'):
             class_id = request.POST['id']
             c = classList.get(id = int(class_id))
             tc = None
@@ -1123,7 +1123,7 @@ def classtab(request, block_id=0):
                 message = 'Giáo viên đã có lớp chủ nhiệm'
                 data = simplejson.dumps({'message':message})
                 return HttpResponse(data, mimetype = 'json')
-        else:
+        elif request.POST['request_type']=='update_all':
             teacher_list = request.POST.getlist('teacher_id')
             i = 0
             for c in classList:
@@ -1872,36 +1872,37 @@ def diem_danh(request, class_id, day, month, year):
                 
                 message = student.full_name() + ': updated.'
                 data = simplejson.dumps({'message': message})
-                return HttpResponse( data, mimetype = 'json')    
-            data = request.POST[u'data']
-            sms_message = ''
-            data = data.split(':')
-            for element in data:
-                if element:
-                    element = element.split('-')
-                    id = element[0]
-                    loai = element[1]
-                    # send sms
-                    student = Pupil.objects.get( id = id)
-                    phone_number = student.sms_phone
-                    
-                    if loai == 'k':
-                        loai = u'đi học'
-                    elif loai == u'Có phép':
-                        loai = u'nghỉ học có phép'
-                    else:
-                        loai = u'nghỉ học không phép'
-                    name = ' '.join([student.last_name,student.first_name])
-                    time = '/'.join([str(day),str(month),str(year)])
-                    sms_message = u'Em '+name+u' đã ' + loai + u'.\n Ngày: ' + time + '.'
-                    if phone_number:
-                        message = message + u'<li> ' + str(phone_number) + u': ' + sms_message + u'</li>'
-                    else:
-                        message = message + u'<li> ' + u'<b>Không số</b>' + u': ' + sms_message + u'</li>'
-                    if phone_number:
-                        sendSMS(phone_number, sms_message, user)
-            data = simplejson.dumps({'message':message})
-            return HttpResponse(data, mimetype = 'json')
+                return HttpResponse( data, mimetype = 'json')
+            if request_type == 'sms':
+                data = request.POST[u'data']
+                sms_message = ''
+                data = data.split(':')
+                for element in data:
+                    if element:
+                        element = element.split('-')
+                        id = element[0]
+                        loai = element[1]
+                        # send sms
+                        student = Pupil.objects.get( id = id)
+                        phone_number = student.sms_phone
+                        
+                        if loai == 'k':
+                            loai = u'đi học'
+                        elif loai == u'Có phép':
+                            loai = u'nghỉ học có phép'
+                        else:
+                            loai = u'nghỉ học không phép'
+                        name = ' '.join([student.last_name,student.first_name])
+                        time = '/'.join([str(day),str(month),str(year)])
+                        sms_message = u'Em '+name+u' đã ' + loai + u'.\n Ngày: ' + time + '.'
+                        if phone_number:
+                            message = message + u'<li> ' + str(phone_number) + u': ' + sms_message + u'</li>'
+                        else:
+                            message = message + u'<li> ' + u'<b>Không số</b>' + u': ' + sms_message + u'</li>'
+                        if phone_number:
+                            sendSMS(phone_number, sms_message, user)
+                data = simplejson.dumps({'message':message})
+                return HttpResponse(data, mimetype = 'json')
         else:
             raise Exception('StrangeRequestMethod')
     pupilList = Pupil.objects.filter(class_id=class_id).order_by('index','first_name', 'last_name')
@@ -2574,7 +2575,7 @@ def hanh_kiem(request, class_id, sort_type = 1, sort_status = 0):
         form[i] = HanhKiemForm(instance=hk)
         i += 1
 
-    if request.is_ajax():
+    if request.is_ajax() and request.POST['request_type'] != u'all':
         p_id = request.POST['id']
         p = c.pupil_set.get(id = int(p_id))
         hk = p.hanhkiem_set.get(year_id__exact=year.id)
@@ -2604,7 +2605,7 @@ def hanh_kiem(request, class_id, sort_type = 1, sort_status = 0):
         if form.is_valid():
             form.save()
 
-    elif request.method == 'POST':
+    elif request.is_ajax() and request.POST['request_type']=='all':
         message = 'Cập nhật thành công hạnh kiểm lớp ' + str(Class.objects.get(id=class_id))
         term1 = request.POST.getlist('term1')
         term2 = request.POST.getlist('term2')

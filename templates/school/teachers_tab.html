@@ -25,14 +25,13 @@
                 var arg = {data: d,
                     type: $(this).attr('method'),
                     url: $(this).attr('action'),
-                    request_type: 'add',
                     success: function(response) {
                         $('.ui-tabs-panel:visible').html(response);
                     }
                 };
                 $.ajax(arg);
                 return false;
-        });    
+            });    
      });
     </script>
     <h2>Danh sách giáo viên</h2>
