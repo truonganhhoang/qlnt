@@ -14,7 +14,10 @@
         $("#tabs").tabs({        
             load: function(event, ui) {
                 $("a.delete").click(function() {
-                    $(ui.panel).load(this.href);
+                    var i = confirm("Bạn có chắc chắn xóa không?");
+                    if (i){
+                        $(ui.panel).load(this.href);
+                    }
                     return false;
                 });
             }

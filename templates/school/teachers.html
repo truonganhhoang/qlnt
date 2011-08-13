@@ -9,11 +9,14 @@
             var $tabs = $("#tabs").tabs({        
                 load: function(event, ui) {
                     $("a.delete").click(function() {
-                        $(ui.panel).load(this.href);
+                        var i = confirm("Bạn có chắc chắn xóa không?");
+                        if ( i ){
+                            $(ui.panel).load(this.href);
+                        }
                         return false;
                     });
                 },
-                tabTemplate: "<li><a href='#{href}'>#{label}</a> <span class='ui-icon ui-icon-close'>Remove Tab</span></li>",
+                tabTemplate: "<li><a href='#{href}'>#{label}</a> <span class='ui-icon ui-icon-close'>Remove Tab</span></li>"
             });
             // modal dialog init: custom buttons and a "close" callback reseting the form inside
             var $dialog = $("#dialog").dialog({
