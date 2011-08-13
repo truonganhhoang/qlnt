@@ -586,7 +586,7 @@ def class_generate(request, class_id, object):
             sheet.row(row).height = 350
             sheet.write(row, 0, row -4, style)
             sheet.write(row, 1, student.last_name + ' '+student.first_name, style)
-            sheet.write(row, 2, student.birthday.strftime('%d/%d/%Y'), style)
+            sheet.write(row, 2, student.birthday.strftime('%d/%m/%Y'), style)
             sheet.write(row, 3, student.birth_place, style)
             sheet.write(row, 4, student.sex, style)
             sheet.write(row, 5, student.dan_toc, style)
