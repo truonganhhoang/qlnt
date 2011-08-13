@@ -193,7 +193,9 @@
     </div>
     <table class="styleA">
         <tr class="thread">
-
+            <th align="center" width="30px">
+                <input type="checkbox" id="checkbox_all"/>
+            </th>
             <th align="center"><a
                     href="{%url school.views.school_index  %}viewClassDetail/{{class.id}}/0/{{next_status}}"
                     class="tiptiphover" title="Hiển thị theo thứ tự sắp xếp"> STT </a></th>
@@ -215,14 +217,14 @@
             <th align="center"> Họ tên bố</th>
             <th align="center"> Họ tên mẹ</th>
             <th align="center"> Số điện thoại</th>
-            <th align="center" width="30px">
-                <input type="checkbox" id="checkbox_all"/>
-            </th>
+
         </tr>
 
         {% for ss in studentList %}
             <tr class="{{ss.id}}">
-
+                <td align="center">
+                    <input type="checkbox" id="checkbox_{{ss.id}}"/>
+                </td>
                 <td align="center"> {{ forloop.counter }} </td>
                 {% if pos > 1 or student_id == ss.id %}
                     <td align="center"><a title="Xem toàn bộ thông tin chi tiết"
@@ -243,9 +245,7 @@
                 <td align="center"> {{ ss.father_name }} </td>
                 <td align="center"> {{ ss.mother_name }} </td>
                 <td align="center"> {{ ss.phone }}</td>
-                <td align="center">
-                    <input type="checkbox" id="checkbox_{{ss.id}}"/>
-                </td>
+
             </tr>
         {% endfor %}
 
@@ -256,6 +256,7 @@
 
                     {{ form.non_field_errors }}
                     <td align="center"></td>
+                    <td align="center"><input class="ggButton" type="submit" value="Thêm"/></td>
                     <td align="center">
                         {{ form.last_name.errors }}
                         <p>{{ form.last_name }}</p>
@@ -303,9 +304,7 @@
                         {{ form.phone.errors }}
                         <p>{{ form.phone }}</p>
                     </td>
-                    <td border = "0px" align="center"><input class="ggButton" type="submit" value="Thêm"/></td>
                 </tr>
-
 
             </form>
         {% endif %}
