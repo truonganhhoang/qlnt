@@ -4,14 +4,14 @@ from django.conf.urls.defaults import patterns, url
 
 urlpatterns = patterns('',
     url(r'^$', 'school.views.school_index', name = "school_index"),
-
     
+
     # author: luulethe@gmail.com (cac ham den cho gach)
     
     #-----------------------------------------------------------------------
     # 2 ham nay dung de test, tao tat ca cac thong tin con thieu cho sinh vien
     # sau nay hoan thien, co the bo di    
-    #url(r'thu$','school.makeTest.thu'),
+    url(r'thu$','school.makeTest.thu'),
     url(r'createTbNam/(?P<year_id>\w+)','school.viewMark.createTbNam'),
     url(r'createAllInfoInTerm/(?P<term_id>\w+)','school.viewMark.createAllInfoInTerm'),
 
@@ -50,6 +50,8 @@ urlpatterns = patterns('',
     url(r'finish$','school.viewFinish.finish'),    
     #thong ke toan truong
     #url(r'countInSchool/(?P<year_id>\w+)' , 'school.viewCount.countInSchool'),
+    url(r'report$' , 'school.writeExcel.report'), 
+    
     url(r'countInSchool$' , 'school.viewCount.countInSchool'), 
     url(r'countPractisingInTerm/(?P<term_id>\w+)$','school.viewCount.countPractisingInTerm'),
     url(r'countPractisingInYear/(?P<year_id>\w+)$','school.viewCount.countPractisingInYear'),
@@ -58,6 +60,10 @@ urlpatterns = patterns('',
     url(r'countAllInTerm/(?P<term_id>\w+)$','school.viewCount.countAllInTerm'),
     url(r'countAllInYear/(?P<year_id>\w+)$','school.viewCount.countAllInYear'),
 
+    url(r'printMarkBook$' , 'school.writeExcel.printMarkBook'), 
+    url(r'printMarkBook/(?P<termNumber>\w+)/(?P<class_id>([0-9-])*)$' , 'school.writeExcel.printMarkBook'), 
+
+    
     #------------------------------------------------------------------
 
     url(r'classes$', 'school.views.classes', name = "classes"),

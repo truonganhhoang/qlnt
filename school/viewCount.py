@@ -195,10 +195,19 @@ def countPractisingInClassInTerm(class_id,term_id):
     slList  =[0,0,0,0,0]
     ptslList=[0,0,0,0,0]
     sum=0.0
+    
     string=['T','K','TB','Y',None]
-    for i in range(string.__len__()):
-        slList[i]=HanhKiem.objects.filter(term_id=term_id,student_id__class_id=class_id,loai=string[i]).count()
-        sum+=slList[i]
+    selectedTerm = Term.objects.get(id=term_id)
+    year_id = selectedTerm.year_id
+    if selectedTerm.number ==1:
+        for i in range(string.__len__()):
+            slList[i]=HanhKiem.objects.filter(year_id=year_id,student_id__class_id=class_id,term1=string[i]).count()
+            sum+=slList[i]
+    else:        
+        for i in range(string.__len__()):
+            slList[i]=HanhKiem.objects.filter(year_id=year_id,student_id__class_id=class_id,term2=string[i]).count()
+            sum+=slList[i]
+            
     if sum!=0:    
         for i in range(string.__len__()):
             ptslList[i]=slList[i]/sum *100
