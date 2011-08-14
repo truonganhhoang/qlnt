@@ -118,7 +118,7 @@ class Team(models.Model):
 
 class Group(models.Model):
     name = models.CharField("Nhóm", max_length= 100)
-    team_id = models.ForeignKey(Organization, verbose_name="Tổ(*)")
+    team_id = models.ForeignKey(Team, verbose_name="Tổ(*)")
 
     class Meta:
         verbose_name = "Nhóm"
