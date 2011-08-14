@@ -46,9 +46,9 @@ class TeacherITForm(forms.ModelForm):
             'birthday' : DateInput(attrs = {'class':'datepicker'}),
         }
     def __init__(self,team_id, *args, **kwargs):
-        super(TeacherForm,self).__init__(*args, **kwargs)
-        team = Team.objects.get(id == team_id)
-        school = team.school
+        super(TeacherITForm,self).__init__(*args, **kwargs)
+        team = Team.objects.get(id = team_id)
+        school = team.school_id
         self.fields['team_id'] = forms.ModelChoiceField(queryset= school.team_set.all(), required=False, label=u'Tổ')
         self.fields['group_id'] = forms.ModelChoiceField(queryset= team.group_set.all(), required=False, label=u'Nhóm')
         

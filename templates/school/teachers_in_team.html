@@ -20,8 +20,64 @@
 
                 });
             });
+            $("select[name=group_id]").each(function() {
+                $(this).change(function() {
+                    var id = $(this).parents("tr").attr('class').split(' ')[0];
+                    var group = $(this).val();
+                    var data = { id: id, group:group, request_type:'group'};
+                    var arg = { type:"POST",
+                        url:"school/teachers_in_team/{{ team.id }}",
+                        data: data,
+                        datatype:"json",
+                        success:function(){
+                        }
+                    };
+                    $.ajax(arg);
+                    return false;
+
+                });
+            });
+            var $d1 = $("#d{{team.id}}").dialog({
+                autoOpen: false,
+                modal: true,
+                buttons: {
+                    Thêm: function() {
+                        addgroup();
+                        $(this).dialog("close");
+                    },
+                    Hủy: function() {
+                        $(this).dialog("close");
+                    }
+                },
+                close: function() {
+                    $("#ag{{team.id}}").reset();
+                }
+            });
+            $("#add_group{{team.id}}").click(function() {
+                $d1.dialog("open");
+            });
+            function addgroup() {
+                var data = { 'name' : $("#group_title{{team.id}}").val(),'team_id':{{team.id}}, request_type:'addGroup'};
+                var arg = { type:"POST",
+                    url:"",
+                    data: data,
+                    datatype:"json",
+                    success: function(response) {
+                        $('.ui-tabs-panel:visible').html(response);
+                    }
+                };
+                $.ajax(arg);
+                return false;
+            }
         });
     </script>
+    <button id="add_group{{team.id}}" class="ggButton"> Thêm nhóm </button>
+    <div id="d{{team.id}}" title="Thêm tổ mới">
+        <form id="ag{{team.id}}">
+            <label for="tab_title">Tên nhóm</label>
+            <input type="text" name="tab_title" id="group_title{{team.id}}" value="" class="ui-widget-content ui-corner-all"/>
+        </form>
+    </div>
     <h2>Danh sách giáo viên {{ team }}</h2>
     <table class="styleA" width="100%">
         <tr>
