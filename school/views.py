@@ -547,6 +547,11 @@ def class_generate(request, class_id, object):
         borders.right = Borders.THICK
         borders.top = Borders.THICK
         borders.bottom = Borders.THICK
+        borders.left_colour = 0x17
+        borders.right_colour = 0x17
+        borders.top_colour = 0x17
+        borders.bottom_colour = 0x17
+
 
         style = XFStyle()
         style.font = fnt
