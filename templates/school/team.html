@@ -36,6 +36,7 @@
                     data: data,
                     datatype:"json",
                     success: function(response) {
+                        $form.empty();
                         $('.ui-tabs-panel:visible').html(response);
                     }
                 };
@@ -48,6 +49,7 @@
                     $("a.delete").click(function() {
                         var i = confirm("Bạn có chắc chắn xóa không?");
                         if (i){
+                            $form.empty();
                             $(ui.panel).load(this.href);
                         }
                         return false;
@@ -72,15 +74,14 @@
                 }
                 return false;
             });
-            $("#group_title{{team.id}}").change(function(){console.log('avc')});
         });
     </script>
     
     <div id="d{{team.id}}" title="Thêm nhóm mới">
         <form id ="ag{{team.id}}">
             <label>Tên nhóm</label>
-            <input type="text" name="group_title" id="group_title{{team.id}}" value="" class="ui-widget-content ui-corner-all"/>
-        </form>    
+            <input type="text" name="group_title" id="group_title{{team.id}}" value="" class="group_title{{team.id}} ui-widget-content ui-corner-all"/>
+        </form>
     </div>
 
     <div id="tabs{{team.id}}">
