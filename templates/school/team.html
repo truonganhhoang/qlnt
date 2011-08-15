@@ -36,7 +36,6 @@
                     data: data,
                     datatype:"json",
                     success: function(response) {
-                        $form.empty();
                         $('.ui-tabs-panel:visible').html(response);
                     }
                 };
@@ -49,7 +48,6 @@
                     $("a.delete").click(function() {
                         var i = confirm("Bạn có chắc chắn xóa không?");
                         if (i){
-                            $form.empty();
                             $(ui.panel).load(this.href);
                         }
                         return false;
@@ -73,6 +71,12 @@
                     $.ajax(arg);
                 }
                 return false;
+            });
+            $(".group_title{{team.id}}").each(function(){
+                $(this).change(function(){
+                    var current = $(this).val();
+                    $(".group_title{{team.id}}").val(current);
+                });
             });
         });
     </script>
