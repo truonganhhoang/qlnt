@@ -3,10 +3,11 @@
 {% block content %}
     <script>
         $(document).ready(function() {
-            var $tab_title_input = $("#tab_title").val();
+            var $tab_title_input = $("#tab_title");
 
             // tabs init with a custom tab template and an "add" callback filling in the content
-            var $tabs = $("#tabs").tabs({        
+            var $tabs = $("#tabs").tabs({
+                tabTemplate: "<li><a href='#{href}'>#{label}</a> <span class='ui-icon ui-icon-close'>xóa</span></li>",        
                 load: function(event, ui) {
                     $("a.delete").click(function() {
                         var i = confirm("Bạn có chắc chắn xóa không?");
@@ -15,8 +16,7 @@
                         }
                         return false;
                     });
-                },
-                tabTemplate: "<li><a href='#{href}'>#{label}</a> <span class='ui-icon ui-icon-close'>Remove Tab</span></li>"
+                }
             });
             // modal dialog init: custom buttons and a "close" callback reseting the form inside
             var $dialog = $("#dialog").dialog({
@@ -48,7 +48,7 @@
 
             // actual addTab function: adds new tab using the title input from the form above
             function addTab() {
-                var data = {'name' : $("#tab_title").val(), 'request_type':'addTeam'};
+                var data = { 'name' : $tab_title_input.val(), request_type:'addTeam'};
                 var arg = { type:"POST",
                     url:"",
                     data: data,
@@ -60,37 +60,49 @@
                 $.ajax(arg);
                 return false;
             }
-
+            
             // addTab button: just opens the dialog
             $("#add_tab")
                     .click(function() {
                         $dialog.dialog("open");
                     });
-
+            $( "#tabs span.ui-icon-close.team" ).live( "click", function() {
+                var i = confirm('Bạn có muốn xóa tổ này không?');
+                if(i){
+                    var index = $( "li", $tabs ).index( $( this ).parent() );
+                    var id =$(this).attr('id').split()[0].split('-')[0];
+                    data = {id:id,request_type:'delete_team'};
+                    arg = { type : 'POST',
+                            data : data,
+                            url : "",
+                            datatype : 'json',
+                            success : function(){
+                                $("#tabs").tabs( "remove", index );
+                            }
+                    }
+                    $.ajax(arg);
+                }
+                return false;
+            });
         });
-    </script>
-    <script>
-        function confirmDelete() {
-            return confirm("Bạn có chắc chắn xóa không?");
-        }
     </script>
 
     <div id="dialog" title="Thêm tổ mới">
-        <form>
+        <form id="at">
             <label for="tab_title">Tên Tổ</label>
             <input type="text" name="tab_title" id="tab_title" value="" class="ui-widget-content ui-corner-all"/>
         </form>
     </div>
 
-    <input class="ggButton" type="button" id="add_tab" value="Thêm tổ">
     <div id="tabs">
         <ul>
             <li><a href="school/teachers_tab/{{ sort_type }}/{{ sort_status }}">Tất cả</a></li>
             {% for t in teamList %}
-                <li><a href="school/teachers_in_team/{{ t.id }}">{{ t.name }}</a></li>
+                <li><a href="school/team/{{ t.id }}">{{ t.name }}</a><span id ="{{t.id}}-team" class="ui-icon ui-icon-close team">xóa</span></li>
             {% endfor %}
+            <input class="ggButton tiptiphover" type="button" id="add_tab" value=" + ">
         </ul>
-
+                
         <input id="reload" type="hidden" onclick="location.replace(location.href)"/>
     </div>
 {% endblock %}

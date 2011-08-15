@@ -1,4 +1,4 @@
-{% block content %}
+﻿{% block content %}
     <script>
         $(document).ready(function() {
             $("select[name=team_id]").each(function() {
@@ -8,7 +8,7 @@
                     var p = $(this).parents("tr");
                     var data = { id: id, team:team, request_type:'team'};
                     var arg = { type:"POST",
-                        url:"school/teachers_in_team/{{ team.id }}",
+                        url:"/school/teachers_in_group/{{ group.id }}",
                         data: data,
                         datatype:"json",
                         success:function(){
@@ -17,30 +17,29 @@
                     };
                     $.ajax(arg);
                     return false;
-
                 });
             });
             $("select[name=group_id]").each(function() {
                 $(this).change(function() {
                     var id = $(this).parents("tr").attr('class').split(' ')[0];
                     var group = $(this).val();
+                    var p = $(this).parents("tr");
                     var data = { id: id, group:group, request_type:'group'};
                     var arg = { type:"POST",
-                        url:"school/teachers_in_team/{{ team.id }}",
+                        url:"/school/teachers_in_group/{{ group.id }}",
                         data: data,
                         datatype:"json",
                         success:function(){
+                            p.empty();
                         }
                     };
                     $.ajax(arg);
                     return false;
-
                 });
             });
         });
     </script>
-
-    <h2>Danh sách giáo viên tổ {{ team }}</h2>
+    <h2>Danh sách giáo viên nhóm{{ group }}</h2>
     <table class="styleA" width="100%">
         <tr>
             <th align="center" width="5%"> STT</th>
@@ -78,10 +77,10 @@
                     <td align="center" width="15%"> {{ f.team_id }} </td>
                     <td align="center" width="15%"> {{ f.group_id }} </td>
                     <td align="center" width="10%"><a
-                            href="{%url school.views.school_index  %}deleteTeacher/{{ss.id}}/{{team.id}}"
-                            title="Xóa giáo viên" class="ggButton delete"> xóa </a></td>
+                            href="{%url school.views.school_index  %}deleteTeacher/{{ss.id}}/{{group.id}}"
+                            title="Xóa giáo viên" class="ggButton delete""> xóa </a></td>
                 {% else %}
-                    <td align="center" width="15%"> {{ ss.team_id }} </td>
+                    <td align="center" width="15%"> {{ ss.group_id }} </td>
                     <td align="center" width="15%"> {{ ss.group_id }} </td>
                 {% endif %}
             </tr>

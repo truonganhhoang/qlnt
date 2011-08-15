@@ -1,0 +1,97 @@
+﻿{% block content %}
+    <script>
+        $(document).ready(function() {
+            var $d1 = $("#d{{team.id}}").dialog({
+                autoOpen: false,
+                modal: true,
+                buttons: {
+                    Thêm: function() {
+                        addgroup();
+                        $(this).dialog("close");
+                    },
+                    Hủy: function() {
+                        $(this).dialog("close");
+                    }
+                },
+                open: function() {
+                     $("#group_title{{team.id}}").focus();
+                },
+                close: function() {
+                    $form[0].reset();
+                }
+            });
+            var $form = $("form", $d1).submit(function() {
+                addgroup();
+                $d1.dialog("close");
+                return false;
+            });
+            $("#add_group{{team.id}}").click(function() {
+                $d1.dialog("open");
+            });
+            
+            function addgroup() {
+                var data = { 'name' : $("#group_title{{team.id}}").val(),'team_id':{{team.id}}, request_type:'addGroup'};
+                var arg = { type:"POST",
+                    url:"/school/team/{{team.id}}",
+                    data: data,
+                    datatype:"json",
+                    success: function(response) {
+                        $('.ui-tabs-panel:visible').html(response);
+                    }
+                };
+                $.ajax(arg);
+                return false;
+            }
+            $("#tabs{{team.id}}").tabs({
+                tabTemplate: "<li><a href='{href}'>{label}</a> <span class='ui-icon ui-icon-close'>xóa</span></li>",
+                load: function(event, ui) {
+                    $("a.delete").click(function() {
+                        var i = confirm("Bạn có chắc chắn xóa không?");
+                        if (i){
+                            $(ui.panel).load(this.href);
+                        }
+                        return false;
+                    });
+                }
+            });
+            $( "#tabs{{team.id}} span.ui-icon-close.group" ).bind( "click", function() {
+                var i = confirm('Bạn có muốn xóa nhóm này không?');
+                if(i){
+                    var index = $( "li", $("#tabs{{team.id}}") ).index( $( this ).parent() );
+                    var id =$(this).attr('id').split()[0].split('-')[0];
+                    data = {id:id,request_type:'delete_group'};
+                    arg = { type : 'POST',
+                            data : data,
+                            url : "",
+                            datatype : 'json',
+                            success : function(){
+                                $("#tabs{{team.id}}").tabs( "remove", index );
+                            }
+                    }
+                    $.ajax(arg);
+                }
+                return false;
+            });
+            $("#group_title{{team.id}}").change(function(){console.log('avc')});
+        });
+    </script>
+    
+    <div id="d{{team.id}}" title="Thêm nhóm mới">
+        <form id ="ag{{team.id}}">
+            <label>Tên nhóm</label>
+            <input type="text" name="group_title" id="group_title{{team.id}}" value="" class="ui-widget-content ui-corner-all"/>
+        </form>    
+    </div>
+
+    <div id="tabs{{team.id}}">
+        <ul>
+            <li><a href="/school/teachers_in_team/{{ team.id }}">{{ team.name }}</a></li>
+            {% for g in groupList %}
+                <li><a href="/school/teachers_in_group/{{ g.id }}">{{ g.name }}</a><span id ="{{g.id}}-group" class="ui-icon ui-icon-close group">xóa</span></li>
+            {% endfor %}
+            <button id="add_group{{team.id}}" class="ggButton tiptiphover" title="Thêm tổ"> + </button>
+        </ul>
+
+        <input id="reload" type="hidden" onclick="location.replace(location.href)"/>
+    </div>
+{% endblock %}

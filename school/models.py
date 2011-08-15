@@ -156,8 +156,8 @@ class BasicPersonInfo(models.Model):
 class Teacher(BasicPersonInfo): 
     user_id = models.OneToOneField(User, verbose_name = "Tài khoản")
     school_id = models.ForeignKey(Organization, verbose_name = "Trường")
-    group_id = models.ForeignKey(Group, null=True, blank=True, verbose_name="Nhóm")
-    team_id = models.ForeignKey(Team, null=True, blank=True, verbose_name="Tổ")
+    group_id = models.ForeignKey(Group, null=True, blank=True, verbose_name="Nhóm", on_delete = models.SET_NULL)
+    team_id = models.ForeignKey(Team, null=True, blank=True, verbose_name="Tổ", on_delete = models.SET_NULL)
 
     class Meta:
         verbose_name = "Giáo viên"

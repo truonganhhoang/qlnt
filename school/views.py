@@ -1333,15 +1333,12 @@ def teachers(request,  sort_type=1, sort_status=0):
     form = TeacherForm(school.id)
     school = get_school(request)
     if request.is_ajax():
+        print request.POST
         if request.POST['request_type'] == u'addTeam':
-            print request.POST
-            try:
-                data = {'name': request.POST['name'], 'school_id': school.id}
-                t = TeamForm(data)
-                if t.is_valid():
-                    t.save()
-            except Exception as e:
-                print e
+            data = {'name': request.POST['name'], 'school_id': school.id}
+            t = TeamForm(data)
+            if t.is_valid():
+                t.save()
             response = simplejson.dumps({'success': True})
             return HttpResponse(response, mimetype='json')
         if request.POST['request_type'] == u'addGroup':
@@ -1349,22 +1346,65 @@ def teachers(request,  sort_type=1, sort_status=0):
             t = GroupForm(data)
             if t.is_valid():
                 t.save()
-            return HttpResponseRedirect('school/teachers_in_team/' + request.POST['team_id'])
+            return HttpResponseRedirect('/school/team/' + request.POST['team_id'])
         if request.POST['request_type'] == u'delete_team':
-            team = school.team_set.get(id = request.POST['team_id'])
-            ts = team.teacher_set.all()
-            for t in ts:
-                t.group_id = None
-                t.team_id = None
-                t.save()
-            team.delete()
-            response = simplejson.dumps({'success': True})
-            return HttpResponse( response, mimetype='json')
-
+            t = school.team_set.get(id = request.POST['id'])
+            teacherList = t.teacher_set.all()
+            for teacher in teacherList:
+                teacher.group_id = None
+            t.delete()
+            return HttpResponse()
+        if request.POST['request_type'] == u'delete_group':
+            g = Group.objects.get(id = request.POST['id'])
+            g.delete()
+            return HttpResponse()    
     teamList = school.team_set.all()
     t = loader.get_template(os.path.join('school', 'teachers.html'))
 
     c = RequestContext(request, {   'teamList' : teamList,
+                                    'pos':pos,
+                                    'sort_type':sort_type,
+                                    'sort_status':sort_status,
+                                    'next_status':1-int(sort_status),
+                                })
+    return HttpResponse(t.render(c))
+    
+def team(request, team_id ,sort_type=1, sort_status=0):
+    user = request.user
+    if not user.is_authenticated():
+        return HttpResponseRedirect(reverse('login'))
+    try:
+        school = get_school(request)
+    except Exception as e:
+        return HttpResponseRedirect(reverse('index'))
+    school = get_school(request)
+    pos = get_position(request)
+    message = None
+    form = TeacherForm(school.id)
+    school = get_school(request)
+    if request.is_ajax():
+        try:
+            if request.POST['request_type'] == u'addTeam':
+                data = {'name': request.POST['name'], 'school_id': school.id}
+                t = TeamForm(data)
+                if t.is_valid():
+                    t.save()
+                response = simplejson.dumps({'success': True})
+                return HttpResponse(response, mimetype='json')
+            if request.POST['request_type'] == u'addGroup':
+                data = {'name': request.POST['name'], 'team_id': request.POST['team_id']}
+                t = GroupForm(data)
+                if t.is_valid():
+                    t.save()
+                return HttpResponseRedirect('/school/team/' + request.POST['team_id'])
+        except:
+            pass
+    team = school.team_set.get(id=team_id)
+    groupList = team.group_set.all()
+    t = loader.get_template(os.path.join('school', 'team.html'))
+
+    c = RequestContext(request, {   'groupList' : groupList,
+                                    'team' : team,
                                     'pos':pos,
                                     'sort_type':sort_type,
                                     'sort_status':sort_status,
@@ -1386,7 +1426,6 @@ def teachers_tab(request, sort_type=1, sort_status=0):
     message = None
     form = TeacherForm(school.id)
     if request.is_ajax():
-        print request.POST
         if (request.method == 'POST' and request.POST['request_type'] == u'team'):
             try:
                 print request.POST
@@ -1510,7 +1549,6 @@ def teachers_in_team(request, team_id):
                 t.save()
             response = simplejson.dumps({'success': True})
             return HttpResponse( response, mimetype='json')
-
     teacherList =  school.teacher_set.filter(team_id = team_id).order_by('first_name', 'last_name')
     flist = []
     team = school.team_set.get(id = team_id)
@@ -1531,6 +1569,62 @@ def teachers_in_team(request, team_id):
                                     'team' : team})
     return HttpResponse(t.render(c))
 
+def teachers_in_group(request, group_id):
+    user = request.user
+    if not user.is_authenticated():
+        return HttpResponseRedirect(reverse('login'))
+    try:
+        school = get_school(request)
+    except Exception as e:
+        return HttpResponseRedirect(reverse('index'))
+    pos = get_position(request)
+    school = get_school(request)
+    if request.is_ajax():
+        if (request.method == 'POST' and request.POST['request_type'] == u'team'):
+            t = school.teacher_set.get(id = request.POST['id'])
+            if request.POST['team']:
+                team = school.team_set.get (id = request.POST['team'])
+                t.team_id = team
+                t.group_id = None
+                t.save()
+            else:
+                t.team_id = None
+                t.group_id = None
+                t.save()
+            response = simplejson.dumps({'success': True})
+            return HttpResponse( response, mimetype='json')
+        if (request.method == 'POST' and request.POST['request_type'] == u'group'):        
+            t = school.teacher_set.get(id = request.POST['id'])
+            if request.POST['group']:
+                group = Group.objects.get(id = request.POST['group'])
+                t.group_id = group
+                t.save()
+            else:
+                t.group_id = None
+                t.save()
+            response = simplejson.dumps({'success': True})
+            return HttpResponse( response, mimetype='json')
+    teacherList =  school.teacher_set.filter(group_id = group_id).order_by('first_name', 'last_name')
+    flist = []
+    group = Group.objects.get(id = group_id)
+    team = group.team_id
+    i = 0
+    for t in teacherList:
+        flist.append(TeacherITForm(team.id))
+        flist[i] = TeacherITForm(team.id,instance = t)
+        i += 1
+    list = zip(teacherList, flist)
+    t = loader.get_template(os.path.join('school', 'teachers_in_group.html'))
+    tmp = get_teacher(request)
+    id = 0
+    if (tmp):
+        id = tmp.id
+    c = RequestContext(request, {   'list': list,
+                                    'pos':pos,
+                                    'teacher_id':id,
+                                    'group' : group})
+    return HttpResponse(t.render(c))
+    
 def viewTeacherDetail(request, teacher_id):
     user = request.user
     if not user.is_authenticated():
