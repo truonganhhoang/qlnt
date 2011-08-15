@@ -188,7 +188,14 @@ def printName(class_id,s,x,y):
             s.write(x+t-1,y,t,h7)
             s.write(x+t-1,y+1,"",last_name1)
             s.write(x+t-1,y+2,"",first_name1)
-            
+def printSTT(s,max,x,y):
+    for t in range(1,max+1):
+        if t % 5 !=0:
+            s.write(x+t-1,y,t,h6)
+        else:    
+            s.write(x+t-1,y,t,h7)
+        
+                
 def printPage13(book):
     s = book.add_sheet('trang 13')
     s.set_paper_size_code(8)
@@ -263,7 +270,7 @@ def printPage15(book,class_id,number,mon1,mon2,mon3):
     printASubject(class_id,s,mon1,1,1)
     printASubject(class_id,s,mon2,1,6)
     printASubject(class_id,s,mon3,1,11)
-    
+    printSTT(s,55,4,0)
     
     max=55
     
@@ -288,6 +295,7 @@ def markBookClass(class_id):
     printPage15(book,class_id,5,u'NN2',u'Nghề phổ thông(lớp 11)',u'....................................')    
     #printPage15(book)
     
+    book.set_active_sheet(0)
     
     response = HttpResponse(mimetype='application/ms-excel')
     response['Content-Disposition'] = u'attachment; filename=ds_hoc_sinh_%s.xls' % unicode(class_id)
