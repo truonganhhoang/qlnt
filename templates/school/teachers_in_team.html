@@ -68,13 +68,30 @@
                 };
                 $.ajax(arg);
                 return false;
-            }
+            };
+            $("#delete_team").click(function(){
+                var i = confirm("Bạn có chắc chắn muốn xóa không?");
+                if (i){
+                    var data = {'team_id':{{team.id}}, request_type:'delete_team'};
+                    var arg = { type:"POST",
+                        url:"school/teachers",
+                        data: data,
+                        datatype:"json",
+                        success: function() {
+                            $("#reload").click();
+                        }
+                    };
+                    $.ajax(arg);
+                }
+                    return false;
+            });
         });
     </script>
     <button id="add_group{{team.id}}" class="ggButton"> Thêm nhóm </button>
-    <div id="d{{team.id}}" title="Thêm tổ mới">
+    <button id="delete_team" class="ggButton">Xoá tổ</button>
+    <div id="d{{team.id}}" title="Thêm nhóm mới">
         <form id="ag{{team.id}}">
-            <label for="tab_title">Tên nhóm</label>
+            <label>Tên nhóm</label>
             <input type="text" name="tab_title" id="group_title{{team.id}}" value="" class="ui-widget-content ui-corner-all"/>
         </form>
     </div>
@@ -117,7 +134,7 @@
                     <td align="center" width="15%"> {{ f.group_id }} </td>
                     <td align="center" width="10%"><a
                             href="{%url school.views.school_index  %}deleteTeacher/{{ss.id}}/{{team.id}}"
-                            title="Xóa giáo viên" class="ggButton delete""> xóa </a></td>
+                            title="Xóa giáo viên" class="ggButton delete"> xóa </a></td>
                 {% else %}
                     <td align="center" width="15%"> {{ ss.team_id }} </td>
                     <td align="center" width="15%"> {{ ss.group_id }} </td>

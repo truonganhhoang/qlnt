@@ -1334,10 +1334,14 @@ def teachers(request,  sort_type=1, sort_status=0):
     school = get_school(request)
     if request.is_ajax():
         if request.POST['request_type'] == u'addTeam':
-            data = {'name': request.POST['name'], 'school_id': school.id}
-            t = TeamForm(data)
-            if t.is_valid():
-                t.save()
+            print request.POST
+            try:
+                data = {'name': request.POST['name'], 'school_id': school.id}
+                t = TeamForm(data)
+                if t.is_valid():
+                    t.save()
+            except Exception as e:
+                print e
             response = simplejson.dumps({'success': True})
             return HttpResponse(response, mimetype='json')
         if request.POST['request_type'] == u'addGroup':
@@ -1346,6 +1350,16 @@ def teachers(request,  sort_type=1, sort_status=0):
             if t.is_valid():
                 t.save()
             return HttpResponseRedirect('school/teachers_in_team/' + request.POST['team_id'])
+        if request.POST['request_type'] == u'delete_team':
+            team = school.team_set.get(id = request.POST['team_id'])
+            ts = team.teacher_set.all()
+            for t in ts:
+                t.group_id = None
+                t.team_id = None
+                t.save()
+            team.delete()
+            response = simplejson.dumps({'success': True})
+            return HttpResponse( response, mimetype='json')
 
     teamList = school.team_set.all()
     t = loader.get_template(os.path.join('school', 'teachers.html'))
@@ -1496,6 +1510,7 @@ def teachers_in_team(request, team_id):
                 t.save()
             response = simplejson.dumps({'success': True})
             return HttpResponse( response, mimetype='json')
+
     teacherList =  school.teacher_set.filter(team_id = team_id).order_by('first_name', 'last_name')
     flist = []
     team = school.team_set.get(id = team_id)
