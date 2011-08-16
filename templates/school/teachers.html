@@ -104,7 +104,7 @@
             {% for t in teamList %}
                 <li><a href="school/team/{{ t.id }}">{{ t.name }}</a><span id ="{{t.id}}-team" class="ui-icon ui-icon-close team">xóa</span></li>
             {% endfor %}
-            <input class="ggButton tiptiphover" type="button" id="add_tab" value=" + ">
+            <input class="ggButton tiptiphover" title="Thêm tổ mới" type="button" id="add_tab" value=" + ">
         </ul>
                 
         <input id="reload" type="hidden" onclick="location.replace(location.href)"/>

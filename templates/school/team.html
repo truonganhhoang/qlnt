@@ -94,7 +94,7 @@
             {% for g in groupList %}
                 <li><a href="/school/teachers_in_group/{{ g.id }}">{{ g.name }}</a><span id ="{{g.id}}-group" class="ui-icon ui-icon-close group">xóa</span></li>
             {% endfor %}
-            <button id="add_group{{team.id}}" class="ggButton tiptiphover" title="Thêm tổ"> + </button>
+            <button id="add_group{{team.id}}" class="ggButton tiptiphover" title="Thêm nhóm mới"> + </button>
         </ul>
 
         <input id="reload" type="hidden" onclick="location.replace(location.href)"/>
