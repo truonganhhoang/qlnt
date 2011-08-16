@@ -535,7 +535,7 @@ def markTable(request,term_id=-1,class_id=-1,subject_id=-1,move=None):
     """
     selectedClass=None
     if classChoice !=-1: 
-        subjectList=Subject.objects.filter(class_id=classChoice,primary__in=[0,selectedTerm.number,3])
+        subjectList=Subject.objects.filter(class_id=classChoice,primary__in=[0,selectedTerm.number,3]).order_by("index")
         selectedClass=Class.objects.get(id=classChoice)   
    
     selectedSubject=None
@@ -710,7 +710,7 @@ def markForAStudent(request,class_id,student_id):
         termChoice =int(request.POST['term'])
         selectedTerm=Term.objects.get(id=termChoice)
         
-    subjectList=selectedClass.subject_set.all().order_by("-hs")
+    subjectList=selectedClass.subject_set.all().order_by("index")
     
     
     markList=[]
