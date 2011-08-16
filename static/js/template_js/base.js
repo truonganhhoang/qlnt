@@ -29,6 +29,49 @@ $(document).ready(function(){
     });
 
     // end setting up
+    // xss prevention
+
+
+    $.fn.is_harmful = function(origin){
+        if ($.encoder.encodeForHTML($.encoder.canonicalize(origin)) != origin ) return true;
+        return $.encoder.encodeForURL($.encoder.canonicalize(origin)) != origin;
+    };
+
+    $("form").each(function(){
+        $(this).submit(function(){
+            var ok = true;
+            console.log('submit');
+            $('input:text').each(function(){
+                var origin = $(this).val();
+                console.log(origin);
+                if ($(this).is_harmful(origin)){
+                    $("#notify").text("Thông tin bạn vừa nhập có chứa mã độc.");
+                    $("#notify").fadeIn('fast');
+                    $(this).focus();
+                    $("#notify").delay(1000).fadeOut('fast');
+                    ok = false;
+                    console.log(ok);
+                }
+            });
+            alert(ok);
+            if (!ok) return false;
+
+        });
+    });
+
+
+    $("input:text").each(function(){
+        $(this).focusout(function(){
+            var origin = $(this).val();
+            if ($(this).is_harmful(origin)){
+                $("#notify").text("Thông tin bạn vừa nhập có chứa mã độc.");
+                $("#notify").fadeIn('fast');
+                $(this).focus();
+                $("#notify").delay(1000).fadeOut('fast');
+            }
+        });
+    });
+    // end xss prevention
     // jquery global function
     $.fn.disableNotification = function(){
         $(".notify-widget-pane").hide();
