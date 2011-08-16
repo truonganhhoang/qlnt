@@ -1,6 +1,10 @@
 {% extends "base.html" %}
 
 {% block content %}
+    <style>
+	    #tabs { margin-top: 1em; }
+	    #tabs li .ui-icon-close { float: left; margin: 0.2em 0.4em 0 0; cursor: pointer; }
+	</style>
     <script>
         $(document).ready(function() {
             var $tab_title_input = $("#tab_title");
