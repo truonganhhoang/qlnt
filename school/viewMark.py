@@ -874,9 +874,12 @@ def update(s,primary):
             m.tb        = None  
             tbcn.save()
                 
-    else :   
+    else :  
+             
             sum=m.ck*3
+            
             factor=3
+            
             if m.mieng_1 != None : 
                 sum=sum+m.mieng_1 
                 factor=factor+1 
@@ -924,19 +927,25 @@ def update(s,primary):
             if m.mot_tiet_5 != None: 
                 sum=sum+m.mot_tiet_5*2
                 factor=factor+2
-                
             m.tb = round(sum/factor + e,1)
-            
-            if (m.term_id.number==2) & ((primary==0)| (primary==3)):
+                
+            if (primary==0)| (primary==3)| (primary==4):
                 subject_id = m.subject_id
                 student_id = m.student_id
-                tbk1=Mark.objects.get(subject_id=subject_id.id,student_id=student_id.id,term_id__number=1)
-
-                if tbk1.tb!=None:
-                    tbcn=TKMon.objects.get(subject_id=subject_id.id,student_id=student_id.id)
-                    tbcn.tb_nam = round((m.tb*2 + tbk1.tb+e)/3 , 1)
-                    tbcn.save()
-                    
+                
+                if  m.term_id.number==2:        
+                    tbk1=Mark.objects.get(subject_id=subject_id.id,student_id=student_id.id,term_id__number=1)
+                    if tbk1.tb!=None:
+                        tbcn=TKMon.objects.get(subject_id=subject_id.id,student_id=student_id.id)
+                        tbcn.tb_nam = round((m.tb*2 + tbk1.tb+e)/3 , 1)
+                        tbcn.save()
+                else:
+                    tbk2=Mark.objects.get(subject_id=subject_id.id,student_id=student_id.id,term_id__number=2)
+                    if tbk2.tb!=None:
+                        tbcn=TKMon.objects.get(subject_id=subject_id.id,student_id=student_id.id)
+                        tbcn.tb_nam = round((m.tb + tbk2.tb*2+e)/3 , 1)
+                        tbcn.save()
+                            
             elif (primary==1) | (primary==2) :                
                 subject_id = m.subject_id
                 student_id = m.student_id
