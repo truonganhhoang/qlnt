@@ -20,6 +20,54 @@
         });    
         $( "#tabs" ).tabs({
         });
+        $("#id_ngay_vao_doi").each(function(){
+            if (!$("#id_doi").is(':checked')){
+                $(this).attr('disabled', true);
+            }
+        });
+
+        $("#id_ngay_vao_doan").each(function(){
+            if (!$("#id_doan").is(':checked')){
+                $(this).attr('disabled', true);
+            }
+        });
+
+        $("#id_ngay_vao_dang").each(function(){
+            if (!$("#id_dang").is(':checked')){
+                $(this).attr('disabled', true);
+            }
+        });
+
+        $("#id_doi").click(function() {
+            if (!$(this).is(':checked')){
+                $("#id_ngay_vao_doi").val('');
+                $("#id_ngay_vao_doi").attr('disabled', true);
+            }
+            else{
+                $("#id_ngay_vao_doi").removeAttr('disabled');
+            };
+        });
+
+        $("#id_doan").click(function() {
+            if (!$(this).is(':checked')){
+                $("#id_ngay_vao_doan").val('');
+                $("#id_ngay_vao_doan").attr('disabled', true);
+            }
+            else{
+                $("#id_ngay_vao_doan").removeAttr('disabled');
+            };
+        });
+
+        $("#id_dang").click(function() {
+            if (!$(this).is(':checked')){
+                $("#id_ngay_vao_dang").val('');
+                $("#id_ngay_vao_dang").attr('disabled', true);
+            }
+            else{
+                $("#id_ngay_vao_dang").removeAttr('disabled');
+            };
+        });
+
     });
     function confirmDelete()
     {
