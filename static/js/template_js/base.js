@@ -53,7 +53,6 @@ $(document).ready(function(){
                     console.log(ok);
                 }
             });
-            alert(ok);
             if (!ok) return false;
 
         });
