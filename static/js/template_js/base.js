@@ -50,7 +50,6 @@ $(document).ready(function(){
                     $(this).focus();
                     $("#notify").delay(1000).fadeOut('fast');
                     ok = false;
-                    alert(ok);
                 }
             });
             if (!ok) return false;
