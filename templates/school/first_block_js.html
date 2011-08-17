@@ -9,7 +9,7 @@
 	else enableSendSMS = 0;
 	
 	
-	if ({{selectedTerm.number}}==2)
+	if ( {{selectedTerm.number}}== 2 )
 		isSecondTerm = 1;
 	else	
 		isSecondTerm = 0; 
@@ -150,7 +150,9 @@ window.onload = function() { document.onkeydown = catchEnter; };
 		//alert(number+"ff");	
 		var table =document.getElementById("markTable");
 		table.rows[number+2].className="";
-		for(var i=1;i<20;i++)
+		if (isSecondTerm==0) var  numberRow = 18;
+		else                 var numberRow = 20;  
+		for(var i=1;i<numberRow;i++)
 		{
 			var name = number*100+i;
 			var temp = document.getElementById(name);
