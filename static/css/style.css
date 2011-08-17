@@ -320,6 +320,7 @@ table.styleA td {
     border-style: solid;
     border-color: #a9c6c9;
     text-align: left;
+    vertical-align: bottom;
 }
 
 .ggButton {
@@ -670,7 +671,6 @@ div#divList {
 
 #content ul li {
     width: auto;
-    height: 20px;
 }
 
 #content ul li a {
