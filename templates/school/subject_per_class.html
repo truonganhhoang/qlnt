@@ -106,7 +106,6 @@
             <th align="center" width="10%"> <a href="{%url school.views.school_index  %}subjectPerClass/{{class.id}}/2/{{next_status}}">Hệ số </a></th>
             <th align="center" width="25%"> <a href="{%url school.views.school_index  %}subjectPerClass/{{class.id}}/3/{{next_status}}">Giáo viên</a></th>
             <th align="center" > Cách tính điểm </th>
-            <th align="center" width="10%"></th>
             {%if pos > 1%}
                 <th width = "5%"> </th>
             {%endif%}
@@ -142,7 +141,6 @@
                         <td align="center" width="25%"> {{ss.teacher_id}}</td>
                         <td align="center" > {{ss.primary}} </td>
                     {%endif%}
-                    <td align="center" width="10%"> <a class = "ggButton" href="{%url school.views.school_index  %}markTable/{{term.id}}/{{class.id}}/{{ss.id}}"> Điểm </a></td>
                     {%if pos > 3%}
                         <td width = "5%"> <a class = "ggButton" href = "{%url school.views.school_index  %}deleteSubject/{{ss.id}}" onclick="return confirmDelete();">xóa</a></td>
                     {%endif%}
@@ -171,7 +169,6 @@
                         <p>{{form.primary}} </p> 
                     </td>
                     <td width="10%"><input class = "ggButton" type ="submit" value="Thêm"/></td>
-                    <td width = "5%" align = "left"></td>
                 </tr>
             {%endif%}
 
