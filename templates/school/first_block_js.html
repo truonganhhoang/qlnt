@@ -105,14 +105,19 @@ window.onload = function() { document.onkeydown = catchEnter; };
 			
 		if ((10<number ) && (number<100))
 		{
-			temp=number/10;
+			var temp=number/10;
 			tb.value=temp.toString();
 		}
 		if (number>=100)
 		{
 			tb.value=tb.value.substring(0,2);				
 			ok=false;
-		}	
+		}
+		if ((tb.value.length==2) && (tb.value[0]=='0'))
+		{
+			var temp = number / 10;
+			tb.value = temp.toString();
+		}		
 		if (ok)
 			if (((48<=keyCode) && (keyCode<=57)) || ((96<=keyCode) && (keyCode<=105)))
 			{
