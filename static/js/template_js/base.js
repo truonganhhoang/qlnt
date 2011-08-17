@@ -33,6 +33,7 @@ $(document).ready(function(){
 
 
     $.fn.is_harmful = function(origin){
+        origin = origin.replace(/\//g,' ').replace(/-/g,' ');
         if ($.encoder.encodeForHTML($.encoder.canonicalize(origin)) != origin ) return true;
         return $.encoder.encodeForJavascript($.encoder.canonicalize(origin)) != origin;
 
@@ -155,6 +156,20 @@ $(document).ready(function(){
                 // Only send the token to relative URLs i.e. locally.
                 xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
             }
+
+            var ok = true;
+            console.log('submit');
+            $('input:text').each(function(){
+                var origin = $(this).val();
+                if ($(this).is_harmful(origin)){
+                    $("#notify").text("Thông tin bạn vừa nhập có chứa mã độc.");
+                    $("#notify").fadeIn('fast');
+                    $(this).focus();
+                    $("#notify").delay(1000).fadeOut('fast');
+                    ok = false;
+                }
+            });
+            if (!ok) return false;
         }
     });
 
