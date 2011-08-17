@@ -960,25 +960,29 @@ def saveMark(request):
     
     t1=time.time()
     message = 'hello'
-    #print "hello"
+    print "hello"
     if request.method == 'POST':
         str = request.POST['str']
         strs=str.split('/')        
         position = get_position(request)
-        
+        print "chao"
+        print position
         if   position ==4 :pass
         elif position ==3 :
-            idTeacher= int(strs[0])
+            idTeacher= int(strs[1])
             teacher= Teacher.objects.get(id=idTeacher)
             if request.user.id!=teacher.user_id.id: return
         else: return
+        print "ok1"
         length = len(strs)
-        primary= int(strs[1])
+        primary= int(strs[2])
+        print "ok2"
         print str
         print length
-        for i in range(2,length):
-                update(strs[i],primary)     
-        message='ok'
+        for i in range(3,length):
+                update(strs[i],primary)
+                     
+        message=strs[0]
         
         data = simplejson.dumps({'message': message})
         t2=time.time()

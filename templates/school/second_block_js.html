@@ -59,13 +59,17 @@
 		{
 			if (xmlhttp.readyState==4 && xmlhttp.status==200)
 			{
-				//document.getElementById("myDiv").innerHTML=xmlhttp.responseText;
-				//alert("fdfdf fsdfffhello1");
-				//tong=tong+1
-				//document.getElementById("messageChanging").innerHTML="Đã lưu";
-				updateOldAr();
-				if (document.getElementById("messageChanging").innerHTML!="Lưu ngay")
-					document.getElementById("messageChanging").innerHTML="Đã lưu";
+				// truong hop goi tin gui sau nhung ma lai den server truoc
+				var responseId=parseInt(xmlhttp.responseText);
+				if (responseId<currentId)
+					resetOldAr();
+				else
+				{	
+					currentId = responseId;
+					updateOldAr();
+					if (document.getElementById("messageChanging").innerHTML!="Lưu ngay")
+						document.getElementById("messageChanging").innerHTML="Đã lưu";
+				}		
 				//document.getElementById("myDiv1").innerHTML=tong;
 			}
 		}   				
@@ -93,6 +97,12 @@
 				oldAr[i][j]=-1;
 		}
 	}	
+	function resetOldAr()
+	{
+		for(var i =1;i<length;i++)
+			for (var j=1;j<17;j++)
+				oldAr[i][j]=-1;
+	}
 	function calculateNewArray()
 	{
 		for(var i=1;i<length;i++)
@@ -238,7 +248,8 @@
 		//alert(str);	
 		if (str!="")
 		{
-			sendToServer(idTeacher+"/"+primary+str);
+			numberId++;
+			sendToServer(numberId+"/"+idTeacher+"/"+primary+str);
 			var currentTime = (new Date()).getTime();
 			if ((currentTime-latestTime)>1500)
 			{
@@ -297,7 +308,7 @@
 	<script>
 		var myTimer;
 		var myTimer1;
-		myTimer  = setInterval("update()", 3000);
+		myTimer  = setInterval("update()", 3500);
 		myTimer1 = setInterval("viewAverage()", 1001);
 		//clearInterval(myTimer);
    
