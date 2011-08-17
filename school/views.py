@@ -2591,7 +2591,7 @@ def edit_ki_luat(request, kt_id):
     c = RequestContext(request, {'form': form, 'p': pupil, 'student_id':pupil.id, 'term':term})
     return HttpResponse(t.render(c))    
 #term_number = 1: ki 1. = 2: ki 2, = 3: ca nam.
-def hanh_kiem(request, class_id, sort_type = 1, sort_status = 0):
+def hanh_kiem(request, class_id = 0, sort_type = 1, sort_status = 0):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
@@ -2599,8 +2599,12 @@ def hanh_kiem(request, class_id, sort_type = 1, sort_status = 0):
         school = get_school(request)
     except Exception as e:
         return HttpResponseRedirect(reverse('index'))
-    
-    c = Class.objects.get(id__exact=class_id)
+    year = get_current_year(request)
+    classList = year.class_set.all()
+    if class_id == 0:
+        for cl in classList:
+            return HttpResponseRedirect('/school/hanhkiem/'+str(cl.id))
+    c = classList.get(id__exact=class_id)
     if not in_school(request, c.block_id.school_id):
         return HttpResponseRedirect('/')           
     
@@ -2612,7 +2616,6 @@ def hanh_kiem(request, class_id, sort_type = 1, sort_status = 0):
     message = None
     listdh = None    
     pupilList = c.pupil_set.all()
-    year = get_current_year(request)
     term = get_current_term(request)
     if int(sort_type) == 1:
         if not int(sort_status):
@@ -2687,7 +2690,6 @@ def hanh_kiem(request, class_id, sort_type = 1, sort_status = 0):
             form[i] = HanhKiemForm(data, instance=hk)
             form[i].save()        
             i += 1
-    classList = year.class_set.all()
     listdh = zip(pupilList, form, all)
     t = loader.get_template(os.path.join('school', 'hanh_kiem.html'))
     c = RequestContext(request, {   'form':form,                                     

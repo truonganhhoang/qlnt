@@ -134,9 +134,9 @@ class BasicPersonInfo(models.Model):
     birth_place = models.CharField("Nơi sinh", max_length = 200, blank = True)
     dan_toc = models.CharField("Dân tộc", max_length = 15, blank = True, default = 'Kinh')
     ton_giao = models.CharField("Tôn giáo", max_length = 20, blank = True)
-    quoc_tich = models.CharField("Quốc tịch(*)", max_length = 20, blank = True, default = 'Việt Nam')
+    quoc_tich = models.CharField("Quốc tịch", max_length = 20, blank = True, default = 'Việt Nam')
     home_town = models.CharField("Quê quán", max_length = 100, blank = True) #nguyen quan
-    sex = models.CharField("Giới tính(*)", max_length = 3, choices = GENDER_CHOICES, blank = True, default = 'Nam')
+    sex = models.CharField("Giới tính", max_length = 3, choices = GENDER_CHOICES, blank = True, default = 'Nam')
     phone = models.CharField("Điện thoại", max_length = 15, blank = True, validators = [validate_phone])
     sms_phone = models.CharField("Điện thoại nhận tin nhắn", max_length = 15, blank = True, validators = [validate_phone])
     current_address = models.CharField("Địa chỉ", max_length = 200, blank = True)
