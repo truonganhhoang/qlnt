@@ -1269,18 +1269,17 @@ def viewClassDetail(request, class_id, sort_type=0, sort_status=0):
                     d = request.POST['birthday'].split('/')
                     print d
                     birthday = date(int(d[2]), int(d[1]), int(d[0]))
-                    print brithday
+                    find = start_year.pupil_set.filter( first_name__exact = request.POST['first_name'])\
+                    .filter(last_name__exact = request.POST['last_name'])\
+                    .filter(birthday__exact = birthday)
+                    if (find):
+                        message += u'<li> ' + u'Học sinh đã tồn tại' + u'</li>'
                 except Exception as e:
                     message = u'<li> ' + u'Chưa nhập hoặc nhập không đúng định dạng "ngày/tháng/năm" ' + u'</li>'
                     print e
 
                 if (request.POST['first_name'] == u''):
                     message += u'<li> ' + u'Ô tên là bắt buộc' + u'</li>'
-                find = start_year.pupil_set.filter( first_name__exact = request.POST['first_name'])\
-                    .filter(last_name__exact = request.POST['last_name'])\
-                    .filter(birthday__exact = birthday)
-                if (find):
-                    message += u'<li> ' + u'Học sinh đã tồn tại' + u'</li>'
                 
                 data = simplejson.dumps({'message': message})
                 return HttpResponse(data, mimetype='json')
