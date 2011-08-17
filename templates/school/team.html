@@ -55,7 +55,7 @@
                 }
             });
             $( "#tabs{{team.id}} span.ui-icon-close.group" ).bind( "click", function() {
-                var i = confirm('Bạn có muốn xóa nhóm này không?');
+                var i = confirm('Nhóm này có thể còn giáo viên, bạn có muốn xóa không?');
                 if(i){
                     var index = $( "li", $("#tabs{{team.id}}") ).index( $( this ).parent() );
                     var id =$(this).attr('id').split()[0].split('-')[0];

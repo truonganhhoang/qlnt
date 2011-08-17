@@ -71,7 +71,7 @@
                         $dialog.dialog("open");
                     });
             $( "#tabs span.ui-icon-close.team" ).live( "click", function() {
-                var i = confirm('Bạn có muốn xóa tổ này không?');
+                var i = confirm('Tổ này có thể còn giáo viên, bạn có muốn xóa không?');
                 if(i){
                     var index = $( "li", $tabs ).index( $( this ).parent() );
                     var id =$(this).attr('id').split()[0].split('-')[0];
@@ -101,7 +101,7 @@
     <div id="tabs">
         <ul>
             <li><a href="school/teachers_tab/{{ sort_type }}/{{ sort_status }}">Tất cả</a></li>
-            {% for t in teamList %}
+            {% for t, n in list %}
                 <li><a href="school/team/{{ t.id }}">{{ t.name }}</a><span id ="{{t.id}}-team" class="ui-icon ui-icon-close team">xóa</span></li>
             {% endfor %}
             <input class="ggButton tiptiphover" title="Thêm tổ mới" type="button" id="add_tab" value=" + ">

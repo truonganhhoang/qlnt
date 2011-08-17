@@ -1224,7 +1224,7 @@ def viewClassDetail(request, class_id, sort_type=0, sort_status=0):
     form = PupilForm(school.id)
     		
     if request.method == 'POST':
-        if request.is_ajax():
+        if request.is_ajax() and request.POST[u'request_type'] == u'del':
             data = request.POST[u'data']
             data = data.split('-')
             for e in data:
@@ -1233,10 +1233,9 @@ def viewClassDetail(request, class_id, sort_type=0, sort_status=0):
                     completely_del_student(std)
 
             data = simplejson.dumps({'success': True})
-
             return HttpResponse(data, mimetype='json')
 
-        else:
+        elif request.POST[u'request_type'] == u'add':
             start_year = StartYear.objects.get(time = int(date.today().year), school_id = school.id)
             data = request.POST.copy()
             data.appendlist('school_join_date',date.today().strftime("%d/%m/%Y"))
@@ -1260,8 +1259,31 @@ def viewClassDetail(request, class_id, sort_type=0, sort_status=0):
                             term=get_current_term(request),
                             school=get_school(request),
                             school_join_date=school_join_date)
-                message = 'Bạn vừa thêm một học sinh mới'
+                message = 'OK'
+                data = simplejson.dumps({'message':message})
+                return HttpResponse(data, mimetype = 'json')
                 form = PupilForm(school.id)
+            else:
+                message = ''
+                try:
+                    d = request.POST['birthday'].split('/')
+                    print d
+                    birthday = date(int(d[2]), int(d[1]), int(d[0]))
+                    print brithday
+                except Exception as e:
+                    message = u'<li> ' + u'Chưa nhập hoặc nhập không đúng định dạng "ngày/tháng/năm" ' + u'</li>'
+                    print e
+
+                if (request.POST['first_name'] == u''):
+                    message += u'<li> ' + u'Ô tên là bắt buộc' + u'</li>'
+                find = start_year.pupil_set.filter( first_name__exact = request.POST['first_name'])\
+                    .filter(last_name__exact = request.POST['last_name'])\
+                    .filter(birthday__exact = birthday)
+                if (find):
+                    message += u'<li> ' + u'Học sinh đã tồn tại' + u'</li>'
+                
+                data = simplejson.dumps({'message': message})
+                return HttpResponse(data, mimetype='json')
     if int(sort_type) == 0:
         if int(sort_status) == 0:
             studentList = cl.pupil_set.order_by('index','first_name', 'last_name','birthday')
@@ -1352,16 +1374,24 @@ def teachers(request,  sort_type=1, sort_status=0):
             teacherList = t.teacher_set.all()
             for teacher in teacherList:
                 teacher.group_id = None
+                teacher.team_id = None
             t.delete()
             return HttpResponse()
         if request.POST['request_type'] == u'delete_group':
             g = Group.objects.get(id = request.POST['id'])
+            teacherList = g.teacher_set.all()
+            for teacher in teacherList:
+                teacher.group_id = None
             g.delete()
-            return HttpResponse()    
+            return HttpResponse()
+    num = []
     teamList = school.team_set.all()
+    for te in teamList:
+        num.append(te.teacher_set.count())
+    list = zip(teamList, num)
     t = loader.get_template(os.path.join('school', 'teachers.html'))
 
-    c = RequestContext(request, {   'teamList' : teamList,
+    c = RequestContext(request, {   'list' : list,
                                     'pos':pos,
                                     'sort_type':sort_type,
                                     'sort_status':sort_status,
@@ -1805,101 +1835,6 @@ def subjectPerClass(request, class_id, sort_type=4, sort_status=0):
                                     'term':term,
                                     'classList':classList,
                                     'pos':pos})
-    return HttpResponse(t.render(c))
-
-def students(request, sort_type=1, sort_status=1, page=1):
-    user = request.user
-    if not user.is_authenticated():
-        return HttpResponseRedirect(reverse('login'))
-        
-    try:
-        school = get_school(request)
-    except Exception as e:
-        return HttpResponseRedirect(reverse('index'))
-    
-    if (get_position(request) < 4):
-        return HttpResponseRedirect('/')
-    message = None
-    school = get_school(request)
-    form = PupilForm(school.id)
-    
-    if request.method == 'POST':
-        #print request.POST
-        if (request.POST['first_name']):
-            name = request.POST['first_name'].split()
-            last_name = ' '.join(name[:len(name)-1])
-            first_name = name[len(name)-1]
-        else:
-            last_name = None
-            first_name = None
-        if (int(request.POST['birthday_year']) and int(request.POST['birthday_month']) and int(request.POST['birthday_day'])):
-            birthday = date(int(request.POST['birthday_year']), int(request.POST['birthday_month']), int(request.POST['birthday_day']))
-        else:
-            birthday = None
-        if (request.POST['school_join_date_year'] and request.POST['school_join_date_month'] and request.POST['school_join_date_day']):
-            school_join_date = date(int(request.POST['school_join_date_year']), int(request.POST['school_join_date_month']), int(request.POST['school_join_date_day']))
-        data = {'first_name':first_name, 'last_name':last_name, 'birthday':birthday, 'sex':request.POST['sex'], 'ban_dk':request.POST['ban_dk'], 'school_join_date':school_join_date, 'start_year_id':request.POST['start_year_id'], 'class_id': request.POST['class_id']}
-        #print request.POST['start_year_id']
-        form = PupilForm(school.id, data)
-        if form.is_valid():
-            start_year = StartYear.objects.get(id=int(data['start_year_id']))
-            _class = Class.objects.get(id=data['class_id'])
-            data['ban'] = data['ban_dk']
-            index = _class.pupil_set.count() + 1
-            add_student(student=data, start_year=start_year,
-                        year=get_current_year(request),
-                        _class=_class,
-                        index = index,
-                        term=get_current_term(request),
-                        school=get_school(request),
-                        school_join_date=school_join_date)
-            message = 'Bạn vừa thêm một học sinh mới'
-
-            form = PupilForm(school.id)
-        else:
-            data['first_name'] = data['last_name'] + ' ' + data['first_name']
-            form = PupilForm(school.id, data)
-            
-	
-    if int(sort_type) == 1:
-        if int(sort_status) == 0:
-            studentList = school.pupil_set.order_by('first_name', 'last_name')
-        else:
-            studentList = school.pupil_set.order_by('-first_name', '-last_name')
-    if int(sort_type) == 2:
-        if int(sort_status) == 0:
-            studentList = school.pupil_set.order_by('birthday')
-        else:
-            studentList = school.pupil_set.order_by('-birthday')
-    if int(sort_type) == 3:
-        if int(sort_status) == 0:
-            studentList = school.pupil_set.order_by('sex')
-        else:
-            studentList = school.pupil_set.order_by('-sex')
-    if int(sort_type) == 4:
-        if int(sort_status) == 0:
-            studentList = school.pupil_set.order_by('ban_dk')
-        else:
-            studentList = school.pupil_set.order_by('-ban_dk')
-    if int(sort_type) == 5:
-        if int(sort_status) == 0:
-            studentList = school.pupil_set.order_by('school_join_date')
-        else:
-            studentList = school.pupil_set.order_by('-school_join_date')
-	
-    if int(sort_type) == 6:
-        if int(sort_status) == 0:
-            studentList = school.pupil_set.order_by('class_id__name')
-        else:
-            studentList = school.pupil_set.order_by('-class_id__name')
-    paginator = Paginator (studentList, 20)
-    try:
-        student_list = paginator.page(page)
-    except (EmptyPage, InvalidPage):
-        student_list = paginator.page(paginator.num_pages)
-		
-    t = loader.get_template(os.path.join('school', 'students.html'))
-    c = RequestContext(request, {'form': form, 'message': message, 'studentList': student_list, 'sort_type':sort_type, 'sort_status':sort_status, 'next_status':1-int(sort_status), 'base_order': (int(page)-1) * 20})
     return HttpResponse(t.render(c))
 
 def viewStudentDetail(request, student_id):
