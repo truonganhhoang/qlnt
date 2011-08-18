@@ -36,19 +36,17 @@
         return cookieValue;
     } 
 	var cookieValue = getCookie('csrftoken'); 
-	var tong=0	
-	var tong1=0
+	var tong=0;	
+	var tong1=0;
 	
 	// day la phan gui diem
 	////////////////////////////////////////////////////////////////////////////////////
 	function sendToServer(str)
 	{
-		//alert("dd");
 		var xmlhttp;
 		if (window.XMLHttpRequest)
 		{// code for IE7+, Firefox, Chrome, Opera, Safari
 			xmlhttp=new XMLHttpRequest();
-			//alert("chao");
 		}
 		else
 		{// code for IE6, IE5
@@ -70,11 +68,8 @@
 					if (document.getElementById("messageChanging").innerHTML!="Lưu ngay")
 						document.getElementById("messageChanging").innerHTML="Đã lưu";
 				}		
-				//document.getElementById("myDiv1").innerHTML=tong;
 			}
 		}   				
-		//alert(cookieValue);
-		
 		xmlhttp.open("POST", "/school/saveMark",true);
         xmlhttp.setRequestHeader("X-CSRFToken",cookieValue );
 		var data = "str="+str;
@@ -83,24 +78,28 @@
 
 	var exp1=/[,]/g	
 	for(var i=1;i<length;i++)
-	{
-		for(var j=1;j<17;j++)
+		for(var j=1;j<20;j++)
 		{		
-			var id = i*100+j;
- 		    //alert(enableChangeMark);
-			var value=document.getElementById(id.toString()).value;
-			if (value==undefined)
-				value=document.getElementById(id.toString()).innerHTML;
-			value=value.replace(exp1,'.');		
-			oldAr[i][j]=parseFloat(value);
-			if (isNaN(oldAr[i][j]))
+			var id = i*100+j;		
+			var tb =document.getElementById(id.toString());
+			if (tb)
+			{ 			
+				var value=tb.value;
+				if (value==undefined)
+					value=tb.innerHTML;
+				value=value.replace(exp1,'.');		
+				oldAr[i][j]=parseFloat(value);
+				if (isNaN(oldAr[i][j]))
+					oldAr[i][j]=-1;
+			}
+			else
 				oldAr[i][j]=-1;
-		}
-	}	
+		}		
+
 	function resetOldAr()
 	{
 		for(var i =1;i<length;i++)
-			for (var j=1;j<17;j++)
+			for (var j=1;j<20;j++)
 				oldAr[i][j]=-1;
 	}
 	function calculateNewArray()
@@ -123,9 +122,14 @@
 					{
 						var tb=document.getElementById(id.toString()); 
 						acceptDigits(tb);
-						tb=document.getElementById(id.toString()); 
 						newAr[i][j]=parseFloat(tb.value);
 					}
+				if (newAr[i][j].toString().length>3)	
+				{
+					var tb=document.getElementById(id.toString()); 					
+					tb.value=tb.value.substring(0,3);
+					newAr[i][j] = parseFloat(tb.value);
+				}
 				if (isNaN(newAr[i][j]))
 					newAr[i][j]=-1;
 			}		
@@ -141,111 +145,85 @@
 		else  var t = 17;
 		
 		for(var i=1;i<length;i++)
+		if (newAr[i][16]!=-1)
 		{
-			var ok=true;
-			for(var j=1;j<17;j++)
-			if (isNaN(newAr[i][j]))
+			sum=newAr[i][16]*3;
+			factor=3;
+			for(j=1;j<11;j++)
+			if (newAr[i][j]!=-1)
 			{
-				ok=false;
-				break;				
+				sum=sum+newAr[i][j];
+				factor++;
 			}
-			if (newAr[i][16]==-1) 
-				ok=false;
-			if (ok)
+			for(j=11;j<16;j++)
+			if (newAr[i][j]!=-1)
 			{
-				sum=newAr[i][16]*3;
-				factor=3;
-				for(j=1;j<11;j++)
-				if (newAr[i][j]!=-1)
-				{
-					sum=sum+newAr[i][j];
-					factor++;
-				}
-				for(j=11;j<16;j++)
-				if (newAr[i][j]!=-1)
-				{
-					sum=sum+newAr[i][j]*2;
-					factor=factor+2;
-				}
-				
-				
-				var name= i*100+t;
-				
-				var averageValue = Math.round(sum/factor *10+0.00000001)/10;
-				newAr[i][t]=averageValue;
-				
-				if ((averageValue-Math.floor(averageValue))<0.01)				
-					document.getElementById(name.toString()).innerHTML= averageValue+".0";
-				else	
-					document.getElementById(name.toString()).innerHTML= averageValue;
-					
-				if (termNumber==2)
-					if (hk1Ar[i]!=-1)
-					{
-						var name1= i*100+19;
-						var value= (averageValue*2+hk1Ar[i])/3; 
-							value= Math.round(value * 10+0.0000001)/10;
-							
-						if ((value-Math.floor(value))<0.01)				
-							document.getElementById(name1.toString()).innerHTML=value+".0";
-						else
-							document.getElementById(name1.toString()).innerHTML=value;						
-						newAr[i][19]=value;
-					}					
+				sum=sum+newAr[i][j]*2;
+				factor=factor+2;
 			}
-			else
-			{
-				var name= i*100+t;
-				document.getElementById(name.toString()).innerHTML="";
-				newAr[i][t]=-1;
-				if (termNumber==2)
+			
+			
+			var name= i*100+t;
+			
+			var averageValue = Math.round(sum/factor *10+0.00000001)/10;
+			newAr[i][t]=averageValue;
+			
+			if ((averageValue-Math.floor(averageValue))<0.01)				
+				document.getElementById(name.toString()).innerHTML= averageValue+".0";
+			else	
+				document.getElementById(name.toString()).innerHTML= averageValue;
+				
+			if (termNumber==2)
+				if (hk1Ar[i]!=-1)
 				{
 					var name1= i*100+19;
-					document.getElementById(name1.toString()).innerHTML="";					
-					newAr[i][19]=-1;
-				}	
+					var value= (averageValue*2+hk1Ar[i])/3; 
+						value= Math.round(value * 10+0.0000001)/10;
+						
+					if ((value-Math.floor(value))<0.01)				
+						document.getElementById(name1.toString()).innerHTML=value+".0";
+					else
+						document.getElementById(name1.toString()).innerHTML=value;						
+					newAr[i][19]=value;
+				}					
+		}
+		else
+		{
+			var name= i*100+t;
+			document.getElementById(name.toString()).innerHTML="";
+			newAr[i][t]=-1;
+			if (termNumber==2)
+			{
+				var name1= i*100+19;
+				document.getElementById(name1.toString()).innerHTML="";					
+				newAr[i][19]=-1;
 			}	
-		}		
+		}	
 	}
 	function updateOldAr()
 	{
 		for(var i=1;i<length;i++)
-			for(var j=1;j<17;j++)
+			for(var j=1;j<20;j++)
 				oldAr[i][j] = tempNewAr[i][j];
 	}
 	function update()
 	{
-		//var date1 = new Date();
-		//alert("dd");
 		var str="";
 		for(var i=1;i<length;i++)
 		{
-			var ok=false;
-			for(var j=1;j<17;j++)
+			var numberString="";
+			var valueString ="";
+			for(var j=1;j<20;j++)
 				if (newAr[i][j]!=oldAr[i][j])
-				{
-					ok=true;
-					break;
+				{					
+					numberString=numberString+j+"*";
+					valueString =valueString+newAr[i][j]+"*"; 
 				}
-			if (ok==true)
-			{
-				var numberString="";
-				var valueString ="";
-				for(var j=1;j<17;j++)
-					if ((newAr[i][j]!=oldAr[i][j]) && (!(isNaN(newAr[i][j]))))
-					{					
-						numberString=numberString+j+"*";
-						valueString =valueString+newAr[i][j]+"*"; 
-					}
-				if (numberString!="")	
-					str=str+"/"+idAr[i]+":"+numberString+":"+valueString;					
-			}				
+			if (numberString!="")	
+				str=str+"/"+idAr[i]+":"+numberString+":"+valueString;					
+							
 		}
-		//tong1=tong1+1
-		//var str1 =document.getElementById("myDiv").innerHTML+" | "+str;
-		//document.getElementById("myDiv").innerHTML=str1;
 		
-		//alert(str);	
 		if (str!="")
 		{
 			numberId++;
@@ -264,7 +242,7 @@
 		}	
 		//writeOld();	
 		for(var i=1;i<length;i++)
-			for(var j=1;j<17;j++)
+			for(var j=1;j<20;j++)
 				tempNewAr[i][j] = newAr[i][j];
 		
 		
@@ -280,7 +258,7 @@
 		var str="";
 		for(var i=1;i<length;i++)
 		{
-			for(var j=0;j<17;j++)
+			for(var j=0;j<20;j++)
 			{
 				str=str+oldAr[i][j]+" ";
 			}		

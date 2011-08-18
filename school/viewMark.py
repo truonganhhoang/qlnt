@@ -83,84 +83,6 @@ class Editable:
 def checkChangeMark(class_id):
     return (not LOCK_MARK) and ENABLE_CHANGE_MARK
 
-def createTbNam(request,year_id):
-    classList = Class.objects.filter(year_id=year_id)
-    selectedYear=Year.objects.get(id=year_id)
-    allList=[]
-    for c in classList :
-        studentList=c.pupil_set.all()
-        allList.append(studentList)
-        for stu in studentList:
-            find = stu.tbnam_set.filter(year_id=year_id,student_id=stu.id)
-            if not find:
-                tbNam=TBNam()
-                tbNam.year_id=selectedYear
-                tbNam.student_id=stu                
-                tbNam.save()
-            #pass
-               
-    t = loader.get_template(os.path.join('school','ll.html'))
-    
-    c = RequestContext(request, {
-                                 "allList":allList,
-                                 "classList":classList,
-                                }
-                       )
-    
-
-    return HttpResponse(t.render(c))
-   
-def createAllInfoInTerm(request,term_id):
-    
-    selectedTerm=Term.objects.get(id=term_id)
-    selectedYear=Year.objects.get(id=selectedTerm.year_id.id)
-    
-    classList = Class.objects.filter(year_id=selectedYear.id)
-    for c in classList :
-        studentList=c.pupil_set.all()
-        subjectList=c.subject_set.all()
-        
-        for stu in studentList:
-            #tao cac bang
-            tkDiemDanh=stu.tkdiemdanh_set.filter(term_id=term_id)
-            
-            if not tkDiemDanh:
-                tkDiemDanh=TKDiemDanh(term_id=selectedTerm,student_id=stu)
-                tkDiemDanh.save()
-
-            hanhKiem=stu.hanhkiem_set.filter(term_id=term_id)
-            if not hanhKiem:            
-                hanhKiem  =HanhKiem(term_id=selectedTerm,student_id=stu)
-                hanhKiem.save()
-                
-            
-            tbHocKy =stu.tbhocky_set.filter(term_id=term_id)
-            if not tbHocKy:
-                tbHocKy   =TBHocKy(term_id=selectedTerm,student_id=stu)
-                tbHocKy.save()
-            
-            # tao mark
-            
-            for sub in subjectList:
-                m=sub.mark_set.filter(term_id=selectedTerm,student_id=stu)
-                if not m:
-                    m=Mark(subject_id=sub,term_id=selectedTerm,student_id=stu)
-                    m.save()
-                
-                tkMon=sub.tkmon_set.filter(student_id=stu.id)
-                if not tkMon:
-                    tkMon=TKMon(student_id=stu,subject_id=sub)
-                    tkMon.save()    
-                                    
-    t = loader.get_template(os.path.join('school','ll.html'))
-    
-    c = RequestContext(request, {
-                                }
-                       )
-    
-
-    return HttpResponse(t.render(c))   
-
                     
 def saveMarkHasComment(request,selectedTerm,markList,idList,tbhk1ListObjects,tbnamListObjects):
             i=0
@@ -864,94 +786,32 @@ def update(s,primary):
         elif number ==16:  
             mt.ck=time                                
             m.ck  =value
-    if m.ck==None:
-        # nếu như điểm cuối cùng là điểm cuối kỳ 
-        if number==16:
+            
+        elif (number==17):                    
+            m.tb = value
+            subject_id = m.subject_id
+            student_id = m.student_id
+            
+            tbk2=Mark.objects.get(subject_id=subject_id.id,student_id=student_id.id,term_id__number=2)
+            tbcn=TKMon.objects.get(subject_id=subject_id.id,student_id=student_id.id)
+            if (tbk2.tb==None) | (value==None):
+                tbcn.tb_nam = None
+            else:     
+                tbcn.tb_nam = round((m.tb + tbk2.tb*2+e)/3 , 1)            
+            tbcn.save()
+            
+        elif (number==18):                 
+            m.tb = value
+        elif (number==19): 
             subject_id = m.subject_id
             student_id = m.student_id
             tbcn=TKMon.objects.get(subject_id=subject_id.id,student_id=student_id.id)
-            tbcn.tb_nam = None
-            m.tb        = None  
-            tbcn.save()
-                
-    else :  
-             
-            sum=m.ck*3
-            
-            factor=3
-            
-            if m.mieng_1 != None : 
-                sum=sum+m.mieng_1 
-                factor=factor+1 
-            if m.mieng_2 != None : 
-                sum=sum+m.mieng_2 
-                factor=factor+1 
-            if m.mieng_3 != None : 
-                sum=sum+m.mieng_3 
-                factor=factor+1 
-            if m.mieng_4 != None : 
-                sum=sum+m.mieng_4 
-                factor=factor+1 
-            if m.mieng_5 != None : 
-                sum=sum+m.mieng_5 
-                factor=factor+1 
-        
-            if m.mlam_1 != None : 
-                sum=sum+m.mlam_1
-                factor=factor+1 
-            if m.mlam_2 != None : 
-                sum=sum+m.mlam_2
-                factor=factor+1 
-            if m.mlam_3 != None: 
-                sum=sum+m.mlam_3
-                factor=factor+1 
-            if m.mlam_4 != None: 
-                sum=sum+m.mlam_4
-                factor=factor+1 
-            if m.mlam_5 != None: 
-                sum=sum+m.mlam_5
-                factor=factor+1 
 
-            if m.mot_tiet_1 != None : 
-                sum=sum+m.mot_tiet_1*2
-                factor=factor+2 
-            if m.mot_tiet_2 != None: 
-                sum=sum+m.mot_tiet_2*2
-                factor=factor+2 
-            if m.mot_tiet_3 != None: 
-                sum=sum+m.mot_tiet_3*2
-                factor=factor+2 
-            if m.mot_tiet_4 != None: 
-                sum=sum+m.mot_tiet_4*2
-                factor=factor+2 
-            if m.mot_tiet_5 != None: 
-                sum=sum+m.mot_tiet_5*2
-                factor=factor+2
-            m.tb = round(sum/factor + e,1)
-                
             if (primary==0)| (primary==3)| (primary==4):
-                subject_id = m.subject_id
-                student_id = m.student_id
-                
-                if  m.term_id.number==2:        
-                    tbk1=Mark.objects.get(subject_id=subject_id.id,student_id=student_id.id,term_id__number=1)
-                    if tbk1.tb!=None:
-                        tbcn=TKMon.objects.get(subject_id=subject_id.id,student_id=student_id.id)
-                        tbcn.tb_nam = round((m.tb*2 + tbk1.tb+e)/3 , 1)
-                        tbcn.save()
-                else:
-                    tbk2=Mark.objects.get(subject_id=subject_id.id,student_id=student_id.id,term_id__number=2)
-                    if tbk2.tb!=None:
-                        tbcn=TKMon.objects.get(subject_id=subject_id.id,student_id=student_id.id)
-                        tbcn.tb_nam = round((m.tb + tbk2.tb*2+e)/3 , 1)
-                        tbcn.save()
-                            
-            elif (primary==1) | (primary==2) :                
-                subject_id = m.subject_id
-                student_id = m.student_id
-                tbcn=TKMon.objects.get(subject_id=subject_id.id,student_id=student_id.id)
-                tbcn.tb_nam = m.tb
-                tbcn.save()
+                tbcn.tb_nam   = value
+            elif (primary==1) | (primary==2):
+                tbcn.tb_nam   =m.tb      
+            tbcn.save()
             
     m.save()  
     mt.save()  
@@ -960,23 +820,18 @@ def saveMark(request):
     
     t1=time.time()
     message = 'hello'
-    print "hello"
     if request.method == 'POST':
         str = request.POST['str']
         strs=str.split('/')        
         position = get_position(request)
-        print "chao"
-        print position
         if   position ==4 :pass
         elif position ==3 :
             idTeacher= int(strs[1])
             teacher= Teacher.objects.get(id=idTeacher)
             if request.user.id!=teacher.user_id.id: return
         else: return
-        print "ok1"
         length = len(strs)
         primary= int(strs[2])
-        print "ok2"
         print str
         print length
         for i in range(3,length):
