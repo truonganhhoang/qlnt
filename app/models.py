@@ -2,13 +2,11 @@
 from django.db import models
 from django import forms
 from django.contrib.auth.models import User
-from django.db.models.signals import post_save
 from django.contrib.auth import authenticate
-
-'''
-Các mô hình dữ liệu dùng chung giữa các đơn vị trong hệ thống và 
-các mô hình dữ liệu cấp Phòng, Sở (ngoài trường phổ thông)
-'''
+from ConfigParser import SafeConfigParser
+import os
+from django.conf import settings
+SCHOOL_SETTING_FOLDER = settings.SCHOOL_SETTING_FOLDER
 
 ORGANIZATION_LEVEL_CHOICES = (('T', u'Trường'),
                                   ('P', u'Phòng'),
@@ -63,6 +61,48 @@ class Organization(models.Model):
         else:
             return ''
 
+    def save_settings(self, attribute, value):
+        if type(attribute) != str or type(value) != str:
+            raise Exception('InvalidArgumentType')
+        try:
+            setting_file_name = '_'.join([self.name, str(self.id)])
+            setting_file_name = os.path.join(SCHOOL_SETTING_FOLDER, setting_file_name)
+        except Exception as e:
+            print e
+            raise Exception('OrganizationNotSaved')
+
+        file = open(setting_file_name, 'wb')
+        setting = SafeConfigParser()
+        setting.read(setting_file_name)
+        if not setting.has_section('school'):
+            setting.add_section('school')
+        setting.set('school', attribute, value)
+        setting.write(file)
+        file.close()
+
+    def get_setting(self, attribute):
+        if type(attribute) != str:
+            raise Exception('InvalidArgumentType')
+
+        if self.id:
+            setting_file_name = '_'.join([self.name, str(self.id)])
+            setting_file_name = os.path.join(SCHOOL_SETTING_FOLDER, setting_file_name)
+        else:
+            raise Exception('OrganizationNotSaved')
+
+        setting = SafeConfigParser()
+        setting.read(setting_file_name)
+        try:
+            result = setting.get('school', attribute)
+        except  Exception as e:
+            print e
+            return ''
+        if result[0] == '[' and result[-1] == ']':
+            return eval(result)
+        else:
+            return result
+
+    
     def __unicode__(self):
         return self.name
 

@@ -239,6 +239,7 @@ COVERAGE_REPORT_HTML_OUTPUT_DIR = (
 
 
 TEMP_FILE_LOCATION = os.path.join(SITE_ROOT, 'temp/uploaded')
+SCHOOL_SETTING_FOLDER = os.path.join(SITE_ROOT, 'school/settings')
 EXPORTED_FILE_LOCATION = os.path.join(SITE_ROOT, 'temp/exported')
 
 #Email

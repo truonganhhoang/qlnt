@@ -31,10 +31,30 @@ $(document).ready(function(){
     // end setting up
     // xss prevention
 
+    function string_to_slug(str) {
+        str = str.replace(/^\s+|\s+$/g, ''); // trim
+        str = str.toLowerCase();
+
+        // remove accents, swap ñ for n, etc
+        var from = "àáäâèéëêìíïîòóöôùúüûñçảãạăắằẳẵặâầấẩẫậoóòỏõọuúùủũụêềếểễệeèéẻẽẹôồốổỗộơờớởỡợìỉĩíị";
+        var to   = "aaaaeeeeiiiioooouuuuncaaaaaaaaaaaaaaaoooooouuuuuueeeeeeeeeeeeooooooooooooiiiii";
+        for (var i=0, l=from.length ; i<l ; i++) {
+            str = str.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i));
+        }
+
+        return str;
+    }
+
 
     $.fn.is_harmful = function(origin){
-        origin = origin.replace(/\//g,' ').replace(/-/g,' ');
+        origin = string_to_slug(origin);
+        origin = origin.replace(/\//g,' ').replace(/-/g,' ')
+                       .replace('@',' ').replace('Nhanh:','')
+                       .replace('nhanh:','');
+        console.log(origin);
+        console.log($.encoder.encodeForHTML($.encoder.canonicalize(origin)));
         if ($.encoder.encodeForHTML($.encoder.canonicalize(origin)) != origin ) return true;
+        console.log($.encoder.encodeForJavascript($.encoder.canonicalize(origin)));
         return $.encoder.encodeForJavascript($.encoder.canonicalize(origin)) != origin;
 
     };

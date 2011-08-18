@@ -87,20 +87,23 @@ def setup(request):
                 
                 data = simplejson.dumps( {'message': message, 'status':'done'})
             elif 'update_class_name' in request.POST:
-                message, labels, success = phase_class_label(request, school)
-                labels = None
+                message, labels, success = parse_class_label(request, school)
+
+                classes_ = None
                 grades = None
                 if success:
-                    labels = '-'.join([label.loai for label in school.danhsachloailop_set.all()])
+                    classes_ = school.get_setting('classes')
+                    classes_ = '-'.join(classes_)
                     lower_bound = get_lower_bound(school)
                     upper_bound = get_upper_bound(school)
                     grades = '-'.join([str(grade) for grade in range(lower_bound, upper_bound)])
 
                 data = simplejson.dumps( {'message': message, 'status': success,
-                                          'labels': labels, 'grades': grades})
+                                          'classes': classes_, 'grades': grades})
                 
             elif 'start_year' in request.POST:
-                if is_safe(school): 
+                if is_safe(school):
+                    
                     data = simplejson.dumps({'status':'done'})
                 else:
                     data = simplejson.dumps( {'message': message,'status': 'failed'} )
@@ -112,7 +115,7 @@ def setup(request):
                 'address': school.address, 'phone': school.phone,
                 'email': school.email}
     school_form = SchoolForm(form_data, request= request)
-    message, labels, success = phase_class_label(request, school)
+    message, labels, success = parse_class_label(request, school)
         
     if request.method == 'POST':
         school_form = SchoolForm(request.POST, request = request)
@@ -214,16 +217,13 @@ def organize_students(request, class_id, type = '0'):
         
     
 
-def phase_class_label(request, school):
+def parse_class_label(request, school):
     class_labels = []
     message = None
     if 'message' in request.session:
         message = request.session['message']
-    for loai in school.danhsachloailop_set.order_by('loai'):
-        class_labels.append(loai.loai)
-    
-    labels = ','.join(class_labels)
-    labels = 'Nhanh: ' + labels
+
+    labels = ','.join(school.get_setting('classes'))
     success = None
     if request.method == 'POST':
         labels = request.POST['labels']
@@ -243,20 +243,24 @@ def phase_class_label(request, school):
             if empty(list_labels):
                 message = u'Bạn cần nhập ít nhất một tên lớp.'
                 success = False
-                
             else:
                 ds = school.danhsachloailop_set.all()
                 for d in ds:
                     d.delete()
+                labels_to_save = []
                 for label in list_labels:
                     if label:
                         label = label.strip()
-                        find = school.danhsachloailop_set.filter( loai__exact = label )
-                        if not find:
+                        lb = school.danhsachloailop_set.filter( loai__exact = label )
+                        if not lb:
                             lb = DanhSachLoaiLop()
                             lb.loai = label
                             lb.school_id = school
                             lb.save()
+                        for i in range(get_lower_bound(school), get_upper_bound(school)):
+                            labels_to_save.append("%s %s" % (i, lb.loai))
+
+                school.save_settings('classes', str(labels_to_save))
                 message = u'Bạn vừa thiết lập thành công danh sách tên lớp cho trường.'
                 success = True
             labels = 'Nhanh: '+ labels
@@ -269,25 +273,29 @@ def phase_class_label(request, school):
                     success = False
                 else:
                     ds = school.danhsachloailop_set.all()
+                    labels_to_save= []
                     for d in ds:
                         d.delete()
                     for label in list_labels:
                         label = label.strip()
                         if label:
                             try:
-                                label = label.split(' ')[1]
-                                find = school.danhsachloailop_set.filter( loai__exact = label )
-                                if not find:
+                                class_type = label.split(' ')[1]
+                                lb = school.danhsachloailop_set.filter( loai__exact = class_type )
+                                if not lb:
                                     lb = DanhSachLoaiLop()
-                                    lb.loai = label
+                                    lb.loai = class_type
                                     lb.school_id = school
                                     lb.save()
+                                labels_to_save.append(label)
                             except Exception as e:
                                 message = u'Các tên lớp phải được cung cấp theo dạng [khối][dấu cách][tên lớp]. Ví dụ: 10 A'
                                 success = False
-                                return message, labels, success     
+                                return message, labels, success
+                    school.save_settings('classes', str(labels_to_save))
                     message = u'Bạn vừa thiết lập thành công danh sách tên lớp cho trường.'
-                    success = True    
+                    success = True
+
                 #--------------
     
     return message, labels, success    
@@ -305,7 +313,7 @@ def class_label(request):
     
     
     #------ user filtering
-    message, labels, success = phase_class_label(request, school)
+    message, labels, success = parse_class_label(request, school)
     
     context = RequestContext(request)
     t = loader.get_template(CLASS_LABEL)
@@ -387,25 +395,19 @@ def b1(request):
         term.save()
         # create new class.
         # -- tao cac lop ---
-        for khoi in range(lower_bound, upper_bound + 1):
-            block = school.block_set.filter(number__exact=khoi)
-            if block:
-                block = block[0]
-            else:
-                raise Exception(u'Khối' + str(khoi) + u'chưa đc tạo')
-                
-            loai_lop = school.danhsachloailop_set.all()
-            for class_name in loai_lop:
-                _class = Class()
-                _class.name = str(block.number) + ' ' + class_name.loai
-                _class.status = 1
-                _class.block_id = block
-                _class.year_id = year
-                _class.save()
-                i =0
-                for mon in ds_mon_hoc:
-                    add_subject( mon, 1, None, _class, index = i )
-                    i+=1
+
+        loai_lop = school.get_setting('classes')
+        for class_name in loai_lop:
+            _class = Class()
+            _class.name = class_name
+            _class.status = 1
+            _class.block_id = school.block_set.get( number = int(class_name.split(' ')[0]))
+            _class.year_id = year
+            _class.save()
+            i =0
+            for mon in ds_mon_hoc:
+                add_subject( mon, 1, None, _class, index = i )
+                i+=1
         # -- day cac hoc sinh len lop        
         last_year = school.year_set.filter(time__exact=current_year -1)
         if last_year:
@@ -543,10 +545,10 @@ def class_generate(request, class_id, object):
         fnt_bold.bold = True
 
         borders = Borders()
-        borders.left = Borders.THICK
-        borders.right = Borders.THICK
-        borders.top = Borders.THICK
-        borders.bottom = Borders.THICK
+        borders.left = Borders.THIN
+        borders.right = Borders.THIN
+        borders.top = Borders.THIN
+        borders.bottom = Borders.THIN
         borders.left_colour = 0x17
         borders.right_colour = 0x17
         borders.top_colour = 0x17
@@ -1354,7 +1356,6 @@ def teachers(request,  sort_type=1, sort_status=0):
     form = TeacherForm(school.id)
     school = get_school(request)
     if request.is_ajax():
-        print request.POST
         if request.POST['request_type'] == u'addTeam':
             data = {'name': request.POST['name'], 'school_id': school.id}
             t = TeamForm(data)
@@ -1457,7 +1458,6 @@ def teachers_tab(request, sort_type=1, sort_status=0):
     if request.is_ajax():
         if (request.method == 'POST' and request.POST['request_type'] == u'team'):
             try:
-                print request.POST
                 t = school.teacher_set.get(id=request.POST['id'])
                 team = school.team_set.get(id=request.POST['team'])
                 t.team_id = team
@@ -2134,22 +2134,22 @@ def diem_danh_hs(request, student_id, view_type = 0):
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
     pos = get_position(request)
-    if (pos < 1):
+    if pos < 1:
         return HttpResponseRedirect('/')
     term = None
     pupil = Pupil.objects.get(id=student_id)
     c = pupil.class_id
-    if in_school(request, c.block_id.school_id) == False:
+    if not in_school(request, c.block_id.school_id):
         return HttpResponseRedirect('/')
     term = get_current_term(request)
-    if term == None:
+    if not term:
         message = None
         t = loader.get_template(os.path.join('school', 'time_select.html'))
         ct = RequestContext(request, {'class_id':c.id, 'message':message})
         return HttpResponse(t.render(ct))
     ddl = DiemDanh.objects.filter(student_id=student_id, term_id=term.id).order_by('time')
     count = ddl.count()
-    if (pos > 1 and view_type !=0):
+    if pos > 1 and view_type:
         iform = DiemDanhForm()
         form = []
         for dd in ddl:
