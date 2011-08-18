@@ -5,29 +5,18 @@
     <script>
         $(document).ready(function() {
             var note = '';
-            var done = function(json) {
+            $("#notify").ajaxSuccess( function(event, request, settings, json){
                 if (json.message != null && json.message != '' && json.message != 'OK') {
-                  $("#errors").html("<ul>" + json.message + "</ul>");
-                  $("#errors").dialog("open");
+                  $(this).html("<ul>" + json.message + "</ul>");
+                  $(this).delay(1000).fadeOut(10000);
                 }
                 else if (json.message == 'OK'){
+                    $(this).text("Đã lưu");
+                    $(this).delay(1000).fadeOut('fast');
                     location.reload('true');
                 }
-            };
-            $("#errors").dialog({
-                modal : true,
-                buttons: {
-                  Đóng: function() {
-                    $(this).dialog('close');
-                  }
-                },
-                autoOpen: false,
-                width: 500,
-                height: 200,
-                maxWidth: 500,
-                maxHeight: 450,
-                title: "Thông báo"
-            })
+
+            });
 
             $("#submitform").submit(function() {
                 var d = $(this).serialize();
@@ -35,7 +24,7 @@
                 var arg = {data: d,
                     type: $(this).attr('method'),
                     url: $(this).attr('action'),
-                    success:done
+                    success:function(){}
                 };
                 $.ajax(arg);
                 return false;
@@ -369,7 +358,6 @@
             </div>
         </div>
     </div>
-    <div id="errors"></div>
     {% upload_js %}
     <script type="text/javascript" src="/static/js/jquery_file_upload/qlnt_upload.js"></script>
 {% endblock %}
