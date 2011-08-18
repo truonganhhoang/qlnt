@@ -12,8 +12,6 @@ urlpatterns = patterns('',
     # 2 ham nay dung de test, tao tat ca cac thong tin con thieu cho sinh vien
     # sau nay hoan thien, co the bo di    
     url(r'thu$','school.makeTest.thu'),
-    url(r'createTbNam/(?P<year_id>\w+)','school.viewMark.createTbNam'),
-    url(r'createAllInfoInTerm/(?P<term_id>\w+)','school.viewMark.createAllInfoInTerm'),
 
     url(r'markTable$','school.viewMark.markTable'),
     url(r'markTable/(?P<term_id>\w+)$','school.viewMark.markTable'),

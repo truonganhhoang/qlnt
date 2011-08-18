@@ -1321,7 +1321,10 @@ def viewClassDetail(request, class_id, sort_type=0, sort_status=0):
     if tmp:
         id = tmp.id
     
-    currentTerm= get_current_term(request)    
+    currentTerm= get_current_term(request)
+    if currentTerm.number ==3:
+        currentTerm=Term.objects.get(year_id=currentTerm.year_id,number=2)
+        
     t = loader.get_template(os.path.join('school', 'classDetail.html'))
     c = RequestContext(request, {   'form': form,
                                     'csrf_token': get_token(request), 
