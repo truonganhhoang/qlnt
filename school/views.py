@@ -1496,7 +1496,6 @@ def teachers_tab(request, sort_type=1, sort_status=0):
                 team = school.team_set.get(id = tid)
             else:
                 team = None
-
             data = {'first_name':first_name, 'last_name':last_name, 'birthday':request.POST['birthday'],
                     'sex':request.POST['sex'], 'school_id':school.id, 'birth_place':request.POST['birth_place'].strip(),
                     'team_id': request.POST['team_id'], 'index':index}

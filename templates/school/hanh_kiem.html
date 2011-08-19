@@ -81,13 +81,12 @@ $(document).ready(function(){
             {%endif%}
         {% endfor %}		
     </select>
-    năm {{year}}
     </h2>
 </form>
 
 <form action="/school/hanhkiem/{{class.id}}" method="post">{% csrf_token %}       
 {%if pos > 3%}
-<input type ="submit" class="ggButton submitbutton" value="Cập nhật"/>
+<input type ="submit" class="ggButton submitbutton" value="Lưu"/>
 {%endif%}
 <a href="{%url school.views.school_index  %}viewClassDetail/{{class.id}}" title ="Quay về danh sách lớp"> <input class="ggButton" type ="button" value="Quay lại"/></a>
     <table class="styleA" width = "75%">
@@ -127,31 +126,35 @@ $(document).ready(function(){
                     {%if term.number == 1%}
                         <td align="center" width="10%">
                             {{ f.term1.errors }}
-                            <p>{{ f.term1 }}</p>
+                            {{ f.term1 }}
                         </td>
-                        <td align="center" width="10%">
-                        <td align="center" width="10%">
+                        <td align="center" width="10%"></td>
+                        <td align="center" width="10%"></td>
                     {%else%}
                         <td align="center" width="10%">                        
-                            <p>{{ v.term1 }}</p>
+                            {{ v.term1 }}
                         </td>
                         
                         <td align="center" width="10%">
                             {{ f.term2.errors }}
-                            <p>{{ f.term2 }}</p>
+                            {{ f.term2 }}
                         </td>
                         <td align="center" width="10%">
                             {{ f.year.errors }}
-                            <p>{{ f.year }}</p>
+                            {{ f.year }}
                         </td>                
                     {%endif%}
+                {% else %}
+                    <td align="center" width="10%">{{ v.term1 }}</td>
+                    <td align="center" width="10%">{{ v.term2 }}</td>
+                    <td align="center" width="10%">{{ v.year }}</td>
                 {%endif%}
             </tr>
         {% endfor %}        
 </table>
 {%if pos > 3%}
-<input class="ggButton submitbutton" type ="submit" value="Cập nhật"/>
+<input class="ggButton submitbutton" type ="submit" value="Lưu"/>
 {%endif%}
-<a href="{%url school.views.school_index  %}viewClassDetail/{{class.id}}" title ="Hủy mọi thao tác và quay về danh sách lớp"> <input class="ggButton" type ="button" value="Quay lại"/></a>
+<a href="{%url school.views.school_index  %}viewClassDetail/{{class.id}}" title ="Quay về danh sách lớp"> <input class="ggButton" type ="button" value="Quay lại"/></a>
 	</form>
 {% endblock %}
