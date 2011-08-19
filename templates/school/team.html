@@ -153,7 +153,7 @@
         <ul>
             <li><a href="/school/teachers_in_team/{{ team.id }}">{{ team.name }}</a></li>
             {% for g in groupList %}
-                <li><a href="/school/teachers_in_group/{{ g.id }}">{{ g.name }}</a><span id ="{{g.id}}-{{g}}-group" class="ui-icon ui-icon-gear grouprn"></span><span id ="{{g.id}}-group" class="ui-icon ui-icon-close group">xóa</span></li>
+                <li><a href="/school/teachers_in_group/{{ g.id }}">{{ g.name }}</a><span title="Đổi tên" id ="{{g.id}}-{{g}}-group" class="ui-icon ui-icon-gear grouprn"></span><span id ="{{g.id}}-group" title="Xóa" class="ui-icon ui-icon-close group">xóa</span></li>
             {% endfor %}
             <button id="add_group{{team.id}}" class="ggButton tiptiphover" title="Thêm nhóm mới"> + </button>
         </ul>
