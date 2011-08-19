@@ -8,6 +8,7 @@ function confirmDelete()
 </script>
 <h2>Những khen thưởng của {{pupil}}</h2>
 
+{% if count > 0 %}
 <table class="styleA"  width = "100%" >
     <tr>
 		<th align="center" width="5%"> STT </th>
@@ -39,4 +40,11 @@ function confirmDelete()
     </tr>
     {% endfor %}
 </table>
+{% else %}
+    <p>Học sinh hiện chưa có khen thưởng nào</p>
+    </br>
+{% endif %}
+{% if pos > 1 %}
+    <a title="Thêm khen thưởng cho học sinh" class = "tiptiphover ggButton" href="/school/khenthuong/{{student_id}}/add"> Thêm </a>
+{% endif %}
 {% endblock %}

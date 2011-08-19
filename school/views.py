@@ -2416,8 +2416,9 @@ def khen_thuong(request, student_id):
         return HttpResponseRedirect('/')
     message = ''
     ktl = sub.khenthuong_set.order_by('time')
+    count = ktl.count()
     t = loader.get_template(os.path.join('school', 'khen_thuong.html'))
-    c = RequestContext(request, {'ktl': ktl, 'message':message, 'student_id':student_id,'pupil':sub, 'pos':pos})
+    c = RequestContext(request, {'ktl': ktl, 'message':message, 'student_id':student_id,'pupil':sub, 'pos':pos, 'count':count})
     return HttpResponse(t.render(c))
     
 def add_khen_thuong(request, student_id):
@@ -2520,8 +2521,9 @@ def ki_luat(request, student_id):
         return HttpResponseRedirect('/')
     message = ''
     ktl = student.kiluat_set.order_by('time')
+    count = ktl.count()
     t = loader.get_template(os.path.join('school', 'ki_luat.html'))
-    c = RequestContext(request, {'ktl': ktl, 'message':message, 'student_id':student_id, 'pupil':student, 'pos':pos})
+    c = RequestContext(request, {'ktl': ktl, 'message':message, 'student_id':student_id, 'pupil':student, 'pos':pos, 'count':count})
     return HttpResponse(t.render(c))
     
 def add_ki_luat(request, student_id):
