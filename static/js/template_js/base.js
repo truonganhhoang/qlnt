@@ -12,10 +12,17 @@ $(document).ready(function(){
     // setting up css to render page in the right way
 
     $("footer").css('width',$(document).width());
-//    if ($('#place_keeper').offset().top + $("footer").outerHeight() <= $(window).height()){
-//        $("footer").css('position', 'fixed');
-//        $("footer").css('bottom', '0');
-//    }
+
+//    $(document).resize(function(){
+//        if ($('#place_keeper').offset().top + $("footer").outerHeight() <= $(window).height()){
+//            $("footer").css('position', 'fixed');
+//            $("footer").css('bottom', '0');
+//        } else {
+//            $("footer").css('position', 'relative');
+//            $("footer").css('bottom', '');
+//        }
+//    });
+
 
     
     var maxHeight = 0;
@@ -66,10 +73,11 @@ $(document).ready(function(){
             $('input:text').each(function(){
                 var origin = $(this).val();
                 if ($(this).is_harmful(origin)){
-                    $("#notify").text("Thông tin bạn vừa nhập có chứa mã độc.");
-                    $("#notify").fadeIn('fast');
+//                    $("#notify").text("Thông tin bạn vừa nhập có chứa mã độc.");
+//                    $("#notify").fadeIn('fast');
                     $(this).focus();
-                    $("#notify").delay(1000).fadeOut('fast');
+//                    $("#notify").delay(1000).fadeOut('fast');
+                    $(this).showNotification("Thông tin bạn vừa nhập có chứa mã độc.");
                     ok = false;
                 }
             });
@@ -83,10 +91,8 @@ $(document).ready(function(){
         $(this).focusout(function(){
             var origin = $(this).val();
             if ($(this).is_harmful(origin)){
-                $("#notify").text("Thông tin bạn vừa nhập có chứa mã độc.");
-                $("#notify").fadeIn('fast');
                 $(this).focus();
-                $("#notify").delay(1000).fadeOut('fast');
+                $(this).showNotification("Thông tin bạn vừa nhập có chứa mã độc.");
             }
         });
     });
@@ -102,7 +108,9 @@ $(document).ready(function(){
         $("#notify").enabelNotification();
         $("#notify").text(msg);
         $("#notify").fadeIn('fast');
-        $("#notify").delay(1000).fadeOut('fast');
+        $("#notify").data('delay', setTimeout(function(){
+            $("#notify").stop(true, true).fadeOut('fast');
+        }, 1000));
     };
     // end jquery global function
 
@@ -185,13 +193,12 @@ $(document).ready(function(){
             $('input:text').each(function(){
                 var origin = $(this).val();
                 if ($(this).is_harmful(origin)){
-                    $("#notify").text("Thông tin bạn vừa nhập có chứa mã độc.");
-                    $("#notify").fadeIn('fast');
                     $(this).focus();
-                    $("#notify").delay(1000).fadeOut('fast');
+                    $("#notify").showNotification("Thông tin bạn vừa nhập có chứa mã độc.");
                     ok = false;
                 }
             });
+            alert(ok);
             if (!ok) return false;
         }
     });
