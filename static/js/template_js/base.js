@@ -198,7 +198,6 @@ $(document).ready(function(){
                     ok = false;
                 }
             });
-            alert(ok);
             if (!ok) return false;
         }
     });
