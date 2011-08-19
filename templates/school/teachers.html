@@ -11,7 +11,7 @@
 
             // tabs init with a custom tab template and an "add" callback filling in the content
             var $tabs = $("#tabs").tabs({
-                tabTemplate: "<li><a href='#{href}'>#{label}</a> <span class='ui-icon ui-icon-close'>xóa</span></li>",        
+                tabTemplate: "<li><a href='#{href}'>#{label}</a> <span class='ui-icon ui-icon-close'></span></li>",
                 load: function(event, ui) {
                     $("a.delete").click(function() {
                         var i = confirm("Bạn có chắc chắn xóa không?");
@@ -42,14 +42,36 @@
                     $form[ 0 ].reset();
                 }
             });
-
+            var $d2 = $("#d2").dialog({
+                autoOpen: false,
+                modal: true,
+                buttons: {
+                    Lưu: function() {
+                        rename();
+                        $(this).dialog("close");
+                    },
+                    Hủy: function() {
+                        $(this).dialog("close");
+                    }
+                },
+                open: function() {
+                    $("#team_rename").focus();
+                },
+                close: function() {
+                    $form[ 0 ].reset();
+                }
+            });
             // addTab form: calls addTab function on submit and closes the dialog
             var $form = $("form", $dialog).submit(function() {
                 addTab();
                 $dialog.dialog("close");
                 return false;
             });
-
+            $("form", $d2).submit(function() {
+                rename();
+                $d2.dialog("close");
+                return false;
+            });
             // actual addTab function: adds new tab using the title input from the form above
             function addTab() {
                 var data = { 'name' : $tab_title_input.val(), request_type:'addTeam'};
@@ -64,7 +86,19 @@
                 $.ajax(arg);
                 return false;
             }
-            
+            function rename() {
+                var data = {name: $("#team_rename").val(), id: $("#team_id_rename").val(),request_type: 'rename_team'};
+                var arg = {type: "POST",
+                    url:"",
+                    data: data,
+                    datatype:"json",
+                    success: function() {
+                        $("#reload").click();
+                    }
+                };
+                $.ajax(arg);
+                return false;
+            }
             // addTab button: just opens the dialog
             $("#add_tab")
                     .click(function() {
@@ -88,21 +122,34 @@
                 }
                 return false;
             });
+            $( "#tabs span.ui-icon-gear.teamrn" ).live( "click", function() {
+                var name = $(this).attr("id").split()[0].split('-')[1];
+                var id = $(this).attr("id").split()[0].split('-')[0];
+                $("#team_rename").val(name);
+                $("#team_id_rename").val(id);
+                $d2.dialog("open");
+            });
         });
     </script>
 
     <div id="dialog" title="Thêm tổ mới">
         <form id="at">
             <label for="tab_title">Tên Tổ</label>
-            <input type="text" name="tab_title" id="tab_title" value="" class="ui-widget-content ui-corner-all"/>
+            <input type="text" name="tab_title" id="tab_title" value="" maxlength="30" class="ui-widget-content ui-corner-all"/>
         </form>
     </div>
-
+    <div id="d2" title="Đổi tên">
+        <form id="rn">
+            <label for="tab_title">Tên Tổ</label>
+            <input type="hidden" id="team_id_rename"/>
+            <input type="text" name="tab_title" id="team_rename" value="" maxlength="30" class="ui-widget-content ui-corner-all"/>
+        </form>
+    </div>
     <div id="tabs">
         <ul>
             <li><a href="school/teachers_tab/{{ sort_type }}/{{ sort_status }}">Tất cả</a></li>
             {% for t, n in list %}
-                <li><a href="school/team/{{ t.id }}">{{ t.name }}</a><span id ="{{t.id}}-team" class="ui-icon ui-icon-close team">xóa</span></li>
+                <li><a href="school/team/{{ t.id }}">{{ t.name }}</a><span id ="{{t.id}}-{{t}}-team" class="ui-icon ui-icon-gear teamrn"></span><span id ="{{t.id}}-team" class="ui-icon ui-icon-close team"></span></li>
             {% endfor %}
             <input class="ggButton tiptiphover" title="Thêm tổ mới" type="button" id="add_tab" value=" + ">
         </ul>

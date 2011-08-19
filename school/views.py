@@ -1387,6 +1387,11 @@ def teachers(request,  sort_type=1, sort_status=0):
                 teacher.group_id = None
             g.delete()
             return HttpResponse()
+        if request.POST['request_type'] == u'rename_team':
+            t = school.team_set.get(id = request.POST['id'])
+            t.name = request.POST['name']
+            t.save()
+            return HttpResponse()
     num = []
     teamList = school.team_set.all()
     for te in teamList:
@@ -1430,6 +1435,12 @@ def team(request, team_id ,sort_type=1, sort_status=0):
                 if t.is_valid():
                     t.save()
                 return HttpResponseRedirect('/school/team/' + request.POST['team_id'])
+            if request.POST['request_type'] == u'renameGroup':
+                print request.POST
+                g = Group.objects.get(id=request.POST['id'])
+                g.name = request.POST['name']
+                g.save()
+                return HttpResponseRedirect('/school/team/' + team_id)
         except:
             pass
     team = school.team_set.get(id=team_id)

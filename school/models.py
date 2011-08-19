@@ -106,7 +106,7 @@ class Block(models.Model):
         return str(self.number)
 
 class Team(models.Model):
-    name = models.CharField("Tổ", max_length= 100)
+    name = models.CharField("Tổ", max_length= 30)
     school_id = models.ForeignKey(Organization, verbose_name="Trường(*)")
 
     class Meta:
@@ -117,7 +117,7 @@ class Team(models.Model):
         return unicode(self.name)
 
 class Group(models.Model):
-    name = models.CharField("Nhóm", max_length= 100)
+    name = models.CharField("Nhóm", max_length= 30)
     team_id = models.ForeignKey(Team, verbose_name="Tổ(*)")
 
     class Meta:
