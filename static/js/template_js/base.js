@@ -131,13 +131,16 @@ $(document).ready(function(){
 
     $("#notify").ajaxSuccess( function(event, request, settings){
         $(this).text("Đã lưu.");
-        $(this).delay(1000).fadeOut('fast');
+        $(this).data('delay', setTimeout(function(){
+            $("#notify").stop(true, true).fadeOut('fast');
+        }, 1000));
     });
 
     $("#notify").ajaxError( function(event, request, settings){
         $(this).text("Gặp lỗi khi gửi dữ liệu tới server");
-        $(this).delay(1000).fadeOut('fast');
-
+        $(this).data('delay', setTimeout(function(){
+            $("#notify").stop(true, true).fadeOut('fast');
+        }, 1000));
     });
 
 
@@ -214,7 +217,8 @@ $(document).ready(function(){
                     var feedback_url = window.location.href;
                     var arg = { type:"POST",
                         url:"/app/feedback/",
-                        data:{content: data, feedback_url: feedback_url},
+                        data:{content: data,
+                              feedback_url: feedback_url},
                         datatype:"json",
                         success: done
                     };

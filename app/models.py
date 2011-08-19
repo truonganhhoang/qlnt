@@ -91,8 +91,8 @@ class Organization(models.Model):
             raise Exception('OrganizationNotSaved')
 
         setting = SafeConfigParser()
-        setting.read(setting_file_name)
         try:
+            setting.read(setting_file_name)
             result = setting.get('school', attribute)
         except  Exception as e:
             print e
