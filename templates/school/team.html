@@ -83,6 +83,13 @@
             }
             $("#tabs{{team.id}}").tabs({
                 tabTemplate: "<li><a href='{href}'>{label}</a> <span class='ui-icon ui-icon-close'>xóa</span></li>",
+                ajaxOptions: {
+                    error: function( xhr, status, index, anchor ) {
+                        $( anchor.hash ).html(
+                            "Có lỗi khi lấy dữ liệu từ máy chủ. Xin hãy thử lại" );
+                    },
+                    global: false
+			    },
                 load: function(event, ui) {
                     $("a.delete").click(function() {
                         var i = confirm("Bạn có chắc chắn xóa không?");

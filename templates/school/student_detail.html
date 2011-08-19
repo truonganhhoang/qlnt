@@ -3,22 +3,14 @@
 {% block content %}
 <script>
 	$(document).ready(function() {
-        $("#notify").ajaxStart( function(){
-            $(this).text("Đang lấy dữ liệu từ server...");
-            $(this).fadeIn('fast');
-        });
-
-        $("#notify").ajaxSuccess( function(event, request, settings){
-            $(this).text("Đã xong");
-            $(this).delay(1000).fadeOut('fast');
-        });
-
-        $("#notify").ajaxError( function(event, request, settings){
-            $(this).text("Gặp lỗi khi lấy dữ liệu từ server");
-            $(this).delay(1000).fadeOut('fast');
-
-        });    
         $( "#tabs" ).tabs({
+            ajaxOptions: {
+                error: function( xhr, status, index, anchor ) {
+                    $( anchor.hash ).html(
+                        "Có lỗi khi lấy dữ liệu từ máy chủ. Xin hãy thử lại" );
+                },
+                global: false
+            },
         });
         $("#id_ngay_vao_doi").each(function(){
             if (!$("#id_doi").is(':checked')){

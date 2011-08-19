@@ -12,6 +12,13 @@
 
             // tabs init with a custom tab template and an "add" callback filling in the content
             var $tabs = $("#tabs").tabs({
+                ajaxOptions: {
+                    error: function( xhr, status, index, anchor ) {
+                        $( anchor.hash ).html(
+                            "Có lỗi khi lấy dữ liệu từ máy chủ. Xin hãy thử lại" );
+                    },
+                    global: false
+			    },
                 load: function(event, ui) {
                     $("a.delete").click(function() {
                         var i = confirm("Bạn có chắc chắn xóa không?");
