@@ -1271,6 +1271,9 @@ def viewClassDetail(request, class_id, sort_type=0, sort_status=0):
                     d = request.POST['birthday'].split('/')
                     print d
                     birthday = date(int(d[2]), int(d[1]), int(d[0]))
+                    if birthday >= date.today():
+                        message += u'<li> ' + u'Ngày không hợp lệ' + u'</li>'
+
                     find = start_year.pupil_set.filter( first_name__exact = request.POST['first_name'])\
                     .filter(last_name__exact = request.POST['last_name'])\
                     .filter(birthday__exact = birthday)
