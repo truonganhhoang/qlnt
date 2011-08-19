@@ -1476,7 +1476,10 @@ def teachers_tab(request, sort_type=1, sort_status=0):
         if (request.method == 'POST' and request.POST['request_type'] == u'team'):
             try:
                 t = school.teacher_set.get(id=request.POST['id'])
-                team = school.team_set.get(id=request.POST['team'])
+                if request.POST['team']:
+                    team = school.team_set.get(id=request.POST['team'])
+                else:
+                    team = None
                 t.team_id = team
                 t.group_id = None
                 t.save()
