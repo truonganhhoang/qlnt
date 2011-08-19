@@ -20,7 +20,20 @@
                 $("a.delete").click(function() {
                     var i = confirm("Bạn có chắc chắn xóa không?");
                     if (i){
-                        $(ui.panel).load(this.href);
+                        //self = $(ui.panel).load(this.href);
+                        self = $(ui.panel);
+                        $.ajax({
+                            url: this.href,
+                            global: false,
+                            dataType: 'html',
+                            type: 'GET',
+                            complete: function(jqXHR, status, responseText){
+                                if (jqXHR.isResolved()){
+                                    self.html(jqXHR.responseText);
+                                }
+                            }
+
+                        });
                     }
                     return false;
                 });
