@@ -1369,12 +1369,6 @@ def teachers(request,  sort_type=1, sort_status=0):
                 t.save()
             response = simplejson.dumps({'success': True})
             return HttpResponse(response, mimetype='json')
-        if request.POST['request_type'] == u'addGroup':
-            data = {'name': request.POST['name'], 'team_id': request.POST['team_id']}
-            t = GroupForm(data)
-            if t.is_valid():
-                t.save()
-            return HttpResponseRedirect('/school/team/' + request.POST['team_id'])
         if request.POST['request_type'] == u'delete_team':
             t = school.team_set.get(id = request.POST['id'])
             teacherList = t.teacher_set.all()
@@ -1425,13 +1419,6 @@ def team(request, team_id ,sort_type=1, sort_status=0):
     school = get_school(request)
     if request.is_ajax():
         try:
-            if request.POST['request_type'] == u'addTeam':
-                data = {'name': request.POST['name'], 'school_id': school.id}
-                t = TeamForm(data)
-                if t.is_valid():
-                    t.save()
-                response = simplejson.dumps({'success': True})
-                return HttpResponse(response, mimetype='json')
             if request.POST['request_type'] == u'addGroup':
                 data = {'name': request.POST['name'], 'team_id': request.POST['team_id']}
                 t = GroupForm(data)
@@ -1509,9 +1496,13 @@ def teachers_tab(request, sort_type=1, sort_status=0):
             if form.is_valid():
                 d = request.POST['birthday'].split('/')
                 birthday = date(int(d[2]),int(d[1]),int(d[0]))
-                add_teacher(first_name=data['first_name'], last_name=data['last_name'], school=get_school(request), birthday=birthday,
-                            sex=data['sex'], birthplace=data['birth_place'], team_id =team)
-                message = 'Bạn vừa thêm một giáo viên mới'
+                try:
+                    test = school.teacher_set.get(first_name__exact=data['first_name'], last_name__exact=data['last_name'],birthday__exact=birthday)
+                    message = 'Giáo viên này đã tồn tại trong hệ thống'
+                except ObjectDoesNotExist:
+                    add_teacher(first_name=data['first_name'], last_name=data['last_name'], school=get_school(request), birthday=birthday,
+                                sex=data['sex'], birthplace=data['birth_place'], team_id =team)
+                    message = 'Bạn vừa thêm một giáo viên mới'
                 form = TeacherForm(school.id)
             else:
                 if data['first_name'] != '':
