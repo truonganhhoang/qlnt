@@ -8,10 +8,13 @@
 <script>
     $(document).ready(function() {
         $("input.datepicker").datepicker();
+        $("#id_group_id").attr('disabled', true);
+        $("#id_team_id").attr('disabled', true);
     });
+
     function confirmCancel()
     {
-        return confirm("Bạn có chắc chắn muốn hủy cập nhật?");
+        return confirm("Bạn có chắc chắn muốn quay lại?");
     }
 </script>
 <form action="/school/viewTeacherDetail/{{id}}" method="post">{% csrf_token %}
@@ -20,8 +23,8 @@
 	    {{ form.as_table }}
 	 </table>
     {%if pos > 3%}
-   <input type ="submit" class="ggButton"  value="Cập nhật"/>
-   <a title="Hủy cập nhật và quay về danh sách giáo viên" href="{%url school.views.school_index  %}teachers" onclick="return confirmCancel();"><input type = "button" class="ggButton" value ="Hủy"/></a>
+   <input type ="submit" class="ggButton"  value="Lưu"/>
+   <a title="Hủy cập nhật và quay về danh sách giáo viên" href="{%url school.views.school_index  %}teachers" onclick="return confirmCancel();"><input type = "button" class="ggButton" value ="Quay lại"/></a>
    {%else%}    
    <a title="Quay về danh sách giáo viên" href="{%url school.views.school_index  %}teachers"><input type="button" class="ggButton" >Quay lại</a>
    {%endif%}
