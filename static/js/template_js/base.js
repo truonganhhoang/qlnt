@@ -133,7 +133,7 @@ $(document).ready(function(){
     });
 
     $("#notify").ajaxStart( function(){
-        $(this).text("Đang lưu dữ liệu lên server...");
+        $(this).text("Đang gửi dữ liệu lên máy chủ...");
         $(this).fadeIn('fast');
     });
 
@@ -145,7 +145,7 @@ $(document).ready(function(){
     });
 
     $("#notify").ajaxError( function(event, request, settings){
-        $(this).text("Gặp lỗi khi gửi dữ liệu tới server");
+        $(this).text("Gặp lỗi khi gửi dữ liệu tới máy chủ");
         $(this).data('delay', setTimeout(function(){
             $("#notify").stop(true, true).fadeOut('fast');
         }, 1000));
