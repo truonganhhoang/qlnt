@@ -16,6 +16,7 @@ from xlwt import Workbook, XFStyle, Borders, Font, easyxf ,Alignment
 import xlwt 
 import xlrd
 from xlrd import cellname
+noneSubject="............................."
 s1=1000
 s2=5000
 s3=2000
@@ -30,6 +31,7 @@ m7=3000
 m8=3500
 m9=1000
 m10=1400
+d1=1400
 
 h1 = easyxf(
     'font:name Arial, bold on,height 1000 ;align: vert centre, horz center')
@@ -55,6 +57,10 @@ h8 = easyxf(
 
 h9 = easyxf(
 'font:name Times New Roman,bold on ,height 240 ;align:horz centre')
+
+h10 = easyxf(
+'font:name Times New Roman,bold on ,height 200 ;align:wrap on,horz centre,vert centre ;'
+'borders: top thin,right thin,left thin,bottom thin')
 
 first_name = easyxf(
 'font:name Times New Roman ,height 240 ;'
@@ -98,7 +104,7 @@ def report(request):
                        )
     return HttpResponse(t.render(c))
 
-def printASubject(class_id,s,mon,x,y):
+def printASubject(class_id,termNumber,s,mon,x,y,ls,number):
     if mon==u'Ngoại ngữ':
         s.write_merge(x,x,y,y+4,'NGOẠI NGỮ:...........................................',h4)        
     else:    
@@ -114,7 +120,7 @@ def printASubject(class_id,s,mon,x,y):
     s.write(x+2,y,u'M',h5)
     s.write(x+2,y+1,u'v',h5)
     
-    monList    = Mark .objects.filter(student_id__class_id=class_id,subject_id__name=mon,term_id__number=1).order_by("student_id__index")
+    monList    = Mark .objects.filter(student_id__class_id=class_id,subject_id__name=mon,term_id__number=termNumber).order_by("student_id__index")
 
     i=0    
     for m in monList:
@@ -144,101 +150,274 @@ def printASubject(class_id,s,mon,x,y):
         
         str5=""
         if m.tb!=None: str5=str(m.tb)
+        
         if i % 5 !=0:
             s.write(x+i+2,y,str1,h6)
             s.write(x+i+2,y+1,str2,h6)
             s.write(x+i+2,y+2,str3,h6)
             s.write(x+i+2,y+3,str4,h6)
             s.write(x+i+2,y+4,str5,h6)
+            ls.write(i+3,number+2,str5,h6)
         else:    
             s.write(x+i+2,y,str1,h7)
             s.write(x+i+2,y+1,str2,h7)
             s.write(x+i+2,y+2,str3,h7)
             s.write(x+i+2,y+3,str4,h7)
             s.write(x+i+2,y+4,str5,h7)
-
+            ls.write(i+3,number+2,str5,h7)
+            
     for t in range(i+1,56):
         if t % 5!=0:
             for j in range(y,y+5):    
                 s.write(x+t+2,j,"",h6)
+                ls.write(t+3,number+2,"",h6)
         else:    
             for j in range(y,y+5):    
                 s.write(x+t+2,j,"",h7)
+                ls.write(t+3,number+2,"",h7)
+                
 def printName(class_id,s,x,y):     
+
+    s.write_merge(x,x+2,y,y,u'Số\nTT',h4)
+    s.write_merge(x,x+2,y+1,y+2,u'Họ và tên',h4)
     
     pupilList = Pupil.objects.filter(class_id=class_id).order_by('index')
     i=0
     for p in pupilList:
-        if i % 5 !=0:
-            s.write(x+i,y,i+1,h6)
-            s.write(x+i,y+1,p.last_name,last_name)
-            s.write(x+i,y+2,p.first_name,first_name)
-        else:    
-            s.write(x+i,y,i+1,h7)
-            s.write(x+i,y+1,p.last_name,last_name1)
-            s.write(x+i,y+2,p.first_name,first_name1)
         i +=1
+        if i % 5 !=0:
+            s.write(x+i+2,y,i,h6)
+            s.write(x+i+2,y+1,p.last_name,last_name)
+            s.write(x+i+2,y+2,p.first_name,first_name)
+        else:    
+            s.write(x+i+2,y,i,h7)
+            s.write(x+i+2,y+1,p.last_name,last_name1)
+            s.write(x+i+2,y+2,p.first_name,first_name1)
         
     for t in range(i+1,56):
         if t % 5 !=0:
-            s.write(x+t-1,y,t,h6)
-            s.write(x+t-1,y+1,"",last_name)
-            s.write(x+t-1,y+2,"",first_name)
+            s.write(x+t+2,y,t,h6)
+            s.write(x+t+2,y+1,"",last_name)
+            s.write(x+t+2,y+2,"",first_name)
         else:    
-            s.write(x+t-1,y,t,h7)
-            s.write(x+t-1,y+1,"",last_name1)
-            s.write(x+t-1,y+2,"",first_name1)
-def printSTT(s,max,x,y):
-    for t in range(1,max+1):
-        if t % 5 !=0:
-            s.write(x+t-1,y,t,h6)
-        else:    
-            s.write(x+t-1,y,t,h7)
-        
+            s.write(x+t+2,y,t,h7)
+            s.write(x+t+2,y+1,"",last_name1)
+            s.write(x+t+2,y+2,"",first_name1)
                 
-def printPage13(book):
-    s = book.add_sheet('trang 13')
-    s.set_paper_size_code(8)
-    s.write_merge(24,24,0,13,u'PHẦN GHI ĐIỂM',h1)
-    s.write_merge(25,25,0,13,u'HỌC KỲ I',h2)
+def printPage13(s,x,y,string):    
+    s.write_merge(x+24,x+27,y,y+12,u'PHẦN GHI ĐIỂM',h1)
+    s.write_merge(x+28,x+31,y,y+12,string,h2)
     
-def printPage14(book,class_id,number,mon1,mon2):
-    s = book.add_sheet('trang'+str(number+13) ,True)
-    book.set_active_sheet(number)
-    s.set_paper_size_code(8)
-        
+def printPage14(class_id,s,termNumber,n1,mon1,mon2,x,y,ls):
+            
     s.col(0).width = s1
     s.col(1).width = s2
     s.col(2).width = s3
+    
     s.col(3).width = m1
     s.col(4).width = m2
     s.col(5).width = m3
     s.col(6).width = m4
     s.col(7).width = m5
     
-    s.col(8).width  = m6
-    s.col(9).width  = m7
-    s.col(10).width = m8
-    s.col(11).width = m9
-    s.col(12).width = m10
+    s.col(8).width  = m1
+    s.col(9).width  = m2
+    s.col(10).width = m3
+    s.col(11).width = m4
+    s.col(12).width = m5
     
-    s.write_merge(0,0,0,12,u'HỌC KỲ I',h3)
+    if termNumber==1:
+        s.write_merge(x,x,y,y+12,u'HỌC KỲ I',h3)
+    else:    
+        s.write_merge(x,x,y,y+12,u'HỌC KỲ II',h3)
     
-    s.write_merge(1,3,0,0,u'Số\nTT',h4)
-    s.write_merge(1,3,1,2,u'Họ và tên',h4)
-            
-    printName(class_id,s,4,0)        
-    printASubject(class_id,s,mon1,1,3)
-    printASubject(class_id,s,mon2,1,8)
+    printName(class_id,s,x+1,y)        
+    printASubject(class_id,termNumber,s,mon1,x+1,y+3,ls,2*n1+1)
+    printASubject(class_id,termNumber,s,mon2,x+1,y+8,ls,2*n1+2)
     
     max = 55
-                
-    s.write_merge(max+5,max+5,0,8,u'Trong trang này có......... điểm được sửa chữa,'+
-u' trong đó môn: '+ mon1+u'....... điểm, '+ mon2+u'.......điểm',h8)
+    str =u'Trong trang này có......... điểm được sửa chữa,'+u' trong đó môn: '+ mon1+u'....... điểm'
+    if mon2!=noneSubject:
+        str+=', '+ mon2+u'.......điểm'       
+    print x+max+5
+    print y+max+5          
+    s.write_merge(x+max+5,x+max+5,y+0,y+8,str,h8)
     
-    s.write_merge(max+5,max+5,9,12,u'Ký xác nhận của',h9)
-    s.write_merge(max+6,max+6,9,12,u'giáo viên chủ nhiệm',h9)
+    s.write_merge(x+max+5,x+max+5,y+9,y+12,u'Ký xác nhận của',h9)
+    s.write_merge(x+max+6,x+max+6,y+9,y+12,u'giáo viên chủ nhiệm',h9)
         
+def printPage20(class_id,termNumber,s,length,subjectList):
+    s.set_paper_size_code(8)
+    s.col(0).width = s1
+    s.col(1).width = s2
+    s.col(2).width = s3
+    for i in range(length):
+        s.col(i+3).width =d1
+        
+    s.col(length+3).width = d1
+    s.col(length+4).width = d1
+    s.col(length+5).width = d1
+    s.col(length+6).width = d1+500
+    
+    if termNumber==1:
+        s.write_merge(0,0,0,length+6,u'TỔNG HỢP KẾT QUẢ HỌC KỲ I',h3)
+    else:    
+        s.write_merge(0,0,0,length+6,u'TỔNG HỢP KẾT QUẢ HỌC KỲ II',h3)
+        
+    for (i,ss) in enumerate(subjectList):
+        if ss.name=='GDCD':
+            s.write_merge(1,3,i+3,i+3,'GD\nCD',h10)
+        elif ss.name=='GDQP-AN':     
+            s.write_merge(1,3,i+3,i+3,'GD\nQP-\nAN',h10)
+        else:    
+            s.write_merge(1,3,i+3,i+3,ss.name,h10)
+            
+    s.write_merge(1,3,length+3,length+3,'TB',h10)
+    s.write_merge(1,2,length+4,length+6,u'Kết quả xếp loại\n và thi đua',h10)
+ 
+    s.write(3,length+4,u'HL',h10)
+    s.write(3,length+5,u'HK',h10)
+    s.write(3,length+6,u'TĐ',h10)
+    
+    
+    selectedClass = Class.objects.get(id=class_id)
+    
+    tbhkList = TBHocKy.objects.filter(student_id__class_id=class_id,term_id__number=termNumber)
+    hkList   = HanhKiem.objects.filter(student_id__class_id=class_id,year_id=selectedClass.year_id)
+    
+    i=-1
+    for (i,(tbhk,hk)) in enumerate(zip(tbhkList,hkList)):
+        str1=""
+        if tbhk.tb_hk!=None: str1 = str(tbhk.tb_hk)
+        str2=""                                
+        if tbhk.tb_hk!=None: str2 = str(tbhk.hl_hk)
+        str3=""
+        if termNumber==1:
+            if hk.term1!=None  : str3 = hk.term1
+        else:    
+            if hk.term2!=None  : str3 = hk.term2
+        str4=""
+        if   tbhk.danh_hieu_hk=='G' : str4='HSG'
+        elif tbhk.danh_hieu_hk=='TT': str4='HSTT'
+        
+        if i % 5!=4:            
+            s.write(i+4,length+3,str1,h6)                         
+            s.write(i+4,length+4,str2,h6)                         
+            s.write(i+4,length+5,str3,h6)                         
+            s.write(i+4,length+6,str4,h6)
+        else:                             
+            s.write(i+4,length+3,str1,h7)                         
+            s.write(i+4,length+4,str2,h7)                         
+            s.write(i+4,length+5,str3,h7)                         
+            s.write(i+4,length+6,str4,h7)
+    
+    for t in range(i+2,56):
+        if t % 5!=0:            
+            s.write(t+3,length+3,"",h6)                         
+            s.write(t+3,length+4,"",h6)                         
+            s.write(t+3,length+5,"",h6)                         
+            s.write(t+3,length+6,"",h6)
+        else:                             
+            s.write(t+3,length+3,"",h7)                         
+            s.write(t+3,length+4,"",h7)                         
+            s.write(t+3,length+5,"",h7)                         
+            s.write(t+3,length+6,"",h7)
+                 
+    printName(class_id,s,1,0)
+    max = 55
+    str1 =u'Trong trang này có......... điểm được sửa chữa,'+u' trong đó môn:........................................................................... '
+    str2 ='........................................................................................................................................................................'
+    s.write_merge(max+5,max+5,0,16,str1,h8)
+    s.write_merge(max+6,max+6,0,16,str2,h8)
+    
+    s.write_merge(max+5,max+5,17,21,u'Ký xác nhận của',h9)
+    s.write_merge(max+6,max+6,17,21,u'giáo viên chủ nhiệm',h9)
+
+def printInTerm(class_id,book,termNumber):
+
+    subjectList = Subject.objects.filter(class_id=class_id,primary__in=[0,termNumber,3,4]).order_by("index")    
+    length = len(subjectList)
+    numberPage = int((length+1)/2+1)
+    
+    if termNumber ==1:
+        s  = book.add_sheet('Điểm HK I',True)
+        ls = book.add_sheet('THKQ I',True)
+    else:
+        s = book.add_sheet('Điểm HK II',True)    
+        ls = book.add_sheet('THKQ II',True)
+    
+             
+    if termNumber == 1 :  printPage13(s,0,0,u'HỌC KỲ I')
+    else               :  printPage13(s,0,0,u'HỌC KỲ II')
+        
+    s.set_paper_size_code(8)
+    setHorz =[]
+    
+    for i in range(numberPage):
+        setHorz.append(((i+1)*70,0,255))
+    s.vert_page_breaks =[]    
+    s.horz_page_breaks = setHorz
+            
+    for i in range(length/2):
+        printPage14(class_id,s,termNumber,i,subjectList[2*i].name,subjectList[2*i+1].name,(i+1)*70,0,ls)
+    i+=1     
+    if length % 2==1:
+        printPage14(class_id,s,termNumber,i,subjectList[2*i].name,noneSubject,(i+1)*70,0,ls)
+    
+    printPage20(class_id,termNumber,ls,length,subjectList)
+
+def markBookClass(class_id):
+    tt1 = time.time()
+    book = Workbook(encoding = 'utf-8')
+        
+    printInTerm(class_id,book,1)
+    printInTerm(class_id,book,2)
+    
+    response = HttpResponse(mimetype='application/ms-excel')
+    response['Content-Disposition'] = u'attachment; filename=ds_hoc_sinh_%s.xls' % unicode(class_id)
+    book.save(response)
+    tt2= time.time()
+    print (tt2-tt1)
+    return response
+
+def printMarkBook(request,termNumber=1,class_id=-2):
+    user = request.user
+    if not user.is_authenticated():
+        return HttpResponseRedirect( reverse('login'))
+    
+    message=None
+    year_id=None
+    if year_id==None:
+        year_id=get_current_year(request).id
+    
+    selectedYear =Year.objects.get(id=year_id)    
+    try:
+        if in_school(request,selectedYear.school_id) == False:
+            return HttpResponseRedirect('/school')
+    except Exception as e:
+        return HttpResponseRedirect(reverse('index'))
+    
+    if get_position(request) != 4:
+       return HttpResponseRedirect('/school')
+    
+    
+    class_id  = int(class_id)
+    classList =Class.objects.filter(year_id=selectedYear) 
+    if class_id!=-2 :
+        return markBookClass(class_id)
+        
+    
+    t = loader.get_template(os.path.join('school','print_mark_book.html'))    
+    c = RequestContext(request, {"message":message,
+                                 'classList':classList,
+                                 'termNumber':termNumber,
+                                 'classChoice':class_id,
+                                }
+                       )
+    return HttpResponse(t.render(c))
+
+
+
 def printPage15(book,class_id,number,mon1,mon2,mon3):
     s = book.add_sheet('trang'+str(number+13) ,True)
     book.set_active_sheet(number)
@@ -283,57 +462,11 @@ u' trong đó môn: '+ mon1+u'....... điểm, '+ mon2+u'.......điểm, '+mon3+
     s.write_merge(max+6,max+6,12,15,u'giáo viên chủ nhiệm',h9)
 
 
-    
-def markBookClass(class_id):
-    #student_list = _class.pupil_set.all().order_by('index')
-    book = Workbook(encoding = 'utf-8')
-    printPage13(book)
-    printPage14(book,class_id,1,u'Toán',u'Vật lí')    
-    printPage15(book,class_id,2,u'Hóa học',u'Sinh học',u'Tin học')    
-    printPage14(book,class_id,3,u'Ngữ văn',u'Lịch sử')
-    printPage15(book,class_id,4,u'Địa lí',u'Ngoại ngữ',u'GDCD')    
-    printPage15(book,class_id,5,u'NN2',u'Nghề phổ thông(lớp 11)',u'....................................')    
-    #printPage15(book)
-    
-    book.set_active_sheet(0)
-    
-    response = HttpResponse(mimetype='application/ms-excel')
-    response['Content-Disposition'] = u'attachment; filename=ds_hoc_sinh_%s.xls' % unicode(class_id)
-    book.save(response)
-    return response
-
-def printMarkBook(request,termNumber=1,class_id=-2):
-    user = request.user
-    if not user.is_authenticated():
-        return HttpResponseRedirect( reverse('login'))
-    
-    message=None
-    year_id=None
-    if year_id==None:
-        year_id=get_current_year(request).id
-    
-    selectedYear =Year.objects.get(id=year_id)    
-    try:
-        if in_school(request,selectedYear.school_id) == False:
-            return HttpResponseRedirect('/school')
-    except Exception as e:
-        return HttpResponseRedirect(reverse('index'))
-    
-    if get_position(request) != 4:
-       return HttpResponseRedirect('/school')
-    
-    
-    class_id  = int(class_id)
-    classList =Class.objects.filter(year_id=selectedYear) 
-    if class_id!=-2 :
-        return markBookClass(class_id)
+def printSTT(s,max,x,y):
+    for t in range(1,max+1):
+        if t % 5 !=0:
+            s.write(x+t-1,y,t,h6)
+        else:    
+            s.write(x+t-1,y,t,h7)
         
-    
-    t = loader.get_template(os.path.join('school','print_mark_book.html'))    
-    c = RequestContext(request, {"message":message,
-                                 'classList':classList,
-                                 'termNumber':termNumber,
-                                 'classChoice':class_id,
-                                }
-                       )
-    return HttpResponse(t.render(c))
+
