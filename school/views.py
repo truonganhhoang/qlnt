@@ -139,6 +139,16 @@ def info(request):
     except Exception as e:
         return HttpResponseRedirect( reverse('index'))
     if request.method == 'POST':
+        if request.is_ajax():
+            form = SchoolForm(request.POST, request = request)
+            if form.is_valid():
+                form.save_to_model()
+                message = u'Bạn vừa cập nhật thông tin trường học thành công'
+            else:
+                message = u'Gặp lỗi khi lưu dữ liệu lên máy chủ.'
+            response = simplejson.dumps({'message': message, 'status': 'done'})
+            return HttpResponse(response, mimetype = 'json')
+
         form = SchoolForm(request.POST, request = request)
         if form.is_valid():
             form.save_to_model()
@@ -201,6 +211,8 @@ def organize_students(request, class_id, type = '0'):
     if not permission in [u'HIEU_TRUONG',u'HIEU_PHO']:
         return HttpResponseRedirect(reverse('school_index'))
 
+    student_list = None
+    _class = None
     try:
         _class = Class.objects.get( id = int(class_id))
         if type=='1':

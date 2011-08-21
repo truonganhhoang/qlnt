@@ -3,36 +3,82 @@
 
 
 {% block content %}
-<script type="text/javascript" >
+    <script type="text/javascript" >
 
-$(document).ready( function(){
-   $("#cancel").click(function(){
-      window.location.href = "{%url school.views.school_index %}";
-      return false;   
-   });
-});
-</script>
+        $(document).ready( function(){
+            $("#cancel").click(function(){
+                window.location.href = "{%url school.views.school_index %}";
+                return false;
+            });
+        });
+        $(document).ready(function(){
+
+            var update_school_detail_done = function(json) {
+                if (json.status == 'done') {
+                    $("#notify").showNotification('Cập nhật thành công thông tin trường học.');
+                    $.ajaxSetup({
+                       global: false
+                    });
+                    $("#dynamic_name").load('{% url school.views.school_index %} #head_title');
+                    $.ajaxSetup({
+                        global: true
+                    });
+                } else {
+                    $("#notify").showNotification(json.message);
+                }
+                
+            };
+
+            $("#submit").click(function() {
+                var school_name = $("#id_name").val();
+                var school_level = $("#id_school_level").val();
+                var school_address = $("#id_address").val();
+                var school_phone = $("#id_phone").val();
+                var school_email = $("#id_email").val();
+                var data = { name: school_name, school_level: school_level,
+                    address: school_address, phone: school_phone, email: school_email,
+                    update_school_detail: true };
+
+                if (school_email.indexOf('@') == -1 || school_email.indexOf('.') == -1) {
+                    $("#notify").showNotification('Email không hợp lệ.');
+                } else {
+                    var para = {
+                        type:"POST",
+                        url:"",
+                        global: false,
+                        data: data,
+                        datatype: "json",
+                        success: update_school_detail_done
+                    };
+                    $.ajax(para);
+                }
+                return false;
+            });
+
+        });
+
+    </script>
 
 
-<h2>Thông tin trường học</h2>
-{% if message != None %}
-	{{message}}
-	<br/>
-{% endif %}
+    <h2>Thông tin trường học</h2>
+    {% if message != None %}
+        {{message}}
+        <br/>
+    {% endif %}
 
-{% if user.userprofile.position == 'HIEU_TRUONG' or user.userprofile.position == 'HIEU_PHO' %}
+    {% if user.userprofile.position == 'HIEU_TRUONG' or user.userprofile.position == 'HIEU_PHO' %}
 
-<form action="{%url school.views.info %}" method="post">{% csrf_token %}
-<div class="infoContent">
-<div class="leftInfoDiv">
-<table class="styleA">
-{{form.as_table}}
-</table>
-</div>
-</div>
-<input type="submit" name="submit" value="Lưu lại" />
-<input type="reset"  id="cancel" name="cancel" value="Hủy" />
-</form>
-{% else %}
-{% endif %}
+        <form action="{%url school.views.info %}" method="post">{% csrf_token %}
+            <div class="infoContent">
+                <div class="leftInfoDiv">
+                    <table class="styleA">
+                        {{form.as_table}}
+                    </table>
+                </div>
+            </div>
+            <input type="submit" id="submit" class="ggButton" name="submit" value="Lưu lại" />
+            <input type="reset"  id="cancel" class="ggButton" name="cancel" value="Hủy" />
+        </form>
+    {% else %}
+    {% endif %}
 {% endblock %}

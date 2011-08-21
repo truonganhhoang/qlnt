@@ -121,8 +121,12 @@ class SchoolForm(forms.Form):
         self.request = kwargs.pop('request')
         super(SchoolForm, self).__init__(*args, **kwargs)
         if get_permission(self.request) in [u'HIEU_TRUONG', u'HIEU_PHO']:
-            self.fields['name'] = forms.CharField(label=u'Tên trường:', max_length = 100, required=True) #tên đơn vị. tổ chức 
-            self.fields['school_level'] = forms.ChoiceField(label=u"Cấp:", choices = KHOI_CHOICES, required = True)
+            self.fields['name'] = forms.CharField(label=u'Tên trường:', max_length = 100 ) #tên đơn vị. tổ chức
+            school = get_school(self.request)
+            self.fields['school_level'] = forms.ChoiceField(label=u"Cấp:", choices = KHOI_CHOICES)
+            if school.status in [1,2]:
+                self.fields['school_level'].widget.attrs['disabled'] = 'disabled'
+                self.fields['school_level'].required = False
             self.fields['address'] = forms.CharField(label=u"Địa chỉ:", max_length = 255, required = False) #
             self.fields['phone'] = forms.CharField(label="Điện thoại:", max_length = 20, validators=[validate_phone], required = False)
             self.fields['email'] = forms.EmailField(max_length = 50,  required = False) 
@@ -130,7 +134,8 @@ class SchoolForm(forms.Form):
         try:
             school = get_school(self.request)
             school.name = self.cleaned_data['name']
-            school.school_level = self.cleaned_data['school_level']
+            if self.cleaned_data['school_level']:
+                school.school_level = self.cleaned_data['school_level']
             school.address = self.cleaned_data['address']
             school.phone = self.cleaned_data['phone']
             school.email = self.cleaned_data['email']
@@ -248,13 +253,13 @@ CONTENT_TYPES = ['application/vnd.ms-excel']
 class uploadFileExcel(forms.Form):
     file  = forms.FileField(label=u'Chọn file Excel:')
     
-    def is_valid():
+    def is_valid(self):
         if not file.content_type in CONTENT_TYPES:
             os.remove(filepath)
             raise forms.ValidationError(u'Bạn chỉ được phép tải lên file Excel.')
-        elif os.path.getsize(filepath) == 0:
+        elif not os.path.getsize(filepath):
             raise forms.ValidationError(u'File của bạn rỗng.')
-        elif xlrd.open_workbook(filepath).sheet_by_index(0).nrows == 0:
+        elif not xlrd.open_workbook(filepath).sheet_by_index(0).nrows:
             raise forms.ValidationError(u'File của bạn rỗng.')
         else:
             return super(uploadFileExcel, self).is_valid()
@@ -273,9 +278,9 @@ class smsFromExcelForm(forms.Form):
         if not file.content_type in CONTENT_TYPES:
             os.remove(filepath)
             raise forms.ValidationError(u'Bạn chỉ được phép tải lên file Excel.')
-        elif os.path.getsize(filepath) == 0:
+        elif not os.path.getsize(filepath):
             raise forms.ValidationError(u'Hãy tải lên một file Excel đúng. File của bạn hiện đang trống.')
-        elif xlrd.open_workbook(filepath).sheet_by_index(0).nrows == 0:
+        elif not xlrd.open_workbook(filepath).sheet_by_index(0).nrows:
             raise forms.ValidationError(u'Hãy tải lên một file Excel đúng. File của bạn hiện đang trống.')
 #        if content._size > settings.MAX_UPLOAD_SIZE:
 #            raise forms.ValidationError(_('Please keep filesize under %s. Current filesize %s') % (filesizeformat(settings.MAX_UPLOAD_SIZE), filesizeformat(content._size)))

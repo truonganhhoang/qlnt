@@ -171,6 +171,12 @@ table.styleB tr.selected {
 table.styleB tr.highLight {
 	background-color:  #D9FFF0;
 }
+
+input[type=text]{
+    border: 1px solid #999999;
+}
+
+
 input.highLight {
     cursor: pointer;
     border: 0;
@@ -626,7 +632,6 @@ div#divList {
 
 #content h2 {
     color: #4d94d7;
-    font: 24px/24px Georgia, "Times New Roman", Times, serif;
     padding: 3px;
 	
 }

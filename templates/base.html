@@ -36,17 +36,19 @@
     <a href="{%url school.views.school_index %}"><img src="/static/css/images/logo.png" class="logo" alt="logo"
                                                       title="{{ user.userprofile.organization.name }}"/>
     </a>
-    <p id="headTitle">
-        {% if user.is_authenticated %}
-            {% if user.is_superuser %}
-                Quản trị hệ thống
+    <div id="dynamic_name">
+        <p id="head_title">
+            {% if user.is_authenticated %}
+                {% if user.is_superuser %}
+                    Quản trị hệ thống
+                {% else %}
+                    {{ user.userprofile.organization.name }}
+                {% endif %}
             {% else %}
-                {{ user.userprofile.organization.name }}
+                Quản lý nhà trường
             {% endif %}
-        {% else %}
-            Quản lý nhà trường
-        {% endif %}
-    </p>
+        </p>
+    </div>
     <p id="detail">
         {% if user.userprofile.position == 'HIEU_TRUONG' or user.userprofile.position == 'HIEU_PHO' or user.userprofile.position == 'GIAO_VIEN' or user.userprofile.position == 'GIAO_VU' or user.userprofile.position == 'HOC_SINH' %}
             {{ user.userprofile.organization.get_status }}
