@@ -136,7 +136,7 @@ class BasicPersonInfo(models.Model):
     ton_giao = models.CharField("Tôn giáo", max_length = 20, blank = True)
     quoc_tich = models.CharField("Quốc tịch", max_length = 20, blank = True, default = 'Việt Nam')
     home_town = models.CharField("Quê quán", max_length = 100, blank = True) #nguyen quan
-    sex = models.CharField("Giới tính", max_length = 3, choices = GENDER_CHOICES, blank = True, default = 'Nam')
+    sex = models.CharField("Giới tính(*)", max_length = 3, choices = GENDER_CHOICES, default = 'Nam')
     phone = models.CharField("Điện thoại", max_length = 15, blank = True, validators = [validate_phone])
     sms_phone = models.CharField("Điện thoại nhận tin nhắn", max_length = 15, blank = True, validators = [validate_phone])
     current_address = models.CharField("Địa chỉ", max_length = 200, blank = True)
@@ -221,7 +221,6 @@ class Class(models.Model):
         try:
             return self.pupil_set.count()
         except Exception as e:
-            print e
             return 0
 
     class Meta:
@@ -274,10 +273,10 @@ class Subject(models.Model):
     hs = models.FloatField("Hệ số(*)", validators = [validate_hs])
 
     primary = models.SmallIntegerField("Tính điểm(*)", default = 0, choices = LOAI_CHOICES)
-    index = models.IntegerField("Số thứ tự", default=0)
+    index = models.IntegerField("Số thứ tự(*)", default=0)
 
     class_id = models.ForeignKey(Class, verbose_name = "Lớp(*)")    
-    teacher_id = models.ForeignKey(Teacher, verbose_name = "Giáo viên(*)", null= True, blank = True) # field nay de cung cap permission cho giao vien de nhap diem
+    teacher_id = models.ForeignKey(Teacher, verbose_name = "Giáo viên", null= True ) # field nay de cung cap permission cho giao vien de nhap diem
     
     class Meta:
         verbose_name = "Môn"

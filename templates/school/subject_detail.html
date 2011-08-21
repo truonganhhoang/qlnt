@@ -5,19 +5,11 @@
         {{ message }} <br>
     {% endif %}
 
-    <script>
-        function confirmCancel() {
-            return confirm("Bạn có chắc chắn muốn hủy cập nhật?");
-        }
-    </script>
-
     <form action="/school/viewSubjectDetail/{{id}}" method="post">{% csrf_token %}
         <table class="styleA styleDetail">
             {{ form.as_table }}
         </table>
-        <input type="submit" class="ggButton" value="Cập nhật"/>
-        <a title="Quay về danh sách môn học"
-           href="{%url school.views.school_index  %}subjectPerClass/{{class_id}}"
-           onclick="return confirmCancel();"><input class="ggButton" type="button" value="Quay lại"></a>
+        <input type="submit" class="ggButton" value="Lưu"/>
+        <a class="ggButton tiptiphover" title="Quay về danh sách môn học" href="{%url school.views.school_index  %}subjectPerClass/{{class_id}}">Quay lại</a>
     </form>
 {% endblock %}

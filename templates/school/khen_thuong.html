@@ -34,8 +34,8 @@ function confirmDelete()
         <td align="center" width="15%"> {{kt.dia_diem}} </td>
         <td align="center" width="30%"> {{kt.noi_dung}} </td>
         {%if pos > 1%}
-        <td width="5%"><a href = "/school/khenthuong/{{kt.id}}/delete" onclick="return confirmDelete();"> Xóa</a></td>
-        <td width="5%"><a href = "/school/khenthuong/{{kt.id}}/edit" > Sửa</a></td>
+        <td width="5%"><a href = "/school/khenthuong/{{kt.id}}/delete" class="ggButton" onclick="return confirmDelete();"> Xóa</a></td>
+        <td width="5%"><a href = "/school/khenthuong/{{kt.id}}/edit" class="ggButton" > Sửa</a></td>
         {% endif %}
     </tr>
     {% endfor %}

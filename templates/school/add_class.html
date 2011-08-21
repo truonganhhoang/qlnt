@@ -11,7 +11,7 @@
     {{ form.non_field_errors }}
     <table class="styleA styleDetail" >
 		<tr>
-			<th><label for="id_name">Tên lớp:</label></th>
+			<th><label for="id_name">Tên lớp(*):</label></th>
 			<td>
 				{{form.name.errors }}
         {{ form.name }}
@@ -35,7 +35,7 @@
 		</tr>    
       
       <tr>
-			<th><label for="id_block_id">Khối:</label></th>
+			<th><label for="id_block_id">Khối(*):</label></th>
 			<td>
 				{{ form.block_id.errors }}
 				{{ form.block_id }}							
