@@ -109,13 +109,14 @@ $(document).ready(function(){
     $.fn.enabelNotification = function(){
         $(".notify-widget-pane").show();
     };
-    $.fn.showNotification = function(msg){
+    $.fn.showNotification = function(msg, duration){
         $("#notify").enabelNotification();
         $("#notify").text(msg);
         $("#notify").fadeIn('fast');
+        if ( !duration || typeof duration != 'number') duration = 1000;
         $("#notify").data('delay', setTimeout(function(){
             $("#notify").stop(true, true).fadeOut('fast');
-        }, 1000));
+        }, duration));
     };
     // end jquery global function
 

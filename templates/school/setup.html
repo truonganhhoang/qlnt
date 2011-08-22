@@ -55,7 +55,7 @@
                         text += '<div style="float: left; margin: 15px;"><ul>';
                         for (var j = 0; j < classes.length; j++)
                             if (classes[j].split(' ')[0] == grades[i])
-                                text = text + '<li>' + classes[j] + '</li>';
+                                text = text + '<li><small>' + (j +1) + ',</small>   ' + classes[j] + '</li>';
                         text += '</ul></div>';
                     }
                     text += '<div style="clear: both;"></div>';
@@ -63,7 +63,10 @@
                     $(".rightInfoDiv").hide();
                     $(".confirmation").fadeIn(300);
                 } else {
-                    $("#notify").showNotification(json.message);
+                    $("#notify").showNotification(json.message, 3000);
+                    $("#labels").removeAttr('readonly');
+                    $("#update_class_name").removeAttr('disabled');
+
                 }
             };
 
@@ -85,6 +88,7 @@
                     var para = {
                         type:"POST",
                         url:"",
+                        global: false,
                         data: data,
                         datatype: "json",
                         success: update_class_name_done
@@ -115,6 +119,9 @@
             });
 
             var start_year_done = function(json) {
+                $("#start_year").attr['disabled'] = 'disabled';
+                $("div.startYear").append('<br><p>Quá trình bắt đầu năm học mới cần xử lý trong vài giây. \
+                Bạn vui lòng đợi một lát.</p>');
                 window.location.href = json.status == 'done' ? "{%url school.views.b1 %}" : "{%url school.views.setup %}";
             }
 

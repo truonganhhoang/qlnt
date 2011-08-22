@@ -89,6 +89,7 @@ def setup(request):
             elif 'update_class_name' in request.POST:
                 message, labels, success = parse_class_label(request, school)
 
+                print 'success', success
                 classes_ = None
                 grades = None
                 if success:
@@ -230,7 +231,6 @@ def organize_students(request, class_id, type = '0'):
     
 
 def parse_class_label(request, school):
-    class_labels = []
     message = None
     if 'message' in request.session:
         message = request.session['message']

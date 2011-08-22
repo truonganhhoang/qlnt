@@ -65,7 +65,7 @@ class Organization(models.Model):
         if type(attribute) != str or type(value) != str:
             raise Exception('InvalidArgumentType')
         try:
-            setting_file_name = '_'.join([self.name, str(self.id)])
+            setting_file_name = str(self.id)
             setting_file_name = os.path.join(SCHOOL_SETTING_FOLDER, setting_file_name)
         except Exception as e:
             print e
@@ -85,7 +85,7 @@ class Organization(models.Model):
             raise Exception('InvalidArgumentType')
 
         if self.id:
-            setting_file_name = '_'.join([self.name, str(self.id)])
+            setting_file_name = str(self.id)
             setting_file_name = os.path.join(SCHOOL_SETTING_FOLDER, setting_file_name)
         else:
             raise Exception('OrganizationNotSaved')
