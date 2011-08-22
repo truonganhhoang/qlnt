@@ -1884,6 +1884,9 @@ def viewStudentDetail(request, student_id):
     ttddform = ThongTinDoanDoiForm(instance=pupil)
     if request.method == 'POST':
         form = PupilForm(school_id, request.POST, instance=pupil)
+        ttllform = ThongTinLienLacForm(request.POST, instance=pupil)
+        ttgdform = ThongTinGiaDinhForm(request.POST, instance=pupil)
+        ttddform = ThongTinDoanDoiForm(request.POST, instance=pupil)
         if form.is_valid():
             form.save()            
             ttcnform = ThongTinCaNhanForm(school_id, instance=pupil)
