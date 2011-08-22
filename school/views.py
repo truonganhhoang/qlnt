@@ -89,7 +89,6 @@ def setup(request):
             elif 'update_class_name' in request.POST:
                 message, labels, success = parse_class_label(request, school)
 
-                print 'success', success
                 classes_ = None
                 grades = None
                 if success:
