@@ -369,7 +369,7 @@ def printPage31(class_id,s,tbNamList,x,y):
     
     printName(class_id,s,x+1,y,1)
                 
-    s.write_merge(x+0,x+0,y,y+12,u'XẾP LOẠI CẢ NĂM HỌC',h3)
+    s.write_merge(x+0,x+0,y,y+12,u'TỔNG HỢP KẾT QUẢ ĐÁNH GIÁ, XẾP LOẠI CẢ NĂM HỌC',h3)
     s.write_merge(x+1,x+2,y+3,y+4,u'XẾP LOẠI',h10)
     s.write_merge(x+3,x+4,y+3,y+3,'HL',h10)
     s.write_merge(x+3,x+4,y+4,y+4,'HK',h10)
@@ -473,7 +473,7 @@ def printPage30(class_id,book):
     s.vert_page_breaks = [(length+8,0,65500)]    
     s.horz_page_breaks = []
     
-    s.write_merge(0,0,0,length+6,u'TỔNG HỢP KẾT QUẢ ĐÁNH GIÁ',h3)
+    s.write_merge(0,0,0,length+6,u'TỔNG HỢP KẾT QUẢ ĐÁNH GIÁ, XẾP LOẠI CẢ NĂM HỌC',h3)
 
     printName(class_id,s,1,0,1)            
     for (i,ss) in enumerate(subjectList):
@@ -593,7 +593,7 @@ def markBookClass(class_id):
     printInTerm(class_id,book,1)
     printInTerm(class_id,book,2)
     printPage30(class_id,book)
-    book.set_active_sheet(4)
+    book.set_active_sheet(0)
     response = HttpResponse(mimetype='application/ms-excel')
     response['Content-Disposition'] = u'attachment; filename=ds_hoc_sinh_%s.xls' % unicode(class_id)
     book.save(response)
