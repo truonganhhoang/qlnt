@@ -901,7 +901,7 @@ def thilai(request,class_id):
     tbMonList=[]
     aTKMonList=[]
     for tbNam in tbNamList:
-        aTKMonList = TKMon.objects.filter(subject_id__class_id=class_id,student_id=tbNam.student_id,subject_id__primary__in=[0,1,2])
+        aTKMonList = TKMon.objects.filter(subject_id__class_id=class_id,student_id=tbNam.student_id,subject_id__primary__in=[0,1,2,3]).order_by('subject_id__index')
         for tbMon in aTKMonList:
             if tbMon.tb_nam==None: message="Chưa tổng kết xong điểm của cả lớp"
             

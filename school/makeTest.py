@@ -56,25 +56,25 @@ def thu1(request):
     return HttpResponse(t.render(c))
 
 @transaction.commit_on_success                                                              
-def thu2(request):
+def thu(request):
     t1= time.time()
-    list1 = TKMon.objects.filter(student_id__class_id=2)
+    list1 = TKMon.objects.filter(student_id__class_id=17)
     for m in list1:
-        m.tb_nam=random.randrange( 4,8 )
+        m.tb_nam=random.randrange( 4,7 )
        # m.save()
     for m in list1:
         m.save()
            
-    list = Mark.objects.filter(student_id__class_id=2)
+    list = Mark.objects.filter(student_id__class_id=17)
     for m in list:
-        m.tb=random.randrange( 5,11 )
+        m.tb=random.randrange( 4,7 )
        # m.save()
     for m in list:
         m.save()
            
-    hanhKiemList =HanhKiem.objects.filter(student_id__class_id=2)
+    hanhKiemList =HanhKiem.objects.filter(student_id__class_id=17)
     for hk in hanhKiemList:
-        t =random.randrange( 1,3 )
+        t =random.randrange( 1,5 )
         if   t==1: hk.year='T'
         elif t==2: hk.year='K'
         elif t==3: hk.year='TB'
@@ -104,17 +104,35 @@ def thu2(request):
     #print (t2-t1)
     return HttpResponse(t.render(c))
 
-def thu(request):
+def thu1(request):
     t1= time.time()
     
-    message=None
-    
+    markList = Mark.objects.filter(subject_id=1)
+    for m in markList:
+        m.mieng_1 = 7
+        m.mieng_2 = 7
+        m.mieng_3 = 7
+        m.mieng_4 = 7
+        m.mieng_5 = 7
+        m.mlam_1 = 6
+        m.mlam_2 = 6
+        m.mlam_3 = 6
+        m.mlam_4 = 6
+        m.mlam_5 = 6
+        m.mot_tiet_1= 8
+        m.mot_tiet_2= 8
+        m.mot_tiet_3= 8
+        m.mot_tiet_4= 8
+        m.mot_tiet_5= 8
+        m.ck        = 9
+        m.save() 
     t = loader.get_template(os.path.join('school','ll.html'))
     t2=time.time()
     print (t2-t1)
-    c = RequestContext(request, {'message':message,
+    c = RequestContext(request, {'list':list,
                                 }
                        )
 
     #print (t2-t1)
     return HttpResponse(t.render(c))
+

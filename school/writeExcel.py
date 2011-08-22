@@ -32,7 +32,8 @@ m8=3500
 m9=1000
 m10=1400
 d1=1400
-
+d2=2000 # kick thuoc cot o trang 31  
+d3=6000
 h1 = easyxf(
     'font:name Arial, bold on,height 1000 ;align: vert centre, horz center')
 h2 = easyxf(
@@ -46,22 +47,38 @@ h5 = easyxf(
 'font:name Times New Roman ,height 240 ;align:wrap on, vert centre, horz center;'
 'borders: top thin,right thin,left thin,bottom thin')
 h6 = easyxf(
-'font:name Times New Roman ,height 240 ;'
+'font:name Times New Roman ,height 240 ;align:wrap on;'
+'borders: right thin,left thin,bottom dotted')
+h61 = easyxf(
+'font:name Times New Roman ,height 240 ;align:horz right;'
 'borders: right thin,left thin,bottom dotted')
 h7 = easyxf(
-'font:name Times New Roman ,height 240 ;'
+'font:name Times New Roman ,height 240 ;align:wrap on;'
+'borders: right thin,left thin,bottom thin')
+h71 = easyxf(
+'font:name Times New Roman ,height 240 ;align:horz right;'
 'borders: right thin,left thin,bottom thin')
 
 h8 = easyxf(
-'font:name Times New Roman ,height 240 ; align:horz left')
+'font:name Times New Roman ,height 240 ; align:wrap on,horz left')
+h81 = easyxf(                                    
+'font:name Times New Roman ,height 240 ; align:wrap on,horz left;'# trang 31
+'borders: right thin,left thin')
 
 h9 = easyxf(
-'font:name Times New Roman,bold on ,height 240 ;align:horz centre')
+'font:name Times New Roman,bold on ,height 240 ;align:horz centre')# xac nhan
+h91 = easyxf(
+'font:name Times New Roman,bold on ,height 240 ;align:horz centre;'
+'borders: right thin,left thin')
 
 h10 = easyxf(
 'font:name Times New Roman,bold on ,height 200 ;align:wrap on,horz centre,vert centre ;'
 'borders: top thin,right thin,left thin,bottom thin')
 
+hh1 = easyxf(
+'font:name Times New Roman,italic on ,height 240 ;align:horz centre;'
+'borders: right thin,left thin')
+ 
 first_name = easyxf(
 'font:name Times New Roman ,height 240 ;'
 'borders: right thin,left no_line,bottom dotted')
@@ -155,16 +172,16 @@ def printASubject(class_id,termNumber,s,mon,x,y,ls,number):
             s.write(x+i+2,y,str1,h6)
             s.write(x+i+2,y+1,str2,h6)
             s.write(x+i+2,y+2,str3,h6)
-            s.write(x+i+2,y+3,str4,h6)
-            s.write(x+i+2,y+4,str5,h6)
-            ls.write(i+3,number+2,str5,h6)
+            s.write(x+i+2,y+3,str4,h61)
+            s.write(x+i+2,y+4,str5,h61)
+            ls.write(i+3,number+2,str5,h61)
         else:    
             s.write(x+i+2,y,str1,h7)
             s.write(x+i+2,y+1,str2,h7)
             s.write(x+i+2,y+2,str3,h7)
-            s.write(x+i+2,y+3,str4,h7)
-            s.write(x+i+2,y+4,str5,h7)
-            ls.write(i+3,number+2,str5,h7)
+            s.write(x+i+2,y+3,str4,h71)
+            s.write(x+i+2,y+4,str5,h71)
+            ls.write(i+3,number+2,str5,h71)
             
     for t in range(i+1,56):
         if t % 5!=0:
@@ -176,10 +193,15 @@ def printASubject(class_id,termNumber,s,mon,x,y,ls,number):
                 s.write(x+t+2,j,"",h7)
                 ls.write(t+3,number+2,"",h7)
                 
-def printName(class_id,s,x,y):     
-
-    s.write_merge(x,x+2,y,y,u'Số\nTT',h4)
-    s.write_merge(x,x+2,y+1,y+2,u'Họ và tên',h4)
+def printName(class_id,s,x,y,mode=0):     
+    
+    if mode==0:
+        s.write_merge(x,x+2,y,y,u'Số\nTT',h4)
+        s.write_merge(x,x+2,y+1,y+2,u'Họ và tên',h4)
+    else:    
+        s.write_merge(x,x+3,y,y,u'Số\nTT',h4)
+        s.write_merge(x,x+3,y+1,y+2,u'Họ và tên',h4)
+        x=x+1
     
     pupilList = Pupil.objects.filter(class_id=class_id).order_by('index')
     i=0
@@ -205,8 +227,8 @@ def printName(class_id,s,x,y):
             s.write(x+t+2,y+2,"",first_name1)
                 
 def printPage13(s,x,y,string):    
-    s.write_merge(x+24,x+27,y,y+12,u'PHẦN GHI ĐIỂM',h1)
-    s.write_merge(x+28,x+31,y,y+12,string,h2)
+    s.write_merge(x+23,x+27,y,y+12,u'PHẦN GHI ĐIỂM',h1)
+    s.write_merge(x+28,x+33,y,y+12,string,h2)
     
 def printPage14(class_id,s,termNumber,n1,mon1,mon2,x,y,ls):
             
@@ -301,15 +323,15 @@ def printPage20(class_id,termNumber,s,length,subjectList):
         elif tbhk.danh_hieu_hk=='TT': str4='HSTT'
         
         if i % 5!=4:            
-            s.write(i+4,length+3,str1,h6)                         
-            s.write(i+4,length+4,str2,h6)                         
-            s.write(i+4,length+5,str3,h6)                         
-            s.write(i+4,length+6,str4,h6)
+            s.write(i+4,length+3,str1,h61)                         
+            s.write(i+4,length+4,str2,h61)                         
+            s.write(i+4,length+5,str3,h61)                         
+            s.write(i+4,length+6,str4,h61)
         else:                             
-            s.write(i+4,length+3,str1,h7)                         
-            s.write(i+4,length+4,str2,h7)                         
-            s.write(i+4,length+5,str3,h7)                         
-            s.write(i+4,length+6,str4,h7)
+            s.write(i+4,length+3,str1,h71)                         
+            s.write(i+4,length+4,str2,h71)                         
+            s.write(i+4,length+5,str3,h71)                         
+            s.write(i+4,length+6,str4,h71)
     
     for t in range(i+2,56):
         if t % 5!=0:            
@@ -333,6 +355,204 @@ def printPage20(class_id,termNumber,s,length,subjectList):
     s.write_merge(max+5,max+5,17,21,u'Ký xác nhận của',h9)
     s.write_merge(max+6,max+6,17,21,u'giáo viên chủ nhiệm',h9)
 
+def printPage31(class_id,s,tbNamList,x,y):
+        
+    s.col(y+0).width = s1
+    s.col(y+1).width = s2
+    s.col(y+2).width = s3
+    for i in range(3,12):
+        s.col(y+i).width =d2
+        if (i==7) | (i==10):         
+            s.col(y+i).width =d2+500
+
+    s.col(y+12).width =d3
+    
+    printName(class_id,s,x+1,y,1)
+                
+    s.write_merge(x+0,x+0,y,y+12,u'XẾP LOẠI CẢ NĂM HỌC',h3)
+    s.write_merge(x+1,x+2,y+3,y+4,u'XẾP LOẠI',h10)
+    s.write_merge(x+3,x+4,y+3,y+3,'HL',h10)
+    s.write_merge(x+3,x+4,y+4,y+4,'HK',h10)
+    s.write_merge(x+1,x+4,y+5,y+5,u'TS ngày\n nghỉ học',h10)
+    s.write_merge(x+1,x+4,y+6,y+6,u'Được\n lên lớp',h10)
+    s.write_merge(x+1,x+4,y+7,y+7,u'Ở lại lớp, KT lại, rèn luyện HK trong hè',h10)
+    s.write_merge(x+1,x+2,y+8,y+10,u'Xếp loại lại về HK, HL, sau KT lại các môn học hoặc rèn luyện về HK',h10)
+    s.write_merge(x+3,x+4,y+8,y+8,u'HL',h10)
+    s.write_merge(x+3,x+4,y+9,y+9,u'HK',h10)
+    s.write_merge(x+3,x+4,y+10,y+10,u'Lên lớp, ở lại lớp',h10)    
+    s.write_merge(x+1,x+4,y+11,y+11,u'Danh hiệu\n HSG,\nHSTT',h10)
+    s.write_merge(x+1,x+4,y+12,y+12,u'TỔNG HỢP CHUNG',h10)
+    
+    hanhKiemList =HanhKiem.objects.filter(student_id__class_id=class_id).order_by('student_id__index')
+    llSauHe=0
+    for (i,(tbNam,hk)) in enumerate(zip(tbNamList,hanhKiemList)):
+        if i % 5 != 4: h=h6
+        else         : h=h7
+        str1=''
+        if tbNam.hl_nam!=None:           str1 = tbNam.hl_nam
+                
+        str2=''
+        if hk.year!=None:   str2= hk.year
+        
+        str3=''
+        if tbNam.tong_so_ngay_nghi!=None: str3 =tbNam.tong_so_ngay_nghi
+         
+        str4=''
+        if (tbNam.len_lop==True) &(tbNam.thi_lai==None) & (hk.hk_ren_luyen_lai==None):
+            str4='Lên lớp'
+        
+        str5=''
+        if   tbNam.thi_lai       :str5='KT lại'
+        elif hk.ren_luyen_lai    :str5='rèn luyện trong hè' 
+        elif tbNam.len_lop==False:str5='Ở lại lớp'
+        
+        str6=''
+        if tbNam.hl_thi_lai    :str6=tbNam.hl_thi_lai
+         
+        str7=''
+        if hk.hk_ren_luyen_lai!=None: str7= hk.hk_ren_luyen_lai
+        
+        str8=''
+        if (hk.ren_luyen_lai!=None) | (tbNam.thi_lai!=None):
+            if   tbNam.len_lop==True : 
+                str8='Lên lớp'
+                llSauHe+=1
+            elif tbNam.len_lop==False: str8='Ở lại lớp'
+        
+        str9=''
+        if (tbNam.danh_hieu_nam != None) & (tbNam.danh_hieu_nam != 'K'):
+            str9='HS'+tbNam.danh_hieu_nam
+        
+        
+        s.write(x+i+5,y+3,str1,h)
+        s.write(x+i+5,y+4,str2,h)
+        s.write(x+i+5,y+5,str3,h)
+        s.write(x+i+5,y+6,str4,h)
+        s.write(x+i+5,y+7,str5,h)
+        s.write(x+i+5,y+8,str6,h)
+        s.write(x+i+5,y+9,str7,h)
+        s.write(x+i+5,y+10,str8,h)
+        s.write(x+i+5,y+11,str9,h)
+        
+    for tt in range(i+1,55):
+        if tt % 5 != 4: h=h6
+        else         : h=h7        
+        for j in range(3,12):
+            s.write(x+tt+5,y+j,'',h)
+    sl1= tbNamList.filter(len_lop=True ).count()
+    sl2= tbNamList.filter(len_lop=False).count()
+    
+    for i in range(55):
+        s.write(x+i+5,y+12,'',h81)
+    s.write(x+54+5,y+12,'',h71)    
+    s.write(x+7,y+12,'Tổng số học sinh: '+str(len(tbNamList)),h81)
+    s.write(x+10,y+12,'-Được lên lớp: '+str(sl1),h81)        
+    s.write(x+12,y+12,'-Ở lại lớp:'+str(sl2),h81)
+    s.write_merge(x+14,x+17,y+12,y+12,'-Được lên lớp sau khi kiểm tra lại các môn học hoặc rèn luyện trong hè: '+str(llSauHe),h81)        
+    s.write(x+20,y+12,'Giáo viên chủ nhiệm',h91)        
+    s.write(x+21,y+12,'(Ký và ghi rõ họ, tên)',hh1)        
+    s.write(x+30,y+12,'Hiệu trưởng',h91)        
+    s.write(x+31,y+12,'(Ký tên, đóng dấu)',hh1)        
+    
+def printPage30(class_id,book):
+    subjectList =Subject.objects.filter(class_id=class_id).order_by("index")
+    length = len(subjectList)
+    s = book.add_sheet('XL cả năm',True)
+    s.set_paper_size_code(8)
+    s.col(0).width = s1
+    s.col(1).width = s2
+    s.col(2).width = s3
+    for i in range(length):
+        s.col(i+3).width =d1
+        
+    s.col(length+3).width = d1
+    s.col(length+4).width = d1
+    s.col(length+5).width = d1
+    s.col(length+6).width = d1
+    
+    s.vert_page_breaks = [(length+8,0,65500)]    
+    s.horz_page_breaks = []
+    
+    s.write_merge(0,0,0,length+6,u'TỔNG HỢP KẾT QUẢ ĐÁNH GIÁ',h3)
+
+    printName(class_id,s,1,0,1)            
+    for (i,ss) in enumerate(subjectList):
+        if ss.name=='GDCD':
+            s.write_merge(1,4,i+3,i+3,'GD\nCD',h10)
+        elif ss.name=='GDQP-AN':     
+            s.write_merge(1,4,i+3,i+3,'GD\nQP-\nAN',h10)
+        else:    
+            s.write_merge(1,4,i+3,i+3,ss.name,h10)
+            
+    s.write_merge(1,4,length+3,length+3,'TB\ncmcn',h10)
+    s.write_merge(1,2,length+4,length+6,u'Điểm KT lại',h10)
+    
+    s.write_merge(3,4,length+4,length+4,'',h10)
+    s.write_merge(3,4,length+5,length+5,'',h10)
+    s.write_merge(3,4,length+6,length+6,'',h10)
+    
+    markList = TKMon.objects.filter(subject_id__class_id=class_id).order_by('student_id__index','subject_id__index')
+    numberPupil = Pupil.objects.filter(class_id=class_id).count()
+    for (t,m) in enumerate(markList):
+        
+        i = t % length
+        j = int(t/length)
+        if i==0 : tt=0
+        str1 ="" 
+        if m.tb_nam !=None: str1 =str(m.tb_nam)  
+        if j % 5!=4:            
+            s.write(j+5,i+3,str1,h61)
+            if m.diem_thi_lai!=None:
+                tt+=1
+                s.write(j+5,length+3+tt,str(m.diem_thi_lai),h61)
+        else:     
+            s.write(j+5,i+3,str1,h71)
+            if m.diem_thi_lai!=None:
+                tt+=1
+                s.write(j+5,length+3+tt,str(m.diem_thi_lai),h71)
+        
+        if i==length-1:
+            if j % 5!=4:            
+                for ii in range(tt,3):
+                    s.write(j+5,length+4+ii," ",h61)
+                    
+            else:        
+                for ii in range(tt,3):
+                    s.write(j+5,length+4+ii," ",h71)
+    
+    for i in range(numberPupil,55):
+        for j in range(length+4):           
+           if i % 5!=4:            
+               s.write(i+5,j+3,'',h61)
+           else:     
+               s.write(i+5,j+3,'',h71)
+               
+    tbNamList = TBNam.objects.filter(student_id__class_id=class_id).order_by("student_id__index")
+    for (i,tbNam) in enumerate(tbNamList):
+        str1 ="" 
+        if tbNam.tb_nam !=None: str1 =str(tbNam.tb_nam)  
+        if i % 5!=4:            
+            s.write(i+5,length+3,str1,h61)
+        else:     
+            s.write(i+5,length+3,str1,h71)
+
+        for tt in range(i+1,55):
+            if tt % 5!=4:            
+                s.write(tt+5,length+3,'',h61)
+            else:     
+                s.write(tt+5,length+3,'',h71)
+    
+    printPage31(class_id,s,tbNamList,0,length+8)
+    max = 55
+    str1=u'Trong trang này có ... điểm được sửa chữa, trong đó môn:'
+    for ss in subjectList:
+        str1+=ss.name+u'.......điểm, '
+    str1 = str1[:len(str1)-2]+'.'
+    s.write_merge(max+5,max+8,0,length,str1,h8)
+    
+    s.write_merge(max+5,max+5,length+1,length+6,u'Ký xác nhận của',h9)
+    s.write_merge(max+6,max+6,length+1,length+6,u'giáo viên chủ nhiệm',h9)
+    
 def printInTerm(class_id,book,termNumber):
 
     subjectList = Subject.objects.filter(class_id=class_id,primary__in=[0,termNumber,3,4]).order_by("index")    
@@ -372,7 +592,8 @@ def markBookClass(class_id):
         
     printInTerm(class_id,book,1)
     printInTerm(class_id,book,2)
-    
+    printPage30(class_id,book)
+    book.set_active_sheet(4)
     response = HttpResponse(mimetype='application/ms-excel')
     response['Content-Disposition'] = u'attachment; filename=ds_hoc_sinh_%s.xls' % unicode(class_id)
     book.save(response)
