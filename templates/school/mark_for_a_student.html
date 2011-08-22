@@ -1,51 +1,52 @@
-﻿<!DOCTYPE HTML>
-{% extends "base.html"%}
+﻿
 {% block content %}
 {% if message != None %}
 {{message}}
 {% endif %}
-<script type="text/javascript" >
-	function submitTerm()
-	{
-		if (document.info.term.value!=-1)
-			if (document.info.term.value!={{termChoice}})
-				document.info.submit();
-	}
-	
+<script>
+    $(document).ready(function(){
+        $("select[name=term]").change(function(){
+            if ($(this).val != -1){
+                var d = $(this).parents("form").serialize();
+                var arg = {data: d,
+                    type: $(this).parents("form").attr('method'),
+                    url: $(this).parents("form").attr('action'),
+                    success: function(response) {
+                        $('.ui-tabs-panel:visible').html(response);
+                    },
+                    global:false
+                };
+                $.ajax(arg);
+            }
+        });
+    });
 </script>
 
 <table border="0" width=100% >
-<form action="/school/markForAStudent/{{class_id}}/{{student_id}}"  name="info" method="post" id='myform' > {% csrf_token %}
 
-	<tr>
-		<td align="center" colspan =4 style="font-size:25px" >
-			<b>Bảng điểm của một học sinh</b>
-		</td>
-	</tr>
-	<tr>
+    <h2>Bảng điểm của học sinh {{studentName}}</h2>
 	<td>&nbsp</td>
 	</tr>
-	
+
 	<tr>
-	<td width="50%">
-	Họ và tên: {{studentName}}
-	</td>
 
 	<td width="50%">
 	Lớp: {{selectedClass}}
 	</td>
 	</tr>
-	
-	<tr>								
-		
-		<td> Học kỳ &nbsp&nbsp:  
-		<select name="term" onclick="submitTerm();" >				
-			<option value=-1 > Chọn kỳ </option>
-			{% for term in termList %}
-					<option   value={{ term.id }} selected> {{ term}} </option>	
-			{% endfor %}	
-			
-		</select>
+
+	<tr>
+
+		<td> Học kỳ :
+        <form action="/school/markForAStudent/{{class_id}}/{{student_id}}"  name="info" method="post" id='myform' > {% csrf_token %}
+            <select name="term" onclick="submitTerm();" >
+                <option value=-1 > Chọn kỳ </option>
+                {% for term in termList %}
+                        <option   value={{ term.id }} selected> {{ term}} </option>
+                {% endfor %}
+
+            </select>
+        </form>
 		</td>					
 	</tr>
 	<tr>
@@ -670,8 +671,7 @@
 		</td>
 		</tr>
 	{% endifequal %}
-		
-</form>	
+
 </table>
 {% endblock %}
 

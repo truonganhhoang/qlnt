@@ -68,7 +68,7 @@
 </script>
 
 {%if pos > 0%}
-	<a title="Xem điểm các môn của học sinh" class = "tiptiphover ggButton" href="{%url school.views.school_index  %}markForAStudent/{{class_id}}/{{id}}">Điểm</a>
+
 {%endif%}
     <a title="Danh sách lớp học" class = "tiptiphove ggButton" href="{%url school.views.school_index  %}viewClassDetail/{{class_id}}">Quay lại</a>
 <br>
@@ -86,6 +86,7 @@
             <li><a href="/school/khenthuong/{{id}}">Khen thưởng</a></li>
             <li><a href="/school/kiluat/{{id}}">Kỉ luật</a></li>
             <li><a href="/school/diemdanhhs/{{id}}">Những buổi nghỉ</a></li>
+            <li><a href="{%url school.views.school_index  %}markForAStudent/{{class_id}}/{{id}}">Điểm</a></li>
         </ul>
         <div id = "tabs-1">
             <table class = "styleA" >
