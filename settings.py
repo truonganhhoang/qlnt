@@ -18,8 +18,8 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'freeschool',
-        'USER': 'freeschool',
+        'NAME': 'qlnt',
+        'USER': 'root',
         'PASSWORD':'freeschool',
         'OPTIONS': { 'init_command': 'SET storage_engine=INNODB',},
     },
@@ -193,9 +193,9 @@ INSTALLED_APPS = (
 
     'south', #for database migration/upgrade
 
-    'nose', #nose must come after south.
+#    'nose', #nose must come after south.
     
-    'test_utils',
+#    'test_utils',
 )
 
 # A sample logging configuration. The only tangible logging
