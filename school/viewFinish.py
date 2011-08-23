@@ -107,13 +107,15 @@ def defineHlNam(tb,monChuyen,monToan,monVan,minMark):
 def calculateOverallMarkTerm(class_id,termNumber):
 
     pupilNoSum =0
-    subjectList=Subject.objects.filter(class_id=class_id,primary__in=[0,termNumber])    
+    subjectList=Subject.objects.filter(class_id=class_id,primary__in=[0,termNumber]).order_by('index')    
     markList = Mark.objects.filter(subject_id__class_id=class_id,term_id__number=termNumber,subject_id__primary__in=[0,termNumber]).order_by('student_id__index','subject_id__index') 
     tbHocKyList = TBHocKy.objects.filter(student_id__class_id=class_id,term_id__number=termNumber).order_by('student_id__index')
     hkList      = HanhKiem.objects.filter(student_id__class_id=class_id).order_by('student_id__index')
     length=len(subjectList)
     i=0   
     vtMonChuyen=-1
+    print subjectList
+    
     for s in subjectList:
         if s.hs==3:  vtMonChuyen=i
                     
