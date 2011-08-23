@@ -18,8 +18,8 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'qlnt',
-        'USER': 'root',
+        'NAME': 'freeschool',
+        'USER': 'freeschool',
         'PASSWORD':'freeschool',
         'OPTIONS': { 'init_command': 'SET storage_engine=INNODB',},
     },
@@ -179,7 +179,7 @@ INSTALLED_APPS = (
     'app',
     'school',
     'persistent_messages',
-    'object_permission',
+#    'object_permission',
 #    'objectpermission',
 #    'django_coverage',
 #    'rosetta',

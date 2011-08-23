@@ -135,8 +135,6 @@ def sync_subject_primary(request):
                                context_instance = context )
 
 
-#def test():
-    from SOAPpy import SOAPProxy
 
 
 
