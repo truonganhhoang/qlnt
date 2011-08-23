@@ -30,6 +30,8 @@ class MultiDBModelAdmin(admin.ModelAdmin):
 
 admin.site.register(Block)
 admin.site.register(Class)
+admin.site.register(Team)
+admin.site.register(Group)
 admin.site.register(Teacher)
 admin.site.register(Pupil)
 admin.site.register(Mark)
