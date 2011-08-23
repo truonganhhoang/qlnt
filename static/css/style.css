@@ -13,8 +13,8 @@ html {
 body {
     width: 100%;
     height: 100%;
-    padding: 0 0 0 0;
-    margin: 0 0 0 0;
+    /*padding: 0 0 0 0;*/
+    /*margin: 0 0 0 0;*/
     color: #595959;
     font: 14px/18px Arial, "Lucida Sans", verdana, sans-serif;
     /*font: 14px/16px "Lucida Grande", "Lucida Sans", verdana, sans-serif;*/
@@ -54,7 +54,6 @@ div.notify {
     visibility: visible;
     -moz-border-radius: 3px; /*firefox*/
     -webkit-border-radius: 3px; /*chrome*/
-
 }
 
 div.notify-widget-paneB {
@@ -286,6 +285,8 @@ table.styleA td.selected {
 }
 
 table.styleA input {
+    font-size: 16px;
+    padding:2px;
     width: 95%;
 }
 
@@ -552,12 +553,7 @@ nav ul li a:hover {
 }
 
 section#main {
-    margin: 15px 10px 15px;
-}
-
-/*---- RIGHT CONTENT----*/
-#rightContent {
-    margin: 10px 25px 2px 190px;
+    margin: 10px 10px 10px 10px;
 }
 
 /*---- CONTENT TOP----*/
@@ -632,8 +628,7 @@ div#divList {
 
 #content h2 {
     color: #4d94d7;
-    padding: 3px;
-	
+    padding: 5px 0px;
 }
 
 #content h2 span {
@@ -696,8 +691,7 @@ div#tabs ul li{
 /*----FOOTER PANEL----*/
 footer {
     position: relative;
-    /*top: 300px;*/
-    margin-top: 20px;
+    margin-top: 50px;
     padding: 6px 0 6px;
     border-top: thin solid #c0c0c0;
     min-width: 1024px;
@@ -721,8 +715,8 @@ div#classes{
 div#classes .classDiv{
     float: left;
     width: 150px;
-    margin: 3px 6px;
-/*    padding: 5px;*/
+    margin: 3px 6px 6px 0px;
+    /*padding: 5px;*/
 }
 
 div#classes a{
@@ -737,8 +731,22 @@ div#classes a:hover{
 
 div#classes h3{
     clear: both;
-    padding: 10px 6px 0px;
+    padding: 5px 6px 5px 0px;
 }
+
+div#classes h4{
+    padding: 5px 6px 5px;
+    font-size: 16px;
+    font-family: arial;
+    font-weight: bold;
+    /*color: #af0202;*/
+}
+
+
+div#classes p .dimmer{
+    color: #9f9d9d;
+}
+
 
 div#classes p{
     padding: 5px 10px;
@@ -754,7 +762,7 @@ div#classes p{
 .thumb {
     float: left;
     width: 172px;
-    margin: 6px 6px;
+    margin: 6px 6px 6px 0px;
 }
 
 #sitemap h3 {
@@ -789,7 +797,6 @@ div#classes p{
     color: #ffffff;
     width: 154px;
 }
-
 
 /* HELP page */
 div#help {

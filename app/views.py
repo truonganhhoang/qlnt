@@ -20,7 +20,6 @@ from django.views.decorators.csrf import csrf_protect
 
 from school.utils import *
 
-
 def user_add(request):
     if request.method == 'POST':
         form = UserForm(request.POST)

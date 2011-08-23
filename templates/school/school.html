@@ -23,7 +23,7 @@
                 </div>
 
               <div class="thumb">
-                  <h3 class="ui-widget-header ui-corner-top">Lớp học</h3>
+                  <h3 class="ui-widget-header  ui-corner-top">Lớp học</h3>
                   <ul class="ui-widget-content ui-corner-bottom">
 {#                        <li><a href="{% url school.views.classes %}">Danh sách lớp học</a></li>#}
                       <li><a href="/school/finish">Tổng kết</a></li>
@@ -58,15 +58,15 @@
             <div id="classes">
                 <h2>Các lớp học</h2>
                 {% for grade in grades %}
-                    <h3 >Khối {{ grade.number }}</h3>
+                    <h3>Khối {{ grade.number }}</h3>
                     {% for class in classes %}
                         {% if class.block_id == grade %}
                         <a class="classDiv ui-widget-content ui-corner-all"
                            href="{% url school.views.viewClassDetail class.id %}">
                           <div id="{{ class.id }}" >
-                              <h3>
+                              <h4>
                                   {{ class.name }}
-                              </h3>
+                              </h4>
                               <p>Sĩ số: {{ class.number_of_pupils }}</p>
                           </div>
                         </a>

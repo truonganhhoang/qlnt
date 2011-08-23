@@ -144,17 +144,13 @@
             <li><a class="color:yellow;"
                    href="#feedbackDiv"
                    id="feedback"
-                   title="Góp ý hoặc thông báo lỗi về hệ thống">Góp ý</a></li>
+                   title="Góp ý hoặc báo lỗi về hệ thống">Góp ý</a></li>
         </ul>
     </nav>
 </header>
 
 <section id="main">
     {% block main %}
-        {#    <div id="leftMenu">#}
-        {#      {% block left_menu %}#}
-        {#      {% endblock %}#}
-        {#    </div>#}
         <div id="contentTop">
             {% block backward_link %}
             {% endblock %}
@@ -165,6 +161,7 @@
         </div>
     {% endblock %}
 </section>
+
 <div id="place_keeper" style="clear: both;"></div>
 <div style="display: none;">
     <div class="feedback" id="feedbackDiv" style="resize: None;">
@@ -177,12 +174,13 @@
 </div>
 <div class="notify-widget-pane" >
     <div class="notify" id="notify" style="display: none;">
-        Đang gửi dữ liệu lên server ...
+        Đang gửi dữ liệu...
     </div>
 </div>
 
 <footer>
-    <p class="copyright">©2011 by Viettel and VNU Hanoi. <a href="/app/contact">Liên hệ</a></p>
+    <p class="copyright">©2011 by Viettel and Vietnam National University, Hanoi. <a href="/app/contact">Liên hệ</a></p>
 </footer>
+
 </body>
 </html>
