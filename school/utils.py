@@ -494,7 +494,7 @@ def add_teacher( first_name = None,
         group_id = None
 
     if major:
-        if to_en(major) not in SUBJECT_LIST:
+        if to_en(major) not in SUBJECT_LIST_ASCII:
             major = ''
 
     teacher = Teacher()
