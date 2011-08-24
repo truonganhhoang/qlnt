@@ -42,9 +42,9 @@ function confirmDelete()
 </table>
 {% else %}
     <p>Học sinh hiện chưa có khen thưởng nào</p>
-    </br>
 {% endif %}
 {% if pos > 1 %}
+    <br>
     <a title="Thêm khen thưởng cho học sinh" class = "tiptiphover ggButton" href="/school/khenthuong/{{student_id}}/add"> Thêm </a>
 {% endif %}
 {% endblock %}

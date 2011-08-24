@@ -1487,6 +1487,16 @@ def teachers_tab(request, sort_type=1, sort_status=0):
                 return HttpResponse(response, mimetype='json')
             except Exception as e:
                 print e
+        elif (request.method == 'POST' and request.POST['request_type'] == u'major'):
+            try:
+                t = school.teacher_set.get(id=request.POST['id'])
+                major = request.POST['major']
+                t.major = major
+                t.save()
+                response = simplejson.dumps({'success': True})
+                return HttpResponse(response, mimetype='json')
+            except Exception as e:
+                print e
         elif request.method == 'POST' and request.POST['request_type']==u'add':
             if (request.POST['first_name'].strip()):
                 name = request.POST['first_name'].split()
@@ -1504,7 +1514,7 @@ def teachers_tab(request, sort_type=1, sort_status=0):
                 team = None
             data = {'first_name':first_name, 'last_name':last_name, 'birthday':request.POST['birthday'],
                     'sex':request.POST['sex'], 'school_id':school.id, 'birth_place':request.POST['birth_place'].strip(),
-                    'team_id': request.POST['team_id'], 'index':index}
+                    'team_id': request.POST['team_id'], 'major' : request.POST['major'], 'index':index}
             form = TeacherForm(school.id,data)
             if form.is_valid():
                 d = request.POST['birthday'].split('/')
@@ -1514,7 +1524,7 @@ def teachers_tab(request, sort_type=1, sort_status=0):
                     message = 'Giáo viên này đã tồn tại trong hệ thống'
                 except ObjectDoesNotExist:
                     add_teacher(first_name=data['first_name'], last_name=data['last_name'], school=get_school(request), birthday=birthday,
-                                sex=data['sex'], birthplace=data['birth_place'], team_id =team)
+                                sex=data['sex'], birthplace=data['birth_place'], team_id =team, major=data['major'])
                     message = 'Bạn vừa thêm một giáo viên mới'
                 form = TeacherForm(school.id)
             else:
@@ -1589,6 +1599,16 @@ def teachers_in_team(request, team_id):
                 t.save()
             response = simplejson.dumps({'success': True})
             return HttpResponse( response, mimetype='json')
+        elif (request.method == 'POST' and request.POST['request_type'] == u'major'):
+            try:
+                t = school.teacher_set.get(id=request.POST['id'])
+                major = request.POST['major']
+                t.major = major
+                t.save()
+                response = simplejson.dumps({'success': True})
+                return HttpResponse(response, mimetype='json')
+            except Exception as e:
+                print e
         if (request.method == 'POST' and request.POST['request_type'] == u'group'):        
             t = school.teacher_set.get(id = request.POST['id'])
             team = school.team_set.get(id = team_id)
@@ -1645,6 +1665,16 @@ def teachers_in_group(request, group_id):
                 t.save()
             response = simplejson.dumps({'success': True})
             return HttpResponse( response, mimetype='json')
+        elif (request.method == 'POST' and request.POST['request_type'] == u'major'):
+            try:
+                t = school.teacher_set.get(id=request.POST['id'])
+                major = request.POST['major']
+                t.major = major
+                t.save()
+                response = simplejson.dumps({'success': True})
+                return HttpResponse(response, mimetype='json')
+            except Exception as e:
+                print e
         if (request.method == 'POST' and request.POST['request_type'] == u'group'):        
             t = school.teacher_set.get(id = request.POST['id'])
             if request.POST['group']:

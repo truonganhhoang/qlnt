@@ -20,6 +20,24 @@
 
                 });
             });
+
+            $("select[name=major]").each(function() {
+                $(this).change(function() {
+                    var id = $(this).parents("tr").attr('class').split(' ')[0];
+                    var major = $(this).val();
+                    var data = { id: id, major:major, request_type:'major'};
+                    var arg = { type:"POST",
+                        url:"school/teachers_in_team/{{ team.id }}",
+                        data: data,
+                        datatype:"json",
+                        success:function() {
+                        }
+                    };
+                    $.ajax(arg);
+                    return false;
+                });
+            });
+
             $("select[name=group_id]").each(function() {
                 $(this).change(function() {
                     var id = $(this).parents("tr").attr('class').split(' ')[0];
@@ -48,8 +66,9 @@
             <th align="center" width="10%">Ngày sinh</th>
             <th align="center" width="20%"> Nơi sinh</th>
             <th align="center" width="10%">Giới tính</th>
-            <th align="center" width="15%">Tổ</th>
-            <th align="center" width="15%">Nhóm</th>
+            <th align="center" width="10%">Chuyên môn</th>
+            <th align="center" width="10%">Tổ</th>
+            <th align="center" width="10%">Nhóm</th>
             {% if pos > 3 %}
                 <th width="10%"></th>
             {% endif %}
@@ -75,14 +94,16 @@
                 <td align="center" width="20%"> {{ ss.birth_place }}</td>
                 <td align="center" width="10%"> {{ ss.sex }} </td>
                 {% if pos > 3 %}
-                    <td align="center" width="15%"> {{ f.team_id }} </td>
-                    <td align="center" width="15%"> {{ f.group_id }} </td>
+                    <td align="center" width="10%"> {{ f.major }} </td>
+                    <td align="center" width="10%"> {{ f.team_id }} </td>
+                    <td align="center" width="10%"> {{ f.group_id }} </td>
                     <td align="center" width="10%"><a
                             href="{%url school.views.school_index  %}deleteTeacher/{{ss.id}}/{{team.id}}"
                             title="Xóa giáo viên" class="ggButton delete"> xóa </a></td>
                 {% else %}
-                    <td align="center" width="15%"> {{ ss.team_id }} </td>
-                    <td align="center" width="15%"> {{ ss.group_id }} </td>
+                    <td align="center" width="10%"> {{ s.major }} </td>
+                    <td align="center" width="10%"> {{ ss.team_id }} </td>
+                    <td align="center" width="10%"> {{ ss.group_id }} </td>
                 {% endif %}
             </tr>
         {% endfor %}
