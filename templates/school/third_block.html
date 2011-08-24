@@ -18,16 +18,24 @@
 		m = document.getElementById("{{move}}")
 		if (m) m.checked = true;
 	</script>
-	
-	<ul>			
-	<button  id="sendSelect" onclick="showMessageTable();" style="margin-buttom: 0px;">Gửi SMS <img src="/static/images/message3.png" > <img src="/static/images/muiten.png" id="messageImage">  </button>
-				
-	<div class="messageTable" id="messageTable" style="display:none;	position:absolute; ">
-		 <li onclick="selectNoSent()">Chọn những điểm chưa nhắn  </li>
-		 <li onclick="selectAllToSend()" >Chọn tất cả   </li>
-		 <li onclick="cancelAll()">Bỏ tất cả            </li>
-         <li onclick="sendSMS()">Gửi       </li> 						 
-	</div>
-	</ul>
+	<table width="100%" >	
+		<tr>
+		<td>
+			<ul>			
+			<button  id="sendSelect" onclick="showMessageTable();" style="margin-buttom: 0px;">Gửi SMS <img src="/static/images/message3.png" > <img src="/static/images/muiten.png" id="messageImage">  </button>
+			<div class="messageTable" id="messageTable" style="display:none;	position:absolute; ">
+				 <li onclick="selectNoSent()">Chọn những điểm chưa nhắn  </li>
+				 <li onclick="selectAllToSend()" >Chọn tất cả   </li>
+				 <li onclick="cancelAll()">Bỏ tất cả            </li>
+				 <li onclick="sendSMS()">Gửi       </li> 						 
+			</div>
+			</ul>
+		</td>
+		<td align="right">
+			<a class="ggButton" href="/school/markExcel/{{termChoice}}/{{subjectChoice}}"> Xuất ra excel </a>	
+			
+		</td>	
+		</tr>
+	</table>	
 	<br>
 	<br>

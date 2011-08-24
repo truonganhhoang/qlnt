@@ -60,14 +60,14 @@ def thu(request):
     t1= time.time()
     list1 = TKMon.objects.filter(student_id__class_id=17)
     for m in list1:
-        m.tb_nam=random.randrange( 4,7 )
+        m.tb_nam=random.randrange( 4,11 )
        # m.save()
     for m in list1:
         m.save()
            
     list = Mark.objects.filter(student_id__class_id=17)
     for m in list:
-        m.tb=random.randrange( 4,7 )
+        m.tb=random.randrange( 4,11 )
        # m.save()
     for m in list:
         m.save()

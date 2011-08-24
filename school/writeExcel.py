@@ -20,6 +20,7 @@ noneSubject="............................."
 s1=1000
 s2=5000
 s3=2000
+s4=3000
 m1=3000
 m2=4000
 m3=4000
@@ -34,6 +35,8 @@ m10=1400
 d1=1400
 d2=2000 # kick thuoc cot o trang 31  
 d3=6000
+d4=1200 # kich thuoc 1 o diem
+SIZE_PAGE_WIDTH=36200
 h1 = easyxf(
     'font:name Arial, bold on,height 1000 ;align: vert centre, horz center')
 h2 = easyxf(
@@ -195,7 +198,7 @@ def printASubject(class_id,termNumber,s,mon,x,y,ls,number):
                 
 def printName(class_id,s,x,y,mode=0):     
     
-    if mode==0:
+    if mode==0 :
         s.write_merge(x,x+2,y,y,u'Số\nTT',h4)
         s.write_merge(x,x+2,y+1,y+2,u'Họ và tên',h4)
     else:    
@@ -691,3 +694,124 @@ def printSTT(s,max,x,y):
             s.write(x+t-1,y,t,h7)
         
 
+
+def markExcel(request,term_id,subject_id):
+    tt1 = time.time()
+    
+    user = request.user
+    if not user.is_authenticated():
+        return HttpResponseRedirect( reverse('login'))
+    
+    message=None
+    year_id=None
+    if year_id==None:
+        year_id=get_current_year(request).id
+    
+    selectedYear =Year.objects.get(id=year_id)    
+    try:
+        if in_school(request,selectedYear.school_id) == False:
+            return HttpResponseRedirect('/school')
+    except Exception as e:
+        return HttpResponseRedirect(reverse('index'))
+    
+    if get_position(request) != 4:
+       return HttpResponseRedirect('/school')
+    
+    selectedSubject= Subject.objects.get(id=subject_id)
+    selectedTerm   = Term.objects.get(id=term_id)
+    book = Workbook(encoding = 'utf-8')
+    str1=u'BẢNG ĐIỂM LỚP '+selectedSubject.class_id.name.upper()+u' MÔN '+selectedSubject.name.upper()+u'  HỌC KỲ'    
+    if selectedTerm.number==1:
+        str1+=' I'
+    else:
+        str1+=' II'  
+              
+    sstr2=str1.replace(' ','_')  
+    str3 =selectedSubject.class_id.name+'_'+selectedSubject.name+'_HK'+str(selectedTerm.number)       
+    s=book.add_sheet(str3,True)
+    if selectedTerm.number==1: numberCol=21
+    else                     : numberCol=23
+    s.set_portrait(0)
+    s.col(0).width=s1
+    s.col(1).width=s2
+    s.col(2).width=s3
+    s.col(3).width=s4
+    
+    size = (SIZE_PAGE_WIDTH-s1-s2-s3-s4)/(numberCol-4) 
+    for i in range(4,numberCol):
+        s.col(i).width = size
+    s.set_top_margin(0)  
+    s.row(0).hidden=True
+    s.row(1).hidden=True
+    s.row(2).hidden=True
+    str2 = 'Năm học '+ str(selectedTerm.year_id.time)+'-'+str(selectedTerm.year_id.time+1)   
+    s.write_merge(4,4,0,19,str1,h9 )
+    s.write_merge(5,5,0,19,str2,h9 )
+    
+    s.write_merge(8,10,0,0,u'Số\nTT',h4)
+    s.write_merge(8,10,1,2,u'Họ và tên',h4)
+    s.write_merge(8,10,3,3,u'Ngày sinh',h4)
+    s.write_merge(8,9,4,8,u'Điểm hs 1-Miệng',h4)
+    s.write_merge(8,9,9,13,u'Điểm hs 1-Viết',h4)
+    s.write_merge(8,9,14,18,u'Điểm hs 2',h4)
+    s.write_merge(8,10,19,19,u'Thi ck',h4)
+    for i in range(15):
+        s.write(10,i+4,(i % 5) +1,h4)
+    if selectedTerm.number ==1:
+        s.write_merge(8,10,20,20,'TB',h4)
+    else:
+        s.write_merge(8,9,20,22,'TB',h4)
+        s.write(10,20,'HK I',h4)    
+        s.write(10,21,'HK II',h4)    
+        s.write(10,22,'CN',h4)   
+        hk1List =  Mark.objects.filter(subject_id=subject_id,term_id__number=1).order_by('student_id__index') 
+        cnList  =  TKMon.objects.filter(subject_id=subject_id).order_by('student_id__index')
+    markList = Mark.objects.filter(subject_id=subject_id,term_id=term_id).order_by('student_id__index')
+    
+    for (i,m) in enumerate(markList):
+        strs=['']*20
+        if i % 5 !=4: h=h61
+        else        : h=h71
+        
+        strs[0] =m.student_id.birthday.strftime('%d/%m/%Y')       
+        if m.mieng_1!=None: strs[1]=m.mieng_1
+        if m.mieng_2!=None: strs[2]=m.mieng_2
+        if m.mieng_3!=None: strs[3]=m.mieng_3
+        if m.mieng_4!=None: strs[4]=m.mieng_4
+        if m.mieng_5!=None: strs[5]=m.mieng_5
+        if m.mlam_1 !=None: strs[6]=m.mlam_1
+        if m.mlam_2 !=None: strs[7]=m.mlam_2
+        if m.mlam_3 !=None: strs[8]=m.mlam_3
+        if m.mlam_4 !=None: strs[9]=m.mlam_4
+        if m.mlam_5 !=None: strs[10]=m.mlam_5
+        if m.mot_tiet_1!=None: strs[11]=m.mot_tiet_1
+        if m.mot_tiet_2!=None: strs[12]=m.mot_tiet_2
+        if m.mot_tiet_3!=None: strs[13]=m.mot_tiet_3
+        if m.mot_tiet_4!=None: strs[14]=m.mot_tiet_4
+        if m.mot_tiet_5!=None: strs[15]=m.mot_tiet_5        
+        if m.ck!=None: strs[16]=m.ck
+        if m.tb!=None: strs[17]=str(m.tb)
+        
+        if selectedTerm.number==2:
+            strs[18]=strs[17]
+            strs[17]=''
+            if hk1List[i].tb!=None    :strs[17]=str(hk1List[i].tb)
+            if cnList[i].tb_nam!=None :strs[19]=str(cnList[i].tb_nam)
+        
+        s.write(11+i,0,i+1,h)
+        if i % 5!=4:
+            s.write(11+i,1,m.student_id.last_name,last_name)
+            s.write(11+i,2,m.student_id.first_name,first_name)
+        else:    
+            s.write(11+i,1,m.student_id.last_name,last_name1)
+            s.write(11+i,2,m.student_id.first_name,first_name1)
+            
+        for j in range(numberCol-3):
+            s.write(11+i,3+j,strs[j],h)
+    response = HttpResponse(mimetype='application/ms-excel')
+    response['Content-Disposition'] = u'attachment; filename=%s.xls' % to_en1(sstr2)
+    book.save(response)
+    tt2= time.time()
+    print (tt2-tt1)
+    print to_en1(str1)
+    return response

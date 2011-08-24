@@ -60,6 +60,7 @@ urlpatterns = patterns('',
 
     url(r'printMarkBook$' , 'school.writeExcel.printMarkBook'), 
     url(r'printMarkBook/(?P<termNumber>\w+)/(?P<class_id>([0-9-])*)$' , 'school.writeExcel.printMarkBook'), 
+    url(r'markExcel/(?P<term_id>\w+)/(?P<subject_id>\w+)$' , 'school.writeExcel.markExcel'), 
 
     
     #------------------------------------------------------------------
