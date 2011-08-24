@@ -1410,7 +1410,7 @@ def addClass(request):
         form = ClassForm(school.id)
         if request.method == 'POST':
             index = get_current_year(request).class_set.count()
-            data = {'name':request.POST['name'], 'year_id':request.POST['year_id'], 'block_id':request.POST['block_id'], 'teacher_id':request.POST['teacher_id'], 'status':school.status,'index':index}
+            data = {'name':request.POST['name'].strip(), 'year_id':request.POST['year_id'], 'block_id':request.POST['block_id'], 'teacher_id':request.POST['teacher_id'], 'status':school.status,'index':index}
             form = ClassForm(school.id,data)
             if form.is_valid():
                 _class = form.save()
@@ -1599,9 +1599,9 @@ def teachers(request,  sort_type=1, sort_status=0):
     school = get_school(request)
     if request.is_ajax():
         if request.POST['request_type'] == u'addTeam':
-            data = {'name': request.POST['name'], 'school_id': school.id}
+            data = {'name': request.POST['name'].strip(), 'school_id': school.id}
             try:
-                t = school.team_set.get(name=request.POST['name'])
+                t = school.team_set.get(name=request.POST['name'].strip())
                 message = 'Tổ này đã tồn tại'
             except ObjectDoesNotExist:
                 message = 'OK'
@@ -1628,11 +1628,11 @@ def teachers(request,  sort_type=1, sort_status=0):
         if request.POST['request_type'] == u'rename_team':
             t = school.team_set.get(id = request.POST['id'])
             try:
-                tmp = school.team_set.get(name=request.POST['name'])
+                tmp = school.team_set.get(name=request.POST['name'].strip())
                 message = 'Tên Tổ này đã tồn tại'
             except ObjectDoesNotExist:
                 message = 'OK'
-                t.name = request.POST['name']
+                t.name = request.POST['name'].strip()
                 t.save()
             data = simplejson.dumps({'message': message})
             return HttpResponse(data, mimetype='json')
@@ -1668,25 +1668,25 @@ def team(request, team_id ,sort_type=1, sort_status=0):
         try:
             if request.POST['request_type'] == u'addGroup':
                 try:
-                    g = Group.objects.get(name = request.POST['name'], team_id=request.POST['team_id'])
+                    g = Group.objects.get(name = request.POST['name'].strip(), team_id=request.POST['team_id'])
                     message = u'Nhóm này đã tồn tại'
                     data = simplejson.dumps({'message': message})
-                    return 
+                    return HttpResponse(data, mimetype='json')
                 except ObjectDoesNotExist:
-                    data = {'name': request.POST['name'], 'team_id': request.POST['team_id']}
+                    data = {'name': request.POST['name'].strip(), 'team_id': request.POST['team_id']}
                     t = GroupForm(data)
                     if t.is_valid():
                         t.save()
                     return HttpResponseRedirect('/school/team/' + request.POST['team_id'])
             if request.POST['request_type'] == u'renameGroup':
                 try:
-                    g = Group.objects.get(name = request.POST['name'], team_id=request.POST['team_id'])
+                    g = Group.objects.get(name = request.POST['name'].strip(), team_id=request.POST['team_id'])
                     message = u'Tên nhóm này đã tồn tại'
                     data = simplejson.dumps({'message': message})
-                    return 
+                    return HttpResponse(data, mimetype='json')
                 except ObjectDoesNotExist:
                     g = Group.objects.get(id=request.POST['id'])
-                    g.name = request.POST['name']
+                    g.name = request.POST['name'].strip()
                     g.save()
                     return HttpResponseRedirect('/school/team/' + team_id)
         except:
@@ -2080,9 +2080,9 @@ def subjectPerClass(request, class_id, sort_type=4, sort_status=0):
                     sfl[i].save()
                     message = 'Danh sách môn học đã được cập nhật.'
             i += 1
-        if teacher_list[i] != u'' or request.POST['name'] != u'' or hs_list[i] != u'':
+        if teacher_list[i] != u'' or request.POST['name'].strip() != u'' or hs_list[i] != u'':
             index = i+1
-            data = {'name':request.POST['name'], 'hs':hs_list[i], 'class_id':class_id, 'teacher_id':teacher_list[i], 'index':index, 'primary':p_list[i]}
+            data = {'name':request.POST['name'].strip(), 'hs':hs_list[i], 'class_id':class_id, 'teacher_id':teacher_list[i], 'index':index, 'primary':p_list[i]}
             form = SubjectForm(school_id, data)
             if form.is_valid():
                 _class = Class.objects.get(id=class_id)
