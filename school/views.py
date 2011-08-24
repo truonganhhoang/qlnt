@@ -1667,17 +1667,28 @@ def team(request, team_id ,sort_type=1, sort_status=0):
     if request.is_ajax():
         try:
             if request.POST['request_type'] == u'addGroup':
-                data = {'name': request.POST['name'], 'team_id': request.POST['team_id']}
-                t = GroupForm(data)
-                if t.is_valid():
-                    t.save()
-                return HttpResponseRedirect('/school/team/' + request.POST['team_id'])
+                try:
+                    g = Group.objects.get(name = request.POST['name'], team_id=request.POST['team_id'])
+                    message = u'Nhóm này đã tồn tại'
+                    data = simplejson.dumps({'message': message})
+                    return 
+                except ObjectDoesNotExist:
+                    data = {'name': request.POST['name'], 'team_id': request.POST['team_id']}
+                    t = GroupForm(data)
+                    if t.is_valid():
+                        t.save()
+                    return HttpResponseRedirect('/school/team/' + request.POST['team_id'])
             if request.POST['request_type'] == u'renameGroup':
-                print request.POST
-                g = Group.objects.get(id=request.POST['id'])
-                g.name = request.POST['name']
-                g.save()
-                return HttpResponseRedirect('/school/team/' + team_id)
+                try:
+                    g = Group.objects.get(name = request.POST['name'], team_id=request.POST['team_id'])
+                    message = u'Tên nhóm này đã tồn tại'
+                    data = simplejson.dumps({'message': message})
+                    return 
+                except ObjectDoesNotExist:
+                    g = Group.objects.get(id=request.POST['id'])
+                    g.name = request.POST['name']
+                    g.save()
+                    return HttpResponseRedirect('/school/team/' + team_id)
         except:
             pass
     team = school.team_set.get(id=team_id)
