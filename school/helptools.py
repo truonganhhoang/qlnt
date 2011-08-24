@@ -147,6 +147,8 @@ def sync_subject_type(request):
                     if not subject.type:
                         if subject.name.lower() == u'Giáo dục quốc phòng'.lower():
                             subject.type = u'GDQP-AN'
+                        elif subject.name.lower() == u'Giáo dục công dân'.lower():
+                            subject.type = u'GDCD'
                         else:
                             subject.type = subject.name
                         subject.save()
