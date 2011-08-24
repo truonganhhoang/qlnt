@@ -13,6 +13,19 @@
             var $tab_title_input = $("#tab_title");
 
             // tabs init with a custom tab template and an "add" callback filling in the content
+            $("#notify").ajaxSuccess(function(event, request, settings, json) {
+                if (json.message != null && json.message != '' && json.message != 'OK') {
+                    $(this).html("<ul>" + json.message + "</ul>");
+                    $(this).delay(1000).fadeOut(10000);
+                }
+                else if (json.message == 'OK') {
+                    $(this).text("Đã lưu");
+                    $(this).delay(1000).fadeOut('fast');
+                    location.reload('true');
+                }
+
+            });
+
             var $tabs = $("#tabs").tabs({
                 ajaxOptions: {
                     error: function( xhr, status, index, anchor ) {
@@ -100,7 +113,6 @@
                     data: data,
                     datatype:"json",
                     success: function() {
-                        $("#reload").click();
                     }
                 };
                 $.ajax(arg);
@@ -113,7 +125,6 @@
                     data: data,
                     datatype:"json",
                     success: function() {
-                        $("#reload").click();
                     }
                 };
                 $.ajax(arg);

@@ -1600,13 +1600,16 @@ def teachers(request,  sort_type=1, sort_status=0):
     if request.is_ajax():
         if request.POST['request_type'] == u'addTeam':
             data = {'name': request.POST['name'], 'school_id': school.id}
-            print school.id, school
-            t = TeamForm(data)
-            if t.is_valid():
-                print t
-                t.save()
-            response = simplejson.dumps({'success': True})
-            return HttpResponse(response, mimetype='json')
+            try:
+                t = school.team_set.get(name=request.POST['name'])
+                message = 'Tổ này đã tồn tại'
+            except ObjectDoesNotExist:
+                message = 'OK'
+                t = TeamForm(data)
+                if t.is_valid():
+                    t.save()
+            data = simplejson.dumps({'message': message})
+            return HttpResponse(data, mimetype='json')
         if request.POST['request_type'] == u'delete_team':
             t = school.team_set.get(id = request.POST['id'])
             teacherList = t.teacher_set.all()
@@ -1624,9 +1627,15 @@ def teachers(request,  sort_type=1, sort_status=0):
             return HttpResponse()
         if request.POST['request_type'] == u'rename_team':
             t = school.team_set.get(id = request.POST['id'])
-            t.name = request.POST['name']
-            t.save()
-            return HttpResponse()
+            try:
+                tmp = school.team_set.get(name=request.POST['name'])
+                message = 'Tên Tổ này đã tồn tại'
+            except ObjectDoesNotExist:
+                message = 'OK'
+                t.name = request.POST['name']
+                t.save()
+            data = simplejson.dumps({'message': message})
+            return HttpResponse(data, mimetype='json')
     num = []
     teamList = school.team_set.all()
     for te in teamList:
