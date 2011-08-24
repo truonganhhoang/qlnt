@@ -417,8 +417,8 @@ def b1(request):
             _class.save()
             i =0
             for mon in ds_mon_hoc:
-                add_subject( mon, 1, None, _class, index = i )
                 i+=1
+                add_subject(subject_name= mon, subject_type= mon, _class=_class, index=i)
         # -- day cac hoc sinh len lop        
         last_year = school.year_set.filter(time__exact=current_year -1)
         if last_year:
@@ -1196,7 +1196,7 @@ def addClass(request):
                 index = 0
                 for mon in ds_mon_hoc:
                     index +=1
-                    add_subject( mon, 1, None, _class, index = index )
+                    add_subject(subject_name= mon, subject_type= mon, _class=_class, index=index)
                 return HttpResponseRedirect('/school/classes')
 
         t = loader.get_template(os.path.join('school', 'add_class.html'))
@@ -1375,8 +1375,10 @@ def teachers(request,  sort_type=1, sort_status=0):
     if request.is_ajax():
         if request.POST['request_type'] == u'addTeam':
             data = {'name': request.POST['name'], 'school_id': school.id}
+            print school.id, school
             t = TeamForm(data)
             if t.is_valid():
+                print t
                 t.save()
             response = simplejson.dumps({'success': True})
             return HttpResponse(response, mimetype='json')
@@ -1814,7 +1816,7 @@ def subjectPerClass(request, class_id, sort_type=4, sort_status=0):
                     add_subject(subject_name=data['name'], hs=float(data['hs']), teacher=teacher, _class=_class, index = index)
                     form = SubjectForm(school_id)
                 else:
-                    add_subject(subject_name=data['name'], hs=float(data['hs']), teacher=None, _class=_class, index = index)
+                    add_subject(subject_name=data['name'], hs=float(data['hs']), _class=_class, index = index)
                     form = SubjectForm(school_id)
                 message = 'Môn học mới đã được thêm.'
             else:
@@ -2572,7 +2574,7 @@ def delete_ki_luat(request, kt_id):
         
     try:
         school = get_school(request)
-    except Exception as e:
+    except Exception:
         return HttpResponseRedirect(reverse('index'))
     
     kt = KiLuat.objects.get(id=kt_id)
@@ -2592,7 +2594,7 @@ def edit_ki_luat(request, kt_id):
     
     try:
         school = get_school(request)
-    except Exception as e:
+    except Exception :
         return HttpResponseRedirect(reverse('index'))
     
     kt = KiLuat.objects.get(id=kt_id)
@@ -2640,7 +2642,6 @@ def hanh_kiem(request, class_id = 0, sort_type = 1, sort_status = 0):
     if gvcn(request, class_id) == 1:
         pos = 4
     message = None
-    listdh = None    
     pupilList = c.pupil_set.all()
     term = get_current_term(request)
     if int(sort_type) == 1:
@@ -2675,6 +2676,7 @@ def hanh_kiem(request, class_id = 0, sort_type = 1, sort_status = 0):
         p_id = request.POST['id']
         p = c.pupil_set.get(id = int(p_id))
         hk = p.hanhkiem_set.get(year_id__exact=year.id)
+        data = {}
         if request.POST['request_type'] == u'term1':
             if request.POST['term1'] != u'':
                 term1 = request.POST['term1']
@@ -2737,7 +2739,7 @@ def viewSubjectDetail (request, subject_id):
         return HttpResponseRedirect(reverse('login'))
     try:
         school = get_school(request)
-    except Exception as e:
+    except Exception :
         return HttpResponseRedirect(reverse('index'))
     
     if get_position(request) < 4:

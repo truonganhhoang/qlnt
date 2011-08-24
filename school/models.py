@@ -5,6 +5,15 @@ from datetime import date
 from app.models import *
 
 LOAI_CHOICES = ((0,u'Tính cả 2 kỳ'),(1,u'Chỉ tính kì 1'),(2,u'Chỉ tính kì 2'),(3,u'Cộng vào điểm TB(NN2)'),(4,u'Không tính điểm'))
+SUBJECT_TYPES = ((u'Toán',u'Toán'),
+                 (u'Vật lí', u'Vật lí'), (u'Hóa học', u'Hóa học'),
+                 (u'Sinh học', u'Sinh học'),(u'Ngữ văn', u'Ngữ văn'),
+                 (u'Lịch sử', u'Lịch sử'), (u'Địa lí', u'Địa lí'),
+                 (u'Ngoại ngữ', u'Ngoại ngữ'), (u'GDCD',u'GDCD'),
+                 (u'Công nghệ', u'Công nghệ'), (u'Thể dục', u'Thể dục'),
+                 (u'Âm nhạc', u'Âm nhạc'),(u'Mĩ thuật', u'Mĩ thuật'),
+                 (u'NN2', u'NN2'),(u'Tin học', u'Tin học'),
+                 (u'GDQP-AN', u'GDQP-AN'),('',u'Loai khac'))
 GENDER_CHOICES = ((u'Nam', u'Nam'),(u'Nữ', u'Nữ'),)
 TERM_CHOICES = ((1, u'1'), (2, u'2'),(3, u'3'),)
 HK_CHOICES = ((u'T', u'Tốt'), (u'K', u'Khá'),(u'TB',u'Trung Bình'),(u'Y', u'Yếu'),)
@@ -153,7 +162,8 @@ class BasicPersonInfo(models.Model):
         
     #class Admin: pass
 
-class Teacher(BasicPersonInfo): 
+class Teacher(BasicPersonInfo):
+    major = models.CharField("Chuyên môn(*)", max_length=45, default='', blank= True, choices=SUBJECT_TYPES)
     user_id = models.OneToOneField(User, verbose_name = "Tài khoản")
     school_id = models.ForeignKey(Organization, verbose_name = "Trường")
     group_id = models.ForeignKey(Group, null=True, blank=True, verbose_name="Nhóm", on_delete = models.SET_NULL)
@@ -220,7 +230,7 @@ class Class(models.Model):
     def number_of_pupils(self):
         try:
             return self.pupil_set.count()
-        except Exception as e:
+        except Exception :
             return 0
 
     class Meta:
@@ -270,6 +280,7 @@ class Pupil(BasicPersonInfo):
 
 class Subject(models.Model):    
     name = models.CharField("Tên môn học(*)", max_length = 45) # can't be null
+    type = models.CharField("Môn(*)", max_length=45, default='', blank=True, choices= SUBJECT_TYPES)
     hs = models.FloatField("Hệ số(*)", validators = [validate_hs])
 
     primary = models.SmallIntegerField("Tính điểm(*)", default = 0, choices = LOAI_CHOICES)
@@ -318,7 +329,7 @@ class Mark(models.Model):
         verbose_name = "Bảng điểm"
         verbose_name_plural = "Bảng điểm"
 
-    #noinspection PyMethodOverriding
+    #noinspection PyMethodOverridi
     def save(self):
         new = self.id is None
         super(Mark, self).save()

@@ -1,27 +1,11 @@
 # -*- coding: utf-8 -*-
 
 
-import os.path
-import datetime
-from django.core.paginator import *
-from django.http import HttpResponse, HttpResponseRedirect
-from django.core.urlresolvers import reverse
-from django.shortcuts import render_to_response
-from django.template import RequestContext, loader
-from django.core.exceptions import *
-from django.middleware.csrf import get_token
-from django.db import transaction
-from django.utils import simplejson
-from django.utils.datastructures import MultiValueDictKeyError
-from school.utils import *
-from school.models import *
 from school.forms import *
 from school.school_settings import *
 from sms.views import *
 #from SOAPpy import WSDL
 
-
-import xlrd
 
 SYNC_RESULT = os.path.join('helptool','recover_marktime.html')
 SYNC_SUBJECT = os.path.join('helptool','sync_subject.html')
@@ -94,28 +78,79 @@ def sync_subject(request):
     message = ''
     number = 0
     try:
-        school = get_school(request)
-        if school.school_level == '1': ds_mon_hoc = CAP1_DS_MON
-        elif school.school_level == '2': ds_mon_hoc = CAP2_DS_MON
-        elif school.school_level == '3': ds_mon_hoc = CAP3_DS_MON
-        else: raise Exception('SchoolLevelInvalid')
         if request.method == 'GET':
             print 'get'
             for _class in classes:
                 if not _class.subject_set.count():
                     number+=1
             print 'message'
-            message = u'Have ' + str(number) + ' classes those have no subject.'
+            message = u'<p>Have ' + str(number) + ' classes those have no subject.</p>'
+
+            number = 0
+            subjects = Subject.objects.all()
+            for subject in subjects:
+                if subject.primary:
+                    number += 1
+            message += u'<br><p>%s subjects in database have non zero primary </p>' % number
         elif  request.method == 'POST':
+            print 'POST'
             if 'sync' in request.POST:
                 for _class in classes:
+                    school = _class.year_id.school_id
+                    if not school.status:
+                        school.status = 1
+                        school.save()
+                    if school.school_level == '1': ds_mon_hoc = CAP1_DS_MON
+                    elif school.school_level == '2': ds_mon_hoc = CAP2_DS_MON
+                    elif school.school_level == '3': ds_mon_hoc = CAP3_DS_MON
+                    else: raise Exception('SchoolLevelInvalid')
+
                     if not _class.subject_set.count():
                         index = 0
                         for mon in ds_mon_hoc:
                             index +=1
-                            add_subject(mon, 1, None, _class, index)
-                message = 'Syncing subject from all classes: Done'
-                
+                            print index
+                            add_subject(subject_name= mon, subject_type= mon, _class=_class, index=index)
+                message = '<p>Syncing subject from all classes: Done </p>'
+                print 'tag'
+                subjects = Subject.objects.all()
+                for subject in subjects:
+                    if subject.primary == 1:
+                        subject.primary = 0
+                        subject.save()
+                message += "<br><p>Syncing subject's primary: Done</p>"
+        context = RequestContext(request)
+        return render_to_response(SYNC_SUBJECT, {'message': message, 'number': number},
+                                  context_instance = context)
+    except Exception as e:
+        print e
+
+@transaction.commit_on_success
+def sync_subject_type(request):
+    message = ''
+    number = 0
+    try:
+        if request.method == 'GET':
+            print 'get'
+            number = 0
+            subjects = Subject.objects.all()
+            for subject in subjects:
+                if not subject.type:
+                    number += 1
+            message += u'<br><p>%s subjects in database do not have correct type </p>' % number
+        elif  request.method == 'POST':
+            print 'POST'
+            if 'sync' in request.POST:
+                print 'tag'
+                subjects = Subject.objects.all()
+                for subject in subjects:
+                    if not subject.type:
+                        if subject.name.lower() == u'Giáo dục quốc phòng'.lower():
+                            subject.type = u'GDQP-AN'
+                        else:
+                            subject.type = subject.name
+                        subject.save()
+                message += "<br><p>Syncing subject's type: Done</p>"
         context = RequestContext(request)
         return render_to_response(SYNC_SUBJECT, {'message': message, 'number': number},
                                   context_instance = context)

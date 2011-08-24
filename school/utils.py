@@ -478,18 +478,22 @@ def del_teacher( teacher):
     #teacher.delete()    
 # subject_name: string, teacher : Teacher object, _class : Class object
 @transaction.commit_manually
-def add_subject( subject_name = None, hs = 1, teacher = None, _class = None, index = 0):
+def add_subject( subject_name = None, subject_type = '', hs = 1, teacher = None, _class = None, index = 0):
     find = _class.subject_set.filter( name__exact = subject_name)
     try:
+        print _class.year_id.term_set.all()
+        print _class.year_id.school_id.status
         term = _class.year_id.term_set.get(number = _class.year_id.school_id.status)
     except Exception as e:
-        #print e
+        print e
         raise Exception("TermDoesNotExist")
     if find:
+        print 'Subject Exist'
         raise Exception("SubjectExist")
     else:
         subject = Subject()
         subject.name = subject_name
+        subject.type = subject_type
         subject.hs = hs
         subject.teacher_id = teacher
         subject.class_id = _class

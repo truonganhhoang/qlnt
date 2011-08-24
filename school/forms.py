@@ -1,20 +1,8 @@
 # -*- coding: utf-8 -*-
-import os.path
-import datetime
-from django.core.paginator import *
-from django.http import HttpResponse, HttpResponseRedirect
-from django.core.urlresolvers import reverse
-from django.shortcuts import render_to_response
-from django.template import RequestContext, loader
-from django.core.exceptions import *
-from django.db import transaction
-from django.forms.widgets import RadioSelect, DateInput
-from django import forms
-
+from django.forms.widgets import  DateInput
 from school.utils import *
 from school.models import *
 from app.models import *
-from school.school_settings import *
 from school.widgets import *
 import xlrd
     
@@ -215,16 +203,21 @@ class MarkForm(forms.ModelForm):
         model = Mark
         
 class DateForm(forms.Form):
-    date = forms.DateField(label = '', widget = DateInput(attrs = {'class':'datepicker'}), initial = date.today())
+    date = forms.DateField(label = '',
+                           widget = DateInput(attrs = {'class':'datepicker'}),
+                           initial = datetime.date.today())
 
         
 class DateAndClassForm(forms.Form):
     class_id = forms.ModelChoiceField(queryset = Class)
-    date = forms.DateField(label = u'ngày', widget = DateInput(attrs = {'class':'datepicker'}), initial= date.today)
+    date = forms.DateField(label = u'ngày',
+                           widget = DateInput(attrs = {'class':'datepicker'}),
+                           initial= datetime.date.today)
     
     def __init__(self, year_id, *args, **kwargs):
         super(DateAndClassForm, self).__init__(*args, **kwargs)
-        self.fields['class_id'] = forms.ModelChoiceField(queryset = Class.objects.filter(year_id = year_id), label = u'lớp')
+        self.fields['class_id'] = forms.ModelChoiceField(queryset = Class.objects.filter(year_id = year_id),
+                                                         label = u'lớp')
     
 class UploadImportFileForm(forms.Form):
     def __init__(self, * args, ** kwargs):
@@ -246,15 +239,17 @@ class ClassifyForm(forms.Form):
         super(ClassifyForm, self).__init__(*args, ** kwargs)
         for student in students:
             label = ' '.join([student.last_name, student.first_name])
-            label += u'[' + str(student.birthday.day ) + '-' + str(student.birthday.month) + '-' + str(student.birthday.year)+']'
+            label += u'[' + str(student.birthday.day ) \
+                          + '-' + str(student.birthday.month) \
+                          + '-' + str(student.birthday.year)+']'
             self.fields[str(student.id)] = forms.ChoiceField(label = label, choices=classes, required=False)
 CONTENT_TYPES = ['application/vnd.ms-excel']            
 
 class uploadFileExcel(forms.Form):
-    file  = forms.FileField(label=u'Chọn file Excel:')
+    file  = forms.FileField(label=u'Chọn file Excel:', widget=forms.FileInput())
     
     def is_valid(self):
-        if not file.content_type in CONTENT_TYPES:
+        if not self.file.content_type in CONTENT_TYPES:
             os.remove(filepath)
             raise forms.ValidationError(u'Bạn chỉ được phép tải lên file Excel.')
         elif not os.path.getsize(filepath):
@@ -275,7 +270,7 @@ class smsFromExcelForm(forms.Form):
         save_file(file)            
         filepath = os.path.join(TEMP_FILE_LOCATION, 'sms_input.xls')
         
-        if not file.content_type in CONTENT_TYPES:
+        if not self.file.content_type in CONTENT_TYPES:
             os.remove(filepath)
             raise forms.ValidationError(u'Bạn chỉ được phép tải lên file Excel.')
         elif not os.path.getsize(filepath):

@@ -43,7 +43,7 @@ $(document).ready(function(){
     // end setting up
     // xss prevention
 
-    function string_to_slug(str) {
+    function toAscii(str) {
         str = str.replace(/^\s+|\s+$/g, ''); // trim
         str = str.toLowerCase();
 
@@ -59,7 +59,7 @@ $(document).ready(function(){
 
 
     $.fn.is_harmful = function(origin){
-        origin = string_to_slug(origin);
+        origin = toAscii(origin);
         origin = origin.replace(/\//g,' ').replace(/-/g,' ')
                        .replace('@',' ').replace('Nhanh:','')
                        .replace('nhanh:','');
