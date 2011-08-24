@@ -2,9 +2,7 @@
 
 {% block content %}
 {{ message }}
-{% if number != 0 %}
     <form action="" method="POST">{% csrf_token %}
         <input type="submit" value="Sync" name="sync"/>
     </form>
-{% endif %}
 {% endblock %}
