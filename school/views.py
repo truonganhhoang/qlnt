@@ -1977,7 +1977,10 @@ def viewTeacherDetail(request, teacher_id):
         return HttpResponseRedirect('/')
     form = TeacherForm (school.id,instance=teacher)
     if request.method == 'POST':
-        form = TeacherForm(school.id,request.POST, instance=teacher)
+        data = request.POST.copy()
+        data['first_name'] = data['first_name'].strip()
+        data['last_name'] = data['last_name'].strip()
+        form = TeacherForm(school.id,data, instance=teacher)
         if form.is_valid():
             form.save()
             message = 'Bạn vừa cập nhật thành công'        
@@ -2160,10 +2163,14 @@ def viewStudentDetail(request, student_id):
     ttgdform = ThongTinGiaDinhForm(instance=pupil)
     ttddform = ThongTinDoanDoiForm(instance=pupil)
     if request.method == 'POST':
-        form = PupilForm(school_id, request.POST, instance=pupil)
-        ttllform = ThongTinLienLacForm(request.POST, instance=pupil)
-        ttgdform = ThongTinGiaDinhForm(request.POST, instance=pupil)
-        ttddform = ThongTinDoanDoiForm(request.POST, instance=pupil)
+        data = request.POST.copy()
+        data['first_name'] = data['first_name'].strip()
+        data['last_name'] = data['last_name'].strip()
+        form = PupilForm(school_id, data, instance=pupil)
+        ttcnform = ThongTinCaNhanForm(school_id, data, instance=pupil)
+        ttllform = ThongTinLienLacForm(data, instance=pupil)
+        ttgdform = ThongTinGiaDinhForm(data, instance=pupil)
+        ttddform = ThongTinDoanDoiForm(data, instance=pupil)
         if form.is_valid():
             form.save()            
             ttcnform = ThongTinCaNhanForm(school_id, instance=pupil)
@@ -3027,7 +3034,8 @@ def viewSubjectDetail (request, subject_id):
     form = SubjectForm (class_id.block_id.school_id.id, instance = sub)
     message = None
     if request.method == 'POST':
-        data = request.POST
+        data = request.POST.copy()
+        data['name'] = data['name'].strip()
         form = SubjectForm(class_id.block_id.school_id.id, data, instance = sub)
         if form.is_valid():
             form.save()
