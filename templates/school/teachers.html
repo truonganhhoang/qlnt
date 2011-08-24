@@ -10,6 +10,7 @@
 	</style>
     <script>
         $(document).ready(function() {
+            applyListener();
             var $tab_title_input = $("#tab_title");
 
             // tabs init with a custom tab template and an "add" callback filling in the content
@@ -31,6 +32,9 @@
                     error: function( xhr, status, index, anchor ) {
                         $( anchor.hash ).html(
                             "Có lỗi khi lấy dữ liệu từ máy chủ. Xin hãy thử lại" );
+                    },
+                    success: function( xhr, status, settings){
+                        applyListener();
                     },
                     global: false
 			    },

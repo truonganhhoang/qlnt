@@ -6,6 +6,34 @@
  * 
  */
 
+var applyListener = function(){
+
+    $("input.datepicker").datepicker({
+        changeMonth: true,
+        changeYear: true,
+        yearRange: 'c-60:c'
+    });
+
+    $("input:text").live('focus',function(){
+        $(this).select();
+        return false;
+    });
+
+
+    $('*[class~="tiptipclick"]').tipTip({
+        activation: "click",
+        delay: 100
+    });
+    $('*[class~="tiptiphover"]').tipTip({
+        activation: "hover",
+        delay: 100
+    });
+    $('*[class~="tiptiphover_delay"]').tipTip({
+        activation: "hover",
+        delay: 1500
+    });
+
+};
 
 
 $(document).ready(function(){
@@ -78,10 +106,7 @@ $(document).ready(function(){
             $('input:text').each(function(){
                 var origin = $(this).val();
                 if ($(this).is_harmful(origin)){
-//                    $("#notify").text("Thông tin bạn vừa nhập có chứa mã độc.");
-//                    $("#notify").fadeIn('fast');
                     $(this).focus();
-//                    $("#notify").delay(1000).fadeOut('fast');
                     $(this).showNotification("Thông tin bạn vừa nhập có chứa mã độc.");
                     ok = false;
                 }
@@ -120,23 +145,15 @@ $(document).ready(function(){
     };
     // end jquery global function
 
-    // local functions.
     $.datepicker.setDefaults(
         $.extend(
             $.datepicker.regional['vi']
         )
     );
 
-    $("input.datepicker").datepicker({
-        changeMonth: true,
-		changeYear: true,
-        yearRange: 'c-60:c'
-    });
 
-    $("input:text").live('focus',function(){
-        $(this).select();
-        return false;
-    });
+
+    // local functions.
 
     $("#notify").ajaxStart( function(){
         $(this).text("Đang gửi dữ liệu lên máy chủ...");
@@ -157,19 +174,10 @@ $(document).ready(function(){
         }, 1000));
     });
 
+    // every listener that wants to apply to DOM elements.
+    applyListener();
 
-    $('*[class~="tiptipclick"]').tipTip({
-        activation: "click",
-        delay: 100
-    });
-    $('*[class~="tiptiphover"]').tipTip({
-        activation: "hover",
-        delay: 100
-    });
-    $('*[class~="tiptiphover_delay"]').tipTip({
-        activation: "hover",
-        delay: 1500
-    });
+
 
     $.ajaxSetup({
         beforeSend: function(xhr, settings) {
