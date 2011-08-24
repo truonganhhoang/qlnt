@@ -769,8 +769,132 @@ def process_file(file_name, task):
             number_ok += 1
         message += u'</ul>'
         return student_list, message, number, number_ok
-    else: task == "import_teacher"
-    
+    elif task == u"import_teacher":
+        teacher_list = []
+        filepath = os.path.join(TEMP_FILE_LOCATION, file_name)
+        if not os.path.isfile(filepath):
+            raise NameError, "%s is not a valid filename" % file_name
+        try:
+            book = xlrd.open_workbook(filepath)
+            sheet = book.sheet_by_index(0)
+        except Exception as e:
+            print e
+            return {'error': u'File tải lên không phải file Excel'}
+
+        start_row = -1
+        for c in range(0, sheet.ncols):
+            flag = False
+            for r in range(0, sheet.nrows):
+                if sheet.cell_value(r, c) == u'Họ và Tên':
+                    start_row = r
+                    flag = True
+                    break
+            if flag: break
+        #                                                             CHUA BIEN LUAN TRUONG HOP: start_row = -1, ko co cot ten: Mã học sinh
+        if start_row == -1:
+            return {'error': u'File tải lên phải có cột "Họ và Tên".'}, u'File tải lên phải có cột "Họ và Tên".', 0, 0
+        # start_row != 0
+        c_ten = -1
+        c_ngay_sinh = -1
+        c_gioi_tinh = -1
+        c_que_quan = -1
+        c_dan_toc = -1
+        c_cho_o_ht = -1
+        c_to = -1
+        c_nhom = -1
+        c_chuyen_mon = -1
+        number = 0
+        number_ok = 0
+        for c in range(0, sheet.ncols):
+            value = sheet.cell_value(start_row, c)
+
+            if value == u'Họ và Tên':
+                c_ten = c
+            elif value == u'Ngày sinh':
+                c_ngay_sinh = c
+            elif value == u'Giới tính':
+                c_gioi_tinh = c
+            elif value == u'Quê quán':
+                c_que_quan = c
+            elif value == u'Dân tộc':
+                c_dan_toc = c
+            elif value == u'Chỗ ở hiện tại':
+                c_cho_o_ht = c
+            elif value == u'Tổ':
+                c_to = c
+            elif value == u'Nhóm':
+                c_nhom = c
+            elif value == u'Chuyên môn':
+                c_chuyen_mon = c
+
+
+        for r in range(start_row + 1, sheet.nrows):
+            name = ''
+            birthday =''
+            gt=''
+            dan_toc=''
+            que_quan=''
+            cho_o_ht=''
+            to = ''
+            nhom = ''
+            chuyen_mon = ''
+            name = sheet.cell(r, c_ten).value.strip()
+            name = ' '.join([i.capitalize() for i in name.split(' ')])
+            if not name.strip():
+                message += u'<li>Ô ' + unicode(cellname(r, c_ten)) + u':Trống. </li>'
+                continue
+            number += 1
+            birthday = sheet.cell(r, c_ngay_sinh).value
+            if not birthday:
+                message += u'<li>Ô ' + unicode(cellname(r, c_ngay_sinh)) + u':Trống. </li>'
+                birthday = None
+            if c_gioi_tinh>-1:
+                gt = sheet.cell(r, c_gioi_tinh).value.strip().capitalize()
+                if not gt: gt = 'Nam'
+            if c_que_quan >-1:
+                que_quan = sheet.cell(r, c_que_quan).value.strip()
+            if c_dan_toc>-1:
+                dan_toc = sheet.cell(r, c_dan_toc).value.strip()
+                if not dan_toc.strip(): dan_toc = 'Kinh'
+            if c_cho_o_ht>-1:
+                cho_o_ht = sheet.cell(r, c_cho_o_ht).value.strip()
+
+            if c_to>-1:
+                to = sheet.cell(r, c_to).value.strip()
+            if c_nhom>-1:
+                nhom = sheet.cell(r, c_nhom).value.strip()
+            if c_chuyen_mon>-1:
+                chuyen_mon = sheet.cell(r, c_chuyen_mon).value.strip()
+
+
+                
+            if birthday:
+                try:
+                    if type(birthday) == unicode or type(birthday)== str:
+                        birthday = to_date(birthday)
+                    else:
+
+                        date_value = xlrd.xldate_as_tuple(sheet.cell(r, c_ngay_sinh).value, book.datemode)
+                        birthday = date(*date_value[:3])
+                except Exception as e:
+                    print e
+                    message += u'<li>Ô ' + unicode(cellname(r, c_ngay_sinh)) + u':Không đúng định dạng "ngày/tháng/năm" ' + u'</li>'
+                    continue
+
+            data = {'fullname': name,
+                    'birthday': birthday,
+                    'sex': gt,
+                    'dan_toc': dan_toc,
+                    'home_town': que_quan,
+                    'current_address': cho_o_ht,
+                    'team': to,
+                    'group': nhom,
+                    'major': chuyen_mon
+                    }
+            teacher_list.append(data)
+            number_ok += 1
+        message += u'</ul>'
+        return teacher_list, message, number, number_ok
     return None
     
 
@@ -850,6 +974,107 @@ def student_import( request, class_id ):
                  'student_confliction': student_confliction,
                  'number': number,
                  'number_ok': number_ok - len(existing_student),
+                 'message': 'Nhập dữ liệu thành công'}]
+    return HttpResponse( simplejson.dumps( data ) )
+
+def teacher_import( request):
+    try:
+        school = get_school(request)
+    except Exception as e:
+        return HttpResponseRedirect(reverse('index'))
+
+    permission = get_permission(request)
+    if not permission in [u'HIEU_TRUONG',u'HIEU_PHO']:
+        return HttpResponseRedirect(reverse('school_index'))
+
+    file = None
+    if request.method == "POST":
+        if request.is_ajax( ):
+            # the file is stored raw in the request
+            upload = request
+            is_raw = True
+            # AJAX Upload will pass the filename in the querystring if it is the "advanced" ajax upload
+            try:
+                file = request.FILES.get('file')
+            except KeyError:
+                return HttpResponseBadRequest( "AJAX request not valid" )
+            # not an ajax upload, so it was the "basic" iframe version with submission via form
+        else:
+            is_raw = False
+            if len( request.FILES ) == 1:
+            # FILES is a dictionary in Django but Ajax Upload gives the uploaded file an
+            # ID based on a random number, so it cannot be guessed here in the code.
+            # Rather than editing Ajax Upload to pass the ID in the querystring,
+            # observer that each upload is a separate request,
+            # so FILES should only have one entry.
+            # Thus, we can just grab the first (and only) value in the dict.
+                upload = request.FILES.values( )[ 0 ]
+            else:
+                raise Http404( "Bad Upload" )
+            filename = '_'.join([request.session.session_key,upload.name])
+    else:
+        return HttpResponseRedirect( reverse('school_index'))
+    # save the file
+    print 'save file'
+    filename = save_file(request.FILES.get('file'), request.session)
+    print 'saved', filename
+    message = None
+    process_file_message = None
+
+    result, process_file_message, number, number_ok = process_file( filename, "import_teacher")
+    existing_teacher = []
+    if 'error' in result:
+        success = False
+        message = result['error']
+        data = [{'name': file.name,
+                 'url': filename,
+                 'sizef':file.size,
+                 'process_message': process_file_message,
+                 'error': u'File excel không đúng định dạng'}]
+    else:
+        try:
+            teacher_list = result
+            for teacher in teacher_list:
+                print teacher
+#                data = {'fullname': name,
+#                    'birthday': birthday,
+#                    'sex': gt,
+#                    'dan_toc': dan_toc,
+#                    'home_town': que_quan,
+#                    'current_address': cho_o_ht,
+#                    'team': to,
+#                    'group': nhom,
+#                    'major': chuyen_mon
+#                    }
+                try:
+                    existing = add_teacher(  full_name= teacher['fullname'],
+                                             birthday= teacher['birthday'],
+                                             sex= teacher['sex'],
+                                             dan_toc= teacher['dan_toc'],
+                                             home_town= teacher['home_town'],
+                                             current_address= teacher['current_address'],
+                                             team_id= teacher['team'],
+                                             group_id= teacher['group'],
+                                             major= teacher['major'],
+                                             school= school)
+                    if existing:
+                        existing_teacher.append(existing)
+                except Exception as e:
+                    print e
+
+        except Exception as e:
+            print e
+            message = u'Lỗi trong quá trình lưu cơ sở dữ liệu'
+
+        teacher_confliction = ''
+        if existing_teacher:
+            teacher_confliction = u'Có %s giáo viên không được nhập do đã tồn tại trong hệ thống' % len(existing_teacher)
+        data = [{'name': file.name, 'url': filename,
+                 'sizef':file.size,
+                 'process_message': process_file_message,
+                 'teacher_confliction': teacher_confliction,
+                 'number': number,
+                 'number_ok': number_ok - len(existing_teacher),
                  'message': 'Nhập dữ liệu thành công'}]
     return HttpResponse( simplejson.dumps( data ) )
 
@@ -1275,7 +1500,7 @@ def viewClassDetail(request, class_id, sort_type=0, sort_status=0):
                 message = 'OK'
                 data = simplejson.dumps({'message':message})
                 return HttpResponse(data, mimetype = 'json')
-                form = PupilForm(school.id)
+                #form = PupilForm(school.id)
             else:
                 message = ''
                 try:
@@ -1288,13 +1513,13 @@ def viewClassDetail(request, class_id, sort_type=0, sort_status=0):
                     find = start_year.pupil_set.filter( first_name__exact = request.POST['first_name'])\
                     .filter(last_name__exact = request.POST['last_name'])\
                     .filter(birthday__exact = birthday)
-                    if (find):
+                    if find:
                         message += u'<li> ' + u'Học sinh đã tồn tại' + u'</li>'
                 except Exception as e:
                     message = u'<li> ' + u'Chưa nhập hoặc nhập không đúng định dạng "ngày/tháng/năm" ' + u'</li>'
                     print e
 
-                if (request.POST['first_name'] == u''):
+                if not request.POST['first_name']:
                     message += u'<li> ' + u'Ô tên là bắt buộc' + u'</li>'
                 
                 data = simplejson.dumps({'message': message})
@@ -1473,7 +1698,7 @@ def teachers_tab(request, sort_type=1, sort_status=0):
     message = None
     form = TeacherForm(school.id)
     if request.is_ajax():
-        if (request.method == 'POST' and request.POST['request_type'] == u'team'):
+        if request.method == 'POST' and request.POST['request_type'] == u'team':
             try:
                 t = school.teacher_set.get(id=request.POST['id'])
                 if request.POST['team']:
@@ -1487,7 +1712,7 @@ def teachers_tab(request, sort_type=1, sort_status=0):
                 return HttpResponse(response, mimetype='json')
             except Exception as e:
                 print e
-        elif (request.method == 'POST' and request.POST['request_type'] == u'major'):
+        elif request.method == 'POST' and request.POST['request_type'] == u'major':
             try:
                 t = school.teacher_set.get(id=request.POST['id'])
                 major = request.POST['major']
@@ -1498,7 +1723,7 @@ def teachers_tab(request, sort_type=1, sort_status=0):
             except Exception as e:
                 print e
         elif request.method == 'POST' and request.POST['request_type']==u'add':
-            if (request.POST['first_name'].strip()):
+            if request.POST['first_name'].strip():
                 name = request.POST['first_name'].split()
                 last_name = ' '.join(name[:len(name)-1])
                 first_name = name[len(name)-1]
@@ -1563,7 +1788,7 @@ def teachers_tab(request, sort_type=1, sort_status=0):
     t = loader.get_template(os.path.join('school', 'teachers_tab.html'))
     tmp = get_teacher(request)
     id = 0
-    if (tmp):
+    if tmp:
         id = tmp.id
     c = RequestContext(request, {   'form': form,
                                     'message': message,

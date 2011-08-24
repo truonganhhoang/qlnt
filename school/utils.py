@@ -444,18 +444,73 @@ def completely_del_student( student):
     student.user_id.delete()
 
 
-def add_teacher( first_name = None, last_name = None, full_name = None, school = None,
-                 birthday = None, sex = 'N', birthplace = None, team_id = None, group_id = None, major=None):
+def add_teacher( first_name = None,
+                 last_name = None,
+                 full_name = None,
+                 school = None,
+                 birthday = None,
+                 sex = 'N',
+                 dan_toc = 'Kinh',
+                 current_address = '',
+                 home_town = '',
+                 birthplace = '',
+                 team_id = None,
+                 group_id = None,
+                 major=''):
+    print 'tag 1'
+    print team_id, group_id
     if full_name:
         names = full_name.split(" ")
         last_name = ' '.join(names[:len(names)-1])
         first_name = names[len(names)-1]
+    if team_id and ( type(team_id) == str or type(team_id) == unicode):
+        name = team_id
+        print 'name', team_id
+        try:
+            team_id = school.team_set.get( name = name)
+        except Exception as e:
+            print e
+            team_id = Team()
+            team_id.name = name
+            team_id.school_id = school
+            team_id.save()
+            print team_id
+    else:
+        team_id = None
+    if team_id:
+        if group_id and ( type(group_id) == str or type(group_id) == unicode):
+            name = group_id
+            print 'name', name
+            try:
+                group_id = team_id.group_set.get( name = name)
+            except Exception as e:
+                print e
+                group_id = Group()
+                group_id.name = name
+                group_id.team_id = team_id
+                group_id.save()
+                print group_id
+    else:
+        group_id = None
+
+    if major:
+        if to_en(major) not in SUBJECT_LIST:
+            major = ''
+
     teacher = Teacher()
     teacher.first_name = first_name
     teacher.last_name = last_name
     teacher.school_id = school
     teacher.birthday = birthday
+    find = school.teacher_set.filter( first_name__exact = first_name,
+                                      last_name__exact = last_name,
+                                      birthday__exact = birthday)
+    if find:
+        return find
+    teacher.home_town = home_town
     teacher.sex = sex
+    teacher.dan_toc = dan_toc
+    teacher.current_address = current_address
     teacher.birth_place = birthplace
     teacher.team_id = team_id
     teacher.group_id = group_id
@@ -473,6 +528,7 @@ def add_teacher( first_name = None, last_name = None, full_name = None, school =
 
     teacher.user_id = user
     teacher.save()
+    return None
 
 def del_teacher( teacher):
     teacher.user_id.delete()

@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+{% load upload_tags %}
+
 {% block content %}
     <style>
 	    #tabs { margin-top: 1em; }
@@ -147,9 +149,35 @@
                 $("#team_id_rename").val(id);
                 $d2.dialog("open");
             });
+
+            $("#import").click(function() {
+                $("#fileupload").dialog('open');
+            });
+
+            $("#fileupload").dialog({
+                modal : true,
+                buttons: {
+                    Đóng: function() {
+                        location.reload('true');
+                        $(this).dialog('close');
+                    }
+                },
+                autoOpen: false,
+                width: 700,
+                height: 400,
+                maxWidth: 700,
+                maxHeight: 400,
+                title: "Nhập giáo viên từ file Excel"
+            });
+            
         });
     </script>
 
+    <div id="tableFunction">
+        {% if pos > 3 %}
+            <a class="ggButton" href="#popupDiv" id="import"> Nhập từ Excel </a>
+        {% endif %}
+    </div>
     <div id="dialog" title="Thêm tổ mới">
         <form id="at">
             <label for="tab_title">Tên Tổ</label>
@@ -174,4 +202,34 @@
                 
         <input id="reload" type="hidden" onclick="location.replace(location.href)"/>
     </div>
+
+    <div style="display: none;">
+        <div id="fileupload">
+            <form method="post" action="" enctype="multipart/form-data">
+                <div class="fileupload-buttonbar">
+                    {% csrf_token %}
+                    <label class="fileinput-button">
+                        <span>Chọn file...</span>
+                        <input type="file" name="file" multiple>
+                    </label>
+                    <button type="submit" id="startUpload" class="start">Tải file lên</button>
+                </div>
+            </form>
+            <div class="fileupload-content">
+                <table class="files"></table>
+                <div class="fileupload-progressbar"></div>
+            </div>
+            <div id="errorDetail" class="errorlist errorDiv" style="display: none;">
+            </div>
+            <div class="hint">
+                <p>
+                    Chú ý: Phải dùng file Excel theo <a href="{{ MEDIA_URL }}template_files/teacher_template.xls">mẫu
+                    này</a>.
+                </p>
+            </div>
+        </div>
+    </div>
+    {% upload_js %}
+    <script type="text/javascript" src="/static/js/jquery_file_upload/qlnt_upload_for_teacher.js"></script>
+
 {% endblock %}
