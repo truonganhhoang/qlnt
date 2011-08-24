@@ -1738,7 +1738,7 @@ def teachers_tab(request, sort_type=1, sort_status=0):
             else:
                 team = None
             data = {'first_name':first_name, 'last_name':last_name, 'birthday':request.POST['birthday'],
-                    'sex':request.POST['sex'], 'school_id':school.id, 'birth_place':request.POST['birth_place'].strip(),
+                    'sex':request.POST['sex'], 'school_id':school.id, 'home_town':request.POST['home_town'].strip(),
                     'team_id': request.POST['team_id'], 'major' : request.POST['major'], 'index':index}
             form = TeacherForm(school.id,data)
             if form.is_valid():
@@ -1749,7 +1749,7 @@ def teachers_tab(request, sort_type=1, sort_status=0):
                     message = 'Giáo viên này đã tồn tại trong hệ thống'
                 except ObjectDoesNotExist:
                     add_teacher(first_name=data['first_name'], last_name=data['last_name'], school=get_school(request), birthday=birthday,
-                                sex=data['sex'], birthplace=data['birth_place'], team_id =team, major=data['major'])
+                                sex=data['sex'], home_town=data['home_town'], team_id =team, major=data['major'])
                     message = 'Bạn vừa thêm một giáo viên mới'
                 form = TeacherForm(school.id)
             else:
