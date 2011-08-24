@@ -62,7 +62,7 @@
                     <th align="center" width="10%"><a
                             href="{%url school.views.school_index  %}teachers/2/{{next_status}}"
                             class="tiptiphover" title="Sắp xếp theo ngày sinh">Ngày sinh</a></th>
-                    <th align="center" width="20%"> Nơi sinh</th>
+                    <th align="center" width="20%"> Quê quán</th>
                     <th align="center" width="10%"><a
                             href="{%url school.views.school_index  %}teachers/3/{{next_status}}"
                             class="tiptiphover" title="Sắp xếp giới tính">Giới tính </a></th>
@@ -89,7 +89,7 @@
                             {{ ss.last_name }} {{ ss.first_name }} </a>
                         </td>
                         <td align="center" width="10%"> {{ ss.birthday|date:"SHORT_DATE_FORMAT" }}</td>
-                        <td align="center" width="20%"> {{ ss.birth_place }}</td>
+                        <td align="center" width="20%"> {{ ss.home_town }}</td>
                         <td align="center" width="10%"> {{ ss.sex }} </td>
 
                         {% if pos > 3 %}
@@ -120,7 +120,7 @@
 
                             <td align="center" width="20%">
                                 {{ form.birth_place.errors }}
-                                <p>{{ form.birth_place }}</p>
+                                <p>{{ form.home_town }}</p>
                             </td>
 
 
@@ -149,7 +149,6 @@
             {% if pos > 3 %}
                 <tr>
                     <td width="5%" align="left">&nbsp</td>
-                    <td align="right"><a href="">Xuất ra Excel</a></td>
                 </tr>
             {% endif %}
 {% endblock %}

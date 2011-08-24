@@ -63,7 +63,7 @@
             <th align="center" width="5%"> STT</th>
             <th align="center" width="15%">Họ tên</th>
             <th align="center" width="10%">Ngày sinh</th>
-            <th align="center" width="20%"> Nơi sinh</th>
+            <th align="center" width="20%">Quê quán</th>
             <th align="center" width="10%">Giới tính</th>
             <th align="center" width="10%">Chuyên môn</th>
             <th align="center" width="15%">Tổ</th>
@@ -90,7 +90,7 @@
                 </td>
 
                 <td align="center" width="10%"> {{ ss.birthday|date:"SHORT_DATE_FORMAT" }}</td>
-                <td align="center" width="20%"> {{ ss.birth_place }}</td>
+                <td align="center" width="20%"> {{ ss.home_town }}</td>
                 <td align="center" width="10%"> {{ ss.sex }} </td>
                 {% if pos > 3 %}
                     <td align="center" width="10%"> {{ f.major }} </td>
@@ -113,7 +113,6 @@
     {% if pos > 3 %}
         <tr>
             <td width="5%" align="left">&nbsp</td>
-            <td align="right"><a href="">Xuất ra Excel</a></td>
         </tr>
     {% endif %}
     <input id="reload" type="hidden" onclick="location.replace(location.href)"/>
