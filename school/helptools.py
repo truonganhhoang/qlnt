@@ -135,7 +135,7 @@ def sync_subject_type(request):
             number = 0
             subjects = Subject.objects.all()
             for subject in subjects:
-                if not subject.type:
+                if (not subject.type) or subject.name == u'Giáo dục công dân':
                     number += 1
             message += u'<br><p>%s subjects in database do not have correct type </p>' % number
         elif  request.method == 'POST':
@@ -144,7 +144,7 @@ def sync_subject_type(request):
                 print 'tag'
                 subjects = Subject.objects.all()
                 for subject in subjects:
-                    if not subject.type:
+                    if (not subject.type) or subject.name == u'Giáo dục công dân':
                         if subject.name.lower() == u'Giáo dục quốc phòng'.lower():
                             subject.type = u'GDQP-AN'
                         elif subject.name.lower() == u'Giáo dục công dân'.lower():
