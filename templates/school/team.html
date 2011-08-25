@@ -54,13 +54,19 @@
             });
             
             function addgroup() {
-                var data = { 'name' : $("#group_title{{team.id}}").val(),'team_id':{{team.id}}, request_type:'addGroup'};
+                var data = { 'name' : $("#group_title{{team.id}}").val(),'team_id':{{team.id}}, 'request_type':'addGroup'};
                 var arg = { type:"POST",
                     url:"/school/team/{{team.id}}",
                     data: data,
                     datatype:"json",
                     success: function(response) {
-                        $('.ui-tabs-panel:visible').html(response);
+                        console.log(response);
+                        if (response.message){
+                            console.log('show');
+                            $("#notify").showNotification(response.message, 3000);
+                        } else {
+                            $('.ui-tabs-panel:visible').html(response);
+                        }
                     }
                 };
                 $.ajax(arg);
@@ -68,14 +74,20 @@
             }
             function renameGroup() {
                 var data = { 'name' : $("#group_rename{{team.id}}").val(),
-                              id:$("#group_id_rename{{team.id}}").val(),
-                              request_type:'renameGroup'};
+                              'id':$("#group_id_rename{{team.id}}").val(),
+                              'request_type':'renameGroup'};
                 var arg = { type:"POST",
                     url:"/school/team/{{team.id}}",
                     data: data,
                     datatype:"json",
                     success: function(response) {
-                        $('.ui-tabs-panel:visible').html(response);
+                        console.log(response);
+                        if (response.message){
+                            console.log('show');
+                            $("#notify").showNotification(response.message, 3000);
+                        } else {
+                            $('.ui-tabs-panel:visible').html(response);
+                        }
                     }
                 };
                 $.ajax(arg);

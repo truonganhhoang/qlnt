@@ -14,6 +14,16 @@ var applyListener = function(){
         yearRange: 'c-60:c'
     });
 
+    $("input:text").each(function(){
+        $(this).focusout(function(){
+            var origin = $(this).val();
+            if ($(this).is_harmful(origin)){
+                $(this).focus();
+                $(this).showNotification("Thông tin bạn vừa nhập có chứa mã độc.");
+            }
+        });
+    });
+
     $("input:text").live('focus',function(){
         $(this).select();
         return false;
@@ -91,10 +101,7 @@ $(document).ready(function(){
         origin = origin.replace(/\//g,' ').replace(/-/g,' ')
                        .replace('@',' ').replace('Nhanh:','')
                        .replace('nhanh:','');
-        console.log(origin);
-        console.log($.encoder.encodeForHTML($.encoder.canonicalize(origin)));
         if ($.encoder.encodeForHTML($.encoder.canonicalize(origin)) != origin ) return true;
-        console.log($.encoder.encodeForJavascript($.encoder.canonicalize(origin)));
         return $.encoder.encodeForJavascript($.encoder.canonicalize(origin)) != origin;
 
     };
@@ -117,15 +124,7 @@ $(document).ready(function(){
     });
 
 
-    $("input:text").each(function(){
-        $(this).focusout(function(){
-            var origin = $(this).val();
-            if ($(this).is_harmful(origin)){
-                $(this).focus();
-                $(this).showNotification("Thông tin bạn vừa nhập có chứa mã độc.");
-            }
-        });
-    });
+
     // end xss prevention
     // jquery global function
     $.fn.disableNotification = function(){

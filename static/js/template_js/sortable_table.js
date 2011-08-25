@@ -29,26 +29,27 @@ $(document).ready(function(){
 
             $(document).keydown(function(event){
                 if (isSorting()){
+                    var prev, next, oldIndex, newIndex, temp;
                     var theSelected = $(".selected");
                     if (theSelected.length >0 ){
                         if (event.which == 38){
                             // if key is up arrow
-                            var prev = theSelected.prev('tr.sortable');
+                            prev = theSelected.prev('tr.sortable');
                             if (prev.length > 0){
-                                var oldIndex = theSelected.children('td.index').children('p');
-                                var newIndex = prev.children('td.index').children('p');
-                                var temp = oldIndex.text();
+                                oldIndex = theSelected.children('td.index').children('p');
+                                newIndex = prev.children('td.index').children('p');
+                                temp = oldIndex.text();
                                 oldIndex.text(newIndex.text());
                                 newIndex.text(temp);
                                 prev.before(theSelected);
                             }
                         } else if (event.which == 40){
                             // if key is down arrow
-                            var next = theSelected.next('tr.sortable');
+                            next = theSelected.next('tr.sortable');
                             if (next.length>0){
-                                var oldIndex = theSelected.children('td.index').children('p');
-                                var newIndex = next.children('td.index').children('p');
-                                var temp = oldIndex.text();
+                                oldIndex = theSelected.children('td.index').children('p');
+                                newIndex = next.children('td.index').children('p');
+                                temp = oldIndex.text();
                                 oldIndex.text(newIndex.text());
                                 newIndex.text(temp);
                                 next.after(theSelected);
@@ -61,14 +62,14 @@ $(document).ready(function(){
                         var theFocused = $(".focused");
                         if (event.which == 38){
                             // if key is up arrow
-                            var prev = theFocused.prev('tr.sortable');
+                            prev = theFocused.prev('tr.sortable');
                             if (prev.length > 0){
                                 prev.addClass('focused');
                                 theFocused.removeClass('focused');
                             }
                         } else if (event.which == 40){
                             // if key is down arrow
-                            var next = theFocused.next('tr.sortable');
+                            next = theFocused.next('tr.sortable');
                             if (next.length>0){
                                 next.addClass('focused');
                                 theFocused.removeClass('focused');

@@ -1627,23 +1627,21 @@ def teachers(request,  sort_type=1, sort_status=0):
             return HttpResponse()
         if request.POST['request_type'] == u'rename_team':
             t = school.team_set.get(id = request.POST['id'])
+            print t
             try:
                 tmp = school.team_set.get(name=request.POST['name'].strip())
-                message = 'Tên Tổ này đã tồn tại'
+                message = u'Tên Tổ này đã tồn tại'
             except ObjectDoesNotExist:
-                message = 'OK'
+                message = u'Đổi tên thành công'
                 t.name = request.POST['name'].strip()
                 t.save()
             data = simplejson.dumps({'message': message})
             return HttpResponse(data, mimetype='json')
     num = []
     teamList = school.team_set.all()
-    for te in teamList:
-        num.append(te.teacher_set.count())
-    list = zip(teamList, num)
     t = loader.get_template(os.path.join('school', 'teachers.html'))
 
-    c = RequestContext(request, {   'list' : list,
+    c = RequestContext(request, {   'list' : teamList,
                                     'pos':pos,
                                     'sort_type':sort_type,
                                     'sort_status':sort_status,
@@ -1664,7 +1662,7 @@ def team(request, team_id ,sort_type=1, sort_status=0):
     message = None
     form = TeacherForm(school.id)
     school = get_school(request)
-    if request.is_ajax():
+    if request.method == 'POST' and request.is_ajax():
         try:
             if request.POST['request_type'] == u'addGroup':
                 try:
@@ -1679,17 +1677,19 @@ def team(request, team_id ,sort_type=1, sort_status=0):
                         t.save()
                     return HttpResponseRedirect('/school/team/' + request.POST['team_id'])
             if request.POST['request_type'] == u'renameGroup':
+                g = Group.objects.get( id = request.POST['id'])
                 try:
-                    g = Group.objects.get(name = request.POST['name'].strip(), team_id=request.POST['team_id'])
-                    message = u'Tên nhóm này đã tồn tại'
+                    _t = g.team_id.group_set.get( name = request.POST['name'])
+                    message = u'Nhóm này đã tồn tại'
+                    print message
                     data = simplejson.dumps({'message': message})
                     return HttpResponse(data, mimetype='json')
                 except ObjectDoesNotExist:
-                    g = Group.objects.get(id=request.POST['id'])
                     g.name = request.POST['name'].strip()
                     g.save()
                     return HttpResponseRedirect('/school/team/' + team_id)
-        except:
+        except Exception as e:
+            print e
             pass
     team = school.team_set.get(id=team_id)
     groupList = team.group_set.all()

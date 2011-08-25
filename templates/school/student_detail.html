@@ -109,11 +109,14 @@
 {%if pos > 0%}
 
 {%endif%}
-    <a title="Danh sách lớp học" class = "tiptiphove ggButton" href="{%url school.views.school_index  %}viewClassDetail/{{class_id}}">Quay lại</a>
-<br>
 {% if message != None %}
 	{{message}} <br>
 {% endif %}
+
+<div id="tableFunction">
+    <a title="Danh sách lớp học" class = "tiptiphove ggButton" href="{%url school.views.school_index  %}viewClassDetail/{{class_id}}">Quay lại</a>
+</div>
+
 <form action="/school/viewStudentDetail/{{id}}" method="post">{% csrf_token %}
 
     <div id = "tabs">

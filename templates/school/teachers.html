@@ -128,7 +128,8 @@
                     url:"",
                     data: data,
                     datatype:"json",
-                    success: function() {
+                    success: function(json) {
+                        $("#notify").showNotification(json.message, 3000);
                     }
                 };
                 $.ajax(arg);
@@ -209,8 +210,12 @@
     <div id="tabs">
         <ul>
             <li><a href="school/teachers_tab/{{ sort_type }}/{{ sort_status }}">Tất cả</a></li>
-            {% for t, n in list %}
-                <li><a href="school/team/{{ t.id }}">{{ t.name }}</a><span title="Đổi tên" id ="{{t.id}}-{{t}}-team" class="ui-icon ui-icon-gear teamrn"></span><span title="Xóa" id ="{{t.id}}-team" class="ui-icon ui-icon-close team"></span></li>
+            {% for t in list %}
+                <li>
+                    <a href="school/team/{{ t.id }}">{{ t.name }}</a>
+                    <span title="Đổi tên" id ="{{t.id}}-{{t}}-team" class="ui-icon ui-icon-gear teamrn"></span>
+                    <span title="Xóa" id ="{{t.id}}-team" class="ui-icon ui-icon-close team"></span>
+                </li>
             {% endfor %}
             <input class="ggButton tiptiphover" title="Thêm tổ mới" type="button" id="add_tab" value=" + ">
         </ul>
