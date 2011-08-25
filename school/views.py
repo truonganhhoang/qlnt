@@ -2184,7 +2184,7 @@ def viewStudentDetail(request, student_id):
     ttcnform = ThongTinCaNhanForm(school_id, instance=pupil)
     ttllform = ThongTinLienLacForm(instance=pupil)
     ttgdform = ThongTinGiaDinhForm(instance=pupil)
-    ttddform = ThongTinDoanDoiForm(instance=pupil)
+    ttddform = ThongTinDoanDoiForm(student_id,instance=pupil)
     if request.method == 'POST':
         data = request.POST.copy()
         data['first_name'] = data['first_name'].strip()
@@ -2193,13 +2193,13 @@ def viewStudentDetail(request, student_id):
         ttcnform = ThongTinCaNhanForm(school_id, data, instance=pupil)
         ttllform = ThongTinLienLacForm(data, instance=pupil)
         ttgdform = ThongTinGiaDinhForm(data, instance=pupil)
-        ttddform = ThongTinDoanDoiForm(data, instance=pupil)
-        if form.is_valid():
+        ttddform = ThongTinDoanDoiForm(student_id, data, instance=pupil)
+        if form.is_valid() and ttddform.is_valid():
             form.save()            
             ttcnform = ThongTinCaNhanForm(school_id, instance=pupil)
             ttllform = ThongTinLienLacForm(instance=pupil)
             ttgdform = ThongTinGiaDinhForm(instance=pupil)
-            ttddform = ThongTinDoanDoiForm(instance=pupil)
+            ttddform = ThongTinDoanDoiForm(student_id, instance=pupil)
             message = 'Bạn đã cập nhật thành công'
     t = loader.get_template(os.path.join('school', 'student_detail.html'))
     c = RequestContext(request, {   'form': form, 
@@ -2746,7 +2746,7 @@ def add_khen_thuong(request, student_id):
     except Exception as e:
         return HttpResponseRedirect(reverse('index'))
     
-    form = KhenThuongForm()
+    form = KhenThuongForm(student_id)
     pupil = Pupil.objects.get(id=student_id)
     if not in_school(request, pupil.class_id.block_id.school_id):
         return HttpResponseRedirect('/')
@@ -2755,7 +2755,7 @@ def add_khen_thuong(request, student_id):
     cl = Class.objects.get(id__exact=pupil.class_id.id)
     term = get_current_term(request)
     if request.method == 'POST':
-        form = KhenThuongForm(request.POST)
+        form = KhenThuongForm(student_id, request.POST)
         if form.is_valid():
             kt = form.save(commit = False)
             kt.student_id = pupil
@@ -2804,9 +2804,9 @@ def edit_khen_thuong(request, kt_id):
     if (get_position(request) < 4):
         return HttpResponseRedirect('/')
     term = kt.term_id
-    form = KhenThuongForm(instance=kt)
+    form = KhenThuongForm(student_id,instance=kt)
     if request.method == 'POST':
-        form = KhenThuongForm(request.POST, instance=kt)
+        form = KhenThuongForm(student_id,request.POST, instance=kt)
         if form.is_valid():
             kt = form.save(commit = False)
             kt.student_id = pupil
@@ -2851,7 +2851,7 @@ def add_ki_luat(request, student_id):
     except Exception as e:
         return HttpResponseRedirect(reverse('index'))
     
-    form = KiLuatForm()
+    form = KiLuatForm(student_id)
     pupil = Pupil.objects.get(id=student_id)
     if not in_school(request, pupil.class_id.block_id.school_id):
         return HttpResponseRedirect('/')
@@ -2860,7 +2860,7 @@ def add_ki_luat(request, student_id):
     cl = Class.objects.get(id__exact=pupil.class_id.id)
     term = get_current_term(request)
     if request.method == 'POST':
-        form = KiLuatForm(request.POST)
+        form = KiLuatForm(student_id,request.POST)
         if form.is_valid():
             kt = form.save(commit = False)
             kt.student_id = pupil
@@ -2910,9 +2910,9 @@ def edit_ki_luat(request, kt_id):
     if get_position(request) < 4:
         return HttpResponseRedirect('/')
     term = kt.term_id
-    form = KiLuatForm(instance=kt)
+    form = KiLuatForm(student_id,instance=kt)
     if request.method == 'POST':
-        form = KiLuatForm(request.POST, instance=kt)
+        form = KiLuatForm(student_id,request.POST, instance=kt)
         if form.is_valid():
             kt = form.save(commit = False)
             kt.student_id = pupil

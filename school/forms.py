@@ -90,18 +90,20 @@ class ThongTinGiaDinhForm(forms.ModelForm):
         }
         
 class ThongTinDoanDoiForm(forms.ModelForm):
-    def __init__(self, *args, **kw):
-            super(forms.ModelForm, self).__init__(*args, **kw)
-            self.fields.keyOrder = ['doi','ngay_vao_doi','doan','ngay_vao_doan','dang','ngay_vao_dang']
+    def __init__(self, student_id, *args, **kw):
+        student = Pupil.objects.get(id = student_id)
+        def validate_ttdd_date(value):
+            if value < student.birthday+timedelta(days=2190) or value > date.today():
+                raise ValidationError(u'Ngày nằm ngoài khoảng cho phép')
+        super(ThongTinDoanDoiForm, self).__init__(*args, **kw)
+        self.fields.keyOrder = ['doi','ngay_vao_doi','doan','ngay_vao_doan','dang','ngay_vao_dang']
+        self.fields['ngay_vao_doi'] = forms.DateField(required=False, label=u'Ngày vào đội', validators=[validate_ttdd_date], widget=forms.DateInput(attrs={'class':'datepicker'}))
+        self.fields['ngay_vao_doan'] = forms.DateField(required=False, label=u'Ngày vào đoàn', validators=[validate_ttdd_date], widget=forms.DateInput(attrs={'class':'datepicker'}))
+        self.fields['ngay_vao_dang'] = forms.DateField(required=False, label=u'Ngày vào đảng', validators=[validate_ttdd_date], widget=forms.DateInput(attrs={'class':'datepicker'}))
         
     class Meta:
         model = Pupil
         fields = {'doi','ngay_vao_doi','doan','ngay_vao_doan','dang','ngay_vao_dang'}
-        widgets = {
-            'ngay_vao_doi': DateInput(attrs = {'class':'datepicker'}),
-            'ngay_vao_doan': DateInput(attrs = {'class':'datepicker'}),
-            'ngay_vao_dang': DateInput(attrs = {'class':'datepicker'}),
-        }
 
         
 class SchoolForm(forms.Form):
@@ -150,16 +152,22 @@ class SubjectForm(forms.ModelForm):
         super(SubjectForm, self).__init__(*args, **kwargs)
         self.fields['teacher_id'] = forms.ModelChoiceField(required = False, queryset = Teacher.objects.filter(school_id = school_id), label=u'Giáo viên giảng dạy')
 
-class KhenThuongForm(forms.ModelForm)        :
+class KhenThuongForm(forms.ModelForm):
     class Meta:
         model = KhenThuong
         exclude = ('student_id', 'term_id')
-        field = ('time', 'noi_dung')
         widgets = {
-            'time' : DateInput(attrs = {'class':'datepicker'}),
             'noi_dung': forms.Textarea(attrs = {'cols': 50, 'rows': 10}),
         }
-        
+
+    def __init__(self, student_id, *args, **kw):
+        student = Pupil.objects.get(id = student_id)
+        def validate_ktkl_date(value):
+            if value < student.school_join_date or value > date.today():
+                raise ValidationError(u'Ngày nằm ngoài khoảng cho phép')
+        super(KhenThuongForm, self).__init__(*args, **kw)
+        self.fields['time'] = forms.DateField(required=False, label=u'Ngày', validators=[validate_ktkl_date], widget=forms.DateInput(attrs={'class':'datepicker'}))
+
 class KiLuatForm(forms.ModelForm):        
     class Meta:
         model = KiLuat
@@ -169,6 +177,14 @@ class KiLuatForm(forms.ModelForm):
             'time' : DateInput(attrs = {'class':'datepicker'}),
             'noi_dung': forms.Textarea(attrs = {'cols': 50, 'rows': 10}),
         }
+
+    def __init__(self, student_id, *args, **kw):
+        student = Pupil.objects.get(id = student_id)
+        def validate_ktkl_date(value):
+            if value < student.school_join_date or value > date.today():
+                raise ValidationError(u'Ngày nằm ngoài khoảng cho phép')
+        super(KiLuatForm, self).__init__(*args, **kw)
+        self.fields['time'] = forms.DateField(required=False, label=u'Ngày', validators=[validate_ktkl_date], widget=forms.DateInput(attrs={'class':'datepicker'}))
 
 class TeamForm(forms.ModelForm):
     class Meta:
