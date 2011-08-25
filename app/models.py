@@ -33,7 +33,7 @@ STATUS = [u'Chưa thiết lập', u'Học kì I', u'Học kì II', u'Học kì h
 #                       ('LH', 'Liên hệ hợp tác'))
 #CC_CHOICES = (('True', u'Có'),
 #                  ('False', u'Không'))
-
+        
 class Organization(models.Model):
     ''' Thông tin về sơ đồ tổ chức của các sở, phòng và các trường '''
     name = models.CharField(u'Tên tổ chức', max_length=100) #tên đơn vị. tổ chức

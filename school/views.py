@@ -139,17 +139,40 @@ def info(request):
     except Exception as e:
         return HttpResponseRedirect( reverse('index'))
     if request.method == 'POST':
+        data = request.POST.copy()
+        data['phone'] = data['phone'].strip()
+        data['email'] = data['email'].strip()
+        data['name'] = data['name'].strip()
+        name=''
+        address=''
+        email=''
+        phone=''
         if request.is_ajax():
-            form = SchoolForm(request.POST, request = request)
+            form = SchoolForm(data, request = request)
             if form.is_valid():
                 form.save_to_model()
                 message = u'Bạn vừa cập nhật thông tin trường học thành công'
+                status = 'done'
             else:
-                message = u'Gặp lỗi khi lưu dữ liệu lên máy chủ.'
-            response = simplejson.dumps({'message': message, 'status': 'done'})
+                message = u'Có lỗi ở thông tin nhập vào'
+                for a in form:
+                    if a.name == 'phone':
+                        if a.errors:
+                            phone = str(a.errors)
+                    elif a.name == 'email':
+                        if a.errors:
+                            email = str(a.errors)
+                    elif a.name == 'address':
+                        if a.errors:
+                            address = str(a.errors)
+                    elif a.name == 'name':
+                        if a.errors:
+                            name = str(a.errors)
+                status = 'error'
+            response = simplejson.dumps({'message': message, 'status': status, 'phone':phone, 'email':email, 'name':name, 'address':address})
             return HttpResponse(response, mimetype = 'json')
 
-        form = SchoolForm(request.POST, request = request)
+        form = SchoolForm(data, request = request)
         if form.is_valid():
             form.save_to_model()
             message = u'Bạn vừa cập nhật thông tin trường học thành công.'

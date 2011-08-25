@@ -24,12 +24,25 @@
                         global: true
                     });
                 } else {
+                    if (json.phone != ''){
+                        $("#id_phone").parents("td").append(json.phone);
+                    }
+                    if (json.email != ''){
+                        $("#id_email").parents("td").append(json.email);
+                    }
+                    if (json.address !=''){
+                        $("#id_address").parents("td").append(json.address);
+                    }
+                    if (json.name != ''){
+                        $("#id_name").parents("td").append(json.name);
+                    }
                     $("#notify").showNotification(json.message);
                 }
                 
             };
 
             $("#submit").click(function() {
+                $(".errorlist").empty();
                 var school_name = $("#id_name").val();
                 var school_level = $("#id_school_level").val();
                 var school_address = $("#id_address").val();
@@ -38,20 +51,15 @@
                 var data = { name: school_name, school_level: school_level,
                     address: school_address, phone: school_phone, email: school_email,
                     update_school_detail: true };
-
-                if (school_email.indexOf('@') == -1 || school_email.indexOf('.') == -1) {
-                    $("#notify").showNotification('Email không hợp lệ.');
-                } else {
-                    var para = {
-                        type:"POST",
-                        url:"",
-                        global: false,
-                        data: data,
-                        datatype: "json",
-                        success: update_school_detail_done
-                    };
-                    $.ajax(para);
-                }
+                var para = {
+                    type:"POST",
+                    url:"",
+                    global: false,
+                    data: data,
+                    datatype: "json",
+                    success: update_school_detail_done
+                };
+                $.ajax(para);
                 return false;
             });
 
