@@ -269,11 +269,11 @@ class Pupil(BasicPersonInfo):
     
     #thong tin gia dinh
     father_name = models.CharField("Họ và tên bố", max_length = 45, blank = True)
-    father_birthday = models.DateField("Ngày sinh của bố", null = True, blank = True)
+    father_birthday = models.DateField("Ngày sinh của bố", null = True, blank = True, validators = [validate_birthday])
     father_phone = models.CharField("Điện thoại của bố", max_length = 15, null = True, blank = True, validators = [validate_phone])
     father_job = models.CharField("Nghê nghiệp của bố", max_length = 100, blank = True)
     mother_name = models.CharField("Họ và tên mẹ", max_length = 45, blank = True)
-    mother_birthday = models.DateField("Ngày sinh của mẹ", null = True, blank = True)
+    mother_birthday = models.DateField("Ngày sinh của mẹ", null = True, blank = True, validators = [validate_birthday])
     mother_job = models.CharField("Nghê nghiệp của mẹ", max_length = 100, blank = True)    
     mother_phone = models.CharField("Điện thoại của mẹ", max_length = 15, null = True, blank = True, validators = [validate_phone])
     

@@ -12,6 +12,45 @@
                 global: false
             }
         });
+        $("#id_father_name").each(function(){
+             if ($(this).val() == ''){
+                $("#id_father_birthday").attr('disabled', true);
+                $("#id_father_job").attr('disabled', true);
+            }
+        });
+
+        $("#id_mother_name").each(function(){
+            if ($(this).val() == ''){
+                $("#id_mother_birthday").attr('disabled', true);
+                $("#id_mother_job").attr('disabled', true);
+            }
+        });
+        $("#id_father_name").change(function(){
+            if ($(this).val() == ''){
+                $("#id_father_birthday").val('');
+                $("#id_father_job").val('');
+                $("#id_father_birthday").attr('disabled', true);
+                $("#id_father_job").attr('disabled', true);
+            }
+            else{
+                $("#id_father_birthday").removeAttr('disabled');
+                $("#id_father_job").removeAttr('disabled');
+            }
+        });
+
+        $("#id_mother_name").change(function(){
+            if ($(this).val() == ''){
+                $("#id_mother_birthday").val('');
+                $("#id_mother_job").val('');
+                $("#id_mother_birthday").attr('disabled', true);
+                $("#id_mother_job").attr('disabled', true);
+            }
+            else{
+                $("#id_mother_birthday").removeAttr('disabled');
+                $("#id_mother_job").removeAttr('disabled');
+            }
+        });
+
         $("#id_ngay_vao_doi").each(function(){
             if (!$("#id_doi").is(':checked')){
                 $(this).attr('disabled', true);
