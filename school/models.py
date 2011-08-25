@@ -85,7 +85,7 @@ def validate_year(value):
 
 #validate the date that pupil join school
 def validate_join_date(value):
-    if value < date(1990,1,1):
+    if value < date(1990,1,1) or value > date.today():
         raise ValidationError(u'Ngày nằm ngoài khoảng cho phép')
 
 def validate_dd_date(value):
@@ -95,7 +95,13 @@ def validate_dd_date(value):
 def validate_hs(value):
     #he so bang 0 la cho nhung mon cham diem bang nhan xet
     if value < 0:
-        raise ValidationError(u'hs must be larger than 0')        
+        raise ValidationError(u'Hệ số phải lớn hơn 0')
+
+def validate_join_mark(value):
+    if value <= 0:
+        raise ValidationError(u'Điểm nhập trường phải lớn hơn 0')
+    if value >= 55:
+        raise ValidationError(u'Điểm nhập trường phải nhỏ hơn 55')
 
 class DanhSachLoaiLop(models.Model):
     loai = models.CharField("Loại", max_length = 15)
@@ -250,7 +256,7 @@ class Pupil(BasicPersonInfo):
 
     school_join_date = models.DateField("Ngày nhập trường(*)", default = date.today(),validators=[validate_join_date])
     ban_dk = models.CharField("Ban đăng kí(*)", max_length = 5, choices = BAN_CHOICE, default = u'CB')
-    school_join_mark = models.IntegerField("Điểm tuyển sinh", null = True, blank = True)
+    school_join_mark = models.IntegerField("Điểm tuyển sinh", null = True, blank = True, validators = [validate_join_mark])
     #thong tin ca nhan
     khu_vuc = models.CharField("Khu vực", max_length = 3, choices = KV_CHOICE, blank = True)
     doi = models.BooleanField("Là đội viên", blank = True, default = False)
