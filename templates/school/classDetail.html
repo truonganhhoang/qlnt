@@ -18,10 +18,11 @@
 
             });
 
-            $("#submitform").submit(function() {
+            $("#submitform").bind('submit',function() {
                 var d = $(this).serialize();
                 d = d + '&request_type=add';
                 var self = $(this);
+                var theLast = self.prev();
                 var arg = {data: d,
                     type: $(this).attr('method'),
                     url: $(this).attr('action'),
@@ -39,6 +40,9 @@
                                 });
                                 var newStudent = $("#student_placeholder > tr");
                                 newStudent.insertBefore(self).click(select);
+                                var stt = parseInt(theLast.find('td:eq(1)').text());
+                                if (stt) newStudent.find('td:eq(1)').text(stt + 1);
+                                else newStudent.find('td:eq(1)').text(1);
                                 $("#notify").showNotification(json.message);
                                 $(".form").find('input:text').val('');
                                 $(".form").find('input#id_dan_toc').val('Kinh');

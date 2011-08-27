@@ -107,9 +107,8 @@ $(document).ready(function(){
     };
 
     $("form").each(function(){
-        $(this).submit(function(){
+        $(this).bind('submit',function(){
             var ok = true;
-            console.log('submit');
             $('input:text').each(function(){
                 var origin = $(this).val();
                 if ($(this).is_harmful(origin)){
@@ -202,7 +201,6 @@ $(document).ready(function(){
             }
 
             var ok = true;
-            console.log('submit');
             $('input:text').each(function(){
                 var origin = $(this).val();
                 if ($(this).is_harmful(origin)){
