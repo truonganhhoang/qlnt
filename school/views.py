@@ -2033,7 +2033,7 @@ def subjectPerClass(request, class_id, sort_type=4, sort_status=0):
     message = None
     cl = Class.objects.get(id=class_id)
     term=get_current_term(request)
-    school_id = cl.block_id.school_id.id
+    school = get_school(request)
     try:
         if int(sort_type) == 1:
             if int(sort_status) == 0:
@@ -2058,10 +2058,10 @@ def subjectPerClass(request, class_id, sort_type=4, sort_status=0):
     except Exception as e:
         print e
 
-    form = SubjectForm(school_id)
+    form = SubjectForm(school.id)
     sfl = []
     for s in subjectList:
-        sfl.append(SubjectForm(school_id, instance=s))
+        sfl.append(SubjectForm(school.id, instance=s))
     list = zip(subjectList, sfl)
     if request.is_ajax():
         sid = request.POST['id']
@@ -2071,39 +2071,40 @@ def subjectPerClass(request, class_id, sort_type=4, sort_status=0):
                 shs = int(request.POST['teacher'])
             else:
                 shs = None
-            data = {'name' : sub.name, 'hs' : sub.hs, 'class_id':class_id, 'teacher_id':shs, 'index':sub.index, 'primary':sub.primary}
-            form = SubjectForm(school_id, data, instance=sub)
-            if form.is_valid():
-                form.save()
+
+            teacher = school.teacher_set.get(id = shs)
+            sub.teacher_id = teacher
+            sub.save()
+        if request.POST['request_type'] == u'type':
+            if request.POST['type'] != u'':
+                type = request.POST['type']
+            else:
+                type = None
+            try:
+                sub.type = type
+                sub.save()
+            except Exception as e:
+                print e
+
         elif request.POST['request_type'] == u'primary':
             shs = request.POST['primary']
-            if sub.teacher_id:
-                teacher=sub.teacher_id.id
-            else:
-                teacher=None
-            data = {'name' : sub.name, 'hs' : sub.hs, 'class_id':class_id, 'teacher_id':teacher, 'index':sub.index, 'primary':shs}
-            form = SubjectForm(school_id, data, instance=sub)
-            if form.is_valid():
-                form.save()
+            sub.primary = shs
+            sub.save()
+
         elif request.POST['request_type'] == u'hs':
             shs = float(request.POST['hs'])
-            if sub.teacher_id:
-                teacher=sub.teacher_id.id
-            else:
-                teacher=None
-            data = {'name' : sub.name, 'hs' : shs, 'class_id':class_id, 'teacher_id':teacher, 'index':sub.index, 'primary':sub.primary}
-            form = SubjectForm(school_id, data, instance=sub)
-            if form.is_valid():
-                form.save()
+            sub.hs = shs
+            sub.save()
     elif request.method == 'POST':
         hs_list = request.POST.getlist('hs')
         teacher_list = request.POST.getlist('teacher_id')
         p_list = request.POST.getlist('primary')
+        t_list = request.POST.getlist('type')
         i = 0
         for s in subjectList:
-            data = {'name':s.name, 'hs':hs_list[i], 'class_id':class_id, 'teacher_id':teacher_list[i], 'index':i, 'primary':p_list[i]}
+            data = {'name':s.name, 'hs':hs_list[i], 'class_id':class_id, 'teacher_id':teacher_list[i], 'index':i, 'primary':p_list[i], 'type':t_list[i]}
             of = sfl[i]
-            sfl[i] = SubjectForm(school_id, data, instance=s)
+            sfl[i] = SubjectForm(school.id, data, instance=s)
             if str(of) != str(sfl[i]):
                 if sfl[i].is_valid():
                     sfl[i].save()
@@ -2111,17 +2112,17 @@ def subjectPerClass(request, class_id, sort_type=4, sort_status=0):
             i += 1
         if teacher_list[i] != u'' or request.POST['name'].strip() != u'' or hs_list[i] != u'':
             index = i+1
-            data = {'name':request.POST['name'].strip(), 'hs':hs_list[i], 'class_id':class_id, 'teacher_id':teacher_list[i], 'index':index, 'primary':p_list[i]}
-            form = SubjectForm(school_id, data)
+            data = {'name':request.POST['name'].strip(), 'hs':hs_list[i], 'class_id':class_id, 'teacher_id':teacher_list[i], 'index':index, 'primary':p_list[i], 'type':t_list[i]}
+            form = SubjectForm(school.id, data)
             if form.is_valid():
                 _class = Class.objects.get(id=class_id)
                 if teacher_list[i] != u'':
                     teacher = Teacher.objects.get(id=int(data['teacher_id']))
-                    add_subject(subject_name=data['name'], hs=float(data['hs']), teacher=teacher, _class=_class, index = index)
-                    form = SubjectForm(school_id)
+                    add_subject(subject_name=data['name'], hs=float(data['hs']), teacher=teacher, _class=_class, index = index, subject_type=data['type'])
+                    form = SubjectForm(school.id)
                 else:
-                    add_subject(subject_name=data['name'], hs=float(data['hs']), _class=_class, index = index)
-                    form = SubjectForm(school_id)
+                    add_subject(subject_name=data['name'], hs=float(data['hs']), _class=_class, index = index, subject_type = data['type'])
+                    form = SubjectForm(school.id)
                 message = 'Môn học mới đã được thêm.'
             else:
                 message = None
@@ -2147,7 +2148,7 @@ def subjectPerClass(request, class_id, sort_type=4, sort_status=0):
     year = get_current_year(request)
     classList = year.class_set.all()
     for s in subjectList:
-        sfl.append(SubjectForm(school_id, instance=s))
+        sfl.append(SubjectForm(school.id, instance=s))
     list = zip(subjectList, sfl)
     t = loader.get_template(os.path.join('school', 'subject_per_class.html'))
     c = RequestContext(request, {   'list':list, 
