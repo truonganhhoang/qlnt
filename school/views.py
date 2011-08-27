@@ -2829,12 +2829,12 @@ def edit_khen_thuong(request, kt_id):
     pupil = kt.student_id
     if not in_school(request, pupil.class_id.block_id.school_id):
         return HttpResponseRedirect('/')
-    if (get_position(request) < 4):
+    if get_position(request) < 4:
         return HttpResponseRedirect('/')
     term = kt.term_id
-    form = KhenThuongForm(student_id,instance=kt)
+    form = KhenThuongForm(pupil.id,instance=kt)
     if request.method == 'POST':
-        form = KhenThuongForm(student_id,request.POST, instance=kt)
+        form = KhenThuongForm(pupil.id, request.POST, instance=kt)
         if form.is_valid():
             kt = form.save(commit = False)
             kt.student_id = pupil
@@ -2938,9 +2938,9 @@ def edit_ki_luat(request, kt_id):
     if get_position(request) < 4:
         return HttpResponseRedirect('/')
     term = kt.term_id
-    form = KiLuatForm(student_id,instance=kt)
+    form = KiLuatForm(pupil.id, instance=kt)
     if request.method == 'POST':
-        form = KiLuatForm(student_id,request.POST, instance=kt)
+        form = KiLuatForm(pupil.id, request.POST, instance=kt)
         if form.is_valid():
             kt = form.save(commit = False)
             kt.student_id = pupil
