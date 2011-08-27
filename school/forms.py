@@ -265,7 +265,8 @@ class uploadFileExcel(forms.Form):
     file  = forms.FileField(label=u'Chọn file Excel:', widget=forms.FileInput())
     
     def is_valid(self):
-        if not self.file.content_type in CONTENT_TYPES:
+        file = self.cleaned_data['file']
+        if not file.content_type in CONTENT_TYPES:
             os.remove(filepath)
             raise forms.ValidationError(u'Bạn chỉ được phép tải lên file Excel.')
         elif not os.path.getsize(filepath):
@@ -286,7 +287,7 @@ class smsFromExcelForm(forms.Form):
         save_file(file)            
         filepath = os.path.join(TEMP_FILE_LOCATION, 'sms_input.xls')
         
-        if not self.file.content_type in CONTENT_TYPES:
+        if not file.content_type in CONTENT_TYPES:
             os.remove(filepath)
             raise forms.ValidationError(u'Bạn chỉ được phép tải lên file Excel.')
         elif not os.path.getsize(filepath):

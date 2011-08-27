@@ -4,6 +4,7 @@
 import os.path
 import datetime
 from django.core.paginator import *
+from django.core import serializers
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.shortcuts import render_to_response
@@ -1507,21 +1508,23 @@ def viewClassDetail(request, class_id, sort_type=0, sort_status=0):
             data.appendlist('start_year_id',start_year.id)
             form = PupilForm(school.id, data)
             if form.is_valid():
-                school_join_date = date.today()
+                school_join_date = date.today() 
                 d = request.POST['birthday'].split('/')
                 birthday = date(int(d[2]),int(d[1]),int(d[0]))
                 data['birthday'] = birthday
                 _class = Class.objects.get(id=class_id)
                 index = _class.pupil_set.count() + 1
-                add_student(student=data, start_year=start_year,
-                            year=get_current_year(request),
-                            _class=_class,
-                            index= index,
-                            term=get_current_term(request),
-                            school=get_school(request),
-                            school_join_date=school_join_date)
-                message = 'OK'
-                data = simplejson.dumps({'message':message})
+                student = add_student( student=data, start_year=start_year,
+                                       year=get_current_year(request),
+                                       _class=_class,
+                                       index= index,
+                                       term=get_current_term(request),
+                                       school=get_school(request),
+                                       school_join_date=school_join_date)
+                message = u'Bạn vừa thêm 1 học sinh'
+                print student, message
+                data = simplejson.dumps({'message':message, 'success': True, 'student_id': student.id})
+                print data
                 return HttpResponse(data, mimetype = 'json')
                 #form = PupilForm(school.id)
             else:

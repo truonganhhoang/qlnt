@@ -125,6 +125,59 @@ def sync_subject(request):
     except Exception as e:
         print e
 
+
+@transaction.commit_on_success
+def check_logic(request):
+    message = ''
+    number = 0
+    try:
+        if request.method == 'GET':
+            print 'get'
+            students = Pupil.objects.all()
+            for student in students:
+                marks = Mark.objects.filter(student_id__exact = student)
+                for mark in marks:
+                    if student.class_id.year_id.school_id != mark.subject_id.class_id.year_id.school_id:
+                        number+=1
+                        print student, student.class_id, mark.subject_id.class_id
+            print 'message'
+            message = u'<p>Have ' + str(number) + ' students that have bugs.</p>'
+
+
+        elif  request.method == 'POST':
+            print 'POST'
+#            if 'sync' in request.POST:
+#                for _class in classes:
+#                    school = _class.year_id.school_id
+#                    if not school.status:
+#                        school.status = 1
+#                        school.save()
+#                    if school.school_level == '1': ds_mon_hoc = CAP1_DS_MON
+#                    elif school.school_level == '2': ds_mon_hoc = CAP2_DS_MON
+#                    elif school.school_level == '3': ds_mon_hoc = CAP3_DS_MON
+#                    else: raise Exception('SchoolLevelInvalid')
+#
+#                    if not _class.subject_set.count():
+#                        index = 0
+#                        for mon in ds_mon_hoc:
+#                            index +=1
+#                            print index
+#                            add_subject(subject_name= mon, subject_type= mon, _class=_class, index=index)
+#                message = '<p>Syncing subject from all classes: Done </p>'
+#                print 'tag'
+#                subjects = Subject.objects.all()
+#                for subject in subjects:
+#                    if subject.primary == 1:
+#                        subject.primary = 0
+#                        subject.save()
+#                message += "<br><p>Syncing subject's primary: Done</p>"
+        context = RequestContext(request)
+        return render_to_response(SYNC_SUBJECT, {'message': message, 'number': number},
+                                  context_instance = context)
+    except Exception as e:
+        print e
+
+
 @transaction.commit_on_success
 def sync_subject_type(request):
     message = ''

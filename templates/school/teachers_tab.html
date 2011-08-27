@@ -45,6 +45,7 @@
                     url: $(this).attr('action'),
                     success: function(response) {
                         $('.ui-tabs-panel:visible').html(response);
+                        applyListener();
                     }
                 };
                 $.ajax(arg);

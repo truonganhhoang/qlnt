@@ -213,12 +213,8 @@ def add_student( student = None, index = 0, start_year = None , year = None,
     if _class:
         number_subject = _class.subject_set.filter( primary = True).count()
     if find: # the student exists:
-        find = find[0]
-        find.class_id = _class
-        if _class is not find.class_id:
-            move_student( find, find.class_id, _class)
-        else:
-            pass
+        transaction.commit()
+        return None
     else:    # the student does not exist
         try:
             st = Pupil()
@@ -241,7 +237,6 @@ def add_student( student = None, index = 0, start_year = None , year = None,
             if 'mother_phone' in student: st.mother_phone = student['mother_phone']
             if 'phone' in student: st.phone = student['phone']
 
-            print 'tag 1'
             if 'sex' in student:
                 st.sex = student['sex']
             else:
@@ -297,12 +292,13 @@ def add_student( student = None, index = 0, start_year = None , year = None,
                 for subject in subjects:
                     tkmon = TKMon(student_id = st, subject_id = subject)
                     tkmon.save()
+            print 'add_student', st
+            transaction.commit()
+            return st
+
         except Exception as e:
             print e
-
     #end for student in students
-    transaction.commit()
-
 
 # adding students to database, return list of existing students.
 @transaction.commit_manually
