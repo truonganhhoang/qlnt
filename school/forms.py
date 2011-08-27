@@ -146,7 +146,7 @@ class ClassForm(forms.ModelForm):
 class SubjectForm(forms.ModelForm):
     class Meta:
         model = Subject
-        exclude = {'index'}
+        exclude = {'index','class_id'}
         
     def __init__(self, school_id, *args, **kwargs):
         super(SubjectForm, self).__init__(*args, **kwargs)
