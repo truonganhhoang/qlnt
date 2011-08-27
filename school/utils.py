@@ -141,7 +141,7 @@ def move_student(school, student, new_class):
     else:
         subjects = old_class.subject_set.all()
         for subject in subjects:
-            subject_in_new_class = new_class.subject_set.filter( name__exact = subject.name)
+            subject_in_new_class = new_class.subject_set.filter( type__exact = subject.type, name_exact = subject.name)
             if subject_in_new_class:
                 the_mark = subject.mark_set.filter( student_id__exact = student)
                 the_mark.subject_id = subject_in_new_class

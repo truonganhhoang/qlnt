@@ -284,7 +284,10 @@ class Pupil(BasicPersonInfo):
     start_year_id = models.ForeignKey(StartYear, verbose_name = "khóa")
     class_id = models.ForeignKey(Class, verbose_name = "lớp", null = True, blank = True)
     school_id = models.ForeignKey(Organization, verbose_name = "trường", null = True, blank = True)
-    
+
+    def get_school(self):
+        return self.school_id
+
     class Meta:
         verbose_name = "Học sinh"
         verbose_name_plural = "Học sinh"

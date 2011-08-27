@@ -21,10 +21,30 @@
             $("#submitform").submit(function() {
                 var d = $(this).serialize();
                 d = d + '&request_type=add';
+                var self = $(this);
                 var arg = {data: d,
                     type: $(this).attr('method'),
                     url: $(this).attr('action'),
-                    success:function() {
+                    success:function(json) {
+                        if (!json.success){
+                            $("#notify").showNotification(json.message, 3000);
+                        } else {
+                            $.ajaxSetup({
+                                global: false
+                            });
+                            $("#student_placeholder").load("{% url school.views.student 0 %}"+json.student_id+" tr",
+                            function(){
+                                $.ajaxSetup({
+                                    global: true
+                                });
+                                var newStudent = $("#student_placeholder > tr");
+                                newStudent.insertBefore(self).click(select);
+                                $("#notify").showNotification(json.message);
+                                $(".form").find('input:text').val('');
+                                $(".form").find('input#id_dan_toc').val('Kinh');
+                            })
+                                
+                        }
                     }
                 };
                 $.ajax(arg);
@@ -51,17 +71,14 @@
                 title: "Nhập học sinh từ file Excel"
             });
 
-            function IsNumeric(input) {
+            function isNumeric(input) {
                 return (input - 0) == input && input.length > 0;
             }
-
-            ;
-
             var select = function() {
                 if (!$(this).hasClass('thread') && !$(this).hasClass('form') && !$(this).hasClass('function')) {
                     var id = $(this).attr('class').split(' ')[0];
                     var checkboxid = '#checkbox_' + id;
-                    var checkboxall = '#checkbox_all'
+                    var checkboxall = '#checkbox_all';
                     if ($(this).hasClass('selected')) {
                         $(this).removeClass('selected');
                         $(checkboxid).prop("checked", false);
@@ -72,9 +89,8 @@
                         $(checkboxid).prop("checked", true);
                         $(checkboxall).prop("checked", true);
                     }
-                    ;
                 }
-            }
+            };
             var delSelected = function() {
                 if (!$("#checkbox_all").is(':checked')) {
                     alert("Bạn chưa chọn học sinh nào để xóa");
@@ -97,11 +113,14 @@
                 };
                 $.ajax(arg);
                 return false;
-            }
+            };
             $("#delSelected").click(delSelected);
+
+            // individual listener
             $("tr").each(function() {
                 $(this).click(select);
             });
+           
             $("#checkbox_all").click(function() {
                 var checkboxall = '#checkbox_all';
                 if ($(checkboxall).is(':checked')) {
@@ -339,7 +358,8 @@
             </form>
         {% endif %}
     </table>
-
+    <div id="student_placeholder" style="display: none;">
+    </div>
     <div style="display: none;">
         <div id="fileupload">
             <form method="post" action="" enctype="multipart/form-data">

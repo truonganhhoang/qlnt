@@ -141,8 +141,13 @@ def calculateOverallMarkTerm(class_id,termNumber):
             monVan   =None
             minMark  =10
             markSum=0
-            factorSum=0   
-            tbHocKy=tbHocKyList[j]
+            factorSum=0
+            try:
+                tbHocKy=tbHocKyList[j]
+            except Exception as e:
+                print e
+                print m.student_id, m.subject_id, m.subject_id.class_id.year_id.school_id
+                print m.student_id.class_id.year_id.school_id
             j+=1                       
              
         if t==vtMonChuyen  :  monChuyen=m

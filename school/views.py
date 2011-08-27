@@ -34,7 +34,7 @@ CLASSIFY = os.path.join('school','classify.html')
 INFO = os.path.join('school','info.html')
 SETUP = os.path.join('school','setup.html')
 ORGANIZE_STUDENTS = os.path.join('school','organize_students.html')
-
+STUDENT = os.path.join('school','classDetail_one_student.html')
 def school_index(request):
     
     user = request.user
@@ -1306,7 +1306,7 @@ def classes(request):
     school = get_school(request)
     blockList = school.block_set.all()
     if request.method == 'POST':
-        if (request.is_ajax()):
+        if request.is_ajax():
             cyear = get_current_year(request)
             class_id = request.POST['id']
             c = cyear.class_set.get(id = int(class_id))
@@ -1455,7 +1455,31 @@ def addClass(request):
         t = loader.get_template(os.path.join('school', 'add_class.html'))
         c = RequestContext(request)
         return HttpResponse(t.render(c))
-		
+
+def student(request, student_id):
+    try:
+        user = request.user
+        if not user.is_authenticated():
+            return HttpResponseRedirect(reverse('login'))
+
+        try:
+            school = get_school(request)
+        except Exception as e:
+            return HttpResponseRedirect(reverse('index'))
+        if not request.is_ajax():
+            raise Exception("PageDoesNotExist")
+        try:
+            student = Pupil.objects.get(id=student_id)
+            if school != student.get_school():
+                raise Exception("IllegalAccess")
+            return render_to_response(STUDENT, {'student': student}, context_instance = RequestContext(request))
+        except ObjectDoesNotExist as e:
+            raise Exception("StudentDoesNotExist")
+    except Exception as e:
+        print e
+
+    
+
 #User: loi.luuthe@gmail.com
 #This function has class_id is an int argument. It gets the information of the class corresponding to the class_id and response to the template
 def viewClassDetail(request, class_id, sort_type=0, sort_status=0):

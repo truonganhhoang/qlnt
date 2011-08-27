@@ -139,7 +139,7 @@ def check_logic(request):
                 for mark in marks:
                     if student.class_id.year_id.school_id != mark.subject_id.class_id.year_id.school_id:
                         number+=1
-                        print student, student.class_id, mark.subject_id.class_id
+                        print student, student.class_id, student.class_id.year_id.school_id, mark.subject_id.class_id, mark.subject_id.class_id.year_id.school_id, mark.subject_id
             print 'message'
             message = u'<p>Have ' + str(number) + ' students that have bugs.</p>'
 
