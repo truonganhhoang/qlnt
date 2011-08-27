@@ -1039,9 +1039,7 @@ def teacher_import( request):
     else:
         return HttpResponseRedirect( reverse('school_index'))
     # save the file
-    print 'save file'
     filename = save_file(request.FILES.get('file'), request.session)
-    print 'saved', filename
     message = None
     process_file_message = None
 
@@ -1059,7 +1057,6 @@ def teacher_import( request):
         try:
             teacher_list = result
             for teacher in teacher_list:
-                print teacher
 #                data = {'fullname': name,
 #                    'birthday': birthday,
 #                    'sex': gt,
@@ -1546,16 +1543,13 @@ def viewClassDetail(request, class_id, sort_type=0, sort_status=0):
                                        school=get_school(request),
                                        school_join_date=school_join_date)
                 message = u'Bạn vừa thêm 1 học sinh'
-                print student, message
                 data = simplejson.dumps({'message':message, 'success': True, 'student_id': student.id})
-                print data
                 return HttpResponse(data, mimetype = 'json')
                 #form = PupilForm(school.id)
             else:
                 message = ''
                 try:
                     d = request.POST['birthday'].split('/')
-                    print d
                     birthday = date(int(d[2]), int(d[1]), int(d[0]))
                     if birthday >= date.today():
                         message += u'<li> ' + u'Ngày không hợp lệ' + u'</li>'
@@ -1677,7 +1671,6 @@ def teachers(request,  sort_type=1, sort_status=0):
             return HttpResponse()
         if request.POST['request_type'] == u'rename_team':
             t = school.team_set.get(id = request.POST['id'])
-            print t
             try:
                 tmp = school.team_set.get(name=request.POST['name'].strip())
                 message = u'Tên Tổ này đã tồn tại'
@@ -1731,7 +1724,6 @@ def team(request, team_id ,sort_type=1, sort_status=0):
                 try:
                     _t = g.team_id.group_set.get( name = request.POST['name'])
                     message = u'Nhóm này đã tồn tại'
-                    print message
                     data = simplejson.dumps({'message': message})
                     return HttpResponse(data, mimetype='json')
                 except ObjectDoesNotExist:
