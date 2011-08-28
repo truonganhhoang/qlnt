@@ -2207,22 +2207,122 @@ def viewStudentDetail(request, student_id):
     ttddform = ThongTinDoanDoiForm(student_id,instance=pupil)
     if request.method == 'POST':
         data = request.POST.copy()
-        data['first_name'] = data['first_name'].strip()
-        data['last_name'] = data['last_name'].strip()
-        form = PupilForm(school_id, data, instance=pupil)
-        ttcnform = ThongTinCaNhanForm(school_id, data, instance=pupil)
-        ttllform = ThongTinLienLacForm(data, instance=pupil)
-        ttgdform = ThongTinGiaDinhForm(data, instance=pupil)
-        ttddform = ThongTinDoanDoiForm(student_id, data, instance=pupil)
-        if form.is_valid() and ttddform.is_valid():
-            form.save()            
-            ttcnform = ThongTinCaNhanForm(school_id, instance=pupil)
-            ttllform = ThongTinLienLacForm(instance=pupil)
-            ttgdform = ThongTinGiaDinhForm(instance=pupil)
-            ttddform = ThongTinDoanDoiForm(student_id, instance=pupil)
-            message = 'Bạn đã cập nhật thành công'
+        if request.POST['request_type'] == 'ttcn':
+            data['first_name'] = data['first_name'].strip()
+            data['last_name'] = data['last_name'].strip()
+            ttcnform = ThongTinCaNhanForm(school_id, data, instance=pupil)
+            if ttcnform.is_valid():
+                ttcnform.save()
+                message = 'Bạn đã cập nhật thành công thông tin cá nhân'
+        elif request.POST['request_type'] == 'ttll':
+            ttllform = ThongTinLienLacForm(data, instance=pupil)
+            if ttllform.is_valid():
+                ttllform.save()
+                message = 'Bạn đã cập nhật thành công thông tin liên lạc'
+        elif request.POST['request_type'] == 'ttgd':
+            ttgdform = ThongTinGiaDinhForm(data, instance=pupil)
+            if ttgdform.is_valid():
+                ttgdform.save()
+                message = 'Bạn đã cập nhật thành công thông gia đình'
+        elif request.POST['request_type'] == 'ttdd':
+            ttddform = ThongTinDoanDoiForm(student_id, data, instance=pupil)
+            if ttddform.is_valid():
+                ttddfrom.save()
+                message = 'Bạn đã cập nhật thành công thông tin đoàn đội'
+    if request.is_ajax():
+        if request.method == 'POST':
+            if request.POST['request_type'] == 'ttcn':
+                first_name = ''
+                last_name = ''
+                birthday = ''
+                school_join_date = ''
+                school_join_mark = ''
+                if not ttcnform.is_valid():
+                    message = 'Có lỗi ở dữ liệu nhập vào'
+                    for a in ttcnform:
+                        if a.name == 'first_name':
+                            if a.errors:
+                                first_name = str(a.errors)
+                        if a.name == 'last_name':
+                            if a.errors:
+                                last_name = str(a.errors)
+                        if a.name == 'birthday':
+                            if a.errors:
+                                birthday = str(a.errors)
+                        if a.name == 'school_join_date':
+                            if a.errors:
+                                school_join_date = str(a.errors)
+                        if a.name == 'school_join_mark':
+                            if a.errors:
+                                school_join_mark = str(a.errors)
+                response = simplejson.dumps({'message': message, 'response_type': 'ttcn',
+                                             'first_name':first_name, 'last_name':last_name,
+                                             'birthday':birthday, 'school_join_date':school_join_date,
+                                             'school_join_mark':school_join_mark})
+                return HttpResponse(response, mimetype = 'json')
+            if request.POST['request_type'] == 'ttll':
+                phone = ''
+                father_phone = ''
+                mother_phone = ''
+                email = ''
+                sms_phone = ''
+                if not ttllform.is_valid():
+                    message = 'Có lỗi ở dữ liệu nhập vào'
+                    for a in ttllform:
+                        if a.name == 'phone':
+                            if a.errors:
+                                phone = str(a.errors)
+                        if a.name == 'father_phone':
+                            if a.errors:
+                                father_phone = str(a.errors)
+                        if a.name == 'mother_phone':
+                            if a.errors:
+                                mother_phone = str(a.errors)
+                        if a.name == 'email':
+                            if a.errors:
+                                email = str(a.errors)
+                        if a.name == 'sms_phone':
+                            if a.errors:
+                                sms_phone = str(a.errors)
+                response = simplejson.dumps({'message': message, 'response_type': 'ttll',
+                                             'father_phone':father_phone, 'mother_phone':mother_phone,
+                                             'phone':phone, 'email':email,'sms_phone':sms_phone})
+                return HttpResponse(response, mimetype = 'json')
+            if request.POST['request_type'] == 'ttgd':
+                father_birthday = ''
+                mother_birthday = ''
+                if not ttgdform.is_valid():
+                    message = 'Có lỗi ở dữ liệu nhập vào'
+                    for a in ttgdform:
+                        if a.name == 'father_birthday':
+                            father_birthday = str(a.errors)
+                        if a.name == 'mother_birthday':
+                            mother_birthday = str(a.errors)
+                response = simplejson.dumps({'message': message, 'response_type': 'ttgd',
+                                             'father_birthday':father_birthday, 'mother_birthday':mother_birthday})
+                return HttpResponse(response, mimetype = 'json')
+            if request.POST['request_type'] == 'ttdd':
+                ngay_vao_doi = ''
+                ngay_vao_doan = ''
+                ngay_vao_dang = ''
+                if not ttddform.is_valid():
+                    message = u'Có lỗi ở dữ liệu nhập vào'
+                    for a in ttddform:
+                        if a.name == 'ngay_vao_doan':
+                            if a.errors:
+                                ngay_vao_doan = str(a.errors)
+                        if a.name == 'ngay_vao_doi':
+                            if a.errors:
+                                ngay_vao_doi = str(a.errors)
+                        if a.name == 'ngay_vao_dang':
+                            if a.errors:
+                                ngay_vao_dang = str(a.errors)
+                response = simplejson.dumps({'message': message, 'response_type': 'ttdd',
+                                             'ngay_vao_doi':ngay_vao_doi, 'ngay_vao_doan':ngay_vao_doan,
+                                             'ngay_vao_dang':ngay_vao_dang})
+                return HttpResponse(response, mimetype = 'json')
     t = loader.get_template(os.path.join('school', 'student_detail.html'))
-    c = RequestContext(request, {   'form': form, 
+    c = RequestContext(request, {   'form': form,
                                     'ttcnform': ttcnform,
                                     'ttllform': ttllform,
                                     'ttgdform': ttgdform,
@@ -2230,7 +2330,8 @@ def viewStudentDetail(request, student_id):
                                     'message': message, 
                                     'id': student_id,
                                     'class_id':pupil.class_id.id,
-                                    'pos':pos
+                                    'pos':pos,
+                                    'student': pupil,
                                 }
                        )
     return HttpResponse(t.render(c))
@@ -2772,6 +2873,7 @@ def add_khen_thuong(request, student_id):
         return HttpResponseRedirect('/')
     if get_position(request) < 4:
         return HttpResponseRedirect('/')
+    url = "/school/khenthuong/"+str(student_id) + "/add"
     cl = Class.objects.get(id__exact=pupil.class_id.id)
     term = get_current_term(request)
     if request.method == 'POST':
@@ -2781,10 +2883,10 @@ def add_khen_thuong(request, student_id):
             kt.student_id = pupil
             kt.term_id = term
             kt.save()
-            url = '/school/viewStudentDetail/' + str(student_id)
+            url = '/school/khenthuong/' + str(student_id)
             return HttpResponseRedirect(url)
     t = loader.get_template(os.path.join('school', 'khen_thuong_detail.html'))
-    c = RequestContext(request, {'form': form, 'p': pupil, 'student_id':student_id, 'term':term})
+    c = RequestContext(request, {'form': form, 'p': pupil, 'student_id':student_id, 'term':term, 'url':url})
     return HttpResponse(t.render(c))
 
 def delete_khen_thuong(request, kt_id):
@@ -2804,7 +2906,7 @@ def delete_khen_thuong(request, kt_id):
     if (get_position(request) < 4):
         return HttpResponseRedirect('/')
     kt.delete()
-    url = '/school/viewStudentDetail/' + str(student.id)
+    url = '/school/khenthuong/' + str(student.id)
     return HttpResponseRedirect(url)
     
 def edit_khen_thuong(request, kt_id):
@@ -2823,6 +2925,7 @@ def edit_khen_thuong(request, kt_id):
         return HttpResponseRedirect('/')
     if get_position(request) < 4:
         return HttpResponseRedirect('/')
+    url = "/school/khenthuong/"+str(pupil.id) + "/edit"
     term = kt.term_id
     form = KhenThuongForm(pupil.id,instance=kt)
     if request.method == 'POST':
@@ -2835,7 +2938,7 @@ def edit_khen_thuong(request, kt_id):
             url = '/school/viewStudentDetail/' + str(pupil.id)
             return HttpResponseRedirect(url)
     t = loader.get_template(os.path.join('school', 'khen_thuong_detail.html'))
-    c = RequestContext(request, {'form': form, 'p': pupil, 'student_id':pupil.id, 'term':term})
+    c = RequestContext(request, {'form': form, 'p': pupil, 'student_id':pupil.id, 'term':term, 'url':url})
     return HttpResponse(t.render(c))
     
 def ki_luat(request, student_id):
@@ -2877,6 +2980,7 @@ def add_ki_luat(request, student_id):
         return HttpResponseRedirect('/')
     if get_position(request) < 2:
         return HttpResponseRedirect('/')
+    url = "/school/kiluat/"+str(student_id) + "/add"
     cl = Class.objects.get(id__exact=pupil.class_id.id)
     term = get_current_term(request)
     if request.method == 'POST':
@@ -2886,10 +2990,10 @@ def add_ki_luat(request, student_id):
             kt.student_id = pupil
             kt.term_id = term
             kt.save()
-            url = '/school/viewStudentDetail/' + str(student_id)
+            url = '/school/kiluat/' + str(student_id)
             return HttpResponseRedirect(url)
     t = loader.get_template(os.path.join('school', 'ki_luat_detail.html'))
-    c = RequestContext(request, {'form': form, 'p': pupil, 'student_id':student_id, 'term':term})
+    c = RequestContext(request, {'form': form, 'p': pupil, 'student_id':student_id, 'term':term, 'url':url})
     return HttpResponse(t.render(c))
 
 def delete_ki_luat(request, kt_id):
@@ -2909,7 +3013,7 @@ def delete_ki_luat(request, kt_id):
     if get_position(request) < 4:
         return HttpResponseRedirect('/')
     kt.delete()
-    url = '/school/viewStudentDetail/' + str(student.id)
+    url = '/school/kiluat/' + str(student.id)
     return HttpResponseRedirect(url)
 
 def edit_ki_luat(request, kt_id):
@@ -2929,6 +3033,7 @@ def edit_ki_luat(request, kt_id):
         return HttpResponseRedirect('/')
     if get_position(request) < 4:
         return HttpResponseRedirect('/')
+    url = "/school/kiluat/"+str(pupil.id) + "/edit"
     term = kt.term_id
     form = KiLuatForm(pupil.id, instance=kt)
     if request.method == 'POST':
@@ -2938,10 +3043,10 @@ def edit_ki_luat(request, kt_id):
             kt.student_id = pupil
             kt.term_id = term
             kt.save()
-            url = '/school/viewStudentDetail/' + str(pupil.id)
+            url = '/school/kiluat/' + str(pupil.id)
             return HttpResponseRedirect(url)
     t = loader.get_template(os.path.join('school', 'ki_luat_detail.html'))
-    c = RequestContext(request, {'form': form, 'p': pupil, 'student_id':pupil.id, 'term':term})
+    c = RequestContext(request, {'form': form, 'p': pupil, 'student_id':pupil.id, 'term':term, 'url':url})
     return HttpResponse(t.render(c))    
 #term_number = 1: ki 1. = 2: ki 2, = 3: ca nam.
 def hanh_kiem(request, class_id = 0, sort_type = 1, sort_status = 0):

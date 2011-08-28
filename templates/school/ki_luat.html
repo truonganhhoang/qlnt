@@ -7,7 +7,6 @@ function confirmDelete()
 }
 </script>
 
-<h2>Kỷ luật của {{pupil}}</h2>
 {% if count > 0 %}
 <table class="styleA" width = "100%" >
     <tr>
@@ -34,8 +33,8 @@ function confirmDelete()
         <td align="center" width="15%"> {{kt.dia_diem}} </td>
         <td align="center" width="30%"> {{kt.noi_dung}} </td>
         {%if pos > 1%}
-        <td width="5%"><a href = "/school/kiluat/{{kt.id}}/delete" class="ggButton" onclick="return confirmDelete();"> xóa</a></td>
-        <td width="5%"><a href = "/school/kiluat/{{kt.id}}/edit" class="ggButton"> Sửa</a></td>
+        <td width="5%"><a href = "/school/kiluat/{{kt.id}}/delete" class="ggButton onPage" onclick="return confirmDelete();"> xóa</a></td>
+        <td width="5%"><a href = "/school/kiluat/{{kt.id}}/edit" class="ggButton onPage"> Sửa</a></td>
         {% endif %}
     </tr>
     {% endfor %}
@@ -45,6 +44,6 @@ function confirmDelete()
     </br>
 {% endif %}
 {% if pos > 1 %}
-    <a title="Thêm kỉ luật cho học sinh" class = "tiptiphover ggButton" href="/school/kiluat/{{student_id}}/add"> Thêm </a>
+    <a title="Thêm kỉ luật cho học sinh" class = "tiptiphover ggButton onPage" href="/school/kiluat/{{student_id}}/add"> Thêm </a>
 {% endif %}
 {% endblock %}

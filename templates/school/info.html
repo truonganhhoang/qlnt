@@ -24,18 +24,10 @@
                         global: true
                     });
                 } else {
-                    if (json.phone != ''){
-                        $("#id_phone").parents("td").append(json.phone);
-                    }
-                    if (json.email != ''){
-                        $("#id_email").parents("td").append(json.email);
-                    }
-                    if (json.address !=''){
-                        $("#id_address").parents("td").append(json.address);
-                    }
-                    if (json.name != ''){
-                        $("#id_name").parents("td").append(json.name);
-                    }
+                    $("#id_phone").parents("td").append(json.phone);
+                    $("#id_email").parents("td").append(json.email);
+                    $("#id_address").parents("td").append(json.address);
+                    $("#id_name").parents("td").append(json.name);
                     $("#notify").showNotification(json.message);
                 }
                 

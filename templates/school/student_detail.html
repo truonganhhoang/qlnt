@@ -76,7 +76,7 @@
             }
             else{
                 $("#id_ngay_vao_doi").removeAttr('disabled');
-            };
+            }
         });
 
         $("#id_doan").click(function() {
@@ -86,7 +86,7 @@
             }
             else{
                 $("#id_ngay_vao_doan").removeAttr('disabled');
-            };
+            }
         });
 
         $("#id_dang").click(function() {
@@ -96,14 +96,76 @@
             }
             else{
                 $("#id_ngay_vao_dang").removeAttr('disabled');
-            };
+            }
         });
-
+        var update_student_detail = function(json) {
+            $("#notify").showNotification(json.message);
+            if (json.response_type == 'ttcn') {
+                $("#id_first_name").parents("td").append(json.first_name);
+                $("#id_last_name").parents("td").append(json.last_name);
+                $("#id_birthday").parents("td").append(json.birthday);
+                $("#id_school_join_date").parents("td").append(json.school_join_date);
+                $("#id_school_join_mark").parents("td").append(json.school_join_mark);
+            }
+            else if (json.response_type == 'ttgd') {
+                $("#id_father_birthday").parents("td").append(json.father_birthday);
+                $("#id_mother_birthday").parents("td").append(json.mother_birthday);
+            }
+            else if (json.response_type == 'ttll') {
+                $("#id_phone").parents("td").append(json.phone);
+                $("#id_father_phone").parents("td").append(json.father_phone);
+                $("#id_mother_phone").parents("td").append(json.mother_phone);
+                $("#id_email").parents("td").append(json.email);
+                $("#id_sms_phone").parents("td").append(json.sms_phone);
+            }
+            else if (json.response_type == 'ttdd') {
+                $("#id_ngay_vao_dang").parents("td").append(json.ngay_vao_dang);
+                $("#id_ngay_vao_doi").parents("td").append(json.ngay_vao_doi);
+                $("#id_ngay_vao_doan").parents("td").append(json.ngay_vao_doan);
+            }
+        };
+        $("form.student_detail").submit(function() {
+            $(".errorlist", this).empty();
+            data = $(this).serialize();
+            var arg = {
+                data : data,
+                type: $(this).attr("method"),
+                url: $(this).attr("action"),
+                success: update_student_detail,
+                global: false
+            };
+            $.ajax(arg);
+            return false;
+        });
+        $("a.onPage").live("click", function() {
+            $.ajax({
+                url: this.href,
+                global: false,
+                dataType: 'html',
+                type: 'GET',
+                success: function(response){
+                    $('.ui-tabs-panel:visible').html(response);
+                    applyListener();
+                }
+            });
+            return false;
+        });
+        $("form.onPage").live("submit", function() {
+            var data = $(this).serialize();
+            var arg = {
+                data:data,
+                type: $(this).attr("method"),
+                url: $(this).attr("action"),
+                global: false,
+                success: function(response){
+                    $('.ui-tabs-panel:visible').html(response);
+                    applyListener();
+                }
+            };
+            $.ajax(arg);
+            return false;
+        });
     });
-    function confirmDelete()
-    {
-        return confirm("Bạn có muốn xóa kỉ luật này không");
-    }
 </script>
 
 {%if pos > 0%}
@@ -116,8 +178,7 @@
 <div id="tableFunction">
     <a title="Danh sách lớp học" class = "tiptiphove ggButton" href="{%url school.views.school_index  %}viewClassDetail/{{class_id}}">Quay lại</a>
 </div>
-
-<form action="/school/viewStudentDetail/{{id}}" method="post">{% csrf_token %}
+<h2> Học sinh {{ student }}</h2>
 
     <div id = "tabs">
         <ul>
@@ -131,29 +192,40 @@
             <li><a href="{%url school.views.school_index  %}markForAStudent/{{class_id}}/{{id}}">Điểm</a></li>
         </ul>
         <div id = "tabs-1">
-            <table class = "styleA" >
-            {{ ttcnform.as_table }}
-            </table>
-            <input class="ggButton" type="submit" value="Lưu"/>
+            <form action="/school/viewStudentDetail/{{id}}" method="post" class="student_detail">{% csrf_token %}
+                <table class = "styleA" >
+                {{ ttcnform.as_table }}
+                </table>
+                <input type="hidden" name="request_type" value="ttcn">
+                <input class="ggButton" type="submit" value="Lưu"/>
+            </form>
         </div>
         <div id = "tabs-2">
-            <table class = "styleA">
-            {{ ttllform.as_table }}
-            </table>
-            <input class="ggButton" type="submit" value="Lưu"/>
+            <form action="/school/viewStudentDetail/{{id}}" method="post" class="student_detail">{% csrf_token %}
+                <table class = "styleA">
+                {{ ttllform.as_table }}
+                </table>
+                <input type="hidden" name="request_type" value="ttll">
+                <input class="ggButton" type="submit" value="Lưu"/>
+            </form>
         </div>
         <div id = "tabs-3">
-            <table class = "styleA">
-            {{ ttgdform.as_table }}
-            </table>
-            <input class="ggButton" type="submit" value="Lưu"/>
+            <form action="/school/viewStudentDetail/{{id}}" method="post" class="student_detail">{% csrf_token %}
+                <table class = "styleA">
+                {{ ttgdform.as_table }}
+                </table>
+                <input type="hidden" name="request_type" value="ttgd">
+                <input class="ggButton" type="submit" value="Lưu"/>
+            </form>
         </div>
         <div id = "tabs-4">
-            <table class = "styleA">
-            {{ ttddform.as_table }}
-            </table>
-            <input class="ggButton" type="submit" value="Lưu"/>
+            <form action="/school/viewStudentDetail/{{id}}" method="post" class="student_detail">{% csrf_token %}
+                <table class = "styleA">
+                {{ ttddform.as_table }}
+                </table>
+                <input type="hidden" name="request_type" value="ttdd">
+                <input class="ggButton" type="submit" value="Lưu"/>
+            </form>
         </div>
     </div>
-</form>
 {% endblock %}

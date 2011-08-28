@@ -1,11 +1,7 @@
-﻿{% extends "base.html" %}
-
-{% block content %}
+﻿{% block content %}
 <br>
 
-<h2>Các buổi nghỉ của {{pupil}} học kì {{term}}</h2>
-<br>
-<form action="/school/diemdanhhs/{{student_id}}/1" method="post">{% csrf_token %}
+<form action="/school/diemdanhhs/{{student_id}}/1" method="post" class="onPage">{% csrf_token %}
         
 <table class="styleA" >
 
@@ -51,7 +47,7 @@
                 </tr>
             <tr>
             <td> <input type ="submit" class="ggButton" value="Lưu"/> </td>
-            <td> <a href="{%url school.views.school_index  %}viewStudentDetail/{{student_id}}" class="ggButton">Quay lại</a> </td>
+            <td> <a href="/school/diemdanhhs/{{student_id}}" class="ggButton onPage">Quay lại</a> </td>
         {%endif%}
 	    </tr>
 </table>

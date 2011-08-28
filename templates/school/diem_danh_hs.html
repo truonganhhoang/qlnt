@@ -1,9 +1,7 @@
 ﻿{% block content %}
-<h2>Các buổi nghỉ của {{pupil}} học kì {{term}}</h2>
-<table class="styleA" >
 
     {% if count > 0 %}
-
+    <table class="styleA" >
         <tr>
             <th align="center"> STT </th>
             <th align="center"> Ngày</th>
@@ -28,5 +26,5 @@
         <p>Học sinh hiện chưa nghỉ buổi nào</p>
     {% endif %}
     <br>
-    <a href="/school/diemdanhhs/{{ student_id }}/1" class="ggButton">Thêm</a>
+    <a href="/school/diemdanhhs/{{ student_id }}/1" class="ggButton onPage">Thêm</a>
 {% endblock %}

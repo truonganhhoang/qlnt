@@ -1,12 +1,8 @@
-﻿{% extends "base.html" %}
-
-{% block content %}
+﻿{% block content %}
 <table border = 0 align = "center" width = "100%">
 </table>
 <br>
-<h2>Kỉ luật học sinh {{p}} </h2>
-<br>
-<form action="" method="post">{% csrf_token %}
+<form action="{{ url }}" method="post" class="onPage">{% csrf_token %}
     {{ form.non_field_errors }}
     <table class="styleA">
 	    {{ form.as_table }}
@@ -15,6 +11,6 @@
 	{{message}} <br>
 	{% endif %}
 	<input type ="submit" class="ggButton" value="Lưu"/>
-    <a href="/school/viewStudentDetail/{{p.id}}" class="ggButton">Quay lại</a>
+    <a href="/school/kiluat/{{p.id}}" class="ggButton onPage">Quay lại</a>
 </form>
 {% endblock %}
