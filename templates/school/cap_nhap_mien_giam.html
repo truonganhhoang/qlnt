@@ -1,5 +1,6 @@
 ﻿
 {% block content %}
+{% if user.userprofile.position == 'HIEU_TRUONG' or user.userprofile.position == 'HIEU_PHO' %}
 	<table class="styleA">
 	<tr>
 		<th> Môn </th>
@@ -117,6 +118,41 @@
 	);
 	
 </script>
+
+{% else %}
+{% if user.userprofile.position == 'GIAO_VIEN' or user.userprofile.position == 'HOC_SINH' %}		
+	{% if coMienGiam %}
+		<table class="styleA">
+			<tr>
+				<th> Môn </th>
+				<th> Hình thức miễn giảm </th>
+			</tr>
+		{% for s,rl in list %}
+			{% if rl != 0 %}
+			<tr>
+				<td> {{s.name}} </td>
+				<td> 
+					{% ifequal rl 1%} 
+						 Miễn kì I
+					{% else %}		
+					{% ifequal rl 2%} 
+						Miễn kì II
+					{% else %}												
+					{% ifequal rl 3%} 
+						Miễn cả năm
+					{% endifequal %}	
+					{% endifequal %}	
+					{% endifequal %}	
+				</td> 
+			</tr>
+			{% endif %}
+		{% endfor %}			
+		</table>		
+	{% else %}
+		Không có môn nào được miển giảm.
+	{% endif %}
 	
+{% endif %}
+{% endif %}
 	
 {% endblock %}

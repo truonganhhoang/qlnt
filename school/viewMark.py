@@ -977,6 +977,7 @@ def capNhapMienGiam(request,class_id, student_id):
         tkMonList[index].save()
                                             
     mgList=[]
+    coMienGiam =False
     for term1,term2,tkMon in zip(term1Mark,term2Mark,tkMonList):
         if    (tkMon.mg) & (term1.mg) & (term2.mg) : 
             mgList.append(3)
@@ -985,7 +986,10 @@ def capNhapMienGiam(request,class_id, student_id):
         else: mgList.append(0)
         
         print term1.mg,' ',term2.mg,' ',tkMon.mg
-    print mgList    
+    for m in mgList:
+        if m !=0:
+            coMienGiam=True
+                
     
     list = zip(subjectList,mgList)     
     message = None
@@ -994,7 +998,9 @@ def capNhapMienGiam(request,class_id, student_id):
                                  'list':list,
                                  'class_id':class_id,
                                  'student_id':student_id,
+                                 'coMienGiam':coMienGiam,
                                 }
                        )
     return HttpResponse(t.render(c))
-
+def convertMarkToCharacter1():
+    return 'chao'

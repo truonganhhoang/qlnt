@@ -23,7 +23,6 @@ urlpatterns = patterns('',
     url(r'markForTeacher/(?P<term_id>\w+)$','school.viewMark.markForTeacher'),
     url(r'markForTeacher/(?P<term_id>\w+)/(?P<subject_id>\w+)$','school.viewMark.markForTeacher'),
     url(r'markForTeacher/(?P<term_id>\w+)/(?P<subject_id>\w+)/(?P<move>\w+)$','school.viewMark.markForTeacher'),
-
     
     url(r'markForAStudent/(?P<class_id>\w+)/(?P<student_id>\w+)$','school.viewMark.markForAStudent'),
     url(r'markForASubject/(?P<subject_id>\w+)','school.viewMark.markForASubject'),
