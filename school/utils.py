@@ -452,9 +452,8 @@ def add_teacher( first_name = None,
                  birthplace = '',
                  team_id = None,
                  group_id = None,
-                 major=''):
-    print 'tag 1'
-    print team_id, group_id
+                 major='',
+                 force_update = False):
     if full_name:
         names = full_name.split(" ")
         last_name = ' '.join(names[:len(names)-1])
@@ -501,8 +500,11 @@ def add_teacher( first_name = None,
     find = school.teacher_set.filter( first_name__exact = first_name,
                                       last_name__exact = last_name,
                                       birthday__exact = birthday)
-    if find:
-        return find
+    if find :
+        if force_update:
+            teacher = find[0]
+        else:
+            return find
     teacher.home_town = home_town
     teacher.sex = sex
     teacher.dan_toc = dan_toc

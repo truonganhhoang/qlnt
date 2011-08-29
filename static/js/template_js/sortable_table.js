@@ -152,6 +152,7 @@ $(document).ready(function(){
 
                     });
                     $("#sort").val("Lưu thứ tự");
+                    $("#save").hide();
                     firstFocus.addClass('focused');
                 } else {
                 // save the indexes to db
@@ -161,7 +162,6 @@ $(document).ready(function(){
                         var index = $(this).children('td.index').children('p').text();
                         data = data + id + '_' + index + '/';
                     });
-
                     var arg = { type:"POST",
                         url: $("#ajax_to").text(),
                         data:{data: data},
@@ -173,6 +173,7 @@ $(document).ready(function(){
                             $("#guide").hide();
                             $("#subject_form").show();
                             $("#sort").val("Sắp xếp");
+                            $("#save").show();
                             $("span.ui-icon ui-icon-arrowthick-2-n-s").each(function(){
                                 $(this).hide();
                             });

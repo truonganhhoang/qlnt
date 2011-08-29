@@ -19,10 +19,10 @@ $(function () {
     
     // Initialize the jQuery File Upload widget:
     $('#fileupload').fileupload({
-        url: '/school/import/teacher',
+        url: '/school/import/teacher/0',
         dataType: 'json',
         acceptFileTypes: /(\.|\/)(xls)$/i,
-        maxNumberOfFiles: 10
+        maxNumberOfFiles: 5
 
     });
 
@@ -32,7 +32,25 @@ $(function () {
             if (data.result[0].process_message.replace(/ /g,'') != ''){
                 $("#errorDetail").html(data.result[0].process_message);
                 if (data.result[0].teacher_confliction){
-                    $("#errorDetail > ul").append('<li>' + data.result[0].teacher_confliction +'</li>');
+                    $("#errorDetail > ul").append(
+                            '<li>' + data.result[0].teacher_confliction +'' +
+                            '<a id="update_existing" href="/school/import/teacher/update" class="ggButton">Cập nhật những giáo viên này.</a>'+
+                            '</li>');
+                    $("#update_existing").click(function(){
+                        $.ajax({
+                            url: "/school/import/teacher/update",
+                            dataType: 'json',
+                            type: 'POST',
+                            success: function(json){
+                                if (!json.success){
+                                    $("#notify").showNotification(json.message);
+                                } else {
+                                    $("#update_existing").text(json.message);
+                                }
+                            }
+                        });
+                        return false;
+                    })
                 }
                 $("#errorDetail > ul").append('<li>' + 'Bạn đã nhập thành công '
                                                      + data.result[0].number_ok

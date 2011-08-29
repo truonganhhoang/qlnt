@@ -116,7 +116,7 @@ urlpatterns = patterns('',
     url(r'start_year/import$', 'school.views.nhap_danh_sach_trung_tuyen'),
     url(r'start_year/import/list$', 'school.views.danh_sach_trung_tuyen', name = "imported_list"),
     url(r'start_year/manual$', 'school.views.manual_adding', name = "manual_adding"),
-    url(r'import/teacher$', 'school.views.teacher_import', name = "teacher_import"),
+    url(r'import/teacher/(?P<request_type>\w+)$', 'school.views.teacher_import', name = "teacher_import"),
 
     url(r'deleteTeacher/(?P<teacher_id>\w+)/(?P<team_id>\w+)$', 'school.views.deleteTeacher'),
     url(r'deleteSubject/(?P<subject_id>\w+)', 'school.views.deleteSubject'),

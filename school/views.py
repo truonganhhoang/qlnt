@@ -1001,7 +1001,7 @@ def student_import( request, class_id ):
                  'message': 'Nhập dữ liệu thành công'}]
     return HttpResponse( simplejson.dumps( data ) )
 
-def teacher_import( request):
+def teacher_import( request, request_type = ''):
     try:
         school = get_school(request)
     except Exception as e:
@@ -1014,10 +1014,26 @@ def teacher_import( request):
     file = None
     if request.method == "POST":
         if request.is_ajax( ):
-            # the file is stored raw in the request
-            upload = request
-            is_raw = True
-            # AJAX Upload will pass the filename in the querystring if it is the "advanced" ajax upload
+            if request_type==u'update':
+                saving_import_teacher = request.session.pop('saving_import_teacher')
+                print saving_import_teacher
+                for teacher in saving_import_teacher:
+                    try:
+                        add_teacher(  full_name= teacher['fullname'],
+                                      birthday= teacher['birthday'],
+                                      sex= teacher['sex'],
+                                      dan_toc= teacher['dan_toc'],
+                                      home_town= teacher['home_town'],
+                                      current_address= teacher['current_address'],
+                                      team_id= teacher['team'],
+                                      group_id= teacher['group'],
+                                      major= teacher['major'],
+                                      school= school,
+                                      force_update=True)
+                    except Exception as e:
+                        print e
+                data =simplejson.dumps({'success': True, 'message': 'Đã cập nhật.'})
+                return HttpResponse(data, mimetype='json')
             try:
                 file = request.FILES.get('file')
             except KeyError:
@@ -1045,6 +1061,7 @@ def teacher_import( request):
 
     result, process_file_message, number, number_ok = process_file( filename, "import_teacher")
     existing_teacher = []
+    saving_import_teacher = []
     if 'error' in result:
         success = False
         message = result['error']
@@ -1080,6 +1097,7 @@ def teacher_import( request):
                                              school= school)
                     if existing:
                         existing_teacher.append(existing)
+                        saving_import_teacher.append(teacher)
                 except Exception as e:
                     print e
 
@@ -1090,13 +1108,15 @@ def teacher_import( request):
         teacher_confliction = ''
         if existing_teacher:
             teacher_confliction = u'Có %s giáo viên không được nhập do đã tồn tại trong hệ thống' % len(existing_teacher)
+            request.session['saving_import_teacher'] = saving_import_teacher
         data = [{'name': file.name, 'url': filename,
                  'sizef':file.size,
                  'process_message': process_file_message,
                  'teacher_confliction': teacher_confliction,
                  'number': number,
+                 'number_existing': len(existing_teacher),
                  'number_ok': number_ok - len(existing_teacher),
-                 'message': 'Nhập dữ liệu thành công'}]
+                 'message': 'Hoàn tất'}]
     return HttpResponse( simplejson.dumps( data ) )
 
 def nhap_danh_sach_trung_tuyen(request):
