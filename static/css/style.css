@@ -65,6 +65,10 @@ div.notify-widget-paneB {
     width: 100%;
 }
 
+.no-padding{
+    padding: 0;
+}
+
 ul {
     list-style-type: none;
 }
