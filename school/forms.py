@@ -17,7 +17,7 @@ class BlockForm(forms.ModelForm):
 class TeacherForm(forms.ModelForm):
     class Meta:
         model = Teacher
-        exclude = ('school_id', 'user_id')
+        exclude = ('school_id', 'user_id', 'index')
         widgets = {
             'birthday' : DateInput(attrs = {'class':'datepicker'}),
         }
@@ -39,7 +39,30 @@ class TeacherITForm(forms.ModelForm):
         school = team.school_id
         self.fields['team_id'] = forms.ModelChoiceField(queryset= school.team_set.all(), required=False, label=u'Tổ')
         self.fields['group_id'] = forms.ModelChoiceField(queryset= team.group_set.all(), required=False, label=u'Nhóm')
-        
+
+class TeacherTTCNForm(forms.ModelForm):
+    class Meta:
+        model = Teacher
+        fields = ('last_name','first_name','birthday','sex','birth_place','dan_toc','ton_giao','quoc_tich','home_town','major')
+        widgets = {
+            'birthday' : DateInput(attrs = {'class':'datepicker'}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(TeacherTTCNForm, self).__init__(*args, **kwargs)
+        for field in self.fields:
+            self.fields[field].widget.attrs['disabled'] = 'disabled'
+
+class TeacherTTLLForm(forms.ModelForm):
+    class Meta:
+        model = Teacher
+        fields = ('current_address','phone','email','sms_phone')
+
+    def __init__(self, *args, **kwargs):
+        super(TeacherTTLLForm, self).__init__(*args, **kwargs)
+        for field in self.fields:
+            self.fields[field].widget.attrs['disabled'] = 'disabled'
+
 class PupilForm(forms.ModelForm):
     class Meta:
         model = Pupil

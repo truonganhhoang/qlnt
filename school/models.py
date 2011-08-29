@@ -175,7 +175,7 @@ class BasicPersonInfo(models.Model):
     #class Admin: pass
 
 class Teacher(BasicPersonInfo):
-    major = models.CharField("Chuyên môn(*)", max_length=45, default='', blank= True, choices=SUBJECT_TYPES)
+    major = models.CharField("Chuyên môn(*)", max_length=45, default='', choices=SUBJECT_TYPES)
     user_id = models.OneToOneField(User, verbose_name = "Tài khoản")
     school_id = models.ForeignKey(Organization, verbose_name = "Trường")
     group_id = models.ForeignKey(Group, null=True, blank=True, verbose_name="Nhóm", on_delete = models.SET_NULL)

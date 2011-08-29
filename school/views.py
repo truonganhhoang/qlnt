@@ -1808,6 +1808,7 @@ def teachers_tab(request, sort_type=1, sort_status=0):
             except Exception as e:
                 print e
         elif request.method == 'POST' and request.POST['request_type']==u'add':
+            print request.POST
             if request.POST['first_name'].strip():
                 name = request.POST['first_name'].split()
                 last_name = ' '.join(name[:len(name)-1])
@@ -1820,11 +1821,13 @@ def teachers_tab(request, sort_type=1, sort_status=0):
             tid = teamlist.pop()
             if tid != u'':
                 team = school.team_set.get(id = tid)
+                team_id = team.id
             else:
                 team = None
+                team_id = ''
             data = {'first_name':first_name, 'last_name':last_name, 'birthday':request.POST['birthday'],
                     'sex':request.POST['sex'], 'school_id':school.id, 'home_town':request.POST['home_town'].strip(),
-                    'team_id': request.POST['team_id'], 'major' : request.POST['major'], 'index':index}
+                    'team_id': team_id, 'major' : request.POST['major'], 'index':index}
             form = TeacherForm(school.id,data)
             if form.is_valid():
                 d = request.POST['birthday'].split('/')
@@ -2036,25 +2039,71 @@ def viewTeacherDetail(request, teacher_id):
         return HttpResponseRedirect('/')
     pos = get_position(request)
     school = get_school(request)
-    if (pos==3) and (get_teacher(request).id == int(teacher_id)):
-        pos = 4
+    if (pos==3) and not(get_teacher(request).id == int(teacher_id)):
+        pos = 1
     if (pos < 1):
         return HttpResponseRedirect('/')
     form = TeacherForm (school.id,instance=teacher)
+    ttcnform = TeacherTTCNForm(instance=teacher)
+    ttllform = TeacherTTLLForm(instance=teacher)
     if request.method == 'POST':
         data = request.POST.copy()
-        data['first_name'] = data['first_name'].strip()
-        data['last_name'] = data['last_name'].strip()
-        form = TeacherForm(school.id,data, instance=teacher)
-        if form.is_valid():
-            form.save()
-            message = 'Bạn vừa cập nhật thành công'        
-            
-    
+        if data['request_type'] == 'ttcn':
+            data['first_name'] = data['first_name'].strip()
+            data['last_name'] = data['last_name'].strip()
+            ttcnform = TeacherTTCNForm(data, instance=teacher)
+            if ttcnform.is_valid():
+                ttcnform.save()
+                message = 'Bạn vừa cập nhật thành công thông tin cá nhân'
+        if data['request_type'] == 'ttll':
+            ttllform = TeacherTTLLForm(data, instance=teacher)
+            if ttllform.is_valid():
+                ttllform.save()
+                message = 'Bạn vừa cập nhật thành công thông tin liên lạc'
+    if request.is_ajax():
+        if request.method == 'POST':
+            if request.POST['request_type'] == 'ttcn':
+                first_name = ''
+                last_name = ''
+                birthday = ''
+                if not ttllform.is_valid():
+                    message = 'Có lỗi ở dữ liệu nhập vào'
+                    for a in ttllform:
+                        if a.name == 'first_name':
+                            if a.errors:
+                                first_name = str(a.errors)
+                        if a.name == 'last_name':
+                            if a.errors:
+                                last_name = str(a.errors)
+                        if a.name == 'birthday':
+                            if a.errors:
+                                birthday = str(a.errors)
+                response = simplejson.dumps({'message': message, 'response_type': 'ttcn',
+                                             'first_name':first_name, 'last_name':last_name,'birthday':birthday})
+                return HttpResponse(response, mimetype = 'json')
+            if request.POST['request_type'] == 'ttll':
+                phone = ''
+                email = ''
+                sms_phone = ''
+                if not ttllform.is_valid():
+                    message = 'Có lỗi ở dữ liệu nhập vào'
+                    for a in ttllform:
+                        if a.name == 'phone':
+                            if a.errors:
+                                phone = str(a.errors)
+                        if a.name == 'email':
+                            if a.errors:
+                                email = str(a.errors)
+                        if a.name == 'sms_phone':
+                            if a.errors:
+                                sms_phone = str(a.errors)
+                response = simplejson.dumps({'message': message, 'response_type': 'ttll',
+                                             'phone':phone, 'email':email,'sms_phone':sms_phone})
+                return HttpResponse(response, mimetype = 'json')
     t = loader.get_template(os.path.join('school', 'teacher_detail.html'))
     c = RequestContext(request, {   'form': form, 'message': message,
-                                    'id': teacher_id,
-                                    'pos': pos})
+                                    'id': teacher_id, 'ttcnform':ttcnform,
+                                    'pos': pos, 'ttllform':ttllform})
     return HttpResponse(t.render(c))
 
 def subjectPerClass(request, class_id, sort_type=4, sort_status=0):
