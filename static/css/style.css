@@ -69,6 +69,14 @@ div.notify-widget-paneB {
     padding: 0;
 }
 
+li.tab-label span{
+    display: None;
+}
+
+li.ui-tabs-selected span{
+    display: block;
+}
+
 ul {
     list-style-type: none;
 }

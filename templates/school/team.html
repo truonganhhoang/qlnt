@@ -186,7 +186,7 @@
         <ul>
             <li><a href="/school/teachers_in_team/{{ team.id }}">{{ team.name }}</a></li>
             {% for g in groupList %}
-                <li style="padding-top: 1px; padding-right: 1px;">
+                <li style="padding-top: 1px; padding-right: 1px;" class="tab-label">
                     <a style="padding-top: 4px; padding-right: 6px;" href="/school/teachers_in_group/{{ g.id }}">{{ g.name }}</a>
                 {% if pos > 3 %}
                     <span title="Đổi tên" id ="{{g.id}}-{{g}}-group" class="ui-icon ui-icon-gear grouprn tiptiphover"></span>
