@@ -302,8 +302,14 @@ def add_student( student = None, index = 0, start_year = None , year = None,
 
 # adding students to database, return list of existing students.
 @transaction.commit_manually
-def add_many_students( student_list = None, start_year = None , year = None,
-                       _class = None, term = None, school = None, school_join_date = None ):
+def add_many_students( student_list = None,
+                       start_year = None ,
+                       year = None,
+                       _class = None,
+                       term = None,
+                       school = None,
+                       school_join_date = None,
+                       force_update = False):
     if not ( student_list and start_year and term and school ):
         raise Exception("Phải có giá trị cho các trường: Student,Start_Year,Term,School.")
     index =0
