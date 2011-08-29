@@ -460,80 +460,92 @@ def add_teacher( first_name = None,
                  group_id = None,
                  major='',
                  force_update = False):
-    if full_name:
-        names = full_name.split(" ")
-        last_name = ' '.join(names[:len(names)-1])
-        first_name = names[len(names)-1]
-    if team_id and ( type(team_id) == str or type(team_id) == unicode):
-        name = team_id
-        print 'name', team_id
-        try:
-            team_id = school.team_set.get( name = name)
-        except Exception as e:
-            print e
-            team_id = Team()
-            team_id.name = name
-            team_id.school_id = school
-            team_id.save()
-            print team_id
-    else:
-        team_id = None
-    if team_id:
-        if group_id and ( type(group_id) == str or type(group_id) == unicode):
-            name = group_id
-            print 'name', name
-            try:
-                group_id = team_id.group_set.get( name = name)
-            except Exception as e:
-                print e
-                group_id = Group()
-                group_id.name = name
-                group_id.team_id = team_id
-                group_id.save()
-                print group_id
-    else:
-        group_id = None
+    try:
+        if full_name:
+            names = full_name.split(" ")
+            last_name = ' '.join(names[:len(names)-1])
+            first_name = names[len(names)-1]
+        if team_id:
+            if  type(team_id) == str or type(team_id) == unicode:
+                name = team_id
+                try:
+                    team_id = school.team_set.get( name = name)
+                except Exception as e:
+                    print e
+                    team_id = Team()
+                    team_id.name = name
+                    team_id.school_id = school
+                    team_id.save()
+                    print team_id
+            elif not isinstance(team_id, Team):
+                team_id = None
 
-    if major:
-        if to_en(major) not in SUBJECT_LIST_ASCII:
-            major = ''
-
-    teacher = Teacher()
-    teacher.first_name = first_name
-    teacher.last_name = last_name
-    teacher.school_id = school
-    teacher.birthday = birthday
-    find = school.teacher_set.filter( first_name__exact = first_name,
-                                      last_name__exact = last_name,
-                                      birthday__exact = birthday)
-    if find :
-        if force_update:
-            teacher = find[0]
         else:
-            return find
-    teacher.home_town = home_town
-    teacher.sex = sex
-    teacher.dan_toc = dan_toc
-    teacher.current_address = current_address
-    teacher.birth_place = birthplace
-    teacher.team_id = team_id
-    teacher.group_id = group_id
-    teacher.major = major
+            team_id = None
+        if team_id:
+            if group_id:
+                if type(group_id) == str or type(group_id) == unicode:
+                    name = group_id
+                    print 'name', name
+                    try:
+                        group_id = team_id.group_set.get( name = name)
+                    except Exception as e:
+                        print e
+                        group_id = Group()
+                        group_id.name = name
+                        group_id.team_id = team_id
+                        group_id.save()
+                        print group_id
+                elif isinstance(group_id, Group):
+                    if group_id.team_id != team_id:
+                        raise Exception("GroupNotBelongToTeam")
+                else:
+                    group_id = None
+        else:
+            group_id = None
 
-    user = User()
-    user.username = make_username( first_name = first_name, last_name = last_name )
-    user.password = make_default_password( user.username)
-    user.save()
-    userprofile = UserProfile()
-    userprofile.user = user
-    userprofile.organization = school
-    userprofile.position = 'GIAO_VIEN'
-    userprofile.save()
+        if major:
+            if to_en(major) not in SUBJECT_LIST_ASCII:
+                major = ''
 
-    teacher.user_id = user
-    teacher.save()
-    return None
+        teacher = Teacher()
+        teacher.first_name = first_name
+        teacher.last_name = last_name
+        teacher.school_id = school
+        teacher.birthday = birthday
+        find = school.teacher_set.filter( first_name__exact = first_name,
+                                          last_name__exact = last_name,
+                                          birthday__exact = birthday)
+        if find :
+            if force_update:
+                teacher = find[0]
+            else:
+                return find
+        teacher.home_town = home_town
+        teacher.sex = sex
+        teacher.dan_toc = dan_toc
+        teacher.current_address = current_address
+        teacher.birth_place = birthplace
+        teacher.team_id = team_id
+        teacher.group_id = group_id
+        teacher.major = major
 
+        user = User()
+        user.username = make_username( first_name = first_name, last_name = last_name )
+        user.password = make_default_password( user.username)
+        user.save()
+        userprofile = UserProfile()
+        userprofile.user = user
+        userprofile.organization = school
+        userprofile.position = 'GIAO_VIEN'
+        userprofile.save()
+
+        teacher.user_id = user
+        teacher.save()
+        return None
+    except Exception as e:
+        print e
+        raise e
 def del_teacher( teacher):
     teacher.user_id.delete()
     #teacher.delete()    
