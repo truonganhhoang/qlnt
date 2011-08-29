@@ -108,11 +108,12 @@
     <form action="/school/subjectPerClass/{{class.id}}" method="post">{% csrf_token %}
     <div id="tableFunction">
         <a href="{%url school.views.school_index  %}viewClassDetail/{{ class.id }}" class="ggButton">Quay lại</a>
-        <input class="ggButton" type="button" id="sort" value="Sắp xếp" />
-        <a id="guide" class="tiptiphover ggButton" href="" title="Dùng các phím mũi tên để chọn môn học,
-        sau đó Enter để thay đổi thứ tự hoặc bỏ chọn môn đó. Kết thúc bằng việc ấn 'Lưu thứ tự'.">Hướng dẫn</a>
-        <input id="save" class="ggButton" type ="submit" value="Lưu"/>
-
+        {% if pos > 3 %}
+            <input class="ggButton" type="button" id="sort" value="Sắp xếp" />
+            <a id="guide" class="tiptiphover ggButton" href="" title="Dùng các phím mũi tên để chọn môn học,
+            sau đó Enter để thay đổi thứ tự hoặc bỏ chọn môn đó. Kết thúc bằng việc ấn 'Lưu thứ tự'.">Hướng dẫn</a>
+            <input id="save" class="ggButton" type ="submit" value="Lưu"/>
+        {% endif %}
     </div>
 
     <table class="styleA" id="sortable" width = "75%" align = "left">
@@ -200,13 +201,15 @@
 
         </table>
     </form>
-    <table border = "0" width = "75%" align = "center">
-        <tr>
-            <td width = "5%" align = "left">&nbsp</td>
-            <td align = "right"> <a href = "">Xuất ra Excel </a> </td>
+    {% if pos > 3 %}
+        <table border = "0" width = "75%" align = "center">
+            <tr>
+                <td width = "5%" align = "left">&nbsp</td>
+                <td align = "right"> <a href = "">Xuất ra Excel </a> </td>
 
-        </tr>
-    </table>
+            </tr>
+        </table>
+    {% endif %}
     <p id="ajax_to" style="display: none;">{% url school.views.change_index 'subject' class.id %}</p>
     <p id="redirect_link" style="display: none;">{% url school.views.subjectPerClass class.id %}</p>
 {% endblock %}

@@ -12,6 +12,13 @@
                 global: false
             }
         });
+        {% if pos > 3 %}
+            $("input").attr('disabled',false);
+            $("select").attr('disabled',false);
+        {% endif %}
+        {% if pos == 1 %}
+            $("input","form.ttll").attr('disabled',false);
+        {% endif %}
         $("#id_father_name").each(function(){
              if ($(this).val() == ''){
                 $("#id_father_birthday").attr('disabled', true);
@@ -197,17 +204,21 @@
                 <table class = "styleA" >
                 {{ ttcnform.as_table }}
                 </table>
-                <input type="hidden" name="request_type" value="ttcn">
-                <input class="ggButton" type="submit" value="Lưu"/>
+                {% if pos > 3 %}
+                    <input type="hidden" name="request_type" value="ttcn">
+                    <input class="ggButton" type="submit" value="Lưu"/>
+                {% endif %}
             </form>
         </div>
         <div id = "tabs-2">
-            <form action="/school/viewStudentDetail/{{id}}" method="post" class="student_detail">{% csrf_token %}
+            <form action="/school/viewStudentDetail/{{id}}" method="post" class="student_detail ttll">{% csrf_token %}
                 <table class = "styleA">
                 {{ ttllform.as_table }}
                 </table>
-                <input type="hidden" name="request_type" value="ttll">
-                <input class="ggButton" type="submit" value="Lưu"/>
+                {% if pos > 3 or pos == 1 %}
+                    <input type="hidden" name="request_type" value="ttll">
+                    <input class="ggButton" type="submit" value="Lưu"/>
+                {% endif %}
             </form>
         </div>
         <div id = "tabs-3">
@@ -215,8 +226,10 @@
                 <table class = "styleA">
                 {{ ttgdform.as_table }}
                 </table>
-                <input type="hidden" name="request_type" value="ttgd">
-                <input class="ggButton" type="submit" value="Lưu"/>
+                {% if pos > 3 %}
+                    <input type="hidden" name="request_type" value="ttgd">
+                    <input class="ggButton" type="submit" value="Lưu"/>
+                {% endif %}
             </form>
         </div>
         <div id = "tabs-4">
@@ -224,8 +237,10 @@
                 <table class = "styleA">
                 {{ ttddform.as_table }}
                 </table>
-                <input type="hidden" name="request_type" value="ttdd">
-                <input class="ggButton" type="submit" value="Lưu"/>
+                {% if pos > 3 %}
+                    <input type="hidden" name="request_type" value="ttdd">
+                    <input class="ggButton" type="submit" value="Lưu"/>
+                {% endif %}
             </form>
         </div>
     </div>

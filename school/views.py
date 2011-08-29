@@ -131,7 +131,6 @@ def setup(request):
     return render_to_response( SETUP, { 'form': school_form, 'message':message, 'labels':labels},
                                context_instance = context )
 
-
 def info(request):
     user = request.user
     message = None
@@ -2209,10 +2208,9 @@ def viewStudentDetail(request, student_id):
         school = get_school(request)
     except Exception as e:
         return HttpResponseRedirect(reverse('index'))
-    
     pos = get_position(request)
-    if (pos==1) and (get_student(request).id==int(student_id)):
-        pos = 4
+    if (pos==1) and not(get_student(request).id==int(student_id)):
+        pos = 2
     if (get_position(request) < 1):
         return HttpResponseRedirect('/')
     message = None
@@ -2226,6 +2224,7 @@ def viewStudentDetail(request, student_id):
     ttgdform = ThongTinGiaDinhForm(instance=pupil)
     ttddform = ThongTinDoanDoiForm(student_id,instance=pupil)
     if request.method == 'POST':
+        print request.POST
         data = request.POST.copy()
         if request.POST['request_type'] == 'ttcn':
             data['first_name'] = data['first_name'].strip()
@@ -3089,6 +3088,9 @@ def hanh_kiem(request, class_id = 0, sort_type = 1, sort_status = 0):
     pos=get_position(request)
     if pos < 1:
         return HttpResponseRedirect('/')
+    if pos == 1:
+        if not inClass(request,class_id):
+            return HttpResponseRedirect('/')
     if gvcn(request, class_id) == 1:
         pos = 4
     message = None

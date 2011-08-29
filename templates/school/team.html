@@ -1,98 +1,6 @@
 ﻿{% block content %}
     <script>
         $(document).ready(function() {
-            var $d1 = $("#d{{team.id}}").dialog({
-                autoOpen: false,
-                modal: true,
-                buttons: {
-                    Thêm: function() {
-                        addgroup();
-                        $(this).dialog("close");
-                    },
-                    Hủy: function() {
-                        $(this).dialog("close");
-                    }
-                },
-                open: function() {
-                     $("group_rename{{ team.id }}").focus();
-                },
-                close: function() {
-                    $form[0].reset();
-                }
-            });
-            var $d3 = $("#d3{{ team.id }}").dialog({
-                autoOpen: false,
-                modal: true,
-                buttons: {
-                    Lưu: function() {
-                        renameGroup();
-                        $(this).dialog("close");
-                    },
-                    Hủy: function() {
-                        $(this).dialog("close");
-                    }
-                },
-                open: function() {
-                    $("#team_rename").focus();
-                },
-                close: function() {
-                    $form1[ 0 ].reset();
-                }
-            });
-            var $form = $("form", $d1).submit(function() {
-                addgroup();
-                $d1.dialog("close");
-                return false;
-            });
-            var $form1 = $("form", $d3).submit(function() {
-                renameGroup();
-                $d3.dialog("close");
-                return false;
-            });
-            $("#add_group{{team.id}}").click(function() {
-                $d1.dialog("open");
-            });
-            
-            function addgroup() {
-                var data = { 'name' : $("#group_title{{team.id}}").val(),'team_id':{{team.id}}, 'request_type':'addGroup'};
-                var arg = { type:"POST",
-                    url:"/school/team/{{team.id}}",
-                    data: data,
-                    datatype:"json",
-                    success: function(response) {
-                        console.log(response);
-                        if (response.message){
-                            console.log('show');
-                            $("#notify").showNotification(response.message, 3000);
-                        } else {
-                            $('.ui-tabs-panel:visible').html(response);
-                        }
-                    }
-                };
-                $.ajax(arg);
-                return false;
-            }
-            function renameGroup() {
-                var data = { 'name' : $("#group_rename{{team.id}}").val(),
-                              'id':$("#group_id_rename{{team.id}}").val(),
-                              'request_type':'renameGroup'};
-                var arg = { type:"POST",
-                    url:"/school/team/{{team.id}}",
-                    data: data,
-                    datatype:"json",
-                    success: function(response) {
-                        console.log(response);
-                        if (response.message){
-                            console.log('show');
-                            $("#notify").showNotification(response.message, 3000);
-                        } else {
-                            $('.ui-tabs-panel:visible').html(response);
-                        }
-                    }
-                };
-                $.ajax(arg);
-                return false;
-            }
             $("#tabs{{team.id}}").tabs({
                 tabTemplate: "<li><a href='{href}'>{label}</a> <span class='ui-icon ui-icon-close'>xóa</span></li>",
                 ajaxOptions: {
@@ -123,71 +31,172 @@
                     });
                 }
             });
-            $( "#tabs{{team.id}} span.ui-icon-close.group" ).bind( "click", function() {
-                var i = confirm('Bạn có muốn xóa nhóm này không?');
-                if(i){
-                    var index = $( "li", $("#tabs{{team.id}}") ).index( $( this ).parent() );
-                    var id =$(this).attr('id').split()[0].split('-')[0];
-                    data = {id:id,request_type:'delete_group'};
-                    arg = { type : 'POST',
-                            data : data,
-                            url : "",
-                            datatype : 'json',
-                            success : function(){
-                                $("#tabs{{team.id}}").tabs( "remove", index );
-                            }
+                {% if pos > 3 %}
+                var $d1 = $("#d{{team.id}}").dialog({
+                    autoOpen: false,
+                    modal: true,
+                    buttons: {
+                        Thêm: function() {
+                            addgroup();
+                            $(this).dialog("close");
+                        },
+                        Hủy: function() {
+                            $(this).dialog("close");
+                        }
+                    },
+                    open: function() {
+                         $("group_rename{{ team.id }}").focus();
+                    },
+                    close: function() {
+                        $form[0].reset();
                     }
+                });
+                var $d3 = $("#d3{{ team.id }}").dialog({
+                    autoOpen: false,
+                    modal: true,
+                    buttons: {
+                        Lưu: function() {
+                            renameGroup();
+                            $(this).dialog("close");
+                        },
+                        Hủy: function() {
+                            $(this).dialog("close");
+                        }
+                    },
+                    open: function() {
+                        $("#team_rename").focus();
+                    },
+                    close: function() {
+                        $form1[ 0 ].reset();
+                    }
+                });
+                var $form = $("form", $d1).submit(function() {
+                    addgroup();
+                    $d1.dialog("close");
+                    return false;
+                });
+                var $form1 = $("form", $d3).submit(function() {
+                    renameGroup();
+                    $d3.dialog("close");
+                    return false;
+                });
+                $("#add_group{{team.id}}").click(function() {
+                    $d1.dialog("open");
+                });
+
+                function addgroup() {
+                    var data = { 'name' : $("#group_title{{team.id}}").val(),'team_id':{{team.id}}, 'request_type':'addGroup'};
+                    var arg = { type:"POST",
+                        url:"/school/team/{{team.id}}",
+                        data: data,
+                        datatype:"json",
+                        success: function(response) {
+                            console.log(response);
+                            if (response.message){
+                                console.log('show');
+                                $("#notify").showNotification(response.message, 3000);
+                            } else {
+                                $('.ui-tabs-panel:visible').html(response);
+                            }
+                        }
+                    };
                     $.ajax(arg);
+                    return false;
                 }
-                return false;
-            });
-            $(".group_title{{team.id}}").each(function(){
-                $(this).change(function(){
-                    var current = $(this).val();
-                    $(".group_title{{team.id}}").val(current);
+                function renameGroup() {
+                    var data = { 'name' : $("#group_rename{{team.id}}").val(),
+                                  'id':$("#group_id_rename{{team.id}}").val(),
+                                  'request_type':'renameGroup'};
+                    var arg = { type:"POST",
+                        url:"/school/team/{{team.id}}",
+                        data: data,
+                        datatype:"json",
+                        success: function(response) {
+                            console.log(response);
+                            if (response.message){
+                                console.log('show');
+                                $("#notify").showNotification(response.message, 3000);
+                            } else {
+                                $('.ui-tabs-panel:visible').html(response);
+                            }
+                        }
+                    };
+                    $.ajax(arg);
+                    return false;
+                }
+                $( "#tabs{{team.id}} span.ui-icon-close.group" ).bind( "click", function() {
+                    var i = confirm('Bạn có muốn xóa nhóm này không?');
+                    if(i){
+                        var index = $( "li", $("#tabs{{team.id}}") ).index( $( this ).parent() );
+                        var id =$(this).attr('id').split()[0].split('-')[0];
+                        data = {id:id,request_type:'delete_group'};
+                        arg = { type : 'POST',
+                                data : data,
+                                url : "",
+                                datatype : 'json',
+                                success : function(){
+                                    $("#tabs{{team.id}}").tabs( "remove", index );
+                                }
+                        }
+                        $.ajax(arg);
+                    }
+                    return false;
                 });
-            });
-            $(".group_rename{{team.id}}").each(function(){
-                $(this).change(function(){
-                    var current = $(this).val();
-                    $(".group_rename{{team.id}}").val(current);
+                $(".group_title{{team.id}}").each(function(){
+                    $(this).change(function(){
+                        var current = $(this).val();
+                        $(".group_title{{team.id}}").val(current);
+                    });
                 });
-            });
-            $( "#tabs span.ui-icon-gear.grouprn" ).bind( "click", function() {
-                var name = $(this).attr("id").split()[0].split('-')[1];
-                var id = $(this).attr("id").split()[0].split('-')[0];
-                $("#team_rename").val(name);
-                $(".group_rename{{ team.id }}").val(name);
-                $(".group_id_rename{{ team.id }}").val(id);
-                $d3.dialog("open");
-            });
+                $(".group_rename{{team.id}}").each(function(){
+                    $(this).change(function(){
+                        var current = $(this).val();
+                        $(".group_rename{{team.id}}").val(current);
+                    });
+                });
+                $( "#tabs span.ui-icon-gear.grouprn" ).bind( "click", function() {
+                    var name = $(this).attr("id").split()[0].split('-')[1];
+                    var id = $(this).attr("id").split()[0].split('-')[0];
+                    $("#team_rename").val(name);
+                    $(".group_rename{{ team.id }}").val(name);
+                    $(".group_id_rename{{ team.id }}").val(id);
+                    $d3.dialog("open");
+                });
+            {% endif %}
         });
     </script>
-    
-    <div id="d{{team.id}}" title="Thêm nhóm mới">
-        <form id ="ag{{team.id}}">
-            <label>Tên nhóm</label>
-            <input type="text" name="group_title" id="group_title{{team.id}}" value="" class="group_title{{team.id}} ui-widget-content ui-corner-all"/>
-        </form>
-    </div>
+    {% if pos > 3 %}
+        <div id="d{{team.id}}" title="Thêm nhóm mới">
+            <form id ="ag{{team.id}}">
+                <label>Tên nhóm</label>
+                <input type="text" name="group_title" id="group_title{{team.id}}" value="" class="group_title{{team.id}} ui-widget-content ui-corner-all"/>
+            </form>
+        </div>
 
-    <div id="d3{{ team.id }}" title="Đổi tên">
-        <form id="rn">
-            <label >Tên nhóm</label>
-            <input type="hidden" id="group_id_rename{{ team.id }}" class="group_id_rename{{ team.id }}"/>
-            <input type="text" name="tab_title" id="group_rename{{ team.id }}" value="" maxlength="30" class="group_rename{{ team.id }} ui-widget-content ui-corner-all"/>
-        </form>
-    </div>
+        <div id="d3{{ team.id }}" title="Đổi tên">
+            <form id="rn">
+                <label >Tên nhóm</label>
+                <input type="hidden" id="group_id_rename{{ team.id }}" class="group_id_rename{{ team.id }}"/>
+                <input type="text" name="tab_title" id="group_rename{{ team.id }}" value="" maxlength="30" class="group_rename{{ team.id }} ui-widget-content ui-corner-all"/>
+            </form>
+        </div>
+    {% endif %}
 
     <div id="tabs{{team.id}}">
         <ul>
             <li><a href="/school/teachers_in_team/{{ team.id }}">{{ team.name }}</a></li>
             {% for g in groupList %}
-                <li><a href="/school/teachers_in_group/{{ g.id }}">{{ g.name }}</a><span title="Đổi tên" id ="{{g.id}}-{{g}}-group" class="ui-icon ui-icon-gear grouprn"></span><span id ="{{g.id}}-group" title="Xóa" class="ui-icon ui-icon-close group">xóa</span></li>
+                <li><a href="/school/teachers_in_group/{{ g.id }}">{{ g.name }}</a>
+                {% if pos > 3 %}
+                    <span title="Đổi tên" id ="{{g.id}}-{{g}}-group" class="ui-icon ui-icon-gear grouprn"></span>
+                    <span id ="{{g.id}}-group" title="Xóa" class="ui-icon ui-icon-close group">xóa</span>
+                {% endif %}
+                </li>
             {% endfor %}
-            <button id="add_group{{team.id}}" class="ggButton tiptiphover" title="Thêm nhóm mới"> + </button>
+            {% if pos > 3 %}
+                <button id="add_group{{team.id}}" class="ggButton tiptiphover" title="Thêm nhóm mới"> + </button>
+            {% endif %}
         </ul>
-
         <input id="reload" type="hidden" onclick="location.replace(location.href)"/>
     </div>
 {% endblock %}

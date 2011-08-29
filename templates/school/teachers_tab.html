@@ -1,58 +1,60 @@
 {% block content %}
-    <script>
-     $(document).ready(function() {
-            $("select[name=team_id]").each(function() {
-                $(this).change(function() {
-                    var id = $(this).parents("tr").attr('class').split(' ')[0];
-                    var team = $(this).val();
-                    var data = { id: id, team:team, request_type:'team'};
-                    var arg = { type:"POST",
-                        url:"school/teachers_tab",
-                        data: data,
-                        datatype:"json",
-                        success:function() {
+    {% if pos > 3 %}
+        <script>
+         $(document).ready(function() {
+                $("select[name=team_id]").each(function() {
+                    $(this).change(function() {
+                        var id = $(this).parents("tr").attr('class').split(' ')[0];
+                        var team = $(this).val();
+                        var data = { id: id, team:team, request_type:'team'};
+                        var arg = { type:"POST",
+                            url:"school/teachers_tab",
+                            data: data,
+                            datatype:"json",
+                            success:function() {
+                            }
+                        };
+                        $.ajax(arg);
+                        return false;
+
+                    });
+                });
+
+                $("select[name=major]").each(function() {
+                    $(this).change(function() {
+                        var id = $(this).parents("tr").attr('class').split(' ')[0];
+                        var major = $(this).val();
+                        var data = { id: id, major:major, request_type:'major'};
+                        var arg = { type:"POST",
+                            url:"school/teachers_tab",
+                            data: data,
+                            datatype:"json",
+                            success:function() {
+                            }
+                        };
+                        $.ajax(arg);
+                        return false;
+                    });
+                });
+
+
+                $("#submitform").submit(function() {
+                    var d = $(this).serialize();
+                    d = d +'&request_type=add';
+                    var arg = {data: d,
+                        type: $(this).attr('method'),
+                        url: $(this).attr('action'),
+                        success: function(response) {
+                            $('.ui-tabs-panel:visible').html(response);
+                            applyListener();
                         }
                     };
                     $.ajax(arg);
                     return false;
-
                 });
-            });
-
-            $("select[name=major]").each(function() {
-                $(this).change(function() {
-                    var id = $(this).parents("tr").attr('class').split(' ')[0];
-                    var major = $(this).val();
-                    var data = { id: id, major:major, request_type:'major'};
-                    var arg = { type:"POST",
-                        url:"school/teachers_tab",
-                        data: data,
-                        datatype:"json",
-                        success:function() {
-                        }
-                    };
-                    $.ajax(arg);
-                    return false;
-                });
-            });
-
-            
-            $("#submitform").submit(function() {
-                var d = $(this).serialize();
-                d = d +'&request_type=add';
-                var arg = {data: d,
-                    type: $(this).attr('method'),
-                    url: $(this).attr('action'),
-                    success: function(response) {
-                        $('.ui-tabs-panel:visible').html(response);
-                        applyListener();
-                    }
-                };
-                $.ajax(arg);
-                return false;
-            });    
-     });
-    </script>
+         });
+        </script>
+    {% endif %}
     <h2>Danh sách giáo viên</h2>
         <form action="/school/teachers_tab" id ="submitform" method="post">{% csrf_token %}
             <table class="styleA" width="100%">

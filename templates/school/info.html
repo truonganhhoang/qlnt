@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 
-
-
 {% block content %}
+
+{% if user.userprofile.position == 'HIEU_TRUONG' or user.userprofile.position == 'HIEU_PHO' %}
     <script type="text/javascript" >
 
         $(document).ready( function(){
@@ -58,7 +58,7 @@
         });
 
     </script>
-
+{% endif %}
 
     <h2>Thông tin trường học</h2>
     {% if message != None %}
@@ -67,7 +67,6 @@
     {% endif %}
 
     {% if user.userprofile.position == 'HIEU_TRUONG' or user.userprofile.position == 'HIEU_PHO' %}
-
         <form action="{%url school.views.info %}" method="post">{% csrf_token %}
             <div class="infoContent">
                 <div class="leftInfoDiv">
@@ -80,5 +79,27 @@
             <input type="reset"  id="cancel" class="ggButton" name="cancel" value="Hủy" />
         </form>
     {% else %}
+        <table class="styleA">
+            <tr>
+                <th> Tên trường: </th>
+                <td> {{ school.name }}</td>
+            </tr>
+            <tr>
+                <th> Cấp: </th>
+                <td>{{ school.school_level }}</td>
+            </tr>
+            <tr>
+                <th>Địa chỉ:</th>
+                <td> {{ school.address }}</td>
+            </tr>
+            <tr>
+                <th> Điện thoại: </th>
+                <td> {{ school.phone }}</td>
+            </tr>
+            <tr>
+                <th> Email: </th>
+                <td> {{ school.email }}</td>
+            </tr>
+        </table>
     {% endif %}
 {% endblock %}

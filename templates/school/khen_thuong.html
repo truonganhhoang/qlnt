@@ -1,12 +1,12 @@
 {% block content %}
-
-<script>
-function confirmDelete()
-{
-    return confirm("Bạn có muốn xóa khen thưởng này không");
-}
-</script>
-
+{% if pos > 3 %}
+    <script>
+    function confirmDelete()
+    {
+        return confirm("Bạn có muốn xóa khen thưởng này không");
+    }
+    </script>
+{% endif %}
 {% if count > 0 %}
 <table class="styleA"  width = "100%" >
     <tr>

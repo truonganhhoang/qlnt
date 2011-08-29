@@ -26,7 +26,6 @@
                 }
 
             });
-
             var $tabs = $("#tabs").tabs({
                 ajaxOptions: {
                     error: function( xhr, status, index, anchor ) {
@@ -59,197 +58,204 @@
                     });
                 }
             });
-            // modal dialog init: custom buttons and a "close" callback reseting the form inside
-            var $dialog = $("#dialog").dialog({
-                autoOpen: false,
-                modal: true,
-                buttons: {
-                    Thêm: function() {
-                        addTab();
-                        $(this).dialog("close");
+                {% if pos > 3 %}
+                // modal dialog init: custom buttons and a "close" callback reseting the form inside
+                var $dialog = $("#dialog").dialog({
+                    autoOpen: false,
+                    modal: true,
+                    buttons: {
+                        Thêm: function() {
+                            addTab();
+                            $(this).dialog("close");
+                        },
+                        Hủy: function() {
+                            $(this).dialog("close");
+                        }
                     },
-                    Hủy: function() {
-                        $(this).dialog("close");
-                    }
-                },
-                open: function() {
-                    $tab_title_input.focus();
-                },
-                close: function() {
-                    $form[ 0 ].reset();
-                }
-            });
-            var $d2 = $("#d2").dialog({
-                autoOpen: false,
-                modal: true,
-                buttons: {
-                    Lưu: function() {
-                        rename();
-                        $(this).dialog("close");
+                    open: function() {
+                        $tab_title_input.focus();
                     },
-                    Hủy: function() {
-                        $(this).dialog("close");
+                    close: function() {
+                        $form[ 0 ].reset();
                     }
-                },
-                open: function() {
-                    $("#team_rename").focus();
-                },
-                close: function() {
-                    $form[ 0 ].reset();
-                }
-            });
-            // addTab form: calls addTab function on submit and closes the dialog
-            var $form = $("form", $dialog).submit(function() {
-                addTab();
-                $dialog.dialog("close");
-                return false;
-            });
-            $("form", $d2).submit(function() {
-                rename();
-                $d2.dialog("close");
-                return false;
-            });
-            // actual addTab function: adds new tab using the title input from the form above
-            function addTab() {
-                var data = { 'name' : $tab_title_input.val(), request_type:'addTeam'};
-                var arg = { type:"POST",
-                    url:"",
-                    data: data,
-                    datatype:"json",
-                    success: function() {
+                });
+                var $d2 = $("#d2").dialog({
+                    autoOpen: false,
+                    modal: true,
+                    buttons: {
+                        Lưu: function() {
+                            rename();
+                            $(this).dialog("close");
+                        },
+                        Hủy: function() {
+                            $(this).dialog("close");
+                        }
+                    },
+                    open: function() {
+                        $("#team_rename").focus();
+                    },
+                    close: function() {
+                        $form[ 0 ].reset();
                     }
-                };
-                $.ajax(arg);
-                return false;
-            }
-            function rename() {
-                var data = {name: $("#team_rename").val(), id: $("#team_id_rename").val(),request_type: 'rename_team'};
-                var arg = {type: "POST",
-                    url:"",
-                    data: data,
-                    datatype:"json",
-                    success: function(json) {
-                        $("#notify").showNotification(json.message, 3000);
-                    }
-                };
-                $.ajax(arg);
-                return false;
-            }
-            // addTab button: just opens the dialog
-            $("#add_tab")
-                    .click(function() {
-                        $dialog.dialog("open");
-                    });
-            $( "#tabs span.ui-icon-close.team" ).live( "click", function() {
-                var i = confirm('Tổ này có thể còn giáo viên, bạn có muốn xóa không?');
-                if(i){
-                    var index = $( "li", $tabs ).index( $( this ).parent() );
-                    var id =$(this).attr('id').split()[0].split('-')[0];
-                    data = {id:id,request_type:'delete_team'};
-                    arg = { type : 'POST',
-                            data : data,
-                            url : "",
-                            datatype : 'json',
-                            success : function(){
-                                $("#tabs").tabs( "remove", index );
-                            }
-                    }
+                });
+                // addTab form: calls addTab function on submit and closes the dialog
+                var $form = $("form", $dialog).submit(function() {
+                    addTab();
+                    $dialog.dialog("close");
+                    return false;
+                });
+                $("form", $d2).submit(function() {
+                    rename();
+                    $d2.dialog("close");
+                    return false;
+                });
+                // actual addTab function: adds new tab using the title input from the form above
+                function addTab() {
+                    var data = { 'name' : $tab_title_input.val(), request_type:'addTeam'};
+                    var arg = { type:"POST",
+                        url:"",
+                        data: data,
+                        datatype:"json",
+                        success: function() {
+                        }
+                    };
                     $.ajax(arg);
+                    return false;
                 }
-                return false;
-            });
-            $( "#tabs span.ui-icon-gear.teamrn" ).live( "click", function() {
-                var name = $(this).attr("id").split()[0].split('-')[1];
-                var id = $(this).attr("id").split()[0].split('-')[0];
-                $("#team_rename").val(name);
-                $("#team_id_rename").val(id);
-                $d2.dialog("open");
-            });
-
-            $("#import").click(function() {
-                $("#fileupload").dialog('open');
-            });
-
-            $("#fileupload").dialog({
-                modal : true,
-                buttons: {
-                    Đóng: function() {
-                        location.reload('true');
-                        $(this).dialog('close');
+                function rename() {
+                    var data = {name: $("#team_rename").val(), id: $("#team_id_rename").val(),request_type: 'rename_team'};
+                    var arg = {type: "POST",
+                        url:"",
+                        data: data,
+                        datatype:"json",
+                        success: function(json) {
+                            $("#notify").showNotification(json.message, 3000);
+                        }
+                    };
+                    $.ajax(arg);
+                    return false;
+                }
+                // addTab button: just opens the dialog
+                $("#add_tab")
+                        .click(function() {
+                            $dialog.dialog("open");
+                        });
+                $( "#tabs span.ui-icon-close.team" ).live( "click", function() {
+                    var i = confirm('Tổ này có thể còn giáo viên, bạn có muốn xóa không?');
+                    if(i){
+                        var index = $( "li", $tabs ).index( $( this ).parent() );
+                        var id =$(this).attr('id').split()[0].split('-')[0];
+                        data = {id:id,request_type:'delete_team'};
+                        arg = { type : 'POST',
+                                data : data,
+                                url : "",
+                                datatype : 'json',
+                                success : function(){
+                                    $("#tabs").tabs( "remove", index );
+                                }
+                        }
+                        $.ajax(arg);
                     }
-                },
-                autoOpen: false,
-                width: 700,
-                height: 400,
-                maxWidth: 700,
-                maxHeight: 400,
-                title: "Nhập giáo viên từ file Excel"
-            });
-            
+                    return false;
+                });
+                $( "#tabs span.ui-icon-gear.teamrn" ).live( "click", function() {
+                    var name = $(this).attr("id").split()[0].split('-')[1];
+                    var id = $(this).attr("id").split()[0].split('-')[0];
+                    $("#team_rename").val(name);
+                    $("#team_id_rename").val(id);
+                    $d2.dialog("open");
+                });
+
+                $("#import").click(function() {
+                    $("#fileupload").dialog('open');
+                });
+
+                $("#fileupload").dialog({
+                    modal : true,
+                    buttons: {
+                        Đóng: function() {
+                            location.reload('true');
+                            $(this).dialog('close');
+                        }
+                    },
+                    autoOpen: false,
+                    width: 700,
+                    height: 400,
+                    maxWidth: 700,
+                    maxHeight: 400,
+                    title: "Nhập giáo viên từ file Excel"
+                });
+            {% endif %}
         });
     </script>
-
-    <div id="tableFunction">
-        {% if pos > 3 %}
-            <a class="ggButton" href="#popupDiv" id="import"> Nhập từ Excel </a>
-        {% endif %}
-    </div>
-    <div id="dialog" title="Thêm tổ mới">
-        <form id="at">
-            <label for="tab_title">Tên Tổ</label>
-            <input type="text" name="tab_title" id="tab_title" value="" maxlength="30" class="ui-widget-content ui-corner-all"/>
-        </form>
-    </div>
-    <div id="d2" title="Đổi tên">
-        <form id="rn">
-            <label for="tab_title">Tên Tổ</label>
-            <input type="hidden" id="team_id_rename"/>
-            <input type="text" name="tab_title" id="team_rename" value="" maxlength="30" class="ui-widget-content ui-corner-all"/>
-        </form>
-    </div>
+    {% if pos > 3 %}
+        <div id="tableFunction">
+            {% if pos > 3 %}
+                <a class="ggButton" href="#popupDiv" id="import"> Nhập từ Excel </a>
+            {% endif %}
+        </div>
+        <div id="dialog" title="Thêm tổ mới">
+            <form id="at">
+                <label for="tab_title">Tên Tổ</label>
+                <input type="text" name="tab_title" id="tab_title" value="" maxlength="30" class="ui-widget-content ui-corner-all"/>
+            </form>
+        </div>
+        <div id="d2" title="Đổi tên">
+            <form id="rn">
+                <label for="tab_title">Tên Tổ</label>
+                <input type="hidden" id="team_id_rename"/>
+                <input type="text" name="tab_title" id="team_rename" value="" maxlength="30" class="ui-widget-content ui-corner-all"/>
+            </form>
+        </div>
+    {% endif %}
     <div id="tabs">
         <ul>
             <li><a href="school/teachers_tab/{{ sort_type }}/{{ sort_status }}">Tất cả</a></li>
             {% for t in list %}
                 <li>
                     <a href="school/team/{{ t.id }}">{{ t.name }}</a>
-                    <span title="Đổi tên" id ="{{t.id}}-{{t}}-team" class="ui-icon ui-icon-gear teamrn"></span>
-                    <span title="Xóa" id ="{{t.id}}-team" class="ui-icon ui-icon-close team"></span>
+                    {% if pos > 3 %}
+                        <span title="Đổi tên" id ="{{t.id}}-{{t}}-team" class="ui-icon ui-icon-gear teamrn"></span>
+                        <span title="Xóa" id ="{{t.id}}-team" class="ui-icon ui-icon-close team"></span>
+                    {% endif %}
                 </li>
             {% endfor %}
-            <input class="ggButton tiptiphover" title="Thêm tổ mới" type="button" id="add_tab" value=" + ">
+            {% if pos > 3 %}
+                <input class="ggButton tiptiphover" title="Thêm tổ mới" type="button" id="add_tab" value=" + ">
+            {% endif %}
         </ul>
                 
         <input id="reload" type="hidden" onclick="location.replace(location.href)"/>
     </div>
-
-    <div style="display: none;">
-        <div id="fileupload">
-            <form method="post" action="" enctype="multipart/form-data">
-                <div class="fileupload-buttonbar">
-                    {% csrf_token %}
-                    <label class="fileinput-button">
-                        <span>Chọn file...</span>
-                        <input type="file" name="file" multiple>
-                    </label>
-                    <button type="submit" id="startUpload" class="start">Tải file lên</button>
+    {% if pos > 3 %}
+        <div style="display: none;">
+            <div id="fileupload">
+                <form method="post" action="" enctype="multipart/form-data">
+                    <div class="fileupload-buttonbar">
+                        {% csrf_token %}
+                        <label class="fileinput-button">
+                            <span>Chọn file...</span>
+                            <input type="file" name="file" multiple>
+                        </label>
+                        <button type="submit" id="startUpload" class="start">Tải file lên</button>
+                    </div>
+                </form>
+                <div class="fileupload-content">
+                    <table class="files"></table>
+                    <div class="fileupload-progressbar"></div>
                 </div>
-            </form>
-            <div class="fileupload-content">
-                <table class="files"></table>
-                <div class="fileupload-progressbar"></div>
-            </div>
-            <div id="errorDetail" class="errorlist errorDiv" style="display: none;">
-            </div>
-            <div class="hint">
-                <p>
-                    Chú ý: Phải dùng file Excel theo <a href="{{ MEDIA_URL }}template_files/teacher_template.xls">mẫu
-                    này</a>.
-                </p>
+                <div id="errorDetail" class="errorlist errorDiv" style="display: none;">
+                </div>
+                <div class="hint">
+                    <p>
+                        Chú ý: Phải dùng file Excel theo <a href="{{ MEDIA_URL }}template_files/teacher_template.xls">mẫu
+                        này</a>.
+                    </p>
+                </div>
             </div>
         </div>
-    </div>
-    {% upload_js %}
-    <script type="text/javascript" src="/static/js/jquery_file_upload/qlnt_upload_for_teacher.js"></script>
+        {% upload_js %}
+        <script type="text/javascript" src="/static/js/jquery_file_upload/qlnt_upload_for_teacher.js"></script>
+    {% endif %}
 
 {% endblock %}

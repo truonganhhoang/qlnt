@@ -74,11 +74,17 @@ class ThongTinCaNhanForm(forms.ModelForm):
         year_id = school.year_set.latest('time').id
         self.fields['start_year_id'] = forms.ModelChoiceField(queryset = StartYear.objects.filter(school_id = school_id),label='Khóa')
         self.fields['class_id'] = forms.ModelChoiceField(queryset = Class.objects.filter(year_id = year_id),label='Lớp')
+        for field in self.fields:
+            self.fields[field].widget.attrs['disabled'] = 'disabled'
 
 class ThongTinLienLacForm(forms.ModelForm):
     class Meta:
         model = Pupil
         fields = ('current_address','phone','father_phone','mother_phone','sms_phone','email')
+    def __init__(self, *args, **kwargs):
+        super(ThongTinLienLacForm, self).__init__(*args, **kwargs)
+        for field in self.fields:
+            self.fields[field].widget.attrs['disabled'] = 'disabled'
 
 class ThongTinGiaDinhForm(forms.ModelForm):
     class Meta:
@@ -88,6 +94,10 @@ class ThongTinGiaDinhForm(forms.ModelForm):
             'father_birthday': DateInput(attrs = {'class':'datepicker'}),
             'mother_birthday': DateInput(attrs = {'class':'datepicker'}),
         }
+    def __init__(self, *args, **kwargs):
+        super(ThongTinGiaDinhForm, self).__init__(*args, **kwargs)
+        for field in self.fields:
+            self.fields[field].widget.attrs['disabled'] = 'disabled'
         
 class ThongTinDoanDoiForm(forms.ModelForm):
     def __init__(self, student_id, *args, **kw):
@@ -100,6 +110,8 @@ class ThongTinDoanDoiForm(forms.ModelForm):
         self.fields['ngay_vao_doi'] = forms.DateField(required=False, label=u'Ngày vào đội', validators=[validate_ttdd_date], widget=forms.DateInput(attrs={'class':'datepicker'}))
         self.fields['ngay_vao_doan'] = forms.DateField(required=False, label=u'Ngày vào đoàn', validators=[validate_ttdd_date], widget=forms.DateInput(attrs={'class':'datepicker'}))
         self.fields['ngay_vao_dang'] = forms.DateField(required=False, label=u'Ngày vào đảng', validators=[validate_ttdd_date], widget=forms.DateInput(attrs={'class':'datepicker'}))
+        for field in self.fields:
+            self.fields[field].widget.attrs['disabled'] = 'disabled'
         
     class Meta:
         model = Pupil

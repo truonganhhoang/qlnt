@@ -1,96 +1,103 @@
 ﻿{% extends "base.html" %}
 
 {% block content %}
-<script language="JavaScript" type="text/javascript" >
-function submitClass(){
-        if (document.info.class.value!={{class.id}})
-        if (document.info.class.value!=-1)
-        {	
-            window.location = "{%url school.views.school_index  %}hanhkiem/"+document.info.class.value;
-        }	
-}
+    {% if pos > 2 %}
+    <script language="JavaScript" type="text/javascript" >
+    function submitClass(){
+            if (document.info.class.value!={{class.id}})
+            if (document.info.class.value!=-1)
+            {
+                window.location = "{%url school.views.school_index  %}hanhkiem/"+document.info.class.value;
+            }
+    }
 
-$(document).ready(function(){
-        $(".submitbutton").attr("disabled", true);
-        $("select[name=term1]").each(function() {
-            $(this).change(function() {
-                var id = $(this).parents("tr").attr('class').split(' ')[0];
-                var term1 = $(this).val();
-                var data = { id: id, term1:term1, request_type:'term1'};
-                var arg = { type:"POST",
-                    url:"",
-                    data: data,
-                    datatype:"json",
-                    error: function(){
-                        $(".submitbutton").attr("disabled", false);
-                    }
-                };
-                $.ajax(arg);
-                return false;
+    $(document).ready(function(){
+            $(".submitbutton").attr("disabled", true);
+            $("select[name=term1]").each(function() {
+                $(this).change(function() {
+                    var id = $(this).parents("tr").attr('class').split(' ')[0];
+                    var term1 = $(this).val();
+                    var data = { id: id, term1:term1, request_type:'term1'};
+                    var arg = { type:"POST",
+                        url:"",
+                        data: data,
+                        datatype:"json",
+                        error: function(){
+                            $(".submitbutton").attr("disabled", false);
+                        }
+                    };
+                    $.ajax(arg);
+                    return false;
 
+                });
+            });
+
+            $("select[name=term2]").each(function() {
+                $(this).change(function() {
+                    var id = $(this).parents("tr").attr('class').split(' ')[0];
+                    var term2 = $(this).val();
+                    var data = { id: id, term2:term2, request_type:'term2'};
+                    var arg = { type:"POST",
+                        url:"",
+                        data: data,
+                        datatype:"json",
+                        error: function(){
+                            $(".submitbutton").attr('disabled', false);
+                        }
+                    };
+                    $.ajax(arg);
+                    return false;
+
+                });
+            });
+
+            $("select[name=year]").each(function() {
+                $(this).change(function() {
+                    var id = $(this).parents("tr").attr('class').split(' ')[0];
+                    var y = $(this).val();
+                    var data = { id: id, year:y, request_type:'year'};
+                    var arg = { type:"POST",
+                        url:"",
+                        data: data,
+                        datatype:"json",
+                        error: function(){
+                            $(".submitbutton").attr('disabled', false);
+                        }
+                    };
+                    $.ajax(arg);
+                    return false;
+
+                });
             });
         });
-
-        $("select[name=term2]").each(function() {
-            $(this).change(function() {
-                var id = $(this).parents("tr").attr('class').split(' ')[0];
-                var term2 = $(this).val();
-                var data = { id: id, term2:term2, request_type:'term2'};
-                var arg = { type:"POST",
-                    url:"",
-                    data: data,
-                    datatype:"json",
-                    error: function(){
-                        $(".submitbutton").attr('disabled', false);
-                    }
-                };
-                $.ajax(arg);
-                return false;
-
-            });
-        });
-
-        $("select[name=year]").each(function() {
-            $(this).change(function() {
-                var id = $(this).parents("tr").attr('class').split(' ')[0];
-                var y = $(this).val();
-                var data = { id: id, year:y, request_type:'year'};
-                var arg = { type:"POST",
-                    url:"",
-                    data: data,
-                    datatype:"json",
-                    error: function(){
-                        $(".submitbutton").attr('disabled', false);
-                    }
-                };
-                $.ajax(arg);
-                return false;
-
-            });
-        });
-    });
-</script>
-
+    </script>
+{% endif %}
+{% if pos < 4 %}
+    <a href="{%url school.views.school_index  %}viewClassDetail/{{class.id}}" title ="Quay về danh sách lớp" class="ggButton"> Quay lại </a>
+{% endif %}
 <form action="" name = "info" method = "post">{% csrf_token %}
-    <h2> Hạnh kiểm lớp
-    <select name="class" onchange="submitClass()">       
-        <option value = -1> {{class}} </option>
-        {% for cl in classList %}
-            {%if cl.id != class.id%}
-            <option  value={{cl.id }}> {{cl}}</option>		
-            {%endif%}
-        {% endfor %}		
-    </select>
-    </h2>
+    {% if pos > 1 %}
+        <h2> Hạnh kiểm lớp
+        <select name="class" onchange="submitClass()">
+            <option value = -1> {{class}} </option>
+            {% for cl in classList %}
+                {%if cl.id != class.id%}
+                <option  value={{cl.id }}> {{cl}}</option>
+                {%endif%}
+            {% endfor %}
+        </select>
+        </h2>
+    {% else %}
+        <h2> Hạnh kiểm lớp {{ class }}</h2>
+    {% endif %}
 </form>
 
 <form action="/school/hanhkiem/{{class.id}}" method="post">{% csrf_token %}       
 {%if pos > 3%}
 <input type ="submit" class="ggButton submitbutton" value="Lưu"/>
+<a href="{%url school.views.school_index  %}viewClassDetail/{{class.id}}" title ="Quay về danh sách lớp" class="ggButton"> Quay lại </a>
 {%endif%}
-<a href="{%url school.views.school_index  %}viewClassDetail/{{class.id}}" title ="Quay về danh sách lớp"> <input class="ggButton" type ="button" value="Quay lại"/></a>
     <table class="styleA" width = "75%">
-
     <tr>
         <th align="center" width="5%"> STT </th>
         <th align="center" width="20%"> <a href="{%url school.views.school_index  %}hanhkiem/{{class.id}}/1/{{next_status}}">Họ tên </a></th>
@@ -155,6 +162,6 @@ $(document).ready(function(){
 {%if pos > 3%}
 <input class="ggButton submitbutton" type ="submit" value="Lưu"/>
 {%endif%}
-<a href="{%url school.views.school_index  %}viewClassDetail/{{class.id}}" title ="Quay về danh sách lớp"> <input class="ggButton" type ="button" value="Quay lại"/></a>
+<a href="{%url school.views.school_index  %}viewClassDetail/{{class.id}}" title ="Quay về danh sách lớp" class="ggButton"> Quay lại </a>
 	</form>
 {% endblock %}

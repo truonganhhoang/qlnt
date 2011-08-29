@@ -3,7 +3,7 @@
   {% if message != None %}
     {{ message }}
   {% endif %}
-
+{% if pos >3 %}
   <script>
     $(document).ready(function() {
         var note = '';
@@ -64,7 +64,7 @@
       return confirm("Bạn có chắc chắn xóa không?");
     }
   </script>
-
+{% endif %}
     <form class="submitform" action="/school/classtab/{{block_id}}" method="post">{% csrf_token %}
     <table class="styleA" width="100%">
         <tr>

@@ -1,63 +1,65 @@
 {% block content %}
-    <script>
-        $(document).ready(function() {
-            $("select[name=team_id]").each(function() {
-                $(this).change(function() {
-                    var id = $(this).parents("tr").attr('class').split(' ')[0];
-                    var team = $(this).val();
-                    var p = $(this).parents("tr");
-                    var data = { id: id, team:team, request_type:'team'};
-                    var arg = { type:"POST",
-                        url:"school/teachers_in_team/{{ team.id }}",
-                        data: data,
-                        datatype:"json",
-                        success:function(){
-                            p.empty();
-                        }
-                    };
-                    $.ajax(arg);
-                    return false;
+    {% if pos > 3 %}
+        <script>
+            $(document).ready(function() {
+                $("select[name=team_id]").each(function() {
+                    $(this).change(function() {
+                        var id = $(this).parents("tr").attr('class').split(' ')[0];
+                        var team = $(this).val();
+                        var p = $(this).parents("tr");
+                        var data = { id: id, team:team, request_type:'team'};
+                        var arg = { type:"POST",
+                            url:"school/teachers_in_team/{{ team.id }}",
+                            data: data,
+                            datatype:"json",
+                            success:function(){
+                                p.empty();
+                            }
+                        };
+                        $.ajax(arg);
+                        return false;
 
+                    });
+                });
+
+                $("select[name=major]").each(function() {
+                    $(this).change(function() {
+                        var id = $(this).parents("tr").attr('class').split(' ')[0];
+                        var major = $(this).val();
+                        var data = { id: id, major:major, request_type:'major'};
+                        var arg = { type:"POST",
+                            url:"school/teachers_in_team/{{ team.id }}",
+                            data: data,
+                            datatype:"json",
+                            success:function() {
+                                applyListener();
+                            }
+                        };
+                        $.ajax(arg);
+                        return false;
+                    });
+                });
+
+                $("select[name=group_id]").each(function() {
+                    $(this).change(function() {
+                        var id = $(this).parents("tr").attr('class').split(' ')[0];
+                        var group = $(this).val();
+                        var data = { id: id, group:group, request_type:'group'};
+                        var arg = { type:"POST",
+                            url:"school/teachers_in_team/{{ team.id }}",
+                            data: data,
+                            datatype:"json",
+                            success:function(){
+                            }
+                        };
+                        $.ajax(arg);
+                        return false;
+
+                    });
                 });
             });
-
-            $("select[name=major]").each(function() {
-                $(this).change(function() {
-                    var id = $(this).parents("tr").attr('class').split(' ')[0];
-                    var major = $(this).val();
-                    var data = { id: id, major:major, request_type:'major'};
-                    var arg = { type:"POST",
-                        url:"school/teachers_in_team/{{ team.id }}",
-                        data: data,
-                        datatype:"json",
-                        success:function() {
-                            applyListener();
-                        }
-                    };
-                    $.ajax(arg);
-                    return false;
-                });
-            });
-
-            $("select[name=group_id]").each(function() {
-                $(this).change(function() {
-                    var id = $(this).parents("tr").attr('class').split(' ')[0];
-                    var group = $(this).val();
-                    var data = { id: id, group:group, request_type:'group'};
-                    var arg = { type:"POST",
-                        url:"school/teachers_in_team/{{ team.id }}",
-                        data: data,
-                        datatype:"json",
-                        success:function(){
-                        }
-                    };
-                    $.ajax(arg);
-                    return false;
-
-                });
-            });
-        });
-    </script>
+        </script>
+    {% endif %}
 
     <h2>Danh sách giáo viên tổ {{ team }}</h2>
     <table class="styleA" width="100%">

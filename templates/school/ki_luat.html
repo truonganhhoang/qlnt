@@ -1,10 +1,12 @@
 ﻿{% block content %}
 
 <script>
-function confirmDelete()
-{
-    return confirm("Bạn có muốn xóa kỉ luật này không");
-}
+{% if pos > 3 %}
+    function confirmDelete()
+    {
+        return confirm("Bạn có muốn xóa kỉ luật này không");
+    }
+{% endif %}
 </script>
 
 {% if count > 0 %}

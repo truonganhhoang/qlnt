@@ -26,5 +26,7 @@
         <p>Học sinh hiện chưa nghỉ buổi nào</p>
     {% endif %}
     <br>
-    <a href="/school/diemdanhhs/{{ student_id }}/1" class="ggButton onPage">Thêm</a>
+    {% if pos > 2 %}
+        <a href="/school/diemdanhhs/{{ student_id }}/1" class="ggButton onPage">Thêm</a>
+    {% endif %}
 {% endblock %}
