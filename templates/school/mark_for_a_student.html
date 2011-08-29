@@ -1,5 +1,6 @@
 ﻿
 {% block content %}
+
 {% if message != None %}
 {{message}}
 {% endif %}
@@ -22,66 +23,50 @@
     });
 </script>
 
-<table border="0" width=100% >
 
-	<td>&nbsp</td>
-	</tr>
 
-	<tr>
 
-	<td width="50%">
-	Lớp: {{selectedClass}}
-	</td>
-	</tr>
-
-	<tr>
-
-		<td> Học kỳ :
         <form action="/school/markForAStudent/{{class_id}}/{{student_id}}"  name="info" method="post" id='myform' > {% csrf_token %}
+			Học kỳ 
             <select name="term" onclick="submitTerm();" >
-                <option value=-1 > Chọn kỳ </option>
                 {% for term in termList %}
                         <option   value={{ term.id }} selected> {{ term}} </option>
                 {% endfor %}
 
             </select>
         </form>
-		</td>					
-	</tr>
-	<tr>
-	<td> &nbsp</td>
-	</tr>
-	<tr>
+		<br>
+		<br>
 		<table border=1 width="50%" class="styleA" >
 			<tr>
-				<td rowspan =2 align="center" width= "10%">
+				<th rowspan =2 align="center" width= "10%">
 					Học kỳ
-				</td>
-				<td colspan =2 align="center" width= "20%" >
+				</th>
+				<th colspan =2 align="center" width= "20%" >
 					Kết quả xết loại
-				</td>
+				</th>
 				{% ifequal selectedTerm.number 2 %}
-				<td colspan =2 align="center" width= "20%">
+				<th colspan =2 align="center" width= "20%">
 					Xếp loại lại sau KT lại môn học hoặc rèn luyện thêm về học lực
-				</td>
+				</th>
 				{% endifequal %}
 				
 			</tr>
 			<tr>
-				<td align="center" width= "10%">
+				<th align="center" width= "10%">
 					TB
-				</td>
-				<td align="center" width= "10%">
+				</th>
+				<th align="center" width= "10%">
 					HL
-				</td>
+				</th>
 
 				{% ifequal selectedTerm.number 2 %}
-				<td align="center" width= "10%">
+				<th align="center" width= "10%">
 					TB
-				</td>
-				<td align="center" width= "10%">
+				</th>
+				<th align="center" width= "10%">
 					HL
-				</td>
+				</th>
 				{% endifequal %}						
 			</tr>
 			<tr>
@@ -168,7 +153,7 @@
 				<td>
 				</td>
 
-				</tr>	
+			</tr>	
 			
 			<tr>
 				<td align="center" >
@@ -214,71 +199,67 @@
 			{% endifequal %}
 		
 		</table>
-	</tr>
-	
-	
+		<br>
+		
 <script type="text/javascript" >
 	document.info.term.value={{termChoice}}
 	
 </script>		
 		
-	<tr><td>&nbsp </td>	</tr>
-	<tr >
-	<td colspan=2>
 	
 	<table border =1 width = "100%" class="styleA">
 		<tr>
-			<td rowspan=2 align="center" width="4%">
+			<th rowspan=2 align="center" width="4%">
 				Stt
-			</td>	
-			<td rowspan=2 align="center" width="18%">
+			</th>	
+			<th rowspan=2 align="center" width="18%">
 			   Môn
-			</td>	
-			<td colspan=5 align="center" width="20%" >
+			</th>	
+			<th colspan=5 align="center" width="20%" >
 				Miệng
-			</td>	
+			</th>	
 
-			<td colspan=5 align="center" width="20%">
+			<th colspan=5 align="center" width="20%">
 				15 phút
-			</td>	
-			<td colspan=5 align="center" width="20%">
+			</th>	
+			<th colspan=5 align="center" width="20%">
 				45 phút
-			</td>
-			<td rowspan=2 align="center" width="5%">
+			</th>
+			<th rowspan=2 align="center" width="5%">
 				Thi cuối kì
-			</td>	
+			</th>	
 		{% ifequal selectedTerm.number 1 %}
-			<td rowspan=2 width="5%" >
+			<th rowspan=2 width="5%" >
 				TB
-			</td>	
+			</th>	
 		{% else %}
-			<td colspan=3 align="center"  >
+			<th colspan=3 align="center"  >
 				<b>ĐIỂM TRUNG BÌNH </b>
-			</td>
+			</th>
 		{% endifequal %}
 			
 			
 		</tr>
 		<tr>
-		<td width ="4%" align="center" > 1</td>
-		<td width ="4%" align="center"> 2</td>
-		<td width ="4%" align="center"> 3</td>
-		<td width ="4%" align="center"> 4</td>
-		<td width ="4%" align="center"> 5</td>
-		<td width ="4%" align="center" > 1</td>
-		<td width ="4%" align="center"> 2</td>
-		<td width ="4%" align="center"> 3</td>
-		<td width ="4%" align="center"> 4</td>
-		<td width ="4%" align="center"> 5</td>
-		<td width ="4%" align="center" > 1</td>
-		<td width ="4%" align="center"> 2</td>
-		<td width ="4%" align="center"> 3</td>
-		<td width ="4%" align="center"> 4</td>
-		<td width ="4%" align="center"> 5</td>
+		<th width ="4%" align="center" > 1</th>
+		<th width ="4%" align="center"> 2</th>
+		<th width ="4%" align="center"> 3</th>
+		<th width ="4%" align="center"> 4</th>
+		<th width ="4%" align="center"> 5</th>
+		<th width ="4%" align="center" > 1</th>
+		<th width ="4%" align="center"> 2</th>
+		<th width ="4%" align="center"> 3</th>
+		<th width ="4%" align="center"> 4</th>
+		<th width ="4%" align="center"> 5</th>
+		<th width ="4%" align="center" > 1</th>
+		<th width ="4%" align="center"> 2</th>
+		<th width ="4%" align="center"> 3</th>
+		<th width ="4%" align="center"> 4</th>
+		<th width ="4%" align="center"> 5</th>
 		{% ifequal selectedTerm.number 2 %}
-			<td align="center" >HK I  </td>
-			<td align="center" >HK II </td>
-			<td align="center" > CK </td>
+			<th align="center" >HK I  </th>
+			<th align="center" >HK II </th>
+			<th align="center" > CK </th>
 			
 		{% endifequal %}
 		
@@ -446,10 +427,7 @@
 		{% endifnotequal %}
 			
 		{% endfor %}
-		</table>	
-		</div>
-		</td>
-		</tr>
+		
 		{%else %}
 		{% for s,m,hk1,tbnam in list %}		
 		<tr>
@@ -665,12 +643,8 @@
 		</tr>	
 			
 		 {%endfor %}
-		</table>	
-		</div>
-		</td>
-		</tr>
 	{% endifequal %}
 
-</table>
+	</table>
 {% endblock %}
 
