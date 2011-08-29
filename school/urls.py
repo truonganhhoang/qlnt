@@ -38,6 +38,7 @@ urlpatterns = patterns('',
     url(r'xlCaNamTheoLop/(?P<class_id>\w+)/(?P<type>\w+)$','school.viewFinish.xlCaNamTheoLop'),
     url(r'thilai/(?P<class_id>\w+)$','school.viewFinish.thilai'),
     url(r'renluyenthem/(?P<class_id>\w+)$','school.viewFinish.renluyenthem'),
+    url(r'capNhapMienGiam/(?P<class_id>\w+)/(?P<student_id>\w+)$','school.viewMark.capNhapMienGiam'),
     		
 	# tinh diem tong ket hoc luc toan truong	
 	# tong ket hoc ky, tinh toan bo hoc luc cua hoc sinh trong toan truong

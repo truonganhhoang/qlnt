@@ -919,4 +919,82 @@ def sendSMSMark(request):
         data = simplejson.dumps({'message': message})
         return HttpResponse( data, mimetype = 'json')    
     
+def capNhapMienGiam(request,class_id, student_id):
+    user = request.user
+    if not user.is_authenticated():
+        return HttpResponseRedirect(reverse('login'))
+        
+    try:
+        school = get_school(request)
+    except Exception as e:
+        return HttpResponseRedirect(reverse('index'))
+    
+    pos = get_position(request)
+    if (pos==1) and (get_student(request).id==int(student_id)):
+        pos = 4
+    if (get_position(request) < 1):
+        return HttpResponseRedirect('/')
+    
+    
+    # nho order
+    subjectList = Subject.objects.filter(class_id=class_id,name__in=['GDQP-AN',u'Thể dục',u'Âm nhạc',u'Mĩ thuật','GDQP']).order_by('index')
+    term1Mark   = Mark.objects.filter(subject_id__class_id=class_id,student_id=student_id,term_id__number=1,subject_id__name__in=['GDQP-AN',u'Thể dục',u'Âm nhạc',u'Mĩ thuật','GDQP']).order_by('subject_id__index')
+    term2Mark   = Mark.objects.filter(subject_id__class_id=class_id,student_id=student_id,term_id__number=2,subject_id__name__in=['GDQP-AN',u'Thể dục',u'Âm nhạc',u'Mĩ thuật','GDQP']).order_by('subject_id__index')
+    tkMonList   = TKMon.objects.filter(subject_id__class_id=class_id,student_id=student_id,subject_id__name__in=['GDQP-AN',u'Thể dục',u'Âm nhạc',u'Mĩ thuật','GDQP']).order_by('subject_id__index')
+    # cam xoa  2 dong nay. Xoa se sai ngay
+    for term1,term2,tkMon,s in zip(term1Mark,term2Mark,tkMonList,subjectList):
+        pass
+    
+    if request.method=='POST':
+        str = request.POST['str']
+        strs= str.split(':')
+        index =int(strs[0])-1
+        type  =int(strs[1])
+        if type==0:
+            term1Mark[index].mg=False
+            term2Mark[index].mg=False
+            tkMonList[index].mg=False
+        elif type==3:
+            term1Mark[index].mg=True
+            term2Mark[index].mg=True
+            tkMonList[index].mg=True
+        elif type==1:
+            term1Mark[index].mg=True
+            term2Mark[index].mg=False
+            tkMonList[index].mg=False
+            if subjectList[index].primary==1:
+                tkMonList[index].mg=True
+            
+        elif type==2:
+            term1Mark[index].mg=False
+            term2Mark[index].mg=True
+            tkMonList[index].mg=False
+            if subjectList[index].primary==2:
+                tkMonList[index].mg=True
+        
+        term1Mark[index].save()    
+        term2Mark[index].save()
+        tkMonList[index].save()
+                                            
+    mgList=[]
+    for term1,term2,tkMon in zip(term1Mark,term2Mark,tkMonList):
+        if    (tkMon.mg) & (term1.mg) & (term2.mg) : 
+            mgList.append(3)
+        elif  term1.mg : mgList.append(1)
+        elif  term2.mg : mgList.append(2)
+        else: mgList.append(0)
+        
+        print term1.mg,' ',term2.mg,' ',tkMon.mg
+    print mgList    
+    
+    list = zip(subjectList,mgList)     
+    message = None
+    t = loader.get_template(os.path.join('school', 'cap_nhap_mien_giam.html'))
+    c = RequestContext(request, { 
+                                 'list':list,
+                                 'class_id':class_id,
+                                 'student_id':student_id,
+                                }
+                       )
+    return HttpResponse(t.render(c))
 

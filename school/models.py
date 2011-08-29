@@ -332,6 +332,7 @@ class Mark(models.Model):
     mot_tiet_4 = models.FloatField("Điểm 1 tiết 4", null = True, blank = True, validators = [validate_mark])
     mot_tiet_5 = models.FloatField("Điểm 1 tiết 5", null = True, blank = True, validators = [validate_mark])
     ck = models.FloatField("Điểm thi cuối kì", null = True, blank = True, validators = [validate_mark])
+    mg = models.BooleanField("Miễn giảm",default = False)
     tb = models.FloatField("Điểm trung bình", null = True, blank = True, validators = [validate_mark])
     
     sent_mark=models.CharField("đánh dấu đã gửi tin nhắn",max_length=19,default="0000000000000000000")
@@ -378,7 +379,6 @@ class MarkTime(models.Model):
     
     ck = models.DateTimeField("Thời gian cập nhật điểm thi cuối kì", null = True, blank = True)
     tb = models.DateTimeField("Thời gian cập nhật điểm trung bình", null = True, blank = True)
-    
     mark_id = models.OneToOneField(Mark, verbose_name = "Điểm")
     
     class Meta:
@@ -388,6 +388,7 @@ class MarkTime(models.Model):
     def __unicode__(self):
         return self.mark_id.__unicode__() 
 class TKMon(models.Model):    
+    mg = models.BooleanField("Miễn giảm",default = False)
     tb_nam = models.FloatField("Trung bình năm", null = True, blank = True, validators = [validate_mark])
     #danh dau xem mon nay co dc phep thi lai hay ko
     thi_lai = models.BooleanField("Có thi lại", blank = True, default = False)

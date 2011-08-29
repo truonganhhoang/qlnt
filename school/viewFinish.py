@@ -114,7 +114,6 @@ def calculateOverallMarkTerm(class_id,termNumber):
     length=len(subjectList)
     i=0   
     vtMonChuyen=-1
-    print subjectList
     
     for s in subjectList:
         if s.hs==3:  vtMonChuyen=i
@@ -129,7 +128,6 @@ def calculateOverallMarkTerm(class_id,termNumber):
     # cam xoa dong nay
     for tt in tbHocKyList:
         pass
-
     
     for m in markList:
         #print i
@@ -142,12 +140,7 @@ def calculateOverallMarkTerm(class_id,termNumber):
             minMark  =10
             markSum=0
             factorSum=0
-            try:
-                tbHocKy=tbHocKyList[j]
-            except Exception as e:
-                print e
-                print m.student_id, m.subject_id, m.subject_id.class_id.year_id.school_id
-                print m.student_id.class_id.year_id.school_id
+            tbHocKy=tbHocKyList[j]
             j+=1                       
              
         if t==vtMonChuyen  :  monChuyen=m
@@ -157,15 +150,20 @@ def calculateOverallMarkTerm(class_id,termNumber):
         elif t==vtMonVan   :  
             monVan =m
              
-        if m.tb !=None:
-            markSum += m.tb*subjectList[t].hs
-            factorSum +=subjectList[t].hs 
-              
-            if m.tb<minMark:
-                minMark=m.tb
+        if (m.tb !=None):
+            if m.mg==False:
+                markSum += m.tb*subjectList[t].hs
+                factorSum +=subjectList[t].hs 
+                  
+                if m.tb<minMark:
+                    minMark=m.tb
         else:
-            ok=False
-        if (t==length-1): 
+            if m.mg==False:
+                ok=False    
+        if (t==length-1):
+            print markSum
+            print factorSum 
+             
             if  ok:
                 if factorSum==0:     
                     tbHocKy.tb_hk=None
@@ -285,14 +283,16 @@ def calculateOverallMarkYear(class_id=7):
             monVan =m
              
         if m.tb_nam !=None:
-            markSum += m.tb_nam*subjectList[t].hs
-            factorSum +=subjectList[t].hs 
-              
-            if m.tb_nam<minMark:
-                minMark=m.tb_nam
+            if m.mg==False:    
+                markSum += m.tb_nam*subjectList[t].hs
+                factorSum +=subjectList[t].hs 
+                  
+                if m.tb_nam<minMark:
+                    minMark=m.tb_nam
         else:
-            ok=False
-        if (t==length-1): 
+            if m.mg==False:            
+                ok=False
+        if (t==length-1):
             if  ok:
                 if factorSum==0:     
                     tbNam.tb_nam=None
@@ -437,9 +437,12 @@ def xepLoaiHlTheoLop(request,class_id,termNumber):
         for m in markList:
             if i % length ==0:
                 markOfAPupil=[]
-            if m.tb==None:    
+            if m.mg:
+                  markOfAPupil.append("MG")
+            elif m.tb==None:    
                   markOfAPupil.append("")
-            else: markOfAPupil.append(m.tb)        
+            else:                  
+                markOfAPupil.append(m.tb)        
             
             if i % length==0:            
                 tempList.append(markOfAPupil) 
@@ -461,9 +464,13 @@ def xepLoaiHlTheoLop(request,class_id,termNumber):
         for m in markList:
             if i % length ==0:
                 markOfAPupil=[]
-            if m.tb_nam==None:    
+                
+            if m.mg:
+                  markOfAPupil.append("MG")
+            elif m.tb_nam==None:    
                   markOfAPupil.append("")
-            else: markOfAPupil.append(m.tb_nam)        
+            else:                  
+                markOfAPupil.append(m.tb_nam)        
             
             if i % length==0:            
                 tempList.append(markOfAPupil) 

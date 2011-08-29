@@ -1,0 +1,21 @@
+﻿{% for p,m in list %}
+	{% if m.mg %}
+	<script>
+		for(var i=1;i<17;i++)
+		{
+			var name={{forloop.counter}}*100+i;
+			var tb = document.getElementById(name);
+			if (tb){
+				if (tb.value!=undefined)
+				{
+					tb.value='MG'
+					tb.readOnly=true;
+					tb.style.color='red';
+				}	
+				else
+					tb.innerHTML='MG';
+			}		
+		}
+	</script>
+	{% endif %}
+{% endfor %}

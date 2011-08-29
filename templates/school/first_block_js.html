@@ -70,6 +70,8 @@ window.onload = function() { document.onkeydown = catchEnter; };
 
 	function acceptDigits(tb,keyCode)
 	{
+		
+		if (tb.readOnly) return;
 		var ok=true;
 		/*
 		if (tb.value=="-")
@@ -78,6 +80,7 @@ window.onload = function() { document.onkeydown = catchEnter; };
 			return;
 		}
 		*/
+		
 		var exp = /[^((\d).,)]/g;
 		tb.value=tb.value.replace(exp,'');		
 		
@@ -128,6 +131,7 @@ window.onload = function() { document.onkeydown = catchEnter; };
 				document.getElementById("buttonSave").style.display="";
 				latestTime= (new Date()).getTime();
 			}			
+			
 	}	
 	function returnMove()
 	{
