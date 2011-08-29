@@ -28,7 +28,7 @@
 
         <form action="/school/markForAStudent/{{class_id}}/{{student_id}}"  name="info" method="post" id='myform' > {% csrf_token %}
 			Học kỳ 
-            <select name="term" onclick="submitTerm();" >
+            <select name="term" >
                 {% for term in termList %}
                         <option   value={{ term.id }} selected> {{ term}} </option>
                 {% endfor %}
