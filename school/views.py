@@ -2404,12 +2404,10 @@ def diem_danh(request, class_id, day, month, year):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
-        
     try:
         school = get_school(request)
     except Exception as e:
         return HttpResponseRedirect(reverse('index'))
-    
     cl = Class.objects.get(id__exact=class_id)
     if not in_school(request, cl.block_id.school_id):
         return HttpResponseRedirect('/')
@@ -2650,10 +2648,12 @@ def diem_danh_hs(request, student_id, view_type = 0):
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
     pos = get_position(request)
+    pupil = Pupil.objects.get(id=student_id)
+    if pos == 3 and not gvcn(request,pupil.class_id):
+        pos = 1
     if pos < 1:
         return HttpResponseRedirect('/')
     term = None
-    pupil = Pupil.objects.get(id=student_id)
     c = pupil.class_id
     if not in_school(request, c.block_id.school_id):
         return HttpResponseRedirect('/')
@@ -2911,6 +2911,8 @@ def khen_thuong(request, student_id):
     if not in_school(request, sub.class_id.block_id.school_id):
         return HttpResponseRedirect('/')
     pos = get_position(request)
+    if pos == 3 and gvcn(request,sub.class_id):
+        pos = 4
     if get_position(request) < 1:
         return HttpResponseRedirect('/')
     message = ''
@@ -2934,7 +2936,10 @@ def add_khen_thuong(request, student_id):
     pupil = Pupil.objects.get(id=student_id)
     if not in_school(request, pupil.class_id.block_id.school_id):
         return HttpResponseRedirect('/')
-    if get_position(request) < 4:
+    pos = get_position(request)
+    if pos == 3 and gvcn(request,pupil.class_id):
+        pos = 4
+    if pos < 4:
         return HttpResponseRedirect('/')
     url = "/school/khenthuong/"+str(student_id) + "/add"
     cl = Class.objects.get(id__exact=pupil.class_id.id)
@@ -2966,7 +2971,10 @@ def delete_khen_thuong(request, kt_id):
     student = kt.student_id    
     if not in_school(request, student.class_id.block_id.school_id):
         return HttpResponseRedirect('/')
-    if (get_position(request) < 4):
+    pos = get_position(request)
+    if pos == 3 and gvcn(request,pupil.class_id):
+        pos = 4
+    if pos < 4:
         return HttpResponseRedirect('/')
     kt.delete()
     url = '/school/khenthuong/' + str(student.id)
@@ -2986,7 +2994,10 @@ def edit_khen_thuong(request, kt_id):
     pupil = kt.student_id
     if not in_school(request, pupil.class_id.block_id.school_id):
         return HttpResponseRedirect('/')
-    if get_position(request) < 4:
+    pos = get_position(request)
+    if pos == 3 and gvcn(request,pupil.class_id):
+        pos = 4
+    if pos < 4:
         return HttpResponseRedirect('/')
     url = "/school/khenthuong/"+str(pupil.id) + "/edit"
     term = kt.term_id
@@ -3018,6 +3029,8 @@ def ki_luat(request, student_id):
     if not in_school(request, student.class_id.block_id.school_id):
         return HttpResponseRedirect('/')
     pos = get_position(request)
+    if pos == 3 and gvcn(request,student.class_id):
+        pos = 4
     if get_position(request) < 1:
         return HttpResponseRedirect('/')
     message = ''
@@ -3041,7 +3054,10 @@ def add_ki_luat(request, student_id):
     pupil = Pupil.objects.get(id=student_id)
     if not in_school(request, pupil.class_id.block_id.school_id):
         return HttpResponseRedirect('/')
-    if get_position(request) < 2:
+    pos = get_position(request)
+    if pos == 3 and gvcn(request,pupil.class_id):
+        pos = 4
+    if pos < 4:
         return HttpResponseRedirect('/')
     url = "/school/kiluat/"+str(student_id) + "/add"
     cl = Class.objects.get(id__exact=pupil.class_id.id)
@@ -3073,7 +3089,10 @@ def delete_ki_luat(request, kt_id):
     student = kt.student_id
     if not in_school(request, student.class_id.block_id.school_id):
         return HttpResponseRedirect('/')
-    if get_position(request) < 4:
+    pos = get_position(request)
+    if pos == 3 and gvcn(request,pupil.class_id):
+        pos = 4
+    if pos < 4:
         return HttpResponseRedirect('/')
     kt.delete()
     url = '/school/kiluat/' + str(student.id)
@@ -3094,7 +3113,10 @@ def edit_ki_luat(request, kt_id):
     pupil = kt.student_id
     if not in_school(request, pupil.class_id.block_id.school_id):
         return HttpResponseRedirect('/')
-    if get_position(request) < 4:
+    pos = get_position(request)
+    if pos == 3 and gvcn(request,pupil.class_id):
+        pos = 4
+    if pos < 4:
         return HttpResponseRedirect('/')
     url = "/school/kiluat/"+str(pupil.id) + "/edit"
     term = kt.term_id

@@ -32,7 +32,7 @@
         <td align="center" width="25%"> {{kt.hinh_thuc}}</td>
         <td align="center" width="15%"> {{kt.dia_diem}} </td>
         <td align="center" width="30%"> {{kt.noi_dung}} </td>
-        {%if pos > 1%}
+        {%if pos > 3%}
         <td width="5%"><a href = "/school/khenthuong/{{kt.id}}/delete" class="ggButton onPage" onclick="return confirmDelete();"> Xóa</a></td>
         <td width="5%"><a href = "/school/khenthuong/{{kt.id}}/edit" class="ggButton onPage" > Sửa</a></td>
         {% endif %}
@@ -42,7 +42,7 @@
 {% else %}
     <p>Học sinh hiện chưa có khen thưởng nào</p>
 {% endif %}
-{% if pos > 1 %}
+{% if pos > 3 %}
     <br>
     <a title="Thêm khen thưởng cho học sinh" class = "tiptiphover ggButton onPage" href="/school/khenthuong/{{student_id}}/add"> Thêm </a>
 {% endif %}

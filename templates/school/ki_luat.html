@@ -34,7 +34,7 @@
         <td align="center" width="25%"> {{kt.hinh_thuc}}</td>
         <td align="center" width="15%"> {{kt.dia_diem}} </td>
         <td align="center" width="30%"> {{kt.noi_dung}} </td>
-        {%if pos > 1%}
+        {%if pos > 3%}
         <td width="5%"><a href = "/school/kiluat/{{kt.id}}/delete" class="ggButton onPage" onclick="return confirmDelete();"> xóa</a></td>
         <td width="5%"><a href = "/school/kiluat/{{kt.id}}/edit" class="ggButton onPage"> Sửa</a></td>
         {% endif %}
@@ -45,7 +45,7 @@
     <p>Học sinh hiện chưa có kỉ luật nào</p>
     </br>
 {% endif %}
-{% if pos > 1 %}
+{% if pos > 3 %}
     <a title="Thêm kỉ luật cho học sinh" class = "tiptiphover ggButton onPage" href="/school/kiluat/{{student_id}}/add"> Thêm </a>
 {% endif %}
 {% endblock %}

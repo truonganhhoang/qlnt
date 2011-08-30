@@ -1,12 +1,12 @@
 {% extends "base.html" %}
-
-{% block js %}
-    <script type="text/javascript" src="/static/js/template_js/sortable_table.js"></script>
-{% endblock %}
+{% if pos > 3 %}
+    {% block js %}
+        <script type="text/javascript" src="/static/js/template_js/sortable_table.js"></script>
+    {% endblock %}
+{% endif %}
 
 {% block content %}
-
-    <script>
+    <script type="text/javascript">
         function submitClass(){
             if (document.info.class.value!={{class.id}})
                 if (document.info.class.value!=-1)
@@ -14,6 +14,9 @@
                     window.location = "{%url school.views.school_index  %}subjectPerClass/"+ document.info.class.value;
                 }
         }
+    </script>
+{% if pos > 3 %}
+    <script>
         function confirmDelete()
         {
             return confirm("Bạn có chắc chắn xóa không?");
@@ -91,7 +94,7 @@
             });
         });
     </script>
-
+{% endif %}
     <form action="" name = "info" method = "post">{% csrf_token %}
     <h2>Danh sách môn học lớp
         <select name="class" onchange="submitClass()">
@@ -126,7 +129,7 @@
             <th align="center" width="10%"> <a href="{%url school.views.school_index  %}subjectPerClass/{{class.id}}/2/{{next_status}}">Hệ số </a></th>
             <th align="center" width="25%"> <a href="{%url school.views.school_index  %}subjectPerClass/{{class.id}}/3/{{next_status}}">Giáo viên</a></th>
             <th align="center" > Cách tính điểm </th>
-            {%if pos > 1%}
+            {%if pos > 3%}
                 <th width = "5%"> </th>
             {%endif%}
         </tr>

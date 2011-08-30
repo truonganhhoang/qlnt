@@ -744,7 +744,10 @@ def save_file(file):
 def gvcn(request, class_id):
     if (request.user.userprofile.position != 'GIAO_VIEN'):
         return 0
-    cClass = Class.objects.get(id=class_id)
+    if isinstance(class_id,Class):
+        cClass = class_id
+    else:
+        cClass = Class.objects.get(id=class_id)
     if cClass.teacher_id and (cClass.teacher_id.user_id == request.user):
         return 1
     return 0
