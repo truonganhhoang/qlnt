@@ -1,6 +1,6 @@
 ﻿
 {% block content %}
-
+{% load mark %}
 {% if message != None %}
 {{message}}
 {% endif %}
@@ -22,88 +22,59 @@
         });
     });
 </script>
+    <form action="/school/markForAStudent/{{class_id}}/{{student_id}}"  name="info" method="post" id='myform' > {% csrf_token %}
+		Học kỳ 
+        <select name="term" >
+            {% for term in termList %}
+                <option   value={{ term.id }} selected> {{ term}} </option>
+            {% endfor %}
 
-
-
-
-        <form action="/school/markForAStudent/{{class_id}}/{{student_id}}"  name="info" method="post" id='myform' > {% csrf_token %}
-			Học kỳ 
-            <select name="term" >
-                {% for term in termList %}
-                        <option   value={{ term.id }} selected> {{ term}} </option>
-                {% endfor %}
-
-            </select>
-        </form>
-		<br>
-		<br>
-		<table border=1 width="50%" class="styleA" >
-			<tr>
-				<th rowspan =2 align="center" width= "10%">
-					Học kỳ
-				</th>
-				<th colspan =2 align="center" width= "20%" >
-					Kết quả xết loại
-				</th>
-				{% ifequal selectedTerm.number 2 %}
+        </select>
+    </form>
+	
+	<br>
+	<br>
+	<table border=1 width="50%" class="styleB" >
+		<tr>
+			<th rowspan =2 align="center" width= "10%">
+				Học kỳ
+			</th>
+			<th colspan =2 align="center" width= "20%" >
+				Kết quả xết loại
+			</th>
+			{% ifequal selectedTerm.number 2 %}
 				<th colspan =2 align="center" width= "20%">
 					Xếp loại lại sau KT lại môn học hoặc rèn luyện thêm về học lực
 				</th>
-				{% endifequal %}
+			{% endifequal %}
 				
-			</tr>
-			<tr>
-				<th align="center" width= "10%">
-					TB
-				</th>
-				<th align="center" width= "10%">
-					HL
-				</th>
+		</tr>
+		<tr>
+			<th align="center" width= "10%">
+				TB
+			</th>
+			<th align="center" width= "10%">
+				HL
+			</th>
 
-				{% ifequal selectedTerm.number 2 %}
+			{% ifequal selectedTerm.number 2 %}
 				<th align="center" width= "10%">
 					TB
 				</th>
 				<th align="center" width= "10%">
 					HL
 				</th>
-				{% endifequal %}						
-			</tr>
-			<tr>
-				<td align="center" >
+			{% endifequal %}						
+		</tr>
+		<tr>
+			<td align="center" >
 				 Học Kỳ I
-				</td>
-				<td align="center">
-					{% if tbhk1.tb_hk != None %}
-						{{tbhk1.tb_hk}}
-					{% else %}
-						&nbsp
-					{% endif %}	
-					
-				</td>
-				<td align="center">
-				{% ifequal tbhk1.hl_hk "G" %}					
-					Giỏi
-				{% else %}	
-				{% ifequal tbhk1.hl_hk "K" %}					
-					Khá
-				{% else %}	
-				{% ifequal tbhk1.hl_hk "TB" %}					
-					Trung bình
-				{% else %}	
-				{% ifequal tbhk1.hl_hk "Y" %}					
-					Yếu
-				{% else %}	
-				{% ifequal tbhk1.hl_hk "Kem" %}					
-					Kém
-				{% else %}
-					&nbsp
-				{% endifequal %}	
-				{% endifequal %}	
-				{% endifequal %}	
-				{% endifequal %}	
-				{% endifequal %}	
-			
+			</td>
+			<td align="center">
+				{{tbhk1.tb_hk|floatformat:"-1" }}					
+			</td>
+			<td align="center">
+				{{ tbhk1.hl_hk|convertHlToVietnamese }}				
 			</td>
 			{% ifequal selectedTerm.number 2  %}
 				<td>
@@ -111,43 +82,18 @@
 				<td>
 				</td>
 			{% endifequal %}	
-			</tr>
+		</tr>
 			{% ifequal selectedTerm.number 2  %}
 			<tr>
 				<td align="center" >
-				 Học Kỳ II
+					Học Kỳ II
 				</td>
 				<td align="center">
-
-					{% if tbhk2.tb_hk != None %}
-						{{tbhk2.tb_hk}}
-					{% else %}
-						&nbsp
-					{% endif %}	
+					{{ tbhk2.tb_hk|floatformat:"-1"}}
 				</td>
 				<td align="center">
-				{% ifequal tbhk2.hl_hk "G" %}					
-					Giỏi
-				{% else %}	
-				{% ifequal tbhk2.hl_hk "K" %}					
-					Khá
-				{% else %}	
-				{% ifequal tbhk2.hl_hk "TB" %}					
-					Trung bình
-				{% else %}	
-				{% ifequal tbhk2.hl_hk "Y" %}					
-					Yếu
-				{% else %}	
-				{% ifequal tbhk2.hl_hk "Kem" %}					
-					Kém
-				{% else %}
-					&nbsp
-				{% endifequal %}	
-				{% endifequal %}	
-				{% endifequal %}	
-				{% endifequal %}	
-				{% endifequal %}	
-				</td>
+					{{ tbhk2.hl_hk|convertHlToVietnamese }}				
+				</td>				
 				<td>
 				</td>
 				<td>
@@ -161,34 +107,10 @@
 				</td>
 				<td align="center">
 					
-					{% if tbCaNam.tb_nam != None %}
-						{{tbCaNam.tb_nam}}
-					{% else %}
-						&nbsp
-					{% endif %}	
+				{{ tbCaNam.tb_nam|floatformat:"-1"}}
 				</td>
 				<td align="center">
-				{% ifequal tbCaNam.hl_nam "G" %}					
-					Giỏi
-				{% else %}	
-				{% ifequal tbCaNam.hl_nam "K" %}					
-					Khá
-				{% else %}	
-				{% ifequal tbCaNam.hl_nam "TB" %}					
-					Trung bình
-				{% else %}	
-				{% ifequal tbCaNam.hl_nam "Y" %}					
-					Yếu
-				{% else %}	
-				{% ifequal tbCaNam.hl_nam "Kem" %}					
-					Kém
-				{% else %}
-					&nbsp
-				{% endifequal %}	
-				{% endifequal %}	
-				{% endifequal %}	
-				{% endifequal %}	
-				{% endifequal %}	
+				{{ tbCaNam.hl_nam|convertHlToVietnamese }}
 				</td>
 				<td>
 				</td>
@@ -198,7 +120,7 @@
 			</tr>	
 			{% endifequal %}
 		
-		</table>
+	</table>
 		<br>
 		
 <script type="text/javascript" >
@@ -207,7 +129,7 @@
 </script>		
 		
 	
-	<table border =1 width = "100%" class="styleA">
+	<table border =1 width = "100%" class="styleA" >
 		<tr>
 			<th rowspan=2 align="center" width="4%">
 				Stt
@@ -240,28 +162,29 @@
 			
 			
 		</tr>
+		
 		<tr>
-		<th width ="4%" align="center" > 1</th>
-		<th width ="4%" align="center"> 2</th>
-		<th width ="4%" align="center"> 3</th>
-		<th width ="4%" align="center"> 4</th>
-		<th width ="4%" align="center"> 5</th>
-		<th width ="4%" align="center" > 1</th>
-		<th width ="4%" align="center"> 2</th>
-		<th width ="4%" align="center"> 3</th>
-		<th width ="4%" align="center"> 4</th>
-		<th width ="4%" align="center"> 5</th>
-		<th width ="4%" align="center" > 1</th>
-		<th width ="4%" align="center"> 2</th>
-		<th width ="4%" align="center"> 3</th>
-		<th width ="4%" align="center"> 4</th>
-		<th width ="4%" align="center"> 5</th>
-		{% ifequal selectedTerm.number 2 %}
-			<th align="center" >HK I  </th>
-			<th align="center" >HK II </th>
-			<th align="center" > CK </th>
-			
-		{% endifequal %}
+			<th width ="4%" align="center"> 1</th>
+			<th width ="4%" align="center"> 2</th>
+			<th width ="4%" align="center"> 3</th>
+			<th width ="4%" align="center"> 4</th>
+			<th width ="4%" align="center"> 5</th>
+			<th width ="4%" align="center" > 1</th>
+			<th width ="4%" align="center"> 2</th>
+			<th width ="4%" align="center"> 3</th>
+			<th width ="4%" align="center"> 4</th>
+			<th width ="4%" align="center"> 5</th>
+			<th width ="4%" align="center" > 1</th>
+			<th width ="4%" align="center"> 2</th>
+			<th width ="4%" align="center"> 3</th>
+			<th width ="4%" align="center"> 4</th>
+			<th width ="4%" align="center"> 5</th>
+			{% ifequal selectedTerm.number 2 %}
+				<th align="center" >HK I  </th>
+				<th align="center" >HK II </th>
+				<th align="center" > CK </th>
+				
+			{% endifequal %}
 		
 		</tr>
 		
@@ -278,150 +201,76 @@
 
 			{% ifnotequal s.hs 	0 %}
 
-			<td align="center">
+			<td align="right">
 				{{m.mieng_1|floatformat:"-1"}}  
 			</td>
-			<td align="center">
+			<td align="right">
 				{{m.mieng_2|floatformat:"-1"}}  
 			</td>
-			<td align="center">
+			<td align="right">
 				{{m.mieng_3|floatformat:"-1"}}  
 			</td>
-			<td align="center">
+			<td align="right">
 				{{m.mieng_4|floatformat:"-1"}}  
 			</td>
-			<td align="center">
+			<td align="right">
 				{{m.mieng_5|floatformat:"-1"}}  
 			</td>
 
-			<td align="center">
+			<td align="right">
 				{{m.mlam_1|floatformat:"-1"}}  
 			</td>
-			<td align="center">
+			<td align="right">
 				{{m.mlam_2|floatformat:"-1"}}  
 			</td>
-			<td align="center">
+			<td align="right">
 				{{m.mlam_3|floatformat:"-1"}}  
 			</td>
-			<td align="center">
+			<td align="right">
 				{{m.mlam_4|floatformat:"-1"}}  
 			</td>
-			<td align="center">
+			<td align="right">
 				{{m.mlam_5|floatformat:"-1"}}  
 			</td>
-			<td align="center">
+			<td align="right">
 				{{m.mot_tiet_1|floatformat:"-1"}}  
 			</td>
-			<td align="center">
+			<td align="right">
 				{{m.mot_tiet_2|floatformat:"-1"}}  
 			</td>
-			<td align="center">
+			<td align="right">
 				{{m.mot_tiet_3|floatformat:"-1"}}  
 			</td>
-			<td align="center">
+			<td align="right">
 				{{m.mot_tiet_4|floatformat:"-1"}}  
 			</td>
-			<td align="center">
+			<td align="right">
 				{{m.mot_tiet_5|floatformat:"-1"}}  
 			</td>
 
-			<td align="center">
-				{{m.ck|floatformat:"-1"}}  
+			<td align="right">
+				{{m.ck|floatformat:"1"}}  
 			</td>
 
-			<td align="center">
-				{{m.tb|floatformat:"-1"}}  
+			<td align="right">
+				{{m.tb|floatformat:"1"}}  
 			</td>
 		</tr>		
 		{% else %}
 			<td colspan=5 align="center">
-			{% ifequal m.mieng_1 9 %}
-				G
-			{% else %}	
-			{% ifequal m.mieng_1 7 %}
-				K
-			{% else %}	
-			{% ifequal m.mieng_1 6 %}
-				TB
-			{% else %}	
-			{% ifequal m.mieng_1 4 %}
-				Y
-			{% else %}	
-			{% ifequal m.mieng_1 1 %}
-				Kém
-			{% endifequal %}	
-			{% endifequal %}	
-			{% endifequal %}	
-			{% endifequal %}	
-			{% endifequal %}	
-			
+			{{ m.mieng_1|convertHlToVietnamese }}			
 			</td>
 			<td colspan=5>
 			</td>
 			<td colspan=5 align="center">
-			{% ifequal m.mot_tiet_1 9 %}
-				G
-			{% else %}	
-			{% ifequal m.mot_tiet_1 7 %}
-				K
-			{% else %}	
-			{% ifequal m.mot_tiet_1 6 %}
-				TB
-			{% else %}	
-			{% ifequal m.mot_tiet_1 4 %}
-				Y
-			{% else %}	
-			{% ifequal m.mot_tiet_1 1 %}
-				Kém
-			{% endifequal %}	
-			{% endifequal %}	
-			{% endifequal %}	
-			{% endifequal %}	
-			{% endifequal %}	
+			{{ m.mot_tiet_1|convertHlToVietnamese }}			
 			</td>
 			<td  align="center">
-			{% ifequal m.ck 9 %}
-				G
-			{% else %}	
-			{% ifequal m.ck 7 %}
-				K
-			{% else %}	
-			{% ifequal m.ck 6 %}
-				TB
-			{% else %}	
-			{% ifequal m.ck 4 %}
-				Y
-			{% else %}	
-			{% ifequal m.ck 1 %}
-				Kém
-			{% endifequal %}	
-			{% endifequal %}	
-			{% endifequal %}	
-			{% endifequal %}	
-			{% endifequal %}	
-			
+			{{ m.ck|convertHlToVietnamese }}						
 			</td>
-			<td align="center">
-			{% ifequal m.tb 9 %}
-				G
-			{% else %}	
-			{% ifequal m.tb 7 %}
-				K
-			{% else %}	
-			{% ifequal m.tb 6 %}
-				TB
-			{% else %}	
-			{% ifequal m.tb 4 %}
-				Y
-			{% else %}	
-			{% ifequal m.tb 1 %}
-				Kém
-			{% endifequal %}	
-			{% endifequal %}	
-			{% endifequal %}	
-			{% endifequal %}	
-			{% endifequal %}	
 			
+			<td align="center">
+			{{ m.tb|convertHlToVietnamese }}						
 			</td>
 
 		{% endifnotequal %}
@@ -440,208 +289,89 @@
 
 		{% ifnotequal s.hs 	0 %}
 
-			<td align="center">
+			<td align="right">
 				{{m.mieng_1|floatformat:"-1"}}  
 			</td>
-			<td align="center">
+			<td align="right">
 				{{m.mieng_2|floatformat:"-1"}}  
 			</td>
-			<td align="center">
+			<td align="right">
 				{{m.mieng_3|floatformat:"-1"}}  
 			</td>
-			<td align="center">
+			<td align="right">
 				{{m.mieng_4|floatformat:"-1"}}  
 			</td>
-			<td align="center">
+			<td align="right">
 				{{m.mieng_5|floatformat:"-1"}}  
 			</td>
 
-			<td align="center">
+			<td align="right">
 				{{m.mlam_1|floatformat:"-1"}}  
 			</td>
-			<td align="center">
+			<td align="right">
 				{{m.mlam_2|floatformat:"-1"}}  
 			</td>
-			<td align="center">
+			<td align="right">
 				{{m.mlam_3|floatformat:"-1"}}  
 			</td>
-			<td align="center">
+			<td align="right">
 				{{m.mlam_4|floatformat:"-1"}}  
 			</td>
-			<td align="center">
+			<td align="right">
 				{{m.mlam_5|floatformat:"-1"}}  
 			</td>
-			<td align="center">
+			<td align="right">
 				{{m.mot_tiet_1|floatformat:"-1"}}  
 			</td>
-			<td align="center">
+			<td align="right">
 				{{m.mot_tiet_2|floatformat:"-1"}}  
 			</td>
-			<td align="center">
+			<td align="right">
 				{{m.mot_tiet_3|floatformat:"-1"}}  
 			</td>
-			<td align="center">
+			<td align="right">
 				{{m.mot_tiet_4|floatformat:"-1"}}  
 			</td>
-			<td align="center">
+			<td align="right">
 				{{m.mot_tiet_5|floatformat:"-1"}}  
 			</td>
 
-			<td align="center">
-				{{m.ck|floatformat:"-1"}}  
+			<td align="right">
+				{{m.ck|floatformat:"1"}}  
 			</td>
 
-			<td align="center">
-				{{hk1|floatformat:"-1"}}  
+			<td align="right">
+				{{hk1|floatformat:"1"}}  
 			</td>			
-			<td align="center">
-				{{m.tb|floatformat:"-1"}}  
+			<td align="right">
+				{{m.tb|floatformat:"1"}}  
 			</td>			
-			<td align="center">
-				{{tbnam|floatformat:"-1"}}  
+			<td align="right">
+				{{tbnam|floatformat:"1"}}  
 			</td>	
 		{%else %}
 			<td colspan=5 align="center">
-			{% ifequal m.mieng_1 9 %}
-				G
-			{% else %}	
-			{% ifequal m.mieng_1 7 %}
-				K
-			{% else %}	
-			{% ifequal m.mieng_1 6 %}
-				TB
-			{% else %}	
-			{% ifequal m.mieng_1 4 %}
-				Y
-			{% else %}	
-			{% ifequal m.mieng_1 1 %}
-				Kém
-			{% endifequal %}	
-			{% endifequal %}	
-			{% endifequal %}	
-			{% endifequal %}	
-			{% endifequal %}	
-			
+				{{ m.mieng_1|convertMarkToCharacter }}
 			</td>
 			<td colspan=5>
 			</td>
 			<td colspan=5 align="center">
-			{% ifequal m.mot_tiet_1 9 %}
-				G
-			{% else %}	
-			{% ifequal m.mot_tiet_1 7 %}
-				K
-			{% else %}	
-			{% ifequal m.mot_tiet_1 6 %}
-				TB
-			{% else %}	
-			{% ifequal m.mot_tiet_1 4 %}
-				Y
-			{% else %}	
-			{% ifequal m.mot_tiet_1 1 %}
-				Kém
-			{% endifequal %}	
-			{% endifequal %}	
-			{% endifequal %}	
-			{% endifequal %}	
-			{% endifequal %}	
+				{{ m.mot_tiet_1|convertMarkToCharacter }}
 			</td>
 			<td  align="center">
-			{% ifequal m.ck 9 %}
-				G
-			{% else %}	
-			{% ifequal m.ck 7 %}
-				K
-			{% else %}	
-			{% ifequal m.ck 6 %}
-				TB
-			{% else %}	
-			{% ifequal m.ck 4 %}
-				Y
-			{% else %}	
-			{% ifequal m.ck 1 %}
-				Kém
-			{% endifequal %}	
-			{% endifequal %}	
-			{% endifequal %}	
-			{% endifequal %}	
-			{% endifequal %}	
-			
+				{{ m.ck|convertMarkToCharacter }}
 			</td>
 			<td align="center">
-			{% ifequal hk1 9 %}
-				G
-			{% else %}	
-			{% ifequal hk1 7 %}
-				K
-			{% else %}	
-			{% ifequal hk1 6 %}
-				TB
-			{% else %}	
-			{% ifequal hk1 4 %}
-				Y
-			{% else %}	
-			{% ifequal hk1 1 %}
-				Kém
-			{% endifequal %}	
-			{% endifequal %}	
-			{% endifequal %}	
-			{% endifequal %}	
-			{% endifequal %}	
-			
+				{{ hk1|convertMarkToCharacter }}
 			</td>
-
 			<td align="center">
-			{% ifequal m.tb 9 %}
-				G
-			{% else %}	
-			{% ifequal m.tb 7 %}
-				K
-			{% else %}	
-			{% ifequal m.tb 6 %}
-				TB
-			{% else %}	
-			{% ifequal m.tb 4 %}
-				Y
-			{% else %}	
-			{% ifequal m.tb 1 %}
-				Kém
-			{% endifequal %}	
-			{% endifequal %}	
-			{% endifequal %}	
-			{% endifequal %}	
-			{% endifequal %}	
-			
+				{{ m.tb|convertMarkToCharacter }}
 			</td>
-
 			<td align="center">
-			{% ifequal tbnam 9 %}
-				G
-			{% else %}	
-			{% ifequal tbnam 7 %}
-				K
-			{% else %}	
-			{% ifequal tbnam 6 %}
-				TB
-			{% else %}	
-			{% ifequal tbnam 4 %}
-				Y
-			{% else %}	
-			{% ifequal tbnam 1 %}
-				Kém
-			{% endifequal %}	
-			{% endifequal %}	
-			{% endifequal %}	
-			{% endifequal %}	
-			{% endifequal %}	
-			
-			</td>
-
-		
-		
+				{{ tbnam|convertMarkToCharacter }}
+			</td>				
 		{% endifnotequal %}	
-		</tr>	
-			
+		</tr>				
 		 {%endfor %}
 	{% endifequal %}
 
