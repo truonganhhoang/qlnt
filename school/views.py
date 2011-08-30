@@ -888,8 +888,6 @@ def process_file(file_name, task):
                 nhom = sheet.cell(r, c_nhom).value.strip()
             if c_chuyen_mon>-1:
                 chuyen_mon = sheet.cell(r, c_chuyen_mon).value.strip()
-
-
                 
             if birthday:
                 try:
@@ -919,7 +917,6 @@ def process_file(file_name, task):
         message += u'</ul>'
         return teacher_list, message, number, number_ok
     return None
-    
 
 def student_import( request, class_id ):
     try:
@@ -1498,8 +1495,6 @@ def student(request, student_id):
     except Exception as e:
         print e
 
-    
-
 #User: loi.luuthe@gmail.com
 #This function has class_id is an int argument. It gets the information of the class corresponding to the class_id and response to the template
 def viewClassDetail(request, class_id, sort_type=0, sort_status=0):
@@ -1552,9 +1547,8 @@ def viewClassDetail(request, class_id, sort_type=0, sort_status=0):
             data.appendlist('start_year_id',start_year.id)
             form = PupilForm(school.id, data)
             if form.is_valid():
-                school_join_date = date.today() 
-                d = request.POST['birthday'].split('/')
-                birthday = date(int(d[2]),int(d[1]),int(d[0]))
+                school_join_date = date.today()
+                birthday = to_date(request.POST['birthday'])
                 data['birthday'] = birthday
                 _class = Class.objects.get(id=class_id)
                 index = _class.pupil_set.count() + 1
@@ -1572,8 +1566,7 @@ def viewClassDetail(request, class_id, sort_type=0, sort_status=0):
             else:
                 message = ''
                 try:
-                    d = request.POST['birthday'].split('/')
-                    birthday = date(int(d[2]), int(d[1]), int(d[0]))
+                    birthday = to_date(request.POST['birthday'])
                     if birthday >= date.today():
                         message += u'<li> ' + u'Ngày không hợp lệ' + u'</li>'
 
@@ -1830,8 +1823,7 @@ def teachers_tab(request, sort_type=1, sort_status=0):
                     'team_id': team_id, 'major' : request.POST['major'], 'index':index}
             form = TeacherForm(school.id,data)
             if form.is_valid():
-                d = request.POST['birthday'].split('/')
-                birthday = date(int(d[2]),int(d[1]),int(d[0]))
+                birthday = to_date(request.POST['birthday'])
                 try:
                     test = school.teacher_set.get(first_name__exact=data['first_name'], last_name__exact=data['last_name'],birthday__exact=birthday)
                     message = 'Giáo viên này đã tồn tại trong hệ thống'
@@ -2581,11 +2573,11 @@ def tnc_select(request):
     if request.method == 'POST':
         form = DateAndClassForm(year_id,request.POST)
         if form.is_valid():
-            d = request.POST['date'].split('/')
+            d = to_date(POST['date'])
             class_id = str(request.POST['class_id'])
-            day = str(d[0])
-            month = str(d[1])
-            year = str(d[2])
+            day = d.day
+            month = d.month
+            year = d.year
             url = '/school/diemdanh/' + class_id + '/' + day + '/' + month + '/' + year
             return HttpResponseRedirect(url)
         else:
@@ -2692,8 +2684,7 @@ def diem_danh_hs(request, student_id, view_type = 0):
                     dd.delete()
                     i += 1
             if list[i] != 'k':
-                d = request.POST['time'].split('/')
-                time = date(int(d[2]), int(d[1]), int(d[0]))
+                time = to_date(request.POST['time'])
                 data = {'student_id':student_id, 'time':time, 'loai':list[i], 'term_id':term.id}
                 iform = DiemDanhForm(data)
                 if iform.is_valid():
