@@ -643,6 +643,97 @@ def class_generate(request, class_id, object):
     else:
         raise Http404( "Page does not exist!" )
 
+def teacher_generate(request, type):
+    try:
+        school = get_school(request)
+    except Exception as e:
+        return HttpResponseRedirect( reverse("index"))
+    try:
+        startyear = get_latest_startyear(request)
+        year = get_current_year(request)
+    except Exception as e:
+        print e
+        return HttpResponseRedirect( reverse("school_index"))
+
+    permission = get_permission(request)
+    if not permission in [u'HIEU_TRUONG',u'HIEU_PHO']:
+        return HttpResponseRedirect(reverse('school_index'))
+
+    if type == 'all':
+        file_name = request.session.session_key + unicode(school) + '_teacher_list.xls'
+        file_name = os.path.join(settings.TEMP_FILE_LOCATION, file_name)
+        teacher_list = school.teacher_set.all().order_by('first_name', 'last_name','birthday')
+        book = Workbook(encoding = 'utf-8')
+        #renderring xls file
+
+        fnt = Font()
+        fnt.name = 'Arial'
+        fnt.height = 240
+
+        fnt_bold = Font()
+        fnt_bold.name = 'Arial'
+        fnt_bold.height = 240
+        fnt_bold.bold = True
+
+        borders = Borders()
+        borders.left = Borders.THIN
+        borders.right = Borders.THIN
+        borders.top = Borders.THIN
+        borders.bottom = Borders.THIN
+        borders.left_colour = 0x17
+        borders.right_colour = 0x17
+        borders.top_colour = 0x17
+        borders.bottom_colour = 0x17
+
+
+        style = XFStyle()
+        style.font = fnt
+        style.borders = borders
+
+        style_bold = XFStyle()
+        style_bold.font = fnt_bold
+        style_bold.borders = borders
+
+        sheet = book.add_sheet('Danh sách giáo viên')
+        sheet.write(0,0,u'Danh sách giáo viên  %s' % unicode(school), style_bold)
+        sheet.row(0).height = 350
+
+
+        sheet.col(0).width = 1500
+        sheet.col(1).width = 7000
+        sheet.col(2).width = 4500
+        sheet.col(3).width = 7000
+        sheet.col(4).width = 3000
+        sheet.col(5).width = 4000
+        sheet.col(6).width = 7000
+        sheet.row(4).height = 350
+
+        sheet.write(4,0,'STT', style_bold)
+        sheet.write(4,1,'Họ và Tên', style_bold)
+        sheet.write(4,2,'Ngày sinh', style_bold)
+        sheet.write(4,3,'Quê quán', style_bold)
+        sheet.write(4,4,'Giới tính', style_bold)
+        sheet.write(4,5,'Chuyên Môn', style_bold)
+        sheet.write(4,6,'Tổ', style_bold)
+
+        row = 5
+        for teacher in teacher_list:
+            sheet.row(row).height = 350
+            sheet.write(row, 0, row -4, style)
+            sheet.write(row, 1, teacher.last_name + ' '+teacher.first_name, style)
+            sheet.write(row, 2, teacher.birthday.strftime('%d/%m/%Y'), style)
+            sheet.write(row, 3, teacher.home_town, style)
+            sheet.write(row, 4, teacher.sex, style)
+            sheet.write(row, 5, teacher.major, style)
+            sheet.write(row, 6, teacher.team_id.name, style)
+            row +=1
+        #return HttpResponse
+        response = HttpResponse(mimetype='application/ms-excel')
+        response['Content-Disposition'] = u'attachment; filename=ds_giao_vien_%s.xls' % unicode(school)
+        book.save(response)
+        return response
+    else:
+        raise Http404( "Page does not exist!" )
 #----------- Importing form Excel -------------------------------------
 
 def save_file(import_file, session):

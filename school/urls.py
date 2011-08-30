@@ -111,6 +111,7 @@ urlpatterns = patterns('',
     url(r'change_index/(?P<target>\w+)/(?P<class_id>\w+)$', 'school.views.change_index'),
 
     url(r'generate/(?P<class_id>\w+)/(?P<object>\w+)/$','school.views.class_generate', name = 'class_generate'),
+    url(r'generate_teacher/(?P<type>\w+)/$','school.views.teacher_generate', name = 'teacher_generate'),
 
     url(r'start_year/import/student/(?P<class_id>\w+)$', 'school.views.student_import'),
     url(r'start_year/import$', 'school.views.nhap_danh_sach_trung_tuyen'),
