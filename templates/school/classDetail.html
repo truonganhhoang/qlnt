@@ -11,7 +11,7 @@
                     $(this).delay(1000).fadeOut(10000);
                 }
                 else if (json.message == 'OK') {
-                    $(this).text("Đã lưu");
+                    $(this).text('Đã lưu');
                     $(this).delay(1000).fadeOut('fast');
                     location.reload('true');
                 }
@@ -47,7 +47,7 @@
                                 $(".form").find('input:text').val('');
                                 $(".form").find('input#id_dan_toc').val('Kinh');
                             })
-                                
+
                         }
                     }
                 };
@@ -124,7 +124,7 @@
             $("tr").each(function() {
                 $(this).click(select);
             });
-           
+
             $("#checkbox_all").click(function() {
                 var checkboxall = '#checkbox_all';
                 if ($(checkboxall).is(':checked')) {
@@ -390,6 +390,7 @@
             </div>
         </div>
     </div>
+
     {% upload_js %}
     <script type="text/javascript" src="/static/js/jquery_file_upload/qlnt_upload_for_student.js"></script>
 {% endblock %}

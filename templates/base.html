@@ -1,3 +1,4 @@
+{% load compress %}
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -8,12 +9,15 @@
     {% endblock %}
 
     {% block css %}
+      {% compress css %}
         <link rel="stylesheet" href="/static/css/tipTip.css" type="text/css" media="screen"/>
         <link rel="stylesheet" href="/static/css/jquery-ui-1.8.14.custom.css" type="text/css" media="screen"/>
         <link rel="stylesheet" href="/static/css/jquery_file_upload/jquery.fileupload-ui.css" type="text/css" media="screen"/>
         <link href="/static/css/style.css" rel="stylesheet" type="text/css"/>
-                
+      {% endcompress %}
     {% endblock %}
+
+    {% compress js %}
     <script type="text/javascript" src="/static/js/jquery.js"></script>
     <script type="text/javascript" src="/static/js/jquery-ui-1.8.14.custom.min.js"></script>
     <script type="text/javascript" src="/static/js/jquery.tipTip.minified.js"></script>
@@ -25,7 +29,8 @@
     <script type="text/javascript" src="/static/js/Class.create.js"></script>
     <script type="text/javascript" src="/static/js/jquery-encoder-0.1.0.js"></script>
     <script type="text/javascript" src="/static/js/template_js/base.js"></script>
-        
+    {% endcompress %}
+
     {% block js %}
         <!-- For extra js -->
     {% endblock %}
@@ -184,3 +189,4 @@
 
 </body>
 </html>
+

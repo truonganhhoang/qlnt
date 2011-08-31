@@ -16,7 +16,7 @@ body {
     /*padding: 0 0 0 0;*/
     /*margin: 0 0 0 0;*/
     color: #595959;
-    font: 14px/18px Arial, "Lucida Sans", verdana, sans-serif;
+    font: 14px/18px Arial, "Times New Roman", verdana, sans-serif;
     /*font: 14px/16px "Lucida Grande", "Lucida Sans", verdana, sans-serif;*/
 	/*font: 14px/18px "Droid Sans", Arial, verdana, sans-serif;*/
 }
@@ -297,8 +297,8 @@ table.styleA td.selected {
 }
 
 table.styleA input {
-    font-size: 16px;
-    padding:2px;
+    font-size: 15px;
+    padding:3px;
     width: 95%;
 }
 
@@ -423,6 +423,12 @@ div#tableFunction {
 
 .errorlist ul {
     width: auto;
+}
+
+.hint {
+    color: #5d5858;
+    position: absolute;
+    bottom: 3px;
 }
 
 div.errorDiv{
