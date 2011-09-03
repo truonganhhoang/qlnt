@@ -15,6 +15,7 @@
                 }
         }
     </script>
+<a href="{% url school.views.school_index %}classes"> Toàn trường</a> > <a href="{% url school.views.school_index %}viewClassDetail/{{ class.id }}"> {{ class }} </a> > Môn học
 {% if pos > 3 %}
     <script>
         function confirmDelete()

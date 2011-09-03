@@ -2484,7 +2484,7 @@ def viewStudentDetail(request, student_id):
                                     'ttddform': ttddform,
                                     'message': message, 
                                     'id': student_id,
-                                    'class_id':pupil.class_id.id,
+                                    'class':pupil.class_id,
                                     'pos':pos,
                                     'student': pupil,
                                 }
@@ -3383,7 +3383,6 @@ def viewSubjectDetail (request, subject_id):
     t = loader.get_template(os.path.join('school', 'subject_detail.html'))
     c = RequestContext(request, {   'form':form, 
                                     'message':message,
-                                    'id': subject_id,
-                                    'class_id' : sub.class_id.id
+                                    'sub': sub,
                                     })
     return HttpResponse(t.render(c))

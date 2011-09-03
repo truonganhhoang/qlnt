@@ -178,6 +178,9 @@
 {%if pos > 0%}
 
 {%endif%}
+
+<a href="{% url school.views.school_index %}classes"> Toàn trường</a> > <a href="{% url school.views.school_index %}viewClassDetail/{{ class.id }}"> {{ class }} </a> > {{ student }}
+
 {% if message != None %}
 	{{message}} <br>
 {% endif %}
@@ -185,7 +188,7 @@
 <h2> Học sinh {{ student }}</h2>
 
 <div id="tableFunction">
-<a title="Danh sách lớp học" class = "tiptiphove ggButton" href="{%url school.views.school_index  %}viewClassDetail/{{class_id}}">Quay lại</a>
+<a title="Danh sách lớp học" class = "tiptiphove ggButton" href="{%url school.views.school_index  %}viewClassDetail/{{class.id}}">Quay lại</a>
 </div>
 
     <div id = "tabs">
@@ -197,8 +200,8 @@
             <li><a href="/school/khenthuong/{{id}}">Khen thưởng</a></li>
             <li><a href="/school/kiluat/{{id}}">Kỉ luật</a></li>
             <li><a href="/school/diemdanhhs/{{id}}">Nghỉ học</a></li>
-            <li><a href="{%url school.views.school_index  %}markForAStudent/{{class_id}}/{{id}}">Điểm</a></li>
-			<li><a title="Cập nhập miễn giảm"  href="/school/capNhapMienGiam/{{class_id}}/{{id}}">Miễn giảm</a> </li>
+            <li><a href="{%url school.views.school_index  %}markForAStudent/{{class.id}}/{{id}}">Điểm</a></li>
+			<li><a title="Cập nhập miễn giảm"  href="/school/capNhapMienGiam/{{class.id}}/{{id}}">Miễn giảm</a> </li>
         </ul>
         <div id = "tabs-1">
             <form action="/school/viewStudentDetail/{{id}}" method="post" class="student_detail">{% csrf_token %}

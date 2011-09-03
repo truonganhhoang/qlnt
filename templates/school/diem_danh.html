@@ -179,6 +179,7 @@
         });
 
     </script>
+    <a href="{% url school.views.school_index %}classes"> Toàn trường</a> > <a href="{% url school.views.school_index %}viewClassDetail/{{ cl.id }}"> {{ cl }} </a> > Điểm danh
     {% if pos == 3 %}
         <h2>Điểm danh lớp {{cl}} ngày {{dncform.date}}</h2>
     {% else %}

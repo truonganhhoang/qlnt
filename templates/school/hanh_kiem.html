@@ -72,9 +72,8 @@
         });
     </script>
 {% endif %}
-{% if pos < 4 %}
-    <a href="{%url school.views.school_index  %}viewClassDetail/{{class.id}}" title ="Quay về danh sách lớp" class="ggButton"> Quay lại </a>
-{% endif %}
+
+<a href="{% url school.views.school_index %}classes"> Toàn trường</a> > <a href="{% url school.views.school_index %}viewClassDetail/{{ class.id }}"> {{ class }} </a> > Hạnh Kiểm
 <form action="" name = "info" method = "post">{% csrf_token %}
     {% if pos > 1 %}
         <h2> Hạnh kiểm lớp
@@ -97,6 +96,10 @@
 <input type ="submit" class="ggButton submitbutton" value="Lưu"/>
 <a href="{%url school.views.school_index  %}viewClassDetail/{{class.id}}" title ="Quay về danh sách lớp" class="ggButton"> Quay lại </a>
 {%endif%}
+    {% if pos < 4 %}
+        <a href="{%url school.views.school_index  %}viewClassDetail/{{class.id}}" title ="Quay về danh sách lớp" class="ggButton"> Quay lại </a>
+    {% endif %}
+
     <table class="styleA" width = "75%">
     <tr>
         <th align="center" width="5%"> STT </th>
