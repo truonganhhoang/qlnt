@@ -16,6 +16,7 @@ from django.utils import simplejson
 from django.utils.datastructures import MultiValueDictKeyError
 from school.utils import *
 from school.models import *
+from django.contrib.auth.forms import *
 from school.forms import *
 from school.school_settings import *
 from sms.views import *
@@ -1392,7 +1393,55 @@ def danh_sach_trung_tuyen(request):
     context = RequestContext(request, {'student_list': student_list})
     return render_to_response(DANH_SACH_TRUNG_TUYEN, {'message':message}, context_instance=context)
 #------------------------------------------------------------------------------------
-                                      
+
+def password_change(request):
+    user = request.user
+    if not user.is_authenticated():
+        return HttpResponseRedirect(reverse('login'))
+    form = PasswordChangeForm(user)
+    message = ''
+    if request.method == 'POST':
+        form = PasswordChangeForm(user,request.POST)
+        if form.is_valid():
+            form.save()
+            message = u'Bạn đã thay đổi mật khẩu thành công'
+    t = loader.get_template(os.path.join('school','password_change.html'))
+    c = RequestContext(request, {'form':form, 'message':message})
+    return HttpResponse(t.render(c))
+
+def username_change(request):
+    user = request.user
+    if not user.is_authenticated():
+        return HttpResponseRedirect(reverse('login'))
+    form = UsernameChangeForm(user)
+    message = ''
+    if request.method == 'POST':
+        form = UsernameChangeForm(user,request.POST)
+        if form.is_valid() and user.userprofile.username_change == 0:
+            form.save()
+            message = u'Bạn đã thay tên tài khoản thành công'
+    t = loader.get_template(os.path.join('school','username_change.html'))
+    c = RequestContext(request, {'form':form, 'message':message})
+    return HttpResponse(t.render(c))
+
+def student_account(request, student_id):
+    user = request.user
+    if not user.is_authenticated():
+        return HttpResponseRedirect(reverse('login'))
+    student = user.userprofile.organization.pupil_set.get(id = student_id)
+    t = loader.get_template(os.path.join('school','account.html'))
+    c = RequestContext(request, {'account':student.user_id.username})
+    return HttpResponse(t.render(c))
+
+def teacher_account(request, teacher_id):
+    user = request.user
+    if not user.is_authenticated():
+        return HttpResponseRedirect(reverse('login'))
+    teacher = user.userprofile.organization.teacher_set.get(id = teacher_id)
+    t = loader.get_template(os.path.join('school','account.html'))
+    c = RequestContext(request, {'account':teacher.user_id.username})
+    return HttpResponse(t.render(c))
+
 def classes(request):
     user = request.user
     if not user.is_authenticated():

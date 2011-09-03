@@ -124,6 +124,7 @@ class UserProfile(models.Model):
     position = models.CharField(choices=POSITION_CHOICE, null=True, blank=True, max_length=15)
     phone = models.CharField('Điện thoại di động', max_length=20, blank=True) #để gửi tin nhắn.
     notes = models.CharField('Ghi chú', max_length=255, blank=True)
+    username_change = models.IntegerField(default=0)
     
     def __unicode__(self):
         return self.user.__unicode__()

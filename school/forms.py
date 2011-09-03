@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+
 from django.forms.widgets import  DateInput
 from school.utils import *
 from school.models import *
@@ -333,4 +334,34 @@ class smsFromExcelForm(forms.Form):
 #            raise forms.ValidationError(_('Please keep filesize under %s. Current filesize %s') % (filesizeformat(settings.MAX_UPLOAD_SIZE), filesizeformat(content._size)))
         else:
             return file     
+
+class UsernameChangeForm(forms.Form):
+    new_username = forms.RegexField(label=u"Tài khoản mới", max_length=30, regex=r'^[\w.@+-]+$')
+    password = forms.CharField(label=u'Mật khẩu', widget=forms.PasswordInput)
+
+    def __init__(self, user, *args, **kwargs):
+        self.user = user
+        super(UsernameChangeForm, self).__init__(*args, **kwargs)
+        self.fields.keyOrder = ['new_username', 'password']
         
+    def clean_password(self):
+        password = self.cleaned_data["password"]
+        if not self.user.check_password(password):
+            raise forms.ValidationError(u"Mật khẩu không đúng hãy nhập lại")
+        return password
+    
+    def clean_new_username(self):
+        new_username = self.cleaned_data["new_username"]
+        try:
+            User.objects.get(username=new_username)
+        except User.DoesNotExist:
+            return new_username
+        raise forms.ValidationError(u"Tên đăng nhập này đã tồn tại")
+
+    def save(self,commit=True):
+        self.user.username = self.cleaned_data["new_username"]
+        self.user.userprofile.username_change = 1
+        if commit:
+            self.user.save()
+            self.user.userprofile.save()
+        return self.user

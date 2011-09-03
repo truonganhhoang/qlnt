@@ -16,9 +16,6 @@
             $("input").attr('disabled',false);
             $("select").attr('disabled',false);
         {% endif %}
-        {% if pos == 1 %}
-            $("input","form.ttll").attr('disabled',false);
-        {% endif %}
         $("#id_father_name").each(function(){
              if ($(this).val() == ''){
                 $("#id_father_birthday").attr('disabled', true);
@@ -202,6 +199,9 @@
             <li><a href="/school/diemdanhhs/{{id}}">Nghỉ học</a></li>
             <li><a href="{%url school.views.school_index  %}markForAStudent/{{class.id}}/{{id}}">Điểm</a></li>
 			<li><a title="Cập nhập miễn giảm"  href="/school/capNhapMienGiam/{{class.id}}/{{id}}">Miễn giảm</a> </li>
+            {% if pos > 3 %}
+                <li><a href="/school/student/account/{{ id }}">Tài khoản</a> </li>
+            {% endif %}
         </ul>
         <div id = "tabs-1">
             <form action="/school/viewStudentDetail/{{id}}" method="post" class="student_detail">{% csrf_token %}

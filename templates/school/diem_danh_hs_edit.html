@@ -1,7 +1,5 @@
 ﻿{% block content %}
-  <h3>Các buổi nghỉ của {{ pupil }} học kì {{ term }}</h3>
-  <form action="/school/diemdanhhs/{{student_id}}/1" method="post">{% csrf_token %}
-    <table class="styleA">
+<br>
 
 <form action="/school/diemdanhhs/{{student_id}}/1" method="post" class="onPage">{% csrf_token %}
         
@@ -10,11 +8,32 @@
     <tr>
         <th align="center"> STT </th>
         <th align="center"> Ngày</th>
-        <th align="center"> Loại</th>
-      </tr>
-      {% if message != None %}
-        {{ message }}
-      {% endif %}
+        <th align="center"> Loại </th>
+    </tr>
+    {% if message != None %}
+    {{message}}
+    {% endif %}
+    
+        {%if pos > 2%}
+            {% for d,f in ddhs %}
+                <tr>
+                    <td align="center">
+                        <p>{{forloop.counter}}</p>
+                    </td>
+                    <td align="center">
+                        <p>{{ d.time|date:"SHORT_DATE_FORMAT" }}</p>
+                    </td>
+                
+                    <td align="center">
+                        {{ f.loai.errors }}
+                        <p>{{ f.loai }}</p>
+                    </td>
+                </tr>
+            {% endfor %}
+                <tr>
+                    <td align="center">
+                        <p>{{ p.id }}</p>
+                    </td>
 
                     <td align="center">
                         {{iform.time.errors}}
@@ -33,35 +52,5 @@
 	    </tr>
 </table>
 </form>
-
-            <td align="center">
-              {{ f.loai.errors }}
-              <p>{{ f.loai }}</p>
-            </td>
-          </tr>
-        {% endfor %}
-        <tr>
-          <td align="center">
-            <p>{{ p.id }}</p>
-          </td>
-
-          <td align="center">
-            {{ iform.time.errors }}
-            <p>{{ iform.time }}</p>
-          </td>
-
-          <td align="center">
-            {{ iform.loai.errors }}
-            <p>{{ iform.loai }}</p>
-          </td>
-        </tr>
-        <tr>
-        <td><input type="submit" class="ggButton" value="Lưu"/></td>
-        <td><a href="{%url school.views.school_index  %}viewStudentDetail/{{student_id}}" class="ggButton">Quay lại</a>
-        </td>
-      {% endif %}
-      </tr>
-    </table>
-  </form>
 
 {% endblock %}

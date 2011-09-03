@@ -59,11 +59,14 @@
         <ul>
             {% if user.is_authenticated %}
                 <li><a href="/profiles/{{user.username}}" title="Xem hồ sơ người sử dụng"> {{ user.username }}</a></li>
+                <li><a href="/school/password_change">Đổi mật khẩu</a></li>
+                {% if user.userprofile.username_change == 0 %}
+                    <li><a href="/school/username_change">Đổi tên tài khoản</a></li>
+                {% endif %}
                 <li><a href="{%url django.contrib.auth.views.logout %}" title="Thoát ra khỏi hệ thống">Đăng xuất</a></li>
             {% else %}
                 <li><a href="{%url app.views.login %}" title="Đăng nhập để sử dụng hệ thống">Đăng nhập</a></li>
             {% endif %}
-
             <li><a href="/help" title="Xem hướng dẫn sử dụng">Trợ giúp</a></li>
         </ul>
     </div>

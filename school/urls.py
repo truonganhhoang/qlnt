@@ -12,7 +12,6 @@ urlpatterns = patterns('',
     # 2 ham nay dung de test, tao tat ca cac thong tin con thieu cho sinh vien
     # sau nay hoan thien, co the bo di    
     url(r'thu$','school.makeTest.thu'),
-
     url(r'markTable$','school.viewMark.markTable'),
     url(r'markTable/(?P<term_id>\w+)$','school.viewMark.markTable'),
     url(r'markTable/(?P<term_id>\w+)/(?P<class_id>\w+)$','school.viewMark.markTable'),
@@ -109,6 +108,10 @@ urlpatterns = patterns('',
     url(r'diemdanh/(?P<class_id>\w+)$', 'school.views.time_select'),
     url(r'diemdanh', 'school.views.tnc_select'),
     url(r'change_index/(?P<target>\w+)/(?P<class_id>\w+)$', 'school.views.change_index'),
+    url(r'password_change$', 'school.views.password_change'),
+    url(r'username_change$', 'school.views.username_change'),
+    url(r'student/account/(?P<student_id>\w+)$','school.views.student_account'),
+    url(r'teacher/account/(?P<teacher_id>\w+)$','school.views.teacher_account'),
 
     url(r'generate/(?P<class_id>\w+)/(?P<object>\w+)/$','school.views.class_generate', name = 'class_generate'),
     url(r'generate_teacher/(?P<type>\w+)/$','school.views.teacher_generate', name = 'teacher_generate'),

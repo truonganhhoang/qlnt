@@ -15,7 +15,15 @@
             $("input","#tabs2").attr("disabled",false);
             $("select","#tabs2").attr("disabled",false);
         {% endif %}
-        $("#tabs").tabs();
+        $( "#tabs" ).tabs({
+            ajaxOptions: {
+                error: function( xhr, status, index, anchor ) {
+                    $( anchor.hash ).html(
+                        "Có lỗi khi lấy dữ liệu từ máy chủ. Xin hãy thử lại" );
+                },
+                global: false
+            }
+        });
         var update_teacher_detail = function(json) {
             $("#notify").showNotification(json.message);
             if (json.response_type == 'ttcn') {
@@ -48,6 +56,7 @@
     <ul>
         <li><a href="#tabs1"> Thông tin cá nhân </a></li>
         <li><a href="#tabs2"> Thông tin liên lạc </a> </li>
+        <li><a href="/school/teacher/account/{{ id }}">Tài khoản</a></li>
     </ul>
     <div id="tabs1">
         <form action="/school/viewTeacherDetail/{{id}}" method="post">{% csrf_token %}
