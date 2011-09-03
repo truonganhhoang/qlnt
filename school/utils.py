@@ -466,7 +466,7 @@ def add_teacher( first_name = None,
             names = full_name.split(" ")
             last_name = ' '.join(names[:len(names)-1])
             first_name = names[len(names)-1]
-        if team_id:
+        if team_id.strip():
             if  type(team_id) == str or type(team_id) == unicode:
                 name = team_id
                 try:
@@ -484,7 +484,7 @@ def add_teacher( first_name = None,
         else:
             team_id = None
         if team_id:
-            if group_id:
+            if group_id.strip():
                 if type(group_id) == str or type(group_id) == unicode:
                     name = group_id
                     print 'name', name
@@ -498,14 +498,17 @@ def add_teacher( first_name = None,
                         group_id.save()
                         print group_id
                 elif isinstance(group_id, Group):
+                    print 'what the f'
                     if group_id.team_id != team_id:
                         raise Exception("GroupNotBelongToTeam")
                 else:
                     group_id = None
+            else:
+                group_id = None
         else:
             group_id = None
 
-        if major:
+        if major.strip():
             if to_en(major) not in SUBJECT_LIST_ASCII:
                 major = ''
 
