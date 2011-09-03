@@ -2723,12 +2723,12 @@ def tnc_select(request):
     if request.method == 'POST':
         form = DateAndClassForm(year_id,request.POST)
         if form.is_valid():
-            d = to_date(POST['date'])
+            d = to_date(request.POST['date'])
             class_id = str(request.POST['class_id'])
             day = d.day
             month = d.month
             year = d.year
-            url = '/school/diemdanh/' + class_id + '/' + day + '/' + month + '/' + year
+            url = '/school/diemdanh/' + class_id + '/' + str(day) + '/' + str(month) + '/' + str(year)
             return HttpResponseRedirect(url)
         else:
             message = 'Chọn lớp và ngày chưa đúng.'
