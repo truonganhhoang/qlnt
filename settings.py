@@ -124,6 +124,11 @@ STATICFILES_FINDERS = (
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = '$@fga3_%m!y@v+0_0h8kqo4n#4@(7fl7b++xz31nf0v)6861=3'
+SMS_WSDL_URL = 'http://viettelvas.vn:7777/sentmt/fromcp.asmx?WSDL'
+WSDL_USERNAME = 'ws8x62'
+WSDL_PASSWORD = 'password'
+MT_USERNAME = 'username'
+MT_PASSWORD = 'password'
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (

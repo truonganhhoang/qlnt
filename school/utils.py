@@ -15,6 +15,7 @@ TEMP_FILE_LOCATION = settings.TEMP_FILE_LOCATION
 
 # date-month-year => time object
 def to_date(value):
+    v = None
     if '-' in value:
         v = value.split('-')
     elif '/' in value:
@@ -26,7 +27,7 @@ def to_date(value):
         result = date(int(v[2]), int(v[1]), int(v[0]))
     except Exception as e:
         print e
-        raise Exception("PhaseDateException")
+        raise Exception("PharseDateException")
     return result
 
 
@@ -91,7 +92,7 @@ def make_username( first_name = None, last_name = None, full_name = None, start_
     i = 0
     username1 = username
     while User.objects.filter( username__exact = username1):
-        i = i+1
+        i += 1
         username1 = username + '_' + str(i)
 
     return username1

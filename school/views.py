@@ -2568,11 +2568,23 @@ def diem_danh(request, class_id, day, month, year):
                         time = '/'.join([str(day),str(month),str(year)])
                         sms_message = u'Em '+name+u' đã ' + loai + u'.\n Ngày: ' + time + '.'
                         if phone_number:
-                            message = message + u'<li> ' + str(phone_number) + u': ' + sms_message + u'</li>'
+                            try:
+                                sent = sendSMS(phone_number, to_en1(sms_message), user)
+                            except Exception as e:
+                                if e.message == 'InvalidPhoneNumber':
+                                    message = message + u'<li><b>Số ' + str(phone_number) \
+                                                      + u' không tồn tại</b>'\
+                                                      + u': ' + sms_message + u'</li>'
+                                    continue
+                                else:
+                                    raise e
+                            if sent == '1':
+                                message = message + u'<li><b>-> ' + str(phone_number) + u': ' + sms_message + u'</b></li>'
+                            else:
+                                print sent
+                                message = message + u'<li> ' + str(phone_number) + u': ' + sms_message + u'</li>'
                         else:
                             message = message + u'<li> ' + u'<b>Không số</b>' + u': ' + sms_message + u'</li>'
-                        if phone_number:
-                            sendSMS(phone_number, sms_message, user)
                 data = simplejson.dumps({'message':message})
                 return HttpResponse(data, mimetype = 'json')
         else:

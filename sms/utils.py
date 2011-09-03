@@ -4,6 +4,7 @@ from models import sms
 import os
 import urllib
 import urllib2
+from suds.client import Client
 #from SOAPpy import SOAPProxy, HTTPTransport, Config
 
 from django.conf import settings
@@ -26,47 +27,54 @@ TEMP_FILE_LOCATION = settings.TEMP_FILE_LOCATION
 #
 
 def sendSMS(phone,content,user):
-    open = urllib2.build_opener(urllib2.HTTPCookieProcessor())
-    urllib2.install_opener(open)
-    print 0
-    para = urllib.urlencode({'u': 'VT_username', 'p': 'VT_password'})
-#    f = open.open('http://viettelvas.vn:7777/fromcp.asmx', para)
-#    f.close();
-    if checkValidPhoneNumber(phone):    
-        '''Save to db'''
+    try:
+        phone = checkValidPhoneNumber(phone)
+    except Exception as e:
+        raise e
+    if phone:
+        from suds.client import Client
+        url = settings.SMS_WSDL_URL
+        username = settings.WSDL_USERNAME
+        password = settings.WSDL_PASSWORD
+        mt_username = settings.MT_USERNAME
+        mt_password = settings.MT_PASSWORD
+
         s = sms(phone=phone, content=content, sender=user, recent=True, success=True)
         s.save()
-                    
-        '''Send sms via Viettel system'''
-        data = urllib.urlencode({
-                        'RequestID'     : '4',
-                        'CPCode'        : '',
-                        'UserID'        : '',
-                        'ReceiverID'    : phone,
-                        'ServiceID'     : '',
-                        'CommandCode'   : '',
-                        'Content'       : content,
-                        'ContentType'   : ''})
-#        f = open.open('http://viettelvas.vn:7777/fromcp.asmx', data)
-    else:    
-        '''Save to db'''
-        s = sms(phone=phone, content=content, sender=user, recent=True, success=False)
-        s.save()
+
+        client = Client(url, username = username, password = password)
+        message = \
+        '''<?xml version="1.0" encoding="UTF-8"?>
+<soap12:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://www.w3.org/2003/05/soap-envelope">
+  <soap12:Body>
+    <InsertMT xmlns="http://tempuri.org/">
+      <User>%s</User>
+      <Pass>%s</Pass>
+      <CPCode>160</CPCode>
+      <RequestID>4</RequestID>
+      <UserID>%s</UserID>
+      <ReceiveID>%s</ReceiveID>
+      <ServiceID>8062</ServiceID>
+      <CommandCode>CNHN1</CommandCode>
+      <ContentType>0</ContentType>
+	<Info>%s</Info>
+    </InsertMT>
+  </soap12:Body>
+</soap12:Envelope>''' % (mt_username, mt_password, phone, phone, content)
+        return client.service.InsertMT(__inject= {'msg': str(message)})
+    else:
+        raise Exception("InvalidPhoneNumber")
         
 def checkValidPhoneNumber(phone):
-    user_list = User.objects.all()
-    user_phone_list = []
-    for u in user_list:
-        try:
-            if (u.get_profile().phone):
-                user_phone_list.append(u.get_profile().phone)
-        except:
-            pass
+    if not int(phone[0]):
+        phone = '84' + phone[1:]
+        return phone
+    elif phone[:2] != '84':
+        return None
+    else:
+        return phone
         
-    for p in user_phone_list:
-        if p == phone:
-            return True
-    return False
+
 
 def getUserFromPhone(phone):
     user_list = User.objects.all()

@@ -27,15 +27,9 @@ SCHOOL_ACTION_STATUS = ((0, u'Trường mới'),
 
 STATUS = [u'Chưa thiết lập', u'Học kì I', u'Học kì II', u'Học kì hè']
 
-#CONTACT_CHOICES = (('GY', u'Góp ý xây dựng'),
-#                       ('HT', u'Hỗ trợ'),
-#                       ('BL', u'Báo lỗi'),
-#                       ('LH', 'Liên hệ hợp tác'))
-#CC_CHOICES = (('True', u'Có'),
-#                  ('False', u'Không'))
         
 class Organization(models.Model):
-    ''' Thông tin về sơ đồ tổ chức của các sở, phòng và các trường '''
+    """ Thông tin về sơ đồ tổ chức của các sở, phòng và các trường """
     name = models.CharField(u'Tên tổ chức', max_length=100) #tên đơn vị. tổ chức
     level = models.CharField(u"cấp", max_length=2, choices=ORGANIZATION_LEVEL_CHOICES) #Cấp
     #------- those attributes is used for School only --------------------------------------------------------
@@ -56,7 +50,7 @@ class Organization(models.Model):
             try:
                 year = self.year_set.latest('time')
                 return STATUS[self.status] + ' - ' + u'Năm học ' + year.__unicode__()
-            except Exception as e:
+            except Exception:
                 return STATUS[0]
         else:
             return ''
@@ -122,16 +116,15 @@ class OrganizationForm(forms.Form):
 
 
 class UserProfile(models.Model):
-    '''
+    """
     Thông tin về người sủ dụng hệ thống, mở rộng User của Django.
-    '''
+    """
     user = models.OneToOneField(User, null=True)
     organization = models.ForeignKey(Organization, verbose_name='Đơn vị')
     position = models.CharField(choices=POSITION_CHOICE, null=True, blank=True, max_length=15)
     phone = models.CharField('Điện thoại di động', max_length=20, blank=True) #để gửi tin nhắn.
     notes = models.CharField('Ghi chú', max_length=255, blank=True)
-    #TODO permission
-
+    
     def __unicode__(self):
         return self.user.__unicode__()
 
@@ -212,20 +205,20 @@ class AuthenticationForm(forms.Form):
 
 
 class Feedback(models.Model):
-    '''
+    """
     Thông tin về các bản báo cáo lỗi hay liên hệ từ khách hàng
-    '''
+    """
     fullname = models.CharField('Họ tên', blank=True, null=True, max_length=100)
     phone = models.CharField('Điện thoại', max_length=20, blank=True, null=True)
     email = models.EmailField(max_length=50, blank=True, null=True)
     title = models.CharField('Tiêu đề', blank=True, null=True, max_length=250)
-    content = models.TextField('Nội dung', max_length=3000, blank=True, null=False)
+    content = models.TextField('Nội dung', max_length=3000, blank=True)
 
     class Meta:
         verbose_name_plural = "Phản hồi"
 
     def __unicode__(self):
-        return self.name
+        return self.fullname
 
 
 class FeedbackForm(forms.Form):
