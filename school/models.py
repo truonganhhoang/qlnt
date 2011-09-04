@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.core.exceptions import ValidationError
-from datetime import date,timedelta
+from datetime import date
 
 from app.models import *
 
@@ -345,7 +345,7 @@ class Mark(models.Model):
         verbose_name = "Bảng điểm"
         verbose_name_plural = "Bảng điểm"
 
-    #noinspection PyMethodOverridi
+    
     def save(self):
         new = self.id is None
         super(Mark, self).save()

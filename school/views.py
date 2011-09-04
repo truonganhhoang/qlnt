@@ -726,7 +726,10 @@ def teacher_generate(request, type):
             sheet.write(row, 3, teacher.home_town, style)
             sheet.write(row, 4, teacher.sex, style)
             sheet.write(row, 5, teacher.major, style)
-            sheet.write(row, 6, teacher.team_id.name, style)
+            if teacher.team_id:
+                sheet.write(row, 6, teacher.team_id.name, style)
+            else:
+                sheet.write(row, 6, '', style)
             row +=1
         #return HttpResponse
         response = HttpResponse(mimetype='application/ms-excel')
