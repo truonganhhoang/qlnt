@@ -75,9 +75,9 @@
         <ul>
             {% if user.is_authenticated %}
                 {% if user.is_superuser %}
-                    <li><a href="/admin" title="Mở trình quản trị sẵn có của hệ thống">Duyệt CSDL</a></li>
-                    <li><a href="{%url app.views.list_org %}" title="Quản lý tổ chức của các đơn vị">Tổ chức</a></li>
-                    <li><a href="{% url app.views.school_admin_add %}">Người quản trị trường</a></li>
+                    <li><a href="/admin" title="Mở trình quản trị sẵn có của hệ thống">Quản trị CSDL</a></li>
+{#                    <li><a href="{%url app.views.list_org %}" title="Quản lý tổ chức của các đơn vị">Tổ chức</a></li>#}
+{#                    <li><a href="{% url app.views.school_admin_add %}">Người quản trị trường</a></li>#}
                 {% endif %}
 
                 {% if user.userprofile.position == 'GIAM_DOC_SO' or user.userprofile.position == 'TRUONG_PHONG' %}
