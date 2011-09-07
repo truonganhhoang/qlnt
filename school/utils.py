@@ -466,9 +466,9 @@ def add_teacher( first_name = None,
             names = full_name.split(" ")
             last_name = ' '.join(names[:len(names)-1])
             first_name = names[len(names)-1]
-        if team_id.strip():
+        if team_id and team_id.strip():
             if  type(team_id) == str or type(team_id) == unicode:
-                name = team_id
+                name = team_id.strip()
                 try:
                     team_id = school.team_set.get( name = name)
                 except Exception as e:
