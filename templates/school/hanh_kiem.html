@@ -1,5 +1,8 @@
 ﻿{% extends "base.html" %}
 
+{% block backward_link %}
+    <a href="{% url school.views.school_index %}classes"> Toàn trường</a> > <a href="{% url school.views.school_index %}viewClassDetail/{{ class.id }}"> {{ class }} </a> > Hạnh Kiểm
+{% endblock %}
 {% block content %}
     {% if pos > 2 %}
     <script language="JavaScript" type="text/javascript" >
@@ -73,7 +76,7 @@
     </script>
 {% endif %}
 
-<a href="{% url school.views.school_index %}classes"> Toàn trường</a> > <a href="{% url school.views.school_index %}viewClassDetail/{{ class.id }}"> {{ class }} </a> > Hạnh Kiểm
+
 <form action="" name = "info" method = "post">{% csrf_token %}
     {% if pos > 1 %}
         <h2> Hạnh kiểm lớp

@@ -5,6 +5,10 @@
     {% endblock %}
 {% endif %}
 
+{% block backward_link %}
+<a href="{% url school.views.school_index %}classes"> Toàn trường</a> > <a href="{% url school.views.school_index %}viewClassDetail/{{ class.id }}"> {{ class }} </a> > Môn học
+{% endblock %}
+
 {% block content %}
     <script type="text/javascript">
         function submitClass(){
@@ -15,7 +19,7 @@
                 }
         }
     </script>
-<a href="{% url school.views.school_index %}classes"> Toàn trường</a> > <a href="{% url school.views.school_index %}viewClassDetail/{{ class.id }}"> {{ class }} </a> > Môn học
+
 {% if pos > 3 %}
     <script>
         function confirmDelete()
@@ -160,15 +164,13 @@
                         <td align="center" width="10%"> {{f.hs}} </td>
                         <td align="center" width="25%"> {{f.teacher_id}}</td>
                         <td align="center"> {{f.primary}} </td>
+                        <td width = "5%"> <a class = "ggButton" href = "{%url school.views.school_index  %}deleteSubject/{{ss.id}}" onclick="return confirmDelete();">xóa</a></td>
                     {%else%}
                         <td align="center" width="20%"> {{ss.name}}</td>
                         <td align="center" width="20%"> {{ss.type}}</td>
                         <td align="center" width="10%"> {{ss.hs}} </td>
                         <td align="center" width="25%"> {{ss.teacher_id}}</td>
                         <td align="center" > {{ss.primary}} </td>
-                    {%endif%}
-                    {%if pos > 3%}
-                        <td width = "5%"> <a class = "ggButton" href = "{%url school.views.school_index  %}deleteSubject/{{ss.id}}" onclick="return confirmDelete();">xóa</a></td>
                     {%endif%}
                 </tr>
             {% endfor %}
