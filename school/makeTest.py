@@ -5,7 +5,8 @@ from django.template import RequestContext, loader
 from school.utils import *
 from django.core.urlresolvers import reverse
 from django.db import transaction
-
+import xlrd  
+from  views import save_file 
 import os.path 
 import time 
 import datetime
@@ -13,8 +14,40 @@ import random
 LOCK_MARK =False
 ENABLE_CHANGE_MARK=True
 
+def thu(request):
+    t1= time.time()
+    t2= time.time()
+    if request.method=='POST':
+        print "chao"
+        s=request.FILES.get('file')
+        print s.name
+        print s.size 
+                       
+        filename = save_file(request.FILES.get('file'), request.session)
+        filepath = os.path.join(TEMP_FILE_LOCATION, filename)
+       
+        book = xlrd.open_workbook(filepath)
+        sheet = book.sheet_by_index(0)
+        
+        print to_en1(sheet.cell(13,1).value)
+        print book
+        print sheet
+        print "ffffffffffffff"
+        
+        
+    print (t2-t1)
+    t = loader.get_template(os.path.join('school','ll.html'))
+    
+    c = RequestContext(request, {
+                                }
+                       )
+    
+    #print (t2-t1)
+
+    return HttpResponse(t.render(c))
+
 @transaction.commit_on_success                                                              
-def thu1(request):
+def thu124(request):
     t1= time.time()
     
     diemdanh = DiemDanh.objects.all()
@@ -43,11 +76,11 @@ def thu1(request):
     """    
     t2=time.time()
     
-    
+    x='G'
     print (t2-t1)
     t = loader.get_template(os.path.join('school','ll.html'))
     
-    c = RequestContext(request, {'list':list,
+    c = RequestContext(request, {'x':x,
                                 }
                        )
     
@@ -56,23 +89,35 @@ def thu1(request):
     return HttpResponse(t.render(c))
 
 @transaction.commit_on_success                                                              
-def thu(request):
+def thu123(request):
     t1= time.time()
-    list1 = TKMon.objects.filter(student_id__class_id=17)
+    list1 = TKMon.objects.filter(student_id__class_id=197)
     for m in list1:
-        m.tb_nam=random.randrange( 4,11 )
+        m.tb_nam=random.randrange( 7,11 )
        # m.save()
     for m in list1:
         m.save()
            
-    list = Mark.objects.filter(student_id__class_id=17)
+    list = Mark.objects.filter(student_id__class_id=197)
     for m in list:
-        m.tb=random.randrange( 4,11 )
+        m.mieng_1 = random.randrange( 7,11 )
+        m.mieng_2 = random.randrange( 7,11 )
+        m.mieng_3 = random.randrange( 7,11 )
+        m.mieng_4 = random.randrange( 7,11 )
+        m.mieng_5 = random.randrange( 7,11 )
+
+        m.mot_tiet_1 = random.randrange( 7,11 )
+        m.mot_tiet_2 = random.randrange( 7,11 )
+        m.mot_tiet_3 = random.randrange( 7,11 )
+        m.mot_tiet_4 = random.randrange( 7,11 )
+        m.mot_tiet_5 = random.randrange( 7,11 )
+        m.ck=random.randrange( 7,11 )
+        m.tb=random.randrange( 7,11 )
        # m.save()
     for m in list:
         m.save()
-           
-    hanhKiemList =HanhKiem.objects.filter(student_id__class_id=17)
+    print list       
+    hanhKiemList =HanhKiem.objects.filter(student_id__class_id=197)
     for hk in hanhKiemList:
         t =random.randrange( 1,5 )
         if   t==1: hk.year='T'

@@ -1,4 +1,6 @@
-﻿	<div class="notify-widget-paneB" >
+﻿{% load upload_tags %}
+
+	<div class="notify-widget-paneB" >
 	<button   style="padding: 2px 2px;width: 70px;display:none" id="buttonSave" onclick="update()"  > <div id="messageChanging"  >  </div>  </button>
 	</div>
 
@@ -13,6 +15,8 @@
         Dọc
         &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp Gõ tắt: ví dụ 75 sẽ thành 7.5, ấn Enter, Tab hoặc mũi tên để sang ô tiếp theo.
     </div>
+	
+	</form>
 	
 	<script>	
 		m = document.getElementById("{{move}}")
@@ -31,11 +35,47 @@
 			</div>
 			</ul>
 		</td>
+			
 		<td align="right">
+			<a class="ggButton" href="#popupDiv" id="import"> Nhập từ Excel </a>	
 			<a class="ggButton" href="/school/markExcel/{{termChoice}}/{{subjectChoice}}"> Xuất ra excel </a>	
 			
 		</td>	
 		</tr>
 	</table>	
+	
+    <div >
+        <div id="fileupload">
+            <form method="post" action="" enctype="multipart/form-data">
+                <div class="fileupload-buttonbar">
+                    {% csrf_token %}
+                    <label class="fileinput-button">
+                        <span>Chọn file...</span>
+                        <input type="file" name="file" multiple>
+                    </label>
+                    <button type="submit" id="startUpload" class="start">Tải file lên</button>
+                </div>
+            </form>
+			
+            <div class="fileupload-content">
+                <table class="files"></table>
+                <div class="fileupload-progressbar"></div>
+            </div>
+			
+            <div id="errorDetail" style="display: none;font: 14px/18px Arial;color:red">
+            </div>
+            <div style="font: 14px/18px Arial">
+                <p>
+                    Chú ý: Phải dùng file Excel theo <a href="{{ MEDIA_URL }}template_files/student_template.xls">mẫu
+                    này</a>.
+                </p>
+            </div>
+        </div>
+    </div>
+    {% upload_js %}
+	<script>
+		{% include "school/qlnt_upload_for_student.js" %}
+	</script>	
+	
 	<br>
 	<br>

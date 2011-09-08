@@ -1,4 +1,5 @@
-{% extends "base.html" %} 
+{% extends "base.html" %}
+ 
 
 {% block backward_link %}
 	<a href="/school/classes"> Toàn trường  </a> > 
@@ -11,7 +12,10 @@
 	
 {% endblock %} 
 
+
+
 {% block content %}
+
   <script language="JavaScript" type="text/javascript">
     function submitSubject() 
 	{
@@ -124,8 +128,9 @@
 		
 		{% include  "school/mien_giam_mark.html" %} 
 		{% include  "school/second_block_js.html" %} 
+	{% else %}
+		</form>
 	{% endifnotequal %}	
 
-  </form>
 
 {% endblock %}

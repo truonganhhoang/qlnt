@@ -802,19 +802,36 @@
 		$('input[type=text]').focus(function(e) {
 			highLight(this);
 		}
-	);
+		);
 
-    $('input[type=text]').blur(function() {
-			loseHighLight(this);
-      }
-    );
-	$('input[type=text]').mouseup(
-	    function(e) {
-	        e.preventDefault();
-	    }
-	);
-	
-	}
-	);
+		$('input[type=text]').blur(function() {
+				loseHighLight(this);
+		  }
+		);
+		$('input[type=text]').mouseup(
+			function(e) {
+				e.preventDefault();
+			}
+		);
+		
+		$("#import").click(function() {
+			$("#fileupload").dialog('open');
+		});		
+		$("#fileupload").dialog({
+			modal : true,
+			buttons: {
+				Đóng: function() {
+					location.reload('true');
+					$(this).dialog('close');
+				}
+			},
+			autoOpen: false,
+			width: 700,
+			height: 400,
+			maxWidth: 700,
+			maxHeight: 400,
+			title: "Nhập điểm từ file excel"
+		});				
+	});
 	viewAverage();
 </script>
