@@ -76,8 +76,8 @@
             {% if user.is_authenticated %}
                 {% if user.is_superuser %}
                     <li><a href="/admin" title="Mở trình quản trị sẵn có của hệ thống">Quản trị CSDL</a></li>
-{#                    <li><a href="{%url app.views.list_org %}" title="Quản lý tổ chức của các đơn vị">Tổ chức</a></li>#}
-{#                    <li><a href="{% url app.views.school_admin_add %}">Người quản trị trường</a></li>#}
+                    {#                    <li><a href="{%url app.views.list_org %}" title="Quản lý tổ chức của các đơn vị">Tổ chức</a></li>#}
+                    {#                    <li><a href="{% url app.views.school_admin_add %}">Người quản trị trường</a></li>#}
                 {% endif %}
 
                 {% if user.userprofile.position == 'GIAM_DOC_SO' or user.userprofile.position == 'TRUONG_PHONG' %}
@@ -92,9 +92,6 @@
                         <!-- <li><a href="{%url school.views.years %}" title="Xem năm học khác, học kỳ khác">Các năm</a></li>  -->
                         <li><a href="{%url school.views.classes %}" title="Quản lý lớp học">Lớp học</a></li>
                         {#            <li><a href="{%url school.views.teachers %}" title="Quản lý giáo viên">Giáo viên</a></li>#}
-                        <li><a href="/school/report"
-                               title="Xem thông tin thống kê, báo cáo tổng hợp"
-                               class="tiptiphover " >Báo cáo</a></li>
                         {% if user.userprofile.position == 'HIEU_TRUONG'  or user.userprofile.position == 'HIEU_PHO' %}
                             {# Khi chưa khởi  tạo năm học #}
                             {% if user.userprofile.organization.status == 0  or user.userprofile.organization.status == 3 %}
@@ -108,6 +105,10 @@
                                 {#                         title="Nhập danh sách học sinh từ file hoặc nhập trực tiếp">Học sinh</a></li>#}
                                 {#              <li><a href="{%url school.views.classify %}" title="Phân học sinh đã nhập vào các lớp">Phân lớp</a></li>#}
                                 <!-- <li><a href="" title="Phân công giáo viên dạy lớp nào, môn nào">Phân công giảng dạy</a></li>  -->
+                                <li><a href="/school/report"
+                                       title="Xem thông tin thống kê, báo cáo tổng hợp"
+                                       class="tiptiphover " >Báo cáo</a></li>
+
                                 <li><a href="{%url school.viewFinish.finish %}"
                                        title="Tính điểm tổng kết toàn trường và kết thúc học kỳ">Tổng kết</a>
                                 </li>
@@ -115,16 +116,10 @@
 
                             {% else %}
                             {% if user.userprofile.position == 'GIAO_VIEN' %}
-                                <li><a href="#">Lớp chủ nhiệm</a></li>
-                                <li><a href="">Lớp giảng dạy</a></li>
                                 <li><a href="/school/markForTeacher">Điểm</a></li>
                                 {% else %}
                                 {% if user.userprofile.position == 'HOC_SINH' %}
-                                    <li><a href="#">Lớp học</a></li>
-                                    <li><a href="#">Điểm</a></li>
-                                    <li><a href="#">Điểm danh</a></li>
-                                    <li><a href="#">Khen thưởng</a></li>
-                                    <li><a href="#">Kỉ luật</a></li>
+                                    <li><a href="{% url school.views.viewStudentDetail user.pupil.id %}">Hồ sơ cá nhân</a></li>
                                 {% else %}
                                     {% if user.userprofile.position == 'GIAO_VU' %}
                                     {% endif %}

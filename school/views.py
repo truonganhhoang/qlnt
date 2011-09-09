@@ -56,12 +56,24 @@ def school_index(request):
         print e
         return HttpResponseRedirect(reverse('setup'))
 
-    grades = school.block_set.all()
-    classes = year.class_set.all()
-    context = RequestContext(request)
-    return render_to_response(SCHOOL,{'classes': classes,
-                                      'grades': grades}, context_instance=context)
+    user_type = get_permission(request)
+    if user_type in ['HIEU_TRUONG', 'HIEU_PHO']:
+        grades = school.block_set.all()
+        classes = year.class_set.all()
+        context = RequestContext(request)
+        return render_to_response(SCHOOL,{'classes': classes,
+                                          'grades': grades}, context_instance=context)
+    elif user_type == 'GIAO_VIEN':
+        teaching_subjects = Subject.objects.filter(teacher_id = user.teacher)
+        teaching_class = user.teacher.teaching_class()
+        term = get_current_term(request)
+        context = RequestContext(request)
 
+        return render_to_response(SCHOOL,{'teaching_subjects': teaching_subjects,
+                                          'term': term, 'teaching_class': teaching_class},
+                                           context_instance=context)
+    elif user_type  == 'HOC_SINH':
+        return HttpResponseRedirect(reverse('student_detail', args=[user.pupil.id]))
 def is_safe(school):
     if school.danhsachloailop_set.all(): return True
     else: return False
@@ -2297,8 +2309,10 @@ def subjectPerClass(request, class_id, sort_type=4, sort_status=0):
                 shs = int(request.POST['teacher'])
             else:
                 shs = None
-
-            teacher = school.teacher_set.get(id = shs)
+            if shs:
+                teacher = school.teacher_set.get(id = shs)
+            else:
+                teacher = None
             sub.teacher_id = teacher
             sub.save()
         if request.POST['request_type'] == u'type':
@@ -2402,7 +2416,7 @@ def viewStudentDetail(request, student_id):
     pos = get_position(request)
     if (pos==1) and not(get_student(request).id==int(student_id)):
         pos = 2
-    if (get_position(request) < 1):
+    if get_position(request) < 1:
         return HttpResponseRedirect('/')
     message = None
     pupil = Pupil.objects.get(id=student_id)

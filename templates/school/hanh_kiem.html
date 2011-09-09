@@ -96,11 +96,16 @@
 
 <form action="/school/hanhkiem/{{class.id}}" method="post">{% csrf_token %}       
 {%if pos > 3%}
-<input type ="submit" class="ggButton submitbutton" value="Lưu"/>
-<a href="{%url school.views.school_index  %}viewClassDetail/{{class.id}}" title ="Quay về danh sách lớp" class="ggButton"> Quay lại </a>
+<div id="tableFunction">
+    <input type ="submit" class="ggButton submitbutton" value="Lưu"/>
+    <a href="{%url school.views.school_index  %}viewClassDetail/{{class.id}}" title ="Quay về danh sách lớp" class="ggButton"> Quay lại </a>
+</div>
 {%endif%}
     {% if pos < 4 %}
-        <a href="{%url school.views.school_index  %}viewClassDetail/{{class.id}}" title ="Quay về danh sách lớp" class="ggButton"> Quay lại </a>
+        <div id="tableFunction">
+            <a href="{%url school.views.school_index  %}viewClassDetail/{{class.id}}" title ="Quay về danh sách lớp" class="ggButton"> Quay lại </a>
+        </div>
+
     {% endif %}
 
     <table class="styleA" width = "75%">

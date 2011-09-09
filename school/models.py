@@ -181,6 +181,13 @@ class Teacher(BasicPersonInfo):
     group_id = models.ForeignKey(Group, null=True, blank=True, verbose_name="Nhóm", on_delete = models.SET_NULL)
     team_id = models.ForeignKey(Team, null=True, blank=True, verbose_name="Tổ", on_delete = models.SET_NULL)
 
+    def teaching_class(self):
+        classes = Class.objects.filter(teacher_id = self)
+        if classes:
+            return classes[0]
+        else:
+            return None
+
     class Meta:
         verbose_name = "Giáo viên"
         verbose_name_plural = "Giáo viên"
