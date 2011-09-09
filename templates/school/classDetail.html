@@ -188,9 +188,14 @@
 
 
     <div id="submenu">
-        {% if pos > 0 %}
+        {% if pos > 1 %}
             <a title="Cập nhật điểm danh theo lớp" class="tiptiphover ggButton"
                href="{%url school.views.school_index  %}diemdanh/{{class.id}}">Điểm danh</a>
+        {% endif %}
+
+        {% if pos > 1 or inClass == 1 %}
+             <a title="Xem tất cả thông tin của của môn học trong lớp" class="tiptiphover ggButton"
+               href="{%url school.views.school_index  %}subjectPerClass/{{class.id}}">Môn học</a>
         {% endif %}
 
         {% if pos > 3 %}
@@ -226,10 +231,6 @@
             {% endifnotequal %}
         {% endif %}
 
-        {% if pos > 0 %}
-            <a title="Xem tất cả thông tin của của môn học trong lớp" class="tiptiphover ggButton"
-               href="{%url school.views.school_index  %}subjectPerClass/{{class.id}}">Môn học</a>
-        {% endif %}
         {% if pos > 3 %}
             <a class="ggButton" href="#popupDiv" id="import"> Nhập từ Excel </a>
             <a class="tiptiphover ggButton"

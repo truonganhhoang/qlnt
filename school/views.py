@@ -1759,9 +1759,11 @@ def viewClassDetail(request, class_id, sort_type=0, sort_status=0):
             studentList = cl.pupil_set.order_by('-school_join_date')
     
     tmp = get_student(request)
+    inCl = inClass(request, class_id)
     id = 0
     if tmp:
         id = tmp.id
+
     
     currentTerm= get_current_term(request)
     if currentTerm.number ==3:
@@ -1774,6 +1776,7 @@ def viewClassDetail(request, class_id, sort_type=0, sort_status=0):
                                     'studentList': studentList, 
                                     'class': cl, 
                                     'cl':classList,
+                                    'inClass' : inCl,
                                     'sort_type':int(sort_type), 
                                     'sort_status':int(sort_status), 
                                     'next_status':1-int(sort_status),
