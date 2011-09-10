@@ -2,6 +2,7 @@
     {% if pos > 3 %}
         <script>
          $(document).ready(function() {
+                $("input.datepicker").datepicker("option", "yearRange", 'c-60:c-18');
                 $("select[name=team_id]").each(function() {
                     $(this).change(function() {
                         var id = $(this).parents("tr").attr('class').split(' ')[0];
@@ -123,7 +124,7 @@
                             </td>
 
                             <td align="center" width="20%">
-                                {{ form.birth_place.errors }}
+                                {{ form.home_town.errors }}
                                 <p>{{ form.home_town }}</p>
                             </td>
 
