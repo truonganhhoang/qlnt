@@ -2216,18 +2216,21 @@ def viewTeacherDetail(request, teacher_id):
                 first_name = ''
                 last_name = ''
                 birthday = ''
-                if not ttllform.is_valid():
+                if not ttcnform.is_valid():
                     message = 'Có lỗi ở dữ liệu nhập vào'
-                    for a in ttllform:
+                    for a in ttcnform:
                         if a.name == 'first_name':
                             if a.errors:
                                 first_name = str(a.errors)
+                                print first_name
                         if a.name == 'last_name':
                             if a.errors:
                                 last_name = str(a.errors)
+                                print last_name
                         if a.name == 'birthday':
                             if a.errors:
                                 birthday = str(a.errors)
+                                print birthday
                 response = simplejson.dumps({'message': message, 'response_type': 'ttcn',
                                              'first_name':first_name, 'last_name':last_name,'birthday':birthday})
                 return HttpResponse(response, mimetype = 'json')

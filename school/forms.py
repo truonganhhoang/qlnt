@@ -26,6 +26,7 @@ class TeacherForm(forms.ModelForm):
         super(TeacherForm,self).__init__(*args, **kwargs)
         school = Organization.objects.get(id = school_id)
         self.fields['team_id'] = forms.ModelChoiceField(queryset= school.team_set.all(), required=False, label=u'Tổ')
+        
 
 class TeacherITForm(forms.ModelForm):
     class Meta:
@@ -90,6 +91,7 @@ class ThongTinCaNhanForm(forms.ModelForm):
         fields = ('last_name','first_name','birthday','sex','class_id','start_year_id','birth_place','dan_toc','ton_giao','uu_tien','quoc_tich','home_town','ban_dk','school_join_date','school_join_mark')
         widgets = {
             'birthday' : DateInput(attrs = {'class':'datepicker'}),
+            'school_join_date' : DateInput(attrs = {'class':'datepicker'})
         }
         
     def __init__(self, school_id, *args, **kwargs):
