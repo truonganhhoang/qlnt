@@ -21,8 +21,6 @@ $(function () {
 		var urlString=id[3]+'/'+id[4];
 	else	
 		var urlString=id[3]+'/'+id[5];
-	alert(id[2]=='markForTeacher');
-	alert(urlString);	
     // Initialize the jQuery File Upload widget:
     $('#fileupload').fileupload({
         url: "/school/importMark/"+urlString,
