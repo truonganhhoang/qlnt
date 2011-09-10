@@ -27,6 +27,7 @@
             return confirm("Bạn có chắc chắn xóa không?");
         }
         $(document).ready(function(){
+            $(".submitbutton").attr("disabled", true);
             $("select[name=teacher_id]").each(function() {
                 $(this).change(function() {
                     var attr = $(this).parents("tr").attr('id');
@@ -37,7 +38,11 @@
                         var arg = { type:"POST",
                             url:"",
                             data: data,
-                            datatype:"json"
+                            datatype:"json",
+                            error: function(){
+                                $(".submitbutton").attr('disabled', false);
+                                $(".submitbutton").val('Lưu lại');
+                            }
                         };
                         $.ajax(arg);
                         return false;
@@ -55,11 +60,15 @@
                         var arg = { type:"POST",
                             url:"",
                             data: data,
-                            datatype:"json"
+                            datatype:"json",
+                            error: function(){
+                                $(".submitbutton").attr('disabled', false);
+                                $(".submitbutton").val('Lưu lại');
+                            }
                         };
                         $.ajax(arg);
                         return false;
-                    }
+                    };
                 });
             });
 
@@ -73,7 +82,11 @@
                         var arg = { type:"POST",
                             url:"",
                             data: data,
-                            datatype:"json"
+                            datatype:"json",
+                            error: function(){
+                                $(".submitbutton").attr('disabled', false);
+                                $(".submitbutton").val('Lưu lại');
+                            }
                         };
                         $.ajax(arg);
                         return false;
@@ -90,7 +103,11 @@
                             var arg = { type:"POST",
                                 url:"",
                                 data: data,
-                                datatype:"json"
+                                datatype:"json",
+                                error: function(){
+                                    $(".submitbutton").attr('disabled', false);
+                                    $(".submitbutton").val('Lưu lại');
+                                }
                             };
                             $.ajax(arg);
                             return false;
@@ -120,7 +137,7 @@
             <input class="ggButton" type="button" id="sort" value="Sắp xếp" />
             <a id="guide" class="tiptiphover ggButton" href="" title="Dùng các phím mũi tên để chọn môn học,
             sau đó Enter để thay đổi thứ tự hoặc bỏ chọn môn đó. Kết thúc bằng việc ấn 'Lưu thứ tự'.">Hướng dẫn</a>
-            <input id="save" class="ggButton" type ="submit" value="Lưu"/>
+            <input id="save" class="ggButton submitbutton" type ="submit" value="Đã Lưu"/>
         {% endif %}
     </div>
 
