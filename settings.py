@@ -18,9 +18,9 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'freeschool',
-        'USER': 'freeschool',
-        'PASSWORD':'freeschool',
+        'NAME': 'dnqlnt5',
+        'USER': 'root',
+        'PASSWORD':'',
         'OPTIONS': { 'init_command': 'SET storage_engine=INNODB',},
     },
 #   'default': {

@@ -2,14 +2,22 @@
  
 
 {% block backward_link %}
-	<a href="/school/classes"> Toàn trường  </a> > 
-	{% if selectedClass %}
-		<a href="/school/viewClassDetail/{{selectedClass.id}}"> {{selectedClass.name}}  </a> > 
-	{% endif %}
-	{% if selectedSubject %}
-		{{selectedSubject.name}}  
-	{% endif %}
+	{% if user.userprofile.position != "GIAO_VIEN" %}
+		<a href="/school/classes"> Toàn trường  </a> > 
+		{% if selectedClass %}
+			<a href="/school/viewClassDetail/{{selectedClass.id}}"> {{selectedClass.name}}  </a> > 
+		{% endif %}
+		{% if selectedSubject %}
+			{{selectedSubject.name}}  
+		{% endif %}
+	{% else %}
+        <a href="/school/markForTeacher">Điểm</a> 
+		{% if selectedSubject %}
+			>
+			{{selectedSubject.name}}-{{selectedSubject.class_id.name}}
+		{% endif %}
 	
+	{% endif %}
 {% endblock %} 
 
 
