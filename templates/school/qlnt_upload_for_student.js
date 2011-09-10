@@ -16,15 +16,16 @@
 
 $(function () {
     'use strict';
-    function IsNumeric(input){
-        return (input - 0) == input && input.length > 0;
-    };
-
     var id = window.location.pathname.split('/');
-
+	if (id[2]=='markForTeacher')
+		var urlString=id[3]+'/'+id[4];
+	else	
+		var urlString=id[3]+'/'+id[5];
+	alert(id[2]=='markForTeacher');
+	alert(urlString);	
     // Initialize the jQuery File Upload widget:
     $('#fileupload').fileupload({
-        url: "/school/importMark/"+id[3]+'/'+id[5],
+        url: "/school/importMark/"+urlString,
         dataType: 'json',
         acceptFileTypes: /(\.|\/)(xls)$/i,
         maxNumberOfFiles: 10
@@ -52,9 +53,10 @@ $(function () {
             }
 			*/
 			$("#errorDetail").text('');
+			
 			if (data.result[0].absentMessage!='')
 			{
-				$("#errorDetail").append("Không có họ tên và ngày sinh của những học sinh sau:<br>");								
+				$("#errorDetail").append("Không có họ tên hoặc ngày sinh của những học sinh sau:<br>");								
 				$("#errorDetail").append("<table class='styleA'>"+data.result[0].absentMessage+"</table>");			
 				$("#errorDetail").show();			
 			}	
@@ -63,6 +65,12 @@ $(function () {
 				$("#errorDetail").append(data.result[0].validateMessage);			
 				$("#errorDetail").show();			
 			}			
+			if (data.result[0].editMarkMessage!='')		
+			{
+				$("#errorDetail").append(data.result[0].editMarkMessage);			
+				$("#errorDetail").show();			
+			}
+			 	
     });
 
 

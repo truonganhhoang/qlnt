@@ -62,7 +62,7 @@ def upload_js():
                 <td colspan="2" class="message">${message}</td>
             {{/if}}
             <td class="delete">
-                <button data-type="DELETE">Delete</button>
+                <button data-type="DELETE">Xóa</button>
             </td>
         </tr>
     </script>
