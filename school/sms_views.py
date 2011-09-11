@@ -20,37 +20,6 @@ import xlrd
 import xlwt
 
 
-def sendSMS(phone,content,user):
-    """
-    open = urllib2.build_opener(urllib2.HTTPCookieProcessor())
-    urllib2.install_opener(open)
-    para = urllib.urlencode({'u': 'VT_username', 'p': 'VT_password'})
-    f = open.open('http://viettelvas.vn:7777/fromcp.asmx', para)
-    f.close();
-    if checkValidPhoneNumber(phone):    
-        '''Save to db'''
-        s = sms(phone=phone, content=content, sender=user, recent=True, success=True)
-        s.save()
-        print "okkkkkkkkkkk"
-        '''Send sms via Viettel system'''
-        data = urllib.urlencode({
-                        'RequestID'     : '4',
-                        'CPCode'        : '',
-                        'UserID'        : '',
-                        'ReceiverID'    : phone,
-                        'ServiceID'     : '',
-                        'CommandCode'   : '',
-                        'Content'       : content,
-                        'ContentType'   : ''})
-#        f = open.open('http://viettelvas.vn:7777/fromcp.asmx', data)
-    else:    
-        '''Save to db'''
-    """        
-    s = sms(phone=phone, content=content, sender=user, recent=True, success=False)
-    s.save()
-    print "send ok"
-
-
 def manual_sms(request):
     print request.method
     if request.method == 'POST':

@@ -19,7 +19,6 @@ import xlwt
 
 def manual_sms(request):
     if request.method == 'POST':
-        sendSMS('123','check sendSMS function', request.user)
         return HttpResponseRedirect('/sms/sent_sms/')
 #        return HttpResponse(request.POST.getlist('receiver'))
         receiver_list = request.POST.getlist('receiver')

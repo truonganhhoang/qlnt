@@ -20,25 +20,23 @@ LOCK_MARK =False
 ENABLE_CHANGE_MARK=True
 e=0.00000001
 
-"""
-
-
+var = '''
 def thu(request):
 
     t1=time.time()
     for i in range(20000000):
         j=1
-    t2=time.time()    
+    t2=time.time()
     print (t2-t1)
     t = loader.get_template(os.path.join('school','thu.html'))
-    
+
     c = RequestContext(request, {
                                 }
                        )
-    
+
 
     return HttpResponse(t.render(c))
-"""
+'''
 class MarkID:
     def __init__(self,d1,d2,d3,d4,d5,d6,d7,d8,d9,d10,d11,d12,d13,d14,d15,d16,d17,d18,d19):
         self.d1=d1
@@ -888,7 +886,7 @@ def sendSMSForAPupil(s,user):
     if markStr4 !="":  smsString+="Thi cuoi ky:" + markStr4
     
     if markStr5 !="":
-        if (termNumber==2):     
+        if termNumber==2:
             smsString+="TBHK II:" + markStr5
         else:         
             smsString+="TBHK I:" + markStr5
@@ -896,7 +894,7 @@ def sendSMSForAPupil(s,user):
     if markStr6 !="":  smsString+="TBHK I:" + markStr6         
     if markStr7 !="":  smsString+="TB ca nam:" + markStr7
     
-    if m.student_id.sms_phone != None:
+    if m.student_id.sms_phone:
         sendSMS(m.student_id.sms_phone,smsString,user)
     m.save()    
     print smsString    
