@@ -466,8 +466,8 @@ def add_teacher( first_name = None,
             names = full_name.split(" ")
             last_name = ' '.join(names[:len(names)-1])
             first_name = names[len(names)-1]
-        if team_id and team_id.strip():
-            if  type(team_id) == str or type(team_id) == unicode:
+        if team_id:
+            if  (type(team_id) == str or type(team_id) == unicode) and team_id.strip():
                 name = team_id.strip()
                 try:
                     team_id = school.team_set.get( name = name)
@@ -484,10 +484,9 @@ def add_teacher( first_name = None,
         else:
             team_id = None
         if team_id:
-            if group_id.strip():
-                if type(group_id) == str or type(group_id) == unicode:
+            if group_id:
+                if (type(group_id) == str or type(group_id) == unicode) and group_id.strip() :
                     name = group_id
-                    print 'name', name
                     try:
                         group_id = team_id.group_set.get( name = name)
                     except Exception as e:
@@ -496,7 +495,6 @@ def add_teacher( first_name = None,
                         group_id.name = name
                         group_id.team_id = team_id
                         group_id.save()
-                        print group_id
                 elif isinstance(group_id, Group):
                     print 'what the f'
                     if group_id.team_id != team_id:

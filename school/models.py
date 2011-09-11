@@ -5,7 +5,7 @@ from datetime import date
 from app.models import *
 
 LOAI_CHOICES = ((0,u'Tính cả 2 kỳ'),(1,u'Chỉ tính kì 1'),(2,u'Chỉ tính kì 2'),(3,u'Cộng vào điểm TB(NN2)'),(4,u'Không tính điểm'))
-SUBJECT_TYPES = ((u'Toán',u'Toán'),
+SUBJECT_TYPES = (('-1',u'Chọn môn'),(u'Toán',u'Toán'),
                  (u'Vật lí', u'Vật lí'), (u'Hóa học', u'Hóa học'),
                  (u'Sinh học', u'Sinh học'),(u'Ngữ văn', u'Ngữ văn'),
                  (u'Lịch sử', u'Lịch sử'), (u'Địa lí', u'Địa lí'),
@@ -13,7 +13,7 @@ SUBJECT_TYPES = ((u'Toán',u'Toán'),
                  (u'Công nghệ', u'Công nghệ'), (u'Thể dục', u'Thể dục'),
                  (u'Âm nhạc', u'Âm nhạc'),(u'Mĩ thuật', u'Mĩ thuật'),
                  (u'NN2', u'NN2'),(u'Tin học', u'Tin học'),
-                 (u'GDQP-AN', u'GDQP-AN'),('',u'Loại khác'))
+                 (u'GDQP-AN', u'GDQP-AN'))
 SUBJECT_LIST = [u'Toán',u'Vật lí', u'Hóa học',u'Sinh học',u'Ngữ văn',
                 u'Lịch sử', u'Địa lí', u'Ngoại ngữ', u'GDCD',u'Công nghệ',
                 u'Thể dục', u'Âm nhạc',u'Mĩ thuật',u'NN2',u'Tin học', u'GDQP-AN']
@@ -175,7 +175,7 @@ class BasicPersonInfo(models.Model):
     #class Admin: pass
 
 class Teacher(BasicPersonInfo):
-    major = models.CharField("Chuyên môn(*)", max_length=45, default='', blank= True, choices=SUBJECT_TYPES)
+    major = models.CharField("Chuyên môn(*)", max_length=45, default='-1', choices=SUBJECT_TYPES)
     user_id = models.OneToOneField(User, verbose_name = "Tài khoản")
     school_id = models.ForeignKey(Organization, verbose_name = "Trường")
     group_id = models.ForeignKey(Group, null=True, blank=True, verbose_name="Nhóm", on_delete = models.SET_NULL)
