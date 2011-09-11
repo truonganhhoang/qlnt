@@ -333,6 +333,10 @@ table.styleA tr.selected {
     background-color: #f5f681;
 }
 
+table.styleA tr.endblock{
+    background-color: #FFFFFF;
+}
+
 table.styleA td {
     border-width: 1px;
     padding: 4px;

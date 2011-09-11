@@ -56,7 +56,10 @@ urlpatterns = patterns('',
     url(r'countLearningInYear/(?P<year_id>\w+)$','school.viewCount.countLearningInYear'),
     url(r'countAllInTerm/(?P<term_id>\w+)$','school.viewCount.countAllInTerm'),
     url(r'countAllInYear/(?P<year_id>\w+)$','school.viewCount.countAllInYear'),
-
+    #thong ke hoc luc, hanh kiem, danh hieu
+    url(r'count1/(?P<year_id>\w+)/(?P<number>\w+)$','school.viewCount.count1'),
+    url(r'count1$','school.viewCount.count1'),
+    
     url(r'printMarkBook$' , 'school.writeExcel.printMarkBook'), 
     url(r'printMarkBook/(?P<termNumber>\w+)/(?P<class_id>([0-9-])*)$' , 'school.writeExcel.printMarkBook'), 
     url(r'markExcel/(?P<term_id>\w+)/(?P<subject_id>\w+)$' , 'school.writeExcel.markExcel'), 

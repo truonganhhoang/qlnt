@@ -697,27 +697,29 @@ def printSTT(s,max,x,y):
 
 def markExcel(request,term_id,subject_id):
     tt1 = time.time()
-    
+
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect( reverse('login'))
     
-    message=None
-    year_id=None
-    if year_id==None:
-        year_id=get_current_year(request).id
-    
-    selectedYear =Year.objects.get(id=year_id)    
-    try:
-        if in_school(request,selectedYear.school_id) == False:
+    selectedSubject = Subject.objects.get(id=subject_id)
+    try:        
+        if in_school(request,selectedSubject.class_id.year_id.school_id) == False:
             return HttpResponseRedirect('/school')
+    
     except Exception as e:
         return HttpResponseRedirect(reverse('index'))
     
-    if get_position(request) != 4:
-       return HttpResponseRedirect('/school')
+    position= get_position(request)
+    if position==4:
+        pass
+    elif position ==3:
+        if (selectedSubject.teacher_id.id != request.user.teacher.id):  
+            return HttpResponseRedirect('/school')
+    else:    
+            return HttpResponseRedirect('/school')
+
     
-    selectedSubject= Subject.objects.get(id=subject_id)
     selectedTerm   = Term.objects.get(id=term_id)
     book = Workbook(encoding = 'utf-8')
     str1=u'BẢNG ĐIỂM LỚP '+selectedSubject.class_id.name.upper()+u' MÔN '+selectedSubject.name.upper()+u'  HỌC KỲ'    

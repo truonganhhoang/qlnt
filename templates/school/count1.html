@@ -1,0 +1,232 @@
+﻿{% extends "base.html"%}  
+{% block backward_link %}
+	<a href="/school/report"> Báo cáo, thống kê  </a>  > 
+	Thống kê học lực, hạnh kiểm, danh hiệu 
+	{% if number = '1' %}
+		kỳ I
+	{% else %}
+	{% if number = '2' %}
+		kỳ II
+	{% else %}
+		cả năm
+	{% endif %}
+	{% endif %}
+	
+{% endblock %}
+
+{% block content %}
+<h2>Thống kê học lực, hạnh kiểm, danh hiệu </h2>	
+
+
+<form name="info" >
+	<INPUT TYPE="radio" NAME="term" id='1' value="1">Học kỳ I &nbsp&nbsp&nbsp&nbsp&nbsp     	
+	<INPUT TYPE="radio" NAME="term" id='2'value="2">Học kỳ II&nbsp&nbsp&nbsp&nbsp&nbsp
+	<INPUT TYPE="radio" NAME="term" id='3'value="3">Cả năm 
+</form>
+<br>
+<br>
+<script>
+
+	$(document).ready(function() {
+		$('input[type=radio]').change(function() {
+			window.location.href="/school/count1/"+{{year_id}}+"/"+this.value;
+		})
+	});
+	document.getElementById({{number}}).checked=true;	
+
+</script>
+
+<table border=1 width="100%" class="styleA" >
+	<tr> 
+		<th rowspan=3 width="10%" align="center" >
+			Lớp
+		</th>
+
+		<th rowspan=3 >
+			SS
+		</th>
+		<th colspan=10>
+			Học lực
+		</th>
+		<th colspan=8>
+			Hạnh kiểm
+		</th>
+		<th colspan=4>
+			Danh hiệu
+		</th>
+		
+	</tr>
+	<tr>
+		<th colspan=2 >
+			Giỏi
+		</th>
+		<th colspan=2 >
+			Khá
+		</th>
+		<th colspan=2 >
+			TB
+		</th>
+		<th colspan=2 >
+			Yếu
+		</th>
+		<th colspan=2 >
+			Kém
+		</th>
+		<th colspan=2 >
+			Giỏi
+		</th>
+		<th colspan=2 >
+			Khá
+		</th>
+		<th colspan=2 >
+			TB
+		</th>
+		<th colspan=2 >
+			Yếu
+		</th>
+		
+		<th colspan=2 >
+			HSG
+		</th>
+		<th colspan=2 >
+			HSTT
+		</th>
+	</tr>	
+		<th >
+			sl
+		</th>
+		<th >			
+			%
+		</th>
+		<th >
+			sl
+		</th>
+		<th >			
+			%
+		</th>
+		<th >
+			sl
+		</th>
+		<th >			
+			%
+		</th>
+		<th >
+			sl
+		</th>
+		<th >			
+			%
+		</th>
+		<th >
+			sl
+		</th>
+		<th >			
+			%
+		</th>
+		<th >
+			sl
+		</th>
+		<th >			
+			%
+		</th>
+		<th >
+			sl
+		</th>
+		<th >			
+			%
+		</th>
+		<th >
+			sl
+		</th>
+		<th >			
+			%
+		</th>
+		<th >
+			sl
+		</th>
+		<th >			
+			%
+		</th>		
+		<th >
+			sl
+		</th>
+		<th >			
+			%
+		</th>		
+		<th >
+			sl
+		</th>
+		<th >			
+			%
+		</th>		
+	</tr>
+{% for b,sum,total,list1 in 	 list %}
+	{% for name,ss,l in list1 %}
+	<tr>
+		<td align="center">
+			{{ name}}
+		</td >
+		
+		<td >
+			{{ ss|floatformat:"0" }}
+		</td>
+		{% for u,v in l %}
+			<td >
+			    {{ u }}
+			</td >
+			
+			<td >
+				{{v|floatformat:"2"}}
+			</td>
+		{% endfor %}
+	</tr>	
+	{% endfor %}
+	<tr >
+		<td>
+			Khối {{b.number}}
+		</td>
+		<td>
+			{{sum|floatformat:"0" }}
+		</td>
+		{% for sl,pt in total %}
+			<td>
+				{{sl}}
+			</td>
+			<td>
+				{{pt|floatformat:"2"}}
+			</td>
+		{% endfor %}
+	</tr>
+	<tr class='endblock'>
+			<td> &nbsp </td>
+			<td> &nbsp </td>
+		{% for sl,pt in total %}
+			<td> &nbsp </td>
+			<td> &nbsp </td>
+		{% endfor %}
+	</tr>
+{% endfor %}
+	<tr>
+		<td>
+			Toàn trường	
+		</td>
+		<td>
+			{{sumsumsum|floatformat:"0" }}
+		</td>
+		{% for sl,pt in allList %}
+			<td>
+				{{sl}}
+			</td>
+			<td>
+				{{pt|floatformat:"2"}}
+			</td>
+		{% endfor %}
+		
+	</tr>
+</table>
+	
+	
+{% endblock %}	
+	
+	
+	
+

@@ -272,7 +272,7 @@ def countPractisingInClassInYear(class_id,year_id):
     sum=0.0
     string=['T','K','TB','Y',None]
     for i in range(string.__len__()):
-        slList[i]=TBNam.objects.filter(year_id=year_id,student_id__class_id=class_id,hk_nam=string[i]).count()
+        slList[i]=HanhKiem.objects.filter(year_id=year_id,student_id__class_id=class_id,year=string[i]).count()
         sum+=slList[i]
     if sum!=0:    
         for i in range(string.__len__()):
@@ -527,23 +527,25 @@ def countAllInTerm(request,term_id):
 
 
 def countAllInClassInYear(class_id,year_id):
-    slList=[0,0,0,0,0,0,0]
-    ptList=[0,0,0,0,0,0,0]
+    slList=[0,0,0,0]
+    ptList=[0,0,0,0]
 
     slList[0]=TBNam.objects.filter(year_id=year_id,student_id__class_id=class_id,danh_hieu_nam='G').count()
     slList[1]=TBNam.objects.filter(year_id=year_id,student_id__class_id=class_id,danh_hieu_nam='TT').count()
-    slList[2]=TBNam.objects.filter(year_id=year_id,student_id__class_id=class_id,len_lop=True).count()
-    slList[3]=TBNam.objects.filter(year_id=year_id,student_id__class_id=class_id,len_lop=False).count()
-    slList[4]=TBNam.objects.filter(year_id=year_id,student_id__class_id=class_id,thi_lai=True).count()
-    slList[5]=TBNam.objects.filter(year_id=year_id,student_id__class_id=class_id,ren_luyen_lai=True).count()    
-    slList[6]=TBNam.objects.filter(year_id=year_id,student_id__class_id=class_id,len_lop=None,thi_lai=None,ren_luyen_lai=None).count()
-                
-    sum=0
-    for i in range(2,7):
-        sum+=slList[i]
+    #slList[2]=TBNam.objects.filter(year_id=year_id,student_id__class_id=class_id,len_lop=True).count()
+    #slList[3]=TBNam.objects.filter(year_id=year_id,student_id__class_id=class_id,len_lop=False).count()
+    #slList[4]=TBNam.objects.filter(year_id=year_id,student_id__class_id=class_id,thi_lai=True).count()
+    #slList[5]=TBNam.objects.filter(year_id=year_id,student_id__class_id=class_id,ren_luyen_lai=True).count()    
+    sl1=TBNam.objects.filter(year_id=year_id,student_id__class_id=class_id,len_lop=True).count()
+    sl2=TBNam.objects.filter(year_id=year_id,student_id__class_id=class_id,len_lop=False).count()
+    sl3=TBNam.objects.filter(year_id=year_id,student_id__class_id=class_id,thi_lai=True).count()
+    sl4=HanhKiem.objects.filter(year_id=year_id,student_id__class_id=class_id,ren_luyen_lai=True).count()    
+    #slList[4]=TBNam.objects.filter(year_id=year_id,student_id__class_id=class_id,len_lop=None,thi_lai=None,ren_luyen_lai=None).count()
+    sum = Pupil.objects.filter(class_id=class_id).count()
+    slList[3] = sum-sl1-sl2-sl3-sl4            
         
     if (sum!=0):        
-        for i in range(7):
+        for i in range(3):
             ptList[i]=float(slList[i])/sum *100
         
     return slList,ptList,sum
@@ -599,3 +601,109 @@ def countAllInYear(request,year_id):
     return HttpResponse(t.render(c))
 
 
+def count1(request,year_id=None,number=None):
+    """
+    user = request.user
+    if not user.is_authenticated():
+        return HttpResponseRedirect( reverse('login'))
+
+    selectedTerm=Term.objects.get(id=term_id)    
+    try:
+        if in_school(request,selectedTerm.year_id.school_id) == False:
+            return HttpResponseRedirect('/school')
+    except Exception as e:
+        return HttpResponseRedirect(reverse('index'))
+
+    if get_position(request) != 4:
+       return HttpResponseRedirect('/school')
+    """
+    
+    if year_id==None:
+        selectedTerm =get_current_term(request)
+        selectedYear =get_current_year(request)
+        year_id   = selectedTerm.year_id.id
+        if selectedTerm.number==3:            
+            term_id = Term.objects.get(year_id=selectedYear.id,number=2).id
+            number=2
+        else:
+            term_id = selectedTerm.id   
+            number = selectedTerm.number 
+    else:
+        print number
+        selectedYear=Year.objects.get(id=year_id)
+        if int(number)<3:
+            term_id = Term.objects.get(year_id=selectedYear.id,number=number).id
+    
+    blockList = Block.objects.filter(school_id=selectedYear.school_id)
+    list=[]   
+    notFinishLearning=0
+    notFinishPractising=0 
+    notFinishAll    =0
+    allSlList=[0,0,0,0,0,0,0,0,0,0,0]
+    allPtList=[0,0,0,0,0,0,0,0,0,0,0]
+    
+    sumsumsum=0  
+    for b in blockList:
+        classList = Class.objects.filter(block_id=b,year_id=selectedYear.id)
+        list1=[]
+        totalSlList=[0,0,0,0,0,0,0,0,0,0,0]
+        totalPtList=[0,0,0,0,0,0,0,0,0,0,0]  
+        sumsum=0      
+        for c in classList:
+            if int(number)<3:
+                aslList,aptList,sum =countLearningInClassInTerm(c.id,term_id)
+                aslList1,aptList1,sum =countPractisingInClassInTerm(c.id,term_id)
+                aslList2,aptList2,sum =countAllInClassInTerm(c.id,term_id)
+            else: 
+                aslList,aptList,sum =countLearningInClassInYear(c.id,year_id)
+                aslList1,aptList1,sum =countPractisingInClassInYear(c.id,year_id)
+                aslList2,aptList2,sum =countAllInClassInYear(c.id,year_id)
+             
+            notFinishLearning+=aslList[5]
+            notFinishPractising+=aslList1[4]
+            notFinishAll      +=aslList2[3]      
+            aslList.pop(5)
+            aptList.pop(5)
+            aslList1.pop(4)          
+            aptList1.pop(4)
+            
+            aslList2.pop(3)          
+            aptList2.pop(3)
+            aslList2.pop(2)          
+            aptList2.pop(2)
+             
+            slList = aslList+aslList1+aslList2
+            ptList = aptList+aptList1+aptList2                   
+            list1.append([c.name,sum,zip(slList,ptList)])
+                        
+            for i in range(11):
+                totalSlList[i]+=slList[i]
+                allSlList[i]+=slList[i]
+            sumsum+=sum
+            sumsumsum+=sum    
+        if sumsum!=0:  
+            for i in range(11):
+                totalPtList[i]=float(totalSlList[i])/sumsum *100                
+        list.append([b,sumsum,zip(totalSlList,totalPtList),list1])
+    if sumsumsum!=0:    
+        for i in range(11):
+            allPtList[i]=float(allSlList[i])/sumsumsum *100
+        allList=zip(allSlList,allPtList)
+    t = loader.get_template(os.path.join('school','count1.html'))    
+    c = RequestContext(request, {'list':list,
+                                 'sumsumsum':sumsumsum,
+                                 'allList':allList,
+                                 'year_id':year_id,
+                                 'number':number,
+                                 })
+                                 
+    """
+                                 'yearString':yearString,
+                                 'selectedTerm':selectedTerm,
+                                 'totalSlList':totalSlList,
+                                 'totalPtList':totalPtList,
+                                 'list':list,
+    """
+                                
+                       
+    return HttpResponse(t.render(c))

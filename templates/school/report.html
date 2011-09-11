@@ -1,6 +1,14 @@
 ﻿{% extends "base.html"%}  
+{% block backward_link %}
+	Báo cáo, thống kê
+
+{% endblock %}
+
 {% block content %}
-<a class="tiptipclick" title="Chức năng đang trong quá trình hoàn thiện" href="/school/countInSchool"> Thống kê </a>
+<br>
+ {# <a title="Chức năng đang trong quá trình hoàn thiện" href="/school/countInSchool"> Thống kê </a> #}
+ 
+<a href="/school/count1"> Thống kê học lực, hạnh kiểm, danh hiệu</a>
 <br>
 <a href="/school/printMarkBook"> In sổ gọi tên và ghi điểm </a>
 {% endblock %}
