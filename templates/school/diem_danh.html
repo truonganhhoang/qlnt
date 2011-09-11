@@ -160,10 +160,6 @@
                 url = "/school/dsnghi/{{class_id}}/{{day}}/{{month}}/{{year}}";
                 window.location.href = url;
             });
-            $("#lophoc").click(function() {
-                url = "/school/viewClassDetail/{{class_id}}";
-                window.location.href = url;
-            });
             $("#capnhat").click(function() {
                 $("#submit").click();
             });
@@ -193,7 +189,6 @@
         {{ message }}
     {% endif %}
     <div id="submenu">
-        <button id="lophoc" class="ggButton">Quay lại</button>
         <button id="sendSelected" class="ggButton">Gửi SMS cho những học sinh đã chọn</button>
         <button id="dsnghi" class="ggButton">Danh sách nghỉ</button>
 

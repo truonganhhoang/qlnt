@@ -132,7 +132,6 @@
 
     <form action="/school/subjectPerClass/{{class.id}}" method="post">{% csrf_token %}
     <div id="tableFunction">
-        <a href="{%url school.views.school_index  %}viewClassDetail/{{ class.id }}" class="ggButton">Quay lại</a>
         {% if pos > 3 %}
             <input class="ggButton" type="button" id="sort" value="Sắp xếp" />
             <a id="guide" class="tiptiphover ggButton" href="" title="Dùng các phím mũi tên để chọn môn học,

@@ -1443,18 +1443,36 @@ def student_account(request, student_id):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
+    pos = get_position(request)
+    if pos < 4:
+        return HttpResponseRedirect('/')
+    message = ''
     student = user.userprofile.organization.pupil_set.get(id = student_id)
+    url = '/school/student/account/' + student_id
+    if request.method == 'POST':
+        student.user_id.set_password(student.user_id.username)
+        student.save()
+        message = 'Mật khẩu của học sinh đã được tạo lại giống tên tài khoản'
     t = loader.get_template(os.path.join('school','account.html'))
-    c = RequestContext(request, {'account':student.user_id.username})
+    c = RequestContext(request, {'account':student.user_id.username,'url':url,'message':message})
     return HttpResponse(t.render(c))
 
 def teacher_account(request, teacher_id):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
+    pos = get_position(request)
+    if pos < 4:
+        return HttpResponseRedirect('/')
+    message = ''
     teacher = user.userprofile.organization.teacher_set.get(id = teacher_id)
+    url = '/school/teacher/account/' + teacher_id
+    if request.method == 'POST':
+        teacher.user_id.set_password(teacher.user_id.username)
+        teacher.save()
+        message = 'Mật khẩu của giáo viên đã được tạo lại giống tên tài khoản'
     t = loader.get_template(os.path.join('school','account.html'))
-    c = RequestContext(request, {'account':teacher.user_id.username})
+    c = RequestContext(request, {'account':teacher.user_id.username,'url':url,'message':message})
     return HttpResponse(t.render(c))
 
 def classes(request):
@@ -2764,6 +2782,8 @@ def ds_nghi(request, class_id, day, month, year):
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
     pos = get_position(request)
+    if (pos == 3 and not gvcn(request,class_id)):
+        pos = 2
     cl  = Class.objects.get(id=class_id)
     pupilList = Pupil.objects.filter(class_id=class_id).order_by('first_name', 'last_name')
     time = date(int(year), int(month), int(day))

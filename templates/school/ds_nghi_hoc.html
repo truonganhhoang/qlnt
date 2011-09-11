@@ -162,7 +162,7 @@
     {{message}}
     <br>
 {% endif %}
-{% if pos > 1%}
+{% if pos > 2%}
     <button id="selectAll" class="ggButton">Đảo chọn</button>
     <button id="sendSelected" class="ggButton">Gửi SMS cho những học sinh đã chọn</button>
     <a class="ggButton" href="{%url school.views.school_index  %}diemdanh/{{class_id}}/{{day}}/{{month}}/{{year}}"> Quay lại </a>
@@ -170,7 +170,7 @@
 <table class="styleA" >
 
     <tr class="thead">
-        {% if pos > 1%}
+        {% if pos > 2%}
             <th align="center" width="2%"> 
                 <input type="checkbox" id="checkbox_all"/>
             </th>
@@ -180,13 +180,13 @@
         <th align="center" width="10%"> Ngày sinh</th>
         <th align="center" width="7%"> Giới tính </th>
         <th align="center" width="8%"> Điểm danh </th>
-        {% if pos > 1%}
+        {% if pos > 2%}
         <th align="center" width="10%">&nbsp </th>
         {% endif %}
     </tr>
         {% for p,f in list %}
             <tr class="{{p.id}}">
-                {% if pos > 1%}
+                {% if pos > 2%}
                     <td align="center" width="2%">
                         <input type="checkbox" id="checkbox_{{p.id}}"/>
                     </td>
@@ -208,7 +208,7 @@
                 </td>
 
                 <td align="center" id="f_{{p.id}}" width="8%">{{f}}</td>
-                {% if pos > 1%}
+                {% if pos > 2%}
                 <td align="center" width="20px">
 						  <input type="submit" value="sms" name="{{p.id}}" class="sms" />                
                 </td>

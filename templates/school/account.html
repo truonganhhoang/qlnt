@@ -1,8 +1,21 @@
+<script type="text/javascript">
+    $(document).ready(function(){
+        $("button").click(function(){
+            var i = confirm('Mật khẩu sẽ được tạo lại giống tên tài khoản.\nBạn có muốn thay đổi.');
+            return i;
+        });
+    });
+</script>
 {% block content %}
+    {{ message }}
     <table class="styleA">
         <tr>
             <th>Tài khoản</th>
             <td>{{ account }}</td>
         </tr>
     </table>
+    <form action="{{ url }}" method="post" class="onPage">
+        {% csrf_token %}
+        <button class="ggButton"> Tạo lại mật khẩu </button>
+    </form>
 {% endblock %}

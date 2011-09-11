@@ -50,6 +50,21 @@
             $.ajax(arg);
             return false;
         });
+        $("form.onPage").live("submit", function() {
+            var data = $(this).serialize();
+            var arg = {
+                data:data,
+                type: $(this).attr("method"),
+                url: $(this).attr("action"),
+                global: false,
+                success: function(response){
+                    $('.ui-tabs-panel:visible').html(response);
+                    applyListener();
+                }
+            };
+            $.ajax(arg);
+            return false;
+        });
     });
 </script>
 <div id="tabs">
