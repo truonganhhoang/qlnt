@@ -409,7 +409,7 @@ def xepLoaiHlTheoLop(request,class_id,termNumber):
         if (noHl==0) & (noHk==0):
             message="Đã có đủ điểm và hạnh kiểm của cả lớp"
         elif (noHl==0):
-            message="Còn "+str(noHanhKiem)+" học sinh chưa có hạnh kiểm"
+            message="Còn "+str(noHk)+" học sinh chưa có hạnh kiểm"
         elif (noHk==0):    
             message="Còn "+str(noHl)+" học sinh chưa đủ điểm "
         else:

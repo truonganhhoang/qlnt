@@ -402,7 +402,7 @@ def countLearningInClassInYear(class_id,year_id):
     sum=0.0
     string=['G','K','TB','Y','Kem',None]
     for i in range(string.__len__()):
-        slList[i]=TBNam.objects.filter(year_id=year_id,hl_nam=string[i]).count()
+        slList[i]=TBNam.objects.filter(year_id=year_id,student_id__class_id=class_id,hl_nam=string[i]).count()
         sum+=slList[i]
     if sum!=0:    
         for i in range(string.__len__()):
@@ -633,7 +633,7 @@ def count1(request,year_id=None,number=None):
         selectedYear=Year.objects.get(id=year_id)
         if int(number)<3:
             term_id = Term.objects.get(year_id=selectedYear.id,number=number).id
-    
+    number=int(number)
     blockList = Block.objects.filter(school_id=selectedYear.school_id)
     list=[]   
     notFinishLearning=0
@@ -658,7 +658,8 @@ def count1(request,year_id=None,number=None):
                 aslList,aptList,sum =countLearningInClassInYear(c.id,year_id)
                 aslList1,aptList1,sum =countPractisingInClassInYear(c.id,year_id)
                 aslList2,aptList2,sum =countAllInClassInYear(c.id,year_id)
-             
+            
+            print aslList 
             notFinishLearning+=aslList[5]
             notFinishPractising+=aslList1[4]
             notFinishAll      +=aslList2[3]      

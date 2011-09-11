@@ -14,7 +14,7 @@ import random
 LOCK_MARK =False
 ENABLE_CHANGE_MARK=True
 
-def thu(request):
+def thu111(request):
     t1= time.time()
     t2= time.time()
     if request.method=='POST':
@@ -89,7 +89,7 @@ def thu124(request):
     return HttpResponse(t.render(c))
 
 @transaction.commit_on_success                                                              
-def thu123(request):
+def thu1234(request):
     t1= time.time()
     list1 = TKMon.objects.filter(student_id__class_id=197)
     for m in list1:
@@ -98,13 +98,20 @@ def thu123(request):
     for m in list1:
         m.save()
            
-    list = Mark.objects.filter(student_id__class_id=197)
+    list = Mark.objects.filter(subject_id=2828)
     for m in list:
+        """
         m.mieng_1 = random.randrange( 7,11 )
         m.mieng_2 = random.randrange( 7,11 )
         m.mieng_3 = random.randrange( 7,11 )
         m.mieng_4 = random.randrange( 7,11 )
         m.mieng_5 = random.randrange( 7,11 )
+        
+        m.mlam_1 = random.randrange( 7,11 )
+        m.mlam_2 = random.randrange( 7,11 )
+        m.mlam_3 = random.randrange( 7,11 )
+        m.mlam_4 = random.randrange( 7,11 )
+        m.mlam_5 = random.randrange( 7,11 )
 
         m.mot_tiet_1 = random.randrange( 7,11 )
         m.mot_tiet_2 = random.randrange( 7,11 )
@@ -113,31 +120,53 @@ def thu123(request):
         m.mot_tiet_5 = random.randrange( 7,11 )
         m.ck=random.randrange( 7,11 )
         m.tb=random.randrange( 7,11 )
-       # m.save()
+        """
+        
+        m.mieng_1 = None
+        m.mieng_2 = None
+        m.mieng_3 = None
+        m.mieng_4 = None
+        m.mieng_5 = None
+        
+        m.mlam_1 = None
+        m.mlam_2 = None
+        m.mlam_3 = None
+        m.mlam_4 = None
+        m.mlam_5 = None
+
+        m.mot_tiet_1 = None
+        m.mot_tiet_2 = None
+        m.mot_tiet_3 = None
+        m.mot_tiet_4 = None
+        m.mot_tiet_5 = None
+        m.ck=None
+        m.tb=None
+        
+        mt=m.marktime
+        mt.mieng_1 = None
+        mt.mieng_2 = None
+        mt.mieng_3 = None
+        mt.mieng_4 = None
+        mt.mieng_5 = None
+        
+        mt.mlam_1 = None
+        mt.mlam_2 = None
+        mt.mlam_3 = None
+        mt.mlam_4 = None
+        mt.mlam_5 = None
+
+        mt.mot_tiet_1 = None
+        mt.mot_tiet_2 = None
+        mt.mot_tiet_3 = None
+        mt.mot_tiet_4 = None
+        mt.mot_tiet_5 = None
+        mt.ck=None
+        mt.tb=None
+        mt.save()
+        print to_en1(m.student_id.first_name)
     for m in list:
         m.save()
     print list       
-    hanhKiemList =HanhKiem.objects.filter(student_id__class_id=197)
-    for hk in hanhKiemList:
-        t =random.randrange( 1,5 )
-        if   t==1: hk.year='T'
-        elif t==2: hk.year='K'
-        elif t==3: hk.year='TB'
-        elif t==4: hk.year='Y'
-
-        t =random.randrange( 1,5 )
-        if   t==1: hk.term1='T'
-        elif t==2: hk.term1='K'
-        elif t==3: hk.term1='TB'
-        elif t==4: hk.term1='Y'
-
-        t =random.randrange( 1,3 )
-        if   t==1: hk.term2='T'
-        elif t==2: hk.term2='K'
-        elif t==3: hk.term2='TB'
-        elif t==4: hk.term2='Y'
-        
-        hk.save()
     
     t = loader.get_template(os.path.join('school','ll.html'))
     t2=time.time()
@@ -149,10 +178,12 @@ def thu123(request):
     #print (t2-t1)
     return HttpResponse(t.render(c))
 
-def thu1(request):
+@transaction.commit_on_success                                                              
+def thu(request):
     t1= time.time()
     
-    markList = Mark.objects.filter(subject_id=1)
+    markList = Mark.objects.filter(subject_id__class_id=200)
+    print markList
     for m in markList:
         m.mieng_1 = 7
         m.mieng_2 = 7
@@ -170,7 +201,35 @@ def thu1(request):
         m.mot_tiet_4= 8
         m.mot_tiet_5= 8
         m.ck        = 9
+        m.tb        = random.randrange( 7,11 ) 
         m.save() 
+    tkmonList= TKMon.objects.filter(subject_id__class_id=200)
+    for tkmon in tkmonList:
+        tkmon.tb_nam=random.randrange( 7,11 )
+        tkmon.save()
+
+    hanhKiemList =HanhKiem.objects.filter(student_id__class_id=200)
+    for hk in hanhKiemList:
+        t =random.randrange( 1,3 )
+        if   t==1: hk.year='T'
+        elif t==2: hk.year='K'
+        elif t==3: hk.year='TB'
+        elif t==4: hk.year='Y'
+
+        t =random.randrange( 1,3 )
+        if   t==1: hk.term1='T'
+        elif t==2: hk.term1='K'
+        elif t==3: hk.term1='TB'
+        elif t==4: hk.term1='Y'
+
+        t =random.randrange( 1,3 )
+        if   t==1: hk.term2='T'
+        elif t==2: hk.term2='K'
+        elif t==3: hk.term2='TB'
+        elif t==4: hk.term2='Y'
+        
+        hk.save()
+            
     t = loader.get_template(os.path.join('school','ll.html'))
     t2=time.time()
     print (t2-t1)
