@@ -20,45 +20,31 @@
     </div>
 </div>
 
-{% if message != None %}
-<script>
-	var temp = document.getElementById("notify1");
-	temp.innerHTML="{{message}}";
-    $(temp).fadeIn('fast');
-	$(temp).delay(7000).fadeOut('fast');      
-</script>	
-{% endif %}
 
-
-	<h2> Bảng điểm tổng kết 
-			{% ifequal number 1 %}
-				học kỳ I
-			{% else %}
-			{% ifequal number 2 %}
-				học kỳ II
-			{% else %}
-				cả năm
-			{% endifequal %}	
-			{% endifequal %}	
-			lớp 
-			{{selectedClass.name}}
-			
-			năm học:{{yearString}} 
-	</h2>
+	
+{#	<h2> Bảng điểm tổng kết   #}
+{#			{% ifequal number 1 %} #}
+{#				học kỳ I           #}    
+{#			{% else %} #}
+{#			{% ifequal number 2 %} #}
+{#				học kỳ II #}
+{#			{% else %}#}
+{#				cả năm#}
+{#			{% endifequal %}	#}
+{#			{% endifequal %}	#}
+{#			lớp #}
+{#			{{selectedClass.name}}			#}
+{#			năm học:{{yearString}} #}
+{#	</h2> #}
 			
 	
 	<br>
-	
-	<a title="Tự động xếp loại cả năm của lớp"
-		href="{%url school.views.school_index  %}xepLoaiHlTheoLop/{{selectedClass.id}}/1">Học kỳ I</a>
-		&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp	
-	<a title="Tự động xếp loại cả năm của lớp"
-	    href="{%url school.views.school_index  %}xepLoaiHlTheoLop/{{selectedClass.id}}/2">Học kỳ II</a>
-		&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp	
-    <a title="Tự động xếp loại cả năm của lớp"
-	     href="{%url school.views.school_index  %}xepLoaiHlTheoLop/{{selectedClass.id}}/3">Cả năm</a>
-	
-	<br>
+	<form name="info" >
+		<INPUT TYPE="radio" NAME="term" id='1' value="1">Học kỳ I &nbsp&nbsp&nbsp&nbsp&nbsp     	
+		<INPUT TYPE="radio" NAME="term" id='2'value="2">Học kỳ II&nbsp&nbsp&nbsp&nbsp&nbsp
+		<INPUT TYPE="radio" NAME="term" id='3'value="3">Cả năm 
+	</form>
+		
 	<br>
 	<form action=" " method="post">{% csrf_token %}
 		<input class = "tiptiphover ggButton" title="Tính điểm trung bình của cả lớp" type="submit" value="Tính điểm trung bình" />
@@ -238,4 +224,23 @@
 			</tr>
 		{% endfor %}
 	</table>
+{% if message != None %}		
+	<script>
+		var temp = document.getElementById("notify1");
+		temp.innerHTML="{{message}}";
+		$(temp).fadeIn('fast');
+		$(temp).delay(7000).fadeOut('fast');     
+		
+	</script>	
+{% endif %}
+
+<script>	
+	$(document).ready(function() {
+		$('input[type=radio]').change(function() {
+			window.location.href="/school/xepLoaiHlTheoLop/"+{{selectedClass.id}}+"/"+this.value;
+		})
+	});
+	document.getElementById({{number}}).checked=true;	
+</script>
+	
 {% endblock %}

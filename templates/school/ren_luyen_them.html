@@ -5,17 +5,16 @@
 	<a href="/school/viewClassDetail/{{selectedClass.id}}"> {{selectedClass.name}}  </a> > 
 
 	<a href="/school/xlCaNamTheoLop/{{selectedClass.id}}/1"> Xếp loại lớp  </a> > 
-	Rèn luyện thêm
+	Cập nhập rèn luyện thêm
 	
 		
 {% endblock %} 
 
 
 {% block content %}
-{% if message %}
-	{{message}}
-{% else	%}
+
 <h2>Cập nhập hạnh kiểm rèn luyện sau hè lớp {{selectedClass.name}} năm học {{yearString}} </h2>
+	<br>
 	<table class="styleA" width="100%">
 	<tr>
 		<th>
@@ -63,7 +62,8 @@
 		</td>
 		<td id="t{{hk.id}}">
 		</td>
-	</tr>			
+	</tr>
+		
 	{% endfor %}
 	
 	{% for hk in hkList %}
@@ -81,7 +81,7 @@
 			{% endif %}	
 		{% endif %}	
 	{% endfor %}
-{% endif %}
+	</table>
 <script>
     function getCookie(name) {
     var cookieValue = null;
