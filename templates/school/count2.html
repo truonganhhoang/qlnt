@@ -1,0 +1,174 @@
+﻿{% extends "base.html"%}  
+{% block backward_link %}
+	<a href="/school/report"> Báo cáo, thống kê  </a>  > 
+	Thống kê điểm trung bình theo môn
+	{% if number = 1 %}
+		kỳ I
+	{% else %}
+	{% if number = 2 %}
+		kỳ II
+	{% else %}
+		cả năm
+	{% endif %}
+	{% endif %}
+	
+{% endblock %}
+{% block content %}
+	<br>
+	Học kỳ
+	<select id="term" style="width:80px" >
+		<option value='1'> Học kỳ I </option>
+		<option value='2'> Học kỳ II </option>
+		<option value='3'> Cả năm </option>		
+	</select>
+	&nbsp&nbsp&nbsp&nbspMôn
+	<select id="subject" >
+			<option value="-1"> Chọn môn </option>			
+		{% for s in subjectList %}
+			<option value="{{forloop.counter}}"> {{ s}} </option>			
+		{% endfor %}
+	</select>
+	<br>
+	<br>
+	<br>	
+{% if index != -1 %}	
+<table  width="100%" class="styleA" >
+	<tr> 
+		<th rowspan=2 width="10%" align="center" >
+			Lớp
+		</th>
+		<th rowspan=2 >
+			Sĩ Số
+		</th>
+		<th colspan=2>
+			Giỏi
+		</th>
+		<th colspan=2>
+			Khá
+		</th>
+		<th colspan=2>
+			TB
+		</th>
+		<th colspan=2>
+			Yếu
+		</th>
+		<th colspan=2>
+			Kém
+		</th>		
+	</tr>
+	<tr>
+		<th >
+			sl
+		</th>
+		<th >			
+			%
+		</th>
+		<th >
+			sl
+		</th>
+		<th >			
+			%
+		</th>
+		<th >
+			sl
+		</th>
+		<th >			
+			%
+		</th>
+		<th >
+			sl
+		</th>
+		<th >			
+			%
+		</th>
+		<th >
+			sl
+		</th>
+		<th >			
+			%
+		</th>
+	</tr>
+{% for b,sum,total,list1 in 	 list %}
+	{% for name,ss,l in list1 %}
+	<tr>
+		<td >
+			{{ name}}
+		</td >
+		
+		<td >
+			{{ ss|floatformat:"0" }}
+		</td>
+		{% for u,v in l %}
+			<td >
+			    {{ u }}
+			</td >
+			
+			<td >
+				{{v|floatformat:"2"}}
+			</td>
+		{% endfor %}
+	</tr>	
+	{% endfor %}
+	<tr >
+		<td>
+			Khối {{b.number}}
+		</td>
+		<td>
+			{{sum|floatformat:"0" }}
+		</td>
+		{% for sl,pt in total %}
+			<td>
+				{{sl}}
+			</td>
+			<td>
+				{{pt|floatformat:"2"}}
+			</td>
+		{% endfor %}
+	</tr>
+	<tr class='endblock'>
+			<td> &nbsp </td>
+			<td> &nbsp </td>
+		{% for sl,pt in total %}
+			<td> &nbsp </td>
+			<td> &nbsp </td>
+		{% endfor %}
+	</tr>
+{% endfor %}
+	<tr>
+		<td>
+			Toàn trường	
+		</td>
+		<td>
+			{{sumsumsum|floatformat:"0" }}
+		</td>
+		{% for sl,pt in allList %}
+			<td>
+				{{sl}}
+			</td>
+			<td>
+				{{pt|floatformat:"2"}}
+			</td>
+		{% endfor %}
+		
+	</tr>		
+</table>	
+{% endif %}	
+	
+	
+<script>
+	$(document).ready(function() {
+		$('#term').change(function() {
+			$('#subject').val('-1');
+		})
+		$('#subject').change(function() {
+			var termNumber  =$('#term').val(); 
+			var subjectIndex=$('#subject').val();
+			if (subjectIndex != '-1')
+				window.location.href="/school/count2/"+{{year_id}}+"/"+termNumber+'/'+subjectIndex;
+		})
+		$('#subject').val("{{index}}");
+		$('#term').val("{{number}}");
+	});
+
+</script>	
+{% endblock %}

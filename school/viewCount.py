@@ -8,6 +8,8 @@ from django.template import RequestContext, loader
 from school.utils import *
 from django.core.urlresolvers import reverse
 import os.path 
+import time 
+
 
 def countTotalPractisingInTerm(term_id):
     slList  =[0,0,0,0,0]
@@ -705,6 +707,111 @@ def count1(request,year_id=None,number=None):
                                  'totalPtList':totalPtList,
                                  'list':list,
     """
+                                
+                       
+    return HttpResponse(t.render(c))
+def listSubject(year_id):
+    subjectList=Subject.objects.filter(class_id__year_id=year_id).order_by("index")
+    list=[]
+    for s in subjectList:
+        if not (s.name in list):
+            list.append(s.name)
+    return list 
+def count2(request,year_id=None,number=None,index=-1):
+    tt1=time.time()
+    """
+    user = request.user
+    if not user.is_authenticated():
+        return HttpResponseRedirect( reverse('login'))
+
+    selectedTerm=Term.objects.get(id=term_id)    
+    try:
+        if in_school(request,selectedTerm.year_id.school_id) == False:
+            return HttpResponseRedirect('/school')
+    except Exception as e:
+        return HttpResponseRedirect(reverse('index'))
+
+    if get_position(request) != 4:
+       return HttpResponseRedirect('/school')
+    """
+    if year_id==None:
+        selectedTerm =get_current_term(request)
+        selectedYear =get_current_year(request)
+        year_id   = selectedTerm.year_id.id
+        if selectedTerm.number==3:            
+            term_id = Term.objects.get(year_id=selectedYear.id,number=2).id
+            number=2
+        else:
+            term_id = selectedTerm.id   
+            number = selectedTerm.number 
+    else:
+        selectedYear=Year.objects.get(id=year_id)
+        if int(number)<3:
+            term_id = Term.objects.get(year_id=selectedYear.id,number=number).id
+    subjectList=listSubject(year_id)
+    number=int(number)
+    sumsumsum=0
+    allList=[]
+    list=[]        
+    if index!=-1:
+        print "fuc"
+        subjectName = subjectList[int(index)-1]
+        blockList = Block.objects.filter(school_id=selectedYear.school_id)  
+        level =[11,7.995,6.495,4.995,3.495,-1]
+        sumsumsum=0
+        allSlList=[0,0,0,0,0]
+        allPtList=[0,0,0,0,0]
+        list=[]        
+        for b in blockList:
+            classList = Class.objects.filter(block_id=b,year_id=selectedYear.id)
+            totalSlList=[0,0,0,0,0]
+            totalPtList=[0,0,0,0,0]  
+            sumsum=0
+            list1=[]
+            for c in classList:
+                slList=[0,0,0,0,0]
+                ptList=[0,0,0,0,0]
+                if number<3:
+                    for i in range(5):
+                        slList[i]=Mark.objects.filter(term_id=term_id,subject_id__name=subjectName,subject_id__class_id=c.id,tb__lt=level[i],tb__gt=level[i+1]).count()
+                else:
+                    for i in range(5):
+                        slList[i]=TKMon.objects.filter(subject_id__class_id=c.id,subject_id__name=subjectName,tb_nam__lt=level[i],tb_nam__gt=level[i+1]).count()
+                            
+                sum=Pupil.objects.filter(class_id=c.id).count()                    
+                for i in range(5):
+                    if sum!=0:
+                        ptList[i]=float(slList[i])/sum*100
+                    totalSlList[i]+=slList[i]
+                    allSlList[i]+=slList[i]
+                if sum!=0:    
+                    print sum,slList,ptList
+                    
+                list1.append([c.name,sum,zip(slList,ptList)])                        
+                sumsum+=sum
+                sumsumsum+=sum
+                    
+            if sumsum!=0:  
+                for i in range(5):
+                    totalPtList[i]=float(totalSlList[i])/sumsum *100                
+            list.append([b,sumsum,zip(totalSlList,totalPtList),list1])
+        if sumsumsum!=0:    
+            for i in range(5):
+                allPtList[i]=float(allSlList[i])/sumsumsum *100
+        allList=zip(allSlList,allPtList)
+    tt2=time.time()
+    print tt2-tt1
+    t = loader.get_template(os.path.join('school','count2.html'))    
+    c = RequestContext(request, {
+                                 'subjectList':subjectList,
+                                 'year_id':year_id,
+                                 'number':number,
+                                 'index':index,
+                                 'list':list,
+                                 'allList':allList,
+                                 'sumsumsum':sumsumsum,
+                                 })
+                                 
                                 
                        
     return HttpResponse(t.render(c))

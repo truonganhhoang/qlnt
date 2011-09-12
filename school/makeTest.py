@@ -182,26 +182,28 @@ def thu1234(request):
 def thu(request):
     t1= time.time()
     
-    markList = Mark.objects.filter(subject_id__class_id=200)
+    markList = Mark.objects.filter(subject_id=3023)
     print markList
     for m in markList:
-        m.mieng_1 = 7
-        m.mieng_2 = 7
-        m.mieng_3 = 7
-        m.mieng_4 = 7
-        m.mieng_5 = 7
-        m.mlam_1 = 6
-        m.mlam_2 = 6
-        m.mlam_3 = 6
-        m.mlam_4 = 6
-        m.mlam_5 = 6
-        m.mot_tiet_1= 8
-        m.mot_tiet_2= 8
-        m.mot_tiet_3= 8
-        m.mot_tiet_4= 8
-        m.mot_tiet_5= 8
-        m.ck        = 9
-        m.tb        = random.randrange( 7,11 ) 
+        m.mieng_1 = random.randrange( 4,11 )
+        m.mieng_2 = random.randrange( 4,11 )
+        m.mieng_3 = random.randrange( 4,11 )
+        m.mieng_4 = random.randrange( 4,11 )
+        m.mieng_5 = random.randrange( 4,11 )
+        
+        m.mlam_1 = random.randrange( 4,11 )
+        m.mlam_2 = random.randrange( 4,11 )
+        m.mlam_3 = random.randrange( 4,11 )
+        m.mlam_4 = random.randrange( 4,11 )
+        m.mlam_5 = random.randrange( 4,11 )
+
+        m.mot_tiet_1 = random.randrange( 4,11 )
+        m.mot_tiet_2 = random.randrange( 4,11 )
+        m.mot_tiet_3 = random.randrange( 4,11 )
+        m.mot_tiet_4 = random.randrange( 4,11 )
+        m.mot_tiet_5 = random.randrange( 4,11 )
+        m.ck=random.randrange( 4,11 )
+        m.tb=random.randrange( 1,11 )
         m.save() 
     tkmonList= TKMon.objects.filter(subject_id__class_id=200)
     for tkmon in tkmonList:
