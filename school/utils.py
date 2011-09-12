@@ -508,7 +508,7 @@ def add_teacher( first_name = None,
 
         if major.strip():
             if to_en(major) not in SUBJECT_LIST_ASCII:
-                major = ''
+                major = '-1'
 
         teacher = Teacher()
         teacher.first_name = first_name

@@ -726,7 +726,7 @@ def teacher_generate(request, type):
         sheet.write(4,2,'Ngày sinh', style_bold)
         sheet.write(4,3,'Quê quán', style_bold)
         sheet.write(4,4,'Giới tính', style_bold)
-        sheet.write(4,5,'Chuyên Môn', style_bold)
+        sheet.write(4,5,'Dạy môn', style_bold)
         sheet.write(4,6,'Tổ', style_bold)
 
         row = 5
@@ -737,7 +737,10 @@ def teacher_generate(request, type):
             sheet.write(row, 2, teacher.birthday.strftime('%d/%m/%Y'), style)
             sheet.write(row, 3, teacher.home_town, style)
             sheet.write(row, 4, teacher.sex, style)
-            sheet.write(row, 5, teacher.major, style)
+            if teacher.major and teacher.major!= '-1':
+                sheet.write(row, 5, teacher.get_major_display(), style)
+            else:
+                sheet.write(row, 5, '', style)
             if teacher.team_id:
                 sheet.write(row, 6, teacher.team_id.name, style)
             else:
@@ -954,7 +957,7 @@ def process_file(file_name, task):
                 c_to = c
             elif value == u'Nhóm':
                 c_nhom = c
-            elif value == u'Chuyên môn':
+            elif value == u'Dạy môn':
                 c_chuyen_mon = c
 
 

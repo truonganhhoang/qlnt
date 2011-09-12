@@ -37,18 +37,20 @@ $(function () {
                             '<a id="update_existing" href="/school/import/teacher/update" class="ggButton">Cập nhật những giáo viên này.</a>'+
                             '</li>');
                     $("#update_existing").click(function(){
-                        $.ajax({
-                            url: "/school/import/teacher/update",
-                            dataType: 'json',
-                            type: 'POST',
-                            success: function(json){
-                                if (!json.success){
-                                    $("#notify").showNotification(json.message);
-                                } else {
-                                    $("#update_existing").text(json.message);
+                        if ($(this).attr('href') != '')
+                            $.ajax({
+                                url: "/school/import/teacher/update",
+                                dataType: 'json',
+                                type: 'POST',
+                                success: function(json){
+                                    if (!json.success){
+                                        $("#notify").showNotification(json.message);
+                                    } else {
+                                        $("#update_existing").text(json.message);
+                                        $("#update_existing").attr('href', '');
+                                    }
                                 }
-                            }
-                        });
+                            });
                         return false;
                     })
                 }
