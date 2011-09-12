@@ -745,7 +745,7 @@ def teacher_generate(request, type):
             row +=1
         #return HttpResponse
         response = HttpResponse(mimetype='application/ms-excel')
-        response['Content-Disposition'] = u'attachment; filename=ds_giao_vien_%s.xls' % unicode(school)
+        response['Content-Disposition'] = u'attachment; filename=ds_giao_vien.xls'
         book.save(response)
         return response
     else:
