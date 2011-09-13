@@ -1,14 +1,14 @@
 ﻿{% extends "base.html"%}  
 {% block backward_link %}
 	<a href="/school/report"> Báo cáo, thống kê  </a>  > 
-	Thống kê học lực, hạnh kiểm, danh hiệu 
+	<a href="/school/count1"> Thống kê học lực, hạnh kiểm, danh hiệu </a> >
 	{% if number = 1 %}
-		kỳ I
+		Học kỳ I
 	{% else %}
 	{% if number = 2 %}
-		kỳ II
+		Học kỳ II
 	{% else %}
-		cả năm
+		Cả năm
 	{% endif %}
 	{% endif %}
 	

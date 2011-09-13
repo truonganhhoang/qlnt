@@ -1,25 +1,40 @@
 ﻿{% extends "base.html"%}  
 {% block backward_link %}
+
+	<div id="termString">
 	<a href="/school/report"> Báo cáo, thống kê  </a>  > 
-	Thống kê điểm trung bình theo môn
-	{% if number = 1 %}
-		kỳ I
+	{% if type = 1 %}
+		<a href="/school/count2/{{type}}"> Thống kê điểm trung bình  </a> >				 
 	{% else %}
-	{% if number = 2 %}
-		kỳ II
-	{% else %}
-		cả năm
+	{% if type = 2	 %}
+		<a href="/school/count2/{{type}}"> Thống kê điểm thi cuối kì </a> >				
+		
 	{% endif %}
-	{% endif %}
-	
+	{% endif %}	
+		{% if number = 1 %}
+			Học kì I
+		{% else %}
+		{% if number = 2 %}
+			Học kì II
+		{% else %}
+			Cả năm
+		{% endif %}
+		{% endif %}
+		{% if  subjectName %}	
+			{{subjectName}}
+		{% endif %}	
+	</div>
 {% endblock %}
+
 {% block content %}
 	<br>
-	Học kỳ
+	Học kì
 	<select id="term" style="width:80px" >
-		<option value='1'> Học kỳ I </option>
-		<option value='2'> Học kỳ II </option>
-		<option value='3'> Cả năm </option>		
+		<option value='1'> Học kì I </option>
+		<option value='2'> Học kì II </option>
+		{% if type = 1 %}
+			<option value='3'> Cả năm </option>		
+		{% endif %}	
 	</select>
 	&nbsp&nbsp&nbsp&nbspMôn
 	<select id="subject" >
@@ -41,19 +56,19 @@
 			Sĩ Số
 		</th>
 		<th colspan=2>
-			Giỏi
+			Giỏi <br> 8 -> 10
 		</th>
 		<th colspan=2>
-			Khá
+			Khá <br> 6.5 -> 7.9
 		</th>
 		<th colspan=2>
-			TB
+			TB <br> 5 -> 6.4
 		</th>
 		<th colspan=2>
-			Yếu
+			Yếu <br> 3.5 -> 4.9
 		</th>
 		<th colspan=2>
-			Kém
+			Kém <br> 0 -> 3.4
 		</th>		
 	</tr>
 	<tr>
@@ -159,12 +174,31 @@
 	$(document).ready(function() {
 		$('#term').change(function() {
 			$('#subject').val('-1');
+			var termNumber  =$('#term').val(); 
+			var str=''			
+			if (termNumber==1)
+				str='Học kì I ';
+			else
+			if (termNumber==2)
+				str='Học kì II';
+			else
+				str='Cả năm';
+				
+			var strs=document.getElementById('termString').innerHTML;			
+			var str1=''
+			for(var t=strs.length-1;t>0;t--)
+				if (strs[t]=='>') break;
+			for(var i=0;i<t;i++)			
+				str1+=strs[i];
+				
+			str1+='> > '+str	
+			document.getElementById('termString').innerHTML=str1;
 		})
 		$('#subject').change(function() {
 			var termNumber  =$('#term').val(); 
 			var subjectIndex=$('#subject').val();
 			if (subjectIndex != '-1')
-				window.location.href="/school/count2/"+{{year_id}}+"/"+termNumber+'/'+subjectIndex;
+				window.location.href="/school/count2/"+{{type}}+'/'+{{year_id}}+"/"+termNumber+'/'+subjectIndex;
 		})
 		$('#subject').val("{{index}}");
 		$('#term').val("{{number}}");

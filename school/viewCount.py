@@ -717,7 +717,7 @@ def listSubject(year_id):
         if not (s.name in list):
             list.append(s.name)
     return list 
-def count2(request,year_id=None,number=None,index=-1):
+def count2(request,type=None,year_id=None,number=None,index=-1):
     tt1=time.time()
     """
     user = request.user
@@ -750,9 +750,11 @@ def count2(request,year_id=None,number=None,index=-1):
             term_id = Term.objects.get(year_id=selectedYear.id,number=number).id
     subjectList=listSubject(year_id)
     number=int(number)
+    type=int(type)
     sumsumsum=0
     allList=[]
-    list=[]        
+    list=[]
+    subjectName=[]        
     if index!=-1:
         print "fuc"
         subjectName = subjectList[int(index)-1]
@@ -771,12 +773,16 @@ def count2(request,year_id=None,number=None,index=-1):
             for c in classList:
                 slList=[0,0,0,0,0]
                 ptList=[0,0,0,0,0]
-                if number<3:
+                if type==1:
+                    if number<3:
+                        for i in range(5):
+                            slList[i]=Mark.objects.filter(term_id=term_id,subject_id__name=subjectName,subject_id__class_id=c.id,tb__lt=level[i],tb__gt=level[i+1]).count()
+                    else:
+                        for i in range(5):
+                            slList[i]=TKMon.objects.filter(subject_id__class_id=c.id,subject_id__name=subjectName,tb_nam__lt=level[i],tb_nam__gt=level[i+1]).count()
+                elif type==2:            
                     for i in range(5):
-                        slList[i]=Mark.objects.filter(term_id=term_id,subject_id__name=subjectName,subject_id__class_id=c.id,tb__lt=level[i],tb__gt=level[i+1]).count()
-                else:
-                    for i in range(5):
-                        slList[i]=TKMon.objects.filter(subject_id__class_id=c.id,subject_id__name=subjectName,tb_nam__lt=level[i],tb_nam__gt=level[i+1]).count()
+                        slList[i]=Mark.objects.filter(term_id=term_id,subject_id__name=subjectName,subject_id__class_id=c.id,ck__lt=level[i],ck__gt=level[i+1]).count()
                             
                 sum=Pupil.objects.filter(class_id=c.id).count()                    
                 for i in range(5):
@@ -803,6 +809,7 @@ def count2(request,year_id=None,number=None,index=-1):
     print tt2-tt1
     t = loader.get_template(os.path.join('school','count2.html'))    
     c = RequestContext(request, {
+                                 'type':type,
                                  'subjectList':subjectList,
                                  'year_id':year_id,
                                  'number':number,
@@ -810,6 +817,7 @@ def count2(request,year_id=None,number=None,index=-1):
                                  'list':list,
                                  'allList':allList,
                                  'sumsumsum':sumsumsum,
+                                 'subjectName':subjectName,
                                  })
                                  
                                 
