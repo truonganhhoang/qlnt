@@ -28,8 +28,6 @@ urlpatterns = patterns('',
     # url for school app
     url(r'^school/', include('school.urls')),
     
-    url(r'^messages/', include('persistent_messages.urls')),
-    
     url(r'^sms/', include('sms.urls')),
     
     url(r'^report', include('report.urls')),

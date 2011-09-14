@@ -1,9 +1,0 @@
-SMS = 120
-INTERNAL = 140
-
-DEFAULT_TAGS = {
-    SMS: 'sms',
-    INTERNAL: 'internal',
-}
-
-PERSISTENT_MESSAGE_LEVELS = (SMS, INTERNAL)

@@ -157,7 +157,6 @@ ROOT_URLCONF = 'qlnt.urls'
 
 TEMPLATE_DIRS = (
     os.path.join(os.path.dirname(__file__), 'templates'),
-    os.path.join(os.path.dirname(__file__), 'persistent_messages/templates'),
     #os.path.join(os.path.dirname(__file__), 'rosetta/templates'),
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
@@ -185,7 +184,6 @@ INSTALLED_APPS = (
     # 'django.contrib.admindocs',
     'app',
     'school',
-    'persistent_messages',
 #    'object_permission',
 #    'objectpermission',
 #    'django_coverage',
@@ -235,9 +233,6 @@ LOGGING = {
 }
 
 LOGIN_REDIRECT_URL = '/'
-
-# Set the message storage backend
-MESSAGE_STORAGE = 'persistent_messages.storage.PersistentMessageStorage'
 
 LOCALE_PATHS = (
     os.path.join(os.path.dirname(__file__), 'locale')
