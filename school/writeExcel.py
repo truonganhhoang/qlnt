@@ -728,8 +728,9 @@ def markExcel(request,term_id,subject_id):
     else:
         str1+=' II'  
               
-    sstr2=str1.replace(' ','_')  
     str3 =selectedSubject.class_id.name+'_'+selectedSubject.name+'_HK'+str(selectedTerm.number)       
+    sstr2='bang_diem_'+str3
+    sstr2=sstr2.replace(' ','_')  
     s=book.add_sheet(str3,True)
     if selectedTerm.number==1: numberCol=21
     else                     : numberCol=23

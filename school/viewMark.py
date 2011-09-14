@@ -444,7 +444,7 @@ def markTable(request,term_id=-1,class_id=-1,subject_id=-1,move=None):
     yearChoice = selectedTerm.year_id.id
             
     termList= Term.objects.filter(year_id=yearChoice,number__lt=3).order_by('number')    
-    classList = Class.objects.filter(year_id=yearChoice)
+    classList = Class.objects.filter(year_id=yearChoice).order_by("block_id","id")
     
 
     """    

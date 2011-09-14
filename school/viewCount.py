@@ -1,6 +1,5 @@
-# author: luulethe@gmail.com 
-
 # -*- coding: utf-8 -*-
+
 from django.http import HttpResponse, HttpResponseRedirect
 from school.models import *
 from django.shortcuts import render_to_response
@@ -534,6 +533,7 @@ def countAllInClassInYear(class_id,year_id):
 
     slList[0]=TBNam.objects.filter(year_id=year_id,student_id__class_id=class_id,danh_hieu_nam='G').count()
     slList[1]=TBNam.objects.filter(year_id=year_id,student_id__class_id=class_id,danh_hieu_nam='TT').count()
+    slList[3]=TBNam.objects.filter(year_id=year_id,student_id__class_id=class_id,danh_hieu_nam=None).count()
     #slList[2]=TBNam.objects.filter(year_id=year_id,student_id__class_id=class_id,len_lop=True).count()
     #slList[3]=TBNam.objects.filter(year_id=year_id,student_id__class_id=class_id,len_lop=False).count()
     #slList[4]=TBNam.objects.filter(year_id=year_id,student_id__class_id=class_id,thi_lai=True).count()
@@ -542,9 +542,8 @@ def countAllInClassInYear(class_id,year_id):
     sl2=TBNam.objects.filter(year_id=year_id,student_id__class_id=class_id,len_lop=False).count()
     sl3=TBNam.objects.filter(year_id=year_id,student_id__class_id=class_id,thi_lai=True).count()
     sl4=HanhKiem.objects.filter(year_id=year_id,student_id__class_id=class_id,ren_luyen_lai=True).count()    
-    #slList[4]=TBNam.objects.filter(year_id=year_id,student_id__class_id=class_id,len_lop=None,thi_lai=None,ren_luyen_lai=None).count()
     sum = Pupil.objects.filter(class_id=class_id).count()
-    slList[3] = sum-sl1-sl2-sl3-sl4            
+    slList[2] = sum-sl1-sl2-sl3-sl4            
         
     if (sum!=0):        
         for i in range(3):
@@ -619,7 +618,7 @@ def count1(request,year_id=None,number=None):
     if get_position(request) != 4:
        return HttpResponseRedirect('/school')
     """
-    
+    message=None
     if year_id==None:
         selectedTerm =get_current_term(request)
         selectedYear =get_current_year(request)
@@ -692,23 +691,29 @@ def count1(request,year_id=None,number=None):
         for i in range(11):
             allPtList[i]=float(allSlList[i])/sumsumsum *100
         allList=zip(allSlList,allPtList)
+    
+    if notFinishLearning!=0:
+        message=str(notFinishLearning)+ u' hs chưa có học lực'
+    if notFinishPractising!=0:
+        if message!='':
+            message+=', '
+        message+=unicode(notFinishLearning)+ u' hs chưa có hạnh kiểm'     
+    if notFinishAll!=0:
+        if message!='':
+            message+=', '
+        message+=unicode(notFinishAll)+ u' hs chưa xét danh hiệu'
+    if message!=0:
+        message=u'Còn ' +message         
+            
     t = loader.get_template(os.path.join('school','count1.html'))    
-    c = RequestContext(request, {'list':list,
+    c = RequestContext(request, {'message':message,
+                                 'list':list,
                                  'sumsumsum':sumsumsum,
                                  'allList':allList,
                                  'year_id':year_id,
                                  'number':number,
                                  })
                                  
-    """
-                                 'yearString':yearString,
-                                 'selectedTerm':selectedTerm,
-                                 'totalSlList':totalSlList,
-                                 'totalPtList':totalPtList,
-                                 'list':list,
-    """
-                                
-                       
     return HttpResponse(t.render(c))
 def listSubject(year_id):
     subjectList=Subject.objects.filter(class_id__year_id=year_id).order_by("index")

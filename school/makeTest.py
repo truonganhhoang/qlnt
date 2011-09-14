@@ -182,7 +182,7 @@ def thu1234(request):
 def thu(request):
     t1= time.time()
     
-    markList = Mark.objects.filter(subject_id=3023)
+    markList = Mark.objects.filter(subject_id__class_id=214)
     print markList
     for m in markList:
         m.mieng_1 = random.randrange( 4,11 )
@@ -205,12 +205,12 @@ def thu(request):
         m.ck=random.randrange( 4,11 )
         m.tb=random.randrange( 1,11 )
         m.save() 
-    tkmonList= TKMon.objects.filter(subject_id__class_id=200)
+    tkmonList= TKMon.objects.filter(subject_id__class_id=214)
     for tkmon in tkmonList:
         tkmon.tb_nam=random.randrange( 7,11 )
         tkmon.save()
 
-    hanhKiemList =HanhKiem.objects.filter(student_id__class_id=200)
+    hanhKiemList =HanhKiem.objects.filter(student_id__class_id=214)
     for hk in hanhKiemList:
         t =random.randrange( 1,3 )
         if   t==1: hk.year='T'

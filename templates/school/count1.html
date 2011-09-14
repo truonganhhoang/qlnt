@@ -15,6 +15,11 @@
 {% endblock %}
 
 {% block content %}
+<div class="notify-widget-pane" >
+    <div class="notify" id="notify1" style="display: none;">
+    </div>
+</div>
+
 {# <h2>Thống kê học lực, hạnh kiểm, danh hiệu </h2>	#}
 
 <br>
@@ -26,6 +31,15 @@
 </form>
 <br>
 <br>
+{% if message != None %}		
+	<script>
+		var temp = document.getElementById("notify1");
+		temp.innerHTML="{{message}}";
+		$(temp).fadeIn('fast');
+		$(temp).delay(15000).fadeOut('fast');     
+		
+	</script>	
+{% endif %}
 <script>
 
 	$(document).ready(function() {
@@ -74,7 +88,7 @@
 			Kém
 		</th>
 		<th colspan=2 >
-			Giỏi
+			Tốt
 		</th>
 		<th colspan=2 >
 			Khá
