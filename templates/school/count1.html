@@ -23,12 +23,20 @@
 {# <h2>Thống kê học lực, hạnh kiểm, danh hiệu </h2>	#}
 
 <br>
-
-<form name="info" >
-	<INPUT TYPE="radio" NAME="term" id='1' value="1">Học kỳ I &nbsp&nbsp&nbsp&nbsp&nbsp     	
-	<INPUT TYPE="radio" NAME="term" id='2'value="2">Học kỳ II&nbsp&nbsp&nbsp&nbsp&nbsp
-	<INPUT TYPE="radio" NAME="term" id='3'value="3">Cả năm 
-</form>
+<table width="100%">
+	<tr>
+		<td>
+		<form name="info" >
+			<INPUT TYPE="radio" NAME="term" id='1' value="1">Học kỳ I &nbsp&nbsp&nbsp&nbsp&nbsp     	
+			<INPUT TYPE="radio" NAME="term" id='2'value="2">Học kỳ II&nbsp&nbsp&nbsp&nbsp&nbsp
+			<INPUT TYPE="radio" NAME="term" id='3'value="3">Cả năm 
+		</form>
+		</td>
+		<td align='right'>
+			<a class='ggButton' href="/school/count1/{{year_id}}/{{number}}/1">Xuất ra exel </a>
+		</td>
+	</tr>	
+</table>	
 <br>
 <br>
 {% if message != None %}		

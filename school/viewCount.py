@@ -8,7 +8,7 @@ from school.utils import *
 from django.core.urlresolvers import reverse
 import os.path 
 import time 
-
+from school.writeExcel import *
 
 def countTotalPractisingInTerm(term_id):
     slList  =[0,0,0,0,0]
@@ -602,7 +602,7 @@ def countAllInYear(request,year_id):
     return HttpResponse(t.render(c))
 
 
-def count1(request,year_id=None,number=None):
+def count1(request,year_id=None,number=None,type=None,):
     """
     user = request.user
     if not user.is_authenticated():
@@ -704,6 +704,8 @@ def count1(request,year_id=None,number=None):
         message+=unicode(notFinishAll)+ u' hs chưa xét danh hiệu'
     if message!=0:
         message=u'Còn ' +message         
+    if type=='1':
+        return count1Excel(year_id,number,list,sumsumsum,allList)
             
     t = loader.get_template(os.path.join('school','count1.html'))    
     c = RequestContext(request, {'message':message,

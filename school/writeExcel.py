@@ -17,6 +17,7 @@ import xlwt
 import xlrd
 from xlrd import cellname
 noneSubject="............................."
+e=0.00000001
 s1=1000
 s2=5000
 s3=2000
@@ -46,6 +47,12 @@ h3 = easyxf(
 h4 = easyxf(
 'font    :name Times New Roman, bold on,height 260 ;align:wrap on, vert centre, horz center;'
 'borders : top thin ,right thin, left thin, bottom thin')
+h41 = easyxf(
+'font    :name Times New Roman, bold on,height 260 ;align:wrap on, horz left;'
+'borders : top thin ,right thin, left thin, bottom thin')
+h40 = easyxf(
+'font    :name Times New Roman, bold on,height 260 ;align:wrap on, vert centre, horz center;')
+
 h5 = easyxf(
 'font:name Times New Roman ,height 240 ;align:wrap on, vert centre, horz center;'
 'borders: top thin,right thin,left thin,bottom thin')
@@ -62,11 +69,24 @@ h71 = easyxf(
 'font:name Times New Roman ,height 240 ;align:horz right;'
 'borders: right thin,left thin,bottom thin')
 
+h72 = easyxf(
+'font:name Times New Roman ,height 220 ;align:horz right;'
+'borders: right thin,left thin,bottom thin,top thin',
+)
+h73 = easyxf(
+'font:name Times New Roman ,height 220 ;align:horz right;'
+'borders: right thin,left thin,bottom thin,top thin',
+num_format_str='0.00' )
+
 h8 = easyxf(
 'font:name Times New Roman ,height 240 ; align:wrap on,horz left')
 h81 = easyxf(                                    
 'font:name Times New Roman ,height 240 ; align:wrap on,horz left;'# trang 31
 'borders: right thin,left thin')
+
+h82 = easyxf(                                    
+'font:name Times New Roman ,height 240 ; align:wrap on,horz left;'# trang 31
+'borders: right thin,left thin,bottom thin,top thin')
 
 h9 = easyxf(
 'font:name Times New Roman,bold on ,height 240 ;align:horz centre')# xac nhan
@@ -597,8 +617,11 @@ def markBookClass(class_id):
     printInTerm(class_id,book,2)
     printPage30(class_id,book)
     book.set_active_sheet(0)
+    selectedClass=Class.objects.get(id=class_id)
     response = HttpResponse(mimetype='application/ms-excel')
-    response['Content-Disposition'] = u'attachment; filename=ds_hoc_sinh_%s.xls' % unicode(class_id)
+    name = 'soGhiDiemGoiTen%s.xls' % unicode(selectedClass.name)
+    name1=name.replace(' ','_')
+    response['Content-Disposition'] = u'attachment; filename=%s' % name1
     book.save(response)
     tt2= time.time()
     print (tt2-tt1)
@@ -817,4 +840,112 @@ def markExcel(request,term_id,subject_id):
     tt2= time.time()
     print (tt2-tt1)
     print to_en1(str1)
+    return response
+
+def count1Excel(year_id,number,list,sumsumsum,allList):
+    tt1 = time.time()
+    
+    book = Workbook(encoding = 'utf-8')
+    selectedYear = Year.objects.get(id=year_id)
+    if number==1:
+        str1='HKI'
+        str2=u'HỌC KỲ I NĂM HỌC '+str(selectedYear.time)+'-'+str(selectedYear.time+1)
+    elif number==2:
+        str1='HKII'
+        str2=u'HỌC KỲ II NĂM HỌC '+str(selectedYear.time)+'-'+str(selectedYear.time+1)
+    else:
+        str1='CaNam'        
+        str2=u'CẢ NĂM NĂM HỌC '+str(selectedYear.time)+'-'+str(selectedYear.time+1)
+    sheetName ='tkHocLuc'+str1+str(selectedYear.time)+'-'+str(selectedYear.time+1) 
+    s=book.add_sheet(sheetName,True)
+    s.set_portrait(0)
+    s.col(0).width=s1    
+    s.col(1).width=s2-s1    
+    size = (SIZE_PAGE_WIDTH-s2)/23 
+    for i in range(2,25):
+        if i % 2==1:
+            s.col(i).width = size-100
+        else:    
+            s.col(i).width = size+100
+    
+    s.write_merge(2,2,0,24,'THỐNG KÊ HỌC LỰC, HẠNH KIỂM, DANH HIỆU',h40)
+    s.write_merge(3,3,0,24,str2,h40)
+    x=5
+    y=1    
+    s.write_merge(x,x+2,y-1,y-1,u'STT',h4)    
+    s.write_merge(x,x+2,y,y,u'Lớp',h4)    
+    s.write_merge(x,x+2,y+1,y+1,u'Sĩ\nSố',h4)    
+    s.write_merge(x,x,y+2,y+11,u'Học lực',h4)    
+    s.write_merge(x,x,y+12,y+19,u'Hạnh kiểm',h4)    
+    s.write_merge(x,x,y+20,y+23,u'Danh hiệu',h4)
+        
+    s.write_merge(x+1,x+1,y+2,y+3,'Giỏi',h4)
+    s.write_merge(x+1,x+1,y+4,y+5,'Khá',h4)
+    s.write_merge(x+1,x+1,y+6,y+7,'TB',h4)
+    s.write_merge(x+1,x+1,y+8,y+9,'Yếu',h4)
+    s.write_merge(x+1,x+1,y+10,y+11,'Kém',h4)
+    
+    s.write_merge(x+1,x+1,y+12,y+13,'Tốt',h4)
+    s.write_merge(x+1,x+1,y+14,y+15,'Khá',h4)
+    s.write_merge(x+1,x+1,y+16,y+17,'TB',h4)
+    s.write_merge(x+1,x+1,y+18,y+19,'Yếu',h4)
+    
+    s.write_merge(x+1,x+1,y+20,y+21,'HSTT',h4)
+    s.write_merge(x+1,x+1,y+22,y+23,'HSG',h4)
+    for i in range(11):
+        s.write(x+2,y+2*i+2,'sl',h4)
+        s.write(x+2,y+2*i+3,'%' ,h4)
+    
+    
+    i=0
+    for b,sum,total,list1 in list:
+        stt=0
+        for name,ss,l in list1:
+            i+=1
+            stt+=1                
+            s.write(x+i+2,y-1,stt,h82)
+            s.write(x+i+2,y,name,h82)
+            s.write(x+i+2,y+1,ss,h72)
+            j=0
+            for u,v in l :
+                v=round(v+e, 2)
+                s.write(x+i+2,y+2*j+2,u,h72)
+                s.write(x+i+2,y+2*j+3,v,h73)
+                j+=1
+                
+        i+=1
+        str11=u'Khối '+str(b.number)
+        s.write(x+i+2,y-1,'',h41)
+        s.write(x+i+2,y,str11,h41)
+        s.write(x+i+2,y+1,sum,h72)        
+        j=0
+        for u,v in total:
+            v=round(v+e, 2)                            
+            s.write(x+i+2,y+2*j+2,u,h72)
+            s.write(x+i+2,y+2*j+3,v,h73)
+            j+=1
+        i+=1
+        s.write(x+i+2,y-1,'',h41)
+        s.write(x+i+2,y,'',h5)
+        s.write(x+i+2,y+1,'',h72)        
+        j=0
+        for u,v in total:
+            s.write(x+i+2,y+2*j+2,'',h72)
+            s.write(x+i+2,y+2*j+3,'',h72)
+            j+=1
+    i+=1    
+    s.write(x+i+2,y,u'Toàn trường',h41)
+    s.write(x+i+2,y+1,sumsumsum,h72)
+    j=0
+    for u,v in allList:
+        v=round(v+e, 2)        
+        s.write(x+i+2,y+2*j+2,u,h72)
+        s.write(x+i+2,y+2*j+3,v,h73)
+        j+=1  
+        
+    response = HttpResponse(mimetype='application/ms-excel')
+    response['Content-Disposition'] = u'attachment; filename=%s.xls' % sheetName
+    book.save(response)
+    tt2= time.time()
+    print (tt2-tt1)
     return response
