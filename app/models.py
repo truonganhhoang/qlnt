@@ -90,7 +90,12 @@ class Organization(models.Model):
             result = setting.get('school', attribute)
         except  Exception as e:
             print e
-            return ''
+            if attribute == 'locked_time':
+                self.save_settings(attribute, '24')
+                return 24
+            else:
+                self.save_settings(attribute, '')
+                return ''
         if result[0] == '[' and result[-1] == ']':
             return eval(result)
         else:

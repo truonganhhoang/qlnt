@@ -312,9 +312,10 @@ def add_many_students( student_list = None,
                        school_join_date = None,
                        force_update = False):
     if not ( student_list and start_year and term and school ):
-        raise Exception("Phải có giá trị cho các trường: Student,Start_Year,Term,School.")
+        raise Exception("Student,Start_Year,Term,School,Can'tNotBeNull")
     index =0
     existing_student = []
+    number_of_change = 0
     for student in student_list:
         index += 1
 
@@ -352,13 +353,11 @@ def add_many_students( student_list = None,
             number_subject = _class.subject_set.filter( primary = True).count()
 
         if find: # the student exists:
-            existing_student.append(find)
-        #                find = find[0]
-        #                find.class_id = _class
-        #                if _class is not find.class_id:
-        #                    move_student( find, find.class_id, _class)
-        #                else:
-        #                    pass
+            if force_update:
+                st = find[0]
+            else:
+                existing_student.append(student)
+                continue
         else:    # the student does not exist
             st = Pupil(first_name = first_name,
                        last_name = last_name,
@@ -369,18 +368,38 @@ def add_many_students( student_list = None,
                        class_id = _class,
                        index = index,
                        school_id = school)
-            if 'sex' in student:
-                st.sex = student['sex']
-            else:
-                st.sex = 'Nam'
-
-            if 'dan_toc' in student: st.dan_toc = student['dan_toc']
-            if 'birth_place' in student: st.birth_place = student['birth_place']
-            if 'current_address' in student: st.current_address = student['current_address']
-            if 'father_name' in student: st.father_name = student['father_name']
-            if 'father_phone' in student: st.father_phone = student['father_phone']
-            if 'mother_name' in student: st.mother_name = student['mother_name']
-            if 'mother_phone' in student: st.mother_phone = student['mother_phone']
+        if 'sex' in student:
+            st.sex = student['sex']
+        else:
+            st.sex = 'Nam'
+        changed = False
+        if 'dan_toc' in student and st.dan_toc!= student['dan_toc']:
+            print st.dan_toc, student['dan_toc']
+            st.dan_toc = student['dan_toc']
+            changed = True
+        if 'birth_place' in student and st.birth_place!=student['birth_place']:
+            print st.birth_place, student['birth_place']
+            st.birth_place = student['birth_place']
+            changed = True
+        if 'current_address' in student and st.current_address!=student['current_address']:
+            st.current_address = student['current_address']
+            changed = True
+        if 'father_name' in student and st.father_name!=student['father_name']:
+            st.father_name = student['father_name']
+            changed = True
+        if 'father_phone' in student and st.father_phone !=student['father_phone']:
+            st.father_phone = student['father_phone']
+            changed = True
+        if 'mother_name' in student and st.mother_name!=student['mother_name']:
+            st.mother_name = student['mother_name']
+            changed = True
+        if 'mother_phone' in student and st.mother_phone!=student['mother_phone']:
+            st.mother_phone = student['mother_phone']
+            changed = True
+        if 'sms_phone' in student and st.sms_phone!=student['sms_phone']:
+            st.sms_phone = student['sms_phone']
+            changed = True
+        if not force_update:
             user = User()
             user.username = make_username( first_name = first_name, last_name = last_name, start_year = start_year)
             user.password = make_default_password( user.username )
@@ -391,13 +410,13 @@ def add_many_students( student_list = None,
             userprofile.position = 'HOC_SINH'
             userprofile.save()
             st.user_id = user
+        if changed:
             st.save()
+            number_of_change += 1
 
+        if not force_update:
             hk = HanhKiem( year_id = year, student_id = st)
             hk.save()
-
-
-
             for i in range(1,3):
                 term1 = year.term_set.get( number__exact = i)
 
@@ -431,9 +450,8 @@ def add_many_students( student_list = None,
                 for subject in subjects:
                     tkmon = TKMon(student_id = st, subject_id = subject)
                     tkmon.save()
-
-
     transaction.commit()
+    if force_update: return number_of_change
     return existing_student
 
 
@@ -532,17 +550,18 @@ def add_teacher( first_name = None,
         teacher.group_id = group_id
         teacher.major = major
 
-        user = User()
-        user.username = make_username( first_name = first_name, last_name = last_name )
-        user.password = make_default_password( user.username)
-        user.save()
-        userprofile = UserProfile()
-        userprofile.user = user
-        userprofile.organization = school
-        userprofile.position = 'GIAO_VIEN'
-        userprofile.save()
-
-        teacher.user_id = user
+        if not force_update:
+            user = User()
+            user.username = make_username( first_name = first_name, last_name = last_name )
+            user.password = make_default_password( user.username)
+            user.save()
+            userprofile = UserProfile()
+            userprofile.user = user
+            userprofile.organization = school
+            userprofile.position = 'GIAO_VIEN'
+            userprofile.save()
+    
+            teacher.user_id = user
         teacher.save()
         return None
     except Exception as e:

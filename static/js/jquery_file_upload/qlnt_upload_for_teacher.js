@@ -33,7 +33,7 @@ $(function () {
                 $("#errorDetail").html(data.result[0].process_message);
                 if (data.result[0].teacher_confliction){
                     $("#errorDetail > ul").append(
-                            '<li>' + data.result[0].teacher_confliction +'' +
+                            '<li>' + data.result[0].teacher_confliction +' ' +
                             '<a id="update_existing" href="/school/import/teacher/update" class="ggButton">Cập nhật những giáo viên này.</a>'+
                             '</li>');
                     $("#update_existing").click(function(){

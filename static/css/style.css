@@ -431,7 +431,8 @@ div#tableFunction {
 
 .hint {
     color: #5d5858;
-    position: absolute;
+    position: relative;
+    margin: 10px;
     bottom: 3px;
 }
 

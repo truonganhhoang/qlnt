@@ -37,7 +37,7 @@ SETUP = os.path.join('school','setup.html')
 ORGANIZE_STUDENTS = os.path.join('school','organize_students.html')
 STUDENT = os.path.join('school','classDetail_one_student.html')
 def school_index(request):
-    
+
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
@@ -47,7 +47,7 @@ def school_index(request):
         return HttpResponseRedirect(reverse('index'))
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
-    
+
     if not school.status:
         return HttpResponseRedirect(reverse('setup'))
     try:
@@ -71,7 +71,7 @@ def school_index(request):
 
         return render_to_response(SCHOOL,{'teaching_subjects': teaching_subjects,
                                           'term': term, 'teaching_class': teaching_class},
-                                           context_instance=context)
+                                  context_instance=context)
     elif user_type  == 'HOC_SINH':
         return HttpResponseRedirect(reverse('student_detail', args=[user.pupil.id]))
 def is_safe(school):
@@ -88,8 +88,8 @@ def setup(request):
     permission = get_permission(request)
     if not permission in [u'HIEU_TRUONG',u'HIEU_PHO']:
         return HttpResponseRedirect(reverse('school_index'))
-    
-    
+
+
     if request.is_ajax():
         if request.method == 'POST':
             if 'update_school_detail' in request.POST:
@@ -98,7 +98,7 @@ def setup(request):
                     school_form.save_to_model()
                     message = u'Bạn vừa cập nhật thông tin trường học thành công.\
                     Hãy cung cấp danh sách tên lớp học theo dạng [khối] [tên lớp]. Ví dụ: 10 A'
-                
+
                 data = simplejson.dumps( {'message': message, 'status':'done'})
             elif 'update_class_name' in request.POST:
                 message, labels, success = parse_class_label(request, school)
@@ -114,32 +114,32 @@ def setup(request):
 
                 data = simplejson.dumps( {'message': message, 'status': success,
                                           'classes': classes_, 'grades': grades})
-                
+
             elif 'start_year' in request.POST:
                 if is_safe(school):
-                    
+
                     data = simplejson.dumps({'status':'done'})
                 else:
                     data = simplejson.dumps( {'message': message,'status': 'failed'} )
             return HttpResponse(data, mimetype = 'json')
         else:
             raise Exception('StrangeRequestMethod')
-    
+
     form_data = {'name': school.name, 'school_level':school.school_level,
-                'address': school.address, 'phone': school.phone,
-                'email': school.email}
+                 'address': school.address, 'phone': school.phone,
+                 'email': school.email}
     school_form = SchoolForm(form_data, request= request)
     message, labels, success = parse_class_label(request, school)
-        
+
     if request.method == 'POST':
         school_form = SchoolForm(request.POST, request = request)
         if school_form.is_valid():
             school_form.save_to_model()
             message = u'Bạn vừa cập nhật thông tin trường học thành công. '
-        
+
         if 'start_year' in request.POST and is_safe(school):
             HttpResponseRedirect( reverse('start_year'))
-        
+
     context = RequestContext(request)
     return render_to_response( SETUP, { 'form': school_form, 'message':message, 'labels':labels},
                                context_instance = context )
@@ -189,15 +189,15 @@ def info(request):
         if form.is_valid():
             form.save_to_model()
             message = u'Bạn vừa cập nhật thông tin trường học thành công.'
-            return HttpResponseRedirect( reverse('info'))                
+            return HttpResponseRedirect( reverse('info'))
     else:
         data = {'name': school.name, 'school_level':school.school_level,
                 'address': school.address, 'phone': school.phone,
                 'email': school.email}
         form = SchoolForm(data, request= request)
-    
+
     context = RequestContext(request)
-    return render_to_response(INFO, { 'form':form, 'school':school, 'message':message}, context_instance = context)    
+    return render_to_response(INFO, { 'form':form, 'school':school, 'message':message}, context_instance = context)
 
 def empty(label_list):
     for l in label_list:
@@ -261,9 +261,9 @@ def organize_students(request, class_id, type = '0'):
     context = RequestContext(request)
     return render_to_response(ORGANIZE_STUDENTS, {'student_list': student_list, 'class': _class},
                               context_instance = context)
-        
-        
-    
+
+
+
 
 def parse_class_label(request, school):
     message = None
@@ -343,9 +343,9 @@ def parse_class_label(request, school):
                     message = u'Bạn vừa thiết lập thành công danh sách tên lớp cho trường.'
                     success = True
 
-                #--------------
-    
-    return message, labels, success    
+                    #--------------
+
+    return message, labels, success
 
 @transaction.commit_on_success
 def class_label(request):
@@ -353,32 +353,32 @@ def class_label(request):
         school = get_school(request)
     except Exception as e:
         return HttpResponseRedirect(reverse('index'))
-    
+
     permission = get_permission(request)
     if not permission in [u'HIEU_TRUONG',u'HIEU_PHO']:
         return HttpResponseRedirect(reverse('school_index'))
-    
-    
+
+
     #------ user filtering
     message, labels, success = parse_class_label(request, school)
-    
+
     context = RequestContext(request)
     t = loader.get_template(CLASS_LABEL)
     c = RequestContext(request, {'labels': labels, 'message': message}, )
-    return HttpResponse(t.render(c)) 
+    return HttpResponse(t.render(c))
 
-@transaction.commit_on_success   
+@transaction.commit_on_success
 def b1(request):
     # tao moi cac khoi neu truong moi thanh lap
     try:
         school = get_school(request)
     except Exception as e:
         return HttpResponseRedirect(reverse('index'))
-    
+
     permission = get_permission(request)
     if not permission in [u'HIEU_TRUONG',u'HIEU_PHO']:
         return HttpResponseRedirect(reverse('school_index'))
-    
+
     message = None
     if not school.danhsachloailop_set.all():
         message = u'Bạn chưa thiết lập danh sách tên lớp học cho nhà trường. Hãy điền vào ô dưới \
@@ -400,7 +400,7 @@ def b1(request):
         ds_mon_hoc = CAP3_DS_MON
     else:
         raise Exception('SchoolLevelInvalid')
-    
+
     if not school.status:
         for khoi in range(lower_bound, upper_bound+1):
             if not school.block_set.filter(number = khoi):
@@ -410,7 +410,7 @@ def b1(request):
                 block.save()
         school.status = 1
         school.save()
-    # tao nam hoc moi
+        # tao nam hoc moi
     current_year = datetime.datetime.now().year
     year = school.year_set.filter(time__exact=current_year)
     if not year:
@@ -455,7 +455,7 @@ def b1(request):
             for mon in ds_mon_hoc:
                 i+=1
                 add_subject(subject_name= mon, subject_type= mon, _class=_class, index=i)
-        # -- day cac hoc sinh len lop        
+            # -- day cac hoc sinh len lop
         last_year = school.year_set.filter(time__exact=current_year -1)
         if last_year:
             blocks = school.block_set.all()
@@ -486,18 +486,18 @@ def b1(request):
                                 pass
         else: # truong ko co nam cu
             pass
-        # render HTML
-    else: 
-        #raise Exception(u'Start_year: đã bắt đầu năm học rồi ?')    
+            # render HTML
+    else:
+    #raise Exception(u'Start_year: đã bắt đầu năm học rồi ?')
         pass
-    return HttpResponseRedirect(reverse("classes"))     
+    return HttpResponseRedirect(reverse("classes"))
 
 def years(request):
-    school = get_school(request)    
+    school = get_school(request)
     years = school.year_set.all()
-    return render_to_response(YEARS, {'years':years}, context_instance=RequestContext(request))        
+    return render_to_response(YEARS, {'years':years}, context_instance=RequestContext(request))
 
-@transaction.commit_on_success  
+@transaction.commit_on_success
 def classify(request):
     try:
         school = get_school(request)
@@ -508,13 +508,13 @@ def classify(request):
         year = get_current_year(request)
     except Exception as e:
         print e
-        return HttpResponseRedirect( reverse("school_index")) 
-    
+        return HttpResponseRedirect( reverse("school_index"))
+
     permission = get_permission(request)
     if not permission in [u'HIEU_TRUONG',u'HIEU_PHO']:
         return HttpResponseRedirect(reverse('school_index'))
-    
-    
+
+
     message = None
     nothing = False
     student_list = startyear.pupil_set.filter( class_id__exact = None).order_by('first_name')
@@ -523,11 +523,11 @@ def classify(request):
     _class_list = [(u'-1', u'Chọn lớp')]
     class_list = year.class_set.filter( block_id__exact = grade)
     for _class in class_list:
-        _class_list.append((_class.id, _class.name))    
+        _class_list.append((_class.id, _class.name))
     if request.method == "GET":
-        if not student_list: 
+        if not student_list:
             message = u'Không còn học sinh nào cần được phân lớp.'
-            nothing = True    
+            nothing = True
     else:
         form = ClassifyForm( request.POST, student_list = student_list, class_list = _class_list)
         if form.is_valid():
@@ -538,19 +538,19 @@ def classify(request):
                     _class = None
                     student.class_id = _class
                     student.save()
-                
+
                 else:
                     _class = year.class_set.get( id = int(_class))
                     move_student(school, student, _class)
                     count +=1
             message = u'Bạn vừa phân lớp thành công cho ' + str(count) + u' học sinh.'
         else:
-            message = u'Xảy ra trục trặc trong quá trình nhập dữ liệu.'        
+            message = u'Xảy ra trục trặc trong quá trình nhập dữ liệu.'
         student_list = startyear.pupil_set.filter( class_id__exact = None).order_by('first_name')
     form = ClassifyForm( student_list = student_list, class_list= _class_list)
     return render_to_response( CLASSIFY, { 'message':message, 'student_list':student_list, 'form':form, 'nothing':nothing},
-                                   context_instance = RequestContext(request))      
-        
+                               context_instance = RequestContext(request))
+
 #----------------------------------------------------------------------------------------------------------------- 
 #----------- Exporting from Excel -------------------------------------
 
@@ -648,7 +648,7 @@ def class_generate(request, class_id, object):
             sheet.write(row, 7, student.phone, style)
             sheet.write(row, 8, '', style)
             row +=1
-        #return HttpResponse
+            #return HttpResponse
         response = HttpResponse(mimetype='application/ms-excel')
         response['Content-Disposition'] = u'attachment; filename=ds_hoc_sinh_%s.xls' % unicode(_class)
         book.save(response)
@@ -746,7 +746,7 @@ def teacher_generate(request, type):
             else:
                 sheet.write(row, 6, '', style)
             row +=1
-        #return HttpResponse
+            #return HttpResponse
         response = HttpResponse(mimetype='application/ms-excel')
         response['Content-Disposition'] = u'attachment; filename=ds_giao_vien.xls'
         book.save(response)
@@ -778,7 +778,7 @@ def process_file(file_name, task):
         except Exception as e:
             print e
             return {'error': u'File tải lên không phải file Excel'}
-        
+
         start_row = -1
         for c in range(0, sheet.ncols):
             flag = False
@@ -788,10 +788,10 @@ def process_file(file_name, task):
                     flag = True
                     break
             if flag: break
-        #                                                             CHUA BIEN LUAN TRUONG HOP: start_row = -1, ko co cot ten: Mã học sinh
+            #                                                             CHUA BIEN LUAN TRUONG HOP: start_row = -1, ko co cot ten: Mã học sinh
         if start_row == -1:
             return {'error': u'File tải lên phải có cột "Họ và Tên".'}, u'File tải lên phải có cột "Họ và Tên".', 0, 0
-        # start_row != 0
+            # start_row != 0
         c_ten = -1
         c_ngay_sinh = -1
         c_gioi_tinh = -1
@@ -803,6 +803,7 @@ def process_file(file_name, task):
         c_so_dt_bo = -1
         c_so_dt_me = -1
         c_nguyen_vong = -1
+        c_so_dt_nt = -1
         number = 0
         number_ok = 0
         for c in range(0, sheet.ncols):
@@ -830,6 +831,8 @@ def process_file(file_name, task):
                 c_so_dt_me = c
             elif value == u'Ban đăng ký':
                 c_nguyen_vong = c
+            elif value == u'Số nhắn tin' or value == u'Số điện thoại nhắn tin':
+                c_so_dt_nt = c
 
 
         for r in range(start_row + 1, sheet.nrows):
@@ -844,6 +847,7 @@ def process_file(file_name, task):
             ten_me=''
             dt_me=''
             ban_dk = ''
+            sms_phone = ''
             name = sheet.cell(r, c_ten).value.strip()
             name = ' '.join([i.capitalize() for i in name.split(' ')])
             if not name.strip():
@@ -876,6 +880,15 @@ def process_file(file_name, task):
                 ban_dk = sheet.cell( r, c_nguyen_vong).value.strip()
                 if not ban_dk.strip(): ban_dk = 'CB'
 
+            if c_so_dt_nt>-1:
+                sms_phone = sheet.cell(r, c_so_dt_nt).value.strip()
+                if sms_phone:
+                    try:
+                        validate_phone(sms_phone)
+                    except Exception as e:
+                        message += u'<li>Ô ' + unicode(cellname(r, c_ngay_sinh)) + u':   Số điện thoại không hợp lệ ' + u'</li>'
+                        sms_phone = ''
+                        print e
             try:
                 if type(birthday) == unicode or type(birthday)== str:
                     birthday = to_date(birthday)
@@ -897,7 +910,8 @@ def process_file(file_name, task):
                     'father_phone': dt_bo,
                     'mother_name': ten_me,
                     'mother_phone': dt_me,
-                    'ban_dk': ban_dk}
+                    'ban_dk': ban_dk,
+                    'sms_phone': sms_phone}
             student_list.append(data)
             number_ok += 1
         message += u'</ul>'
@@ -923,10 +937,10 @@ def process_file(file_name, task):
                     flag = True
                     break
             if flag: break
-        #                                                             CHUA BIEN LUAN TRUONG HOP: start_row = -1, ko co cot ten: Mã học sinh
+            #                                                             CHUA BIEN LUAN TRUONG HOP: start_row = -1, ko co cot ten: Mã học sinh
         if start_row == -1:
             return {'error': u'File tải lên phải có cột "Họ và Tên".'}, u'File tải lên phải có cột "Họ và Tên".', 0, 0
-        # start_row != 0
+            # start_row != 0
         c_ten = -1
         c_ngay_sinh = -1
         c_gioi_tinh = -1
@@ -998,7 +1012,7 @@ def process_file(file_name, task):
                 nhom = sheet.cell(r, c_nhom).value.strip()
             if c_chuyen_mon>-1:
                 chuyen_mon = sheet.cell(r, c_chuyen_mon).value.strip()
-                
+
             if birthday:
                 try:
                     if type(birthday) == unicode or type(birthday)== str:
@@ -1021,35 +1035,57 @@ def process_file(file_name, task):
                     'team': to,
                     'group': nhom,
                     'major': chuyen_mon
-                    }
+            }
             teacher_list.append(data)
             number_ok += 1
         message += u'</ul>'
         return teacher_list, message, number, number_ok
     return None
 
-def student_import( request, class_id ):
+def student_import( request, class_id, request_type='' ):
     try:
         school = get_school(request)
     except Exception as e:
         return HttpResponseRedirect(reverse('index'))
-    
+
     permission = get_permission(request)
     if not permission in [u'HIEU_TRUONG',u'HIEU_PHO']:
         return HttpResponseRedirect(reverse('school_index'))
 
     file = None
-    if request.method == "POST":    
+    if request.method == "POST":
         if request.is_ajax( ):
             # the file is stored raw in the request
-            upload = request
-            is_raw = True
-            # AJAX Upload will pass the filename in the querystring if it is the "advanced" ajax upload
             try:
-                file = request.FILES.get('file')
-            except KeyError:
-                return HttpResponseBadRequest( "AJAX request not valid" )
-            # not an ajax upload, so it was the "basic" iframe version with submission via form
+                if request_type==u'update':
+                    chosen_class = Class.objects.get( id = int(class_id) )
+                    year = school.startyear_set.get(time=datetime.date.today().year)
+                    current_year = school.year_set.latest('time')
+                    term = get_current_term( request)
+                    saving_import_student = request.session.pop('saving_import_student')
+                    print saving_import_student
+                    try:
+                        number_of_change = add_many_students( student_list = saving_import_student,
+                                                              _class = chosen_class,
+                                                              start_year = year, year = current_year,
+                                                              term = term, school=school,
+                                                              force_update= True)
+                    except Exception as e:
+                        print e
+                    if number_of_change:
+                        data =simplejson.dumps({'success': True, 'message': u'Đã cập nhật %s học sinh.' %number_of_change})
+                    else:
+                        data =simplejson.dumps({'success': True, 'message': u'Thông tin không thay đổi'})
+                    return HttpResponse(data, mimetype='json')
+                    # AJAX Upload will pass the filename in the querystring if it is the "advanced" ajax upload
+                try:
+                    file = request.FILES.get('file')
+                except KeyError:
+                    return HttpResponseBadRequest( "AJAX request not valid" )
+                    # not an ajax upload, so it was the "basic" iframe version with submission via form
+            except Exception as e:
+                print e
+                raise e
         else:
             is_raw = False
             if len( request.FILES ) == 1:
@@ -1064,9 +1100,9 @@ def student_import( request, class_id ):
                 raise Http404( "Bad Upload" )
             filename = '_'.join([request.session.session_key,upload.name])
     else:
-        return HttpResponseRedirect( reverse('school_index')) 
-    # save the file
-    
+        return HttpResponseRedirect( reverse('school_index'))
+        # save the file
+
     filename = save_file(request.FILES.get('file'), request.session)
     message = None
     process_file_message = None
@@ -1090,14 +1126,15 @@ def student_import( request, class_id ):
             existing_student= add_many_students(student_list = result, _class = chosen_class,
                                                 start_year = year, year = current_year,
                                                 term = term, school=school)
-            
-            
+
+
         except Exception as e:
             message = u'Lỗi trong quá trình lưu cơ sở dữ liệu'
 
         student_confliction = ''
         if existing_student:
             student_confliction = u'Có %s học sinh không được nhập do đã tồn tại trong hệ thống' % len(existing_student)
+            request.session['saving_import_student'] = existing_student
         data = [{'name': file.name, 'url': filename,
                  'sizef':file.size,
                  'process_message': process_file_message,
@@ -1144,7 +1181,7 @@ def teacher_import( request, request_type = ''):
                 file = request.FILES.get('file')
             except KeyError:
                 return HttpResponseBadRequest( "AJAX request not valid" )
-            # not an ajax upload, so it was the "basic" iframe version with submission via form
+                # not an ajax upload, so it was the "basic" iframe version with submission via form
         else:
             is_raw = False
             if len( request.FILES ) == 1:
@@ -1160,7 +1197,7 @@ def teacher_import( request, request_type = ''):
             filename = '_'.join([request.session.session_key,upload.name])
     else:
         return HttpResponseRedirect( reverse('school_index'))
-    # save the file
+        # save the file
     filename = save_file(request.FILES.get('file'), request.session)
     message = None
     process_file_message = None
@@ -1180,16 +1217,16 @@ def teacher_import( request, request_type = ''):
         try:
             teacher_list = result
             for teacher in teacher_list:
-#                data = {'fullname': name,
-#                    'birthday': birthday,
-#                    'sex': gt,
-#                    'dan_toc': dan_toc,
-#                    'home_town': que_quan,
-#                    'current_address': cho_o_ht,
-#                    'team': to,
-#                    'group': nhom,
-#                    'major': chuyen_mon
-#                    }
+            #                data = {'fullname': name,
+            #                    'birthday': birthday,
+            #                    'sex': gt,
+            #                    'dan_toc': dan_toc,
+            #                    'home_town': que_quan,
+            #                    'current_address': cho_o_ht,
+            #                    'team': to,
+            #                    'group': nhom,
+            #                    'major': chuyen_mon
+            #                    }
                 try:
                     existing = add_teacher(  full_name= teacher['fullname'],
                                              birthday= teacher['birthday'],
@@ -1230,12 +1267,12 @@ def nhap_danh_sach_trung_tuyen(request):
         school = get_school(request)
     except Exception as e:
         return HttpResponseRedirect(reverse('index'))
-    
+
     permission = get_permission(request)
     if not permission in [u'HIEU_TRUONG',u'HIEU_PHO']:
         return HttpResponseRedirect(reverse('school_index'))
-    
-    message = ''    
+
+    message = ''
     _class_list = []
     try:
         this_year = school.year_set.latest('time')
@@ -1255,28 +1292,28 @@ def nhap_danh_sach_trung_tuyen(request):
                 request.session['chosen_class'] = chosen_class
                 student_list, process_file_message, number, number_ok = process_file(file_name=save_file_name, task="import_student")
                 if 'error' in student_list:
-                    message = student_list['error']   
+                    message = student_list['error']
                 else:
                     request.session['student_list'] = student_list
                     return HttpResponseRedirect(reverse('imported_list'))
-            # end if error in save_file_name
+                    # end if error in save_file_name
         else:
             message = u'Gặp lỗi trong quá trình tải file lên server'
     form = UploadImportFileForm(class_list=_class_list)
     context = RequestContext(request, {'form':form, 'message': message})
     return render_to_response(NHAP_DANH_SACH_TRUNG_TUYEN, context_instance=context)
 
-@transaction.commit_on_success  
+@transaction.commit_on_success
 def manual_adding(request):
     try:
         school = get_school(request)
     except Exception as e:
         return HttpResponseRedirect(reverse('index'))
-    
+
     permission = get_permission(request)
     if not permission in [u'HIEU_TRUONG',u'HIEU_PHO']:
         return HttpResponseRedirect(reverse('school_index'))
-    
+
     _class_list = []
     message = None
     try:
@@ -1288,11 +1325,11 @@ def manual_adding(request):
     except Exception as e:
         print e
         _class_list = None
-    
+
     ns_error = False
     name_error = False
     ns_entered = ""
-                
+
     if request.method == 'POST':
         form = ManualAddingForm(request.POST, class_list=_class_list)
         student_list = request.session['student_list']
@@ -1310,12 +1347,12 @@ def manual_adding(request):
                 for student in student_list:
                     i += 1
                     data = {'full_name': student['ten'], 'birthday':student['ngay_sinh'],
-                        'ban':student['nguyen_vong'], }
+                            'ban':student['nguyen_vong'], }
                     try:
                         add_student(student=data, _class=chosen_class,
-                                start_year=year, year=this_year,
-                                index = i,
-                                term=term, school=school)
+                                    start_year=year, year=this_year,
+                                    index = i,
+                                    term=term, school=school)
                     except Exception as e:
                         print e
                 transaction.commit()
@@ -1328,44 +1365,44 @@ def manual_adding(request):
                 except Exception as e:
                     diem = 0
                 if not request.POST['name_hs_trung_tuyen'].strip():
-                    name_error = True    
+                    name_error = True
                 try:
                     ns = to_date(request.POST['ns_hs_trung_tuyen'])
                     if request.POST['name_hs_trung_tuyen'].strip():
                         element = { 'ten': request.POST['name_hs_trung_tuyen'],
-                                'ngay_sinh': ns,
-                                'nguyen_vong': request.POST['nv_hs_trung_tuyen'],
-                                'tong_diem': diem,
-                               }
+                                    'ngay_sinh': ns,
+                                    'nguyen_vong': request.POST['nv_hs_trung_tuyen'],
+                                    'tong_diem': diem,
+                                    }
                         student_list.append(element)
-                
+
                 except Exception as e:
                     print e
                     ns_error = True
                     ns_entered = request.POST['ns_hs_trung_tuyen']
-                request.session['student_list'] = student_list                            
+                request.session['student_list'] = student_list
     else:
         student_list = []
         request.session['student_list'] = student_list
         form = ManualAddingForm(class_list=_class_list)
-    context = RequestContext(request, {'student_list': student_list})    
-    return render_to_response(NHAP_BANG_TAY, {'form':form, 
-                                              'name_error':name_error, 
-                                              'ns_error':ns_error, 
-                                              'ns_entered':ns_entered}, context_instance=context)   
+    context = RequestContext(request, {'student_list': student_list})
+    return render_to_response(NHAP_BANG_TAY, {'form':form,
+                                              'name_error':name_error,
+                                              'ns_error':ns_error,
+                                              'ns_entered':ns_entered}, context_instance=context)
 
-@transaction.commit_on_success    
+@transaction.commit_on_success
 def danh_sach_trung_tuyen(request):
 
     try:
         school = get_school(request)
     except Exception as e:
         return HttpResponseRedirect(reverse('index'))
-    
+
     permission = get_permission(request)
     if not permission in [u'HIEU_TRUONG',u'HIEU_PHO']:
         return HttpResponseRedirect(reverse('school_index'))
-    
+
     student_list = request.session['student_list']
     term = school.year_set.latest('time').term_set.latest('number')
     chosen_class = request.session['chosen_class']
@@ -1377,7 +1414,7 @@ def danh_sach_trung_tuyen(request):
     else:
         chosen_class = None
     message = None
-   
+
     if request.method == 'POST':
         if request.POST['clickedButton'] == 'save':
             year = school.startyear_set.get(time=datetime.date.today().year)
@@ -1386,8 +1423,8 @@ def danh_sach_trung_tuyen(request):
             for student in student_list:
                 i += 1
                 data = {'full_name': student['ten'], 'birthday':student['ngay_sinh'],
-                    'ban':student['nguyen_vong'], }
-                
+                        'ban':student['nguyen_vong'], }
+
                 add_student(student=data, _class=chosen_class,
                             start_year=year, year=current_year,
                             index = i,
@@ -1397,17 +1434,17 @@ def danh_sach_trung_tuyen(request):
             request.session['student_list'] = student_list
             return HttpResponseRedirect('/school/viewClassDetail/'+ str(chosen_class.id))
         elif request.POST['clickedButton'] == 'add':
-            
+
             diem = float(request.POST['diem_hs_trung_tuyen'])
             ns = to_date(request.POST['ns_hs_trung_tuyen'])
             element = {'ten': request.POST['name_hs_trung_tuyen'],
-                'ngay_sinh': ns,
-                'nguyen_vong': request.POST['nv_hs_trung_tuyen'],
-                'tong_diem': diem,
-            }
+                       'ngay_sinh': ns,
+                       'nguyen_vong': request.POST['nv_hs_trung_tuyen'],
+                       'tong_diem': diem,
+                       }
             student_list.append(element)
             request.session['student_list'] = student_list
-    
+
     context = RequestContext(request, {'student_list': student_list})
     return render_to_response(DANH_SACH_TRUNG_TUYEN, {'message':message}, context_instance=context)
 #------------------------------------------------------------------------------------
@@ -1486,7 +1523,7 @@ def classes(request):
         school = get_school(request)
     except Exception as e:
         return HttpResponseRedirect(reverse('index'))
-    
+
     pos = get_position(request)
     if pos == 1:
         url = '/school/viewClassDetail/' + str(get_student(request).class_id.id)
@@ -1520,7 +1557,7 @@ def classes(request):
                 data = simplejson.dumps({'message':message})
                 return HttpResponse(data, mimetype = 'json')
     t = loader.get_template(os.path.join('school', 'classes.html'))
-    c = RequestContext(request, {   'message': message, 
+    c = RequestContext(request, {   'message': message,
                                     'blockList': blockList,
                                     'pos':pos,})
     return HttpResponse(t.render(c))
@@ -1614,12 +1651,12 @@ def addClass(request):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
-    
+
     try:
         school = get_school(request)
     except Exception as e:
         return HttpResponseRedirect(reverse('index'))
-    
+
     if get_position(request) < 4:
         return HttpResponseRedirect('/')
     school = user.userprofile.organization
@@ -1644,7 +1681,7 @@ def addClass(request):
         t = loader.get_template(os.path.join('school', 'add_class.html'))
         c = RequestContext(request, {'form': form})
         return HttpResponse(t.render(c))
-    else:    
+    else:
         t = loader.get_template(os.path.join('school', 'add_class.html'))
         c = RequestContext(request)
         return HttpResponse(t.render(c))
@@ -1677,29 +1714,29 @@ def viewClassDetail(request, class_id, sort_type=0, sort_status=0):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
-    
+
     try:
         school = get_school(request)
     except Exception as e:
         return HttpResponseRedirect(reverse('index'))
-    
+
     pos = get_position(request)
     if not pos:
         return HttpResponseRedirect('/')
     try:
-        cl = Class.objects.get(id=class_id)    
+        cl = Class.objects.get(id=class_id)
     except Class.DoesNotExist:
         return HttpResponseRedirect('/school/classes')
     cn=gvcn(request, class_id)
     inCl=inClass(request, class_id)
     if not in_school(request, cl.block_id.school_id):
-        return HttpResponseRedirect('/')   
+        return HttpResponseRedirect('/')
     message = None
     school = cl.block_id.school_id
     cyear = get_current_year(request)
     classList = cyear.class_set.all()
     form = PupilForm(school.id)
-    		
+
     if request.method == 'POST':
         if request.is_ajax() and request.POST[u'request_type'] == u'del':
             data = request.POST[u'data']
@@ -1757,14 +1794,14 @@ def viewClassDetail(request, class_id, sort_type=0, sort_status=0):
 
                 if not request.POST['first_name']:
                     message += u'<li> ' + u'Ô tên là bắt buộc' + u'</li>'
-                
+
                 data = simplejson.dumps({'message': message})
                 return HttpResponse(data, mimetype='json')
     if int(sort_type) == 0:
         if int(sort_status) == 0:
             studentList = cl.pupil_set.order_by('index','first_name', 'last_name','birthday')
         else:
-            studentList = cl.pupil_set.order_by('index','-first_name', '-last_name','-birthday')                    
+            studentList = cl.pupil_set.order_by('index','-first_name', '-last_name','-birthday')
     if int(sort_type) == 1:
         if int(sort_status) == 0:
             studentList = cl.pupil_set.order_by('first_name', 'last_name','birthday')
@@ -1790,33 +1827,33 @@ def viewClassDetail(request, class_id, sort_type=0, sort_status=0):
             studentList = cl.pupil_set.order_by('school_join_date')
         else:
             studentList = cl.pupil_set.order_by('-school_join_date')
-    
+
     tmp = get_student(request)
     inCl = inClass(request, class_id)
     id = 0
     if tmp:
         id = tmp.id
 
-    
+
     currentTerm= get_current_term(request)
     if currentTerm.number ==3:
         currentTerm=Term.objects.get(year_id=currentTerm.year_id,number=2)
-        
+
     t = loader.get_template(os.path.join('school', 'classDetail.html'))
     c = RequestContext(request, {   'form': form,
-                                    'csrf_token': get_token(request), 
-                                    'message': message, 
-                                    'studentList': studentList, 
-                                    'class': cl, 
+                                    'csrf_token': get_token(request),
+                                    'message': message,
+                                    'studentList': studentList,
+                                    'class': cl,
                                     'cl':classList,
                                     'inClass' : inCl,
-                                    'sort_type':int(sort_type), 
-                                    'sort_status':int(sort_status), 
+                                    'sort_type':int(sort_type),
+                                    'sort_status':int(sort_status),
                                     'next_status':1-int(sort_status),
                                     'pos': pos,
                                     'gvcn':cn,
                                     'student_id':id,
-                                    'currentTerm':currentTerm,                                    
+                                    'currentTerm':currentTerm,
                                     })
     return HttpResponse(t.render(c))
 
@@ -1826,7 +1863,7 @@ def teachers(request,  sort_type=1, sort_status=0):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
-    
+
     try:
         school = get_school(request)
     except Exception as e:
@@ -1884,9 +1921,9 @@ def teachers(request,  sort_type=1, sort_status=0):
                                     'sort_type':sort_type,
                                     'sort_status':sort_status,
                                     'next_status':1-int(sort_status),
-                                })
+                                    })
     return HttpResponse(t.render(c))
-    
+
 def team(request, team_id ,sort_type=1, sort_status=0):
     user = request.user
     if not user.is_authenticated():
@@ -1938,7 +1975,7 @@ def team(request, team_id ,sort_type=1, sort_status=0):
                                     'sort_type':sort_type,
                                     'sort_status':sort_status,
                                     'next_status':1-int(sort_status),
-                                })
+                                    })
     return HttpResponse(t.render(c))
 
 def teachers_tab(request, sort_type=1, sort_status=0):
@@ -2093,7 +2130,7 @@ def teachers_in_team(request, team_id):
                 return HttpResponse(response, mimetype='json')
             except Exception as e:
                 print e
-        if (request.method == 'POST' and request.POST['request_type'] == u'group'):        
+        if (request.method == 'POST' and request.POST['request_type'] == u'group'):
             t = school.teacher_set.get(id = request.POST['id'])
             team = school.team_set.get(id = team_id)
             if request.POST['group']:
@@ -2159,7 +2196,7 @@ def teachers_in_group(request, group_id):
                 return HttpResponse(response, mimetype='json')
             except Exception as e:
                 print e
-        if (request.method == 'POST' and request.POST['request_type'] == u'group'):        
+        if (request.method == 'POST' and request.POST['request_type'] == u'group'):
             t = school.teacher_set.get(id = request.POST['id'])
             if request.POST['group']:
                 group = Group.objects.get(id = request.POST['group'])
@@ -2190,17 +2227,17 @@ def teachers_in_group(request, group_id):
                                     'teacher_id':id,
                                     'group' : group})
     return HttpResponse(t.render(c))
-    
+
 def viewTeacherDetail(request, teacher_id):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
-    
+
     try:
         school = get_school(request)
     except Exception as e:
         return HttpResponseRedirect(reverse('index'))
-    
+
     message = None
     try:
         teacher = Teacher.objects.get(id=teacher_id)
@@ -2288,7 +2325,7 @@ def subjectPerClass(request, class_id, sort_type=4, sort_status=0):
         school = get_school(request)
     except Exception as e:
         return HttpResponseRedirect(reverse('index'))
-    
+
     pos = get_position(request)
     if (pos == 0):
         return HttpResponseRedirect('/')
@@ -2316,7 +2353,7 @@ def subjectPerClass(request, class_id, sort_type=4, sort_status=0):
             if int(sort_status) == 0:
                 subjectList = cl.subject_set.order_by('index')
             else:
-                subjectList = cl.subject_set.order_by('-index')            
+                subjectList = cl.subject_set.order_by('-index')
     except Exception as e:
         print e
 
@@ -2407,7 +2444,7 @@ def subjectPerClass(request, class_id, sort_type=4, sort_status=0):
             subjectList = cl.subject_set.order_by('-teacher_id__first_name')
     if int(sort_type) == 4:
         subjectList = cl.subject_set.order_by('index')
-        
+
     sfl = []
     year = get_current_year(request)
     classList = year.class_set.all()
@@ -2415,14 +2452,14 @@ def subjectPerClass(request, class_id, sort_type=4, sort_status=0):
         sfl.append(SubjectForm(school.id, instance=s))
     list = zip(subjectList, sfl)
     t = loader.get_template(os.path.join('school', 'subject_per_class.html'))
-    c = RequestContext(request, {   'list':list, 
-                                    'form': form, 
-                                    'message': message, 
-                                    'subjectList': subjectList, 
-                                    'class': cl,                                     
-                                    'sort_type': sort_type, 
-                                    'sort_status':sort_status, 
-                                    'next_status':1-int(sort_status), 
+    c = RequestContext(request, {   'list':list,
+                                    'form': form,
+                                    'message': message,
+                                    'subjectList': subjectList,
+                                    'class': cl,
+                                    'sort_type': sort_type,
+                                    'sort_status':sort_status,
+                                    'next_status':1-int(sort_status),
                                     'term':term,
                                     'classList':classList,
                                     'pos':pos})
@@ -2432,7 +2469,7 @@ def viewStudentDetail(request, student_id):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
-        
+
     try:
         school = get_school(request)
     except Exception as e:
@@ -2575,13 +2612,13 @@ def viewStudentDetail(request, student_id):
                                     'ttllform': ttllform,
                                     'ttgdform': ttgdform,
                                     'ttddform': ttddform,
-                                    'message': message, 
+                                    'message': message,
                                     'id': student_id,
                                     'class':pupil.class_id,
                                     'pos':pos,
                                     'student': pupil,
-                                }
-                       )
+                                    }
+    )
     return HttpResponse(t.render(c))
 
 def diem_danh(request, class_id, day, month, year):
@@ -2596,7 +2633,7 @@ def diem_danh(request, class_id, day, month, year):
     if not in_school(request, cl.block_id.school_id):
         return HttpResponseRedirect('/')
     url = '/school/dsnghi/' + str(class_id) + '/' + str(day) + '/' + str(month) + '/' + str(year)
-    pos = get_position(request) 
+    pos = get_position(request)
     if (pos < 3 or (pos == 3 and not gvcn(request,class_id))):
         return HttpResponseRedirect(url)
     message = ''
@@ -2614,27 +2651,27 @@ def diem_danh(request, class_id, day, month, year):
                 student = Pupil.objects.get( id = int(id))
                 time = date(int(year), int(month), int(day))
                 diemdanh = student.diemdanh_set.filter( student_id__exact = student)\
-                                                .filter( time__exact = time)
+                .filter( time__exact = time)
                 if not diemdanh:
-                    
+
                     diemdanh = DiemDanh()
                     diemdanh.term_id = get_current_term(request)
                     diemdanh.student_id = student
                     diemdanh.time = time
                     diemdanh.loai = loai
                     diemdanh.save()
-                else:   
-                    diemdanh = diemdanh[0] 
+                else:
+                    diemdanh = diemdanh[0]
                     if loai == 'k':
                         diemdanh.delete()
                         message = u'No need to update'
-                        data = simplejson.dumps({'message':message})                    
+                        data = simplejson.dumps({'message':message})
                         return HttpResponse(data, mimetype = 'json')
-                                    
+
                     if diemdanh.loai != loai:
                         diemdanh.loai = loai
                         diemdanh.save()
-                
+
                 message = student.full_name() + ': updated.'
                 data = simplejson.dumps({'message': message})
                 return HttpResponse( data, mimetype = 'json')
@@ -2650,7 +2687,7 @@ def diem_danh(request, class_id, day, month, year):
                         # send sms
                         student = Pupil.objects.get( id = id)
                         phone_number = student.sms_phone
-                        
+
                         if loai == 'k':
                             loai = u'đi học'
                         elif loai == u'Có phép':
@@ -2665,9 +2702,9 @@ def diem_danh(request, class_id, day, month, year):
                                 sent = sendSMS(phone_number, to_en1(sms_message), user)
                             except Exception as e:
                                 if e.message == 'InvalidPhoneNumber':
-                                    message = message + u'<li><b>Số ' + str(phone_number) \
-                                                      + u' không tồn tại</b>'\
-                                                      + u': ' + sms_message + u'</li>'
+                                    message = message + u'<li><b>Số ' + str(phone_number)\
+                                              + u' không tồn tại</b>'\
+                                              + u': ' + sms_message + u'</li>'
                                     continue
                                 else:
                                     raise e
@@ -2696,7 +2733,7 @@ def diem_danh(request, class_id, day, month, year):
     listdh = zip(pupilList, form)
     try:
         if request.method == 'POST':
-#            message = 'Điểm danh lớp ' + str(Class.objects.get(id=class_id)) + ', ngày ' + str(time) + ' đã xong.'
+        #            message = 'Điểm danh lớp ' + str(Class.objects.get(id=class_id)) + ', ngày ' + str(time) + ' đã xong.'
             message = 'Đã lưu điểm danh.'
             list = request.POST.getlist('loai')
             i = 0
@@ -2726,9 +2763,9 @@ def diem_danh(request, class_id, day, month, year):
     listdh = zip(pupilList, form)
     t = loader.get_template(os.path.join('school', 'diem_danh.html'))
     c = RequestContext(request, {'dncform':dncform, 'form':form, 'pupilList': pupilList, 'time': time, 'message':message, 'class_id':class_id, 'time':time, 'list':listdh,
-                       'day':day, 'month':month, 'year':year, 'cl':cl,'pos':pos})
+                                 'day':day, 'month':month, 'year':year, 'cl':cl,'pos':pos})
     return HttpResponse(t.render(c))
-    
+
 def time_select(request, class_id):
     user = request.user
     if not user.is_authenticated():
@@ -2745,7 +2782,7 @@ def time_select(request, class_id):
     year = int(date.today().year)
     url = '/school/diemdanh/' + str(class_id) + '/' + str(day) + '/' + str(month) + '/' + str(year)
     return HttpResponseRedirect(url)
-    
+
 def tnc_select(request):
     user = request.user
     if not user.is_authenticated():
@@ -2779,7 +2816,7 @@ def tnc_select(request):
     t = loader.get_template(os.path.join('school', 'time_class_select.html'))
     c = RequestContext(request, {'form':form, 'message':message})
     return HttpResponse(t.render(c))
-    
+
 def ds_nghi(request, class_id, day, month, year):
     user = request.user
     if not user.is_authenticated():
@@ -2810,7 +2847,7 @@ def ds_nghi(request, class_id, day, month, year):
                     # send sms
                     student = Pupil.objects.get( id = id)
                     phone_number = student.sms_phone
-                    
+
                     loai = loai.strip()
                     if loai == 'k':
                         loai = u'đi học'
@@ -2828,7 +2865,7 @@ def ds_nghi(request, class_id, day, month, year):
             return HttpResponse(data, mimetype = 'json')
         else:
             raise Exception("StrangeRequestMethod")
-    #end if request.is_ajax()
+        #end if request.is_ajax()
     for p in pupilList:
         try:
             dd = DiemDanh.objects.get(time__exact=time, student_id__exact=p.id, term_id__exact=term.id)
@@ -2840,7 +2877,7 @@ def ds_nghi(request, class_id, day, month, year):
     t = loader.get_template(os.path.join('school', 'ds_nghi_hoc.html'))
     c = RequestContext(request, {'list':ds_nghi, 'class_id':class_id, 'time':time, 'day':day, 'month':month, 'year':year, 'cl':cl, 'pos':pos,'dncform':dncform})
     return HttpResponse(t.render(c))
-    
+
 def diem_danh_hs(request, student_id, view_type = 0):
     user = request.user
     if not user.is_authenticated():
@@ -2877,7 +2914,7 @@ def diem_danh_hs(request, student_id, view_type = 0):
                     form[i] = DiemDanhForm(data, instance=dd)
                     if form[i].is_valid():
                         form[i].save()
-                    i += 1    
+                    i += 1
                 else:
                     dd.delete()
                     i += 1
@@ -2892,32 +2929,32 @@ def diem_danh_hs(request, student_id, view_type = 0):
                     url = '/school/diemdanhhs/' + str(student_id)
         ddl = DiemDanh.objects.filter(student_id=student_id, term_id=term.id).order_by('time')
         for dd in ddl:
-            form.append(DiemDanhForm(instance=dd))        
-        ddhs = zip(ddl,form)                    
+            form.append(DiemDanhForm(instance=dd))
+        ddhs = zip(ddl,form)
         t = loader.get_template(os.path.join('school', 'diem_danh_hs_edit.html'))
         c = RequestContext(request, {   'ddhs':ddhs,
                                         'iform':iform,
-                                        'pupil':pupil, 
-                                        'student_id':student_id, 
+                                        'pupil':pupil,
+                                        'student_id':student_id,
                                         'term':term,
                                         'pos':pos,
                                         'count':count})
         return HttpResponse(t.render(c))
     else:
         t = loader.get_template(os.path.join('school', 'diem_danh_hs.html'))
-        c = RequestContext(request, {   'form': ddl,  
-                                        'pupil':pupil, 
-                                        'student_id':student_id, 
+        c = RequestContext(request, {   'form': ddl,
+                                        'pupil':pupil,
+                                        'student_id':student_id,
                                         'term':term,
                                         'pos':pos,
                                         'count':count})
         return HttpResponse(t.render(c))
-    
+
 def tk_dd_lop(class_id, term_id):
     ppl = Pupil.objects.filter(class_id=class_id)
     for p in ppl:
         tk_diem_danh(p.id, term_id)
-    
+
 def tk_diem_danh(student_id, term_id):
     pupil = Pupil.objects.get(id=student_id)
     c = pupil.class_id
@@ -2933,7 +2970,7 @@ def tk_diem_danh(student_id, term_id):
     except ObjectDoesNotExist:
         tk = TKDiemDanhForm(data)
     tk.save()
-    
+
 def test(request):
     form = PupilForm()
     message = 'Hello'
@@ -2946,20 +2983,20 @@ def deleteSubject(request, subject_id):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
-    
+
     try:
         school = get_school(request)
     except Exception as e:
         return HttpResponseRedirect(reverse('index'))
-    
+
     if get_position(request) < 4:
         return HttpResponseRedirect('/')
     try:
         sub = Subject.objects.get(id=subject_id)
     except Subject.DoesNotExist:
         return HttpResponseRedirect('/')
-        
-    class_id = sub.class_id    
+
+    class_id = sub.class_id
     if not in_school(request, class_id.block_id.school_id):
         return HttpResponseRedirect('/')
     completely_del_subject(sub)
@@ -2970,19 +3007,19 @@ def deleteTeacher(request, teacher_id, team_id = 0):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
-    
+
     try:
         school = get_school(request)
     except Exception as e:
         return HttpResponseRedirect(reverse('index'))
-    
+
     message = "Đã xóa xong."
     school = get_school(request)
     try:
         s = Teacher.objects.get(id = teacher_id)
     except Teacher.DoesNotExist:
         return HttpResponseRedirect('/')
-    
+
     if not in_school(request, s.school_id):
         return HttpResponseRedirect('/school/teachers')
     if get_position(request) < 4:
@@ -2990,12 +3027,12 @@ def deleteTeacher(request, teacher_id, team_id = 0):
     cl = Subject.objects.filter(teacher_id = s.id)
     for sj in cl:
         sj.teacher_id = None
-        sj.save()   
+        sj.save()
     cl = Class.objects.filter(teacher_id = s.id)
     for sj in cl:
         sj.teacher_id = None
-        sj.save()   
-    #s.delete()
+        sj.save()
+        #s.delete()
     del_teacher(s)
     if int(team_id) != 0:
         return HttpResponseRedirect("/school/teachers_in_team/" + team_id)
@@ -3005,12 +3042,12 @@ def deleteClass(request, class_id, block_id):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
-        
+
     try:
         school = get_school(request)
     except Exception as e:
         return HttpResponseRedirect(reverse('index'))
-    
+
     message = "Đã xóa xong."
     try:
         s = get_current_year(request).class_set.get(id=class_id)
@@ -3027,18 +3064,18 @@ def deleteStudentInClass(request, student_id):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
-        
+
     try:
         school = get_school(request)
     except Exception as e:
         return HttpResponseRedirect(reverse('index'))
-    
+
     message = "Đã xóa xong."
     try:
         student = Pupil.objects.get(id=student_id)
     except Pupil.DoesNotExist:
         return HttpResponseRedirect('/')
-        
+
     class_id = student.class_id
     if not in_school(request, class_id.block_id.school_id):
         return HttpResponseRedirect('/')
@@ -3052,40 +3089,40 @@ def deleteAllStudentsInClass(request, class_id):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
-        
+
     try:
         school = get_school(request)
     except Exception as e:
         return HttpResponseRedirect(reverse('index'))
-        
+
     try:
         cl = Class.objects.get(id=class_id)
     except Class.DoesNotExist:
         return HttpResponseRedirect('/')
-        
+
     students = cl.pupil_set.all()
-    
+
     if not in_school(request, cl.block_id.school_id):
         return HttpResponseRedirect('/')
     if get_position(request) < 4:
-        return HttpResponseRedirect('/')   
-    
+        return HttpResponseRedirect('/')
+
     for student in students:
         completely_del_student(student)
     transaction.commit()
     return HttpResponseRedirect('/school/viewClassDetail/'+str(cl.id))
-    
+
 def deleteStudentInSchool(request, student_id):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
-        
+
     try:
         school = get_school(request)
     except Exception as e:
         return HttpResponseRedirect(reverse('index'))
-    
-#    message = "Đã xóa xong."
+
+    #    message = "Đã xóa xong."
     sub = Pupil.objects.get(id=student_id)
     if not in_school(request, sub.class_id.block_id.school_id):
 
@@ -3099,12 +3136,12 @@ def khen_thuong(request, student_id):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
-        
+
     try:
         school = get_school(request)
     except Exception as e:
         return HttpResponseRedirect(reverse('index'))
-    
+
     sub = Pupil.objects.get(id=student_id)
     if not in_school(request, sub.class_id.block_id.school_id):
         return HttpResponseRedirect('/')
@@ -3119,17 +3156,17 @@ def khen_thuong(request, student_id):
     t = loader.get_template(os.path.join('school', 'khen_thuong.html'))
     c = RequestContext(request, {'ktl': ktl, 'message':message, 'student_id':student_id,'pupil':sub, 'pos':pos, 'count':count})
     return HttpResponse(t.render(c))
-    
+
 def add_khen_thuong(request, student_id):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
-        
+
     try:
         school = get_school(request)
     except Exception as e:
         return HttpResponseRedirect(reverse('index'))
-    
+
     form = KhenThuongForm(student_id)
     pupil = Pupil.objects.get(id=student_id)
     if not in_school(request, pupil.class_id.block_id.school_id):
@@ -3159,14 +3196,14 @@ def delete_khen_thuong(request, kt_id):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
-    
+
     try:
         school = get_school(request)
     except Exception as e:
         return HttpResponseRedirect(reverse('index'))
-    
+
     kt = KhenThuong.objects.get(id=kt_id)
-    student = kt.student_id    
+    student = kt.student_id
     if not in_school(request, student.class_id.block_id.school_id):
         return HttpResponseRedirect('/')
     pos = get_position(request)
@@ -3177,17 +3214,17 @@ def delete_khen_thuong(request, kt_id):
     kt.delete()
     url = '/school/khenthuong/' + str(student.id)
     return HttpResponseRedirect(url)
-    
+
 def edit_khen_thuong(request, kt_id):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
-        
+
     try:
         school = get_school(request)
     except Exception as e:
         return HttpResponseRedirect(reverse('index'))
-    
+
     kt = KhenThuong.objects.get(id=kt_id)
     pupil = kt.student_id
     if not in_school(request, pupil.class_id.block_id.school_id):
@@ -3212,17 +3249,17 @@ def edit_khen_thuong(request, kt_id):
     t = loader.get_template(os.path.join('school', 'khen_thuong_detail.html'))
     c = RequestContext(request, {'form': form, 'p': pupil, 'student_id':pupil.id, 'term':term, 'url':url})
     return HttpResponse(t.render(c))
-    
+
 def ki_luat(request, student_id):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
-        
+
     try:
         school = get_school(request)
     except Exception as e:
         return HttpResponseRedirect(reverse('index'))
-    
+
     student = Pupil.objects.get(id=student_id)
     if not in_school(request, student.class_id.block_id.school_id):
         return HttpResponseRedirect('/')
@@ -3237,17 +3274,17 @@ def ki_luat(request, student_id):
     t = loader.get_template(os.path.join('school', 'ki_luat.html'))
     c = RequestContext(request, {'ktl': ktl, 'message':message, 'student_id':student_id, 'pupil':student, 'pos':pos, 'count':count})
     return HttpResponse(t.render(c))
-    
+
 def add_ki_luat(request, student_id):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
-        
+
     try:
         school = get_school(request)
     except Exception as e:
         return HttpResponseRedirect(reverse('index'))
-    
+
     form = KiLuatForm(student_id)
     pupil = Pupil.objects.get(id=student_id)
     if not in_school(request, pupil.class_id.block_id.school_id):
@@ -3277,12 +3314,12 @@ def delete_ki_luat(request, kt_id):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
-        
+
     try:
         school = get_school(request)
     except Exception:
         return HttpResponseRedirect(reverse('index'))
-    
+
     kt = KiLuat.objects.get(id=kt_id)
     student = kt.student_id
     if not in_school(request, student.class_id.block_id.school_id):
@@ -3300,12 +3337,12 @@ def edit_ki_luat(request, kt_id):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
-    
+
     try:
         school = get_school(request)
     except Exception :
         return HttpResponseRedirect(reverse('index'))
-    
+
     kt = KiLuat.objects.get(id=kt_id)
 
     pupil = kt.student_id
@@ -3330,7 +3367,7 @@ def edit_ki_luat(request, kt_id):
             return HttpResponseRedirect(url)
     t = loader.get_template(os.path.join('school', 'ki_luat_detail.html'))
     c = RequestContext(request, {'form': form, 'p': pupil, 'student_id':pupil.id, 'term':term, 'url':url})
-    return HttpResponse(t.render(c))    
+    return HttpResponse(t.render(c))
 #term_number = 1: ki 1. = 2: ki 2, = 3: ca nam.
 def hanh_kiem(request, class_id = 0, sort_type = 1, sort_status = 0):
     user = request.user
@@ -3347,8 +3384,8 @@ def hanh_kiem(request, class_id = 0, sort_type = 1, sort_status = 0):
             return HttpResponseRedirect('/school/hanhkiem/'+str(cl.id))
     c = classList.get(id__exact=class_id)
     if not in_school(request, c.block_id.school_id):
-        return HttpResponseRedirect('/')           
-    
+        return HttpResponseRedirect('/')
+
     pos=get_position(request)
     if pos < 1:
         return HttpResponseRedirect('/')
@@ -3375,11 +3412,11 @@ def hanh_kiem(request, class_id = 0, sort_type = 1, sort_status = 0):
             pupilList = c.pupil_set.order_by('sex')
         else:
             pupilList = c.pupil_set.order_by('-sex')
-            
+
     #tk_dd_lop(class_id, term.id)
     form = []
     all = []
-    i = 0        
+    i = 0
     for p in pupilList:
         form.append(HanhKiemForm())
         all.append(HanhKiem())
@@ -3425,24 +3462,24 @@ def hanh_kiem(request, class_id = 0, sort_type = 1, sort_status = 0):
         term2 = request.POST.getlist('term2')
         y = request.POST.getlist('year')
         i = 0
-        for p in pupilList:            
+        for p in pupilList:
             hk = p.hanhkiem_set.get(year_id__exact=year.id)
             if term.number == 1:
                 data = {'student_id':p.id, 'term1':term1[i], 'year_id':year.id}
             else:
                 data = {'student_id':p.id, 'term1':hk.term1, 'term2':term2[i], 'year':y[i], 'year_id':year.id}
             form[i] = HanhKiemForm(data, instance=hk)
-            form[i].save()        
+            form[i].save()
             i += 1
     listdh = zip(pupilList, form, all)
     t = loader.get_template(os.path.join('school', 'hanh_kiem.html'))
-    c = RequestContext(request, {   'form':form,                                     
-                                    'message':message,                                     
-                                    'class':c, 
-                                    'list':listdh, 
-                                    'sort_type':sort_type, 
-                                    'sort_status':sort_status, 
-                                    'next_status':1-int(sort_status),                                     
+    c = RequestContext(request, {   'form':form,
+                                    'message':message,
+                                    'class':c,
+                                    'list':listdh,
+                                    'sort_type':sort_type,
+                                    'sort_status':sort_status,
+                                    'next_status':1-int(sort_status),
                                     'year' : year,
                                     'term' : term,
                                     'classList':classList,
@@ -3457,14 +3494,14 @@ def viewSubjectDetail (request, subject_id):
         school = get_school(request)
     except Exception :
         return HttpResponseRedirect(reverse('index'))
-    
+
     if get_position(request) < 4:
         return HttpResponseRedirect('/')
-    sub = Subject.objects.get(id=subject_id)        
-    class_id = sub.class_id    
+    sub = Subject.objects.get(id=subject_id)
+    class_id = sub.class_id
     if not in_school(request, class_id.block_id.school_id):
         return HttpResponseRedirect('/')
-    
+
     form = SubjectForm (class_id.block_id.school_id.id, instance = sub)
     message = None
     if request.method == 'POST':
@@ -3473,10 +3510,10 @@ def viewSubjectDetail (request, subject_id):
         form = SubjectForm(class_id.block_id.school_id.id, data, instance = sub)
         if form.is_valid():
             form.save()
-            message = 'Bạn đã cập nhật thành công'        
-            
+            message = 'Bạn đã cập nhật thành công'
+
     t = loader.get_template(os.path.join('school', 'subject_detail.html'))
-    c = RequestContext(request, {   'form':form, 
+    c = RequestContext(request, {   'form':form,
                                     'message':message,
                                     'sub': sub,
                                     })

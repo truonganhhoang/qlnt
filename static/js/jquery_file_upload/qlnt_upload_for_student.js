@@ -31,7 +31,7 @@ $(function () {
 
     // Initialize the jQuery File Upload widget:
     $('#fileupload').fileupload({
-        url: '/school/start_year/import/student/' + id,
+        url: '/school/start_year/import/student/' + id +'/0',
         dataType: 'json',
         acceptFileTypes: /(\.|\/)(xls)$/i,
         maxNumberOfFiles: 10
@@ -44,7 +44,28 @@ $(function () {
             if (data.result[0].process_message.replace(/ /g,'') != ''){
                 $("#errorDetail").html(data.result[0].process_message);
                 if (data.result[0].student_confliction){
-                    $("#errorDetail > ul").append('<li>' + data.result[0].student_confliction +'</li>');
+                    $("#errorDetail > ul").append(
+                            '<li>' + data.result[0].student_confliction +' ' +
+                            '<a id="update_existing" href="/school/start_year/import/student/'+id+
+                            '/update" class="ggButton">Cập nhật những học sinh này.</a>'+
+                            '</li>');
+                    $("#update_existing").click(function(){
+                        if ($(this).attr('href') != '')
+                            $.ajax({
+                                url: $(this).attr('href'),
+                                dataType: 'json',
+                                type: 'POST',
+                                success: function(json){
+                                    if (!json.success){
+                                        $("#notify").showNotification(json.message);
+                                    } else {
+                                        $("#update_existing").text(json.message);
+                                        $("#update_existing").attr('href', '');
+                                    }
+                                }
+                            });
+                        return false;
+                    })
                 }
                 $("#errorDetail > ul").append('<li>' + 'Bạn đã nhập thành công '
                                                      + data.result[0].number_ok
