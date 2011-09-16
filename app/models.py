@@ -96,10 +96,14 @@ class Organization(models.Model):
             else:
                 self.save_settings(attribute, '')
                 return ''
-        if result[0] == '[' and result[-1] == ']':
-            return eval(result)
-        else:
-            return result
+        try:
+            if len(result) > 1 and result[0] == '[' and result[-1] == ']':
+                return eval(result)
+            else:
+                return result
+        except Exception as e:
+            print e
+            return ''
 
     
     def __unicode__(self):
