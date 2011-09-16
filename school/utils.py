@@ -373,12 +373,14 @@ def add_many_students( student_list = None,
         else:
             st.sex = 'Nam'
         changed = False
+
+        if 'ban_dk' in student and st.ban_dk!= student['ban_dk']:
+            st.ban_dk = student['ban_dk']
+            changed = True
         if 'dan_toc' in student and st.dan_toc!= student['dan_toc']:
-            print st.dan_toc, student['dan_toc']
             st.dan_toc = student['dan_toc']
             changed = True
         if 'birth_place' in student and st.birth_place!=student['birth_place']:
-            print st.birth_place, student['birth_place']
             st.birth_place = student['birth_place']
             changed = True
         if 'current_address' in student and st.current_address!=student['current_address']:

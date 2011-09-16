@@ -838,15 +838,15 @@ def process_file(file_name, task):
         for r in range(start_row + 1, sheet.nrows):
             name = ''
             birthday =''
-            gt=''
-            dan_toc=''
+            gt='Nam'
+            dan_toc=u'Kinh'
             noi_sinh=''
             cho_o_ht=''
             ten_bo=''
             dt_bo=''
             ten_me=''
             dt_me=''
-            ban_dk = ''
+            ban_dk = u'CB'
             sms_phone = ''
             name = sheet.cell(r, c_ten).value.strip()
             name = ' '.join([i.capitalize() for i in name.split(' ')])
