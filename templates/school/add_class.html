@@ -1,5 +1,9 @@
 ﻿{% extends "base.html" %}
 
+{% block backward_link %}
+<a href="{% url school.views.school_index %}classes"> Toàn trường</a> > Thêm lớp
+{% endblock %}
+
 {% block content %}
 <h2>Thêm lớp học</h2>
 {% if message != None %}
@@ -44,6 +48,5 @@
 	</table>
    <br> 
    <input class = "ggButton" type = "submit"  title =""value="Thêm"/>
-   <a href="{%url school.views.school_index  %}classes" title="Quay lại danh sách lớp"> <input class="ggButton" type="button"value ="Quay lại"></a>
 </form>
 {% endblock %}

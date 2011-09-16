@@ -728,6 +728,7 @@ def teacher_generate(request, type):
         sheet.write(4,4,'Giới tính', style_bold)
         sheet.write(4,5,'Dạy môn', style_bold)
         sheet.write(4,6,'Tổ', style_bold)
+        sheet.write(4,7,'Tài Khoản', style_bold)
 
         row = 5
         for teacher in teacher_list:
@@ -745,6 +746,7 @@ def teacher_generate(request, type):
                 sheet.write(row, 6, teacher.team_id.name, style)
             else:
                 sheet.write(row, 6, '', style)
+            sheet.write(row, 7, teacher.user_id.username, style)
             row +=1
             #return HttpResponse
         response = HttpResponse(mimetype='application/ms-excel')
