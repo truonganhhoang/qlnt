@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block backward_link %}
-    <a href="{% url school.views.school_index %}classes"> Toàn trường</a> > {{ class }}
+    <a href="{% url school.views.school_index %}classes"> Toàn trường</a> > <a href="{% url school.views.school_index %}viewClassDetail/{{ class.id }}">{{ class }}</a> > Sắp xếp học sinh
 {% endblock %}
 {% block content %}
     <script type="text/javascript">
@@ -29,9 +29,8 @@
 
         });
     </script>
-    <h2>Sắp xếp học sinh lớp <a href="{% url school.views.viewClassDetail class.id  %}">{{ class }}</a></h2>
+    <h2>Sắp xếp học sinh lớp {{ class }}</a></h2>
     <div id="submenu">
-        <input type="button" class="ggButton" id="back" value="Quay lại"/>
         <input type="button" class="ggButton" id="save" value="Lưu thứ tự" />
         <input type="button" class="ggButton" id="sort_alphabet" value="Sắp xếp abc" />
         <input type="button" class="ggButton" id="cancel_list_sorting" title = "Trở về thứ tự ban đầu" value="Hủy sắp xếp" />
