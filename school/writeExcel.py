@@ -5,7 +5,6 @@ from django.http import HttpResponse, HttpResponseRedirect
 from school.models import *
 from django.shortcuts import render_to_response
 from django.template import RequestContext, loader
-from school.viewCount import *
 from school.utils import *
 from django.core.urlresolvers import reverse
 from django.db import transaction

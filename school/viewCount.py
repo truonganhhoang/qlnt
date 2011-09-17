@@ -618,6 +618,7 @@ def count1(request,year_id=None,number=None,type=None,):
     if get_position(request) != 4:
        return HttpResponseRedirect('/school')
     """
+    tt1=time.time()
     message=None
     if year_id==None:
         selectedTerm =get_current_term(request)
@@ -704,6 +705,8 @@ def count1(request,year_id=None,number=None,type=None,):
         message+=unicode(notFinishAll)+ u' hs chưa xét danh hiệu'
     if message!=0:
         message=u'Còn ' +message         
+    tt2=time.time()
+    print tt2-tt1
     if type=='1':
         return count1Excel(year_id,number,list,sumsumsum,allList)
             

@@ -146,6 +146,7 @@ def saveMarkHasComment(request,selectedTerm,markList,idList,tbhk1ListObjects,tbn
 
 def defineEdit(mt,timeToEdit):
     timeNow =datetime.datetime.now()
+    print mt.mieng_1
     if mt==None:
         return Editable(0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0 ,0)
     else:
@@ -241,7 +242,8 @@ def getMark(subjectChoice,selectedTerm):
     
     selectedSubject = Subject.objects.get(id= subjectChoice)
     class_id = selectedSubject.class_id.id
-    timeToEdit = 0    
+    timeToEdit = int(selectedTerm.year_id.school_id.get_setting('locked_time'))*60
+    print timeToEdit    
     pupilList=Pupil.objects.filter(class_id=class_id).order_by('index')                
     editList=[]    
     idList=[]    

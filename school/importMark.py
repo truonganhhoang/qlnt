@@ -73,7 +73,8 @@ def importMark(request,term_id,subject_id):
             return HttpResponseRedirect('/school')
     
     t1= time.time()
-    timeToEdit=0
+    timeToEdit = int(selectedSubject.class_id.year_id.school_id.get_setting('locked_time'))*60
+
     timeNow =datetime.datetime.now()
        
     absentMessage=''
@@ -157,7 +158,7 @@ def importMark(request,term_id,subject_id):
     message='Lỗi'                 
     if (validateMessage=='') & (editMarkMessage==''):
         if numberOk==len(markList):
-            message="Đã nhập thành cdddông cả lớp"
+            message="Đã nhập thành công cả lớp"
         else:
             message="Đã nhập được "+str(numberOk)+"/"+str(len(markList))+" học sinh."
                                                        
