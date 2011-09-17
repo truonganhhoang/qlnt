@@ -1713,10 +1713,12 @@ def student(request, student_id):
 #User: loi.luuthe@gmail.com
 #This function has class_id is an int argument. It gets the information of the class corresponding to the class_id and response to the template
 def viewClassDetail(request, class_id, sort_type=0, sort_status=0):
+    """
+
+    """
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
-
     try:
         school = get_school(request)
     except Exception as e:
@@ -1729,6 +1731,11 @@ def viewClassDetail(request, class_id, sort_type=0, sort_status=0):
         cl = Class.objects.get(id=class_id)
     except Class.DoesNotExist:
         return HttpResponseRedirect('/school/classes')
+
+    year_max = int(date.today().year)- cl.block_id.number - 4
+    year_min = int(date.today().year)- cl.block_id.number - 8
+    year_range = '' + str(year_min) + ':' + str(year_max)
+    default_date = str(-cl.block_id.number-6) + 'y -' + str(int(date.today().month)-1) + 'm-'+ str(int(date.today().day)-1)
     cn=gvcn(request, class_id)
     inCl=inClass(request, class_id)
     if not in_school(request, cl.block_id.school_id):
@@ -1856,6 +1863,8 @@ def viewClassDetail(request, class_id, sort_type=0, sort_status=0):
                                     'gvcn':cn,
                                     'student_id':id,
                                     'currentTerm':currentTerm,
+                                    'year_range':year_range,
+                                    'default_date':default_date
                                     })
     return HttpResponse(t.render(c))
 
