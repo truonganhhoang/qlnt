@@ -2,7 +2,9 @@
 {% load upload_tags %}
 
 {% block backward_link %}
+    {% if pos > 1 %}
     <a href="{% url school.views.school_index %}classes"> Toàn trường</a> > {{ class }}
+    {% endif %}
 {% endblock %}
 
 {% block content %}

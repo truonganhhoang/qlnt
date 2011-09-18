@@ -98,14 +98,26 @@
                         <td align="center" width="10%"> {{ ss.sex }} </td>
 
                         {% if pos > 3 %}
-                            <td align="center" width="15%"> {{ f.major }} </td>
+                            <td align="center" width="15%">{{ f.major }}</td>
                             <td align="center" width="15%"> {{ f.team_id }} </td>
                             <td align="center" width="10%"><a
                                     href="{%url school.views.school_index  %}deleteTeacher/{{ss.id}}/0"
                                     title="Xóa giáo viên" class="ggButton delete"> xóa </a></td>
                         {% else %}
-                            <td align="center" width="15%"> {{ ss.major }} </td>
-                            <td align="center" width="15%"> {{ ss.team_id }} </td>
+                            <td align="center" width="15%">
+                                {% if ss.major = '-1' %}
+                                    Chưa rõ
+                                {% else %}
+                                    {{ ss.major }}
+                                {% endif %}
+                            </td>
+                            <td align="center" width="15%">
+                                {% if ss.team_id %}
+                                    {{ ss.team_id }}
+                                {% else %}
+                                    Chưa rõ
+                                {% endif %}
+                            </td>
                         {% endif %}
                     </tr>
                 {% endfor %}

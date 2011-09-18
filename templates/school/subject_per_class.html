@@ -167,7 +167,6 @@
                     </th>
                     <th class="naviButton" style="display: none;">
                         <button class="naviButton-down ggButton">Xuống</button>
-
                     </th>
 
                     <td class="index" width="3%">
@@ -185,7 +184,13 @@
                         <td align="center" width="20%"> {{ss.name}}</td>
                         <td align="center" width="20%"> {{ss.type}}</td>
                         <td align="center" width="10%"> {{ss.hs}} </td>
-                        <td align="center" width="25%"> {{ss.teacher_id}}</td>
+                        <td align="center" width="25%">
+                            {% if ss.teacher_id != "None" %}
+                                    Chưa rõ
+                                {% else %}
+                                    {{ ss.teacher_id }}
+                                {% endif %}
+                        </td>
                         <td align="center" > {{ss.primary}} </td>
                     {%endif%}
                 </tr>

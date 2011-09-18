@@ -1,5 +1,11 @@
 {% extends "base.html" %}
 
+{% block backward_link %}
+    {% if pos > 1 %}
+    <a href="{% url school.views.school_index %}teachers"> Giáo viên</a> > {{ teacher }}
+    {% endif %}
+{% endblock %}
+
 {% block content %}
 {% if message != None %}
 	{{message}} <br>
@@ -71,7 +77,9 @@
     <ul>
         <li><a href="#tabs1"> Thông tin cá nhân </a></li>
         <li><a href="#tabs2"> Thông tin liên lạc </a> </li>
+        {% if pos > 3%}
         <li><a href="/school/teacher/account/{{ id }}">Tài khoản</a></li>
+        {% endif %}
     </ul>
     <div id="tabs1">
         <form action="/school/viewTeacherDetail/{{id}}" method="post">{% csrf_token %}

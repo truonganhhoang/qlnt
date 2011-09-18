@@ -2323,7 +2323,7 @@ def viewTeacherDetail(request, teacher_id):
                                              'phone':phone, 'email':email,'sms_phone':sms_phone})
                 return HttpResponse(response, mimetype = 'json')
     t = loader.get_template(os.path.join('school', 'teacher_detail.html'))
-    c = RequestContext(request, {   'form': form, 'message': message,
+    c = RequestContext(request, {   'form': form, 'message': message, 'teacher' : teacher,
                                     'id': teacher_id, 'ttcnform':ttcnform,
                                     'pos': pos, 'ttllform':ttllform})
     return HttpResponse(t.render(c))

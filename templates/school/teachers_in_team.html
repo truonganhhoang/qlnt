@@ -104,9 +104,27 @@
                             href="{%url school.views.school_index  %}deleteTeacher/{{ss.id}}/{{team.id}}"
                             title="Xóa giáo viên" class="ggButton delete"> Xóa </a></td>
                 {% else %}
-                    <td align="center" width="10%"> {{ s.major }} </td>
-                    <td align="center" width="10%"> {{ ss.team_id }} </td>
-                    <td align="center" width="10%"> {{ ss.group_id }} </td>
+                    <td align="center" width="15%">
+                        {% if ss.major = '-1' %}
+                            Chưa rõ
+                        {% else %}
+                            {{ ss.major }}
+                        {% endif %}
+                    </td>
+                    <td align="center" width="15%">
+                        {% if ss.team_id%}
+                            {{ ss.team_id }}
+                        {% else %}
+                            Chưa rõ
+                        {% endif %}
+                    </td>
+                    <td align="center" width="10%">
+                    {% if ss.group_id %}
+                            {{ ss.group_id }}
+                        {% else %}
+                            Chưa rõ
+                        {% endif %}
+                    </td>
                 {% endif %}
             </tr>
         {% endfor %}

@@ -1,7 +1,9 @@
 ﻿{% extends "base.html" %}
 
 {% block backward_link %}
+    {% if pos > 1 %}
     <a href="{% url school.views.school_index %}classes"> Toàn trường</a> > <a href="{% url school.views.school_index %}viewClassDetail/{{ class.id }}"> {{ class }} </a> > Hạnh kiểm
+    {% endif %}
 {% endblock %}
 {% block content %}
     {% if pos > 2 %}
@@ -149,7 +151,11 @@
                         <td align="center" width="10%"></td>
                     {%else%}
                         <td align="center" width="10%">                        
-                            {{ v.term1 }}
+                            {%  if v.term1 %}
+                                {{v.term1}}
+                            {% else %}
+                                Chưa xét
+                            {% endif %}
                         </td>
                         
                         <td align="center" width="10%">
@@ -162,9 +168,27 @@
                         </td>                
                     {%endif%}
                 {% else %}
-                    <td align="center" width="10%">{{ v.term1 }}</td>
-                    <td align="center" width="10%">{{ v.term2 }}</td>
-                    <td align="center" width="10%">{{ v.year }}</td>
+                    <td align="center" width="10%">
+                    {%  if v.term1 %}
+                                {{v.term1}}
+                            {% else %}
+                                Chưa xét
+                            {% endif %}
+                    </td>
+                    <td align="center" width="10%">
+                        {%  if v.term2 %}
+                                {{v.term2}}
+                            {% else %}
+                                Chưa xét
+                            {% endif %}
+                    </td>
+                    <td align="center" width="10%">
+                        {%  if v.year %}
+                                {{v.year}}
+                            {% else %}
+                                Chưa xét
+                            {% endif %}
+                    </td>
                 {%endif%}
             </tr>
         {% endfor %}        

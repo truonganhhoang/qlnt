@@ -86,7 +86,13 @@
                     {% if pos >= 4 %}
                         <td align="center"> {{ f.teacher_id }} </td>
                     {% else %}
-                        <td align="center"> {{ class.teacher_id }} </td>
+                        <td align="center">
+                            {% if class.teacher_id %}
+                                {{ class.teacher_id }}
+                            {% else %}
+                                Chưa rõ
+                            {% endif %}
+                        </td>
                     {% endif %}
                     <td align="center"> {{ class.year_id }} </td>
                     {% if pos >= 4 %}
