@@ -145,60 +145,93 @@ def setup(request):
                                context_instance = context )
 
 def info(request):
-    user = request.user
-    message = None
     try:
-        school = get_school(request)
-    except Exception as e:
-        return HttpResponseRedirect( reverse('index'))
-    if request.method == 'POST':
-        data = request.POST.copy()
-        data['phone'] = data['phone'].strip()
-        data['email'] = data['email'].strip()
-        data['name'] = data['name'].strip()
-        name=''
-        address=''
-        email=''
-        phone=''
-        if request.is_ajax():
+        user = request.user
+        message = None
+        try:
+            school = get_school(request)
+        except Exception as e:
+            return HttpResponseRedirect( reverse('index'))
+        form = None
+        setting_form = None
+        if request.method == 'POST':
+            data = request.POST.copy()
+            data['phone'] = data['phone'].strip()
+            data['email'] = data['email'].strip()
+            data['name'] = data['name'].strip()
+            data['lock_time'] = data['lock_time'].strip()
+            name=''
+            address=''
+            email=''
+            phone=''
+            lock_time =''
+            if request.is_ajax():
+                form = SchoolForm(data, request = request)
+                setting_form = SettingForm(data, request=request)
+                if form.is_valid():
+                    form.save_to_model()
+                    message = u'Bạn vừa cập nhật thông tin trường học thành công'
+                    status = 'done'
+                else:
+                    message = u'Có lỗi ở thông tin nhập vào'
+                    for a in form:
+                        if a.name == 'phone':
+                            if a.errors:
+                                phone = str(a.errors)
+                        elif a.name == 'email':
+                            if a.errors:
+                                email = str(a.errors)
+                        elif a.name == 'address':
+                            if a.errors:
+                                address = str(a.errors)
+                        elif a.name == 'name':
+                            if a.errors:
+                                name = str(a.errors)
+                    status = 'error'
+                if setting_form.is_valid():
+                    setting_form.save_to_model()
+                    message = u'Bạn vừa cập nhật thông tin trường học thành công'
+                    status = 'done'
+                else:
+                    message = u'Có lỗi ở thông tin nhập vào'
+                    for a in setting_form:
+                        if a.name == 'lock_time':
+                            if a.errors:
+                                lock_time = str(a.errors)
+                    status = 'error'
+                response = simplejson.dumps({'message': message,
+                                             'status': status,
+                                             'phone':phone,
+                                             'email':email,
+                                             'name':name,
+                                             'address':address,
+                                             'lock_time': lock_time})
+                return HttpResponse(response, mimetype = 'json')
+
             form = SchoolForm(data, request = request)
             if form.is_valid():
                 form.save_to_model()
-                message = u'Bạn vừa cập nhật thông tin trường học thành công'
-                status = 'done'
-            else:
-                message = u'Có lỗi ở thông tin nhập vào'
-                for a in form:
-                    if a.name == 'phone':
-                        if a.errors:
-                            phone = str(a.errors)
-                    elif a.name == 'email':
-                        if a.errors:
-                            email = str(a.errors)
-                    elif a.name == 'address':
-                        if a.errors:
-                            address = str(a.errors)
-                    elif a.name == 'name':
-                        if a.errors:
-                            name = str(a.errors)
-                status = 'error'
-            response = simplejson.dumps({'message': message, 'status': status, 'phone':phone, 'email':email, 'name':name, 'address':address})
-            return HttpResponse(response, mimetype = 'json')
+                message = u'Bạn vừa cập nhật thông tin trường học thành công.'
+                return HttpResponseRedirect( reverse('info'))
+        else:
+            data = {'name': school.name,
+                    'address': school.address, 'phone': school.phone,
+                    'email': school.email}
+            form = SchoolForm(data, request= request)
+            lock_time = school.get_setting('lock_time')
+            print 'lock_time',lock_time
+            setting = {'lock_time': lock_time}
+            setting_form = SettingForm(setting, request= request)
 
-        form = SchoolForm(data, request = request)
-        if form.is_valid():
-            form.save_to_model()
-            message = u'Bạn vừa cập nhật thông tin trường học thành công.'
-            return HttpResponseRedirect( reverse('info'))
-    else:
-        data = {'name': school.name, 'school_level':school.school_level,
-                'address': school.address, 'phone': school.phone,
-                'email': school.email}
-        form = SchoolForm(data, request= request)
-
-    context = RequestContext(request)
-    return render_to_response(INFO, { 'form':form, 'school':school, 'message':message}, context_instance = context)
-
+        context = RequestContext(request)
+        return render_to_response(INFO, { 'form':form,
+                                          'school':school,
+                                          'message':message,
+                                          'setting_form': setting_form},
+                                  context_instance = context)
+    except Exception as e:
+        print e
+        raise e
 def empty(label_list):
     for l in label_list:
         if l.strip(): return False
@@ -635,6 +668,7 @@ def class_generate(request, class_id, object):
         sheet.write(4,6,'Chỗ ở hiện tại', style_bold)
         sheet.write(4,7,'Số điện thoại', style_bold)
         sheet.write(4,8,'Ghi chú', style_bold)
+        sheet.write(4,9, 'Tên tài khoản', style_bold)
         row = 5
         for student in student_list:
             sheet.row(row).height = 350
@@ -647,6 +681,7 @@ def class_generate(request, class_id, object):
             sheet.write(row, 6, student.current_address, style)
             sheet.write(row, 7, student.phone, style)
             sheet.write(row, 8, '', style)
+            sheet.write(row, 9, student.user_id.username, style)
             row +=1
             #return HttpResponse
         response = HttpResponse(mimetype='application/ms-excel')

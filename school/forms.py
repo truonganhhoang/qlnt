@@ -170,7 +170,28 @@ class SchoolForm(forms.Form):
             school.save()
         except Exception as e:
             print e
-    
+
+class SettingForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop('request')
+        super(SettingForm, self).__init__(*args, **kwargs)
+        self.fields['lock_time'] = forms.IntegerField(label=u"Thời gian khóa điểm(Giờ):", required = True) #
+        #self.fields['class_labels'] = forms.CharField(label=u"Danh sách lớp học:", max_length = 512,
+        #                                              validators=[validate_class_label],
+        #                                              required = False)
+    def save_to_model(self):
+        try:
+            school = get_school(self.request)
+            if self.cleaned_data['lock_time'] >= 0:
+                print self.cleaned_data['lock_time']
+                school.save_settings('lock_time', self.cleaned_data['lock_time'])
+            else:
+                raise Exception('LockTimeValueError')
+        except Exception as e:
+            print e
+
+
+
 class ClassForm(forms.ModelForm):
     class Meta:
         model = Class

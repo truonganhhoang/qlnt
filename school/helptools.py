@@ -9,7 +9,7 @@ from sms.views import *
 
 SYNC_RESULT = os.path.join('helptool','recover_marktime.html')
 SYNC_SUBJECT = os.path.join('helptool','sync_subject.html')
-
+TEST_TABLE = os.path.join('helptool','test_table.html')
 
 
 def recover_marktime(request):
@@ -225,7 +225,13 @@ def sync_subject_primary(request):
                                context_instance = context )
 
 
-
+def test_table(request):
+    context = RequestContext(request)
+    school = get_school(request)
+    student_list = [x for x in range(1,70)]
+    mark_list = [x for x in range(1,20)]
+    return render_to_response( TEST_TABLE, {'mark_list': mark_list,
+                                            'student_list': student_list}, context_instance = context)
 
 
 #class myHTTPTransport(HTTPTransport):

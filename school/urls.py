@@ -157,5 +157,5 @@ urlpatterns = patterns('',
     #url(r'check_logic/$', 'school.helptools.check_logic', name='check_logic'),
     #url(r'sync_subject_type/$', 'school.helptools.sync_subject_type', name='sync_subject_type'),
     #url(r'sync_subject_primary/$', 'school.helptools.sync_subject_primary', name='sync_subject_primary'),
-
+    #url(r'test_table/$', 'school.helptools.test_table'),
 	)

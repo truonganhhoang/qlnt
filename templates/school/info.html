@@ -2,104 +2,126 @@
 
 {% block content %}
 
-{% if user.userprofile.position == 'HIEU_TRUONG' or user.userprofile.position == 'HIEU_PHO' %}
-    <script type="text/javascript" >
+    {% if user.userprofile.position == 'HIEU_TRUONG' or user.userprofile.position == 'HIEU_PHO' %}
+        <script type="text/javascript" >
 
-        $(document).ready( function(){
-            $("#cancel").click(function(){
-                window.location.href = "{%url school.views.school_index %}";
-                return false;
+            $(document).ready( function(){
+                $("#cancel").click(function(){
+                    window.location.href = "{%url school.views.school_index %}";
+                    return false;
+                });
             });
-        });
-        $(document).ready(function(){
+            $(document).ready(function(){
 
-            var update_school_detail_done = function(json) {
-                if (json.status == 'done') {
-                    $("#notify").showNotification('Cập nhật thành công thông tin trường học.');
-                    $.ajaxSetup({
-                       global: false
-                    });
-                    $("#dynamic_name").load('{% url school.views.school_index %} #head_title');
-                    $.ajaxSetup({
-                        global: true
-                    });
-                } else {
-                    $("#id_phone").parents("td").append(json.phone);
-                    $("#id_email").parents("td").append(json.email);
-                    $("#id_address").parents("td").append(json.address);
-                    $("#id_name").parents("td").append(json.name);
-                    $("#notify").showNotification(json.message);
-                }
-                
-            };
+                var updateSchoolDetailDone = function(json) {
+                    if (json.status == 'done') {
+                        $("#notify").showNotification('Cập nhật thành công thông tin trường học.');
+                        $.ajaxSetup({
+                            global: false
+                        });
+                        $("#dynamic_name").load('{% url school.views.school_index %} #head_title');
+                        $.ajaxSetup({
+                            global: true
+                        });
+                    } else {
+                        $("#id_phone").parents("td").append(json.phone);
+                        $("#id_email").parents("td").append(json.email);
+                        $("#id_address").parents("td").append(json.address);
+                        $("#id_name").parents("td").append(json.name);
+                        $("#id_lock_time").parents("td").append(json.lock_time);
+                        $("#notify").showNotification(json.message);
+                    }
 
-            $("#submit").click(function() {
-                $(".errorlist").empty();
-                var school_name = $("#id_name").val();
-                var school_level = $("#id_school_level").val();
-                var school_address = $("#id_address").val();
-                var school_phone = $("#id_phone").val();
-                var school_email = $("#id_email").val();
-                var data = { name: school_name, school_level: school_level,
-                    address: school_address, phone: school_phone, email: school_email,
-                    update_school_detail: true };
-                var para = {
-                    type:"POST",
-                    url:"",
-                    global: false,
-                    data: data,
-                    datatype: "json",
-                    success: update_school_detail_done
                 };
-                $.ajax(para);
-                return false;
+
+                $("#submit").click(function() {
+                    $(".errorlist").empty();
+                    var schoolName = $("#id_name").val();
+                    var schoolLevel = $("#id_school_level").val();
+                    var schoolAddress = $("#id_address").val();
+                    var schoolPhone = $("#id_phone").val();
+                    var schoolEmail = $("#id_email").val();
+                    var schoolLockTime = $("#id_lock_time").val();
+                    var data = { name: schoolName, school_level: schoolLevel,
+                        address: schoolAddress, phone: schoolPhone, email: schoolEmail,
+                        update_school_detail: true,
+                        lock_time: schoolLockTime
+                    };
+                    var para = {
+                        type:"POST",
+                        url:"",
+                        global: false,
+                        data: data,
+                        datatype: "json",
+                        success: updateSchoolDetailDone
+                    };
+                    $.ajax(para);
+                    return false;
+                });
+
             });
 
-        });
-
-    </script>
-{% endif %}
-
-    <h2>Thông tin trường học</h2>
-    {% if message != None %}
-        {{message}}
-        <br/>
+        </script>
     {% endif %}
+
 
     {% if user.userprofile.position == 'HIEU_TRUONG' or user.userprofile.position == 'HIEU_PHO' %}
         <form action="{%url school.views.info %}" method="post">{% csrf_token %}
-            <div class="infoContent">
-                <div class="leftInfoDiv">
+            {% if message != None %}
+                {{message}}
+                <br/>
+            {% endif %}
+            <div class="leftInfoDiv">
+                <h2>Thông tin trường học</h2>
+                <div class="infoContent">
                     <table class="styleA">
-                        {{form.as_table}}
+                        {{ form.as_table }}
                     </table>
                 </div>
             </div>
+            <div class="rightInfoDiv">
+                <h2>Thiết lập thông số</h2>
+                <div class="infoContent">
+                    <table class="styleA">
+                        {{ setting_form.as_table }}
+                    </table>
+                </div>
+            </div>
+            <div style="clear: both;"></div>
             <input type="submit" id="submit" class="ggButton" name="submit" value="Lưu lại" />
             <input type="reset"  id="cancel" class="ggButton" name="cancel" value="Hủy" />
         </form>
+
     {% else %}
-        <table class="styleA">
-            <tr>
-                <th> Tên trường: </th>
-                <td> {{ school.name }}</td>
-            </tr>
-            <tr>
-                <th> Cấp: </th>
-                <td>{{ school.school_level }}</td>
-            </tr>
-            <tr>
-                <th>Địa chỉ:</th>
-                <td> {{ school.address }}</td>
-            </tr>
-            <tr>
-                <th> Điện thoại: </th>
-                <td> {{ school.phone }}</td>
-            </tr>
-            <tr>
-                <th> Email: </th>
-                <td> {{ school.email }}</td>
-            </tr>
-        </table>
+        <div>
+            <h2>Thông tin trường học</h2>
+            {% if message != None %}
+                {{message}}
+                <br/>
+            {% endif %}
+
+            <table class="styleA">
+                <tr>
+                    <th> Tên trường: </th>
+                    <td> {{ school.name }}</td>
+                </tr>
+                <tr>
+                    <th> Cấp: </th>
+                    <td>{{ school.school_level }}</td>
+                </tr>
+                <tr>
+                    <th>Địa chỉ:</th>
+                    <td> {{ school.address }}</td>
+                </tr>
+                <tr>
+                    <th> Điện thoại: </th>
+                    <td> {{ school.phone }}</td>
+                </tr>
+                <tr>
+                    <th> Email: </th>
+                    <td> {{ school.email }}</td>
+                </tr>
+            </table>
+        </div>
     {% endif %}
 {% endblock %}

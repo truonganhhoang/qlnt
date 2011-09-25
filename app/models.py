@@ -56,7 +56,7 @@ class Organization(models.Model):
             return ''
 
     def save_settings(self, attribute, value):
-        if type(attribute) != str or type(value) != str:
+        if type(attribute) != str or (type(value) != str and type(value) != int):
             raise Exception('InvalidArgumentType')
         try:
             setting_file_name = str(self.id)
@@ -70,7 +70,7 @@ class Organization(models.Model):
         setting.read(setting_file_name)
         if not setting.has_section('school'):
             setting.add_section('school')
-        setting.set('school', attribute, value)
+        setting.set('school', attribute, str(value))
         setting.write(file)
         file.close()
 
@@ -90,8 +90,8 @@ class Organization(models.Model):
             result = setting.get('school', attribute)
         except  Exception as e:
             print e
-            if attribute == 'locked_time':
-                self.save_settings(attribute, '24')
+            if attribute == 'lock_time':
+                self.save_settings(attribute, 24)
                 return 24
             else:
                 self.save_settings(attribute, '')
@@ -100,6 +100,9 @@ class Organization(models.Model):
             if len(result) > 1 and result[0] == '[' and result[-1] == ']':
                 return eval(result)
             else:
+                if attribute == 'lock_time' and not result:
+                    self.save_settings('lock_time', 24)
+                    result = 24
                 return result
         except Exception as e:
             print e

@@ -60,6 +60,10 @@ def this_year():
 
 #validate mark of pupil
 #mark must be between 0 and 10
+
+def validate_class_label(value):
+    if not value.strip(): raise ValidationError(u'Bạn chưa nhập danh sách tên lớp ')
+
 def validate_mark(value):
     if value < 0 or value > 10:
         raise ValidationError(u'Điểm phải nằm trong khoảng từ 0 đến 10')
