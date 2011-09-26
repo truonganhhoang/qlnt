@@ -72,6 +72,35 @@ def sync_index(request):
                                context_instance = context )
 
 @transaction.commit_on_success
+def copy_hanh_kiem_data(request):
+
+    try:
+        students = Pupil.objects.all()
+        number = 0
+        message = ''
+        for student in students:
+            tbnams = TBNam.objects.filter(student_id = student)
+            for tbnam in tbnams:
+                print tbnam.student_id, tbnam.year_id
+                hk = HanhKiem.objects.filter(student_id=student, year_id=tbnam.year_id )
+                if len(hk)>1:
+                    for h in hk:
+                        print h.student_id, h.year_id, h.term1, h.term2, h.year, h.ren_luyen_lai, h.hk_ren_luyen_lai
+                number += 1
+                tbnam.term1 = hk[0].term1
+                tbnam.term2 = hk[0].term2
+                tbnam.year = hk[0].year
+                tbnam.ren_luyen_lai = hk[0].ren_luyen_lai
+                tbnam.hk_ren_luyen_lai = hk[0].hk_ren_luyen_lai
+                tbnam.save()
+    except Exception as e:
+        print e
+    message += '\n' + u'Copy xong.' + str(number)
+    context = RequestContext(request)
+    return render_to_response( SYNC_RESULT, { 'message' : message},
+                               context_instance = context )
+
+@transaction.commit_on_success
 def sync_subject(request):
     classes = Class.objects.all()
     print classes

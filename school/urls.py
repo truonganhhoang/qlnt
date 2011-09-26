@@ -158,4 +158,5 @@ urlpatterns = patterns('',
     #url(r'sync_subject_type/$', 'school.helptools.sync_subject_type', name='sync_subject_type'),
     #url(r'sync_subject_primary/$', 'school.helptools.sync_subject_primary', name='sync_subject_primary'),
     #url(r'test_table/$', 'school.helptools.test_table'),
+    url(r'copy_hanh_kiem_data/$','school.helptools.copy_hanh_kiem_data'),
 	)
