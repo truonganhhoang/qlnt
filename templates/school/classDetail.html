@@ -118,6 +118,7 @@
                     data: {data:data, request_type:'del'},
                     datatype:"json",
                     success: function() {
+                        $("#notify").showNotification("Đã xóa xong");
                         location.reload('true');
                     }
                 };
