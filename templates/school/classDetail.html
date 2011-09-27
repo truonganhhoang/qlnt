@@ -112,6 +112,8 @@
                 $(".selected").each(function() {
                     data = data + $(this).attr('class').split(' ')[0] + '-';
                 });
+                $("#notify").text("Đang xóa...");
+                $("#notify").show();
                 var arg = { type:"POST",
                     url:"",
                     global: false,
