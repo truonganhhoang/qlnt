@@ -73,7 +73,7 @@ def importMark(request,term_id,subject_id):
             return HttpResponseRedirect('/school')
     
     t1= time.time()
-    timeToEdit = int(selectedSubject.class_id.year_id.school_id.get_setting('locked_time'))*60
+    timeToEdit = int(selectedSubject.class_id.year_id.school_id.get_setting('lock_time'))*60
 
     timeNow =datetime.datetime.now()
        
