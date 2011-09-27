@@ -327,7 +327,7 @@ def printPage20(class_id,termNumber,s,length,subjectList):
     selectedClass = Class.objects.get(id=class_id)
     
     tbhkList = TBHocKy.objects.filter(student_id__class_id=class_id,term_id__number=termNumber)
-    hkList   = HanhKiem.objects.filter(student_id__class_id=class_id,year_id=selectedClass.year_id)
+    hkList   = TBNam.objects.filter(student_id__class_id=class_id,year_id=selectedClass.year_id)
     
     i=-1
     for (i,(tbhk,hk)) in enumerate(zip(tbhkList,hkList)):
@@ -405,37 +405,37 @@ def printPage31(class_id,s,tbNamList,x,y):
     s.write_merge(x+1,x+4,y+11,y+11,u'Danh hiệu\n HSG,\nHSTT',h10)
     s.write_merge(x+1,x+4,y+12,y+12,u'TỔNG HỢP CHUNG',h10)
     
-    hanhKiemList =HanhKiem.objects.filter(student_id__class_id=class_id).order_by('student_id__index')
+    #hanhKiemList =HanhKiem.objects.filter(student_id__class_id=class_id).order_by('student_id__index')
     llSauHe=0
-    for (i,(tbNam,hk)) in enumerate(zip(tbNamList,hanhKiemList)):
+    for (i,(tbNam)) in enumerate(tbNamList):
         if i % 5 != 4: h=h6
         else         : h=h7
         str1=''
         if tbNam.hl_nam!=None:           str1 = tbNam.hl_nam
                 
         str2=''
-        if hk.year!=None:   str2= hk.year
+        if tbNam.year!=None:   str2= tbNam.year
         
         str3=''
         if tbNam.tong_so_ngay_nghi!=None: str3 =tbNam.tong_so_ngay_nghi
          
         str4=''
-        if (tbNam.len_lop==True) &(tbNam.thi_lai==None) & (hk.hk_ren_luyen_lai==None):
+        if (tbNam.len_lop==True) &(tbNam.thi_lai==None) & (tbNam.hk_ren_luyen_lai==None):
             str4='Lên lớp'
         
         str5=''
         if   tbNam.thi_lai       :str5='KT lại'
-        elif hk.ren_luyen_lai    :str5='rèn luyện trong hè' 
+        elif tbNam.ren_luyen_lai    :str5='rèn luyện trong hè' 
         elif tbNam.len_lop==False:str5='Ở lại lớp'
         
         str6=''
         if tbNam.hl_thi_lai    :str6=tbNam.hl_thi_lai
          
         str7=''
-        if hk.hk_ren_luyen_lai!=None: str7= hk.hk_ren_luyen_lai
+        if tbNam.hk_ren_luyen_lai!=None: str7= tbNam.hk_ren_luyen_lai
         
         str8=''
-        if (hk.ren_luyen_lai!=None) | (tbNam.thi_lai!=None):
+        if (tbNam.ren_luyen_lai!=None) | (tbNam.thi_lai!=None):
             if   tbNam.len_lop==True : 
                 str8='Lên lớp'
                 llSauHe+=1

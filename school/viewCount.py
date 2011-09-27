@@ -20,11 +20,11 @@ def countTotalPractisingInTerm(term_id):
     year_id  = selectedTerm.year_id
     if selectedTerm.number==1:
         for i in range(string.__len__()):
-            slList[i]=HanhKiem.objects.filter(year_id=year_id,term1=string[i]).count()
+            slList[i]=TBNam.objects.filter(year_id=year_id,term1=string[i]).count()
             sum+=slList[i]
     else:        
         for i in range(string.__len__()):
-            slList[i]=HanhKiem.objects.filter(year_id=year_id,term2=string[i]).count()
+            slList[i]=TBNam.objects.filter(year_id=year_id,term2=string[i]).count()
             sum+=slList[i]
 
     if sum!=0:    
@@ -66,7 +66,7 @@ def countTotalPractisingInYear(year_id):
     sum=0.0
     string=['T','K','TB','Y',None]
     for i in range(string.__len__()):
-        slList[i]=HanhKiem.objects.filter(year_id=year_id,year=string[i]).count()
+        slList[i]=TBNam.objects.filter(year_id=year_id,year=string[i]).count()
         sum+=slList[i]
     if sum!=0:    
         for i in range(string.__len__()):
@@ -202,11 +202,11 @@ def countPractisingInClassInTerm(class_id,term_id):
     year_id = selectedTerm.year_id
     if selectedTerm.number ==1:
         for i in range(string.__len__()):
-            slList[i]=HanhKiem.objects.filter(year_id=year_id,student_id__class_id=class_id,term1=string[i]).count()
+            slList[i]=TBNam.objects.filter(year_id=year_id,student_id__class_id=class_id,term1=string[i]).count()
             sum+=slList[i]
     else:        
         for i in range(string.__len__()):
-            slList[i]=HanhKiem.objects.filter(year_id=year_id,student_id__class_id=class_id,term2=string[i]).count()
+            slList[i]=TBNam.objects.filter(year_id=year_id,student_id__class_id=class_id,term2=string[i]).count()
             sum+=slList[i]
             
     if sum!=0:    
@@ -267,13 +267,13 @@ def countPractisingInTerm(request,term_id):
                        )
     return HttpResponse(t.render(c))
 
-def countPractisingInClassInYear(class_id,year_id):
+def countPractisingInClassInYear(class_id):
     slList  =[0,0,0,0,0]
     ptslList=[0,0,0,0,0]
     sum=0.0
     string=['T','K','TB','Y',None]
     for i in range(string.__len__()):
-        slList[i]=HanhKiem.objects.filter(year_id=year_id,student_id__class_id=class_id,year=string[i]).count()
+        slList[i]=TBNam.objects.filter(student_id__class_id=class_id,year=string[i]).count()
         sum+=slList[i]
     if sum!=0:    
         for i in range(string.__len__()):
@@ -397,13 +397,13 @@ def countLearningInTerm(request,term_id):
     return HttpResponse(t.render(c))
 
 
-def countLearningInClassInYear(class_id,year_id):
+def countLearningInClassInYear(class_id):
     slList  =[0,0,0,0,0,0]
     ptslList=[0,0,0,0,0,0]
     sum=0.0
     string=['G','K','TB','Y','Kem',None]
     for i in range(string.__len__()):
-        slList[i]=TBNam.objects.filter(year_id=year_id,student_id__class_id=class_id,hl_nam=string[i]).count()
+        slList[i]=TBNam.objects.filter(student_id__class_id=class_id,hl_nam=string[i]).count()
         sum+=slList[i]
     if sum!=0:    
         for i in range(string.__len__()):
@@ -527,23 +527,25 @@ def countAllInTerm(request,term_id):
     return HttpResponse(t.render(c))
 
 
-def countAllInClassInYear(class_id,year_id):
+def countAllInClassInYear(class_id):
     slList=[0,0,0,0]
     ptList=[0,0,0,0]
 
-    slList[0]=TBNam.objects.filter(year_id=year_id,student_id__class_id=class_id,danh_hieu_nam='G').count()
-    slList[1]=TBNam.objects.filter(year_id=year_id,student_id__class_id=class_id,danh_hieu_nam='TT').count()
-    slList[3]=TBNam.objects.filter(year_id=year_id,student_id__class_id=class_id,danh_hieu_nam=None).count()
+    slList[0]=TBNam.objects.filter(student_id__class_id=class_id,danh_hieu_nam='G').count()
+    slList[1]=TBNam.objects.filter(student_id__class_id=class_id,danh_hieu_nam='TT').count()
+    slList[3]=TBNam.objects.filter(student_id__class_id=class_id,danh_hieu_nam=None).count()
+    #slList[2]=    
     #slList[2]=TBNam.objects.filter(year_id=year_id,student_id__class_id=class_id,len_lop=True).count()
     #slList[3]=TBNam.objects.filter(year_id=year_id,student_id__class_id=class_id,len_lop=False).count()
     #slList[4]=TBNam.objects.filter(year_id=year_id,student_id__class_id=class_id,thi_lai=True).count()
     #slList[5]=TBNam.objects.filter(year_id=year_id,student_id__class_id=class_id,ren_luyen_lai=True).count()    
-    sl1=TBNam.objects.filter(year_id=year_id,student_id__class_id=class_id,len_lop=True).count()
-    sl2=TBNam.objects.filter(year_id=year_id,student_id__class_id=class_id,len_lop=False).count()
-    sl3=TBNam.objects.filter(year_id=year_id,student_id__class_id=class_id,thi_lai=True).count()
-    sl4=HanhKiem.objects.filter(year_id=year_id,student_id__class_id=class_id,ren_luyen_lai=True).count()    
+    #sl1=TBNam.objects.filter(year_id=year_id,student_id__class_id=class_id,len_lop=True).count()
+    #sl2=TBNam.objects.filter(year_id=year_id,student_id__class_id=class_id,len_lop=False).count()
+    #sl3=TBNam.objects.filter(year_id=year_id,student_id__class_id=class_id,thi_lai=True).count()
+    #sl4=TBNam.objects.filter(year_id=year_id,student_id__class_id=class_id,ren_luyen_lai=True).count()    
     sum = Pupil.objects.filter(class_id=class_id).count()
-    slList[2] = sum-sl1-sl2-sl3-sl4            
+
+    #slList[2] = sum-sl1-sl2-sl3-sl4            
         
     if (sum!=0):        
         for i in range(3):
@@ -657,9 +659,9 @@ def count1(request,year_id=None,number=None,type=None,):
                 aslList1,aptList1,sum =countPractisingInClassInTerm(c.id,term_id)
                 aslList2,aptList2,sum =countAllInClassInTerm(c.id,term_id)
             else: 
-                aslList,aptList,sum =countLearningInClassInYear(c.id,year_id)
-                aslList1,aptList1,sum =countPractisingInClassInYear(c.id,year_id)
-                aslList2,aptList2,sum =countAllInClassInYear(c.id,year_id)
+                aslList,aptList,sum =countLearningInClassInYear(c.id)
+                aslList1,aptList1,sum =countPractisingInClassInYear(c.id)
+                aslList2,aptList2,sum =countAllInClassInYear(c.id)
             
             print aslList 
             notFinishLearning+=aslList[5]

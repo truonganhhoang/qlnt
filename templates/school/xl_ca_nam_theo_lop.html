@@ -96,7 +96,7 @@ Hãy chọn phân loại danh sách học sinh theo:
 			
 
 		</tr>
-		{% for p,tbNam,hk in list %}
+		{% for p,tbNam in list %}
 			<tr>
 				<td align="center">
 					{{forloop.counter}}	
@@ -137,16 +137,16 @@ Hãy chọn phân loại danh sách học sinh theo:
 
 				<td align="center">
 
-					{% ifequal hk.year "T"  %}
+					{% ifequal tbNam.year "T"  %}
 						Tốt
 					{% else %}	
-					{% ifequal hk.year "K"  %}
+					{% ifequal tbNam.year "K"  %}
 						Khá
 					{% else %}	
-					{% ifequal hk.year "TB"  %}
+					{% ifequal tbNam.year "TB"  %}
 						TB
 					{% else %}	
-					{% ifequal hk.year "Y"  %}
+					{% ifequal tbNam.year "Y"  %}
 						Yếu
 					{% else %}
 					   &nbsp	

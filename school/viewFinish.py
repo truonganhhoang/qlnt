@@ -110,7 +110,7 @@ def calculateOverallMarkTerm(class_id,termNumber):
     subjectList=Subject.objects.filter(class_id=class_id,primary__in=[0,termNumber]).order_by('index')    
     markList = Mark.objects.filter(subject_id__class_id=class_id,term_id__number=termNumber,subject_id__primary__in=[0,termNumber]).order_by('student_id__index','subject_id__index') 
     tbHocKyList = TBHocKy.objects.filter(student_id__class_id=class_id,term_id__number=termNumber).order_by('student_id__index')
-    hkList      = HanhKiem.objects.filter(student_id__class_id=class_id).order_by('student_id__index')
+    hkList      = TBNam.objects.filter(student_id__class_id=class_id).order_by('student_id__index')
     length=len(subjectList)
     i=0   
     vtMonChuyen=-1
@@ -241,7 +241,7 @@ def calculateOverallMarkYear(class_id=7):
     subjectList= Subject.objects.filter(class_id=class_id,primary__in=[0,1,2]).order_by("index")    
     markList   = TKMon.objects.filter(subject_id__class_id=class_id,subject_id__primary__in=[0,1,2]).order_by('student_id__index','subject_id__index') 
     tbNamList  = TBNam.objects.filter(student_id__class_id=class_id).order_by('student_id__index')
-    hkList     = HanhKiem.objects.filter(student_id__class_id=class_id).order_by('student_id__index')
+    #hkList     = HanhKiem.objects.filter(student_id__class_id=class_id).order_by('student_id__index')
 
     #calculateTKMon(class_id)
 
@@ -316,8 +316,9 @@ def calculateOverallMarkYear(class_id=7):
                 elif  nn2.tb_nam+e>=5  : tbNam.tb_nam+=0.1
         
     noHanhKiem = 0            
-    for hk,tbNam in zip(hkList,tbNamList):
-        loaiHk=hk.year
+    for tbNam in tbNamList:
+        loaiHk=tbNam.year
+        
         if loaiHk==None: noHanhKiem+=1
         
         if (loaiHk==None) | (tbNam.hl_nam==None):
@@ -422,7 +423,7 @@ def xepLoaiHlTheoLop(request,class_id,termNumber):
         subjectList=Subject.objects.filter(class_id=class_id,primary__in=[0,termNumber,3]).order_by("index")    
         markList = Mark.objects.filter(subject_id__class_id=class_id,term_id__number=termNumber,subject_id__primary__in=[0,termNumber,3]).order_by('student_id__index','subject_id__index') 
         tbHocKyList = TBHocKy.objects.filter(student_id__class_id=class_id,term_id__number=termNumber).order_by('student_id__index')
-        hkList      = HanhKiem.objects.filter(student_id__class_id=class_id).order_by('student_id__index')
+        hkList      = TBNam.objects.filter(student_id__class_id=class_id).order_by('student_id__index')
         hkList1 =[]
         if termNumber==1:
             for hk in hkList:
@@ -457,7 +458,7 @@ def xepLoaiHlTheoLop(request,class_id,termNumber):
         subjectList=Subject.objects.filter(class_id=class_id).order_by("index")    
         markList   =TKMon.objects.filter(subject_id__class_id=class_id).order_by('student_id__index','subject_id__index') 
         tbNamList = TBNam.objects.filter(student_id__class_id=class_id).order_by('student_id__index')
-        hkList      = HanhKiem.objects.filter(student_id__class_id=class_id).order_by('student_id__index')
+        #hkList      = HanhKiem.objects.filter(student_id__class_id=class_id).order_by('student_id__index')
         length = len(subjectList)
 
         i=0    
@@ -478,7 +479,7 @@ def xepLoaiHlTheoLop(request,class_id,termNumber):
  
         #markOfAPupil.append(convertHlToVietnamese(tbHocKy.hl_hk))
                                     
-        list=zip(pupilList,tempList,tbNamList,hkList)    
+        list=zip(pupilList,tempList,tbNamList,tbNamList)    
         
     
 
@@ -506,38 +507,38 @@ def xepLoaiLop(class_id):
     tbNamList    =TBNam.objects.filter(student_id__class_id=class_id).order_by('student_id__index')
     ddhk1List    =TKDiemDanh.objects.filter(student_id__class_id=class_id,term_id__number=1).order_by('student_id__index')
     ddhk2List    =TKDiemDanh.objects.filter(student_id__class_id=class_id,term_id__number=2).order_by('student_id__index')
-    hanhKiemList =HanhKiem.objects.filter(student_id__class_id=class_id).order_by('student_id__index')
+    #hanhKiemList =HanhKiem.objects.filter(student_id__class_id=class_id).order_by('student_id__index')
     repr(tbNamList)
     noHk=0
     noHl=0
     #for tt in tbNamList:
     #    pass
     i=0
-    for tbNam,ddhk1,ddhk2,hk in zip(tbNamList,ddhk1List,ddhk2List,hanhKiemList):
+    for tbNam,ddhk1,ddhk2 in zip(tbNamList,ddhk1List,ddhk2List):
         i+=1
         
         ddhk1.tong_so=DiemDanh.objects.filter(student_id=tbNam.student_id,term_id__number=1).count()
         ddhk2.tong_so=DiemDanh.objects.filter(student_id=tbNam.student_id,term_id__number=2).count()
-        if hk.year==None     : noHk+=1
+        if tbNam.year==None     : noHk+=1
         if tbNam.hl_nam==None: noHl+=1
         
                         
-        if (tbNam.hl_nam==None) |(hk.year==None):
+        if (tbNam.hl_nam==None) |(tbNam.year==None):
             tbNam.danh_hieu_nam=None            
             tbNam.tong_so_ngay_nghi=ddhk1.tong_so+ddhk2.tong_so
             if tbNam.tong_so_ngay_nghi>45:
                 tbNam.len_lop=False
                 tbNam.thi_lai=None
-                hk.ren_luyen_lai=None
+                tbNam.ren_luyen_lai=None
             else:    
                 tbNam.len_lop=None
                 tbNam.thi_lai=None
-                hk.ren_luyen_lai=None
+                tbNam.ren_luyen_lai=None
                 
         else:
-            if (tbNam.hl_nam=='G') & (hk.year=='T'):
+            if (tbNam.hl_nam=='G') & (tbNam.year=='T'):
                 tbNam.danh_hieu_nam='G'
-            elif ((tbNam.hl_nam=='G') | (tbNam.hl_nam=='K') ) & ((hk.year=='T') | (hk.year=='K')):
+            elif ((tbNam.hl_nam=='G') | (tbNam.hl_nam=='K') ) & ((tbNam.year=='T') | (tbNam.year=='K')):
                 tbNam.danh_hieu_nam='TT'
             else:
                 tbNam.danh_hieu_nam='K'
@@ -546,29 +547,29 @@ def xepLoaiLop(class_id):
             
             if tbNam.tong_so_ngay_nghi>45:
                 tbNam.len_lop=False
-                hk.ren_luyen_lai=None
+                tbNam.ren_luyen_lai=None
                 tbNam.thi_lai=None
                 continue        
 
-            if (tbNam.hl_nam!='Y') & (tbNam.hl_nam!='Kem') & (hk.year!='Y'):
+            if (tbNam.hl_nam!='Y') & (tbNam.hl_nam!='Kem') & (tbNam.year!='Y'):
                 tbNam.len_lop=True
                 tbNam.thi_lai=None
-                hk.ren_luyen_lai=None
+                tbNam.ren_luyen_lai=None
                 continue
     
-            if ((hk.year!='Y') & (tbNam.hl_nam=='Y')):
+            if ((tbNam.year!='Y') & (tbNam.hl_nam=='Y')):
                 tbNam.len_lop=None
                 tbNam.thi_lai=True
-                hk.ren_luyen_lai=None
+                tbNam.ren_luyen_lai=None
             elif  ((hk.year=='Y')  & (tbNam.hl_nam!='Y') & (tbNam.hl_nam!='Kem')):
                 tbNam.thi_lai=None
                 tbNam.len_lop=None
-                hk.ren_luyen_lai=True
+                tbNam.ren_luyen_lai=True
                 #if i==7: print "ddddee"    
             else:
                 tbNam.len_lop=False
                 tbNam.thi_lai=None
-                hk.ren_luyen_lai=None
+                tbNam.ren_luyen_lai=None
     """            
     for tb,hk1,hk2 in zip(tbNamList,ddhk1List,ddhk2List):
         tb.save()
@@ -581,8 +582,6 @@ def xepLoaiLop(class_id):
         dd.save()
     for dd in ddhk2List:
         dd.save()
-    for hk in hanhKiemList:
-        hk.save()            
     return noHl,noHk    
 @transaction.commit_on_success                                                                                  
 def xlCaNamTheoLop(request,class_id,type):
@@ -628,17 +627,18 @@ def xlCaNamTheoLop(request,class_id,type):
     
     pupilList    =Pupil.objects.filter(class_id=class_id).order_by('index')
     tbNamList    =TBNam.objects.filter(student_id__class_id=class_id).order_by('student_id__index')
-    hanhKiemList =HanhKiem.objects.filter(student_id__class_id=class_id).order_by('student_id__index')
+    #hanhKiemList =HanhKiem.objects.filter(student_id__class_id=class_id).order_by('student_id__index')
     
     pupilList1=[]
     tbNamList1=[]
-    hanhKiemList1=[]
+    #hanhKiemList1=[]
     type=int(type)
-    for p,tbNam,hk in zip(pupilList,tbNamList,hanhKiemList):
+    
+    for p,tbNam in zip(pupilList,tbNamList):
         ok=False
         if   type==1: ok=True
         elif type==2:
-            if (tbNam.len_lop==None) & (tbNam.thi_lai==None) & (hk.ren_luyen_lai==None): ok=True
+            if (tbNam.len_lop==None) & (tbNam.thi_lai==None) & (tbNam.ren_luyen_lai==None): ok=True
         elif type==3:
             if tbNam.danh_hieu_nam=='G': ok=True
         elif type==4:
@@ -650,13 +650,13 @@ def xlCaNamTheoLop(request,class_id,type):
         elif type==7:
             if tbNam.thi_lai==True: ok=True            
         elif type==8:
-            if hk.ren_luyen_lai==True: ok=True
+            if tbNam.ren_luyen_lai==True: ok=True
         if ok:    
             pupilList1.append(p)
             tbNamList1.append(tbNam)
-            hanhKiemList1.append(hk)
+            #hanhKiemList1.append(hk)
             
-    list= zip(pupilList1,tbNamList1,hanhKiemList1)             
+    list= zip(pupilList1,tbNamList1)             
     #print list
     yearString=str(selectedClass.year_id.time)+"-"+str(selectedClass.year_id.time+1)
     t = loader.get_template(os.path.join('school','xl_ca_nam_theo_lop.html'))
@@ -707,11 +707,11 @@ def countDetailTerm(term_id):
         else        :  notFinishLearning.append([c.name,number])
         
         if selectedTerm.number==1:        
-            number = HanhKiem.objects.filter(year_id=selectedTerm.year_id,student_id__class_id=c.id,term1=None).count()
+            number = TBNam.objects.filter(year_id=selectedTerm.year_id,student_id__class_id=c.id,term1=None).count()
             if number==0:  finishPractising.append(c.name)
             else        :  notFinishPractising.append([c.name,number])
         else:
-            number = HanhKiem.objects.filter(year_id=selectedTerm.year_id,student_id__class_id=c.id,term2=None).count()
+            number = TBNam.objects.filter(year_id=selectedTerm.year_id,student_id__class_id=c.id,term2=None).count()
             if number==0:  finishPractising.append(c.name)
             else        :  notFinishPractising.append([c.name,number])
                 
@@ -812,7 +812,7 @@ def countDetailYear(year_id):
         if number==0:   finishLearning.append(c.name)
         else        :  notFinishLearning.append([c.name,number])
         
-        number = HanhKiem.objects.filter(year_id=year_id,student_id__class_id=c.id,year=None).count()
+        number = TBNam.objects.filter(year_id=year_id,student_id__class_id=c.id,year=None).count()
         if number==0:  finishPractising.append(c.name)
         else        :  notFinishPractising.append([c.name,number])
                 
@@ -1061,7 +1061,7 @@ def renluyenthem(request,class_id):
 
 
     message=None
-    hkList=HanhKiem.objects.filter(student_id__class_id=class_id,ren_luyen_lai=True).order_by('student_id__index')
+    hkList=TBNam.objects.filter(student_id__class_id=class_id,ren_luyen_lai=True).order_by('student_id__index')
     
     lengthList = len(hkList)
     if lengthList==0:

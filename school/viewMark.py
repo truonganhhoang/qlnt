@@ -243,6 +243,8 @@ def getMark(subjectChoice,selectedTerm):
     selectedSubject = Subject.objects.get(id= subjectChoice)
     class_id = selectedSubject.class_id.id
     timeToEdit = int(selectedTerm.year_id.school_id.get_setting('lock_time'))*60
+    print "fffffffffffffff"
+    print selectedTerm.year_id.school_id.get_setting('lock_time')  
     print timeToEdit    
     pupilList=Pupil.objects.filter(class_id=class_id).order_by('index')                
     editList=[]    
