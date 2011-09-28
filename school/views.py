@@ -3414,7 +3414,8 @@ def edit_ki_luat(request, kt_id):
     t = loader.get_template(os.path.join('school', 'ki_luat_detail.html'))
     c = RequestContext(request, {'form': form, 'p': pupil, 'student_id':pupil.id, 'term':term, 'url':url})
     return HttpResponse(t.render(c))
-#term_number = 1: ki 1. = 2: ki 2, = 3: ca nam.
+
+
 def hanh_kiem(request, class_id = 0, sort_type = 1, sort_status = 0):
     user = request.user
     if not user.is_authenticated():
@@ -3423,11 +3424,13 @@ def hanh_kiem(request, class_id = 0, sort_type = 1, sort_status = 0):
         school = get_school(request)
     except Exception as e:
         return HttpResponseRedirect(reverse('index'))
+
     year = get_current_year(request)
     classList = year.class_set.all()
     if class_id == 0:
         for cl in classList:
             return HttpResponseRedirect('/school/hanhkiem/'+str(cl.id))
+
     c = classList.get(id__exact=class_id)
     if not in_school(request, c.block_id.school_id):
         return HttpResponseRedirect('/')
@@ -3464,24 +3467,24 @@ def hanh_kiem(request, class_id = 0, sort_type = 1, sort_status = 0):
     all = []
     i = 0
     for p in pupilList:
-        form.append(HanhKiemForm())
-        all.append(HanhKiem())
-        hk = p.hanhkiem_set.get(year_id__exact=year.id)
+        form.append(TBNamForm())
+        all.append(TBNam())
+        hk = p.tbnam_set.get(year_id__exact=year.id)
         all[i] = hk
-        form[i] = HanhKiemForm(instance=hk)
+        form[i] =TBNamForm(instance=hk)
         i += 1
 
     if request.is_ajax() and request.POST['request_type'] != u'all':
         p_id = request.POST['id']
         p = c.pupil_set.get(id = int(p_id))
-        hk = p.hanhkiem_set.get(year_id__exact=year.id)
-        data = {}
+        hk = p.tbnam_set.get(year_id__exact=year.id)
         if request.POST['request_type'] == u'term1':
             if request.POST['term1'] != u'':
                 term1 = request.POST['term1']
             else:
                 term1 = None
-            data = {'student_id':p_id, 'term1':term1, 'year_id':year.id}
+            hk.term1 = term1
+            hk.save()
 
 
         elif request.POST['request_type'] == u'term2':
@@ -3489,18 +3492,16 @@ def hanh_kiem(request, class_id = 0, sort_type = 1, sort_status = 0):
                 term2 = request.POST['term2']
             else:
                 term2 = None
-            data = {'student_id':p_id, 'term1':hk.term1, 'term2':term2, 'year_id':year.id}
+            hk.term2 = term2
+            hk.save()
 
         elif request.POST['request_type'] == u'year':
             if request.POST['year'] != u'':
                 y = request.POST['year']
             else:
                 y = None
-            data = {'student_id':p_id, 'term1':hk.term1, 'term2': hk.term2, 'year':y, 'year_id':year.id}
-
-        form = HanhKiemForm(data, instance=hk)
-        if form.is_valid():
-            form.save()
+            hk.year = y
+            hk.save()
 
     elif request.is_ajax() and request.POST['request_type']=='all':
         message = 'Cập nhật thành công hạnh kiểm lớp ' + str(Class.objects.get(id=class_id))
@@ -3509,13 +3510,13 @@ def hanh_kiem(request, class_id = 0, sort_type = 1, sort_status = 0):
         y = request.POST.getlist('year')
         i = 0
         for p in pupilList:
-            hk = p.hanhkiem_set.get(year_id__exact=year.id)
+            hk = p.tbnam_set.get(year_id__exact=year.id)
             if term.number == 1:
-                data = {'student_id':p.id, 'term1':term1[i], 'year_id':year.id}
+                hk.term1=term1[i]
             else:
-                data = {'student_id':p.id, 'term1':hk.term1, 'term2':term2[i], 'year':y[i], 'year_id':year.id}
-            form[i] = HanhKiemForm(data, instance=hk)
-            form[i].save()
+                hk.term2=term2[i]
+                hk.year=y[i]
+            hk.save()
             i += 1
     listdh = zip(pupilList, form, all)
     t = loader.get_template(os.path.join('school', 'hanh_kiem.html'))

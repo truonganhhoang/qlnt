@@ -26,7 +26,7 @@ class TeacherForm(forms.ModelForm):
         super(TeacherForm,self).__init__(*args, **kwargs)
         school = Organization.objects.get(id = school_id)
         self.fields['team_id'] = forms.ModelChoiceField(queryset= school.team_set.all(), required=False, label=u'Tổ')
-        
+
 
 class TeacherITForm(forms.ModelForm):
     class Meta:
@@ -201,6 +201,11 @@ class ClassForm(forms.ModelForm):
         self.fields['teacher_id'] = forms.ModelChoiceField(required = False, queryset=Teacher.objects.filter(school_id = school_id))
         self.fields['year_id'] = forms.ModelChoiceField(queryset=Year.objects.filter(school_id = school_id),initial = Year.objects.filter(school_id = school_id).latest('time'))
         self.fields['block_id'] = forms.ModelChoiceField(queryset=Block.objects.filter(school_id = school_id))
+
+class TBNamForm(forms.ModelForm):
+    class Meta:
+        model = TBNam
+        exclude = {'number_subject', 'number_finish', 'tong_so_ngay_nghi', 'danh_hieu_nam', 'len_lop', 'thi_lai', 'tb_thi_lai', 'hl_thi_lai'}
 
 class SubjectForm(forms.ModelForm):
     class Meta:
