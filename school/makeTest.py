@@ -47,40 +47,39 @@ def thu111(request):
     return HttpResponse(t.render(c))
 
 @transaction.commit_on_success                                                              
-def thu124(request):
+def thu11111(request):
     t1= time.time()
+    school=get_school(request)
+    classList=Class.objects.filter(year_id__school_id=school.id)
+    tong=0
+    tong1=0
     
-    diemdanh = DiemDanh.objects.all()
-    print diemdanh.count()
-    diemdanh.delete()
-    
-    """
-    sum = Pupil.objects.filter(class_id=1).count()    
-    pupilList = Pupil.objects.filter(class_id=1)
-    sum = pupilList.count()
-    termList= Term.objects.all()
-    datet =datetime.datetime.now()
-    date = datet.date 
-    for i in range(100000):
-        try:
-            dd = DiemDanh()
-            dd.loai       ="co phep"
-            dd.term_id    = termList[random.randrange( 1,3)]
-            dd.student_id = pupilList[random.randrange( 1,sum)]
-            date = datetime.datetime(random.randrange( 1,2007),random.randrange( 1,13),random.randrange( 1,28))
-            dd.time =date  
-            dd.save()
-            if i % 100==0: print i
-        except Exception as e:
-            print e   
-    """    
-    t2=time.time()
-    
-    x='G'
+    for c in classList:
+        """
+        tbnamList=TBNam.objects.filter(student_id__class_id=c.id)
+        HKList=HanhKiem.objects.filter(student_id__class_id=c.id)
+        for tbnam in tbnamList:
+            if tbnam.len_lop==None:
+                tong1+=1
+        for hk in HKList:
+            pass        
+        for hk in HKList:
+            pass        
+        for hk in HKList:
+            pass        
+        tong+=len(tbnamList)
+        """        
+        tong1+=TBNam.objects.filter(student_id__class_id=c.id,len_lop=None).count()
+        tong1+=HanhKiem.objects.filter(student_id__class_id=c.id,year=None).count()
+        #print tbnamList   
+    print tong     
+    print tong1
+    t2=time.time()    
     print (t2-t1)
     t = loader.get_template(os.path.join('school','ll.html'))
     
-    c = RequestContext(request, {'x':x,
+    c = RequestContext(request, {
+                                 
                                 }
                        )
     
@@ -89,11 +88,11 @@ def thu124(request):
     return HttpResponse(t.render(c))
 
 @transaction.commit_on_success                                                              
-def thu1234(request):
+def thu(request):
     t1= time.time()
-    list1 = TKMon.objects.filter(student_id__class_id=197)
+    list1 = TKMon.objects.filter(student_id__class_id=213)
     for m in list1:
-        m.tb_nam=random.randrange( 7,11 )
+        m.tb_nam=random.randrange( 6,10)
        # m.save()
     for m in list1:
         m.save()
@@ -179,7 +178,7 @@ def thu1234(request):
     return HttpResponse(t.render(c))
 
 @transaction.commit_on_success                                                              
-def thu(request):
+def thu12345(request):
     t1= time.time()
     
     markList = Mark.objects.filter(subject_id__class_id=213)

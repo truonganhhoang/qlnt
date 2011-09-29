@@ -108,7 +108,7 @@ def countPassInYear(year_id):
     slList[0]=TBNam.objects.filter(year_id=year_id,len_lop=True).count()
     slList[1]=TBNam.objects.filter(year_id=year_id,len_lop=False).count()
     slList[2]=TBNam.objects.filter(year_id=year_id,thi_lai=True).count()
-    slList[3]=HanhKiem.objects.filter(year_id=year_id,ren_luyen_lai=True).count()
+    slList[3]=TBNam.objects.filter(year_id=year_id,ren_luyen_lai=True).count()
     slList[4]=TBNam.objects.filter(year_id=year_id,len_lop=None).count()
     for i in range(slList.__len__()):
         sum+=slList[i]

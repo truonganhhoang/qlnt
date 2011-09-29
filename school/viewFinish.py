@@ -530,10 +530,17 @@ def xepLoaiLop(class_id):
                 tbNam.len_lop=False
                 tbNam.thi_lai=None
                 tbNam.ren_luyen_lai=None
+                
+                tbNam.hk_ren_luyen_lai=None
+                tbNam.tb_thi_lai=None
+                tbNam.hl_thi_lai=None
             else:    
                 tbNam.len_lop=None
                 tbNam.thi_lai=None
                 tbNam.ren_luyen_lai=None
+                tbNam.hk_ren_luyen_lai=None
+                tbNam.tb_thi_lai=None
+                tbNam.hl_thi_lai=None
                 
         else:
             if (tbNam.hl_nam=='G') & (tbNam.year=='T'):
@@ -549,27 +556,47 @@ def xepLoaiLop(class_id):
                 tbNam.len_lop=False
                 tbNam.ren_luyen_lai=None
                 tbNam.thi_lai=None
+                tbNam.hk_ren_luyen_lai=None
+                tbNam.tb_thi_lai=None
+                tbNam.hl_thi_lai=None
                 continue        
 
             if (tbNam.hl_nam!='Y') & (tbNam.hl_nam!='Kem') & (tbNam.year!='Y'):
                 tbNam.len_lop=True
                 tbNam.thi_lai=None
                 tbNam.ren_luyen_lai=None
+                
+                tbNam.hk_ren_luyen_lai=None
+                tbNam.tb_thi_lai=None
+                tbNam.hl_thi_lai=None
+
                 continue
     
             if ((tbNam.year!='Y') & (tbNam.hl_nam=='Y')):
                 tbNam.len_lop=None
                 tbNam.thi_lai=True
                 tbNam.ren_luyen_lai=None
-            elif  ((hk.year=='Y')  & (tbNam.hl_nam!='Y') & (tbNam.hl_nam!='Kem')):
+                tbNam.hk_ren_luyen_lai=None
+                tbNam.tb_thi_lai=None
+                tbNam.hl_thi_lai=None
+                
+            elif  ((tbNam.year=='Y')  & (tbNam.hl_nam!='Y') & (tbNam.hl_nam!='Kem')):
                 tbNam.thi_lai=None
                 tbNam.len_lop=None
                 tbNam.ren_luyen_lai=True
+                tbNam.hk_ren_luyen_lai=None
+                tbNam.tb_thi_lai=None
+                tbNam.hl_thi_lai=None
+                
                 #if i==7: print "ddddee"    
             else:
                 tbNam.len_lop=False
                 tbNam.thi_lai=None
                 tbNam.ren_luyen_lai=None
+                tbNam.hk_ren_luyen_lai=None
+                tbNam.tb_thi_lai=None
+                tbNam.hl_thi_lai=None
+                
     """            
     for tb,hk1,hk2 in zip(tbNamList,ddhk1List,ddhk2List):
         tb.save()
@@ -616,7 +643,7 @@ def xlCaNamTheoLop(request,class_id,type):
         if (noHl==0) & (noHk==0):
             message="Đã xếp loại xong cả lớp"
         elif (noHl==0):
-            message="Còn "+str(noHanhKiem)+" học sinh chưa có hạnh kiểm"
+            message="Còn "+str(noHk)+" học sinh chưa có hạnh kiểm"
         elif (noHk==0):    
             message="Còn "+str(noHl)+" học sinh chưa có học lực "
         else:
@@ -1084,6 +1111,7 @@ def renluyenthem(request,class_id):
     
 
     return HttpResponse(t.render(c))
+	
 def saveRenLuyenThem(request):
     message = 'hello'
     if request.method == 'POST':
@@ -1093,13 +1121,12 @@ def saveRenLuyenThem(request):
         print str
         id = int(strs[0])
         
-        hk = HanhKiem.objects.get(id=id)
+        tbNam = TBNam.objects.get(id=id)
         if strs[1]!='No':
-            hk.hk_ren_luyen_lai= strs[1]
+            tbNam.hk_ren_luyen_lai= strs[1]
         else:     
-            hk.hk_ren_luyen_lai= None
+            tbNam.hk_ren_luyen_lai= None
         
-        tbNam = TBNam.objects.get(year_id=hk.year_id, student_id=hk.student_id)
         if strs[1]=='No':
             tbNam.len_lop=None
         elif strs[1]=='Y':
@@ -1107,7 +1134,6 @@ def saveRenLuyenThem(request):
         else:
             tbNam.len_lop=True       
             
-        hk.save()
         tbNam.save()                                                         
         message='ok'
         data = simplejson.dumps({'message': message})
