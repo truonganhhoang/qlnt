@@ -8,6 +8,15 @@
                         $( anchor.hash ).html(
                             "Có lỗi khi lấy dữ liệu từ máy chủ. Xin hãy thử lại" );
                     },
+                    success: function( xhr, status, settings){
+                        $("input:checked").each(function(){
+                            $(this).prop("checked",false);
+                        });
+                        $("tr.selected").each(function(){
+                            $(this).removeClass('selected');
+                        });
+                        applyListener();
+                    },
                     global: false
 			    },
                 load: function(event, ui) {

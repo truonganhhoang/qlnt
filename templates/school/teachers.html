@@ -33,6 +33,12 @@
                             "Có lỗi khi lấy dữ liệu từ máy chủ. Xin hãy thử lại" );
                     },
                     success: function( xhr, status, settings){
+                        $("input:checked").each(function(){
+                            $(this).prop("checked",false);
+                        });
+                        $("tr.selected").each(function(){
+                            $(this).removeClass('selected');
+                        });
                         applyListener();
                     },
                     global: false
@@ -58,7 +64,7 @@
                     });
                 }
             });
-                {% if pos > 3 %}
+            {% if pos > 3 %}
                 // modal dialog init: custom buttons and a "close" callback reseting the form inside
                 var $dialog = $("#dialog").dialog({
                     autoOpen: false,
@@ -185,6 +191,77 @@
                     maxHeight: 400,
                     title: "Nhập giáo viên từ file Excel"
                 });
+                var select = function() {
+                    if (!$(this).hasClass('thread') && !$(this).hasClass('form') && !$(this).hasClass('function')) {
+                        var id = $(this).attr('class').split(' ')[0];
+                        var checkboxid = '.checkbox_' + id;
+                        var checkboxall = '.checkbox_all';
+                        if ($(this).hasClass('selected')) {
+                            $(this).removeClass('selected');
+                            $(checkboxid).prop("checked", false);
+                            var n = $("tr.selected").length;
+                            if (n == 0){
+                                $(checkboxall).prop("checked", false);
+                            }
+                        } else {
+                            $(this).addClass('selected');
+                            $(checkboxid).prop("checked", true);
+                            $(checkboxall).prop("checked", true);
+                        }
+                    }
+                };
+                $("tr").live("click",select);
+                $(".checkbox_all").live("click",function() {
+                    var checkboxall = '.checkbox_all';
+                    if ($(checkboxall).is(':checked')) {
+                        $("tr").each(function() {
+                            var id = $(this).attr('class').split(' ')[0];
+                            var checkboxid = '.checkbox_' + id;
+                            if (!$(this).hasClass('selected'))
+                                $(this).trigger('click');
+                        });
+                    }
+                    else {
+                        $("tr").each(function() {
+                            var id = $(this).attr('class').split(' ')[0];
+                            var checkboxid = '.checkbox_' + id;
+                            if ($(this).hasClass('selected'))
+                                $(this).trigger('click');
+                        });
+                    }
+                });
+                $("#delete").click(function(){
+                    if (!$(".checkbox_all").is(':checked')) {
+                        alert("Bạn chưa chọn giáo viên nào để xóa");
+                        return false;
+                    }
+                    var answer = confirm('Bạn có muốn xóa những giáo viên đã chọn');
+                    if (!answer) return false;
+                    var data = '';
+                    $(".selected").each(function() {
+                        data = data + $(this).attr('class').split(' ')[0] + '-';
+                    });
+                    $("#notify").text("Đang xóa...");
+                    $("#notify").show();
+                    var arg = { type:"POST",
+                        url:"",
+                        global: false,
+                        data: {data:data, request_type:'del'},
+                        datatype:"json",
+                        success: function() {
+                            $("#notify").showNotification("Đã xóa xong");
+                            $("tr.selected").each(function(){
+                                $(this).remove();
+                            });
+                            $(".checkbox_all").prop("checked", false);
+                        }
+                    };
+                    $.ajax(arg);
+                    return false;
+                });
+                $("select").live("click",function(){
+                    return false;
+                });
             {% endif %}
         });
     </script>
@@ -192,10 +269,9 @@
         <div id="tableFunction">
             {% if pos > 3 %}
                 <a class="ggButton" href="#popupDiv" id="import"> Nhập từ Excel </a>
-                <a class="tiptiphover ggButton"
-               title="Xuất danh sách giáo viên ra file excel."
-               href="{% url school.views.teacher_generate 'all' %}"
-               id="export"> Xuất ra Excel </a>
+                <a class="tiptiphover ggButton" title="Xuất danh sách giáo viên ra file excel."
+                    href="{% url school.views.teacher_generate 'all' %}" id="export"> Xuất ra Excel </a>
+                <button class="ggButton tiptiphover" id="delete"> Xóa những giáo viên đã chọn </button>
             {% endif %}
         </div>
         <div id="dialog" title="Thêm tổ mới">

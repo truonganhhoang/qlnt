@@ -1920,6 +1920,15 @@ def teachers(request,  sort_type=1, sort_status=0):
     form = TeacherForm(school.id)
     school = get_school(request)
     if request.is_ajax():
+        if request.POST['request_type'] == u'del':
+            data = request.POST[u'data']
+            data = data.split('-')
+            for e in data:
+                if e.strip():
+                    teacher = Teacher.objects.get(id__exact = int(e))
+                    del_teacher(teacher);
+            data = simplejson.dumps({'success': True})
+            return HttpResponse(data, mimetype='json')
         if request.POST['request_type'] == u'addTeam':
             data = {'name': request.POST['name'].strip(), 'school_id': school.id}
             try:

@@ -13,7 +13,7 @@
                             data: data,
                             datatype:"json",
                             success:function(){
-                                p.empty();
+                                p.remove();
                             }
                         };
                         $.ajax(arg);
@@ -49,7 +49,7 @@
                             data: data,
                             datatype:"json",
                             success:function(){
-                                p.empty();
+                                p.remove();
                             }
                         };
                         $.ajax(arg);
@@ -62,6 +62,11 @@
     <h2>Danh sách giáo viên nhóm{{ group }}</h2>
     <table class="styleA" width="100%">
         <tr>
+            {% if pos > 3 %}
+            <th align="center" width="30px" title="Chọn cả lớp" class="tiptiphover">
+                <input type="checkbox" class="checkbox_all"/>
+            </th>
+            {% endif %}
             <th align="center" width="5%"> STT</th>
             <th align="center" width="15%">Họ tên</th>
             <th align="center" width="10%">Ngày sinh</th>
@@ -70,9 +75,6 @@
             <th align="center" width="10%">Chuyên môn</th>
             <th align="center" width="15%">Tổ</th>
             <th align="center" width="15%">Nhóm</th>
-            {% if pos > 3 %}
-                <th width="10%"></th>
-            {% endif %}
         </tr>
 
         {% if message != None %}
@@ -81,6 +83,11 @@
 
         {% for ss, f in list %}
             <tr class="{{ ss.id }}">
+                {% if pos > 3 %}
+                    <td align="center" width="30px">
+                        <input type="checkbox" class="checkbox_{{ss.id}}"/>
+                    </td>
+                {% endif %}
                 <td align="center" width="5%">{{ forloop.counter }}</td>
                 <td align="center" width="15%">
                     {% if pos > 3 or teacher_id == ss.id %}
@@ -98,12 +105,9 @@
                     <td align="center" width="10%"> {{ f.major }} </td>
                     <td align="center" width="10%"> {{ f.team_id }} </td>
                     <td align="center" width="10%"> {{ f.group_id }} </td>
-                    <td align="center" width="10%"><a
-                            href="{%url school.views.school_index  %}deleteTeacher/{{ss.id}}/{{group.id}}"
-                            title="Xóa giáo viên" class="ggButton delete"> xóa </a></td>
                 {% else %}
                     <td align="center" width="15%">
-                        {% if ss.major = '-1' %}
+                        {% if ss.major == '-1' %}
                             Chưa rõ
                         {% else %}
                             {{ ss.major }}

@@ -60,6 +60,11 @@
         <form action="/school/teachers_tab" id ="submitform" method="post">{% csrf_token %}
             <table class="styleA" width="100%">
                 <tr>
+                    {% if pos > 3 %}
+                    <th align="center" width="30px" title="Chọn cả lớp" class="tiptiphover">
+                        <input type="checkbox" class="checkbox_all"/>
+                    </th>
+                    {% endif %}
                     <th align="center" width="5%"> STT</th>
                     <th align="center" width="15%"><a
                             href="{%url school.views.school_index  %}teachers/1/{{next_status}}"
@@ -86,6 +91,11 @@
 
                 {% for ss, f in list %}
                     <tr class="{{ss.id}}">
+                        {% if pos > 3 %}
+                        <td align="center" width="30px">
+                            <input type="checkbox" class="checkbox_{{ss.id}}"/>
+                        </td>
+                        {% endif %}
                         <td align="center" width="5%">{{ forloop.counter }}</td>
                         <td align="center" width="15%">
                             {% if pos > 3 or teacher_id == ss.id %}
@@ -100,12 +110,10 @@
                         {% if pos > 3 %}
                             <td align="center" width="15%">{{ f.major }}</td>
                             <td align="center" width="15%"> {{ f.team_id }} </td>
-                            <td align="center" width="10%"><a
-                                    href="{%url school.views.school_index  %}deleteTeacher/{{ss.id}}/0"
-                                    title="Xóa giáo viên" class="ggButton delete"> xóa </a></td>
+                            <td align="center" width="10%"></td>
                         {% else %}
                             <td align="center" width="15%">
-                                {% if ss.major = '-1' %}
+                                {% if ss.major == '-1' %}
                                     Chưa rõ
                                 {% else %}
                                     {{ ss.major }}
@@ -124,6 +132,7 @@
                 {% if pos > 3 %}
                         <tr>
                             {{ form.non_field_errors }}
+                            <td align="center"></td>
                             <td width="5%"></td>
                             <td align="center" width="15%">
                                 {{ form.first_name.errors }}
