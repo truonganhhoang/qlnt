@@ -62,21 +62,35 @@
     {% endif %}
 
     <h2>Danh sách giáo viên tổ {{ team }}</h2>
-    <table class="styleA" width="100%">
+    <table class="styleA" style="width: 100%;">
+        {% if pos > 3 %}
+            <colgroup style="width: 5%; text-align: center;"></colgroup>
+        {% endif %}
+        <colgroup style="width: 5%; text-align: center;"></colgroup>
+        <colgroup style="width: 20%; text-align: center;"></colgroup>
+        <colgroup style="width: 10%; text-align: center;"></colgroup>
+        <colgroup style="width: 25%; text-align: center;"></colgroup>
+        <colgroup style="width: 5%; text-align: center;"></colgroup>
+        <colgroup style="width: 10%; text-align: center;"></colgroup>
+        <colgroup style="width: 10%; text-align: center;"></colgroup>
+        <colgroup style="width: 10%;text-align: center;"></colgroup>
+
+
         <tr class="thread">
+
             {% if pos > 3 %}
-            <th align="center" width="30px" title="Chọn cả tổ" class="tiptiphover">
-                <input type="checkbox" class="checkbox_all"/>
-            </th>
+                <th title="Chọn cả tổ" class="tiptiphover">
+                    <input type="checkbox" class="checkbox_all"/>
+                </th>
             {% endif %}
-            <th align="center" width="5%"> STT</th>
-            <th align="center" width="15%">Họ tên</th>
-            <th align="center" width="10%">Ngày sinh</th>
-            <th align="center" width="20%">Quê quán</th>
-            <th align="center" width="10%">Giới tính</th>
-            <th align="center" width="10%">Dạy môn</th>
-            <th align="center" width="15%">Tổ</th>
-            <th align="center" width="15%">Nhóm</th>
+            <th>STT</th>
+            <th>Họ tên</th>
+            <th>Ngày sinh</th>
+            <th>Quê quán</th>
+            <th>Giới tính</th>
+            <th>Dạy môn</th>
+            <th>Tổ</th>
+            <th>Nhóm</th>
         </tr>
 
         {% if message != None %}
@@ -86,12 +100,12 @@
         {% for ss, f in list %}
             <tr class="{{ ss.id }}">
                 {% if pos > 3 %}
-                <td align="center" width="30px">
-                    <input type="checkbox" class="checkbox_{{ss.id}}"/>
-                </td>
+                    <td>
+                        <input type="checkbox" class="checkbox_{{ss.id}}"/>
+                    </td>
                 {% endif %}
-                <td align="center" width="5%">{{ forloop.counter }}</td>
-                <td align="center" width="15%">
+                <td>{{ forloop.counter }}</td>
+                <td>
                     {% if pos > 3 or teacher_id == ss.id %}
                         <a href="{%url school.views.school_index  %}viewTeacherDetail/{{ss.id}}">
                             {{ ss.last_name }} {{ ss.first_name }} </a>
@@ -100,29 +114,30 @@
                     {% endif %}
                 </td>
 
-                <td align="center" width="10%"> {{ ss.birthday|date:"SHORT_DATE_FORMAT" }}</td>
-                <td align="center" width="20%"> {{ ss.home_town }}</td>
-                <td align="center" width="10%"> {{ ss.sex }} </td>
+                <td> {{ ss.birthday|date:"SHORT_DATE_FORMAT" }}</td>
+                <td> {{ ss.home_town }}</td>
+                <td> {{ ss.sex }} </td>
                 {% if pos > 3 %}
-                    <td align="center" width="10%"> {{ f.major }} </td>
-                    <td align="center" width="15%"> {{ f.team_id }} </td>
-                    <td align="center" width="15%"> {{ f.group_id }} </td>
-                {% else %}
-                    <td align="center" width="15%">
+                    <td> {{ f.major }} </td>
+                    <td> {{ f.team_id }} </td>
+                    <td> {{ f.group_id }} </td>
+                    {% else %}
+                    <td>
                         {% if ss.major == '-1' %}
                             Chưa rõ
                         {% else %}
                             {{ ss.major }}
                         {% endif %}
                     </td>
-                    <td align="center" width="15%">
+                    <td>
                         {% if ss.team_id%}
                             {{ ss.team_id }}
                         {% else %}
                             Chưa rõ
                         {% endif %}
                     </td>
-                    {% if ss.group_id %}
+                    <td>
+                        {% if ss.group_id %}
                             {{ ss.group_id }}
                         {% else %}
                             Chưa rõ

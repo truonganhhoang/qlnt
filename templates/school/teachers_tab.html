@@ -59,29 +59,41 @@
     <h2>Danh sách giáo viên</h2>
         <form action="/school/teachers_tab" id ="submitform" method="post">{% csrf_token %}
             <table class="styleA" width="100%">
+                {% if pos > 3 %}
+                    <colgroup style="width: 5%; text-align: center;"></colgroup>
+                {% endif %}
+                <colgroup style="width: 5%; text-align: center;"></colgroup>
+                <colgroup style="width: 20%; text-align: center;"></colgroup>
+                <colgroup style="width: 10%; text-align: center;"></colgroup>
+                <colgroup style="width: 25%; text-align: center;"></colgroup>
+                <colgroup style="width: 5%; text-align: center;"></colgroup>
+                <colgroup style="width: 10%; text-align: center;"></colgroup>
+                <colgroup style="width: 15%; text-align: center;"></colgroup>
+                <colgroup style="width: 5%; text-align: center;"></colgroup>
+
                 <tr class="thread">
                     {% if pos > 3 %}
-                    <th align="center" width="30px" title="Chọn tất cả" class="tiptiphover">
+                    <th title="Chọn tất cả" class="tiptiphover">
                         <input type="checkbox" class="checkbox_all"/>
                     </th>
                     {% endif %}
-                    <th align="center" width="5%"> STT</th>
-                    <th align="center" width="15%"><a
+                    <th> STT</th>
+                    <th><a
                             href="{%url school.views.school_index  %}teachers/1/{{next_status}}"
                             class="tiptiphover" title="Sắp xếp theo tên">Họ tên </a></th>
-                    <th align="center" width="10%"><a
+                    <th><a
                             href="{%url school.views.school_index  %}teachers/2/{{next_status}}"
                             class="tiptiphover" title="Sắp xếp theo ngày sinh">Ngày sinh</a></th>
-                    <th align="center" width="20%"> Quê quán</th>
-                    <th align="center" width="10%"><a
+                    <th> Quê quán</th>
+                    <th><a
                             href="{%url school.views.school_index  %}teachers/3/{{next_status}}"
                             class="tiptiphover" title="Sắp xếp giới tính">Giới tính </a></th>
-                    <th align="center" width="15%">Dạy môn</th>
-                    <th align="center" width="15%"><a
+                    <th>Dạy môn</th>
+                    <th><a
                             href="{%url school.views.school_index  %}teachers/4/{{next_status}}"
                             class="tiptiphover" title="Sắp xếp theo tổ">Tổ </a></th>
                     {% if pos > 3 %}
-                        <th width="10%"></th>
+                        <th></th>
                     {% endif %}
                 </tr>
 
@@ -92,34 +104,34 @@
                 {% for ss, f in list %}
                     <tr class="{{ss.id}}">
                         {% if pos > 3 %}
-                        <td align="center" width="30px">
+                        <td>
                             <input type="checkbox" class="checkbox_{{ss.id}}"/>
                         </td>
                         {% endif %}
-                        <td align="center" width="5%">{{ forloop.counter }}</td>
-                        <td align="center" width="15%">
+                        <td>{{ forloop.counter }}</td>
+                        <td>
                             {% if pos > 3 or teacher_id == ss.id %}
                                 <a href="{%url school.views.school_index  %}viewTeacherDetail/{{ss.id}}">
                             {% endif %}
                             {{ ss.last_name }} {{ ss.first_name }} </a>
                         </td>
-                        <td align="center" width="10%"> {{ ss.birthday|date:"SHORT_DATE_FORMAT" }}</td>
-                        <td align="center" width="20%"> {{ ss.home_town }}</td>
-                        <td align="center" width="10%"> {{ ss.sex }} </td>
+                        <td> {{ ss.birthday|date:"SHORT_DATE_FORMAT" }}</td>
+                        <td> {{ ss.home_town }}</td>
+                        <td> {{ ss.sex }} </td>
 
                         {% if pos > 3 %}
-                            <td align="center" width="15%">{{ f.major }}</td>
-                            <td align="center" width="15%"> {{ f.team_id }} </td>
-                            <td align="center" width="10%"></td>
+                            <td>{{ f.major }}</td>
+                            <td> {{ f.team_id }} </td>
+                            <td></td>
                         {% else %}
-                            <td align="center" width="15%">
+                            <td>
                                 {% if ss.major == '-1' %}
                                     Chưa rõ
                                 {% else %}
                                     {{ ss.major }}
                                 {% endif %}
                             </td>
-                            <td align="center" width="15%">
+                            <td>
                                 {% if ss.team_id %}
                                     {{ ss.team_id }}
                                 {% else %}
@@ -132,36 +144,36 @@
                 {% if pos > 3 %}
                         <tr>
                             {{ form.non_field_errors }}
-                            <td align="center"></td>
-                            <td width="5%"></td>
-                            <td align="center" width="15%">
+                            <td></td>
+                            <td></td>
+                            <td>
                                 {{ form.first_name.errors }}
                                 <p>{{ form.first_name }}</p>
                             </td>
 
-                            <td align="center" width="10%">
+                            <td>
                                 {{ form.birthday.errors }}
                                 <p>{{ form.birthday }}</p>
                             </td>
 
-                            <td align="center" width="20%">
+                            <td>
                                 {{ form.home_town.errors }}
                                 <p>{{ form.home_town }}</p>
                             </td>
 
 
-                            <td align="center" width="10%">
+                            <td>
                                 {{ form.sex.errors }}
                                 <p>{{ form.sex }}</p>
                             </td>
 
 
-                            <td align="center" width="15%">
+                            <td>
                                 {{ form.major.errors }}
                                 <p>{{ form.major }}</p>
                             </td>
 
-                            <td align="center" width="15%">
+                            <td>
                                 {{ form.team_id.errors }}
                                 <p>{{ form.team_id }}</p>
                             </td>
@@ -174,7 +186,7 @@
 
             {% if pos > 3 %}
                 <tr>
-                    <td width="5%" align="left">&nbsp</td>
+                    <td align="left">&nbsp</td>
                 </tr>
             {% endif %}
 {% endblock %}

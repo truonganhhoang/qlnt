@@ -61,11 +61,22 @@
     {% endif %}
     <h2>Danh sách giáo viên nhóm{{ group }}</h2>
     <table class="styleA" width="100%">
+        {% if pos > 3 %}
+            <colgroup style="width: 5%; text-align: center;"></colgroup>
+        {% endif %}
+        <colgroup style="width: 5%; text-align: center;"></colgroup>
+        <colgroup style="width: 20%; text-align: center;"></colgroup>
+        <colgroup style="width: 10%; text-align: center;"></colgroup>
+        <colgroup style="width: 25%; text-align: center;"></colgroup>
+        <colgroup style="width: 5%; text-align: center;"></colgroup>
+        <colgroup style="width: 10%; text-align: center;"></colgroup>
+        <colgroup style="width: 10%; text-align: center;"></colgroup>
+        <colgroup style="width: 10%;text-align: center;"></colgroup>
         <tr class="thread">
             {% if pos > 3 %}
-            <th align="center" width="30px" title="Chọn cả nhóm" class="tiptiphover">
-                <input type="checkbox" class="checkbox_all"/>
-            </th>
+                <th align="center" width="30px" title="Chọn cả nhóm" class="tiptiphover">
+                    <input type="checkbox" class="checkbox_all"/>
+                </th>
             {% endif %}
             <th align="center" width="5%"> STT</th>
             <th align="center" width="15%">Họ tên</th>
@@ -84,9 +95,9 @@
         {% for ss, f in list %}
             <tr class="{{ ss.id }}">
                 {% if pos > 3 %}
-                <td align="center" width="30px">
-                    <input type="checkbox" class="checkbox_{{ss.id}}"/>
-                </td>
+                    <td align="center" width="30px">
+                        <input type="checkbox" class="checkbox_{{ss.id}}"/>
+                    </td>
                 {% endif %}
                 <td align="center" width="5%">{{ forloop.counter }}</td>
                 <td align="center" width="15%">
@@ -105,7 +116,7 @@
                     <td align="center" width="10%"> {{ f.major }} </td>
                     <td align="center" width="15%"> {{ f.team_id }} </td>
                     <td align="center" width="15%"> {{ f.group_id }} </td>
-                {% else %}
+                    {% else %}
                     <td align="center" width="10%">
                         {% if ss.major == '-1' %}
                             Chưa rõ
@@ -121,7 +132,7 @@
                         {% endif %}
                     </td>
                     <td align="center" width="15%">
-                    {% if ss.group_id %}
+                        {% if ss.group_id %}
                             {{ ss.group_id }}
                         {% else %}
                             Chưa rõ
