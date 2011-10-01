@@ -16,9 +16,8 @@ POSITION_CHOICE = (('HOC_SINH', u'Học sinh'), ('GIAO_VU', u'Giáo vụ'), ('GI
                        ('HIEU_PHO', u'Hiệu phó'), ('HIEU_TRUONG', u'Hiệu trưởng'),
                        ('GIAM_DOC_SO', u'Giám đốc sở'), ('TRUONG_PHONG', u'Trưởng phòng'))
 
-KHOI_CHOICES = (('1', u'Cấp 1'),
-                    ('2', u'Cấp 2'),
-                    ('3', u'Cấp 3'))
+KHOI_CHOICES = (('2', u'Cấp 2'),
+                ('3', u'Cấp 3'))
 
 SCHOOL_ACTION_STATUS = ((0, u'Trường mới'),
                             (1, u'Đang học kì 1'),

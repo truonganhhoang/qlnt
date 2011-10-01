@@ -6,9 +6,9 @@
 <table class="styleA" >
 
     <tr>
-        <th align="center"> STT </th>
-        <th align="center"> Ngày</th>
-        <th align="center"> Loại </th>
+        <th class="leftAlign"> STT </th>
+        <th class="leftAlign"> Ngày</th>
+        <th class="leftAlign"> Loại </th>
     </tr>
     {% if message != None %}
     {{message}}
@@ -17,30 +17,30 @@
         {%if pos > 2%}
             {% for d,f in ddhs %}
                 <tr>
-                    <td align="center">
+                    <td style="text-align: center;">
                         <p>{{forloop.counter}}</p>
                     </td>
-                    <td align="center">
+                    <td style="text-align: center;">
                         <p>{{ d.time|date:"SHORT_DATE_FORMAT" }}</p>
                     </td>
                 
-                    <td align="center">
+                    <td style="text-align: center;">
                         {{ f.loai.errors }}
                         <p>{{ f.loai }}</p>
                     </td>
                 </tr>
             {% endfor %}
                 <tr>
-                    <td align="center">
+                    <td style="text-align: center;">
                         <p>{{ p.id }}</p>
                     </td>
 
-                    <td align="center">
+                    <td style="text-align: center;">
                         {{iform.time.errors}}
                         <p>{{ iform.time }}</p>
                     </td>
                 
-                    <td align="center">
+                    <td style="text-align: center;">
                         {{ iform.loai.errors }}
                         <p>{{ iform.loai }}</p>
                     </td>

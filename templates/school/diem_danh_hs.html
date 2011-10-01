@@ -3,20 +3,20 @@
     {% if count > 0 %}
     <table class="styleA" >
         <tr>
-            <th align="center"> STT </th>
-            <th align="center"> Ngày</th>
-            <th align="center"> Loại </th>
+            <th class="leftAlign"> STT </th>
+            <th class="leftAlign"> Ngày</th>
+            <th class="leftAlign"> Loại </th>
         </tr>
         {% for f in form %}
             <tr>
-                <td align="center">
+                <td>
                     <p>{{forloop.counter}}</p>
                 </td>
-                <td align="center">
+                <td>
                     <p>{{ f.time|date:"SHORT_DATE_FORMAT" }}</p>
                 </td>
 
-                <td align="center">
+                <td>
                     <p>{{ f.loai }}</p>
                 </td>
             </tr>

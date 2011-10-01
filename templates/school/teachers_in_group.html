@@ -74,18 +74,18 @@
         <colgroup style="width: 10%;text-align: center;"></colgroup>
         <tr class="thread">
             {% if pos > 3 %}
-                <th align="center" width="30px" title="Chọn cả nhóm" class="tiptiphover">
+                <th class="leftAlign" width="30px" title="Chọn cả nhóm" class="tiptiphover">
                     <input type="checkbox" class="checkbox_all"/>
                 </th>
             {% endif %}
-            <th align="center" width="5%"> STT</th>
-            <th align="center" width="15%">Họ tên</th>
-            <th align="center" width="10%">Ngày sinh</th>
-            <th align="center" width="20%">Quê quán</th>
-            <th align="center" width="10%">Giới tính</th>
-            <th align="center" width="10%">Chuyên môn</th>
-            <th align="center" width="15%">Tổ</th>
-            <th align="center" width="15%">Nhóm</th>
+            <th class="leftAlign" width="5%"> STT</th>
+            <th class="leftAlign" width="15%">Họ tên</th>
+            <th class="leftAlign" width="10%">Ngày sinh</th>
+            <th class="leftAlign" width="20%">Quê quán</th>
+            <th class="leftAlign" width="10%">Giới tính</th>
+            <th class="leftAlign" width="10%">Chuyên môn</th>
+            <th class="leftAlign" width="15%">Tổ</th>
+            <th class="leftAlign" width="15%">Nhóm</th>
         </tr>
 
         {% if message != None %}
@@ -95,12 +95,12 @@
         {% for ss, f in list %}
             <tr class="{{ ss.id }}">
                 {% if pos > 3 %}
-                    <td align="center" width="30px">
+                    <td style="text-align: center;" width="30px">
                         <input type="checkbox" class="checkbox_{{ss.id}}"/>
                     </td>
                 {% endif %}
-                <td align="center" width="5%">{{ forloop.counter }}</td>
-                <td align="center" width="15%">
+                <td style="text-align: center;" width="5%">{{ forloop.counter }}</td>
+                <td style="text-align: center;" width="15%">
                     {% if pos > 3 or teacher_id == ss.id %}
                         <a href="{%url school.views.school_index  %}viewTeacherDetail/{{ss.id}}">
                             {{ ss.last_name }} {{ ss.first_name }} </a>
@@ -109,29 +109,29 @@
                     {% endif %}
                 </td>
 
-                <td align="center" width="10%"> {{ ss.birthday|date:"SHORT_DATE_FORMAT" }}</td>
-                <td align="center" width="20%"> {{ ss.home_town }}</td>
-                <td align="center" width="10%"> {{ ss.sex }} </td>
+                <td style="text-align: center;" width="10%"> {{ ss.birthday|date:"SHORT_DATE_FORMAT" }}</td>
+                <td style="text-align: center;" width="20%"> {{ ss.home_town }}</td>
+                <td style="text-align: center;" width="10%"> {{ ss.sex }} </td>
                 {% if pos > 3 %}
-                    <td align="center" width="10%"> {{ f.major }} </td>
-                    <td align="center" width="15%"> {{ f.team_id }} </td>
-                    <td align="center" width="15%"> {{ f.group_id }} </td>
+                    <td style="text-align: center;" width="10%"> {{ f.major }} </td>
+                    <td style="text-align: center;" width="15%"> {{ f.team_id }} </td>
+                    <td style="text-align: center;" width="15%"> {{ f.group_id }} </td>
                     {% else %}
-                    <td align="center" width="10%">
+                    <td style="text-align: center;" width="10%">
                         {% if ss.major == '-1' %}
                             Chưa rõ
                         {% else %}
                             {{ ss.major }}
                         {% endif %}
                     </td>
-                    <td align="center" width="15%">
+                    <td style="text-align: center;" width="15%">
                         {% if ss.team_id%}
                             {{ ss.team_id }}
                         {% else %}
                             Chưa rõ
                         {% endif %}
                     </td>
-                    <td align="center" width="15%">
+                    <td style="text-align: center;" width="15%">
                         {% if ss.group_id %}
                             {{ ss.group_id }}
                         {% else %}

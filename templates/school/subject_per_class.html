@@ -145,11 +145,11 @@
             <th class="naviButton" style="display: none;"></th>
             <th class="naviButton" style="display: none;"></th>
             <th class="arrow_header" width="5%"> <a href="{%url school.views.school_index  %}subjectPerClass/{{class.id}}/4/{{next_status}}"> STT </a></th>
-            <th align="center" width="20%"> <a href="{%url school.views.school_index  %}subjectPerClass/{{class.id}}/1/{{next_status}}">Tên Môn Học</a></th>
-            <th align="center"> Chuyên Môn</th>
-            <th align="center" width="10%"> <a href="{%url school.views.school_index  %}subjectPerClass/{{class.id}}/2/{{next_status}}">Hệ số </a></th>
-            <th align="center" width="25%"> <a href="{%url school.views.school_index  %}subjectPerClass/{{class.id}}/3/{{next_status}}">Giáo viên</a></th>
-            <th align="center" > Cách tính điểm </th>
+            <th class="leftAlign" width="20%"> <a href="{%url school.views.school_index  %}subjectPerClass/{{class.id}}/1/{{next_status}}">Tên Môn Học</a></th>
+            <th class="leftAlign"> Chuyên Môn</th>
+            <th class="leftAlign" width="10%"> <a href="{%url school.views.school_index  %}subjectPerClass/{{class.id}}/2/{{next_status}}">Hệ số </a></th>
+            <th class="leftAlign" width="25%"> <a href="{%url school.views.school_index  %}subjectPerClass/{{class.id}}/3/{{next_status}}">Giáo viên</a></th>
+            <th class="leftAlign" > Cách tính điểm </th>
             {%if pos > 3%}
                 <th width = "5%"> </th>
             {%endif%}
@@ -174,24 +174,24 @@
                         <p>{{ forloop.counter }}</p>
                     </td>
                     {%if pos > 3%}
-                        <td align="center" width="20%"> <a title="Chỉnh sửa thông tin môn học" href="{%url school.views.school_index  %}viewSubjectDetail/{{ss.id}}">{{ss.name}}</a></td>
-                        <td align="center"> {{f.type}} </td>
-                        <td align="center" width="10%"> {{f.hs}} </td>
-                        <td align="center" width="25%"> {{f.teacher_id}}</td>
-                        <td align="center"> {{f.primary}} </td>
+                        <td style="text-align: center;" width="20%"> <a title="Chỉnh sửa thông tin môn học" href="{%url school.views.school_index  %}viewSubjectDetail/{{ss.id}}">{{ss.name}}</a></td>
+                        <td style="text-align: center;"> {{f.type}} </td>
+                        <td style="text-align: center;" width="10%"> {{f.hs}} </td>
+                        <td style="text-align: center;" width="25%"> {{f.teacher_id}}</td>
+                        <td style="text-align: center;"> {{f.primary}} </td>
                         <td width = "5%"> <a class = "ggButton" href = "{%url school.views.school_index  %}deleteSubject/{{ss.id}}" onclick="return confirmDelete();">xóa</a></td>
                     {%else%}
-                        <td align="center" width="20%"> {{ss.name}}</td>
-                        <td align="center" width="20%"> {{ss.type}}</td>
-                        <td align="center" width="10%"> {{ss.hs}} </td>
-                        <td align="center" width="25%">
+                        <td style="text-align: center;" width="20%"> {{ss.name}}</td>
+                        <td style="text-align: center;" width="20%"> {{ss.type}}</td>
+                        <td style="text-align: center;" width="10%"> {{ss.hs}} </td>
+                        <td style="text-align: center;" width="25%">
                             {% if ss.teacher_id != "None" %}
                                     Chưa rõ
                                 {% else %}
                                     {{ ss.teacher_id }}
                                 {% endif %}
                         </td>
-                        <td align="center" > {{ss.primary}} </td>
+                        <td style="text-align: center;" > {{ss.primary}} </td>
                     {%endif%}
                 </tr>
             {% endfor %}
@@ -199,26 +199,26 @@
                 <tr id="subject_form">
                     {{ form.non_field_errors }}
                     <td width="5%"> </td>
-                    <td align="center" width="20%">
+                    <td style="text-align: center;" width="20%">
                         {{ form.name.errors }}
                         <p>{{ form.name }}</p>
                     </td>
 
-                    <td align="center">
+                    <td style="text-align: center;">
                         {{ form.type.errors }}
                         <p>{{ form.type }}</p>
                     </td>
 
-                    <td align="center" width="10%">
+                    <td style="text-align: center;" width="10%">
                         {{form.hs.errors }}
                         <p>{{ form.hs }}</p>
                     </td>
 
-                    <td align="center" width="25%">
+                    <td style="text-align: center;" width="25%">
                         {{ form.teacher_id.errors }}
                         <p>{{ form.teacher_id }}</p>
                     </td>
-                    <td align="center" > 
+                    <td style="text-align: center;" >
                         {{form.primary.errors}}
                         <p>{{form.primary}} </p> 
                     </td>

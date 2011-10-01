@@ -73,24 +73,24 @@ Hãy chọn phân loại danh sách học sinh theo:
 				Họ và tên
 			</th>	
 			
-			<th align="center" width="1%">			
+			<th class="leftAlign" width="1%">
 				Ngày sinh
 			</th>	
 			
-			<th align="center" width="10%">			
+			<th class="leftAlign" width="10%">
 				Học lực
 			</th>	
-			<th align="center" width="7%">			
+			<th class="leftAlign" width="7%">
 				Hạnh kiểm
 			</th>	
-			<th align="center" width="5%">			
+			<th class="leftAlign" width="5%">
 				Tổng số ngày nghỉ
 			</th>	
-			<th align="center" width="15%">			
+			<th class="leftAlign" width="15%">
 				Danh hiệu
 			</th>	
 			
-			<th align="center" width="15%">			
+			<th class="leftAlign" width="15%">
 				Thuộc diện
 			</th>	
 			
@@ -98,7 +98,7 @@ Hãy chọn phân loại danh sách học sinh theo:
 		</tr>
 		{% for p,tbNam in list %}
 			<tr>
-				<td align="center">
+				<td style="text-align: center;">
 					{{forloop.counter}}	
 				</td>
 				<td class="lastname">
@@ -111,7 +111,7 @@ Hãy chọn phân loại danh sách học sinh theo:
 				<td>
 				{{p.birthday|date:"SHORT_DATE_FORMAT"}}
 				</td>
-				<td align="center">
+				<td style="text-align: center;">
 					{% ifequal tbNam.hl_nam "G"  %}
 						Giỏi
 					{% else %}	
@@ -135,7 +135,7 @@ Hãy chọn phân loại danh sách học sinh theo:
 					{% endifequal %}
 				</td>
 
-				<td align="center">
+				<td style="text-align: center;">
 
 					{% ifequal tbNam.year "T"  %}
 						Tốt
@@ -156,7 +156,7 @@ Hãy chọn phân loại danh sách học sinh theo:
 					{% endifequal %}
 
 				</td >
-				<td align="center">
+				<td style="text-align: center;">
 					
 					{% if tbNam.tong_so_ngay_nghi == None %}
 						&nbsp
@@ -165,7 +165,7 @@ Hãy chọn phân loại danh sách học sinh theo:
 					{% endif %}	
 				</td>
 
-				<td align="center">
+				<td style="text-align: center;">
 					{% ifequal tbNam.danh_hieu_nam "G" %}
 						Học sinh giỏi
 					{% else %}	
@@ -176,7 +176,7 @@ Hãy chọn phân loại danh sách học sinh theo:
 					{% endifequal %}
 					{% endifequal %}
 				</td>
-				<td align="center">
+				<td style="text-align: center;">
 					{% if tbNam.len_lop %}
 						Được lên lớp	
 							{% if tbNam.thi_lai %}

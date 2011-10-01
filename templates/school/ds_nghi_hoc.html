@@ -168,48 +168,57 @@
     <a class="ggButton" href="{%url school.views.school_index  %}diemdanh/{{class_id}}/{{day}}/{{month}}/{{year}}"> Quay lại </a>
 {% endif %}
 <table class="styleA" >
+    {% if pos > 2%}
+        <colgroup style="width: 3%;"></colgroup>
+    {% endif %}
+    <colgroup style="width: 3%;"></colgroup>
+    <colgroup style="width: 10%;"></colgroup>
+    <colgroup style="width: 7%;"></colgroup>
+    <colgroup style="width: 7%;"></colgroup>
+    <colgroup style="width: 10%;"></colgroup>
+    <colgroup style="width: 5%;"></colgroup>
 
     <tr class="thead">
         {% if pos > 2%}
-            <th align="center" width="2%"> 
+            <th class="leftAlign" width="2%">
                 <input type="checkbox" id="checkbox_all"/>
             </th>
         {% endif %}    
-        <th align="center" width="3%"> STT </th>
-        <th align="center" width="15%"> Họ Tên </th>
-        <th align="center" width="10%"> Ngày sinh</th>
-        <th align="center" width="7%"> Giới tính </th>
-        <th align="center" width="8%"> Điểm danh </th>
+        <th class="leftAlign">STT </th>
+        <th class="leftAlign">Họ Tên </th>
+        <th class="leftAlign">Ngày sinh</th>
+        <th class="leftAlign">Giới tính </th>
+        <th class="leftAlign">Điểm danh </th>
         {% if pos > 2%}
-        <th align="center" width="10%">&nbsp </th>
+        <th class="leftAlign">&nbsp </th>
         {% endif %}
     </tr>
         {% for p,f in list %}
             <tr class="{{p.id}}">
                 {% if pos > 2%}
-                    <td align="center" width="2%">
+                    <td>
                         <input type="checkbox" id="checkbox_{{p.id}}"/>
                     </td>
                 {% endif %}
-                <td align="center" width="5%">
+                <td>
                     <p>{{forloop.counter}}</p>
                 </td>
             
-                <td align="center" width="15%">
+                <td>
                     <p>{{ p.last_name }}&nbsp{{ p.first_name }}</p>
                 </td>
 
-                <td align="center" width="10%">
+                <td>
                     <p>{{ p.birthday|date:"SHORT_DATE_FORMAT" }}</p>
                 </td>
 
-                <td align="center" width="7%">
+                <td>
                     <p>{{ p.sex }}</p>
                 </td>
 
-                <td align="center" id="f_{{p.id}}" width="8%">{{f}}</td>
+                <td id="f_{{p.id}}" >{{f}}</td>
                 {% if pos > 2%}
-                <td align="center" width="20px">
+                <td >
 						  <input type="submit" value="sms" name="{{p.id}}" class="sms" />                
                 </td>
                 {% endif %}

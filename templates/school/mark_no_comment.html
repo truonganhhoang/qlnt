@@ -70,9 +70,9 @@
 		<td width ="3%" align="center" > 5 </td>
 											
 		{% ifequal selectedTerm.number 2 %}
-			<td align="center" width ="5%">HK I  </td>
-			<td align="center" width ="5%">HK II </td>
-			<td align="center" width ="5%"> CK </td>
+			<td style="text-align: center;" width ="5%">HK I  </td>
+			<td style="text-align: center;" width ="5%">HK II </td>
+			<td style="text-align: center;" width ="5%"> CK </td>
 			
 		{% endifequal %}
 		
@@ -126,7 +126,7 @@
 		</script>	
 		<tr >
 			{% if enableSendSMS %}
-			<td align="center" onclick="select(this)" style="border-right-width:0px" > 
+			<td style="text-align: center;" onclick="select(this)" style="border-right-width:0px" >
 			 <input title="Có thể click vào cột họ tên và ngày sinh để chọn cho nhanh hơn" type="checkbox" id="{{forloop.counter}}00" > 	
 			</td>
 			{% endif %}
@@ -381,7 +381,7 @@
 		
 		<tr >
 			{% if enableSendSMS %}
-			<td align="center" onclick="select(this)" style="border-right-width:0px" > 
+			<td style="text-align: center;" onclick="select(this)" style="border-right-width:0px" >
 			 <input title="Có thể click vào cột họ tên và ngày sinh để chọn cho nhanh hơn" type="checkbox" id="{{forloop.counter}}00" > 	
 			</td>
 			{% endif %}
@@ -656,7 +656,7 @@
 		
 		<tr>
 			{% if enableSendSMS %}
-			<td align="center" onclick="select(this)" style="border-right-width:0px" > 
+			<td style="text-align: center;" onclick="select(this)" style="border-right-width:0px" >
 			 <input title="Có thể click vào cột họ tên và ngày sinh để chọn cho nhanh hơn" type="checkbox" id="{{forloop.counter}}00" > 	
 			</td>
 			{% endif %}
@@ -676,58 +676,58 @@
 			{{ p.birthday.day}}/{{ p.birthday.month}}/{{ p.birthday.year}} 
 			</td>
 
-			<td align="center" id={{ id.d1}} >
+			<td style="text-align: center;" id={{ id.d1}} >
 				{{m.mieng_1|floatformat:"-2"}}  
 			</td>
-			<td align="center" id={{ id.d2}}>
+			<td style="text-align: center;" id={{ id.d2}}>
 				{{m.mieng_2|floatformat:"-2"}}  
 			</td>
-			<td align="center" id={{ id.d3}}>
+			<td style="text-align: center;" id={{ id.d3}}>
 				{{m.mieng_3|floatformat:"-2"}}  
 			</td>
-			<td align="center" id={{ id.d4}}>
+			<td style="text-align: center;" id={{ id.d4}}>
 				{{m.mieng_4|floatformat:"-2"}}  
 			</td>
-			<td align="center" id={{ id.d5}} style="border-right-width:3px">
+			<td style="text-align: center;" id={{ id.d5}} style="border-right-width:3px">
 				{{m.mieng_5|floatformat:"-2"}}  
 			</td>
 
-			<td align="center" id={{ id.d6}} style="border-left-width:3px">
+			<td style="text-align: center;" id={{ id.d6}} style="border-left-width:3px">
 				{{m.mlam_1|floatformat:"-2"}}  
 			</td>
-			<td align="center" id={{ id.d7}}>
+			<td style="text-align: center;" id={{ id.d7}}>
 				{{m.mlam_2|floatformat:"-2"}}  
 			</td>
-			<td align="center" id={{ id.d8}}>
+			<td style="text-align: center;" id={{ id.d8}}>
 				{{m.mlam_3|floatformat:"-2"}}  
 			</td>
-			<td align="center" id={{ id.d9}}>
+			<td style="text-align: center;" id={{ id.d9}}>
 				{{m.mlam_4|floatformat:"-2"}}  
 			</td>
-			<td align="center" id={{ id.d10}} style="border-right-width:3px">
+			<td style="text-align: center;" id={{ id.d10}} style="border-right-width:3px">
 				{{m.mlam_5|floatformat:"-2"}}  
 			</td>
-			<td align="center" id={{ id.d11}} style="border-left-width:3px">
+			<td style="text-align: center;" id={{ id.d11}} style="border-left-width:3px">
 				{{m.mot_tiet_1|floatformat:"-2"}}  
 			</td>
-			<td align="center" id={{ id.d12}}>
+			<td style="text-align: center;" id={{ id.d12}}>
 				{{m.mot_tiet_2|floatformat:"-2"}}  
 			</td>
-			<td align="center" id={{ id.d13}}>
+			<td style="text-align: center;" id={{ id.d13}}>
 				{{m.mot_tiet_3|floatformat:"-2"}}  
 			</td>
-			<td align="center" id={{ id.d14}}>
+			<td style="text-align: center;" id={{ id.d14}}>
 				{{m.mot_tiet_4|floatformat:"-2"}}  
 			</td>
-			<td align="center" id={{ id.d15}} style="border-right-width:3px">
+			<td style="text-align: center;" id={{ id.d15}} style="border-right-width:3px">
 				{{m.mot_tiet_5|floatformat:"-2"}}  
 			</td>
 
-			<td align="center" id={{ id.d16}} style="border-left-width:3px"> 
+			<td style="text-align: center;" id={{ id.d16}} style="border-left-width:3px">
 				{{m.ck|floatformat:"-1"}}  
 			</td>
 
-			<td align="center" id={{ id.d17}} >
+			<td style="text-align: center;" id={{ id.d17}} >
 				{{m.tb|floatformat:"-1"}}  
 			</td>
 		</tr>		
@@ -752,12 +752,12 @@
 		
 		<tr>
 			{% if enableSendSMS %}		
-			<td align="center" onclick="select(this)" style="border-right-width:0px" > 
+			<td style="text-align: center;" onclick="select(this)" style="border-right-width:0px" >
 			 <input title="Có thể click vào cột họ tên và ngày sinh để chọn cho nhanh hơn" type="checkbox" id="{{forloop.counter}}00" > 	
 			</td>
 			{% endif %}
 		
-			<td align="center" onclick="select(this)" >
+			<td style="text-align: center;" onclick="select(this)" >
 			 {{forloop.counter}}	
 			</td>
 			<td style="border-right-width:0px" width ="15%" onclick="select(this)">
@@ -772,64 +772,64 @@
 			{{ p.birthday.day}}/{{ p.birthday.month}}/{{ p.birthday.year}} 
 			</td>
 
-			<td align="center" id={{ id.d1}}>
+			<td style="text-align: center;" id={{ id.d1}}>
 				{{m.mieng_1|floatformat:"-2"}}  
 			</td>
-			<td align="center" id={{ id.d2}}>
+			<td style="text-align: center;" id={{ id.d2}}>
 				{{m.mieng_2|floatformat:"-2"}}  
 			</td>
-			<td align="center" id={{ id.d3}}>
+			<td style="text-align: center;" id={{ id.d3}}>
 				{{m.mieng_3|floatformat:"-2"}}  
 			</td>
-			<td align="center" id={{ id.d4}}>
+			<td style="text-align: center;" id={{ id.d4}}>
 				{{m.mieng_4|floatformat:"-2"}}  
 			</td>
-			<td align="center" id={{ id.d5}} style="border-right-width:3px">
+			<td style="text-align: center;" id={{ id.d5}} style="border-right-width:3px">
 				{{m.mieng_5|floatformat:"-2"}}  
 			</td>
 
-			<td align="center" id={{ id.d6}}style="border-left-width:3px">
+			<td style="text-align: center;" id={{ id.d6}}style="border-left-width:3px">
 				{{m.mlam_1|floatformat:"-2"}}  
 			</td>
-			<td align="center" id={{ id.d7}}>
+			<td style="text-align: center;" id={{ id.d7}}>
 				{{m.mlam_2|floatformat:"-2"}}  
 			</td>
-			<td align="center" id={{ id.d8}}>
+			<td style="text-align: center;" id={{ id.d8}}>
 				{{m.mlam_3|floatformat:"-2"}}  
 			</td>
-			<td align="center" id={{ id.d9}}>
+			<td style="text-align: center;" id={{ id.d9}}>
 				{{m.mlam_4|floatformat:"-2"}}  
 			</td>
-			<td align="center" id={{ id.d10}} style="border-right-width:3px">
+			<td style="text-align: center;" id={{ id.d10}} style="border-right-width:3px">
 				{{m.mlam_5|floatformat:"-2"}}  
 			</td>
-			<td align="center" id={{ id.d11}} style="border-left-width:3px">
+			<td style="text-align: center;" id={{ id.d11}} style="border-left-width:3px">
 				{{m.mot_tiet_1|floatformat:"-2"}}  
 			</td>
-			<td align="center" id={{ id.d12}}>
+			<td style="text-align: center;" id={{ id.d12}}>
 				{{m.mot_tiet_2|floatformat:"-2"}}  
 			</td>
-			<td align="center" id={{ id.d13}}>
+			<td style="text-align: center;" id={{ id.d13}}>
 				{{m.mot_tiet_3|floatformat:"-2"}}  
 			</td>
-			<td align="center" id={{ id.d14}}>
+			<td style="text-align: center;" id={{ id.d14}}>
 				{{m.mot_tiet_4|floatformat:"-2"}}  
 			</td>
-			<td align="center" id={{ id.d15}} style="border-right-width:3px">
+			<td style="text-align: center;" id={{ id.d15}} style="border-right-width:3px">
 				{{m.mot_tiet_5|floatformat:"-2"}}  
 			</td>
 
-			<td align="center" id={{ id.d16}}style="border-left-width:3px" >
+			<td style="text-align: center;" id={{ id.d16}}style="border-left-width:3px" >
 				{{m.ck|floatformat:"-2"}}  
 			</td>
 
-			<td align="center" id={{ id.d18}}>
+			<td style="text-align: center;" id={{ id.d18}}>
 				{{hk1|floatformat:"-1"}}  
 			</td>			
-			<td align="center" id={{ id.d17}}>
+			<td style="text-align: center;" id={{ id.d17}}>
 				{{m.tb|floatformat:"-1"}}  
 			</td>			
-			<td align="center" id={{ id.d19}}>
+			<td style="text-align: center;" id={{ id.d19}}>
 				{{tbnam|floatformat:"-1"}}  
 			</td>			
 		</tr>	

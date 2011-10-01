@@ -109,15 +109,15 @@
 
     {% endif %}
 
-    <table class="styleA" width = "75%">
+    <table class="styleA" >
     <tr>
-        <th align="center" width="5%"> STT </th>
-        <th align="center" width="20%"> <a href="{%url school.views.school_index  %}hanhkiem/{{class.id}}/1/{{next_status}}">Họ tên </a></th>
-        <th align="center" width="10%"> <a href="{%url school.views.school_index  %}hanhkiem/{{class.id}}/2/{{next_status}}">Ngày sinh</a></th>
-        <th align="center" width="10%"> <a href="{%url school.views.school_index  %}hanhkiem/{{class.id}}/3/{{next_status}}">Giới tính </a></th>
-        <th align="center" width="10%"> Kì 1 </th>
-        <th align="center" width="10%"> Kì 2 </th>
-        <th align="center" width="10%"> Cả năm </th>
+        <th class="leftAlign" > STT </th>
+        <th class="leftAlign" > <a href="{%url school.views.school_index  %}hanhkiem/{{class.id}}/1/{{next_status}}">Họ tên </a></th>
+        <th class="leftAlign" > <a href="{%url school.views.school_index  %}hanhkiem/{{class.id}}/2/{{next_status}}">Ngày sinh</a></th>
+        <th class="leftAlign" > <a href="{%url school.views.school_index  %}hanhkiem/{{class.id}}/3/{{next_status}}">Giới tính </a></th>
+        <th class="leftAlign" > Kì 1 </th>
+        <th class="leftAlign" > Kì 2 </th>
+        <th class="leftAlign" > Cả năm </th>
     </tr>
     {% if message != None %}
     <br>
@@ -126,31 +126,31 @@
         
         {% for p,f, v in list %}
             <tr class = "{{p.id}}">
-                <td align="center" width="5%">
+                <td >
                     <p>{{ forloop.counter}}</p>
                 </td>
             
-                <td align="center" width="20%">
+                <td >
                     <p>{{ p.last_name }} {{p.first_name}}</p>
                 </td>
 
-                <td align="center" width="10%">
+                <td>
                     <p>{{ p.birthday|date:"SHORT_DATE_FORMAT"}}</p>
                 </td>
 
-                <td align="center" width="10%">
+                <td>
                     <p>{{ p.sex }}</p>
                 </td>
                 {%if pos > 3 %}
                     {%if term.number == 1%}
-                        <td align="center" width="10%">
+                        <td>
                             {{ f.term1.errors }}
                             {{ f.term1 }}
                         </td>
-                        <td align="center" width="10%"></td>
-                        <td align="center" width="10%"></td>
+                        <td></td>
+                        <td></td>
                     {%else%}
-                        <td align="center" width="10%">                        
+                        <td>
                             {%  if v.term1 %}
                                 {{v.term1}}
                             {% else %}
@@ -158,31 +158,31 @@
                             {% endif %}
                         </td>
                         
-                        <td align="center" width="10%">
+                        <td>
                             {{ f.term2.errors }}
                             {{ f.term2 }}
                         </td>
-                        <td align="center" width="10%">
+                        <td>
                             {{ f.year.errors }}
                             {{ f.year }}
                         </td>                
                     {%endif%}
                 {% else %}
-                    <td align="center" width="10%">
+                    <td>
                     {%  if v.term1 %}
                                 {{v.term1}}
                             {% else %}
                                 Chưa xét
                             {% endif %}
                     </td>
-                    <td align="center" width="10%">
+                    <td>
                         {%  if v.term2 %}
                                 {{v.term2}}
                             {% else %}
                                 Chưa xét
                             {% endif %}
                     </td>
-                    <td align="center" width="10%">
+                    <td>
                         {%  if v.year %}
                                 {{v.year}}
                             {% else %}

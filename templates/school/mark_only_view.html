@@ -60,9 +60,9 @@
 		<th width ="3%" align="center" onclick="checkCol(this,1)" id="-115" style="border-bottom-width:0px"> 5 </th>
 											
 		{% ifequal selectedTerm.number 2 %}
-		<th align="center" width ="5%" onclick="checkCol(this,1)" id="-117" style="border-bottom-width:0px">HK I  </th>
-		<th align="center" width ="5%" onclick="checkCol(this,1)" id="-118" style="border-bottom-width:0px">HK II </th>
-		<th align="center" width ="5%" onclick="checkCol(this,1)" id="-119" style="border-bottom-width:0px"> CK </th>
+		<th class="leftAlign" width ="5%" onclick="checkCol(this,1)" id="-117" style="border-bottom-width:0px">HK I  </th>
+		<th class="leftAlign" width ="5%" onclick="checkCol(this,1)" id="-118" style="border-bottom-width:0px">HK II </th>
+		<th class="leftAlign" width ="5%" onclick="checkCol(this,1)" id="-119" style="border-bottom-width:0px"> CK </th>
 			
 		{% endifequal %}
 		
@@ -110,7 +110,7 @@
 				setArrayId({{m.id}}) ;
 				setSentMark("{{m.sent_mark}}");
 		</script>	
-			<td align="center" onclick="select(this)" style="border-right-width:0px" > 
+			<td style="text-align: center;" onclick="select(this)" style="border-right-width:0px" >
 			 <input title="Có thể click vào cột họ tên và ngày sinh để chọn cho nhanh hơn" type="checkbox" id="{{forloop.counter}}00" style="display:none" > 	
 			</td>
 			<td title="Click vào đây để chọn học sinh được gửi tin nhắn" align="center" onclick="select(this)" style="border-left-width:0px" >
@@ -200,7 +200,7 @@
 		{% endifequal %}
 
 		<tr >
-			<td align="center" onclick="select(this)" style="border-right-width:0px" > 
+			<td style="text-align: center;" onclick="select(this)" style="border-right-width:0px" >
 			 <input title="Có thể click vào cột họ tên và ngày sinh để chọn cho nhanh hơn" type="checkbox" id="{{forloop.counter}}00" style="display:none" > 	
 			</td>
 			<td title="Click vào đây để chọn học sinh được gửi tin nhắn" align="center" onclick="select(this)" style="border-left-width:0px" >

@@ -49,9 +49,9 @@
 		</tr>
 		<tr>
 		{% ifequal selectedTerm.number 2 %}
-			<td align="center" width ="5%">HK I  </td>
-			<td align="center" width ="5%">HK II </td>
-			<td align="center" width ="5%"> CK </td>
+			<td style="text-align: center;" width ="5%">HK I  </td>
+			<td style="text-align: center;" width ="5%">HK II </td>
+			<td style="text-align: center;" width ="5%"> CK </td>
 			
 		{% endifequal %}
 		
@@ -61,7 +61,7 @@
 	{% ifequal selectedTerm.number 1 %} 
 		{% for p,m,id in list %}		
 		<tr>
-			<td align="center">
+			<td style="text-align: center;">
 			 {{forloop.counter}}	
 			</td>
 			<td style="border-right-width:0px" width ="15%">
@@ -176,7 +176,7 @@
 	{% else%}
 		{% for p,m,hk1,tbnam,id in list %}		
 		<tr>
-			<td align="center">
+			<td style="text-align: center;">
 			 {{forloop.counter}}	
 			</td>
 			<td style="border-right-width:0px" width ="15%">
@@ -329,7 +329,7 @@
 	{% ifequal selectedTerm.number 1 %} 
 		{% for p,m,id in list %}		
 		<tr>
-			<td align="center">
+			<td style="text-align: center;">
 			 {{forloop.counter}}	
 			</td>
 			<td style="border-right-width:0px" width ="15%">
@@ -343,7 +343,7 @@
 			{{ p.birthday.day}}/{{ p.birthday.month}}/{{ p.birthday.year}} 
 			</td>
 
-			<td align="center">
+			<td style="text-align: center;">
 			{% ifequal m.mieng_1 9 %}
 				G
 			{% else %}	
@@ -366,7 +366,7 @@
 			
 			</td>
 
-			<td align="center">
+			<td style="text-align: center;">
 			{% ifequal m.mot_tiet_1 9 %}
 				G
 			{% else %}	
@@ -389,7 +389,7 @@
 			
 			</td>
 
-			<td align="center">
+			<td style="text-align: center;">
 			{% ifequal m.ck 9 %}
 				G
 			{% else %}	
@@ -411,7 +411,7 @@
 			{% endifequal %}	
 			
 			</td>
-			<td align="center">
+			<td style="text-align: center;">
 			{% ifequal m.tb 9 %}
 				G
 			{% else %}	
@@ -442,7 +442,7 @@
 	{%else %}
 		{% for p,m,hk1,tbnam,id in list %}		
 		<tr>
-			<td align="center">
+			<td style="text-align: center;">
 			 {{forloop.counter}}	
 			</td>
 			<td style="border-right-width:0px" width ="15%">
@@ -456,7 +456,7 @@
 			{{ p.birthday.day}}/{{ p.birthday.month}}/{{ p.birthday.year}} 
 			</td>
 
-			<td align="center">
+			<td style="text-align: center;">
 			{% ifequal m.mieng_1 9 %}
 				G
 			{% else %}	
@@ -479,7 +479,7 @@
 			
 			</td>
 
-			<td align="center">
+			<td style="text-align: center;">
 			{% ifequal m.mot_tiet_1 9 %}
 				G
 			{% else %}	
@@ -502,7 +502,7 @@
 			
 			</td>
 
-			<td align="center">
+			<td style="text-align: center;">
 			{% ifequal m.ck 9 %}
 				G
 			{% else %}	
@@ -525,7 +525,7 @@
 			
 			</td>
 
-			<td align="center">
+			<td style="text-align: center;">
 			{% ifequal hk1 9 %}
 				G
 			{% else %}	
@@ -548,7 +548,7 @@
 			
 			</td>
 
-			<td align="center">
+			<td style="text-align: center;">
 			{% ifequal m.tb 9 %}
 				G
 			{% else %}	
@@ -571,7 +571,7 @@
 			
 			</td>
 
-			<td align="center">
+			<td style="text-align: center;">
 			{% ifequal tbnam 9 %}
 				G
 			{% else %}	

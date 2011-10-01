@@ -265,7 +265,16 @@ table.styleA th {
     background-color: #c3dde0;
     padding: 8px;
     border: 1px solid #a9c6c9;
+    text-align: right;
 }
+
+table.styleA th.leftAlign {
+    background-color: #c3dde0;
+    padding: 8px;
+    border: 1px solid #a9c6c9;
+    text-align: left;
+}
+
 
 table.styleA th.mark {
     background-color: #c3dde0;

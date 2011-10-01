@@ -31,21 +31,21 @@
 		</td>		
 	</tr>
 	<tr>
-		<td align="center">
+		<td style="text-align: center;">
 			Số lượng
 		</td>
 		{% for h in totalSlList %}
-		<td align="center">
+		<td style="text-align: center;">
 			{{h}}
 		</td>
 		{% endfor %}
 	</tr>
 	<tr>
-		<td align="center">
+		<td style="text-align: center;">
 			Phần trăm (%)
 		</td>
 		{% for h in totalPtList %}
-		<td align="center">
+		<td style="text-align: center;">
 			{{h|floatformat:"2"}}
 		</td>
 		{% endfor %}
@@ -117,19 +117,19 @@
 	
 	{% for name,ss,l in list %}
 	<tr>
-		<td align="center">
+		<td style="text-align: center;">
 			{{ name}}
 		</td >
 		
-		<td align="center">
+		<td style="text-align: center;">
 			{{ ss|floatformat:"0" }}
 		</td>
 		{% for u,v in l %}
-			<td align="center">
+			<td style="text-align: center;">
 			    {{ u }}
 			</td >
 			
-			<td align="center">
+			<td style="text-align: center;">
 				{{v|floatformat:"1"}}
 			</td>
 		{% endfor %}

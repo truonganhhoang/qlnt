@@ -12,14 +12,14 @@
 {% if count > 0 %}
 <table class="styleA" width = "100%" >
     <tr>
-		<th align="center" width="5%"> STT </th>
-        <th align="center" width="15%"> Thời gian</th>
-        <th align="center" width="25%"> Hình thức</th>
-        <th align="center" width="15%"> Địa điểm </th>
-        <th align="center" width="30%"> Nội dung </th>
+		<th class="leftAlign"> STT </th>
+        <th class="leftAlign"> Thời gian</th>
+        <th class="leftAlign"> Hình thức</th>
+        <th class="leftAlign"> Địa điểm </th>
+        <th class="leftAlign"> Nội dung </th>
         {%if pos > 1%}
-        <th width = "5%"></th>
-        <th width = "5%"></th>
+        <th></th>
+        <th></th>
         {%endif%}
     </tr>
 
@@ -29,21 +29,21 @@
 
     {% for kt in ktl %}
     <tr>
-        <td align="center" width="5%"> {{forloop.counter}} </td>
-        <td align="center" width="15%"> {{kt.time|date:"SHORT_DATE_FORMAT"}}</td>
-        <td align="center" width="25%"> {{kt.hinh_thuc}}</td>
-        <td align="center" width="15%"> {{kt.dia_diem}} </td>
-        <td align="center" width="30%"> {{kt.noi_dung}} </td>
+        <td> {{forloop.counter}} </td>
+        <td> {{kt.time|date:"SHORT_DATE_FORMAT"}}</td>
+        <td> {{kt.hinh_thuc}}</td>
+        <td> {{kt.dia_diem}} </td>
+        <td> {{kt.noi_dung}} </td>
         {%if pos > 3%}
-        <td width="5%"><a href = "/school/kiluat/{{kt.id}}/delete" class="ggButton onPage" onclick="return confirmDelete();"> xóa</a></td>
-        <td width="5%"><a href = "/school/kiluat/{{kt.id}}/edit" class="ggButton onPage"> Sửa</a></td>
+        <td><a href = "/school/kiluat/{{kt.id}}/delete" class="ggButton onPage" onclick="return confirmDelete();"> xóa</a></td>
+        <td><a href = "/school/kiluat/{{kt.id}}/edit" class="ggButton onPage"> Sửa</a></td>
         {% endif %}
     </tr>
     {% endfor %}
 </table>
 {% else %}
     <p>Học sinh hiện chưa có kỉ luật nào</p>
-    </br>
+    <br>
 {% endif %}
 {% if pos > 3 %}
     <a title="Thêm kỉ luật cho học sinh" class = "tiptiphover ggButton onPage" href="/school/kiluat/{{student_id}}/add"> Thêm </a>
