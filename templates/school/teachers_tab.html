@@ -59,9 +59,9 @@
     <h2>Danh sách giáo viên</h2>
         <form action="/school/teachers_tab" id ="submitform" method="post">{% csrf_token %}
             <table class="styleA" width="100%">
-                <tr>
+                <tr class="thread">
                     {% if pos > 3 %}
-                    <th align="center" width="30px" title="Chọn cả lớp" class="tiptiphover">
+                    <th align="center" width="30px" title="Chọn tất cả" class="tiptiphover">
                         <input type="checkbox" class="checkbox_all"/>
                     </th>
                     {% endif %}

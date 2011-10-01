@@ -212,21 +212,25 @@
                 };
                 $("tr").live("click",select);
                 $(".checkbox_all").live("click",function() {
-                    var checkboxall = '.checkbox_all';
+                    var checkboxall = '.checkbox_all:visible';
                     if ($(checkboxall).is(':checked')) {
-                        $("tr").each(function() {
-                            var id = $(this).attr('class').split(' ')[0];
-                            var checkboxid = '.checkbox_' + id;
-                            if (!$(this).hasClass('selected'))
-                                $(this).trigger('click');
+                        $("tr:visible").each(function() {
+                            if (!$(this).hasClass('selected')){
+                                $(this).addClass('selected');
+                            }
+                        });
+                        $("input[type=checkbox]:not(:checked):visible").each(function(){
+                            $(this).prop("checked",true);
                         });
                     }
                     else {
                         $("tr").each(function() {
-                            var id = $(this).attr('class').split(' ')[0];
-                            var checkboxid = '.checkbox_' + id;
-                            if ($(this).hasClass('selected'))
-                                $(this).trigger('click');
+                            if ($(this).hasClass('selected')){
+                                $(this).removeClass('selected');
+                            }
+                        });
+                        $("input:checked").each(function(){
+                            $(this).prop('checked',false);
                         });
                     }
                 });

@@ -63,11 +63,11 @@
 
     <h2>Danh sách giáo viên tổ {{ team }}</h2>
     <table class="styleA" width="100%">
-        <tr>
+        <tr class="thread">
             {% if pos > 3 %}
-                <th align="center" width="30px" title="Chọn cả lớp" class="tiptiphover">
-                    <input type="checkbox" class="checkbox_all"/>
-                </th>
+            <th align="center" width="30px" title="Chọn cả tổ" class="tiptiphover">
+                <input type="checkbox" class="checkbox_all"/>
+            </th>
             {% endif %}
             <th align="center" width="5%"> STT</th>
             <th align="center" width="15%">Họ tên</th>
@@ -75,8 +75,8 @@
             <th align="center" width="20%">Quê quán</th>
             <th align="center" width="10%">Giới tính</th>
             <th align="center" width="10%">Dạy môn</th>
-            <th align="center" width="10%">Tổ</th>
-            <th align="center" width="10%">Nhóm</th>
+            <th align="center" width="15%">Tổ</th>
+            <th align="center" width="15%">Nhóm</th>
         </tr>
 
         {% if message != None %}
@@ -86,9 +86,9 @@
         {% for ss, f in list %}
             <tr class="{{ ss.id }}">
                 {% if pos > 3 %}
-                    <td align="center" width="30px">
-                        <input type="checkbox" class="checkbox_{{ss.id}}"/>
-                    </td>
+                <td align="center" width="30px">
+                    <input type="checkbox" class="checkbox_{{ss.id}}"/>
+                </td>
                 {% endif %}
                 <td align="center" width="5%">{{ forloop.counter }}</td>
                 <td align="center" width="15%">
@@ -105,8 +105,8 @@
                 <td align="center" width="10%"> {{ ss.sex }} </td>
                 {% if pos > 3 %}
                     <td align="center" width="10%"> {{ f.major }} </td>
-                    <td align="center" width="10%"> {{ f.team_id }} </td>
-                    <td align="center" width="10%"> {{ f.group_id }} </td>
+                    <td align="center" width="15%"> {{ f.team_id }} </td>
+                    <td align="center" width="15%"> {{ f.group_id }} </td>
                 {% else %}
                     <td align="center" width="15%">
                         {% if ss.major == '-1' %}

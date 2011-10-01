@@ -61,9 +61,9 @@
     {% endif %}
     <h2>Danh sách giáo viên nhóm{{ group }}</h2>
     <table class="styleA" width="100%">
-        <tr>
+        <tr class="thread">
             {% if pos > 3 %}
-            <th align="center" width="30px" title="Chọn cả lớp" class="tiptiphover">
+            <th align="center" width="30px" title="Chọn cả nhóm" class="tiptiphover">
                 <input type="checkbox" class="checkbox_all"/>
             </th>
             {% endif %}
@@ -84,9 +84,9 @@
         {% for ss, f in list %}
             <tr class="{{ ss.id }}">
                 {% if pos > 3 %}
-                    <td align="center" width="30px">
-                        <input type="checkbox" class="checkbox_{{ss.id}}"/>
-                    </td>
+                <td align="center" width="30px">
+                    <input type="checkbox" class="checkbox_{{ss.id}}"/>
+                </td>
                 {% endif %}
                 <td align="center" width="5%">{{ forloop.counter }}</td>
                 <td align="center" width="15%">
@@ -103,10 +103,10 @@
                 <td align="center" width="10%"> {{ ss.sex }} </td>
                 {% if pos > 3 %}
                     <td align="center" width="10%"> {{ f.major }} </td>
-                    <td align="center" width="10%"> {{ f.team_id }} </td>
-                    <td align="center" width="10%"> {{ f.group_id }} </td>
+                    <td align="center" width="15%"> {{ f.team_id }} </td>
+                    <td align="center" width="15%"> {{ f.group_id }} </td>
                 {% else %}
-                    <td align="center" width="15%">
+                    <td align="center" width="10%">
                         {% if ss.major == '-1' %}
                             Chưa rõ
                         {% else %}
@@ -120,7 +120,7 @@
                             Chưa rõ
                         {% endif %}
                     </td>
-                    <td align="center" width="10%">
+                    <td align="center" width="15%">
                     {% if ss.group_id %}
                             {{ ss.group_id }}
                         {% else %}
