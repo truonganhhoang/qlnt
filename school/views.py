@@ -2459,8 +2459,17 @@ def subjectPerClass(request, class_id, sort_type=4, sort_status=0):
 
         elif request.POST['request_type'] == u'hs':
             shs = float(request.POST['hs'])
-            sub.hs = shs
-            sub.save()
+            if shs < 0:
+                message = u'Hệ số không được nhỏ hơn 0'
+                data = simplejson.dumps({'message': message})
+                return HttpResponse(data, mimetype='json')
+            elif shs > 3:
+                message = u'Hệ số không được lớn hơn 3'
+                data = simplejson.dumps({'message': message})
+                return HttpResponse(data, mimetype='json')
+            else:
+                sub.hs = shs
+                sub.save()
     elif request.method == 'POST':
         hs_list = request.POST.getlist('hs')
         teacher_list = request.POST.getlist('teacher_id')
@@ -3435,7 +3444,7 @@ def edit_ki_luat(request, kt_id):
     return HttpResponse(t.render(c))
 
 
-def hanh_kiem(request, class_id = 0, sort_type = 1, sort_status = 0):
+def hanh_kiem(request, class_id = 0, sort_type = 0, sort_status = 0):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
@@ -3463,7 +3472,7 @@ def hanh_kiem(request, class_id = 0, sort_type = 1, sort_status = 0):
     if gvcn(request, class_id) == 1:
         pos = 4
     message = None
-    pupilList = c.pupil_set.all()
+    pupilList = c.pupil_set.order_by('index')
     term = get_current_term(request)
     if int(sort_type) == 1:
         if not int(sort_status):
@@ -3563,6 +3572,7 @@ def viewSubjectDetail (request, subject_id):
 
     if get_position(request) < 4:
         return HttpResponseRedirect('/')
+    pos = get_position(request)
     sub = Subject.objects.get(id=subject_id)
     class_id = sub.class_id
     if not in_school(request, class_id.block_id.school_id):
@@ -3582,5 +3592,6 @@ def viewSubjectDetail (request, subject_id):
     c = RequestContext(request, {   'form':form,
                                     'message':message,
                                     'sub': sub,
+                                    'pos':pos,
                                     })
     return HttpResponse(t.render(c))

@@ -2,9 +2,10 @@
 
 {% block backward_link %}
     {% if pos > 1 %}
-    <a href="{% url school.views.school_index %}classes"> Toàn trường</a> > <a href="{% url school.views.school_index %}viewClassDetail/{{ sub.class_id.id }}"> {{ sub.class_id }} </a> > <a href="{% url school.views.school_index %}subjectPerClass/{{ sub.class_id.id }}"> Môn học </a> > {{ sub }}
+        <a href="{% url school.views.school_index %}classes"> Toàn trường</a> > <a href="{% url school.views.school_index %}viewClassDetail/{{ sub.class_id.id }}"> {{ sub.class_id }} </a> > <a href="{% url school.views.school_index %}subjectPerClass/{{ sub.class_id.id }}"> Môn học </a> > {{ sub }}
     {% endif %}
 {% endblock %}
+
 {% block content %}
 
     {% if message != None %}
@@ -16,6 +17,6 @@
             {{ form.as_table }}
         </table>
         <input type="submit" class="ggButton" value="Lưu"/>
-        <a class="ggButton tiptiphover" title="Quay về danh sách môn học" href="{%url school.views.school_index  %}subjectPerClass/{{class_id}}">Quay lại</a>
+        <a class="ggButton tiptiphover" title="Quay về danh sách môn học" href="{%url school.views.school_index  %}subjectPerClass/{{sub.class_id.id}}">Quay lại</a>
     </form>
 {% endblock %}

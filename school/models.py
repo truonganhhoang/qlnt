@@ -99,7 +99,9 @@ def validate_dd_date(value):
 def validate_hs(value):
     #he so bang 0 la cho nhung mon cham diem bang nhan xet
     if value < 0:
-        raise ValidationError(u'Hệ số phải lớn hơn 0')
+        raise ValidationError(u'Hệ số không được nhỏ hơn 0')
+    if value > 3:
+        raise ValidationError(u'Hệ số không được lớn hơn 3')
 
 def validate_join_mark(value):
     if value <= 0:

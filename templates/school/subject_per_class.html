@@ -27,6 +27,17 @@
             return confirm("Bạn có chắc chắn xóa không?");
         }
         $(document).ready(function(){
+            $("#notify").ajaxSuccess(function(event, request, settings, json) {
+                if (json.message != null) {
+                    $(this).html("<ul>" + json.message + "</ul>");
+                    $(this).delay(1000).fadeOut(10000);
+                }
+                else{
+                    $(this).text("Đã lưu");
+                    $(this).delay(1000).fadeOut('fast');
+                }
+            });
+
             $(".submitbutton").attr("disabled", true);
             $("select[name=teacher_id]").each(function() {
                 $(this).change(function() {
@@ -107,6 +118,8 @@
                                 error: function(){
                                     $(".submitbutton").attr('disabled', false);
                                     $(".submitbutton").val('Lưu lại');
+                                },
+                                success: function() {
                                 }
                             };
                             $.ajax(arg);
