@@ -161,16 +161,24 @@ def check_logic(request):
     number = 0
     try:
         if request.method == 'GET':
-#            print 'get'
-#            students = Pupil.objects.all()
-#            for student in students:
-#                marks = Mark.objects.filter(student_id__exact = student)
-#                for mark in marks:
-#                    if student.class_id.year_id.school_id != mark.subject_id.class_id.year_id.school_id:
-#                        number+=1
-#                        print student, student.class_id, student.class_id.year_id.school_id, mark.subject_id.class_id, mark.subject_id.class_id.year_id.school_id, mark.subject_id
-#            print 'message'
-#            message = u'<p>Have ' + str(number) + ' students that have bugs.</p>'
+            print 'get'
+            students = Pupil.objects.all()
+            for student in students:
+                marks = Mark.objects.filter(student_id__exact = student)
+                for mark in marks:
+                    if student.class_id.year_id.school_id != mark.subject_id.class_id.year_id.school_id:
+                        number+=1
+                        print student, student.class_id, student.class_id.year_id.school_id, mark.subject_id.class_id, mark.subject_id.class_id.year_id.school_id, mark.subject_id
+            print 'message'
+            tkmons = TKMon.objects.all()
+            wrong_logic = 0
+            for tk in tkmons:
+                student = tk.student_id
+                subject = tk.subject_id
+                if student.class_id != subject.class_id:
+                    wrong_logic += 1
+
+            message = u'<p>Have ' + str(number) + ','+ str(wrong_logic) + ' students that have bugs.</p>'
 
             number = 0
             classes = Class.objects.all()
@@ -187,6 +195,7 @@ def check_logic(request):
                 number += _class.subject_set.count() * _class.pupil_set.count()
             message += r'<li>' + 'Expected tkmon: ' + str(number) + r'</li>'
             message += ':' + str(TKMon.objects.count())
+            tkmons = TKMon.objects.all()
             if number == TKMon.objects.count():
                 message += 'OK'
         elif  request.method == 'POST':
