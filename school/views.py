@@ -685,7 +685,9 @@ def class_generate(request, class_id, object):
             row +=1
             #return HttpResponse
         response = HttpResponse(mimetype='application/ms-excel')
-        response['Content-Disposition'] = u'attachment; filename=ds_hoc_sinh_%s.xls' % unicode(_class)
+        strstr=unicode(_class)
+        strstr1=strstr.replace(' ','_')
+        response['Content-Disposition'] = u'attachment; filename=ds_hoc_sinh_%s.xls' % strstr1
         book.save(response)
         return response
     else:
