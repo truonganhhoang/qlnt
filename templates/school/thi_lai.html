@@ -4,7 +4,7 @@
 	<a href="/school/viewClassDetail/{{selectedClass.id}}"> {{selectedClass.name}}  </a> > 
 
 	<a href="/school/xlCaNamTheoLop/{{selectedClass.id}}/1"> Xếp loại lớp  </a> > 
-	Thi lại
+	Nhập điểm thi lại
 	
 		
 {% endblock %} 
@@ -16,285 +16,9 @@
 	{{message}}
 {% else%}
 <script>
-	var length={{lengthList}} ;
-	var numberSubject = {{numberSubject}};
-	
-	var mark = new Array(length);
-	var tempMark = new Array(length);
-	var newMark  = new Array(length);
-	var idAr = new Array(length);
-	var hs   = new Array(20);
-	var index = 0;
-	var index1= 0;
-	var index2= 0;
-	var index3=0;
-	for(var i=0;i<length;i++)
-	{
-		mark[i] = new Array(20);
-		idAr[i] = new Array(20);
-		tempMark[i] = new Array(20);
-		newMark[i]  = new Array(20);
-	}
-	function setMark(m)
-	{
-		var i = parseInt(index/numberSubject);
-		var j = index % numberSubject;
-		mark[i][j] = m;
-		index++;
-	}
-	function setId(id)
-	{
-		var i = parseInt(index1/numberSubject);
-		var j = index1 % numberSubject;
-		idAr[i][j] =""+id;
-		index1++;
-	}
-	function setTbNam(id)
-	{
-		idAr[index2][17]="t"+id;
-		idAr[index2][18]="h"+id;
-		idAr[index2][19]="x"+id;	
-		index2++;	
-	}
-	function setHs(hs1)
-	{
-		hs[index3]=hs1;
-		index3++;
-	}
-	function find(id)
-	{
-		for (var i=0;i<length;i++)
-			for(var j=0;j<20;j++)
-				if (idAr[i][j]==id)
-					return i;
-	}
-	function defineHl(tb,vtMonChuyen,vtMonToan,vtMonVan,newMark)
-	{
-		var e=0.00000001;
-		var minMark = 10;
-		tb= tb+e;
-		for(var i=0;i<numberSubject;i++)
-		if (minMark>newMark[i])
-			minMark = newMark[i];
-			
-		if (vtMonChuyen!=-1)
-			var firstMark=newMark[vtMonChuyen]+e
-		else
-		if 	(newMark[vtMonToan]<newMark[vtMonVan])
-			var firstMark=newMark[vtMonVan]+e
-		else
-			var firstMark=newMark[vtMonToan]+e                
-    
-		//alert(tb);
-		//alert(firstMark);
-		//alert(minMark);	
-		if ((tb>=8.0) & (firstMark>=8.0) & (minMark>=6.5))
-			return 'Giỏi'
-		else 
-		if ((tb>=8.0) & (minMark>=5))
-			return 'Khá'
-		else
-		if	(tb>=8.0)
-			return 'TB'
-		else 
-		if ((tb>=6.5) & (firstMark>=6.5) & (minMark>=5))
-			return 'Khá'
-		else
-		if	((tb>=6.5) & (minMark>=3.5))
-			return 'TB'
-		else 
-		if (tb>=6.5)
-			return 'Yếu'
-		else 
-		if ((tb>=5) & (firstMark>=5) & (minMark>=3.5))
-			return 'TB'
-		else 
-		if ((tb>=3.5) & (minMark>=2))
-			return 'Yếu'
-		else
-			return 'Kém'
-
-			
-	}
-	function calculate(t)
-	{
-		var newMark = new Array(20);
-		for(var i=0;i<numberSubject;i++)
-			newMark[i] = mark[t][i];
-		for(var  i=0;i<numberSubject;i++)
-			if (idAr[t][i])
-			{
-				var cell = document.getElementById(idAr[t][i]);
-				if (cell)
-				if (cell.value.length>0)
-					newMark[i] = parseInt(cell.value); 
-			}
-		var sum=0;	
-		var sumFactor = 0;
-		for(var i=0;i<numberSubject;i++)
-		{
-			sumFactor +=hs[i];
-			sum += newMark[i]*hs[i]
-		}
-		var average = sum/sumFactor;
-			average = Math.round(average*10+0.0000001)/10;
-		
-		//alert("fuck"+average);	
-		document.getElementById(idAr[t][17]).value= average;
-		
-		var hk=defineHl(average,{{vtMonChuyen}},{{vtMonToan}},{{vtMonVan}},newMark);
-		
-		document.getElementById(idAr[t][18]).value=hk;
-		if ((hk!='Yếu') && (hk !='Kém'))
-			document.getElementById(idAr[t][19]).value='Được lên lớp';
-		else	
-			document.getElementById(idAr[t][19]).value='Ở lại lớp';		
-	}
-	function  calculateTempMark()
-	{
-		for(var i=0;i<length;i++)
-			for(j=0;j<20;j++)
-			if (idAr[i][j])
-			{							
-				var cell = document.getElementById(idAr[i][j]);
-				if (cell)
-					tempMark[i][j]=cell.value;								
-						
-				if (tempMark[i][j]==undefined)		
-					tempMark[i][j]=-1
-				else	
-				if (tempMark[i][j].length==0)		
-					tempMark[i][j]=-1					
-			}
-			else		
-				tempMark[i][j]=-1;
-	}
-	function update()
-	{
-		calculateTempMark();
-		for(var i=0;i<length;i++)
-		{
-			var ok=false;
-			for(j=0;j<numberSubject;j++)
-			if (idAr[i][j])
-			{								
-				var cell = document.getElementById(idAr[i][j]);					
-				if (cell) 
-				if (cell.value.length>0)
-					ok=true;				
-					
-			}
-			if (ok)
-				calculate(i)
-			else
-			{
-				document.getElementById(idAr[i][17]).value= "";
-				document.getElementById(idAr[i][18]).value= "";
-				document.getElementById(idAr[i][19]).value= "";
-			}	
-		}		
-		calculateTempMark();
-	}
-	
-    function getCookie(name) {
-    var cookieValue = null;
-        if (document.cookie && document.cookie != '') {
-        var cookies = document.cookie.split(';');
-        for (var i = 0; i < cookies.length; i++) {
-            var cookie = jQuery.trim(cookies[i]);
-             // Does this cookie string begin with the name we want?
-            if (cookie.substring(0, name.length + 1) == (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-            }
-         }
-        }
-        return cookieValue;
-    } 
-	var cookieValue = getCookie('csrftoken'); 	
-	function sendToServer(str)
-	{
-		var xmlhttp;
-		if (window.XMLHttpRequest)
-		{// code for IE7+, Firefox, Chrome, Opera, Safari
-			xmlhttp=new XMLHttpRequest();
-			//alert("chao");
-		}
-		else
-		{// code for IE6, IE5
-			xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-		}
-
-		xmlhttp.onreadystatechange=function()
-		{
-			if (xmlhttp.readyState==4 && xmlhttp.status==200)
-			{
-				//document.getElementById("messageChanging").innerHTML="Đã lưu";
-				updateNewMark();
-				var temp = document.getElementById("notify");
-					temp.innerHTML="Đã lưu";
-					$(temp).fadeIn();
-					$(temp).delay(2000).fadeOut('fast');      
-				
-				//if (document.getElementById("messageChanging").innerHTML!="Lưu ngay")
-				//	document.getElementById("messageChanging").innerHTML="Đã lưu";
-			}
-		}   				
-		//alert(cookieValue);
-		
-		xmlhttp.open("POST", "/school/saveHocLai",true);
-        xmlhttp.setRequestHeader("X-CSRFToken",cookieValue );
-		var data = "str="+str;
-		xmlhttp.send(data);			
-	}
-	
-	function updateToServer()
-	{
-		//writeTemp();
-		var str="";
-		for(var i=0;i<length;i++)
-			{
-				for(var j=0;j<numberSubject;j++)
-					if (tempMark[i][j] != newMark[i][j])
-						str+=":"+0+"*"+idAr[i][j]+"*"+tempMark[i][j];
-						
-				if (tempMark[i][17] != newMark[i][17])
-					{
-						var id  = idAr[i][17]; 
-						id = id.substring(1,id.length);
-						str += ":"+1+"*"+id+"*"+tempMark[i][17];
-					}	
-						
-				if (tempMark[i][18] != newMark[i][18])
-				{
-					var id  = idAr[i][18]; 
-					id = id.substring(1,id.length);
-					var hl="";
-					if   (tempMark[i][18]=='Giỏi')  hl ='G'
-					else
-					if   (tempMark[i][18]=='Khá')  hl ='K'
-					else
-					if   (tempMark[i][18]=='TB')  hl ='TB'
-					else
-					if   (tempMark[i][18]=='Yếu')  hl ='Y'
-					else
-					if   (tempMark[i][18]=='Kém')  hl ='Kem'
-					else                           hl='-1';  
-					str += ":"+2+"*"+id+"*"+hl;
-				}	
-			}	
-		if (str !="")
-			sendToServer(str);
-		//writeNew();	
-	}
-	function updateNewMark()
-	{
-		for(var i=0;i<length;i++)
-			for(var j=0;j<20;j++)
-				newMark[i][j] = tempMark[i][j];
-	}
 	function acceptDigits(tb)
 	{
+		if (tb.readOnly) return;
 		var ok=true;		
 		var exp = /[^((\d).,)]/g;
 		tb.value=tb.value.replace(exp,'');		
@@ -325,67 +49,38 @@
 			
 		if ((10<number ) && (number<100))
 		{
-			temp=number/10;
+			var temp=number/10;
 			tb.value=temp.toString();
 		}
 		if (number>=100)
 		{
 			tb.value=tb.value.substring(0,2);				
 			ok=false;
-		}	
-	}
-	function writeTemp()
-	{
-		var str="";
-		for(var i=0;i<length;i++)
+		}
+		if ((tb.value.length==2) && (tb.value[0]=='0'))
 		{
-			for(var j=0;j<20;j++)
-			{
-				str=str+tempMark[i][j]+" ";
-			}		
-			str=str+"<p>"
-		}	
-		str=str+"<br><br> "
-		document.getElementById("myDiv1").innerHTML = str;
-	}
-	function writeNew()
-	{
-		var str="";
-		for(var i=0;i<length;i++)
-		{
-			for(var j=0;j<20;j++)
-			{
-				str=str+newMark[i][j]+" ";
-			}		
-			str=str+"<p>"
-		}	
-		document.getElementById("myDiv2").innerHTML = str;
-	}
+			var temp = number / 10;
+			tb.value = temp.toString();
+		}		
+	}	
+
 </script>
 	<div id = "myDiv1" > </div>
 	<div id = "myDiv2" > </div>
+	<br>
+	Hướng dẫn: Nếu học sinh đăng kí thi lại môn nào thì nhập điểm vào môn đó, ngược lại thì bỏ trống.
+<form action="/school/thilai/{{selectedClass.id}}" method="post">{% csrf_token %}	
+	<input type="submit" class="ggButton" value="Lưu và xếp loại" >
 	
-<h2>Cập nhập kiểm tra lại lớp {{selectedClass.name}} năm học {{yearString}} </h2>
-	{% for tkMon in aTKMonList %}
-		<script>
-			setHs({{tkMon.subject_id.hs}});
-		</script>
-	{% endfor %}
 	
 	{% for tkMonList,tbNam in list  %}
-		<script>
-			setTbNam({{tbNam.id}});
-		</script>
 		<br>
 		<br>
 		{{tbNam.student_id.last_name}} &nbsp {{tbNam.student_id.first_name}}
+		
 		<table class="styleC">
 		<tr>
 			{% for tkMon in tkMonList %}
-			<script>
-				setMark({{tkMon.tb_nam}});				
-				setId({{tkMon.id}});
-			</script>
 			
 			{% endfor %}
 		
@@ -433,19 +128,20 @@
 			<td> Điểm KT lại
 			</td>
 			{% for tkMon in tkMonList %}
-			{%if tkMon.thi_lai %}
-				{% ifequal tkMon.diem_thi_lai None %}	
-				<td>
-					<input class="mark" type="text" id="{{tkMon.id}}" >
-				</td>
-				{% else %}
-				<td>
-					<input class="mark" type="text" id="{{tkMon.id}}" value="{{tkMon.diem_thi_lai}}">
-				</td>
-				{% endifequal %}
-				
-			{% endif %}
+				{%if tkMon.thi_lai %}
+					{% ifequal tkMon.diem_thi_lai None %}	
+					<td>
+						<input class="mark" type="text" id="{{tkMon.id}}" name="{{tkMon.id}}" >
+					</td>
+					{% else %}
+					<td>
+						<input class="mark" type="text" id="{{tkMon.id}}" name="{{tkMon.id}}" value="{{tkMon.diem_thi_lai}}">
+					</td>
+					{% endifequal %}
+					
+				{% endif %}
 			{% endfor %}
+			
 			{% ifequal tbNam.tb_thi_lai None %}
 				<td >
 					<input class="noedit" type="text" id="t{{tbNam.id}}"  readonly="readonly">				
@@ -455,46 +151,58 @@
 					<input class="noedit" type="text" id="t{{tbNam.id}}"  value="{{tbNam.tb_thi_lai}}" readonly="readonly">				
 				</td>
 			{% endifequal %}	
-			
+			<td>
 			{% ifequal tbNam.hl_thi_lai None %}			
-				<td>
-					<input class="noedit" type="text" id="h{{tbNam.id}}"  readonly="readonly">				
-				</td>
+				&nbsp
 			{% else %}	
-				<td>
-					<input class="noedit" type="text" id="h{{tbNam.id}}" value="{{tbNam.hl_thi_lai}}" readonly="readonly">				
-				</td>
-			{% endifequal %}	
+					{% ifequal tbNam.hl_thi_lai "G" %}
+						Giỏi
+					{% else %} 	
+					{% ifequal tbNam.hl_thi_lai "K" %}
+						Khá
+					{% else %} 							
+					{% ifequal tbNam.hl_thi_lai "TB" %}
+						TB
+					{% else %} 							
+					{% ifequal tbNam.hl_thi_lai "Y" %}
+						Yếu
+					{% else %} 							
+					{% ifequal tbNam.hl_thi_lai "Kem" %}
+						Kém
+					{% endifequal %}	
+					{% endifequal %}	
+					{% endifequal %}	
+					{% endifequal %}	
+					{% endifequal %}	
 			
+			{% endifequal %}	
+			</td>
 			<td >
-				<input class="noedit" type="text" id="x{{tbNam.id}}" readonly="readonly">				
+				{% if tbNam.len_lop %}
+					Được lên lớp
+				{% else %}
+				{% if tbNam.len_lop != None %}
+					Không được lên lớp
+				{% else %}
+					&nbsp
+				{% endif %}
+				{% endif %}
 			</td>
 		</tr>
 		</table>
 	{% endfor %}
-	<script>
-		
+</form>	
+	<script>		
 		$(document).ready(function() 
 		{
 			$('input').keyup(function(){
 				if ((this.id[0]!='t') && (this.id[0]!='h') && (this.id[0]!='x'))
 					{
-						acceptDigits(this)
-						update();
+						acceptDigits(this);
 					}	
 					
-			}
-			);
-		}
-		);
-		
-		calculateTempMark();
-		updateNewMark();
-		var myTimer;
-		var myTimer1;
-		update();
-		myTimer1 = setInterval("updateToServer()", 3000);
-
+				});
+		});
 	</script>	
 {% endif %}
 {% endblock %}

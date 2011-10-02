@@ -41,10 +41,11 @@ def finish(request):
                                  'firstTerm':firstTerm,
                                  'secondTerm':secondTerm,
                                  'currentTerm':currentTerm,
+
                                 }
                        )
     return HttpResponse(t.render(c))
-        
+
 # tinh diem tong ket cho 1 lop theo hoc ky
 def defineHl(tb,monChuyen,monToan,monVan,minMark):
     if monChuyen:
@@ -72,6 +73,48 @@ def defineHl(tb,monChuyen,monToan,monVan,minMark):
         return 'Y'
     else:
         return 'Kem'
+
+def defineHlThiLai(tb,monChuyen,monToan,monVan,minMark):
+    
+    if monToan.diem_thi_lai!=None:
+        diemToan=monToan.diem_thi_lai
+    else:
+        diemToan=monToan.tb_nam
+        
+    if monVan.diem_thi_lai!=None:
+        diemVan=monVan.diem_thi_lai
+    else:
+        diemVan=monVan.tb_nam
+    
+    if monChuyen:
+        if monChuyen.diem_thi_lai!=None:
+            firstMark=monChuyen.diem_thi_lai+e
+        else:    
+            firstMark=monChuyen.tb_nam+e
+    elif diemToan<diemVan:
+        firstMark=diemVan+e
+    else:
+        firstMark=diemToan+e                
+    
+    if (tb>=8.0) & (firstMark>=8.0) & (minMark>=6.5):
+        return 'G'
+    elif (tb>=8.0) & (minMark>=5):
+        return 'K'
+    elif (tb>=8.0):
+        return 'TB'
+    elif (tb>=6.5) & (firstMark>=6.5) & (minMark>=5):
+        return 'K'
+    elif (tb>=6.5) & (minMark>=3.5):
+        return 'TB'
+    elif (tb>=6.5): 
+        return 'Y'
+    elif (tb>=5) & (firstMark>=5) & (minMark>=3.5):
+        return 'TB'
+    elif (tb>=3.5) & (minMark>=2):
+        return 'Y'
+    else:
+        return 'Kem'
+
 
 def defineHlNam(tb,monChuyen,monToan,monVan,minMark):
     if monChuyen:
@@ -911,6 +954,7 @@ def finishYear(request,year_id):
                        )
     return HttpResponse(t.render(c))
 
+@transaction.commit_on_success
 def thilai(request,class_id):
     t1=time.time()
     user = request.user
@@ -946,17 +990,19 @@ def thilai(request,class_id):
         for tbMon in aTKMonList:
             if tbMon.tb_nam==None: message="Chưa tổng kết xong điểm của cả lớp"
             
-            elif tbMon.tb_nam <5   : tbMon.thi_lai=True
+            elif (tbMon.tb_nam <5) & (tbMon.mg==False) :  
+                tbMon.thi_lai=True
+            else                                       :  
+                tbMon.thi_lai=False
             
         tbMonList.append(aTKMonList)
-        print tbNam.hl_thi_lai
-        
+        """
         if   tbNam.hl_thi_lai=='G'  : tbNam.hl_thi_lai='Giỏi'
         elif tbNam.hl_thi_lai=='K'  : tbNam.hl_thi_lai='Khá'
         elif tbNam.hl_thi_lai=='TB' : tbNam.hl_thi_lai='TB'
         elif tbNam.hl_thi_lai=='Y'  : tbNam.hl_thi_lai=u'Yếu'
         elif tbNam.hl_thi_lai=='Kem' : tbNam.hl_thi_lai='Kém'
-        
+        """
         
         
     vtMonChuyen = -1
@@ -972,9 +1018,57 @@ def thilai(request,class_id):
         elif  tkMon.subject_id.name.lower().__contains__(u'văn'):
             vtMonVan=i   
         i+=1     
-
     
     list= zip(tbMonList,tbNamList)
+    
+    if request.method =='POST':
+        for aTKMonList,tbNam in list:
+            sum=0
+            sumFactor=0
+            minMark=10
+            monChuyen=None
+                    
+            for (i,tbMon) in enumerate(aTKMonList):
+                if tbMon.thi_lai:
+                    value = request.POST[str(tbMon.id)]
+                    if len(value)!=0:
+                        value1=float(value)
+                        tbMon.diem_thi_lai=value1
+                        tbMon.save()
+                    else:
+                        tbMon.diem_thi_lai=None
+                        tbMon.save()
+                ok=False    
+                if tbMon.thi_lai:
+                    if tbMon.diem_thi_lai!=None:
+                        sumFactor+=tbMon.subject_id.hs
+                        sum+=tbMon.diem_thi_lai*tbMon.subject_id.hs
+                        if minMark>tbMon.diem_thi_lai:
+                            minMark=tbMon.diem_thi_lai
+                        ok=True
+                if (not ok) & ( tbMon.mg==False ):
+                    sumFactor+=tbMon.subject_id.hs
+                    sum+=tbMon.tb_nam * tbMon.subject_id.hs
+                    if minMark>tbMon.tb_nam:
+                        minMark=tbMon.tb_nam
+                        
+                if   i==vtMonChuyen:
+                    monChuyen=tbMon
+                    
+                if i==vtMonToan:
+                    monToan=tbMon
+                elif  i==vtMonVan:
+                    monVan=tbMon                
+            
+            tbNam.tb_thi_lai=round(float(sum)/sumFactor,1)
+            tbNam.hl_thi_lai=defineHlThiLai(tbNam.tb_thi_lai,monChuyen,monToan,monVan,minMark,)
+            
+            if (tbNam.hl_thi_lai!='Y') & (tbNam.hl_thi_lai!='Kem'):
+                tbNam.len_lop=True
+            else:
+                tbNam.len_lop=False 
+            tbNam.save()        
+                                
     lengthList = len(list)
     if lengthList==0:
         message="Lớp chưa tổng kết xong hoặc không có học sinh nào phải thi lại"
@@ -982,7 +1076,6 @@ def thilai(request,class_id):
     
     yearString=str(selectedClass.year_id.time)+"-"+str(selectedClass.year_id.time+1)
     
-    print message
     t = loader.get_template(os.path.join('school','thi_lai.html'))
     t2=time.time()
     print (t2-t1)
