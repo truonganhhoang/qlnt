@@ -1838,6 +1838,14 @@ def viewClassDetail(request, class_id, sort_type=0, sort_status=0):
                     message = u'<li> ' + u'Chưa nhập hoặc nhập không đúng định dạng "ngày/tháng/năm" ' + u'</li>'
                     print e
 
+                try:
+                    if data['sms_phone']:
+                        validate_phone(data['sms_phone'])
+                except Exception as e:
+                    message = u'<li> ' + u'Số điện thoại không tồn tại' + u'</li>'
+                    print e
+
+
                 if not request.POST['first_name']:
                     message += u'<li> ' + u'Ô tên là bắt buộc' + u'</li>'
 

@@ -237,6 +237,8 @@ def add_student( student = None, index = 0, start_year = None , year = None,
             if 'mother_name' in student: st.mother_name = student['mother_name']
             if 'mother_phone' in student: st.mother_phone = student['mother_phone']
             if 'phone' in student: st.phone = student['phone']
+            if 'sms_phone' in student: st.sms_phone = student['sms_phone']
+
 
             if 'sex' in student:
                 st.sex = student['sex']
@@ -373,7 +375,6 @@ def add_many_students( student_list = None,
         else:
             st.sex = 'Nam'
         changed = False
-
         if 'ban_dk' in student and st.ban_dk!= student['ban_dk']:
             st.ban_dk = student['ban_dk']
             changed = True
@@ -389,12 +390,15 @@ def add_many_students( student_list = None,
         if 'father_name' in student and st.father_name!=student['father_name']:
             st.father_name = student['father_name']
             changed = True
+
         if 'father_phone' in student and st.father_phone !=student['father_phone']:
             st.father_phone = student['father_phone']
             changed = True
+
         if 'mother_name' in student and st.mother_name!=student['mother_name']:
             st.mother_name = student['mother_name']
             changed = True
+
         if 'mother_phone' in student and st.mother_phone!=student['mother_phone']:
             st.mother_phone = student['mother_phone']
             changed = True
@@ -412,10 +416,12 @@ def add_many_students( student_list = None,
             userprofile.position = 'HOC_SINH'
             userprofile.save()
             st.user_id = user
-        if changed:
+        if force_update and changed:
+            print 'temp', changed
             st.save()
             number_of_change += 1
-
+        elif not force_update:
+            st.save()
         if not force_update:
             hk = HanhKiem( year_id = year, student_id = st)
             hk.save()

@@ -1,7 +1,14 @@
 {% extends "base.html" %}
 
 {% block content %}
-{{ message }}
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $("#result").html("{{ message }}");
+        });
+    </script>
+    <ul id="result">
+
+    </ul>
     <form action="" method="POST">{% csrf_token %}
         <input type="submit" value="Sync" name="sync"/>
     </form>

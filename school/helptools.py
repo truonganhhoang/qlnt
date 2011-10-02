@@ -161,20 +161,55 @@ def check_logic(request):
     number = 0
     try:
         if request.method == 'GET':
-            print 'get'
-            students = Pupil.objects.all()
-            for student in students:
-                marks = Mark.objects.filter(student_id__exact = student)
-                for mark in marks:
-                    if student.class_id.year_id.school_id != mark.subject_id.class_id.year_id.school_id:
-                        number+=1
-                        print student, student.class_id, student.class_id.year_id.school_id, mark.subject_id.class_id, mark.subject_id.class_id.year_id.school_id, mark.subject_id
-            print 'message'
-            message = u'<p>Have ' + str(number) + ' students that have bugs.</p>'
+#            print 'get'
+#            students = Pupil.objects.all()
+#            for student in students:
+#                marks = Mark.objects.filter(student_id__exact = student)
+#                for mark in marks:
+#                    if student.class_id.year_id.school_id != mark.subject_id.class_id.year_id.school_id:
+#                        number+=1
+#                        print student, student.class_id, student.class_id.year_id.school_id, mark.subject_id.class_id, mark.subject_id.class_id.year_id.school_id, mark.subject_id
+#            print 'message'
+#            message = u'<p>Have ' + str(number) + ' students that have bugs.</p>'
 
-
+            number = 0
+            classes = Class.objects.all()
+            for _class in classes:
+                expected_tkmon_number = _class.subject_set.count() * _class.pupil_set.count()
+                tkmon_number = 0
+                subjects = Subject.objects.filter( class_id = _class)
+                for subject in subjects:
+                    tkmon_number += subject.tkmon_set.count()
+                if expected_tkmon_number != tkmon_number:
+                    message += r'<li>'+unicode(_class.year_id.school_id) + ':'\
+                               + unicode(_class)+':' \
+                               + str(expected_tkmon_number) + '----' + str(tkmon_number) + r'</li>'
+                number += _class.subject_set.count() * _class.pupil_set.count()
+            message += r'<li>' + 'Expected tkmon: ' + str(number) + r'</li>'
+            message += ':' + str(TKMon.objects.count())
+            if number == TKMon.objects.count():
+                message += 'OK'
         elif  request.method == 'POST':
             print 'POST'
+            message = ''
+            number = 0
+            classes = Class.objects.all()
+            for _class in classes:
+                subjects = _class.subject_set.all()
+                students = _class.pupil_set.all()
+                for student in students:
+                    for subject in subjects:
+                        a = TKMon.objects.filter(student_id = student, subject_id = subject)
+                        if not a:
+
+                            print '*', student.get_school(), student.class_id, student, subject
+                            a = TKMon.objects.create(student_id = student, subject_id = subject)
+                            number += 1
+                        elif len(a) >= 2:
+                            print '__',student.get_school(), student.class_id, student, subject
+                            aa = a[1]
+                            aa.delete()
+            message += r'Done:' + str(number)
 #            if 'sync' in request.POST:
 #                for _class in classes:
 #                    school = _class.year_id.school_id
