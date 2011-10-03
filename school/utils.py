@@ -604,18 +604,25 @@ def add_subject( subject_name = None, subject_type = '', hs = 1, teacher = None,
 
         students = _class.pupil_set.all()
         for student in students:
-            mark = Mark()
-            mark.student_id = student
-            mark.subject_id = subject
-            mark.term_id = term
-            mark.save()
-            if term.number == 1:
-                term1 = _class.year_id.term_set.get(number = 2)
+            for i in range(1,3):
+                t = _class.year_id.term_set.get(number = i)
                 mark = Mark()
                 mark.student_id = student
                 mark.subject_id = subject
-                mark.term_id = term1
+                mark.term_id = t
                 mark.save()
+#            mark = Mark()
+#            mark.student_id = student
+#            mark.subject_id = subject
+#            mark.term_id = term
+#            mark.save()
+#            if term.number == 1:
+#                term1 = _class.year_id.term_set.get(number = 2)
+#                mark = Mark()
+#                mark.student_id = student
+#                mark.subject_id = subject
+#                mark.term_id = term1
+#                mark.save()
 
             tkmon = TKMon()
             tkmon.student_id = student

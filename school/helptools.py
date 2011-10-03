@@ -162,14 +162,14 @@ def check_logic(request):
     try:
         if request.method == 'GET':
             print 'get'
-            students = Pupil.objects.all()
-            for student in students:
-                marks = Mark.objects.filter(student_id__exact = student)
-                for mark in marks:
-                    if student.class_id.year_id.school_id != mark.subject_id.class_id.year_id.school_id:
-                        number+=1
-                        print student, student.class_id, student.class_id.year_id.school_id, mark.subject_id.class_id, mark.subject_id.class_id.year_id.school_id, mark.subject_id
-            print 'message'
+#            students = Pupil.objects.all()
+#            for student in students:
+#                marks = Mark.objects.filter(student_id__exact = student)
+#                for mark in marks:
+#                    if student.class_id.year_id.school_id != mark.subject_id.class_id.year_id.school_id:
+#                        number+=1
+#                        print student, student.class_id, student.class_id.year_id.school_id, mark.subject_id.class_id, mark.subject_id.class_id.year_id.school_id, mark.subject_id
+#            print 'message'
             tkmons = TKMon.objects.all()
             wrong_logic = 0
             for tk in tkmons:

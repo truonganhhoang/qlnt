@@ -487,7 +487,10 @@ def b1(request):
             i =0
             for mon in ds_mon_hoc:
                 i+=1
-                add_subject(subject_name= mon, subject_type= mon, _class=_class, index=i)
+                if mon == u'Toán' or mon == u'Ngữ văn':
+                    add_subject(subject_name= mon, subject_type= mon, hs=2,_class=_class, index=i)
+                else:
+                    add_subject(subject_name= mon, subject_type= mon, _class=_class, index=i)
             # -- day cac hoc sinh len lop
         last_year = school.year_set.filter(time__exact=current_year -1)
         if last_year:
@@ -1699,7 +1702,7 @@ def addClass(request):
     if get_position(request) < 4:
         return HttpResponseRedirect('/')
     school = user.userprofile.organization
-    if school.status != 0:
+    if school.status:
         form = ClassForm(school.id)
         if request.method == 'POST':
             index = get_current_year(request).class_set.count()
@@ -1714,7 +1717,10 @@ def addClass(request):
                 index = 0
                 for mon in ds_mon_hoc:
                     index +=1
-                    add_subject(subject_name= mon, subject_type= mon, _class=_class, index=index)
+                    if mon == u'Toán' or mon == u'Ngữ văn':
+                        add_subject(subject_name= mon, subject_type= mon, hs=2,_class=_class, index=index)
+                    else:
+                        add_subject(subject_name= mon, subject_type= mon, _class=_class, index=index)
                 return HttpResponseRedirect('/school/classes')
 
         t = loader.get_template(os.path.join('school', 'add_class.html'))
