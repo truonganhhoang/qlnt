@@ -2325,6 +2325,7 @@ def viewTeacherDetail(request, teacher_id):
     form = TeacherForm (school.id,instance=teacher)
     ttcnform = TeacherTTCNForm(instance=teacher)
     ttllform = TeacherTTLLForm(instance=teacher)
+    ttcbform = TeacherTTCBForm(instance=teacher)
     if request.method == 'POST':
         data = request.POST.copy()
         if data['request_type'] == 'ttcn':
@@ -2339,6 +2340,11 @@ def viewTeacherDetail(request, teacher_id):
             if ttllform.is_valid():
                 ttllform.save()
                 message = 'Bạn vừa cập nhật thành công thông tin liên lạc'
+        if data['request_type'] == 'ttcb':
+            ttcbform = TeacherTTCBForm(data, instance=teacher)
+            if ttcbform.is_valid():
+                ttcbform.save()
+                message = 'Bạn vừa cập nhật thành công thông tin cán bộ'
     if request.is_ajax():
         if request.method == 'POST':
             if request.POST['request_type'] == 'ttcn':
@@ -2382,10 +2388,39 @@ def viewTeacherDetail(request, teacher_id):
                 response = simplejson.dumps({'message': message, 'response_type': 'ttll',
                                              'phone':phone, 'email':email,'sms_phone':sms_phone})
                 return HttpResponse(response, mimetype = 'json')
+            if request.POST['request_type'] == 'ttcb':
+                cmt = ''
+                ngay_vao_doan = ''
+                ngay_vao_dang = ''
+                muc_luong = ''
+                hs_luong = ''
+                bhxh = ''
+                if not ttcbform.is_valid():
+                    message = 'Có lỗi ở dữ liệu nhập vào'
+                    for a in ttcbform:
+                        if a.errors:
+                            if a.name == 'cmt':
+                                cmt = str(a.errors)
+                            if a.name == 'ngay_vao_doan':
+                                ngay_vao_doan = str(a.errors)
+                            if a.name == 'ngay_vao_dang':
+                                ngay_vao_dang = str(a.errors)
+                            if a.name == 'muc_luong':
+                                muc_luong = str(a.errors)
+                            if a.name == 'hs_luong':
+                                hs_luong = str(a.errors)
+                            if a.name == 'bhxh':
+                                bhxh = str(a.errors)
+                response = simplejson.dumps({'message': message, 'response_type': 'ttcb',
+                                             'cmt': cmt, 'ngay_vao_doan': ngay_vao_doan,
+                                             'ngay_vao_dang': ngay_vao_dang, 'muc_luong': muc_luong,
+                                             'hs_luong': hs_luong, 'bhxh': bhxh})
+                return HttpResponse(response, mimetype = 'json')
+
     t = loader.get_template(os.path.join('school', 'teacher_detail.html'))
     c = RequestContext(request, {   'form': form, 'message': message, 'teacher' : teacher,
                                     'id': teacher_id, 'ttcnform':ttcnform,
-                                    'pos': pos, 'ttllform':ttllform})
+                                    'pos': pos, 'ttllform':ttllform, 'ttcbform':ttcbform})
     return HttpResponse(t.render(c))
 
 def subjectPerClass(request, class_id, sort_type=4, sort_status=0):

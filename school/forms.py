@@ -65,6 +65,20 @@ class TeacherTTLLForm(forms.ModelForm):
         for field in self.fields:
             self.fields[field].widget.attrs['disabled'] = 'disabled'
 
+class TeacherTTCBForm(forms.ModelForm):
+    class Meta:
+        model = Teacher
+        fields = ('cmt','ngay_cap','noi_cap','ngay_vao_doan','ngay_vao_dang','muc_luong','hs_luong','bhxh')
+        widgets = {
+            'ngay_vao_doan' : DateInput(attrs= {'class': 'datepicker'}),
+            'ngay_vao_dang' : DateInput(attrs= {'class': 'datepicker'})
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(TeacherTTCBForm, self).__init__(*args, **kwargs)
+        for field in self.fields:
+            self.fields[field].widget.attrs['disabled'] = 'disabled'
+            
 class PupilForm(forms.ModelForm):
     class Meta:
         model = Pupil

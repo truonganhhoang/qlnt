@@ -109,6 +109,20 @@ def validate_join_mark(value):
     if value >= 55:
         raise ValidationError(u'Điểm nhập trường phải nhỏ hơn 55')
 
+def validate_hs_luong(value):
+    if value <= 0 or value > 13:
+        raise ValidationError(u'Hệ số nằm ngoài khoảng cho phép')
+    
+def validate_muc_luong(value):
+    if value <= 0:
+        raise ValidationError(u'Mức lương phải lớn hơn 0')
+
+def validate_num(value):
+    try:
+        int(value)
+    except :
+        raise ValidationError(u'Định dạng không đúng')
+    
 class DanhSachLoaiLop(models.Model):
     loai = models.CharField("Loại", max_length = 15)
     school_id = models.ForeignKey(Organization,verbose_name = "Trường")
@@ -186,6 +200,14 @@ class Teacher(BasicPersonInfo):
     school_id = models.ForeignKey(Organization, verbose_name = "Trường")
     group_id = models.ForeignKey(Group, null=True, blank=True, verbose_name="Nhóm", on_delete = models.SET_NULL)
     team_id = models.ForeignKey(Team, null=True, blank=True, verbose_name="Tổ", on_delete = models.SET_NULL)
+    cmt = models.CharField("Chứng minh thư", null=True, blank=True, max_length=10, validators=[validate_num])
+    ngay_cap = models.DateField("Ngày cấp", null=True, blank=True, validators=[validate_dd_date])
+    noi_cap = models.CharField("Nơi cấp", null=True, blank=True, max_length=30)
+    ngay_vao_doan = models.DateField("Ngày vào đoàn", null=True, blank=True, validators=[validate_dd_date])
+    ngay_vao_dang = models.DateField("Ngày vào đảng", null=True, blank=True, validators=[validate_dd_date])
+    muc_luong = models.IntegerField("Mức lương", null=True, blank=True, validators=[validate_muc_luong])
+    hs_luong = models.FloatField("Hệ số lương", null=True, blank=True, validators=[validate_hs_luong])
+    bhxh = models.CharField("Số bảo hiểm xã hội", null=True, blank=True, max_length=10, validators=[validate_num])
 
     def teaching_class(self):
         classes = Class.objects.filter(teacher_id = self)

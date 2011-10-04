@@ -42,6 +42,14 @@
                 $("#id_email").parents("td").append(json.email);
                 $("#id_sms_phone").parents("td").append(json.sms_phone);
             }
+            else if (json.response_type == 'ttcb'){
+                $("#id_cmt").parents("td").append(json.cmt);
+                $("#id_ngay_vao_doan").parents("td").append(json.ngay_vao_doan);
+                $("#id_ngay_vao_dang").parents("td").append(json.ngay_vao_dang);
+                $("#id_hs_luong").parents("td").append(json.hs_luong);
+                $("#id_bac_luong").parents("td").append(json.bac_luong);
+                $("#id_bhxh").parents("td").append(json.bhxh);
+            }
         };
         $("form").submit(function(){
             $(".errorlist", this).empty();
@@ -77,7 +85,10 @@
     <ul>
         <li><a href="#tabs1"> Thông tin cá nhân </a></li>
         <li><a href="#tabs2"> Thông tin liên lạc </a> </li>
-        {% if pos > 3%}
+        {% if pos >= 3%}
+        <li><a href="#tabs3"> Thông tin cán bộ </a></li>
+        {% endif %}
+        {% if pos > 3 %}
         <li><a href="/school/teacher/account/{{ id }}">Tài khoản</a></li>
         {% endif %}
     </ul>
@@ -107,5 +118,20 @@
             <a title="Hủy cập nhật và quay về danh sách giáo viên" href="{%url school.views.school_index  %}teachers" class="ggButton">Quay lại</a>
         </form>
     </div>
+    {% if pos >= 3 %}
+    <div id="tabs3">
+        <form action="/school/viewTeacherDetail/{{ id }}" method="post">{% csrf_token %}
+            {{ ttcbform.non_field_errors }}
+            <table class="styleA">
+                {{ ttcbform.as_table }}
+            </table>
+            <input type="hidden" value="ttcb" name="request_type">
+            {%if pos > 3%}
+                <input type ="submit" class="ggButton"  value="Lưu"/>
+            {% endif %}
+            <a title="Hủy cập nhật và quay về danh sách giáo viên" href="{%url school.views.school_index  %}teachers" class="ggButton">Quay lại</a>
+        </form>
+    </div>
+    {% endif %}
 </div>
 {% endblock %}
