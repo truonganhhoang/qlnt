@@ -310,6 +310,7 @@ class Subject(models.Model):
     name = models.CharField("Tên môn học(*)", max_length = 45) # can't be null
     type = models.CharField("Môn(*)", max_length=45, default='', choices= SUBJECT_TYPES)
     hs = models.FloatField("Hệ số(*)", validators = [validate_hs])
+    nx = models.BooleanField("Là môn nhận xét", default= False)
 
     primary = models.SmallIntegerField("Tính điểm(*)", default = 0, choices = LOAI_CHOICES)
     index = models.IntegerField("Số thứ tự(*)", default=0)
