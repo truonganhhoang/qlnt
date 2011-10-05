@@ -258,10 +258,10 @@ class Term(models.Model):
     #class Admin: pass
 
 class Class(models.Model):    
-    #cai nay sau cung bo di    
-    #class_code = models.CharField(max_length = 20, unique = True)    
     name = models.CharField("Tên lớp(*)", max_length = 20)
     index = models.IntegerField("Số thứ tự", default=0)
+    phan_ban = models.CharField("Phân ban", max_length=5, choices= BAN_CHOICE, default=u'CB')
+    max = models.IntegerField("Max student index", default=0)
     status = models.SmallIntegerField("Tình trạng", max_length = 3, null = True, blank= True, choices = CLASS_ACTION_STATUS)
 
 

@@ -44,11 +44,11 @@ def sync_index(request):
     message = ''
     try:
         for _class in classes:
-            students = _class.pupil_set.order_by('first_name', 'last_name')
+            students = _class.pupil_set.order_by('index')
             index = 0
             for student in students:
                 index +=1
-                print index
+                print student.index, index
                 if not student.first_name.strip():
                     message += '\n' + student.last_name + ': wrong name'
                     names = student.last_name.strip().split(' ')
@@ -63,6 +63,8 @@ def sync_index(request):
                 if student.index != index:
                     student.index = index
                     student.save()
+            _class.max = index
+            _class.save()
 
     except Exception as e:
         print e

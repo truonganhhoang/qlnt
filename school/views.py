@@ -1377,15 +1377,16 @@ def manual_adding(request):
         student_list = request.session['student_list']
         if form.is_valid():
             chosen_class = form.cleaned_data['the_class']
+            max_index
             if chosen_class != u'0':
                 chosen_class = school.year_set.latest('time').class_set.get(id=chosen_class)
-                number_of_student = chosen_class.pupil_set.count()
+                max_index = chosen_class.max
             else:
                 chosen_class = None
             if request.POST['clickedButton'] == 'save':
                 year = school.startyear_set.get(time=datetime.date.today().year)
                 today = datetime.date.today()
-                i = number_of_student
+                i = max_index
                 for student in student_list:
                     i += 1
                     data = {'full_name': student['ten'], 'birthday':student['ngay_sinh'],
@@ -1449,10 +1450,9 @@ def danh_sach_trung_tuyen(request):
     term = school.year_set.latest('time').term_set.latest('number')
     chosen_class = request.session['chosen_class']
     current_year = school.year_set.latest('time')
-    number_of_student = 0
     if chosen_class != u'0':
         chosen_class = school.year_set.latest('time').class_set.get(id=chosen_class)
-        number_of_student = chosen_class.pupil_set.count();
+        max_index = chosen_class.max
     else:
         chosen_class = None
     message = None
@@ -1461,7 +1461,7 @@ def danh_sach_trung_tuyen(request):
         if request.POST['clickedButton'] == 'save':
             year = school.startyear_set.get(time=datetime.date.today().year)
             today = datetime.date.today()
-            i = number_of_student
+            i = max_index
             for student in student_list:
                 i += 1
                 data = {'full_name': student['ten'], 'birthday':student['ngay_sinh'],
@@ -1816,7 +1816,7 @@ def viewClassDetail(request, class_id, sort_type=0, sort_status=0):
                 birthday = to_date(request.POST['birthday'])
                 data['birthday'] = birthday
                 _class = Class.objects.get(id=class_id)
-                index = _class.pupil_set.count() + 1
+                index = _class.max + 1
                 student = add_student( student=data, start_year=start_year,
                                        year=get_current_year(request),
                                        _class=_class,

@@ -255,6 +255,8 @@ def add_student( student = None, index = 0, start_year = None , year = None,
             userprofile.save()
             st.user_id = user
             st.save()
+            _class.max += 1
+            _class.save()
 
             hk = HanhKiem()
             hk.year_id=year
@@ -313,9 +315,9 @@ def add_many_students( student_list = None,
                        school = None,
                        school_join_date = None,
                        force_update = False):
-    if not ( student_list and start_year and term and school ):
+    if not ( student_list and start_year and term and school and _class ):
         raise Exception("Student,Start_Year,Term,School,Can'tNotBeNull")
-    index =0
+    index = _class.max
     existing_student = []
     number_of_change = 0
     for student in student_list:
@@ -458,6 +460,8 @@ def add_many_students( student_list = None,
                 for subject in subjects:
                     tkmon = TKMon(student_id = st, subject_id = subject)
                     tkmon.save()
+    _class.max = index
+    _class.save()
     transaction.commit()
     if force_update: return number_of_change
     return existing_student
@@ -470,6 +474,11 @@ def del_student( student):
     student.save()
 
 def completely_del_student( student):
+    #TODO
+    """
+    This raw deletion can harm to the indexing of students in a class
+    Maybe the index of student is not really necessary, just use id for indexing.
+    """
     student.user_id.delete()
 
 
