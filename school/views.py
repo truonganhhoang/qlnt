@@ -2749,7 +2749,7 @@ def diem_danh(request, class_id, day, month, year):
         return HttpResponseRedirect('/')
     url = '/school/dsnghi/' + str(class_id) + '/' + str(day) + '/' + str(month) + '/' + str(year)
     pos = get_position(request)
-    if (pos < 3 or (pos == 3 and not gvcn(request,class_id))):
+    if pos < 3 or (pos == 3 and not gvcn(request,class_id)):
         return HttpResponseRedirect(url)
     message = ''
     listdh = None
@@ -2792,8 +2792,8 @@ def diem_danh(request, class_id, day, month, year):
                 return HttpResponse( data, mimetype = 'json')
             if request_type == 'sms':
                 data = request.POST[u'data']
-                sms_message = ''
                 data = data.split(':')
+                print '1'
                 for element in data:
                     if element:
                         element = element.split('-')
@@ -2809,9 +2809,12 @@ def diem_danh(request, class_id, day, month, year):
                             loai = u'nghỉ học có phép'
                         else:
                             loai = u'nghỉ học không phép'
+                        print '2'
                         name = ' '.join([student.last_name,student.first_name])
                         time = '/'.join([str(day),str(month),str(year)])
-                        sms_message = u'Em '+name+u' đã ' + loai + u'.\n Ngày: ' + time + '.'
+                        print '3'
+                        sms_message = u'Em '+name+u' đã ' + loai + u' ngày ' + time
+                        print '5'
                         if phone_number:
                             try:
                                 sent = sendSMS(phone_number, to_en1(sms_message), user)

@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 from django.contrib.auth.models import User
 from models import sms
+from school.utils import *
 import os
+import datetime
 import urllib
 import urllib2
 from suds.client import Client
@@ -31,19 +33,23 @@ def sendSMS(phone,content,user):
         phone = checkValidPhoneNumber(phone)
     except Exception as e:
         raise e
-    if phone:
-        from suds.client import Client
-        url = settings.SMS_WSDL_URL
-        username = settings.WSDL_USERNAME
-        password = settings.WSDL_PASSWORD
-        mt_username = settings.MT_USERNAME
-        mt_password = settings.MT_PASSWORD
+    try:
+        school = user.userprofile.organization
+        if phone:
+            from suds.client import Client
+            url = settings.SMS_WSDL_URL
+            username = settings.WSDL_USERNAME
+            password = settings.WSDL_PASSWORD
+            mt_username = settings.MT_USERNAME
+            mt_password = settings.MT_PASSWORD
+            time = datetime.datetime.now()
+            content =u'Trường ' + to_en1(unicode(school)) + u': Ngày ' + str(time) + '.\n' + content
+            print content
+            s = sms(phone=phone, content=content, sender=user, recent=True, success=True)
+            s.save()
 
-        s = sms(phone=phone, content=content, sender=user, recent=True, success=True)
-        s.save()
-
-        client = Client(url, username = username, password = password)
-        message = \
+            client = Client(url, username = username, password = password)
+            message = \
         '''<?xml version="1.0" encoding="UTF-8"?>
 <soap12:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://www.w3.org/2003/05/soap-envelope">
   <soap12:Body>
@@ -61,10 +67,13 @@ def sendSMS(phone,content,user):
     </InsertMT>
   </soap12:Body>
 </soap12:Envelope>''' % (mt_username, mt_password, phone, phone, content)
-        return client.service.InsertMT(__inject= {'msg': str(message)})
-    else:
-        raise Exception("InvalidPhoneNumber")
-        
+            return client.service.InsertMT(__inject= {'msg': str(message)})
+        else:
+            raise Exception("InvalidPhoneNumber")
+    except Exception as e:
+        print e
+        raise e
+
 def checkValidPhoneNumber(phone):
     if not int(phone[0]):
         phone = '84' + phone[1:]
