@@ -46,7 +46,6 @@ def sendSMS(phone,content,user):
                              str(datetime.date.today().month),
                              str(datetime.date.today().year) ])
             content =u'Trường ' + to_en1(unicode(school)) + u': Ngày ' + str(time) + '.\n' + content
-            print content
             s = sms(phone=phone, content=content, sender=user, recent=True, success=True)
             s.save()
 
