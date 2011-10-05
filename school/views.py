@@ -2810,7 +2810,7 @@ def diem_danh(request, class_id, day, month, year):
                             loai = u'nghỉ học không phép'
                         name = ' '.join([student.last_name,student.first_name])
                         time = '/'.join([str(day),str(month),str(year)])
-                        sms_message = u'Em '+name+u' đã ' + loai + u' ngày ' + time
+                        sms_message = str(student.school_id) + u':' + u' Ngày ' + time + u' Em '+name+u' đã ' + loai
                         if phone_number:
                             try:
                                 sent = sendSMS(phone_number, to_en1(sms_message), user)
@@ -2951,8 +2951,8 @@ def ds_nghi(request, class_id, day, month, year):
     message = ''
     if request.is_ajax():
         if request.method == 'POST':
+            print request.POST
             data = request.POST[u'data']
-            sms_message = ''
             data = data.split(':')
             for element in data:
                 if element:
@@ -2963,7 +2963,6 @@ def ds_nghi(request, class_id, day, month, year):
                     student = Pupil.objects.get( id = id)
                     phone_number = student.sms_phone
 
-                    loai = loai.strip()
                     if loai == 'k':
                         loai = u'đi học'
                     elif loai == u'Có phép':
@@ -2972,10 +2971,26 @@ def ds_nghi(request, class_id, day, month, year):
                         loai = u'nghỉ học không phép'
                     name = ' '.join([student.last_name,student.first_name])
                     time = '/'.join([str(day),str(month),str(year)])
-                    sms_message = u'Em '+name+u' đã ' + loai + u'.\n Ngày: ' + time + '.'
-                    message = message + u'---> ' + str(phone_number) + u': ' + sms_message + u'<br>'
+                    sms_message = str(student.school_id) + u':' + u' Ngày ' + time + u' Em '+name+u' đã ' + loai
                     if phone_number:
-                        sendSMS(phone_number, sms_message, user)
+                        try:
+                            sent = sendSMS(phone_number, to_en1(sms_message), user)
+                        except Exception as e:
+                            if e.message == 'InvalidPhoneNumber':
+                                message = message + u'<li><b>Số ' + str(phone_number)\
+                                          + u' không tồn tại</b>'\
+                                          + u': ' + sms_message + u'</li>'
+                                continue
+                            else:
+                                message = e.message
+                                continue
+                        if sent == '1':
+                            message = message + u'<li><b>-> ' + str(phone_number) + u': ' + sms_message + u'</b></li>'
+                        else:
+                            print sent
+                            message = message + u'<li> ' + str(phone_number) + u': ' + sms_message + u'</li>'
+                    else:
+                        message = message + u'<li> ' + u'<b>Không số</b>' + u': ' + sms_message + u'</li>'
             data = simplejson.dumps({'message':message})
             return HttpResponse(data, mimetype = 'json')
         else:

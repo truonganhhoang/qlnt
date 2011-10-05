@@ -7,7 +7,7 @@
             var note = '';
 
             var done = function(json) {
-                if (json.message != null && json.message != '')$("#smsNotification").html("<ul>"+json.message+"</ul>");
+                if (json.message != null && json.message != '') $("#smsNotification").html("<ul>"+json.message+"</ul>");
                 else $("#smsNotification").html('');
                 $("#smsNotification").dialog("open");
                 $(".selected").each(select);
@@ -31,8 +31,8 @@
 
             var sendSmS = function() {
                 var id = $(this).attr('name');
-                var select = "tr." + id + " > td:has(select) > select ";
-                var loai = $(select).val();
+                var select = "#f_" + id;
+                var loai = $(select).text();
                 var data = id + '-' + loai;
                 //alert(window.location.pathname);
                 var arg = { type:"POST",
@@ -50,8 +50,8 @@
                 var data = '';
                 $(".selected").each(function() {
                     var id = $(this).attr('class').split(' ')[0];
-                    var select = "tr." + id + " > td:has(select) > select ";
-                    var loai = $(select).val();
+                    var select = "#f_" + id;
+                    var loai = $(select).text();
                     var element = id + '-' + loai;
                     data = data + ':' + element;
                 });
@@ -118,9 +118,6 @@
             });
             $("tr").each(function() {
                 $(this).click(select);
-            });
-            $("select[name=loai]").click( function (){
-                return false;
             });
             $("#checkbox_all").click( function(){
                 var checkboxall = '#checkbox_all'
@@ -225,5 +222,10 @@
             </tr>
         {% endfor %}
 </table>
+
+    <div style="display: None;">
+        <div id="smsNotification">
+        </div>
+    </div>
 
 {% endblock %}
