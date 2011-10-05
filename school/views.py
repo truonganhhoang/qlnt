@@ -2793,7 +2793,6 @@ def diem_danh(request, class_id, day, month, year):
             if request_type == 'sms':
                 data = request.POST[u'data']
                 data = data.split(':')
-                print '1'
                 for element in data:
                     if element:
                         element = element.split('-')
@@ -2809,12 +2808,9 @@ def diem_danh(request, class_id, day, month, year):
                             loai = u'nghỉ học có phép'
                         else:
                             loai = u'nghỉ học không phép'
-                        print '2'
                         name = ' '.join([student.last_name,student.first_name])
                         time = '/'.join([str(day),str(month),str(year)])
-                        print '3'
                         sms_message = u'Em '+name+u' đã ' + loai + u' ngày ' + time
-                        print '5'
                         if phone_number:
                             try:
                                 sent = sendSMS(phone_number, to_en1(sms_message), user)
@@ -2825,7 +2821,8 @@ def diem_danh(request, class_id, day, month, year):
                                               + u': ' + sms_message + u'</li>'
                                     continue
                                 else:
-                                    raise e
+                                    message = e.message
+                                    continue
                             if sent == '1':
                                 message = message + u'<li><b>-> ' + str(phone_number) + u': ' + sms_message + u'</b></li>'
                             else:
