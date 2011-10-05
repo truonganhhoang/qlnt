@@ -589,7 +589,7 @@ def del_teacher( teacher):
     #teacher.delete()    
 # subject_name: string, teacher : Teacher object, _class : Class object
 @transaction.commit_manually
-def add_subject( subject_name = None, subject_type = '', hs = 1, teacher = None, _class = None, index = 0):
+def add_subject( subject_name = None, subject_type = '', hs = 1, teacher = None, _class = None, index = 0, nx= False):
     find = _class.subject_set.filter( name__exact = subject_name)
     try:
         print _class.year_id.term_set.all()
@@ -608,6 +608,7 @@ def add_subject( subject_name = None, subject_type = '', hs = 1, teacher = None,
         subject.hs = hs
         subject.teacher_id = teacher
         subject.class_id = _class
+        subject.nx=nx
         subject.index = index
         subject.save()
 

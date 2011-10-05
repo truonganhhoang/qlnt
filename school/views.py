@@ -2498,6 +2498,14 @@ def subjectPerClass(request, class_id, sort_type=4, sort_status=0):
             sub.primary = shs
             sub.save()
 
+        elif request.POST['request_type'] == u'nx':
+            try:
+                shs = request.POST['nx']
+                sub.nx = (shs != u'false')
+                sub.save()
+            except Exception as e:
+                print e
+
         elif request.POST['request_type'] == u'hs':
             shs = float(request.POST['hs'])
             if shs < 0:
@@ -2516,9 +2524,14 @@ def subjectPerClass(request, class_id, sort_type=4, sort_status=0):
         teacher_list = request.POST.getlist('teacher_id')
         p_list = request.POST.getlist('primary')
         t_list = request.POST.getlist('type')
+        nx_list = request.POST.getlist('nx')
+        print request.POST
         i = 0
+        j = 0
         for s in subjectList:
-            data = {'name':s.name, 'hs':hs_list[i], 'class_id':class_id, 'teacher_id':teacher_list[i], 'index':i, 'primary':p_list[i], 'type':t_list[i]}
+            data = {'name': s.name, 'hs': hs_list[i], 'class_id': class_id, 'teacher_id': teacher_list[i], 'index': i,'primary': p_list[i], 'type': t_list[i], 'nx':s.nx}
+            if (s.nx):
+                j = j+1
             of = sfl[i]
             sfl[i] = SubjectForm(school.id, data, instance=s)
             if str(of) != str(sfl[i]):
@@ -2528,16 +2541,20 @@ def subjectPerClass(request, class_id, sort_type=4, sort_status=0):
             i += 1
         if teacher_list[i] != u'' or request.POST['name'].strip() != u'' or hs_list[i] != u'':
             index = i+1
-            data = {'name':request.POST['name'].strip(), 'hs':hs_list[i], 'class_id':class_id, 'teacher_id':teacher_list[i], 'index':index, 'primary':p_list[i], 'type':t_list[i]}
+            nxn = False
+            if len(nx_list) > j:
+                nxn = True
+
+            data = {'name':request.POST['name'].strip(), 'hs':hs_list[i], 'class_id':class_id, 'teacher_id':teacher_list[i], 'index':index, 'primary':p_list[i], 'type':t_list[i], 'nx':nxn}
             form = SubjectForm(school.id, data)
             if form.is_valid():
                 _class = Class.objects.get(id=class_id)
                 if teacher_list[i] != u'':
                     teacher = Teacher.objects.get(id=int(data['teacher_id']))
-                    add_subject(subject_name=data['name'], hs=float(data['hs']), teacher=teacher, _class=_class, index = index, subject_type=data['type'])
+                    add_subject(subject_name=data['name'], hs=float(data['hs']), teacher=teacher, _class=_class, index = index, subject_type=data['type'], nx=data['nx'])
                     form = SubjectForm(school.id)
                 else:
-                    add_subject(subject_name=data['name'], hs=float(data['hs']), _class=_class, index = index, subject_type = data['type'])
+                    add_subject(subject_name=data['name'], hs=float(data['hs']), _class=_class, index = index, subject_type = data['type'], nx=data['nx'])
                     form = SubjectForm(school.id)
                 message = 'Môn học mới đã được thêm.'
             else:

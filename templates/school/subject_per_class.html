@@ -127,6 +127,30 @@
                     }
                 });
             });
+
+            $("input[name=nx]").each(function() {
+                $(this).change(function(){
+                    var attr = $(this).parents("tr").attr('id');
+                    if (typeof attr !== 'undefined' && attr !== false && attr !== 'subject_form'){
+                        var id = $(this).parents("tr").attr('id').split(' ')[0];
+                        var val = $(this).is(':checked');
+                            var data = { id: id, nx: val, request_type:'nx'}
+                            var arg = { type:"POST",
+                                url:"",
+                                data: data,
+                                datatype:"json",
+                                error: function(){
+                                    $(".submitbutton").attr('disabled', false);
+                                    $(".submitbutton").val('Lưu lại');
+                                },
+                                success: function() {
+                                }
+                            };
+                            $.ajax(arg);
+                            return false;
+                    }
+                });
+            });
         });
     </script>
 {% endif %}
@@ -163,6 +187,7 @@
             <th class="leftAlign" width="10%"> <a href="{%url school.views.school_index  %}subjectPerClass/{{class.id}}/2/{{next_status}}">Hệ số </a></th>
             <th class="leftAlign" width="25%"> <a href="{%url school.views.school_index  %}subjectPerClass/{{class.id}}/3/{{next_status}}">Giáo viên</a></th>
             <th class="leftAlign" > Cách tính điểm </th>
+            <th class="leftAlign" width="17%">Môn nhận xét</th>
             {%if pos > 3%}
                 <th width = "5%"> </th>
             {%endif%}
@@ -192,6 +217,7 @@
                         <td style="text-align: center;" width="10%"> {{f.hs}} </td>
                         <td style="text-align: center;" width="25%"> {{f.teacher_id}}</td>
                         <td style="text-align: center;"> {{f.primary}} </td>
+                        <td style="text-align: center;"> {{f.nx}} </td>
                         <td width = "5%"> <a class = "ggButton" href = "{%url school.views.school_index  %}deleteSubject/{{ss.id}}" onclick="return confirmDelete();">xóa</a></td>
                     {%else%}
                         <td style="text-align: center;" width="20%"> {{ss.name}}</td>
@@ -205,6 +231,7 @@
                                 {% endif %}
                         </td>
                         <td style="text-align: center;" > {{ss.primary}} </td>
+                        <td style="text-align: center;" > {{ss.nx}} </td>
                     {%endif%}
                 </tr>
             {% endfor %}
@@ -234,6 +261,10 @@
                     <td style="text-align: center;" >
                         {{form.primary.errors}}
                         <p>{{form.primary}} </p> 
+                    </td>
+                    <td style="text-align: center;" >
+                        {{form.nx.errors}}
+                        <p>{{form.nx}} </p>
                     </td>
                     <td width="10%"><input class = "ggButton" type ="submit" value="Thêm"/></td>
                 </tr>
