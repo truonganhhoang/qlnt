@@ -160,11 +160,14 @@ def info(request):
             data['email'] = data['email'].strip()
             data['name'] = data['name'].strip()
             data['lock_time'] = data['lock_time'].strip()
+            data['class_labels'] = data['class_labels'].strip()
             name=''
             address=''
             email=''
             phone=''
             lock_time =''
+            class_labels = ''
+            print data
             if request.is_ajax():
                 form = SchoolForm(data, request = request)
                 setting_form = SettingForm(data, request=request)
@@ -198,6 +201,9 @@ def info(request):
                         if a.name == 'lock_time':
                             if a.errors:
                                 lock_time = str(a.errors)
+                        elif a.name == 'class_labels':
+                            if a.errors:
+                                class_labels = str(a.errors)
                     status = 'error'
                 response = simplejson.dumps({'message': message,
                                              'status': status,
@@ -205,7 +211,8 @@ def info(request):
                                              'email':email,
                                              'name':name,
                                              'address':address,
-                                             'lock_time': lock_time})
+                                             'lock_time': lock_time,
+                                             'class_labels': class_labels})
                 return HttpResponse(response, mimetype = 'json')
 
             form = SchoolForm(data, request = request)
@@ -219,8 +226,9 @@ def info(request):
                     'email': school.email}
             form = SchoolForm(data, request= request)
             lock_time = school.get_setting('lock_time')
-            print 'lock_time',lock_time
-            setting = {'lock_time': lock_time}
+            labels = school.get_setting('class_labels')
+            class_labels = ', '.join(labels)
+            setting = {'lock_time': lock_time, 'class_labels': class_labels}
             setting_form = SettingForm(setting, request= request)
 
         context = RequestContext(request)

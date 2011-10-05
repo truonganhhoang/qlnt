@@ -5,28 +5,44 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from ConfigParser import SafeConfigParser
 import os
+import codecs
 from django.conf import settings
 SCHOOL_SETTING_FOLDER = settings.SCHOOL_SETTING_FOLDER
 
 ORGANIZATION_LEVEL_CHOICES = (('T', u'Trường'),
-                                  ('P', u'Phòng'),
-                                  ('S', u'Sở'))
+                              ('P', u'Phòng'),
+                              ('S', u'Sở'))
 
 POSITION_CHOICE = (('HOC_SINH', u'Học sinh'), ('GIAO_VU', u'Giáo vụ'), ('GIAO_VIEN', u'Giáo viên'),
-                       ('HIEU_PHO', u'Hiệu phó'), ('HIEU_TRUONG', u'Hiệu trưởng'),
-                       ('GIAM_DOC_SO', u'Giám đốc sở'), ('TRUONG_PHONG', u'Trưởng phòng'))
+                   ('HIEU_PHO', u'Hiệu phó'), ('HIEU_TRUONG', u'Hiệu trưởng'),
+                   ('GIAM_DOC_SO', u'Giám đốc sở'), ('TRUONG_PHONG', u'Trưởng phòng'))
 
 KHOI_CHOICES = (('2', u'Cấp 2'),
                 ('3', u'Cấp 3'))
 
 SCHOOL_ACTION_STATUS = ((0, u'Trường mới'),
-                            (1, u'Đang học kì 1'),
-                            (2, u'Đang học kì 2'),
-                            (3, u'Đang nghỉ hè'))
+                        (1, u'Đang học kì 1'),
+                        (2, u'Đang học kì 2'),
+                        (3, u'Đang nghỉ hè'))
 
 STATUS = [u'Chưa thiết lập', u'Học kì I', u'Học kì II', u'Học kì hè']
 
-        
+
+class MyConfigParser(SafeConfigParser):
+    def write(self, fp):
+        for section in self._sections:
+            print section
+            fp.write("[%s]\n" % section)
+            for (key, value) in self._sections[section].items():
+                print '..', key, value
+                if key == "__name__":
+                    continue
+                if (value is not None) or (self._optcre == self.OPTCRE):
+                    key = " = ".join((key, unicode(value).replace('\n', '\n\t')))
+                fp.write("%s\n" % key)
+            fp.write("\n")
+
+
 class Organization(models.Model):
     """ Thông tin về sơ đồ tổ chức của các sở, phòng và các trường """
     name = models.CharField(u'Tên tổ chức', max_length=100) #tên đơn vị. tổ chức
@@ -55,7 +71,7 @@ class Organization(models.Model):
             return ''
 
     def save_settings(self, attribute, value):
-        if type(attribute) != str or (type(value) != str and type(value) != int):
+        if type(attribute) != str or (type(value) != str and type(value) != unicode and type(value) != int):
             raise Exception('InvalidArgumentType')
         try:
             setting_file_name = str(self.id)
@@ -64,15 +80,17 @@ class Organization(models.Model):
             print e
             raise Exception('OrganizationNotSaved')
 
-        file = open(setting_file_name, 'wb')
-        setting = SafeConfigParser()
-        setting.read(setting_file_name)
+        setting = MyConfigParser()
+        file = codecs.open(setting_file_name, 'r', 'utf-8')
+        setting.readfp(file)
+        file.close()
         if not setting.has_section('school'):
             setting.add_section('school')
-        setting.set('school', attribute, str(value))
+        setting.set('school', attribute, unicode(value))
+        file = codecs.open(setting_file_name, 'wb', 'utf-8')
         setting.write(file)
         file.close()
-
+        
     def get_setting(self, attribute):
         if type(attribute) != str:
             raise Exception('InvalidArgumentType')
@@ -83,9 +101,10 @@ class Organization(models.Model):
         else:
             raise Exception('OrganizationNotSaved')
 
-        setting = SafeConfigParser()
+        setting = MyConfigParser()
         try:
-            setting.read(setting_file_name)
+            file = codecs.open(setting_file_name, 'r', 'utf-8')
+            setting.readfp(file)
             result = setting.get('school', attribute)
         except  Exception as e:
             print e
@@ -107,7 +126,7 @@ class Organization(models.Model):
             print e
             return ''
 
-    
+
     def __unicode__(self):
         return self.name
 
@@ -136,11 +155,11 @@ class UserProfile(models.Model):
     phone = models.CharField('Điện thoại di động', max_length=20, blank=True) #để gửi tin nhắn.
     notes = models.CharField('Ghi chú', max_length=255, blank=True)
     username_change = models.IntegerField(default=0)
-    
+
     def __unicode__(self):
         return self.user.__unicode__()
 
-        
+
 
 class UserForm(forms.ModelForm):
     class Meta:

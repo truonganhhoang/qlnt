@@ -190,17 +190,29 @@ class SettingForm(forms.Form):
         self.request = kwargs.pop('request')
         super(SettingForm, self).__init__(*args, **kwargs)
         self.fields['lock_time'] = forms.IntegerField(label=u"Thời gian khóa điểm(Giờ):", required = True) #
-        #self.fields['class_labels'] = forms.CharField(label=u"Danh sách lớp học:", max_length = 512,
-        #                                              validators=[validate_class_label],
-        #                                              required = False)
+        self.fields['class_labels'] = forms.CharField(label=u"Danh sách lớp học:", max_length = 512,
+                                                      validators=[validate_class_label],
+                                                      required = False)
+        
     def save_to_model(self):
         try:
             school = get_school(self.request)
             if self.cleaned_data['lock_time'] >= 0:
-                print self.cleaned_data['lock_time']
                 school.save_settings('lock_time', self.cleaned_data['lock_time'])
             else:
                 raise Exception('LockTimeValueError')
+            if self.cleaned_data['class_labels']:
+                labels = self.cleaned_data['class_labels']
+                labels = labels.split(',')
+                result = u'['
+                for label in labels:
+                    if label.strip():
+                        result += u"u'%s'," % label.strip()
+                result = result[:-1]
+                result += u']'
+                print 'result', result
+                school.save_settings('class_labels', unicode(result) )
+
         except Exception as e:
             print e
 

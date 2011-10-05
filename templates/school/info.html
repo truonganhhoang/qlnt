@@ -42,10 +42,12 @@
                     var schoolPhone = $("#id_phone").val();
                     var schoolEmail = $("#id_email").val();
                     var schoolLockTime = $("#id_lock_time").val();
+                    var schoolClassLabels = $("#id_class_labels").val();
                     var data = { name: schoolName, school_level: schoolLevel,
                         address: schoolAddress, phone: schoolPhone, email: schoolEmail,
                         update_school_detail: true,
-                        lock_time: schoolLockTime
+                        lock_time: schoolLockTime,
+                        class_labels: schoolClassLabels
                     };
                     var para = {
                         type:"POST",
