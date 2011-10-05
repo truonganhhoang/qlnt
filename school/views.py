@@ -2810,7 +2810,7 @@ def diem_danh(request, class_id, day, month, year):
                             loai = u'nghỉ học không phép'
                         name = ' '.join([student.last_name,student.first_name])
                         time = '/'.join([str(day),str(month),str(year)])
-                        sms_message = str(student.school_id) + u':' + u' Ngày ' + time + u' Em '+name+u' đã ' + loai
+                        sms_message = u' Em '+ name + u' đã ' + loai + u' ngày ' + time
                         if phone_number:
                             try:
                                 sent = sendSMS(phone_number, to_en1(sms_message), user)
@@ -2971,7 +2971,7 @@ def ds_nghi(request, class_id, day, month, year):
                         loai = u'nghỉ học không phép'
                     name = ' '.join([student.last_name,student.first_name])
                     time = '/'.join([str(day),str(month),str(year)])
-                    sms_message = str(student.school_id) + u':' + u' Ngày ' + time + u' Em '+name+u' đã ' + loai
+                    sms_message = u' Em '+ name + u' đã ' + loai + u' ngày ' + time
                     if phone_number:
                         try:
                             sent = sendSMS(phone_number, to_en1(sms_message), user)
