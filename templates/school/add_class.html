@@ -14,7 +14,7 @@
                     alert('Tên lớp bắt đầu bằng số và dấu cách, ví dụ 10 A, 10 B..');
                 }
                 else{
-                    if ((parseInt(names[0]) >= {{ up }}) || (parseInt(names[0]) <= {{ low }})){
+                    if ((parseInt(names[0]) >= {{ up }}) || (parseInt(names[0]) < {{ low }})){
                         $("#submit").attr('disabled', true);
                         alert('Khối ngoài khoảng [{{ low }}, {{ up }})');
                     }
