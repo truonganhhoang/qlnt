@@ -221,14 +221,13 @@ class SettingForm(forms.Form):
 class ClassForm(forms.ModelForm):
     class Meta:
         model = Class
-        exclude = {'max','phan_ban'}
+        exclude = {'max'}
         
     def __init__(self, school_id, *args, **kwargs):
         super(ClassForm, self).__init__(*args, **kwargs)
         self.fields['teacher_id'] = forms.ModelChoiceField(required = False, queryset=Teacher.objects.filter(school_id = school_id))
         self.fields['year_id'] = forms.ModelChoiceField(queryset=Year.objects.filter(school_id = school_id),initial = Year.objects.filter(school_id = school_id).latest('time'))
         self.fields['block_id'] = forms.ModelChoiceField(queryset=Block.objects.filter(school_id = school_id))
-
 class TBNamForm(forms.ModelForm):
     class Meta:
         model = TBNam

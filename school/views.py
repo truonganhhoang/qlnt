@@ -59,7 +59,7 @@ def school_index(request):
     user_type = get_permission(request)
     if user_type in ['HIEU_TRUONG', 'HIEU_PHO']:
         grades = school.block_set.all()
-        classes = year.class_set.all()
+        classes = year.class_set.order_by('name')
         context = RequestContext(request)
         return render_to_response(SCHOOL,{'classes': classes,
                                           'grades': grades}, context_instance=context)
@@ -1603,7 +1603,10 @@ def classes(request):
                 
             if not teacher or not tc:
                 try:
-                    data = {'name':c.name, 'year_id':c.year_id.id, 'block_id':c.block_id.id, 'teacher_id':teacher_id,'status':c.status,'index':c.index}
+                    data = {'name':c.name, 'year_id':c.year_id.id,
+                            'block_id':c.block_id.id, 'teacher_id':teacher_id,
+                            'phan_ban':c.phan_ban,
+                            'status':c.status,'index':c.index}
                     form = ClassForm(school.id, data, instance=c)
                     if form.is_valid():
                         form.save()
