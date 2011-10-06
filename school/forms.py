@@ -221,6 +221,7 @@ class SettingForm(forms.Form):
 class ClassForm(forms.ModelForm):
     class Meta:
         model = Class
+        exclude = {'max','phan_ban'}
         
     def __init__(self, school_id, *args, **kwargs):
         super(ClassForm, self).__init__(*args, **kwargs)

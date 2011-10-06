@@ -1587,21 +1587,30 @@ def classes(request):
             class_id = request.POST['id']
             c = cyear.class_set.get(id = int(class_id))
             tc = None
+            teacher = None
             teacher_id = None
             if request.POST['teacher_id'] != u'':
                 teacher_id = request.POST['teacher_id']
+                print 'teacher_id', teacher_id
                 teacher = school.teacher_set.get(id = int(teacher_id))
+                print teacher
                 try:
                     tc = cyear.class_set.get(teacher_id__exact = teacher.id)
                 except ObjectDoesNotExist:
                     pass
             else:
                 teacher_id = None
-            if teacher_id == None or tc == None:
-                data = {'name':c.name, 'year_id':c.year_id.id, 'block_id':c.block_id.id, 'teacher_id':teacher_id,'status':c.status,'index':c.index}
-                form = ClassForm(school.id, data, instance=c)
-                if form.is_valid():
-                    form.save()
+                
+            if not teacher or not tc:
+                try:
+                    data = {'name':c.name, 'year_id':c.year_id.id, 'block_id':c.block_id.id, 'teacher_id':teacher_id,'status':c.status,'index':c.index}
+                    form = ClassForm(school.id, data, instance=c)
+                    if form.is_valid():
+                        form.save()
+                except Exception as e:
+                    print e
+                    raise e
+
             else:
                 message = 'Giáo viên đã có lớp chủ nhiệm'
                 data = simplejson.dumps({'message':message})
@@ -1652,14 +1661,21 @@ def classtab(request, block_id=0):
                 if request.POST['teacher_id'] != u'':
                     teacher_id = request.POST['teacher_id']
                     teacher = school.teacher_set.get(id = int(teacher_id))
+                    print 'teacher', teacher
                     try:
                         tc = cyear.class_set.get(teacher_id__exact = teacher.id)
-                    except ObjectDoesNotExist:
+                    except ObjectDoesNotExist as e:
                         pass
+#                        print e
+#                        message = u'Không tồn tại giáo viên'
+#                        data = simplejson.dumps({'message':message})
+#                        return HttpResponse(data, mimetype = 'json')
                 else:
+                    print 'teacher', 'None'
                     teacher_id = None
                 if not teacher_id or not tc:
-                    data = {'name':c.name, 'year_id':c.year_id.id, 'block_id':c.block_id.id, 'teacher_id':teacher_id,'status':c.status,'index':c.index}
+                    data = {'name':c.name, 'year_id':c.year_id.id, 'block_id':c.block_id.id,
+                            'teacher_id':teacher_id,'status':c.status,'index':c.index}
                     form = ClassForm(school_id, data, instance=c)
                     if form.is_valid():
                         form.save()

@@ -260,8 +260,8 @@ class Term(models.Model):
 class Class(models.Model):    
     name = models.CharField("Tên lớp(*)", max_length = 20)
     index = models.IntegerField("Số thứ tự", default=0)
-    phan_ban = models.CharField("Phân ban", max_length=5, choices= BAN_CHOICE, default=u'CB')
-    max = models.IntegerField("Max student index", default=0)
+    phan_ban = models.CharField("Phân ban", max_length=5, choices= BAN_CHOICE, default=u'CB', null = True)
+    max = models.IntegerField("Max student index", default=0, null = True)
     status = models.SmallIntegerField("Tình trạng", max_length = 3, null = True, blank= True, choices = CLASS_ACTION_STATUS)
 
 
