@@ -14,15 +14,13 @@
                     alert('Tên lớp bắt đầu bằng số và dấu cách, ví dụ 10 A, 10 B..');
                 }
                 else{
-                    if ((parseInt(names[0]) > 12) || (parseInt(names[0]) < 10)){
+                    if ((parseInt(names[0]) >= {{ up }}) || (parseInt(names[0]) <= {{ low }})){
                         $("#submit").attr('disabled', true);
-                        alert('Chỉ có khối 10, 11 và 12');
+                        alert('Khối ngoài khoảng cho phép');
                     }
                     else
                         $("#submit").removeAttr('disabled');
                 }
-
-
             });
         });
     </script>
@@ -30,7 +28,6 @@
     {% if message != None %}
         {{ message }} <br>
     {% endif %}
-
 
     <form action="/school/addclass" method="post">{% csrf_token %}
         {{ form.non_field_errors }}

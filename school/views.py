@@ -1710,6 +1710,8 @@ def addClass(request):
     if get_position(request) < 4:
         return HttpResponseRedirect('/')
     school = user.userprofile.organization
+    low = get_lower_bound(school)
+    up = get_upper_bound(school)
     if school.status:
         form = ClassForm(school.id)
 
@@ -1746,7 +1748,7 @@ def addClass(request):
                     print e
 
         t = loader.get_template(os.path.join('school', 'add_class.html'))
-        c = RequestContext(request, {'form': form})
+        c = RequestContext(request, {'form': form, 'low':low, 'up':up})
         return HttpResponse(t.render(c))
     else:
         t = loader.get_template(os.path.join('school', 'add_class.html'))
