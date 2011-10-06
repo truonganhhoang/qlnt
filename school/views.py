@@ -1712,10 +1712,21 @@ def addClass(request):
     school = user.userprofile.organization
     if school.status:
         form = ClassForm(school.id)
+
         if request.method == 'POST':
+            names = request.POST['name'].split(" ")
+            block_num = names[0]
+
+            try:
+                block = school.block_set.get(number=int(block_num))
+            except Exception as e:
+                t = loader.get_template(os.path.join('school', 'add_class.html'))
+                c = RequestContext(request, {'form': form})
+                return HttpResponse(t.render(c))
+
             index = get_current_year(request).class_set.count()
-            data = {'name':request.POST['name'].strip(), 'year_id':request.POST['year_id'], 'block_id':request.POST['block_id'], 'teacher_id':request.POST['teacher_id'], 'status':school.status,'index':index}
-            form = ClassForm(school.id,data)
+            data = {'name':request.POST['name'], 'year_id':request.POST['year_id'], 'block_id':block.id, 'teacher_id':request.POST['teacher_id'], 'phan_ban':request.POST['phan_ban'], 'max' : 0, 'status':school.status,'index':index}
+            form = ClassForm(school.id, data)
             if form.is_valid():
                 _class = form.save()
                 if school.school_level == '1': ds_mon_hoc = CAP1_DS_MON
@@ -1723,13 +1734,16 @@ def addClass(request):
                 elif school.school_level == '3': ds_mon_hoc = CAP3_DS_MON
                 else: raise Exception('SchoolLevelInvalid')
                 index = 0
-                for mon in ds_mon_hoc:
-                    index +=1
-                    if mon == u'Toán' or mon == u'Ngữ văn':
-                        add_subject(subject_name= mon, subject_type= mon, hs=2,_class=_class, index=index)
-                    else:
-                        add_subject(subject_name= mon, subject_type= mon, _class=_class, index=index)
-                return HttpResponseRedirect('/school/classes')
+                try:
+                    for mon in ds_mon_hoc:
+                        index += 1
+                        if mon == u'Toán' or mon == u'Ngữ văn':
+                            add_subject(subject_name=mon, subject_type=mon, hs=2, _class=_class, index=index)
+                        else:
+                            add_subject(subject_name=mon, subject_type=mon, _class=_class, index=index)
+                    return HttpResponseRedirect('/school/classes')
+                except Exception as e:
+                    print e
 
         t = loader.get_template(os.path.join('school', 'add_class.html'))
         c = RequestContext(request, {'form': form})

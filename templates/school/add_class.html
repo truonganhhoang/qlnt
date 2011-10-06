@@ -1,52 +1,75 @@
 ﻿{% extends "base.html" %}
 
 {% block backward_link %}
-<a href="{% url school.views.school_index %}classes"> Toàn trường</a> > Thêm lớp
+    <a href="{% url school.views.school_index %}classes"> Toàn trường</a> > Thêm lớp
 {% endblock %}
 
 {% block content %}
-<h2>Thêm lớp học</h2>
-{% if message != None %}
-	{{message}} <br>
-{% endif %}
+    <script>
+        $(document).ready(function() {
+            $("#id_name").change(function() {
+                var names = $(this).val().split(" ");
+                if (isNaN(parseInt(names[0]))) {
+                    $("#submit").attr('disabled', true);
+                    alert('Tên lớp bắt đầu bằng số và dấu cách, ví dụ 10 A, 10 B..');
+                }
+                else{
+                    if ((parseInt(names[0]) > 12) || (parseInt(names[0]) < 10)){
+                        $("#submit").attr('disabled', true);
+                        alert('Chỉ có khối 10, 11 và 12');
+                    }
+                    else
+                        $("#submit").removeAttr('disabled');
+                }
 
 
-<form action="/school/addclass" method="post">{% csrf_token %}
-    {{ form.non_field_errors }}
-    <table class="styleA styleDetail" >
-		<tr>
-			<th><label for="id_name">Tên lớp(*):</label></th>
-			<td>
-				{{form.name.errors }}
-        {{ form.name }}
-			</td>		
-		</tr>
-    
-		<tr>
-			<th><label for="id_teacher_id">Giáo viên chủ nhiệm:</label></th>
-			<td>
-				{{ form.teacher_id.errors }}
-				{{ form.teacher_id }}			
-			</td>		
-		</tr>    
-    
-		<tr>
-			<th><label for="id_year_id">Năm học:</label></th>
-			<td>
-				{{ form.year_id.errors }}
-				{{ form.year_id }}			
-			</td>		
-		</tr>    
-      
-      <tr>
-			<th><label for="id_block_id">Khối(*):</label></th>
-			<td>
-				{{ form.block_id.errors }}
-				{{ form.block_id }}							
-			</td>      
-      </tr>  
-	</table>
-   <br> 
-   <input class = "ggButton" type = "submit"  title =""value="Thêm"/>
-</form>
+            });
+        });
+    </script>
+    <h2>Thêm lớp học</h2>
+    {% if message != None %}
+        {{ message }} <br>
+    {% endif %}
+
+
+    <form action="/school/addclass" method="post">{% csrf_token %}
+        {{ form.non_field_errors }}
+        <table class="styleA styleDetail">
+            <tr>
+                <th><label for="id_name">Tên lớp(*):</label></th>
+                <td>
+                    {{ form.name.errors }}
+                    {{ form.name }}
+                </td>
+            </tr>
+
+            <tr>
+                <th><label for="id_phan_ban">Phân ban(*):</label></th>
+                <td>
+                    {{ form.phan_ban.errors }}
+                    {{ form.phan_ban }}
+                </td>
+            </tr>
+                        
+            <tr>
+                <th><label for="id_teacher_id">Giáo viên chủ nhiệm:</label></th>
+                <td>
+                    {{ form.teacher_id.errors }}
+                    {{ form.teacher_id }}
+                </td>
+            </tr>
+
+            <tr>
+                <th><label for="id_year_id">Năm học:</label></th>
+                <td>
+                    {{ form.year_id.errors }}
+                    {{ form.year_id }}
+                </td>
+            </tr>
+
+
+        </table>
+        <br>
+        <input class="ggButton" type="submit" id="submit" title="" value="Thêm"/>
+    </form>
 {% endblock %}
