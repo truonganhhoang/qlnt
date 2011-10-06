@@ -37,6 +37,40 @@ def recover_marktime(request):
     context = RequestContext(request)
     return render_to_response( SYNC_RESULT, { 'message' : message},
                                context_instance = context )
+
+def make_setting(request):
+
+    orgs = Organization.objects.all()
+    for org in orgs:
+        if org.level == u'T':
+            school = org
+            try:
+                last_year = school.year_set.latest('time')
+                lock_time = school.get_setting('lock_time')
+                if int(lock_time) == 24:
+                    school.save_settings('lock_time', 24)
+                print org
+                classes = last_year.class_set.all()
+                class_labels = u'['
+                for _class in classes:
+                    names = _class.name.split(' ')
+                    if len(names) > 1:
+                        try:
+                            a = int(names[0])
+                            class_labels += "u'%s'," % ' '.join(names[1:])
+                        except Exception as e:
+                            print e
+                            continue
+                class_labels = class_labels[:-1] + u']'
+                school.save_settings('class_labels', class_labels)
+            except Exception as e:
+                continue
+    message = 'done'
+    context = RequestContext(request)
+    return render_to_response( SYNC_RESULT, { 'message' : message},
+                               context_instance = context )
+
+
 @transaction.commit_on_success
 def sync_index(request):
 
