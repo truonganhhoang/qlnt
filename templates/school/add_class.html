@@ -16,7 +16,7 @@
                 else{
                     if ((parseInt(names[0]) >= {{ up }}) || (parseInt(names[0]) <= {{ low }})){
                         $("#submit").attr('disabled', true);
-                        alert('Khối ngoài khoảng cho phép');
+                        alert('Khối ngoài khoảng [{{ low }}, {{ up }})');
                     }
                     else
                         $("#submit").removeAttr('disabled');

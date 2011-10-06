@@ -106,7 +106,7 @@ def setup(request):
                 classes_ = None
                 grades = None
                 if success:
-                    classes_ = school.get_setting('classes')
+                    classes_ = school.get_setting('class_labels')
                     classes_ = '-'.join(classes_)
                     lower_bound = get_lower_bound(school)
                     upper_bound = get_upper_bound(school)
@@ -311,7 +311,7 @@ def parse_class_label(request, school):
     if 'message' in request.session:
         message = request.session['message']
 
-    labels = ','.join(school.get_setting('classes'))
+    labels = ','.join(school.get_setting('class_labels'))
     success = None
     if request.method == 'POST':
         labels = request.POST['labels']
@@ -348,7 +348,7 @@ def parse_class_label(request, school):
                         for i in range(get_lower_bound(school), get_upper_bound(school)):
                             labels_to_save.append("%s %s" % (i, lb.loai))
 
-                school.save_settings('classes', str(labels_to_save))
+                school.save_settings('class_labels', str(labels_to_save))
                 message = u'Bạn vừa thiết lập thành công danh sách tên lớp cho trường.'
                 success = True
             labels = 'Nhanh: '+ labels
@@ -380,7 +380,7 @@ def parse_class_label(request, school):
                                 message = u'Các tên lớp phải được cung cấp theo dạng [khối][dấu cách][tên lớp]. Ví dụ: 10 A'
                                 success = False
                                 return message, labels, success
-                    school.save_settings('classes', str(labels_to_save))
+                    school.save_settings('class_labels', str(labels_to_save))
                     message = u'Bạn vừa thiết lập thành công danh sách tên lớp cho trường.'
                     success = True
 
@@ -484,7 +484,7 @@ def b1(request):
         # create new class.
         # -- tao cac lop ---
 
-        loai_lop = school.get_setting('classes')
+        loai_lop = school.get_setting('class_labels')
         for class_name in loai_lop:
             _class = Class()
             _class.name = class_name

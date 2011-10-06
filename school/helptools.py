@@ -57,7 +57,7 @@ def make_setting(request):
                     if len(names) > 1:
                         try:
                             a = int(names[0])
-                            class_labels += "u'%s'," % ' '.join(names[1:])
+                            class_labels += "u'%s'," % ' '.join(names)
                         except Exception as e:
                             print e
                             continue

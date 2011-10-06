@@ -81,7 +81,12 @@ class Organization(models.Model):
             raise Exception('OrganizationNotSaved')
 
         setting = MyConfigParser()
-        file = codecs.open(setting_file_name, 'r', 'utf-8')
+        try:
+            file = codecs.open(setting_file_name, 'r', 'utf-8')
+        except IOError as e:
+            file = codecs.open(setting_file_name, 'wb', 'utf-8')
+            file.close()
+            file = codecs.open(setting_file_name, 'r', 'utf-8')
         setting.readfp(file)
         file.close()
         if not setting.has_section('school'):
