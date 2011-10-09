@@ -449,7 +449,7 @@
                         <div class="ui-widget">
                             <select class="combobox">
                                 <option value="">Select one...</option>
-                                {% for teacher in teachers %}
+                                {% for teacher in allteacher %}
                                     <option value="{{ teacher.id}}">{{ teacher }}</option>
                                 {% endfor %}
                             </select>
