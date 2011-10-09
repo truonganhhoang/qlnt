@@ -6,65 +6,179 @@
 {% endif %}
 
 {% block backward_link %}
-<a href="{% url school.views.school_index %}classes"> Toàn trường</a> > <a href="{% url school.views.school_index %}viewClassDetail/{{ class.id }}"> {{ class }} </a> > Môn học
+    <a href="{% url school.views.school_index %}classes"> Toàn trường</a> > <a
+        href="{% url school.views.school_index %}viewClassDetail/{{ class.id }}"> {{ class }} </a> > Môn học
 {% endblock %}
 
 {% block content %}
+    <style>
+        .ui-button {
+            margin: auto;
+        }
+
+        .ui-autocomplete-input {
+            margin: 0;
+            padding: 0 0 0 0;
+        }
+    </style>
+
     <script type="text/javascript">
-        function submitClass(){
-            if (document.info.class.value!={{class.id}})
-                if (document.info.class.value!=-1)
-                {
-                    window.location = "{%url school.views.school_index  %}subjectPerClass/"+ document.info.class.value;
+        function submitClass() {
+            if (document.info.class.value !={{class.id}})
+                if (document.info.class.value != -1) {
+                    window.location = "{%url school.views.school_index  %}subjectPerClass/" + document.info.class.value;
                 }
         }
     </script>
 
-{% if pos > 3 %}
-    <script>
-        function confirmDelete()
-        {
+    {% if pos > 3 %}
+        <script>
+
+        function confirmDelete() {
             return confirm("Bạn có chắc chắn xóa không?");
         }
-        $(document).ready(function(){
+        $(document).ready(function() {
+            (function($) {
+                $.widget("ui.combobox", {
+                    _create: function() {
+                        var self = this,
+                                select = this.element.hide(),
+                                selected = select.children(":selected"),
+                                value = selected.val() ? selected.text() : "";
+                        var input = this.input = $("<input>")
+                                .insertAfter(select)
+                                .val(value)
+                                .addClass("ui-widget ui-widget-content ui-corner-left")
+                                .autocomplete({
+                                    delay: 0,
+                                    minLength: 0,
+                                    source: function(request, response) {
+                                        var matcher = new RegExp($.ui.autocomplete.escapeRegex(request.term), "i");
+                                        response(select.children("option").map(function() {
+                                            var text = $(this).text();
+                                            if (this.value && ( !request.term || matcher.test(text) ))
+                                                return {
+                                                    label: text.replace(
+                                                            new RegExp(
+                                                                    "(?![^&;]+;)(?!<[^<>]*)(" +
+                                                                            $.ui.autocomplete.escapeRegex(request.term) +
+                                                                            ")(?![^<>]*>)(?![^&;]+;)", "gi"
+                                                            ), "<strong>$1</strong>"),
+                                                    value: text,
+                                                    option: this
+                                                };
+                                        }));
+                                    },
+                                    select: function(event, ui) {
+                                        ui.item.option.selected = true;
+                                        self._trigger("selected", event, {
+                                            item: ui.item.option
+                                        });
+                                        this.value = ui.item.option.text;
+                                        var attr = $(this).parents("tr").attr('id');
+                                        var teacher = ui.item.option.value;
+                                        $(this).parents("td").children("#id_teacher_id").val(teacher);
+                                        $(this).parents("td").children(".all_teacher").val(teacher);
+                                        $(this).parents("td").children(".major_teacher").val(teacher);
+
+                                        if (typeof attr !== 'undefined' && attr !== false && attr !== 'subject_form') {
+                                            var id = $(this).parents("tr").attr('id').split(' ')[0];
+                                            var data = { id: id, teacher: teacher, request_type:'teacher'}
+                                            var arg = { type:"POST",
+                                                url:"",
+                                                data: data,
+                                                datatype:"json",
+                                                error: function() {
+                                                    $(".submitbutton").attr('disabled', false);
+                                                    $(".submitbutton").val('Lưu lại');
+                                                }
+                                            };
+                                            $.ajax(arg);
+                                            return false;
+                                        }
+                                        ;
+                                    },
+                                    change: function(event, ui) {
+                                        if (!ui.item) {
+                                            var matcher = new RegExp("^" + $.ui.autocomplete.escapeRegex($(this).val()) + "$", "i"),
+                                                    valid = false;
+                                            select.children("option").each(function() {
+                                                if ($(this).text().match(matcher)) {
+                                                    this.selected = valid = true;
+                                                    return false;
+                                                }
+                                            });
+                                            if (!valid) {
+                                                // remove invalid value, as it didn't match anything
+                                                $(this).val("");
+                                                select.val("");
+                                                input.data("autocomplete").term = "";
+                                                return false;
+                                            }
+                                        }
+                                    }
+                                });
+
+                        input.data("autocomplete")._renderItem = function(ul, item) {
+                            return $("<li></li>")
+                                    .data("item.autocomplete", item)
+                                    .append("<a>" + item.label + "</a>")
+                                    .appendTo(ul);
+                        };
+
+                        this.button = $("<button type='button'>&nbsp;</button>")
+                                .attr("tabIndex", -1)
+                                .attr("title", "Danh sách giáo viên")
+                                .insertAfter(input)
+                                .button({
+                                    icons: {
+                                        primary: "ui-icon-triangle-1-s"
+                                    },
+                                    text: false
+                                })
+                                .removeClass("ui-corner-all")
+                                .addClass("ui-corner-left ui-button-icon")
+                                .click(function() {
+                                    // close if already visible
+                                    if (input.autocomplete("widget").is(":visible")) {
+                                        input.autocomplete("close");
+                                        return;
+                                    }
+
+                                    // work around a bug (likely same cause as #5265)
+                                    $(this).blur();
+
+                                    // pass empty string as value to search for, displaying all results
+                                    input.autocomplete("search", "");
+                                    input.focus();
+                                });
+                    }
+                });
+            })(jQuery);
+
+            $(function() {
+                $(".combobox").each(function() {
+                    $(this).combobox();
+                });
+            });
+
             $("#notify").ajaxSuccess(function(event, request, settings, json) {
                 if (json.message != null) {
                     $(this).html("<ul>" + json.message + "</ul>");
                     $(this).delay(1000).fadeOut(10000);
                 }
-                else{
+                else {
                     $(this).text("Đã lưu");
                     $(this).delay(1000).fadeOut('fast');
                 }
             });
 
             $(".submitbutton").attr("disabled", true);
-            $("select[name=teacher_id]").each(function() {
-                $(this).change(function() {
-                    var attr = $(this).parents("tr").attr('id');
-                    if (typeof attr !== 'undefined' && attr !== false && attr !== 'subject_form'){
-                        var id = $(this).parents("tr").attr('id').split(' ')[0];
-                        var teacher = $(this).val();
-                        var data = { id: id, teacher: teacher, request_type:'teacher'}
-                        var arg = { type:"POST",
-                            url:"",
-                            data: data,
-                            datatype:"json",
-                            error: function(){
-                                $(".submitbutton").attr('disabled', false);
-                                $(".submitbutton").val('Lưu lại');
-                            }
-                        };
-                        $.ajax(arg);
-                        return false;
-                    }
-                });
-            });
 
             $("select[name=type]").each(function() {
                 $(this).change(function() {
                     var attr = $(this).parents("tr").attr('id');
-                    if (typeof attr !== 'undefined' && attr !== false && attr !== 'subject_form'){
+                    if (typeof attr !== 'undefined' && attr !== false && attr !== 'subject_form') {
                         var id = $(this).parents("tr").attr('id').split(' ')[0];
                         var type = $(this).val();
                         var data = { id: id, type: type, request_type:'type'}
@@ -72,21 +186,22 @@
                             url:"",
                             data: data,
                             datatype:"json",
-                            error: function(){
+                            error: function() {
                                 $(".submitbutton").attr('disabled', false);
                                 $(".submitbutton").val('Lưu lại');
                             }
                         };
                         $.ajax(arg);
                         return false;
-                    };
+                    }
+                    ;
                 });
             });
 
             $("select[name=primary]").each(function() {
                 $(this).change(function() {
                     var attr = $(this).parents("tr").attr('id');
-                    if (typeof attr !== 'undefined' && attr !== false && attr !== 'subject_form'){
+                    if (typeof attr !== 'undefined' && attr !== false && attr !== 'subject_form') {
                         var id = $(this).parents("tr").attr('id').split(' ')[0];
                         var primary = $(this).val();
                         var data = { id: id, primary: primary, request_type:'primary'}
@@ -94,7 +209,7 @@
                             url:"",
                             data: data,
                             datatype:"json",
-                            error: function(){
+                            error: function() {
                                 $(".submitbutton").attr('disabled', false);
                                 $(".submitbutton").val('Lưu lại');
                             }
@@ -104,98 +219,129 @@
                     }
                 });
             });
+
+            $("select[name=teacher_id]").each(function() {
+                $(this).hide();
+            });
+
             $("input[name=hs]").each(function() {
                 $(this).change(function() {
                     var attr = $(this).parents("tr").attr('id');
-                    if (typeof attr !== 'undefined' && attr !== false && attr !== 'subject_form'){
+                    if (typeof attr !== 'undefined' && attr !== false && attr !== 'subject_form') {
                         var id = $(this).parents("tr").attr('id').split(' ')[0];
                         var val = $(this).val();
-                            var data = { id: id, hs: val, request_type:'hs'}
-                            var arg = { type:"POST",
-                                url:"",
-                                data: data,
-                                datatype:"json",
-                                error: function(){
-                                    $(".submitbutton").attr('disabled', false);
-                                    $(".submitbutton").val('Lưu lại');
-                                },
-                                success: function() {
-                                }
-                            };
-                            $.ajax(arg);
-                            return false;
+                        var data = { id: id, hs: val, request_type:'hs'}
+                        var arg = { type:"POST",
+                            url:"",
+                            data: data,
+                            datatype:"json",
+                            error: function() {
+                                $(".submitbutton").attr('disabled', false);
+                                $(".submitbutton").val('Lưu lại');
+                            },
+                            success: function() {
+                            }
+                        };
+                        $.ajax(arg);
+                        return false;
                     }
                 });
             });
 
             $("input[name=nx]").each(function() {
-                $(this).change(function(){
+                $(this).change(function() {
                     var attr = $(this).parents("tr").attr('id');
-                    if (typeof attr !== 'undefined' && attr !== false && attr !== 'subject_form'){
+                    if (typeof attr !== 'undefined' && attr !== false && attr !== 'subject_form') {
                         var id = $(this).parents("tr").attr('id').split(' ')[0];
                         var val = $(this).is(':checked');
-                            var data = { id: id, nx: val, request_type:'nx'}
-                            var arg = { type:"POST",
-                                url:"",
-                                data: data,
-                                datatype:"json",
-                                error: function(){
-                                    $(".submitbutton").attr('disabled', false);
-                                    $(".submitbutton").val('Lưu lại');
-                                },
-                                success: function() {
-                                }
-                            };
-                            $.ajax(arg);
-                            return false;
+                        var data = { id: id, nx: val, request_type:'nx'}
+                        var arg = { type:"POST",
+                            url:"",
+                            data: data,
+                            datatype:"json",
+                            error: function() {
+                                $(".submitbutton").attr('disabled', false);
+                                $(".submitbutton").val('Lưu lại');
+                            },
+                            success: function() {
+                            }
+                        };
+                        $.ajax(arg);
+                        return false;
                     }
                 });
             });
+
+            $(".all_teacher").each(function(){
+                $(this).hide();
+            });
+
+            $(".range").each(function(){
+                $(this).change(function(){
+                    if ($(this).val() == '1'){
+                        $(this).parents("td").children(".all_teacher").show();
+                        $(this).parents("td").children(".major_teacher").hide();
+                    }
+                    else{
+                        $(this).parents("td").children(".all_teacher").hide();
+                        $(this).parents("td").children(".major_teacher").show();
+                    }
+                });
+            });
+
         });
-    </script>
-{% endif %}
-    <form action="" name = "info" method = "post">{% csrf_token %}
-    <h2>Danh sách môn học lớp
-        <select name="class" onchange="submitClass()">
-            <option value = -1> {{class}} </option>
-            {% for cl in classList %}
-                {%if cl.id != class.id%}
-                    <option  value={{cl.id }}> {{cl}}</option>
-                {%endif%}
-            {% endfor %}
-        </select>
-    </h2>
+        </script>
+    {% endif %}
+    <form action="" name="info" method="post">{% csrf_token %}
+        <h2>Danh sách môn học lớp
+            <select name="class" onchange="submitClass()">
+                <option value=-1> {{ class }} </option>
+                {% for cl in classList %}
+                    {% if cl.id != class.id %}
+                        <option value={{ cl.id }}> {{ cl }}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+        </h2>
     </form>
 
     <form action="/school/subjectPerClass/{{class.id}}" method="post">{% csrf_token %}
-    <div id="tableFunction">
-        {% if pos > 3 %}
-            <input class="ggButton" type="button" id="sort" value="Sắp xếp" />
-            <a id="guide" class="tiptiphover ggButton" href="" title="Dùng các phím mũi tên để chọn môn học,
+        <div id="tableFunction">
+            {% if pos > 3 %}
+                <input class="ggButton" type="button" id="sort" value="Sắp xếp"/>
+                <a id="guide" class="tiptiphover ggButton" href="" title="Dùng các phím mũi tên để chọn môn học,
             sau đó Enter để thay đổi thứ tự hoặc bỏ chọn môn đó. Kết thúc bằng việc ấn 'Lưu thứ tự'.">Hướng dẫn</a>
-            <input id="save" class="ggButton submitbutton" type ="submit" value="Đã Lưu"/>
-        {% endif %}
-    </div>
+                <input id="save" class="ggButton submitbutton" type="submit" value="Đã Lưu"/>
+            {% endif %}
+        </div>
 
-    <table class="styleA" id="sortable" width = "75%" align = "left">
-        <tr>
-            <th class="naviButton" style="display: none;"></th>
-            <th class="naviButton" style="display: none;"></th>
-            <th class="arrow_header" width="5%"> <a href="{%url school.views.school_index  %}subjectPerClass/{{class.id}}/4/{{next_status}}"> STT </a></th>
-            <th class="leftAlign" width="20%"> <a href="{%url school.views.school_index  %}subjectPerClass/{{class.id}}/1/{{next_status}}">Tên Môn Học</a></th>
-            <th class="leftAlign"> Chuyên Môn</th>
-            <th class="leftAlign" width="10%"> <a href="{%url school.views.school_index  %}subjectPerClass/{{class.id}}/2/{{next_status}}">Hệ số </a></th>
-            <th class="leftAlign" width="25%"> <a href="{%url school.views.school_index  %}subjectPerClass/{{class.id}}/3/{{next_status}}">Giáo viên</a></th>
-            <th class="leftAlign" > Cách tính điểm </th>
-            <th class="leftAlign" width="17%">Môn nhận xét</th>
-            {%if pos > 3%}
-                <th width = "5%"> </th>
-            {%endif%}
-        </tr>
-        {% if message != None %}
-            {{message}}
-            <br>
-        {% endif %}
+        <table class="styleA" id="sortable" width="75%" align="left">
+            <tr>
+                <th class="naviButton" style="display: none;"></th>
+                <th class="naviButton" style="display: none;"></th>
+                <th class="arrow_header" width="5%"><a
+                        href="{%url school.views.school_index  %}subjectPerClass/{{class.id}}/4/{{next_status}}">
+                    STT </a></th>
+                <th class="leftAlign" width="20%"><a
+                        href="{%url school.views.school_index  %}subjectPerClass/{{class.id}}/1/{{next_status}}">Tên Môn
+                    Học</a></th>
+                <th class="leftAlign"> Chuyên Môn</th>
+                <th class="leftAlign" width="10%"><a
+                        href="{%url school.views.school_index  %}subjectPerClass/{{class.id}}/2/{{next_status}}">Hệ
+                    số </a></th>
+                <th class="leftAlign" width="25%"><a
+                        href="{%url school.views.school_index  %}subjectPerClass/{{class.id}}/3/{{next_status}}">Giáo
+                    viên</a></th>
+                <th class="leftAlign"> Cách tính điểm</th>
+                <th class="leftAlign" width="17%">Môn nhận xét</th>
+                {% if pos > 3 %}
+                    <th width="5%"></th>
+                {% endif %}
+            </tr>
+            {% if message != None %}
+                {{ message }}
+                <br>
+            {% endif %}
 
             {% for ss,f in list %}
                 <tr class="sortable" id="{{ ss.id }}">
@@ -209,36 +355,79 @@
 
                     <td class="index" width="3%">
                         <span class="ui-icon ui-icon-arrowthick-2-n-s" style="display: none; float: left;"></span>
+
                         <p>{{ forloop.counter }}</p>
                     </td>
-                    {%if pos > 3%}
-                        <td style="text-align: center;" width="20%"> <a title="Chỉnh sửa thông tin môn học" href="{%url school.views.school_index  %}viewSubjectDetail/{{ss.id}}">{{ss.name}}</a></td>
-                        <td style="text-align: center;"> {{f.type}} </td>
-                        <td style="text-align: center;" width="10%"> {{f.hs}} </td>
-                        <td style="text-align: center;" width="25%"> {{f.teacher_id}}</td>
-                        <td style="text-align: center;"> {{f.primary}} </td>
-                        <td style="text-align: center;"> {{f.nx}} </td>
-                        <td width = "5%"> <a class = "ggButton" href = "{%url school.views.school_index  %}deleteSubject/{{ss.id}}" onclick="return confirmDelete();">xóa</a></td>
-                    {%else%}
-                        <td style="text-align: center;" width="20%"> {{ss.name}}</td>
-                        <td style="text-align: center;" width="20%"> {{ss.type}}</td>
-                        <td style="text-align: center;" width="10%"> {{ss.hs}} </td>
+                    {% if pos > 3 %}
+                        <td style="text-align: center;" width="20%"><a title="Chỉnh sửa thông tin môn học"
+                                                                       href="{%url school.views.school_index  %}viewSubjectDetail/{{ss.id}}">{{ ss.name }}</a>
+                        </td>
+                        <td style="text-align: center;"> {{ f.type }} </td>
+                        <td style="text-align: center;" width="10%"> {{ f.hs }} </td>
+                        <td style="text-align: center;" width="35%">
+                            {{ f.teacher_id }}
+                            <div class="ui-widget major_teacher">
+                                <select class="combobox">
+                                    <option value="">Select one...</option>
+                                    {% for iteacher in teachers %}
+                                        {% if  forloop.counter == forloop.parentloop.counter %}
+                                            {% for teacher in iteacher %}
+                                                {% if teacher == ss.teacher_id %}
+                                                    <option selected="selected"
+                                                            value="{{ teacher.id}}">{{ teacher }}</option>
+                                                {% else %}
+                                                    <option value="{{ teacher.id}}">{{ teacher }}</option>
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% endif %}
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <div class="ui-widge all_teacher">
+                                <select class="combobox">
+                                    <option value="">Select one...</option>
+                                    {% for teacher in allteacher %}
+                                        {% if teacher == ss.teacher_id %}
+                                            <option selected="selected" value="{{ teacher.id}}">{{ teacher }}</option>
+                                        {% else %}
+                                            <option value="{{ teacher.id}}">{{ teacher }}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        
+                        <select  class="range">
+                            <option value="1"  >Cả trường </option>
+                            <option value="2" selected="selected">{{ ss.name }}</option>
+                        </select>
+
+                        </td>
+                        <td style="text-align: center;"> {{ f.primary }} </td>
+                        <td style="text-align: center;"> {{ f.nx }} </td>
+                        <td width="5%"><a class="ggButton"
+                                          href="{%url school.views.school_index  %}deleteSubject/{{ss.id}}"
+                                          onclick="return confirmDelete();">xóa</a></td>
+                        {% else %}
+                        <td style="text-align: center;" width="20%"> {{ ss.name }}</td>
+                        <td style="text-align: center;" width="20%"> {{ ss.type }}</td>
+                        <td style="text-align: center;" width="10%"> {{ ss.hs }} </td>
                         <td style="text-align: center;" width="25%">
                             {% if ss.teacher_id != "None" %}
-                                    Chưa rõ
-                                {% else %}
-                                    {{ ss.teacher_id }}
-                                {% endif %}
+                                Chưa rõ
+                            {% else %}
+                                {{ ss.teacher_id }}
+                            {% endif %}
                         </td>
-                        <td style="text-align: center;" > {{ss.primary}} </td>
-                        <td style="text-align: center;" > {{ss.nx}} </td>
-                    {%endif%}
+                        <td style="text-align: center;"> {{ ss.primary }} </td>
+                        <td style="text-align: center;"> {{ ss.nx }} </td>
+                    {% endif %}
                 </tr>
             {% endfor %}
-            {%if pos > 3%}
+            {% if pos > 3 %}
                 <tr id="subject_form">
                     {{ form.non_field_errors }}
-                    <td width="5%"> </td>
+                    <td width="5%"></td>
                     <td style="text-align: center;" width="20%">
                         {{ form.name.errors }}
                         <p>{{ form.name }}</p>
@@ -250,34 +439,41 @@
                     </td>
 
                     <td style="text-align: center;" width="10%">
-                        {{form.hs.errors }}
+                        {{ form.hs.errors }}
                         <p>{{ form.hs }}</p>
                     </td>
 
                     <td style="text-align: center;" width="25%">
                         {{ form.teacher_id.errors }}
-                        <p>{{ form.teacher_id }}</p>
+                        {{ form.teacher_id }}
+                        <div class="ui-widget">
+                            <select class="combobox">
+                                <option value="">Select one...</option>
+                                {% for teacher in teachers %}
+                                    <option value="{{ teacher.id}}">{{ teacher }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
                     </td>
-                    <td style="text-align: center;" >
-                        {{form.primary.errors}}
-                        <p>{{form.primary}} </p> 
+                    <td style="text-align: center;">
+                        {{ form.primary.errors }}
+                        <p>{{ form.primary }} </p>
                     </td>
-                    <td style="text-align: center;" >
-                        {{form.nx.errors}}
-                        <p>{{form.nx}} </p>
+                    <td style="text-align: center;">
+                        {{ form.nx.errors }}
+                        <p>{{ form.nx }} </p>
                     </td>
-                    <td width="10%"><input class = "ggButton" type ="submit" value="Thêm"/></td>
+                    <td width="10%"><input class="ggButton" type="submit" value="Thêm"/></td>
                 </tr>
-            {%endif%}
+            {% endif %}
 
         </table>
     </form>
     {% if pos > 3 %}
-        <table border = "0" width = "75%" align = "center">
+        <table border="0" width="75%" align="center">
             <tr>
-                <td width = "5%" align = "left">&nbsp</td>
-                <td align = "right"> <a href = "">Xuất ra Excel </a> </td>
-
+                <td width="5%" align="left">&nbsp</td>
+                <td align="right"><a href="">Xuất ra Excel </a></td>
             </tr>
         </table>
     {% endif %}

@@ -2621,10 +2621,13 @@ def subjectPerClass(request, class_id, sort_type=4, sort_status=0):
         subjectList = cl.subject_set.order_by('index')
 
     sfl = []
+    teachers = []
     year = get_current_year(request)
     classList = year.class_set.all()
     for s in subjectList:
         sfl.append(SubjectForm(school.id, instance=s))
+        teachers.append(school.teacher_set.filter(major__contains=s.name))
+    allteacher = school.teacher_set.all()
     list = zip(subjectList, sfl)
     t = loader.get_template(os.path.join('school', 'subject_per_class.html'))
     c = RequestContext(request, {   'list':list,
@@ -2637,6 +2640,8 @@ def subjectPerClass(request, class_id, sort_type=4, sort_status=0):
                                     'next_status':1-int(sort_status),
                                     'term':term,
                                     'classList':classList,
+                                    'teachers':teachers,
+                                    'allteacher':allteacher,
                                     'pos':pos})
     return HttpResponse(t.render(c))
 
