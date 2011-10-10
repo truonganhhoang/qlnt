@@ -23,8 +23,9 @@ def validate(s):
     for i in range(x,s.nrows):
         for j in range(4,20):
             try:
+                print "ffffffffffffffffffffffff"
                 value = str(s.cell(i,j).value)
-                
+                value = value.replace(' ','')
                 if len(value) !=0:
                     value1 = float(value)
                     

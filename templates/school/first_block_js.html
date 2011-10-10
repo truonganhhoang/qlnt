@@ -13,7 +13,8 @@
 		isSecondTerm = 1;
 	else	
 		isSecondTerm = 0; 
-
+		
+	var isComment="{{selectedSubject.nx}}"=="True";
 	//window.addeventListener('keydown', function(e) {
 	//if ((e.keyCode==38) || (e.keyCode==38))
 	//	e.preventDefault()
@@ -49,23 +50,27 @@
 	}	
 	for(var i=1;i<length;i++)
 		for(var j=1;j<20;j++)
-			newAr[i][j]=-1;
-
+			{
+				newAr[i][j]=-1;
+				oldAr[i][j]=-1;
+			}	
 	
 function catchEnter(e)
 
 {
-
+	  	
       if (!e) e = window.event; 
       var code = (e.keyCode) ? e.keyCode : e.which;
-		
 	if ((code == 13) || (code == 3) || (code==9)) 
 	{
 		return false;
 	}	
 	else return true;
 }
-window.onload = function() { document.onkeydown = catchEnter; };
+
+window.onload = function(e) { 
+		document.onkeydown = catchEnter;		
+};
    
 
 	function acceptDigits(tb,keyCode)
@@ -99,9 +104,9 @@ window.onload = function() { document.onkeydown = catchEnter; };
 		if (countDot>1)
 			tb.value=value.substring(0,value.length-1);
 			
-		if (tb.value.length>3)	
+		if (tb.value.length>4)	
 		{
-			tb.value=tb.value.substring(0,3);
+			tb.value=tb.value.substring(0,4);
 			ok=false;
 		}	
 			
@@ -130,9 +135,30 @@ window.onload = function() { document.onkeydown = catchEnter; };
 				document.getElementById("buttonSave").disabled="";
 				document.getElementById("buttonSave").style.display="";
 				latestTime= (new Date()).getTime();
-			}			
-			
+			}				
 	}	
+	function validateComment(tb,keyCode)
+	{
+		if (tb.readOnly) return;
+		var ok=true;	
+		var value=tb.value.toLowerCase();
+		var length=value.length;
+		if ((value!="g") && (value!="k") &&
+		(value!="tb")&& (value!="t")&& (value!="y") &&
+		(value!="ke") && (value!="kem")
+		&& (value!="kém"))
+		{
+			tb.value=value.substring(0,length-1);
+		}
+		if (value=='t')
+			tb.value='TB'
+		else
+		if ((value=='ke') | (value=='kem' ) | (value=='kem '))
+			tb.value='Kem';
+		else
+			tb.value=tb.value.toUpperCase();
+	}
+	
 	function returnMove()
 	{
 		for(var i=0;i<2;i++)
@@ -305,88 +331,54 @@ window.onload = function() { document.onkeydown = catchEnter; };
 		}
 	}
 	
-	function saveMarkHasComment()
+	function convertToDigit(value)
 	{
-		var length={{lengthList}};
-		document.getElementById("commentTable").style.visibility='hidden';
-		for(var i=1;i<=length;i++)
-			for(var j=1;j<5;j++)
-			{
-				k=i*100+j;
-				var name=k+"";
-				var t=document.getElementById(name).value.toLowerCase();
-				//alert(t);
-				var value="";
-				if (t!="")
-					if (t=="g")
-						value="9";
-					else
-					if (t=="k")
-						value="7";
-					else						
-					if ((t=="tb") ||(t=="t"))
-						value="6";
-					else						
-					if (t=="y")
-						value="4";
-					else						
-						value="1";
-						
-					document.getElementById(name).value=value;									
-				}
-		document.info.submitChoice.value="luulai";
-		document.info.submit();
-
+		//alert(value);
+		var value1=value.toLowerCase();
+		
+		if (value1=="g")
+			return 9;
+		else
+		if (value1=="k")
+			return 7;
+		else						
+		if ((value1=="tb"))
+			return 6;
+		else						
+		if (value1=='y')
+			return 4
+		else
+		if (value1=='kem')	
+			return 1
+		else
+			return -1;
 	}
-	function saveMarkHasComment1()
+	function convertToChar(value)
 	{
-		var length={{lengthList}};
-		document.getElementById("commentTable").style.visibility='hidden';
-		//alert(length);
-		for(var i=1;i<=length;i++)
-			for(var j=1;j<6;j++)
-			{
-				k=i*100+j;
-				var name=k+"";
-				var t=document.getElementById(name).value.toLowerCase();
-				//alert(t);
-				var value="";
-				if (t!="")
-					if (t=="g")
-						value="9";
-					else
-					if (t=="k")
-						value="7";
-					else						
-					if ((t=="tb") ||(t=="t"))
-						value="6";
-					else						
-					if (t=="y")
-						value="4";
-					else						
-						value="1";
-						
-					document.getElementById(name).value=value;									
-				}
-		document.info.submitChoice.value="luulai";
-		document.info.submit();
-
-	}
-	function validateComment(tb)
-	{
-		var value=tb.value.toLowerCase();
-		if ((value!="g") && (value!="k") &&
-		(value!="tb")&& (value!="t")&& (value!="y") &&
-		(value!="ke") && (value!="kem")
-		&& (value!="kém"))
-		{
-			tb.value="";
-		}
+		if (value==9)
+			return 'G';
+		else
+		if (value==7)
+			return 'K';
+		else
+		if (value==6)
+			return 'TB';
+		else
+		if (value==4)
+			return 'Y';
+		else
+		if (value==1)
+			return 'Kem';
+		else
+			return "";			
 	}
 	function  control(tb,event)
 	{
 		//alert(event.keyCode);
-		acceptDigits(tb,event.keyCode);
+		if (isComment)
+			validateComment(tb,event.keyCode);
+		else	
+			acceptDigits(tb,event.keyCode);
 		//ntrolDirection(tb,event);				
 		var keyCode = event.keyCode;
 		if ((keyCode==37) || (keyCode==38)|| (keyCode==39) || (keyCode==40)
@@ -394,7 +386,6 @@ window.onload = function() { document.onkeydown = catchEnter; };
 			tb.select();
 	}
 	
-			
 	function setArrayId(id)
 	{
 		indexId++;
@@ -418,5 +409,39 @@ window.onload = function() { document.onkeydown = catchEnter; };
 		for(var i=1;i<20;i++)
 			sentMark[indexId][i]=parseInt(str[i-1]);
 	}
-	
+	function setMark(index,value)
+	{
+		var name=indexId*100+index;
+		var tb=document.getElementById(name);
+		if (tb.value==undefined) return;
+		
+		if (value=='None')
+			tb.value='';	
+		else
+		{	
+			if (value=='10.0')
+				tb.value='10';
+			else			
+			if (value[value.length-1]=='0')
+				tb.value=value[0];
+			else	
+				tb.value=value;
+		}	
+	}
+	function convertToComment()
+	{
+		var name;
+		for(var i=1;i<20;i++)
+			{
+				name = indexId*100+i;
+				var tb=document.getElementById(name);
+				if (tb)
+				{
+					if (tb.value!=undefined)
+						tb.value=convertToChar(tb.value);
+					else
+						tb.innerHTML = convertToChar(tb.innerHTML); 
+				}				
+			}
+	}	
 </script>

@@ -103,10 +103,6 @@
 	{% ifequal selectedTerm.number 1 %} 
 		{% for p,m,ea,id in list %}	
 		<tr >
-		<script>
-				setArrayId({{m.id}}) ;
-				setSentMark("{{m.sent_mark}}");
-		</script>	
 			<td style="text-align: center;" onclick="select(this)" style="border-right-width:0px" >
 			 <input title="Có thể click vào cột họ tên và ngày sinh để chọn cho nhanh hơn" type="checkbox" id="{{forloop.counter}}00" style="display:none" > 	
 			</td>
@@ -311,30 +307,58 @@
 			</td>
 			{% endif %}
 			
-			
-			<td id="{{id.d17}}" onclick="checkToSend(this)" > 			  
-				{{ m.tb|floatformat:"1"}}
-			</td>	
+			{%if  selectedSubject.nx %}
+				{% if ea.a17 %}
+				<td onclick="checkToSend(this)">
+					<input  type="text" id="{{id.d17}}" value="{{m.tb|floatformat:"-1"}}"
+					onkeyup="control(this,event); controlDirection(this,event);" class="mark" >						
+				</td>
+				{% else %}
+				<td id="{{id.d17}}"  onclick="checkToSend(this)">
+					 {{m.tb|floatformat:"-1"}}  					
+				</td>
+				{% endif %}				
+			{% else %}
+				<td id="{{id.d17}}" onclick="checkToSend(this)" > 			  
+					{{ m.tb|floatformat:"1"}}
+				</td>	
+			{% endif %}
 
+		<script>
+				setArrayId({{m.id}}) ;
+				setSentMark("{{m.sent_mark}}");
+				
+				setMark(1,"{{m.mieng_1}}");	
+				setMark(2,"{{m.mieng_2}}");	
+				setMark(3,"{{m.mieng_3}}");	
+				setMark(4,"{{m.mieng_4}}");	
+				setMark(5,"{{m.mieng_5}}");	
+
+				setMark(6,"{{m.mlam_1}}");	
+				setMark(7,"{{m.mlam_2}}");	
+				setMark(8,"{{m.mlam_3}}");	
+				setMark(9,"{{m.mlam_4}}");	
+				setMark(10,"{{m.mlam_5}}");	
+				
+				setMark(11,"{{m.mot_tiet_1}}");	
+				setMark(12,"{{m.mot_tiet_2}}");	
+				setMark(13,"{{m.mot_tiet_3}}");	
+				setMark(14,"{{m.mot_tiet_4}}");	
+				setMark(15,"{{m.mot_tiet_5}}");	
+				
+				setMark(16,"{{m.ck}}");	
+				
+				if (isComment)
+				{	
+					setMark(17,"{{m.tb}}");
+					convertToComment();
+				}	
+
+		</script>			
 		</tr>	
-		
 		{% endfor %}
 	{% else%}
 		{% for p,m,ea,hk1,tbnam,id in list %}		
-		<script>
-			setArrayId({{m.id}});
-			setSentMark("{{m.sent_mark}}");
-		</script>	
-		{% ifequal hk1.tb None %}
-			<script>
-				setArrayHk1None();
-			</script>	
-		{% else %}
-			<script>
-				setArrayHk1({{hk1.tb}});
-			</script>	
-		{% endifequal %}
-
 		<tr >
 			<td style="text-align: center;" onclick="select(this)" style="border-right-width:0px" >
 			 <input title="Có thể click vào cột họ tên và ngày sinh để chọn cho nhanh hơn" type="checkbox" id="{{forloop.counter}}00" style="display:none" > 	
@@ -545,13 +569,79 @@
 					{{ hk1.tb|floatformat:"1"}}
 			</td>	
 
-			<td id="{{id.d18}}" onclick="checkToSend(this)" > 			  
-					{{ m.tb|floatformat:"1"}}
-			</td>	
+			{% if selectedSubject.nx %}	
+				{% if ea.a18 %}
+				<td onclick="checkToSend(this)">
+					<input  type="text" id="{{id.d18}}" value="{{m.tb|floatformat:"-1"}}"
+					onkeyup="control(this,event); controlDirection(this,event);" class="mark" >						
+				</td>
+				{% else %}
+				<td id="{{id.d18}}"  onclick="checkToSend(this)">
+					 {{m.tb|floatformat:"-1"}}  					
+				</td>
+				{% endif %}
+				
+				{% if ea.a19 %}
+				<td onclick="checkToSend(this)">
+					<input  type="text" id="{{id.d19}}" value="{{tbnam.tb_nam|floatformat:"-1"}}"
+					onkeyup="control(this,event); controlDirection(this,event);" class="mark" >						
+				</td>
+				{% else %}
+				<td id="{{id.d19}}"  onclick="checkToSend(this)">
+					 {{tbnam.tb_nam|floatformat:"-1"}}  					
+				</td>
+				{% endif %}
+				
+			{% else %}
+				<td id="{{id.d18}}" onclick="checkToSend(this)" > 			  
+						{{ m.tb|floatformat:"1"}}
+				</td>	
 
-			<td id="{{id.d19}}" onclick="checkToSend(this)" >
-					{{ tbnam.tb_nam|floatformat:"1"}}
-			</td>	
+				<td id="{{id.d19}}" onclick="checkToSend(this)" >
+						{{ tbnam.tb_nam|floatformat:"1"}}
+				</td>	
+			{% endif %}	
+			
+		<script>
+			setArrayId({{m.id}});
+			setSentMark("{{m.sent_mark}}");
+			
+			setMark(1,"{{m.mieng_1}}");	
+			setMark(2,"{{m.mieng_2}}");	
+			setMark(3,"{{m.mieng_3}}");	
+			setMark(4,"{{m.mieng_4}}");	
+			setMark(5,"{{m.mieng_5}}");	
+
+			setMark(6,"{{m.mlam_1}}");	
+			setMark(7,"{{m.mlam_2}}");	
+			setMark(8,"{{m.mlam_3}}");	
+			setMark(9,"{{m.mlam_4}}");	
+			setMark(10,"{{m.mlam_5}}");	
+			
+			setMark(11,"{{m.mot_tiet_1}}");	
+			setMark(12,"{{m.mot_tiet_2}}");	
+			setMark(13,"{{m.mot_tiet_3}}");	
+			setMark(14,"{{m.mot_tiet_4}}");	
+			setMark(15,"{{m.mot_tiet_5}}");	
+			
+			setMark(16,"{{m.ck}}");	
+			
+			if (isComment)
+			{
+				setMark(18,"{{m.tb}}");	
+				setMark(19,"{{tbnam.tb_nam}}");	
+				convertToComment();
+			}				
+		</script>	
+		{% ifequal hk1.tb None %}
+			<script>
+				setArrayHk1None();
+			</script>	
+		{% else %}
+			<script>
+				setArrayHk1({{hk1.tb}});
+			</script>	
+		{% endifequal %}
 			
 		</tr>
 		

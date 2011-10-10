@@ -1,81 +1,81 @@
 ﻿<script>
 	// ngan chan khi dang luu diem hoac chua luu diem	
 	
-	var primary = {{selectedSubject.primary}};	
-	var needToConfirm = false;
-	
-	window.onbeforeunload = function confirmExit()
+var primary = {{selectedSubject.primary}};	
+var needToConfirm = false;
+
+window.onbeforeunload = function confirmExit(e)
+{
+	if (document.getElementById("buttonSave").style.display=="")
 	{
-		if (document.getElementById("buttonSave").style.display=="")
-		{
-			if (document.getElementById("messageChanging").innerHTML!="Đã lưu")
-				needToConfirm=true;
-			else	needToConfirm=false;
-		}		
+		if (document.getElementById("messageChanging").innerHTML!="Đã lưu")
+			needToConfirm=true;
 		else	needToConfirm=false;
+	}		
+	else	needToConfirm=false;
+	
+	if (needToConfirm)
+		return "Đang lưu điểm. Xin vui lòng ấn cancel(ở lại trang này) để lưu nốt.";
 		
-		if (needToConfirm)
-			return "Đang lưu điểm. Xin vui lòng ấn cancel(ở lại trang này) để lưu nốt.";
-			
+}
+
+
+function getCookie(name) {
+var cookieValue = null;
+	if (document.cookie && document.cookie != '') {
+	var cookies = document.cookie.split(';');
+	for (var i = 0; i < cookies.length; i++) {
+		var cookie = jQuery.trim(cookies[i]);
+		 // Does this cookie string begin with the name we want?
+		if (cookie.substring(0, name.length + 1) == (name + '=')) {
+			cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+			break;
+		}
+	 }
+	}
+	return cookieValue;
+} 
+var cookieValue = getCookie('csrftoken'); 
+var tong=0;	
+var tong1=0;
+
+// day la phan gui diem
+////////////////////////////////////////////////////////////////////////////////////
+function sendToServer(str)
+{
+	var xmlhttp;
+	if (window.XMLHttpRequest)
+	{// code for IE7+, Firefox, Chrome, Opera, Safari
+		xmlhttp=new XMLHttpRequest();
+	}
+	else
+	{// code for IE6, IE5
+		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
 	}
 
-	
-    function getCookie(name) {
-    var cookieValue = null;
-        if (document.cookie && document.cookie != '') {
-        var cookies = document.cookie.split(';');
-        for (var i = 0; i < cookies.length; i++) {
-            var cookie = jQuery.trim(cookies[i]);
-             // Does this cookie string begin with the name we want?
-            if (cookie.substring(0, name.length + 1) == (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-            }
-         }
-        }
-        return cookieValue;
-    } 
-	var cookieValue = getCookie('csrftoken'); 
-	var tong=0;	
-	var tong1=0;
-	
-	// day la phan gui diem
-	////////////////////////////////////////////////////////////////////////////////////
-	function sendToServer(str)
+	xmlhttp.onreadystatechange=function()
 	{
-		var xmlhttp;
-		if (window.XMLHttpRequest)
-		{// code for IE7+, Firefox, Chrome, Opera, Safari
-			xmlhttp=new XMLHttpRequest();
-		}
-		else
-		{// code for IE6, IE5
-			xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-		}
-
-		xmlhttp.onreadystatechange=function()
+		if (xmlhttp.readyState==4 && xmlhttp.status==200)
 		{
-			if (xmlhttp.readyState==4 && xmlhttp.status==200)
-			{
-				// truong hop goi tin gui sau nhung ma lai den server truoc
-				var responseId=parseInt(xmlhttp.responseText);
-				if (responseId<currentId)
-					resetOldAr();
-				else
-				{	
-					currentId = responseId;
-					updateOldAr();
-					if (document.getElementById("messageChanging").innerHTML!="Lưu ngay")
-						document.getElementById("messageChanging").innerHTML="Đã lưu";
-				}		
-			}
-		}   				
-		xmlhttp.open("POST", "/school/saveMark",true);
-        xmlhttp.setRequestHeader("X-CSRFToken",cookieValue );
-		var data = "str="+str;
-		xmlhttp.send(data);			
-	}
-
+			// truong hop goi tin gui sau nhung ma lai den server truoc
+			var responseId=parseInt(xmlhttp.responseText);
+			if (responseId<currentId)
+				resetOldAr();
+			else
+			{	
+				currentId = responseId;
+				updateOldAr();
+				if (document.getElementById("messageChanging").innerHTML!="Lưu ngay")
+					document.getElementById("messageChanging").innerHTML="Đã lưu";
+			}		
+		}
+	}   				
+	xmlhttp.open("POST", "/school/saveMark",true);
+	xmlhttp.setRequestHeader("X-CSRFToken",cookieValue );
+	var data = "str="+str;
+	xmlhttp.send(data);			
+}
+    //can doan code nay la vi can kiem tra xem diem tren server co giong o client hay ko
 	var exp1=/[,]/g	
 	for(var i=1;i<length;i++)
 		for(var j=1;j<20;j++)
@@ -87,22 +87,29 @@
 				var value=tb.value;
 				if (value==undefined)
 					value=tb.innerHTML;
-				value=value.replace(exp1,'.');		
-				oldAr[i][j]=parseFloat(value);
-				if (isNaN(oldAr[i][j]))
-					oldAr[i][j]=-1;
+				value=value.replace(exp1,'.');
+				if (!isComment)
+				{	
+					oldAr[i][j]=parseFloat(value);
+					if (isNaN(oldAr[i][j]))
+						oldAr[i][j]=-1;
+				}
+				else
+					oldAr[i][j]=value;	
 			}
 			else
 				oldAr[i][j]=-1;
 		}		
 
-	function resetOldAr()
-	{
-		for(var i =1;i<length;i++)
-			for (var j=1;j<20;j++)
-				oldAr[i][j]=-1;
-	}
-	function calculateNewArray()
+function resetOldAr()
+{
+	for(var i =1;i<length;i++)
+		for (var j=1;j<20;j++)
+			oldAr[i][j]=-1;
+}
+function calculateNewArray(newAr)
+{
+	if (!isComment)
 	{
 		for(var i=1;i<length;i++)
 			for(var j=1;j<17;j++)
@@ -124,20 +131,39 @@
 						acceptDigits(tb);
 						newAr[i][j]=parseFloat(tb.value);
 					}
-				if (newAr[i][j].toString().length>3)	
+				if (newAr[i][j].toString().length>4)	
 				{
 					var tb=document.getElementById(id.toString()); 					
-					tb.value=tb.value.substring(0,3);
+					tb.value=tb.value.substring(0,4);
 					newAr[i][j] = parseFloat(tb.value);
 				}
 				if (isNaN(newAr[i][j]))
 					newAr[i][j]=-1;
 			}		
 	}
+	else
+	{		
+		for(var i=1;i<length;i++)
+			for(var j=1;j<20;j++)
+			{		
+				var id = i*100+j;
+				var tb=document.getElementById(id);
+				if (tb)
+				{
+					if (tb.value!=undefined)
+						newAr[i][j]=tb.value;
+					else
+						newAr[i][j]=tb.innerHTML;
+				}
+				else
+					newAr[i][j]=-1;
+			}		
+	}	
+}
 	function viewAverage()
 	{
 		var termNumber = {{selectedTerm.number}};
-		calculateNewArray();
+		calculateNewArray(newAr);
 		
 		var sum=0;
 		var factor=0
@@ -208,6 +234,8 @@
 	}
 	function update()
 	{
+		if (isComment)
+			calculateNewArray(newAr);
 		var str="";
 		for(var i=1;i<length;i++)
 		{
@@ -217,7 +245,10 @@
 				if (newAr[i][j]!=oldAr[i][j])
 				{					
 					numberString=numberString+j+"*";
-					valueString =valueString+newAr[i][j]+"*"; 
+					if (isComment)
+						valueString =valueString+convertToDigit(newAr[i][j].toString())+"*"; 
+					else	
+						valueString =valueString+newAr[i][j]+"*"; 
 				}
 			if (numberString!="")	
 				str=str+"/"+idAr[i]+":"+numberString+":"+valueString;					
@@ -240,18 +271,10 @@
 			document.getElementById("messageChanging").innerHTML="Đã lưu";
 			document.getElementById("buttonSave").disabled="disabled";			
 		}	
-		//writeOld();	
 		for(var i=1;i<length;i++)
 			for(var j=1;j<20;j++)
-				tempNewAr[i][j] = newAr[i][j];
+				tempNewAr[i][j] = newAr[i][j];		
 		
-		
-		//var date2 = new Date();
-		//var difference=date2.getTime()-date1.getTime();
-		//document.getElementById("myDiv6").innerHTML="abc"+difference;
-		//alert(difference);
-		
-		//writeNew();	
 	}
 	function writeOld()
 	{
@@ -271,7 +294,7 @@
 		var str="";
 		for(var i=1;i<length;i++)
 		{
-			for(var j=1;j<20;j++)
+			for(var j=0;j<20;j++)
 			{
 				str=str+newAr[i][j]+" ";
 			}		
@@ -287,7 +310,8 @@
 		var myTimer;
 		var myTimer1;
 		myTimer  = setInterval("update()", 3000);
-		myTimer1 = setInterval("viewAverage()", 1001);
+		if (!isComment)
+			myTimer1 = setInterval("viewAverage()", 1001);
 		//clearInterval(myTimer);
    
 	</script>
@@ -579,7 +603,8 @@
 	///////////////////////////////////
 	function sendSMS()
 	{
-		viewAverage();
+		if (!isComment)
+			viewAverage();
 		var table=document.getElementById("markTable");
 		var str="";
 		
@@ -814,7 +839,6 @@
 			}
 		);
 		
-		/*
 		$("#import").click(function() {
 			$("#fileupload").dialog('open');
 		});		
@@ -836,7 +860,8 @@
 			maxHeight: 400,
 			title: "Nhập điểm từ file excel"
 		});				
-		*/
+		
 	});
-	viewAverage();
+	if (!isComment)
+		viewAverage();
 </script>

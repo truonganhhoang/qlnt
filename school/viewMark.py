@@ -60,7 +60,7 @@ class MarkID:
         self.d19=d19
         
 class Editable:
-    def __init__(self,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16):
+    def __init__(self,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19):
         self.a1=a1
         self.a2=a2
         self.a3=a3
@@ -77,6 +77,9 @@ class Editable:
         self.a14=a14
         self.a15=a15
         self.a16=a16
+        self.a17=a17
+        self.a18=a18
+        self.a19=a19
         
 def checkChangeMark(class_id):
     return (not LOCK_MARK) and ENABLE_CHANGE_MARK
@@ -146,7 +149,6 @@ def saveMarkHasComment(request,selectedTerm,markList,idList,tbhk1ListObjects,tbn
 
 def defineEdit(mt,timeToEdit):
     timeNow =datetime.datetime.now()
-    print mt.mieng_1
     if mt==None:
         return Editable(0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0 ,0)
     else:
@@ -230,8 +232,11 @@ def defineEdit(mt,timeToEdit):
             if (timeNow-mt.ck).total_seconds()/60 > timeToEdit: a16=0
             else: a16=1
         else: a16=1
-        
-        return Editable(a1,a2,a3,a4,a5, a6,a7,a8,a9,a10, a11,a12,a13,a14,a15 ,a16)
+        #can bo sung doan nay
+        a17=1
+        a18=1
+        a19=1
+        return Editable(a1,a2,a3,a4,a5, a6,a7,a8,a9,a10, a11,a12,a13,a14,a15 ,a16,a17,a18,a19)
         ###########################################################    
     
         

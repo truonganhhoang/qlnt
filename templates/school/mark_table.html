@@ -68,7 +68,8 @@
   </script>
   
     {% include  "school/first_block_js.html" %}
-	
+
+
 <form action="/school/markTable" name="info" method="post" id='myform'
     onsubmit="return false">{% csrf_token %}
 	<input type="hidden" name="submitChoice" value="">
