@@ -137,7 +137,7 @@
                                     text: false
                                 })
                                 .removeClass("ui-corner-all")
-                                .addClass("ui-corner-left ui-button-icon")
+                                .addClass("ui-corner-right ui-button-icon")
                                 .click(function() {
                                     // close if already visible
                                     if (input.autocomplete("widget").is(":visible")) {
@@ -272,8 +272,17 @@
                 });
             });
 
-            $(".all_teacher").each(function(){
-                $(this).hide();
+            $(".major_teacher").each(function(){
+                if ($(this).parents("td").children("#id_teacher_id").val()==''){
+                   $(this).parents("td").children(".all_teacher").hide();
+                }
+                else if ($(this).children("select").val()==''){
+                    $(this).hide();
+                    $(this).parents("td").children(".range").val('1');
+                }
+                else{
+                    $(this).parents("td").children(".all_teacher").hide();
+                }
             });
 
             $(".range").each(function(){
@@ -288,7 +297,6 @@
                     }
                 });
             });
-
         });
         </script>
     {% endif %}
@@ -397,7 +405,7 @@
                                 </select>
                             </div>
                         
-                        <select  class="range">
+                        <select  class="range" style ="float:left;">
                             <option value="1"  >Cả trường </option>
                             <option value="2" selected="selected">{{ ss.name }}</option>
                         </select>
