@@ -33,8 +33,9 @@
 
 <body>
 <header>
-    <a href="{%url school.views.school_index %}"><img src="/static/css/images/logo.png" class="logo" alt="logo"
-                                                      title="{{ user.userprofile.organization.name }}"/>
+    <a href="{%url school.views.school_index %}">
+    <img src="/static/css/images/logo.png" class="logo" alt="logo"
+      title="{{ user.userprofile.organization.name }}"/>
     </a>
     <div id="dynamic_name">
         <p id="head_title">
@@ -139,7 +140,7 @@
                 <li><a href="/help" title="Xem hướng dẫn sử dụng">Trợ giúp</a></li>
                 <li><a href="{%url app.views.feedback %}" title="Gửi thông tin về hệ thống">Liên hệ</a></li>
             {% endif %}
-            <li><a style="color:yellow;"
+            <li><a style="color:#f3f48d;"
                    href="#feedbackDiv"
                    id="feedback"
                    title="Góp ý hoặc báo lỗi về hệ thống">Góp ý</a></li>

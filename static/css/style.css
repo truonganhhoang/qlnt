@@ -7,7 +7,7 @@
 
 html {
     width: 100%;
-    min-width: 1024px;
+    min-width: 980px;
 }
 
 body {
@@ -475,43 +475,43 @@ div.errorDiv{
 
 /*----TOP PANEL----*/
 header {
-    /*min-width: 1024px;*/
     width: 100%;
-    height: 80px;
+    height: 73px;
     position: relative;
-    margin: 0 auto;
-    color: #fff;
-    background-color: #4d94d7;
-    padding: 0;
+    /*margin: 0 auto;*/ 
+    color: #000000;
+    /*background-color: #eff1e4;*/
+    /*padding: 0;*/
+    border-bottom: #cccccc thin solid;
 }
 
 header img.logo {
     width: 80px;
-    height: 40px;
+    height: 50px;
     position: absolute;
-    top: 5px;
-    left: 15px;
+    top: 10px;
+    left: 5px;
 }
 
 header p {
     position: absolute;
     top: 5px;
-    left: 120px;
-    font: 16px Arial, Helvetica, sans-serif;
-    font-weight: bold;
-    color: black
+    left: 100px;
+    font: 14px Arial, Helvetica, sans-serif;
+    /*font-weight: bold;*/
+    color: #555555;
 }
 
 header p#detail {
     position: absolute;
-    left: 120px;
-    top: 30px;
-    font-weight: bold;
-    font-size: 15px;
-    color: #ffe804;
+    left: 100px;
+    top: 23px;
+    /*font-weight: bold;*/
+    font-size: 13px;
+    color: #555555;
 }
 
-#topUser {
+header #topUser {
     width: auto;
     height: 20px;
     position: absolute;
@@ -519,69 +519,77 @@ header p#detail {
     right: 1px;
 }
 
-#topUser ul {
+header #topUser ul {
     width: auto;
     height: 20px;
 }
 
-#topUser ul li {
+header #topUser ul li {
     width: auto;
     height: 30px;
     float: left;
 }
 
-#topUser ul li a {
+header #topUser ul li a {
     width: auto;
     height: 20px;
     display: block;
-    color: white;
+    color: #0066cc;
     text-decoration: none;
     text-align: center;
     padding: 4px 8px 4px;
 }
 
-#topUser ul li a:hover {
-    background: #fff;
-    color: #4d94d7;
+header #topUser ul li a:hover {
+    background: #e17009;
+    /*color: #e17009;*/
     text-decoration: none;
 }
 
 nav {
     height: 24px;
     position: relative;
-    top: 56px;
-    /*left: 10px; 
-	*//*background-color:red;*/
+    top: 45px;
+    /*bottom: 0px;*/
+    left: 100px;
+    /*background-color: #c6d9f9;*/
     width: auto;
-    margin-left: auto;
-    margin-right: auto;
+    /*margin-left: auto;*/
+    /*margin-right: auto;*/
+    /*border-bottom: #e3dcdc thin solid;*/
 }
 
 nav ul {
-    width: auto;
-    height: 22px;
+    /*width: auto;*/
+    /*height: 12px;*/
 }
 
 nav ul li {
     width: auto;
-    height: 22px;
     float: left;
 }
 
 nav ul li a {
     width: auto;
     height: 22px;
-    display: block; /*background-color:blue;*/
-    color: white;
+    display: block;
+    background: url(../menu/nav_bar_background.png) repeat 0 0;
+    /*background-color: #eeeeee;*/
+    /*border: #eeeccc thin solid;*/
+    /*color: #0066cc;*/
+    color: #FFFFFF;
+    font-weight: bold;
     text-decoration: none;
     text-align: center;
-    padding: 2px 10px 0;
+    padding: 4px 10px 2px 10px;
+    margin: 0px 1px 0px 0px;
+
 }
 
 nav ul li a:hover {
-    background: #fff;
-    color: #4d94d7;
-    text-decoration: none;
+    /*background: #F4F4F4;*/
+    background: #e17009;
+    /*text-decoration: none;*/
 }
 
 section#main {
@@ -590,7 +598,11 @@ section#main {
 
 /*---- CONTENT TOP----*/
 #contentTop {
-    background-color: #F3F3F3;
+    background-color: #FFFFFF;
+}
+
+#contentTop a {
+    text-decoration: none;
 }
 
 #content {
@@ -598,24 +610,6 @@ section#main {
     position: relative;
     display: block;
 }
-
-/*div.leftInfoDiv {*/
-    /*width: auto;*/
-    /*float: left;*/
-    /*border-right: 1px solid #DADADA;*/
-    /*padding: 10px;*/
-    /*text-align: right;*/
-
-/*}*/
-
-/*div.rightInfoDiv {*/
-    /*position: relative;*/
-    /*width: auto;*/
-    /*padding: 10px;*/
-    /*border-right: 1px solid #DADADA;*/
-    /*float: left;*/
-    /*text-align: right;*/
-/*}*/
 
 div.infoContent {
     width: 100%;
@@ -629,7 +623,7 @@ div.rightInfoDivMain {
 div.leftInfoDiv, div.rightInfoDiv, div.confirmation, div.startYear {
     position: relative;
     width: auto;
-    padding: 10px;
+    padding: 5px;
     float: left;
 }
 
@@ -659,13 +653,14 @@ div#divList {
 }
 
 #content h2 {
-    color: #4d94d7;
+    color: #555555;
     padding: 5px 0px;
+    font-size: 18px;
 }
 
 #content h2 span {
-    background: #fff;
-    color: #4d94d7;
+    /*background: #fff;*/
+    color: #555555;
 }
 /*
 #content h3 {
@@ -732,7 +727,7 @@ footer {
 }
 
 footer p {
-    color: #999;
+    color: #666666;
     font-size: 80%;
     text-align: center
 }
@@ -753,17 +748,19 @@ div#classes .classDiv{
 
 div#classes a{
     text-decoration: none;
+    border-color: #bbbbbb;
 }
 
 div#classes a:hover{
-    background-color: #75a8fa;
     text-decoration: none;
+    background-color: #e17009;
     background-image: none;
 }
 
 div#classes h3{
+    font-size: 14px;
     clear: both;
-    padding: 5px 6px 5px 0px;
+    padding: 3px 6px 0px 0px;
 }
 
 div#classes h4{
@@ -771,7 +768,7 @@ div#classes h4{
     font-size: 16px;
     font-family: arial;
     font-weight: bold;
-    /*color: #af0202;*/
+    color: #0066cc;
 }
 
 
@@ -779,56 +776,58 @@ div#classes p .dimmer{
     color: #9f9d9d;
 }
 
-
 div#classes p{
     padding: 5px 10px;
 }
 
-#sitemap {
+
+div#sitemap {
     position: relative;
     overflow: hidden;
     float: left;
-    width: 40%;
+    width: 20%;
+    margin-right: 20px;
+    border-right: 1px;
+    min-width: 285px;
+}
+
+div#sitemap a {
+    float: left;
+    text-align: center;
+    vertical-align: middle;
+    text-decoration: none;
+    color: #0066cc;
+    vertical-align: bottom;
+    display: block;
+    border-color: #bbbbbb;
+    margin: 3px 3px;
+    padding: 3px 3px;
+}
+
+.sitemapitem {
+    width: 80px;
+    height: 80px;
+}
+
+div#sitemap a:hover {
+    display: block;
+    color: #e17009;
+    border-color: #e17009;
+    /*background-color: #ffff00;*/
 }
 
 .thumb {
-    float: left;
+     /*float: left;*/
     width: 172px;
     margin: 6px 6px 6px 0px;
 }
 
-#sitemap h3 {
-    font-size: 12;
-    display: block;
-    margin: 0px 0px;
+div#sitemap .icon {
+    width: 48px;
+    height: 48px;
+    margin: 3px 3px;
 }
 
-#sitemap ul{
-    width: 170px;
-    margin: 0px 0px;
-}
-
-#sitemap ul li {
-    height: 30px;
-    padding: 3px 3px;
-}
-
-#sitemap ul li a {
-    display: block;
-    padding: 5px 5px;
-    text-decoration: none;
-    width: 150px;
-}
-
-#sitemap a{
-    color: #000000;
-}
-
-#sitemap ul li a:hover {
-    background-color: #4d94d7;
-    color: #ffffff;
-    width: 154px;
-}
 
 /* HELP page */
 div#help {
@@ -847,7 +846,7 @@ div#help p, h3 {
 
 
 table.dataform {
-    margin: 5px 5px;
+    margin: 3px 3px;
     background-color:  #e2edef;
 }
 
