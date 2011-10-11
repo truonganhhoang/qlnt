@@ -65,8 +65,12 @@ function sendToServer(str)
 			{	
 				currentId = responseId;
 				updateOldAr();
-				if (document.getElementById("messageChanging").innerHTML!="Lưu ngay")
+				var currentTime = (new Date()).getTime();
+				if ((currentTime-latestTime)>1500)
+				{
 					document.getElementById("messageChanging").innerHTML="Đã lưu";
+					document.getElementById("buttonSave").disabled="disabled";
+				}	
 			}		
 		}
 	}   				
@@ -109,6 +113,7 @@ function resetOldAr()
 }
 function calculateNewArray(newAr)
 {
+	var ok=false;
 	if (!isComment)
 	{
 		for(var i=1;i<length;i++)
@@ -139,6 +144,15 @@ function calculateNewArray(newAr)
 				}
 				if (isNaN(newAr[i][j]))
 					newAr[i][j]=-1;
+					
+				if (newAr[i][j] != oldAr[i][j] && ( !ok))
+				{
+					document.getElementById("messageChanging").innerHTML="Lưu ngay";
+					document.getElementById("buttonSave").disabled="";
+					document.getElementById("buttonSave").style.display="";
+					latestTime= (new Date()).getTime();
+					ok=true;
+				}				
 			}		
 	}
 	else
@@ -157,7 +171,22 @@ function calculateNewArray(newAr)
 				}
 				else
 					newAr[i][j]=-1;
-			}		
+					
+				if (newAr[i][j] != oldAr[i][j] && ( !ok))
+				{
+					document.getElementById("messageChanging").innerHTML="Lưu ngay";
+					document.getElementById("buttonSave").disabled="";
+					document.getElementById("buttonSave").style.display="";
+					latestTime= (new Date()).getTime();
+					ok=true;
+				}				
+			}
+				
+	}
+	if (!ok)
+	{
+		document.getElementById("messageChanging").innerHTML="Đã lưu";
+		document.getElementById("buttonSave").disabled ="disabled";
 	}	
 }
 	function viewAverage()
@@ -259,12 +288,14 @@ function calculateNewArray(newAr)
 		{
 			numberId++;
 			sendToServer(numberId+"/"+idTeacher+"/"+primary+str);
+			/*
 			var currentTime = (new Date()).getTime();
 			if ((currentTime-latestTime)>1500)
 			{
 				document.getElementById("messageChanging").innerHTML="Đang lưu";
 				document.getElementById("buttonSave").disabled="disabled";			
-			}	
+			}
+			*/	
 		}
 		else
 		{
@@ -838,7 +869,7 @@ function calculateNewArray(newAr)
 				e.preventDefault();
 			}
 		);
-		
+				
 		$("#import").click(function() {
 			$("#fileupload").dialog('open');
 		});		
