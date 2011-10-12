@@ -259,6 +259,7 @@ table.styleA {
     border-collapse: collapse;
     border-spacing: 0;
     margin-bottom: 10px;
+    width: 980px;
 }
 
 table.styleA th {
@@ -307,9 +308,21 @@ table.styleA td.selected {
 
 table.styleA input {
     font-size: 15px;
-    padding:3px;
+    padding:2px;
+}
+
+table.styleA select {
+    font-size: 13px;
+    height: 23px;
+    margin: 2px 2px 0 2px;
+}
+
+
+table.styleA input[type="text"] {
+    font-size: 15px;
     width: 95%;
 }
+
 
 table.styleDetail th {
     text-align: right;
@@ -348,12 +361,28 @@ table.styleA tr.endblock{
 
 table.styleA td {
     border-width: 1px;
-    padding: 4px;
+    padding: 4px 2px 4px 2px;
     border-style: solid;
     border-color: #a9c6c9;
     text-align: left;
     vertical-align: bottom;
 }
+
+table.setting {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    color: #333333;
+    border: 1px solid #999999;
+    border-radius: 3px;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    border-collapse: collapse;
+    border-spacing: 0;
+    margin-bottom: 10px;
+    padding: 10px;
+}
+
+
 
 .ggButton {
     background-color: #4D90FE;
@@ -732,6 +761,16 @@ footer p {
     text-align: center
 }
 
+input.ui-autocomplete-input{
+    float: left;
+}
+
+div.autocomplete button{
+    float: left;
+    height: 23px;
+    width: 21px;
+}
+
 div#classes{
     position: relative;
     float: left;
@@ -742,7 +781,7 @@ div#classes{
 div#classes .classDiv{
     float: left;
     width: 150px;
-    margin: 3px 6px 6px 0px;
+    margin: 3px 6px 6px 0;
     /*padding: 5px;*/
 }
 

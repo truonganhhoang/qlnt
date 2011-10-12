@@ -253,8 +253,8 @@
             <button id="delSelected" class="ggButton">Xóa những học sinh đã chọn</button>
     </div>
     {% endif %}
-    <table class="styleA">
-        <colgroup style="width: 3%;"></colgroup>
+    <table class="styleA fixed_header">
+        <colgroup style="width: 4%;"></colgroup>
         <colgroup></colgroup>
         <colgroup style="width: 12%;"></colgroup>
         <colgroup style="width: 7%"></colgroup>
@@ -269,7 +269,7 @@
 
         <tr class="thread">
             {% if pos > 3 %}
-            <th class="leftAlign" title="Chọn cả lớp" class="tiptiphover">
+            <th class="leftAlign" title="Chọn cả lớp" class="tiptiphover" style="text-align: center;">
                 <input type="checkbox" id="checkbox_all"/>
             </th>
             {% endif %}
@@ -300,7 +300,7 @@
         {% for ss in studentList %}
             <tr class="{{ss.id}}">
                 {% if pos > 3 %}
-                <td >
+                <td style="text-align: center;">
                     <input type="checkbox" id="checkbox_{{ss.id}}"/>
                 </td>
                 {% endif %}

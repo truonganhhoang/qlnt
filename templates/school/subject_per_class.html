@@ -323,27 +323,37 @@
             {% endif %}
         </div>
 
-        <table class="styleA" id="sortable" width="75%" align="left">
+        <table class="styleA" id="sortable">
+            <colgroup style="width: 3%;"></colgroup>
+            <colgroup style="width: 10%;"></colgroup>
+            <colgroup style="width: 5%;"></colgroup>
+            <colgroup></colgroup>
+            <colgroup style="width: 32%;"></colgroup>
+            <colgroup></colgroup>
+            <colgroup></colgroup>
+            {% if pos > 3 %}
+                <colgroup></colgroup>
+            {% endif %}
             <tr>
                 <th class="naviButton" style="display: none;"></th>
                 <th class="naviButton" style="display: none;"></th>
-                <th class="arrow_header" width="5%"><a
+                <th class="arrow_header" ><a
                         href="{%url school.views.school_index  %}subjectPerClass/{{class.id}}/4/{{next_status}}">
                     STT </a></th>
-                <th class="leftAlign" width="20%"><a
+                <th class="leftAlign" ><a
                         href="{%url school.views.school_index  %}subjectPerClass/{{class.id}}/1/{{next_status}}">Tên Môn
                     Học</a></th>
                 <th class="leftAlign"> Chuyên Môn</th>
-                <th class="leftAlign" width="10%"><a
+                <th class="leftAlign" ><a
                         href="{%url school.views.school_index  %}subjectPerClass/{{class.id}}/2/{{next_status}}">Hệ
                     số </a></th>
-                <th class="leftAlign" width="25%"><a
+                <th class="leftAlign" ><a
                         href="{%url school.views.school_index  %}subjectPerClass/{{class.id}}/3/{{next_status}}">Giáo
                     viên</a></th>
                 <th class="leftAlign"> Cách tính điểm</th>
-                <th class="leftAlign" width="17%">Môn nhận xét</th>
+                <th class="leftAlign" >Môn nhận xét</th>
                 {% if pos > 3 %}
-                    <th width="5%"></th>
+                    <th ></th>
                 {% endif %}
             </tr>
             {% if message != None %}
@@ -361,21 +371,21 @@
                         <button class="naviButton-down ggButton">Xuống</button>
                     </th>
 
-                    <td class="index" width="3%">
+                    <td class="index" >
                         <span class="ui-icon ui-icon-arrowthick-2-n-s" style="display: none; float: left;"></span>
 
                         <p>{{ forloop.counter }}</p>
                     </td>
                     {% if pos > 3 %}
-                        <td style="text-align: center;" width="20%"><a title="Chỉnh sửa thông tin môn học"
+                        <td style="text-align: center;" ><a title="Chỉnh sửa thông tin môn học"
                                                                        href="{%url school.views.school_index  %}viewSubjectDetail/{{ss.id}}">{{ ss.name }}</a>
                         </td>
                         <td style="text-align: center;"> {{ f.type }} </td>
-                        <td style="text-align: center;" width="10%"> {{ f.hs }} </td>
-                        <td style="text-align: center;" width="35%">
+                        <td style="text-align: center;" > {{ f.hs }} </td>
+                        <td style="text-align: center;" >
                             {{ f.teacher_id }}
-                            <div class="ui-widget major_teacher">
-                                <select class="combobox">
+                            <div class="ui-widget major_teacher autocomplete">
+                                <select class="combobox" style="margin-left: 5px;">
                                     <option value="">Select one...</option>
                                     {% for iteacher in teachers %}
                                         {% if  forloop.counter == forloop.parentloop.counter %}
@@ -392,8 +402,8 @@
                                 </select>
                             </div>
 
-                            <div class="ui-widge all_teacher">
-                                <select class="combobox">
+                            <div class="ui-widge all_teacher autocomplete">
+                                <select class="combobox" style="margin-left: 5px;">
                                     <option value="">Select one...</option>
                                     {% for teacher in allteacher %}
                                         {% if teacher == ss.teacher_id %}
@@ -405,7 +415,7 @@
                                 </select>
                             </div>
                         
-                        <select  class="range" style ="float:left;">
+                        <select  class="range" style ="float:left; width: 90px; margin-left: 5px;">
                             <option value="1"  >Cả trường </option>
                             <option value="2" selected="selected">{{ ss.name }}</option>
                         </select>
@@ -413,14 +423,14 @@
                         </td>
                         <td style="text-align: center;"> {{ f.primary }} </td>
                         <td style="text-align: center;"> {{ f.nx }} </td>
-                        <td width="5%"><a class="ggButton"
+                        <td ><a class="ggButton"
                                           href="{%url school.views.school_index  %}deleteSubject/{{ss.id}}"
                                           onclick="return confirmDelete();">xóa</a></td>
                         {% else %}
-                        <td style="text-align: center;" width="20%"> {{ ss.name }}</td>
-                        <td style="text-align: center;" width="20%"> {{ ss.type }}</td>
-                        <td style="text-align: center;" width="10%"> {{ ss.hs }} </td>
-                        <td style="text-align: center;" width="25%">
+                        <td style="text-align: center;" > {{ ss.name }}</td>
+                        <td style="text-align: center;" > {{ ss.type }}</td>
+                        <td style="text-align: center;" > {{ ss.hs }} </td>
+                        <td style="text-align: center;" >
                             {% if ss.teacher_id != "None" %}
                                 Chưa rõ
                             {% else %}
@@ -435,8 +445,8 @@
             {% if pos > 3 %}
                 <tr id="subject_form">
                     {{ form.non_field_errors }}
-                    <td width="5%"></td>
-                    <td style="text-align: center;" width="20%">
+                    <td ></td>
+                    <td style="text-align: center;" >
                         {{ form.name.errors }}
                         <p>{{ form.name }}</p>
                     </td>
@@ -446,15 +456,15 @@
                         <p>{{ form.type }}</p>
                     </td>
 
-                    <td style="text-align: center;" width="10%">
+                    <td style="text-align: center;" >
                         {{ form.hs.errors }}
                         <p>{{ form.hs }}</p>
                     </td>
 
-                    <td style="text-align: center;" width="25%">
+                    <td style="text-align: center;" >
                         {{ form.teacher_id.errors }}
                         {{ form.teacher_id }}
-                        <div class="ui-widget">
+                        <div class="ui-widget autocomplete">
                             <select class="combobox">
                                 <option value="">Select one...</option>
                                 {% for teacher in allteacher %}
@@ -471,20 +481,20 @@
                         {{ form.nx.errors }}
                         <p>{{ form.nx }} </p>
                     </td>
-                    <td width="10%"><input class="ggButton" type="submit" value="Thêm"/></td>
+                    <td ><input class="ggButton" type="submit" value="Thêm"/></td>
                 </tr>
             {% endif %}
 
         </table>
     </form>
-    {% if pos > 3 %}
-        <table border="0" width="75%" align="center">
-            <tr>
-                <td width="5%" align="left">&nbsp</td>
-                <td align="right"><a href="">Xuất ra Excel </a></td>
-            </tr>
-        </table>
-    {% endif %}
+{#    {% if pos > 3 %}#}
+{#        <table border="0" align="center">#}
+{#            <tr>#}
+{#                <td align="left">&nbsp</td>#}
+{#                <td align="right"><a href="">Xuất ra Excel </a></td>#}
+{#            </tr>#}
+{#        </table>#}
+{#    {% endif %}#}
     <p id="ajax_to" style="display: none;">{% url school.views.change_index 'subject' class.id %}</p>
     <p id="redirect_link" style="display: none;">{% url school.views.subjectPerClass class.id %}</p>
 {% endblock %}
