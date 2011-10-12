@@ -1624,6 +1624,7 @@ def classes(request):
                                     'pos':pos,})
     return HttpResponse(t.render(c))
 
+
 def classtab(request, block_id=0):
     try:
         user = request.user
@@ -1656,41 +1657,42 @@ def classtab(request, block_id=0):
             num.append(c.pupil_set.count())
         list = zip(classList, cfl, num)
         if request.method == 'POST':
-            if request.is_ajax() and request.POST['request_type']==u'update':
+            if request.is_ajax() and request.POST['request_type'] == u'update':
                 class_id = request.POST['id']
-                c = classList.get(id = int(class_id))
+                c = classList.get(id=int(class_id))
                 tc = None
                 teacher_id = None
                 if request.POST['teacher_id'] != u'':
                     teacher_id = request.POST['teacher_id']
-                    teacher = school.teacher_set.get(id = int(teacher_id))
+                    teacher = school.teacher_set.get(id=int(teacher_id))
                     print 'teacher', teacher
                     try:
-                        tc = cyear.class_set.get(teacher_id__exact = teacher.id)
+                        tc = cyear.class_set.get(teacher_id__exact=teacher.id)
                     except ObjectDoesNotExist as e:
                         pass
-#                        print e
-#                        message = u'Không tồn tại giáo viên'
-#                        data = simplejson.dumps({'message':message})
-#                        return HttpResponse(data, mimetype = 'json')
+                    #                        print e
+                    #                        message = u'Không tồn tại giáo viên'
+                    #                        data = simplejson.dumps({'message':message})
+                    #                        return HttpResponse(data, mimetype = 'json')
                 else:
                     print 'teacher', 'None'
                     teacher_id = None
                 if not teacher_id or not tc:
-                    data = {'name':c.name, 'year_id':c.year_id.id, 'block_id':c.block_id.id,
-                            'teacher_id':teacher_id,'status':c.status,'index':c.index}
+                    data = {'name': c.name, 'year_id': c.year_id.id, 'block_id': c.block_id.id,
+                            'teacher_id': teacher_id, 'status': c.status, 'index': c.index}
                     form = ClassForm(school_id, data, instance=c)
                     if form.is_valid():
                         form.save()
                 else:
                     message = 'Giáo viên đã có lớp chủ nhiệm'
-                    data = simplejson.dumps({'message':message})
-                    return HttpResponse(data, mimetype = 'json')
-            elif request.POST['request_type']=='update_all':
+                    data = simplejson.dumps({'message': message})
+                    return HttpResponse(data, mimetype='json')
+            elif request.POST['request_type'] == 'update_all':
                 teacher_list = request.POST.getlist('teacher_id')
                 i = 0
                 for c in classList:
-                    data = {'name':c.name, 'year_id':c.year_id.id, 'block_id':c.block_id.id, 'teacher_id':teacher_list[i],'status':c.status,'index':c.index}
+                    data = {'name': c.name, 'year_id': c.year_id.id, 'block_id': c.block_id.id,
+                            'teacher_id': teacher_list[i], 'status': c.status, 'index': c.index}
                     of = cfl[i]
                     cfl[i] = ClassForm(school_id, data, instance=c)
                     if str(of) != str(cfl[i]):
@@ -1702,13 +1704,15 @@ def classtab(request, block_id=0):
                 url = 'school/classes'
                 return HttpResponseRedirect(url)
             list = zip(classList, cfl, num)
+        teachers = school.teacher_set.all()
         t = loader.get_template(os.path.join('school', 'classtab.html'))
-        c = RequestContext(request, {   'list': list,
-                                        'form': form,
-                                        'message': message,
-                                        'classList': classList,
-                                        'block_id': block_id,
-                                        'pos':pos,})
+        c = RequestContext(request, {'list': list,
+                                     'form': form,
+                                     'message': message,
+                                     'classList': classList,
+                                     'block_id': block_id,
+                                     'teachers': teachers,
+                                     'pos': pos, })
         return HttpResponse(t.render(c))
     except Exception as e:
         print e
