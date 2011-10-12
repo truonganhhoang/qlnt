@@ -1,8 +1,9 @@
 {% extends "base.html" %}
 
 {% block content %}
+  <h2>Đổi tên tài khoản</h2>
     {% if user.userprofile.username_change == 0 %}
-        <p style="color:#FF0000"> <b>Chú ý</b> tên tài khoản chỉ có thể thay đổi <b>1</b> lần duy nhất </p>
+        <p style="color:#FF0000"> <b>Chú ý</b> tên tài khoản chỉ được thay đổi <b>một</b> lần duy nhất.</p>
         <form action="/school/username_change" method="post">{% csrf_token %}
             <table class="styleA">
                 {{ message }}
@@ -12,6 +13,6 @@
         </form>
     {% else %}
         {{ message }}
-        <p> Bạn đã thay đổi tên tài khoản. Không thể thay đổi lần nữa </p>
+        <p> Bạn đã thay đổi tên tài khoản. Không thể thay đổi lần nữa.</p>
     {% endif %}
 {% endblock %}

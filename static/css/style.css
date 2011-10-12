@@ -571,7 +571,7 @@ header #topUser ul li a {
 
 header #topUser ul li a:hover {
     background: #e17009;
-    /*color: #e17009;*/
+    color: #ffffff;
     text-decoration: none;
 }
 
@@ -612,6 +612,9 @@ nav ul li a {
     text-align: center;
     padding: 4px 10px 2px 10px;
     margin: 0px 1px 0px 0px;
+
+    /*border: #777777 solid thin;*/
+    /*border-radius: 3px;*/
 
 }
 
@@ -870,19 +873,25 @@ div#sitemap .icon {
 
 /* HELP page */
 div#help {
+    height:auto;
+    -moz-column-width: 16em;
+    -moz-column-gap: 1em;
+    -webkit-column-width: 16em;
+    -webkit-column-gap: 1em;
     text-align: justify;
-    -moz-column-count: 2;
-    -moz-column-gap: 1.5em;
-    -moz-column-rule: 1px solid #C7B5A7;
-    -webkit-column-count: 2;
-    -webkit-column-gap: 1.5em;
-    -webkit-column-rule: 1px solid #C7B5A7;
 }
 
 div#help p, h3 {
 	padding: 5px;
 }
 
+
+div#help h2 {
+    -webkit-column-break-before: always;
+    -moz-column-break-before: always;
+    /*column-break-before:always;*/
+    /*break-before: column;*/
+}
 
 table.dataform {
     margin: 3px 3px;

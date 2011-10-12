@@ -88,7 +88,9 @@
 
                 {# Người sử dụng cấp trường       #}
                 {% if user.userprofile.position == 'HIEU_TRUONG' or user.userprofile.position == 'HIEU_PHO' or user.userprofile.position == 'GIAO_VIEN' or user.userprofile.position == 'GIAO_VU' or user.userprofile.position == 'HOC_SINH' %}
-                    <li><a href="{%url school.views.school_index %}" title="Trở về trang đầu">Trang chủ</a></li>
+                    <li><a
+{#                            class="ui-corner-left" #}
+                           href="{%url school.views.school_index %}" title="Trở về trang đầu">Trang chủ</a></li>
                     {% if user.userprofile.organization.status != 0 %}
                         <!-- <li><a href="{%url school.views.years %}" title="Xem năm học khác, học kỳ khác">Các năm</a></li>  -->
                         <li><a href="{%url school.views.classes %}" title="Quản lý lớp học">Lớp học</a></li>
@@ -140,7 +142,9 @@
                 <li><a href="/help" title="Xem hướng dẫn sử dụng">Trợ giúp</a></li>
                 <li><a href="{%url app.views.feedback %}" title="Gửi thông tin về hệ thống">Liên hệ</a></li>
             {% endif %}
-            <li><a style="color:#f3f48d;"
+            <li><a
+{#                    class=" ui-corner-right" #}
+                    style="color:#f3f48d;"
                    href="#feedbackDiv"
                    id="feedback"
                    title="Góp ý hoặc báo lỗi về hệ thống">Góp ý</a></li>
