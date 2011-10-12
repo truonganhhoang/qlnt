@@ -26,6 +26,7 @@ footer, header, nav, section, audio, video {
     display: block;
 }
 
+
 #popupDiv {
     margin: 20px;
 }
@@ -883,6 +884,16 @@ div#help {
 
 div#help p, h3 {
 	padding: 5px;
+}
+
+.leftAlign{
+    text-align: left;
+}
+.rightAlign{
+    text-align: right;
+}
+.centerAlign{
+    text-align: center;
 }
 
 

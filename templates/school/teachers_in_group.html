@@ -60,32 +60,32 @@
         </script>
     {% endif %}
     <h2>Danh sách giáo viên nhóm{{ group }}</h2>
-    <table class="styleA" width="100%">
+    <table class="styleA">
         {% if pos > 3 %}
-            <colgroup style="width: 5%; text-align: center;"></colgroup>
+            <colgroup style="width: 5%;"></colgroup>
         {% endif %}
-        <colgroup style="width: 5%; text-align: center;"></colgroup>
-        <colgroup style="width: 20%; text-align: center;"></colgroup>
-        <colgroup style="width: 10%; text-align: center;"></colgroup>
-        <colgroup style="width: 25%; text-align: center;"></colgroup>
-        <colgroup style="width: 5%; text-align: center;"></colgroup>
-        <colgroup style="width: 10%; text-align: center;"></colgroup>
-        <colgroup style="width: 10%; text-align: center;"></colgroup>
-        <colgroup style="width: 10%;text-align: center;"></colgroup>
+        <colgroup style="width: 5%;"></colgroup>
+        <colgroup style="width: 20%;"></colgroup>
+        <colgroup style="width: 10%;"></colgroup>
+        <colgroup style="width: 25%;"></colgroup>
+        <colgroup style="width: 5%;"></colgroup>
+        <colgroup style="width: 10%;"></colgroup>
+        <colgroup style="width: 10%;"></colgroup>
+        <colgroup style="width: 10%;"></colgroup>
         <tr class="thread">
             {% if pos > 3 %}
-                <th class="leftAlign" width="30px" title="Chọn cả nhóm" class="tiptiphover">
+                <th title="Chọn cả nhóm" class="tiptiphover" style="text-align: center;">
                     <input type="checkbox" class="checkbox_all"/>
                 </th>
             {% endif %}
-            <th class="leftAlign" width="5%"> STT</th>
-            <th class="leftAlign" width="15%">Họ tên</th>
-            <th class="leftAlign" width="10%">Ngày sinh</th>
-            <th class="leftAlign" width="20%">Quê quán</th>
-            <th class="leftAlign" width="10%">Giới tính</th>
-            <th class="leftAlign" width="10%">Chuyên môn</th>
-            <th class="leftAlign" width="15%">Tổ</th>
-            <th class="leftAlign" width="15%">Nhóm</th>
+            <th class="leftAlign"> STT</th>
+            <th class="leftAlign">Họ tên</th>
+            <th class="leftAlign">Ngày sinh</th>
+            <th class="leftAlign">Quê quán</th>
+            <th class="leftAlign">Giới tính</th>
+            <th class="leftAlign">Dạy môn</th>
+            <th class="leftAlign">Tổ</th>
+            <th class="leftAlign">Nhóm</th>
         </tr>
 
         {% if message != None %}
@@ -95,12 +95,12 @@
         {% for ss, f in list %}
             <tr class="{{ ss.id }}">
                 {% if pos > 3 %}
-                    <td style="text-align: center;" width="30px">
+                    <td style="text-align: center;">
                         <input type="checkbox" class="checkbox_{{ss.id}}"/>
                     </td>
                 {% endif %}
-                <td style="text-align: center;" width="5%">{{ forloop.counter }}</td>
-                <td style="text-align: center;" width="15%">
+                <td class="leftAlign">{{ forloop.counter }}</td>
+                <td class="leftAlign">
                     {% if pos > 3 or teacher_id == ss.id %}
                         <a href="{%url school.views.school_index  %}viewTeacherDetail/{{ss.id}}">
                             {{ ss.last_name }} {{ ss.first_name }} </a>
@@ -109,33 +109,33 @@
                     {% endif %}
                 </td>
 
-                <td style="text-align: center;" width="10%"> {{ ss.birthday|date:"SHORT_DATE_FORMAT" }}</td>
-                <td style="text-align: center;" width="20%"> {{ ss.home_town }}</td>
-                <td style="text-align: center;" width="10%"> {{ ss.sex }} </td>
+                <td class="leftAlign"> {{ ss.birthday|date:"SHORT_DATE_FORMAT" }}</td>
+                <td class="leftAlign"> {{ ss.home_town }}</td>
+                <td class="leftAlign"> {{ ss.sex }} </td>
                 {% if pos > 3 %}
-                    <td style="text-align: center;" width="10%"> {{ f.major }} </td>
-                    <td style="text-align: center;" width="15%"> {{ f.team_id }} </td>
-                    <td style="text-align: center;" width="15%"> {{ f.group_id }} </td>
+                    <td class="leftAlign"> {{ f.major }} </td>
+                    <td class="leftAlign"> {{ f.team_id }} </td>
+                    <td class="leftAlign"> {{ f.group_id }} </td>
                     {% else %}
-                    <td style="text-align: center;" width="10%">
+                    <td class="leftAlign">
                         {% if ss.major == '-1' %}
-                            Chưa rõ
+                            Chưa có
                         {% else %}
                             {{ ss.major }}
                         {% endif %}
                     </td>
-                    <td style="text-align: center;" width="15%">
+                    <td class="leftAlign">
                         {% if ss.team_id%}
                             {{ ss.team_id }}
                         {% else %}
-                            Chưa rõ
+                            Chưa có
                         {% endif %}
                     </td>
-                    <td style="text-align: center;" width="15%">
+                    <td class="leftAlign">
                         {% if ss.group_id %}
                             {{ ss.group_id }}
                         {% else %}
-                            Chưa rõ
+                            Chưa có
                         {% endif %}
                     </td>
                 {% endif %}
@@ -147,7 +147,7 @@
 
     {% if pos > 3 %}
         <tr>
-            <td width="5%" align="left">&nbsp</td>
+            <td class="leftAlign">&nbsp</td>
         </tr>
     {% endif %}
     <input id="reload" type="hidden" onclick="location.replace(location.href)"/>
