@@ -426,6 +426,7 @@ class MarkTime(models.Model):
 class TKMon(models.Model):    
     mg = models.BooleanField("Miễn giảm",default = False)
     tb_nam = models.FloatField("Trung bình năm", null = True, blank = True, validators = [validate_mark])
+    time = models.DateTimeField("Thời gian cập nhật điểm tổng kết", null = True, blank = True)
     #danh dau xem mon nay co dc phep thi lai hay ko
     thi_lai = models.BooleanField("Có thi lại", blank = True, default = False)
     diem_thi_lai=models.FloatField("Điểm thi lại", null = True, blank = True, validators = [validate_mark])
