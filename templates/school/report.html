@@ -1,19 +1,25 @@
-﻿{% extends "base.html"%}  
-{% block backward_link %}
-	Báo cáo, thống kê
+﻿{% extends "base.html" %}
 
+{% block backward_link %}
+  <a href="/school/report">Báo cáo</a>  >
 {% endblock %}
 
 {% block content %}
-<br>
- {# <a title="Chức năng đang trong quá trình hoàn thiện" href="/school/countInSchool"> Thống kê </a> #}
- 
-<a href="/school/count1"> Thống kê học lực, hạnh kiểm, danh hiệu</a>
-<br>
-<a href="/school/count2/1"> Thống kê điểm trung bình</a>
-<br>
-<a href="/school/count2/2"> Thống kê điểm thi cuối kì</a>
-<br>
-<a href="/school/printMarkBook"> In sổ gọi tên và ghi điểm </a>
+  <h2>Các báo cáo, thống kê</h2>
 
+  {# <a title="Chức năng đang trong quá trình hoàn thiện" href="/school/countInSchool"> Thống kê </a> #}
+  <table>
+    <tr>
+      <td><a href="/school/count1"> Thống kê học lực, hạnh kiểm, danh hiệu</a></td>
+    </tr>
+    <tr>
+      <td><a href="/school/count2/1"> Thống kê điểm trung bình</a></td>
+    </tr>
+    <tr>
+      <td><a href="/school/count2/2"> Thống kê điểm cuối kì</a></td>
+    </tr>
+    <tr>
+      <td><a href="/school/printMarkBook"> In sổ gọi tên và ghi điểm </a></td>
+    </tr>
+  </table>
 {% endblock %}

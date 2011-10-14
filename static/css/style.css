@@ -260,7 +260,7 @@ table.styleA {
     border-collapse: collapse;
     border-spacing: 0;
     margin-bottom: 10px;
-    width: 980px;
+    /*width: 980px;*/
 }
 
 table.styleA th {
@@ -525,10 +525,10 @@ header img.logo {
 
 header p {
     position: absolute;
-    top: 5px;
+    top: 10px;
     left: 100px;
-    font: 14px Arial, Helvetica, sans-serif;
-    /*font-weight: bold;*/
+    font: 18px Arial, Helvetica, sans-serif;
+    font-weight: bold;
     color: #555555;
 }
 
@@ -577,7 +577,7 @@ header #topUser ul li a:hover {
 }
 
 nav {
-    height: 24px;
+    height: 22px;
     position: relative;
     top: 45px;
     /*bottom: 0px;*/
@@ -614,9 +614,18 @@ nav ul li a {
     padding: 4px 10px 2px 10px;
     margin: 0px 1px 0px 0px;
 
-    /*border: #777777 solid thin;*/
-    /*border-radius: 3px;*/
+    /*border-radius: 2px;*/
 
+}
+
+nav span {
+    /*width: auto;*/
+    position: relative;
+    height: inherit;
+    /*top: 10px;*/
+    /*display: block;*/
+    vertical-align: bottom;
+    background: url(../menu/nav_bar_background.png) repeat 0 0;
 }
 
 nav ul li a:hover {
@@ -687,7 +696,7 @@ div#divList {
 
 #content h2 {
     color: #555555;
-    padding: 5px 0px;
+    padding: 10px 0px;
     font-size: 18px;
 }
 

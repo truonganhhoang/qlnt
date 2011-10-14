@@ -1,208 +1,210 @@
-﻿{% extends "base.html"%}  
-{% block backward_link %}
+﻿{% extends "base.html" %}
 
-	<div id="termString">
-	<a href="/school/report"> Báo cáo, thống kê  </a>  > 
-	{% if type = 1 %}
-		<a href="/school/count2/{{type}}"> Thống kê điểm trung bình  </a> >				 
-	{% else %}
-	{% if type = 2	 %}
-		<a href="/school/count2/{{type}}"> Thống kê điểm thi cuối kì </a> >				
-		
-	{% endif %}
-	{% endif %}	
-		{% if number = 1 %}
-			Học kì I
-		{% else %}
-		{% if number = 2 %}
-			Học kì II
-		{% else %}
-			Cả năm
-		{% endif %}
-		{% endif %}
-		{% if  subjectName %}	
-			{{subjectName}}
-		{% endif %}	
-	</div>
+{% block backward_link %}
+  <div id="termString">
+    <a href="/school/report"> Báo cáo, thống kê </a> >
+    {% if type == 1 %}
+      <a href="/school/count2/{{type}}"> Thống kê điểm trung bình </a> >
+    {% else %}
+      {% if type == 2 %}
+        <a href="/school/count2/{{type}}"> Thống kê điểm thi cuối kì </a> >
+
+      {% endif %}
+    {% endif %}
+    {% if number == 1 %}
+      Học kì I
+      {% else %}
+      {% if number == 2 %}
+        Học kì II
+      {% else %}
+        Cả năm
+      {% endif %}
+    {% endif %}
+    {% if  subjectName %}
+      {{ subjectName }}
+    {% endif %}
+  </div>
 {% endblock %}
 
 {% block content %}
-	<br>
-	Học kì
-	<select id="term" style="width:80px" >
-		<option value='1'> Học kì I </option>
-		<option value='2'> Học kì II </option>
-		{% if type = 1 %}
-			<option value='3'> Cả năm </option>		
-		{% endif %}	
-	</select>
-	&nbsp&nbsp&nbsp&nbspMôn
-	<select id="subject" >
-			<option value="-1"> Chọn môn </option>			
-		{% for s in subjectList %}
-			<option value="{{forloop.counter}}"> {{ s}} </option>			
-		{% endfor %}
-	</select>
-	<br>
-	<br>
-	<br>	
-{% if index != -1 %}	
-<table  width="100%" class="styleA" >
-	<tr> 
-		<th rowspan=2 width="10%" align="center" >
-			Lớp
-		</th>
-		<th rowspan=2 >
-			Sĩ Số
-		</th>
-		<th colspan=2>
-			Giỏi <br> 8 -> 10
-		</th>
-		<th colspan=2>
-			Khá <br> 6.5 -> 7.9
-		</th>
-		<th colspan=2>
-			TB <br> 5 -> 6.4
-		</th>
-		<th colspan=2>
-			Yếu <br> 3.5 -> 4.9
-		</th>
-		<th colspan=2>
-			Kém <br> 0 -> 3.4
-		</th>		
-	</tr>
-	<tr>
-		<th >
-			sl
-		</th>
-		<th >			
-			%
-		</th>
-		<th >
-			sl
-		</th>
-		<th >			
-			%
-		</th>
-		<th >
-			sl
-		</th>
-		<th >			
-			%
-		</th>
-		<th >
-			sl
-		</th>
-		<th >			
-			%
-		</th>
-		<th >
-			sl
-		</th>
-		<th >			
-			%
-		</th>
-	</tr>
-{% for b,sum,total,list1 in 	 list %}
-	{% for name,ss,l in list1 %}
-	<tr>
-		<td >
-			{{ name}}
-		</td >
-		
-		<td >
-			{{ ss|floatformat:"0" }}
-		</td>
-		{% for u,v in l %}
-			<td >
-			    {{ u }}
-			</td >
-			
-			<td >
-				{{v|floatformat:"2"}}
-			</td>
-		{% endfor %}
-	</tr>	
-	{% endfor %}
-	<tr >
-		<td>
-			Khối {{b.number}}
-		</td>
-		<td>
-			{{sum|floatformat:"0" }}
-		</td>
-		{% for sl,pt in total %}
-			<td>
-				{{sl}}
-			</td>
-			<td>
-				{{pt|floatformat:"2"}}
-			</td>
-		{% endfor %}
-	</tr>
-	<tr class='endblock'>
-			<td> &nbsp </td>
-			<td> &nbsp </td>
-		{% for sl,pt in total %}
-			<td> &nbsp </td>
-			<td> &nbsp </td>
-		{% endfor %}
-	</tr>
-{% endfor %}
-	<tr>
-		<td>
-			Toàn trường	
-		</td>
-		<td>
-			{{sumsumsum|floatformat:"0" }}
-		</td>
-		{% for sl,pt in allList %}
-			<td>
-				{{sl}}
-			</td>
-			<td>
-				{{pt|floatformat:"2"}}
-			</td>
-		{% endfor %}
-		
-	</tr>		
-</table>	
-{% endif %}	
-	
-	
-<script>
-	$(document).ready(function() {
-		$('#term').change(function() {
-			$('#subject').val('-1');
-			var termNumber  =$('#term').val(); 
-			var str=''			
-			if (termNumber==1)
-				str='Học kì I ';
-			else
-			if (termNumber==2)
-				str='Học kì II';
-			else
-				str='Cả năm';
-				
-			var strs=document.getElementById('termString').innerHTML;			
-			var str1=''
-			for(var t=strs.length-1;t>0;t--)
-				if (strs[t]=='>') break;
-			for(var i=0;i<t;i++)			
-				str1+=strs[i];
-				
-			str1+='> > '+str	
-			document.getElementById('termString').innerHTML=str1;
-		})
-		$('#subject').change(function() {
-			var termNumber  =$('#term').val(); 
-			var subjectIndex=$('#subject').val();
-			if (subjectIndex != '-1')
-				window.location.href="/school/count2/"+{{type}}+'/'+{{year_id}}+"/"+termNumber+'/'+subjectIndex;
-		})
-		$('#subject').val("{{index}}");
-		$('#term').val("{{number}}");
-	});
 
-</script>	
+  <br>
+  Học kì
+  <select id="term" style="width:80px">
+    <option value='1'> Học kì I</option>
+    <option value='2'> Học kì II</option>
+    {% if type == 1 %}
+      <option value='3'> Cả năm</option>
+    {% endif %}
+  </select>
+  &nbsp&nbsp&nbsp&nbspMôn
+  <select id="subject">
+    <option value="-1"> Chọn môn</option>
+    {% for s in subjectList %}
+      <option value="{{forloop.counter}}"> {{ s }} </option>
+    {% endfor %}
+  </select>
+  <br>
+  <br>
+  <br>
+  {% if index != -1 %}
+    <table width="100%" class="styleA">
+      <tr>
+        <th rowspan=2 width="10%" align="center">
+          Lớp
+        </th>
+        <th rowspan=2>
+          Sĩ Số
+        </th>
+        <th colspan=2>
+          Giỏi <br> 8 -> 10
+        </th>
+        <th colspan=2>
+          Khá <br> 6.5 -> 7.9
+        </th>
+        <th colspan=2>
+          TB <br> 5 -> 6.4
+        </th>
+        <th colspan=2>
+          Yếu <br> 3.5 -> 4.9
+        </th>
+        <th colspan=2>
+          Kém <br> 0 -> 3.4
+        </th>
+      </tr>
+      <tr>
+        <th>
+          sl
+        </th>
+        <th>
+          %
+        </th>
+        <th>
+          sl
+        </th>
+        <th>
+          %
+        </th>
+        <th>
+          sl
+        </th>
+        <th>
+          %
+        </th>
+        <th>
+          sl
+        </th>
+        <th>
+          %
+        </th>
+        <th>
+          sl
+        </th>
+        <th>
+          %
+        </th>
+      </tr>
+      {% for b,sum,total,list1 in 	 list %}
+        {% for name,ss,l in list1 %}
+          <tr>
+            <td>
+              {{ name }}
+            </td>
+
+            <td>
+              {{ ss|floatformat:"0" }}
+            </td>
+            {% for u,v in l %}
+              <td>
+                {{ u }}
+              </td>
+
+              <td>
+                {{ v|floatformat:"2" }}
+              </td>
+            {% endfor %}
+          </tr>
+        {% endfor %}
+        <tr>
+          <td>
+            Khối {{ b.number }}
+          </td>
+          <td>
+            {{ sum|floatformat:"0" }}
+          </td>
+          {% for sl,pt in total %}
+            <td>
+              {{ sl }}
+            </td>
+            <td>
+              {{ pt|floatformat:"2" }}
+            </td>
+          {% endfor %}
+        </tr>
+        <tr class='endblock'>
+          <td> &nbsp</td>
+          <td> &nbsp</td>
+          {% for sl,pt in total %}
+            <td> &nbsp</td>
+            <td> &nbsp</td>
+          {% endfor %}
+        </tr>
+      {% endfor %}
+      <tr>
+        <td>
+          Toàn trường
+        </td>
+        <td>
+          {{ sumsumsum|floatformat:"0" }}
+        </td>
+        {% for sl,pt in allList %}
+          <td>
+            {{ sl }}
+          </td>
+          <td>
+            {{ pt|floatformat:"2" }}
+          </td>
+        {% endfor %}
+
+      </tr>
+    </table>
+  {% endif %}
+
+
+  <script>
+    $(document).ready(function() {
+      $('#term').change(function() {
+        $('#subject').val('-1');
+        var termNumber = $('#term').val();
+        var str = ''
+        if (termNumber == 1)
+          str = 'Học kì I ';
+        else
+        if (termNumber == 2)
+          str = 'Học kì II';
+        else
+          str = 'Cả năm';
+
+        var strs = document.getElementById('termString').innerHTML;
+        var str1 = ''
+        for (var t = strs.length - 1; t > 0; t--)
+          if (strs[t] == '>') break;
+        for (var i = 0; i < t; i++)
+          str1 += strs[i];
+
+        str1 += '> > ' + str
+        document.getElementById('termString').innerHTML = str1;
+      })
+      $('#subject').change(function() {
+        var termNumber = $('#term').val();
+        var subjectIndex = $('#subject').val();
+        if (subjectIndex != '-1')
+          window.location.href = "/school/count2/" + {{type}} + '/' + {{year_id}} +
+                  "/" + termNumber + '/' + subjectIndex;
+      })
+      $('#subject').val("{{index}}");
+      $('#term').val("{{number}}");
+    });
+
+  </script>
 {% endblock %}

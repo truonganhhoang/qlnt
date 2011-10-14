@@ -1,56 +1,54 @@
 ﻿{% block content %}
-<br>
+  <br>
 
-<form action="/school/diemdanhhs/{{student_id}}/1" method="post" class="onPage">{% csrf_token %}
-        
-<table class="styleA" >
+  <form action="/school/diemdanhhs/{{student_id}}/1" method="post" class="onPage">{% csrf_token %}
 
-    <tr>
-        <th class="leftAlign"> STT </th>
+    <table class="styleA">
+
+      <tr>
+        <th class="leftAlign"> STT</th>
         <th class="leftAlign"> Ngày</th>
-        <th class="leftAlign"> Loại </th>
-    </tr>
-    {% if message != None %}
-    {{message}}
-    {% endif %}
-    
-        {%if pos > 2%}
-            {% for d,f in ddhs %}
-                <tr>
-                    <td style="text-align: center;">
-                        <p>{{forloop.counter}}</p>
-                    </td>
-                    <td style="text-align: center;">
-                        <p>{{ d.time|date:"SHORT_DATE_FORMAT" }}</p>
-                    </td>
-                
-                    <td style="text-align: center;">
-                        {{ f.loai.errors }}
-                        <p>{{ f.loai }}</p>
-                    </td>
-                </tr>
-            {% endfor %}
-                <tr>
-                    <td style="text-align: center;">
-                        <p>{{ p.id }}</p>
-                    </td>
+        <th class="leftAlign"> Loại</th>
+      </tr>
+      {% if message != None %}
+        {{ message }}
+      {% endif %}
 
-                    <td style="text-align: center;">
-                        {{iform.time.errors}}
-                        <p>{{ iform.time }}</p>
-                    </td>
-                
-                    <td style="text-align: center;">
-                        {{ iform.loai.errors }}
-                        <p>{{ iform.loai }}</p>
-                    </td>
-                </tr>
-            <tr>
-            <td> <input type ="submit" class="ggButton" value="Lưu"/> </td>
-            <td> <a href="/school/diemdanhhs/{{student_id}}" class="ggButton onPage">Quay lại</a> </td>
-        {%endif%}
-	    </tr>
-</table>
-</form>
+      {% if pos > 2 %}
+        {% for d,f in ddhs %}
+          <tr>
+            <td style="text-align: center;">
+              <p>{{ forloop.counter }}</p>
+            </td>
+            <td style="text-align: center;">
+              <p>{{ d.time|date:"SHORT_DATE_FORMAT" }}</p>
+            </td>
+
+            <td style="text-align: center;">
+              {{ f.loai.errors }}
+              <p>{{ f.loai }}</p>
+            </td>
+          </tr>
+        {% endfor %}
+        <tr>
+          <td style="text-align: center;">
+            <p>{{ p.id }}</p>
+          </td>
+
+          <td style="text-align: center;">
+            {{ iform.time.errors }}
+            <p>{{ iform.time }}</p>
+          </td>
+
+          <td style="text-align: center;">
+            {{ iform.loai.errors }}
+            <p>{{ iform.loai }}</p>
+          </td>
+        </tr>
+      {% endif %}
+    </table>
+    <input type="submit" class="ggButton" value="Lưu"/>
+    <a href="/school/diemdanhhs/{{student_id}}" class="ggButton onPage">Quay lại</a>
+  </form>
 
 {% endblock %}

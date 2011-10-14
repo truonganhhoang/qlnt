@@ -25,7 +25,7 @@ SCHOOL_ACTION_STATUS = ((0, u'Trường mới'),
                         (2, u'Đang học kì 2'),
                         (3, u'Đang nghỉ hè'))
 
-STATUS = [u'Chưa thiết lập', u'Học kì I', u'Học kì II', u'Học kì hè']
+SEMESTER_STATUS = [u'Chưa thiết lập', u'Học kì I', u'Học kì II', u'Học kì hè']
 
 
 class MyConfigParser(SafeConfigParser):
@@ -64,9 +64,10 @@ class Organization(models.Model):
         if self.level == 'T':
             try:
                 year = self.year_set.latest('time')
-                return STATUS[self.status] + ' - ' + u'Năm học ' + year.__unicode__()
+#                return STATUS[self.status] + ' - ' + u'Năm học ' + year.__unicode__()
+                return SEMESTER_STATUS[self.status] + u', ' + year.__unicode__()
             except Exception:
-                return STATUS[0]
+                return SEMESTER_STATUS[0]
         else:
             return ''
 

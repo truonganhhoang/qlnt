@@ -1,4 +1,17 @@
 ﻿{% extends "base.html" %}
+
+{% block backward_link %}
+  <a href="/school/finish">Tổng kết</a>  >
+  <a>{% ifequal selectedTerm.number 1 %}
+    Học kỳ I
+  {% else %}
+    Học kỳ II
+  {% endifequal %}
+  năm học {{ yearString }}
+  </a>
+{% endblock %}
+
+
 {% block content %}
 
   <div class="notify-widget-pane">
@@ -26,7 +39,6 @@
     năm học {{ yearString }}
   </h2>
 
-  <br>
   <form action="/school/finishTerm/{{selectedTerm.id}}" name="info" method="post" id='myform'>{% csrf_token %}
     {% ifequal selectedTerm currentTerm %}
       <p>Thông tin học kỳ: <span style="color:red;"> Đang diễn ra</span></p>

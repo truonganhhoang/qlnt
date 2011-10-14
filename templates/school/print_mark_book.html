@@ -1,7 +1,11 @@
 ﻿{% extends "base.html"%}  
-{% block content %}
 
-Xuất ra excel
+{% block backward_link %}
+  <a href="/school/report"> Báo cáo, thống kê </a>  >
+  <a href="/school/count1"> In sổ gọi tên và ghi điểm </a> >
+{% endblock  %}
+
+{% block content %}
 <script>
 function reset()
 {
@@ -13,14 +17,15 @@ function submit(tb)
 	if (tb.value!="-2")
 		window.location.href="/school/printMarkBook/"+value1+"/"+tb.value;
 }
-	
 </script>
+<br>
+  Học kỳ
 <select id="mode" onchange="reset()" >
     <option value ="1" > Học kỳ I  </option>
     <option value ="3" > Cả năm    </option>	 
 </select>
 
-&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+&nbsp&nbsp&nbsp
 Lớp
 <select id="classList" onchange="submit(this)" >
 		<option value="-2" >Chọn lớp </option>
@@ -29,7 +34,9 @@ Lớp
 	{% endfor %}
 		<option value="-1">Toàn trường </option>
 </select>
-
+<br>
+  <br>
+  (Chọn kỳ và lớp để tải file báo cáo Excel về. Sau đó bạn có thể mở file Excel xem báo cáo trên máy.)
 <script>
 	document.getElementById("mode").value={{termNumber}}; 
 	document.getElementById("classList").value={{classChoice}}; 	

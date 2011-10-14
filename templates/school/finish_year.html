@@ -1,4 +1,10 @@
-﻿ {% extends "base.html"%} 
+﻿{% extends "base.html"%}
+
+{% block backward_link %}
+  <a href="/school/finish">Tổng kết</a>  >
+  <a> Tổng kết năm học {{yearString}} </a>
+{% endblock %}
+
 {% block content %}
 
 {{selecteTerm.number}}
@@ -18,7 +24,7 @@
 {% endif %}
 
 
-<h2> Tổng kết cả năm năm học {{yearString}}  
+<h2> Tổng kết năm học {{yearString}}
 </h2>
 
 <br>
