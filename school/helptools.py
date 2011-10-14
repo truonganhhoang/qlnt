@@ -12,6 +12,20 @@ SYNC_SUBJECT = os.path.join('helptool','sync_subject.html')
 TEST_TABLE = os.path.join('helptool','test_table.html')
 
 
+def convert_data_1n_mn(request):
+    classes = Class.objects.all()
+    for _class in classes:
+        print _class.attend_set.all()
+    students = Pupil.objects.all()
+    for student in students:
+        _class = student.class_id
+        student.join_class(_class)
+    message = 'Done'
+    context = RequestContext(request)
+    return render_to_response( SYNC_RESULT, { 'message' : message},
+                               context_instance = context )
+
+
 def recover_marktime(request):
     
     marks = Mark.objects.all()

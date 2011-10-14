@@ -16,18 +16,18 @@
 
 $(function () {
     'use strict';
-    function IsNumeric(input){
+    function isNumeric(input){
         return (input - 0) == input && input.length > 0;
-    };
+    }
 
     var id = window.location.pathname.split('/');
     var i = 0;
     for ( i=0; i < id.length; i++){
-        if (IsNumeric(id[i])){
+        if (isNumeric(id[i])){
             id = id[i];
             break;
         }
-    };
+    }
 
     // Initialize the jQuery File Upload widget:
     $('#fileupload').fileupload({

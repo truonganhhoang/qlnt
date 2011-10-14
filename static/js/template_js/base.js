@@ -29,7 +29,6 @@ var applyListener = function(){
         return false;
     });
 
-
     $('*[class~="tiptipclick"]').tipTip({
         activation: "click",
         delay: 100

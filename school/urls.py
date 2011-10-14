@@ -160,4 +160,5 @@ urlpatterns = patterns('',
     #url(r'test_table/$', 'school.helptools.test_table'),
     url(r'copy_hanh_kiem_data/$','school.helptools.copy_hanh_kiem_data'),
     url(r'make_setting/$','school.helptools.make_setting'),
+    url(r'convert_1n_mn/$', 'school.helptools.convert_data_1n_mn'),
 	)

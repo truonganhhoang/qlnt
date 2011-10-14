@@ -274,6 +274,15 @@ class Class(models.Model):
     def __unicode__(self):
         return self.name
 
+    def attended_student(self):
+        students = self.student_set.all()
+        return students
+
+    #this function will return list of students those are studying in this class
+    def students(self):
+        return self.student_set.filter(attend__leave_time = None)
+
+
     def number_of_pupils(self):
         try:
             return self.pupil_set.count()
@@ -319,7 +328,48 @@ class Pupil(BasicPersonInfo):
     start_year_id = models.ForeignKey(StartYear, verbose_name = "khóa")
     class_id = models.ForeignKey(Class, verbose_name = "lớp", null = True, blank = True)
     school_id = models.ForeignKey(Organization, verbose_name = "trường", null = True, blank = True)
+    classes = models.ManyToManyField(Class, through="Attend", related_name='student_set')
 
+    def get_attended_classes(self):
+        classes = Class.objects.filter( pupil__id = self.id)
+        return classes
+
+    def current_class(self):
+        classes = Class.objects.filter( pupil__id = self.id,
+                                        attend__leave_time = None)
+        if not classes:
+            #print classes
+            #raise Exception('InvalidClassSet_%s' % self.id)
+            pass
+        else:
+            return classes[0]
+
+    def join_class(self, _class):
+        current = self.current_class()
+        try:
+            if current:
+                relationship = Attend.objects.filter(pupil = self, _class = current)
+                print relationship
+                if len(relationship) == 1:
+                    if current != _class:
+                        relationship[0].leave_time = date.today()
+                        relationship[0].save()
+                        Attend.objects.create(pupil = self,
+                                              _class = _class,
+                                              attend_time = date.today(),
+                                              leave_time = None )
+                elif not relationship:
+                    Attend.objects.create(pupil = self,
+                                          _class = _class,
+                                          attend_time = date.today(),
+                                          leave_time = None )
+                else:
+                    print relationship
+                    raise Exception(u'InvalidClassSet_%s' % self.id)
+            return self
+        except Exception as e:
+            print e
+            raise e
     def get_school(self):
         return self.school_id
 
@@ -327,6 +377,15 @@ class Pupil(BasicPersonInfo):
         verbose_name = "Học sinh"
         verbose_name_plural = "Học sinh"
         unique_together = ("class_id", "first_name", "last_name", "birthday",)
+
+class Attend(models.Model):
+    pupil = models.ForeignKey(Pupil, verbose_name=u"Học sinh")
+    _class = models.ForeignKey(Class, verbose_name=u"Lớp")
+    attend_time = models.DateTimeField("Thời gian nhập lớp")
+    leave_time = models.DateTimeField("Thời gian rời lớp", null = True, blank= True)
+
+    def __unicode__(self):
+        return unicode(self.pupil) + '_' + unicode(self._class)
 
 class Subject(models.Model):    
     name = models.CharField("Tên môn học(*)", max_length = 45) # can't be null

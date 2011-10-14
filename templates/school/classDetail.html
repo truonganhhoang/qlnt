@@ -2,432 +2,432 @@
 {% load upload_tags %}
 
 {% block backward_link %}
-  {% if pos > 1 %}
-    {#    <a href="{% url school.views.school_index %}classes"> Toàn trường</a>#}
-    {#      > {{ class }}#}
-    <form action="" name="info" method="post">{% csrf_token %}
-      <a href="{% url school.views.school_index %}classes"> Toàn trường</a>
-      > Lớp
-      <select name="class" onchange="submitClass()">
-        <option value=-1> {{ class }} </option>
-        {% for c in cl %}
-          {% if c.id != class.id %}
-            <option value={{ c.id }}> {{ c }}</option>
-          {% endif %}
-        {% endfor %}
-      </select>
-    </form>
-  {% endif %}
+    {% if pos > 1 %}
+        {#    <a href="{% url school.views.school_index %}classes"> Toàn trường</a>#}
+        {#      > {{ class }}#}
+        <form action="" name="info" method="post">{% csrf_token %}
+            <a href="{% url school.views.school_index %}classes"> Toàn trường</a>
+            > Lớp
+            <select name="class" onchange="submitClass()">
+                <option value=-1> {{ class }} </option>
+                {% for c in cl %}
+                    {% if c.id != class.id %}
+                        <option value={{ c.id }}> {{ c }}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+        </form>
+    {% endif %}
 {% endblock %}
 
 {% block content %}
-  <h2>Lớp {{ class }} </h2>
+    <h2>Lớp {{ class }} </h2>
 
-  <script>
-    $(document).ready(function() {
-      var note = '';
-      $("#notify").ajaxSuccess(function(event, request, settings, json) {
-        if (json.message != null && json.message != '' && json.message != 'OK') {
-          $(this).html("<ul>" + json.message + "</ul>");
-          $(this).delay(1000).fadeOut(10000);
-        }
-        else if (json.message == 'OK') {
-          $(this).text('Đã lưu');
-          $(this).delay(1000).fadeOut('fast');
-          location.reload('true');
-        }
+    <script>
+        $(document).ready(function() {
+            var note = '';
+            $("#notify").ajaxSuccess(function(event, request, settings, json) {
+                if (json.message != null && json.message != '' && json.message != 'OK') {
+                    $(this).html("<ul>" + json.message + "</ul>");
+                    $(this).delay(1000).fadeOut(10000);
+                }
+                else if (json.message == 'OK') {
+                    $(this).text('Đã lưu');
+                    $(this).delay(1000).fadeOut('fast');
+                    location.reload('true');
+                }
 
-      });
+            });
 
-      $("#submitform").bind('submit', function() {
-        var d = $(this).serialize();
-        d = d + '&request_type=add';
-        var self = $(this);
-        var theLast = self.prev();
-        var arg = {data: d,
-          type: $(this).attr('method'),
-          url: $(this).attr('action'),
-          success:function(json) {
-            if (!json.success) {
-              $("#notify").showNotification(json.message, 3000);
-            } else {
-              $.ajaxSetup({
-                global: false
-              });
-              $("#student_placeholder").load("{% url school.views.student 0 %}" + json.student_id + " tr",
-                      function() {
-                        $.ajaxSetup({
-                          global: true
-                        });
-                        var newStudent = $("#student_placeholder > tr");
-                        newStudent.insertBefore(self).click(select);
-                        var stt = parseInt(theLast.find('td:eq(1)').text());
-                        if (stt) newStudent.find('td:eq(1)').text(stt + 1);
-                        else newStudent.find('td:eq(1)').text(1);
-                        $("#notify").showNotification(json.message);
-                        $(".form").find('input:text').val('');
-                        $(".form").find('input#id_dan_toc').val('Kinh');
-                      })
+            $("#submitform").bind('submit', function() {
+                var d = $(this).serialize();
+                d = d + '&request_type=add';
+                var self = $(this);
+                var theLast = self.prev();
+                var arg = {data: d,
+                    type: $(this).attr('method'),
+                    url: $(this).attr('action'),
+                    success:function(json) {
+                        if (!json.success) {
+                            $("#notify").showNotification(json.message, 3000);
+                        } else {
+                            $.ajaxSetup({
+                                global: false
+                            });
+                            $("#student_placeholder").load("{% url school.views.student 0 %}" + json.student_id + " tr",
+                                    function() {
+                                        $.ajaxSetup({
+                                            global: true
+                                        });
+                                        var newStudent = $("#student_placeholder > tr");
+                                        newStudent.insertBefore(self).click(select);
+                                        var stt = parseInt(theLast.find('td:eq(1)').text());
+                                        if (stt) newStudent.find('td:eq(1)').text(stt + 1);
+                                        else newStudent.find('td:eq(1)').text(1);
+                                        $("#notify").showNotification(json.message);
+                                        $(".form").find('input:text').val('');
+                                        $(".form").find('input#id_dan_toc').val('Kinh');
+                                    })
 
+                        }
+                    }
+                };
+                $.ajax(arg);
+                return false;
+            });
+
+            $("#import").click(function() {
+                $("#fileupload").dialog('open');
+            });
+
+            $("#fileupload").dialog({
+                modal : true,
+                buttons: {
+                    Đóng: function() {
+                        location.reload('true');
+                        $(this).dialog('close');
+                    }
+                },
+                autoOpen: false,
+                width: 700,
+                height: 400,
+                maxWidth: 700,
+                maxHeight: 400,
+                title: "Nhập học sinh từ file Excel"
+            });
+
+            function isNumeric(input) {
+                return (input - 0) == input && input.length > 0;
             }
-          }
-        };
-        $.ajax(arg);
-        return false;
-      });
 
-      $("#import").click(function() {
-        $("#fileupload").dialog('open');
-      });
+            var select = function() {
+                if (!$(this).hasClass('thread') && !$(this).hasClass('form') && !$(this).hasClass('function')) {
+                    var id = $(this).attr('class').split(' ')[0];
+                    var checkboxid = '#checkbox_' + id;
+                    var checkboxall = '#checkbox_all';
+                    if ($(this).hasClass('selected')) {
+                        $(this).removeClass('selected');
+                        $(checkboxid).prop("checked", false);
+                        var n = $("input:checked").length;
+                        if (n == 1) $(checkboxall).prop("checked", false);
+                    } else {
+                        $(this).addClass('selected');
+                        $(checkboxid).prop("checked", true);
+                        $(checkboxall).prop("checked", true);
+                    }
+                }
+            };
+            var delSelected = function() {
+                if (!$("#checkbox_all").is(':checked')) {
+                    alert("Bạn chưa chọn học sinh nào để xóa");
+                    return false;
+                }
+                var answer = confirm('Bạn có muốn xóa những học sinh đã chọn');
+                if (!answer) return false;
+                var data = '';
+                $(".selected").each(function() {
+                    data = data + $(this).attr('class').split(' ')[0] + '-';
+                });
+                $("#notify").text("Đang xóa...");
+                $("#notify").show();
+                var arg = { type:"POST",
+                    url:"",
+                    global: false,
+                    data: {data:data, request_type:'del'},
+                    datatype:"json",
+                    success: function() {
+                        $("#notify").showNotification("Đã xóa xong");
+                        location.reload('true');
+                    }
+                };
+                $.ajax(arg);
+                return false;
+            };
+            $("#delSelected").click(delSelected);
 
-      $("#fileupload").dialog({
-        modal : true,
-        buttons: {
-          Đóng: function() {
-            location.reload('true');
-            $(this).dialog('close');
-          }
-        },
-        autoOpen: false,
-        width: 700,
-        height: 400,
-        maxWidth: 700,
-        maxHeight: 400,
-        title: "Nhập học sinh từ file Excel"
-      });
+            // individual listener
+            $("tr").each(function() {
+                $(this).click(select);
+            });
 
-      function isNumeric(input) {
-        return (input - 0) == input && input.length > 0;
-      }
+            $("#checkbox_all").click(function() {
+                var checkboxall = '#checkbox_all';
+                if ($(checkboxall).is(':checked')) {
+                    $("tr").each(function() {
+                        var id = $(this).attr('class').split(' ')[0];
+                        var checkboxid = '#checkbox_' + id;
+                        if (!$(this).hasClass('selected'))
+                            $(this).trigger('click');
+                    });
+                }
+                else {
+                    $("tr").each(function() {
+                        var id = $(this).attr('class').split(' ')[0];
+                        var checkboxid = '#checkbox_' + id;
+                        if ($(this).hasClass('selected'))
+                            $(this).trigger('click');
+                    });
+                }
+            });
+            $("#selectAll").click(function() {
+                $("tr").each(select);
+                return false;
+            });
+            $("input.datepicker").datepicker("option", "yearRange", '{{ year_range }}');
+            $("input.datepicker").datepicker("option", "defaultDate", '{{ default_date }}');
 
-      var select = function() {
-        if (!$(this).hasClass('thread') && !$(this).hasClass('form') && !$(this).hasClass('function')) {
-          var id = $(this).attr('class').split(' ')[0];
-          var checkboxid = '#checkbox_' + id;
-          var checkboxall = '#checkbox_all';
-          if ($(this).hasClass('selected')) {
-            $(this).removeClass('selected');
-            $(checkboxid).prop("checked", false);
-            var n = $("input:checked").length;
-            if (n == 1) $(checkboxall).prop("checked", false);
-          } else {
-            $(this).addClass('selected');
-            $(checkboxid).prop("checked", true);
-            $(checkboxall).prop("checked", true);
-          }
-        }
-      };
-      var delSelected = function() {
-        if (!$("#checkbox_all").is(':checked')) {
-          alert("Bạn chưa chọn học sinh nào để xóa");
-          return false;
-        }
-        var answer = confirm('Bạn có muốn xóa những học sinh đã chọn');
-        if (!answer) return false;
-        var data = '';
-        $(".selected").each(function() {
-          data = data + $(this).attr('class').split(' ')[0] + '-';
         });
-        $("#notify").text("Đang xóa...");
-        $("#notify").show();
-        var arg = { type:"POST",
-          url:"",
-          global: false,
-          data: {data:data, request_type:'del'},
-          datatype:"json",
-          success: function() {
-            $("#notify").showNotification("Đã xóa xong");
-            location.reload('true');
-          }
-        };
-        $.ajax(arg);
-        return false;
-      };
-      $("#delSelected").click(delSelected);
 
-      // individual listener
-      $("tr").each(function() {
-        $(this).click(select);
-      });
-
-      $("#checkbox_all").click(function() {
-        var checkboxall = '#checkbox_all';
-        if ($(checkboxall).is(':checked')) {
-          $("tr").each(function() {
-            var id = $(this).attr('class').split(' ')[0];
-            var checkboxid = '#checkbox_' + id;
-            if (!$(this).hasClass('selected'))
-              $(this).trigger('click');
-          });
+        function submitClass() {
+            if (document.info.class.value !={{class.id}})
+                if (document.info.class.value != -1) {
+                    window.location = "{%url school.views.school_index  %}viewClassDetail/" + document.info.class.value;
+                }
         }
-        else {
-          $("tr").each(function() {
-            var id = $(this).attr('class').split(' ')[0];
-            var checkboxid = '#checkbox_' + id;
-            if ($(this).hasClass('selected'))
-              $(this).trigger('click');
-          });
+
+        function confirmDelete() {
+            return confirm("Bạn có chắc chắn xóa toàn bộ thông tin của học sinh không?");
         }
-      });
-      $("#selectAll").click(function() {
-        $("tr").each(select);
-        return false;
-      });
-      $("input.datepicker").datepicker("option", "yearRange", '{{ year_range }}');
-      $("input.datepicker").datepicker("option", "defaultDate", '{{ default_date }}');
 
-    });
+    </script>
+    {#  <form action="" name="info" method="post">{% csrf_token %}#}
+    {#      <h2>Lớp#}
+    {#          <select name="class" onchange="submitClass()">#}
+    {#              <option value=-1> {{ class }} </option>#}
+    {#              {% for c in cl %}#}
+    {#                  {% if c.id != class.id %}#}
+    {#                      <option value={{ c.id }}> {{ c }}</option>#}
+    {#                  {% endif %}#}
+    {#              {% endfor %}#}
+    {#          </select>#}
+    {#      </h2>#}
+    {#  </form>#}
 
-    function submitClass() {
-      if (document.info.class.value !={{class.id}})
-        if (document.info.class.value != -1) {
-          window.location = "{%url school.views.school_index  %}viewClassDetail/" + document.info.class.value;
-        }
-    }
-
-    function confirmDelete() {
-      return confirm("Bạn có chắc chắn xóa toàn bộ thông tin của học sinh không?");
-    }
-
-  </script>
-  {#  <form action="" name="info" method="post">{% csrf_token %}#}
-  {#      <h2>Lớp#}
-  {#          <select name="class" onchange="submitClass()">#}
-  {#              <option value=-1> {{ class }} </option>#}
-  {#              {% for c in cl %}#}
-  {#                  {% if c.id != class.id %}#}
-  {#                      <option value={{ c.id }}> {{ c }}</option>#}
-  {#                  {% endif %}#}
-  {#              {% endfor %}#}
-  {#          </select>#}
-  {#      </h2>#}
-  {#  </form>#}
-
-  {% if message != None %}
-    <a>{{ message }}</a>
-  {% endif %}
-
-  <div id="submenu">
-    {% if pos > 1 %}
-      <a title="Cập nhật điểm danh theo lớp" class="tiptiphover ggButton"
-         href="{%url school.views.school_index  %}diemdanh/{{class.id}}">Điểm danh</a>
+    {% if message != None %}
+        <a>{{ message }}</a>
     {% endif %}
 
-    {% if pos > 3 %}
-      <a title="Nhập hoặc chỉnh sửa điểm của tất cả các môn trong lớp" class="tiptiphover ggButton"
-         href="{%url school.views.school_index  %}markTable/{{currentTerm.id}}/{{class.id}}">Điểm</a>
-    {% endif %}
+    <div id="submenu">
+        {% if pos > 1 %}
+            <a title="Cập nhật điểm danh theo lớp" class="tiptiphover ggButton"
+               href="{%url school.views.school_index  %}diemdanh/{{class.id}}">Điểm danh</a>
+        {% endif %}
 
-    {% if pos > 2 %}
-      <a title="Đánh giá hạnh kiểm học sinh trong lớp" class="tiptiphover ggButton"
-         href="{%url school.views.school_index  %}hanhkiem/{{class.id}}">Hạnh kiểm</a>
-    {% endif %}
-
-    {% if pos > 3 %}
-      {% ifequal class.year_id.school_id.status 1 %}
-        <a title="Tính trung bình học lực của cả lớp" class="tiptiphover ggButton"
-           href="{%url school.views.school_index  %}xepLoaiHlTheoLop/{{class.id}}/1">
-          Tổng kết </a>
-      {% else %}
-        <a title="Tính trung bình học lực của cả lớp" class="tiptiphover ggButton"
-           href="{%url school.views.school_index  %}xepLoaiHlTheoLop/{{class.id}}/2">
-          Tổng kết </a>
-      {% endifequal %}
-
-
-      {% ifnotequal class.year_id.school_id.status 1 %}
-        <a title="Xếp loại, xét lên lớp, ở lại lớp, kiểm tra lại, rèn luyện thêm trong hè"
-           class="tiptiphover ggButton"
-           href="{%url school.views.school_index  %}xlCaNamTheoLop/{{class.id}}/1">Xếp loại</a>
-      {% else %}
-        <a title="Chức năng này đã bị vô hiệu hóa vì đang trong học kỳ I" class="ggButton disabled">Xếp loại</a>
-      {% endifnotequal %}
-    {% endif %}
-
-    {% if pos > 1 or inClass == 1 %}
-      <a title="Xem tất cả thông tin của của môn học trong lớp" class="tiptiphover ggButton"
-         href="{%url school.views.school_index  %}subjectPerClass/{{class.id}}">Môn học</a>
-    {% endif %}
-
-    {% if pos > 3 %}
-      <a class="ggButton" href="#popupDiv" id="import"> Nhập từ Excel </a>
-      <a class="tiptiphover ggButton"
-         title="Xuất danh sách học sinh ra file Excel."
-         href="{% url school.views.class_generate class.id 'student_list' %}"
-         id="export"> Xuất ra Excel </a>
-    {% endif %}
-  </div>
-  {% if pos > 3 %}
-    <div id="tableFunction">
-      <a class="tiptiphover ggButton"
-         href="{% url school.views.organize_students class.id "0" %}"
-         title="Sắp xếp thứ tự học sinh trong lớp">Sắp xếp</a>
-      <button id="delSelected" class="ggButton">Xóa những học sinh đã chọn</button>
-    </div>
-  {% endif %}
-  <table class="styleA fixed_header">
-    <colgroup style="width: 4%;"></colgroup>
-    <colgroup></colgroup>
-    <colgroup style="width: 12%;"></colgroup>
-    <colgroup style="width: 7%"></colgroup>
-    <colgroup></colgroup>
-    <colgroup></colgroup>
-    <colgroup></colgroup>
-    <colgroup></colgroup>
-    <colgroup></colgroup>
-    <colgroup></colgroup>
-    <colgroup></colgroup>
-    <colgroup></colgroup>
-
-    <tr class="thread">
-      {% if pos > 3 %}
-        <th class="leftAlign" title="Chọn cả lớp" class="tiptiphover" style="text-align: center;">
-          <input type="checkbox" id="checkbox_all"/>
-        </th>
-      {% endif %}
-      <th class="leftAlign"><a
-              href="{%url school.views.school_index  %}viewClassDetail/{{class.id}}/0/{{next_status}}"
-              class="tiptiphover" title="Hiển thị theo thứ tự sắp xếp"> STT </a></th>
-      <th class="leftAlign"> Họ</th>
-      <th class="leftAlign"><a
-              href="{%url school.views.school_index  %}viewClassDetail/{{class.id}}/1/{{next_status}} "
-              class="tiptiphover" title="Sắp xếp theo tên">Tên</a></th>
-      <th class="leftAlign"><a
-              href="{%url school.views.school_index  %}viewClassDetail/{{class.id}}/2/{{next_status}}"
-              class="tiptiphover" title="Sắp xếp ngày sinh">Ngày sinh</a>
-      </th>
-      <th class="leftAlign"> Nơi sinh</th>
-      <th class="leftAlign"><a
-              href="{%url school.views.school_index  %}viewClassDetail/{{class.id}}/3/{{next_status}}"
-              class="tiptiphover" title="Sắp xếp giới tính">Giới tính</a>
-      </th>
-      <th class="leftAlign">Dân tộc</th>
-      <th class="leftAlign">Chỗ ở hiện tại</th>
-      <th class="leftAlign">Họ tên bố</th>
-      <th class="leftAlign">Họ tên mẹ</th>
-      <th class="leftAlign">Số điện thoại</th>
-
-    </tr>
-
-    {% for ss in studentList %}
-      <tr class="{{ss.id}}">
         {% if pos > 3 %}
-          <td style="text-align: center;">
-            <input type="checkbox" id="checkbox_{{ss.id}}"/>
-          </td>
+            <a title="Nhập hoặc chỉnh sửa điểm của tất cả các môn trong lớp" class="tiptiphover ggButton"
+               href="{%url school.views.school_index  %}markTable/{{currentTerm.id}}/{{class.id}}">Điểm</a>
         {% endif %}
-        <td> {{ forloop.counter }} </td>
-        {% if pos > 1 or student_id == ss.id %}
-          <td><a title="Xem toàn bộ thông tin chi tiết"
-                 href="{%url school.views.school_index  %}viewStudentDetail/{{ss.id}}">{{ ss.last_name }}</a>
-          </td>
-          <td><a title="Xem toàn bộ thông tin chi tiết"
-                 href="{%url school.views.school_index  %}viewStudentDetail/{{ss.id}}">{{ ss.first_name }}</a>
-          </td>
-        {% else %}
-          <td> {{ ss.last_name }} </td>
-          <td> {{ ss.first_name }} </td>
+
+        {% if pos > 2 %}
+            <a title="Đánh giá hạnh kiểm học sinh trong lớp" class="tiptiphover ggButton"
+               href="{%url school.views.school_index  %}hanhkiem/{{class.id}}">Hạnh kiểm</a>
         {% endif %}
-        <td> {{ ss.birthday|date:"SHORT_DATE_FORMAT" }} </td>
-        <td> {{ ss.birth_place }} </td>
-        <td> {{ ss.sex }} </td>
-        <td> {{ ss.dan_toc }} </td>
-        <td> {{ ss.current_address }} </td>
-        <td> {{ ss.father_name }} </td>
-        <td> {{ ss.mother_name }} </td>
-        <td> {{ ss.sms_phone }}</td>
 
-      </tr>
-    {% endfor %}
+        {% if pos > 3 %}
+            {% ifequal class.year_id.school_id.status 1 %}
+                <a title="Tính trung bình học lực của cả lớp" class="tiptiphover ggButton"
+                   href="{%url school.views.school_index  %}xepLoaiHlTheoLop/{{class.id}}/1">
+                    Tổng kết </a>
+            {% else %}
+                <a title="Tính trung bình học lực của cả lớp" class="tiptiphover ggButton"
+                   href="{%url school.views.school_index  %}xepLoaiHlTheoLop/{{class.id}}/2">
+                    Tổng kết </a>
+            {% endifequal %}
 
-    {% if pos > 3 %}
-      <form action="/school/viewClassDetail/{{class.id}}/{{sort_type}}/{{sort_status}}" id="submitform"
-            method="post">{% csrf_token %}
-        <tr class="form">
 
-          {{ form.non_field_errors }}
-          <td></td>
-          <td><input class="ggButton" type="submit" value="Thêm"/></td>
-          <td>
-            {{ form.last_name.errors }}
-            {{ form.last_name }}
-          </td>
-          <td>
-            {{ form.first_name.errors }}
-            {{ form.first_name }}
-          </td>
+            {% ifnotequal class.year_id.school_id.status 1 %}
+                <a title="Xếp loại, xét lên lớp, ở lại lớp, kiểm tra lại, rèn luyện thêm trong hè"
+                   class="tiptiphover ggButton"
+                   href="{%url school.views.school_index  %}xlCaNamTheoLop/{{class.id}}/1">Xếp loại</a>
+            {% else %}
+                <a title="Chức năng này đã bị vô hiệu hóa vì đang trong học kỳ I" class="ggButton disabled">Xếp loại</a>
+            {% endifnotequal %}
+        {% endif %}
 
-          <td>
-            {{ form.birthday.errors }}
-            {{ form.birthday }}
-          </td>
+        {% if pos > 1 or inClass == 1 %}
+            <a title="Xem tất cả thông tin của của môn học trong lớp" class="tiptiphover ggButton"
+               href="{%url school.views.school_index  %}subjectPerClass/{{class.id}}">Môn học</a>
+        {% endif %}
 
-          <td>
-            {{ form.birth_place.errors }}
-            {{ form.birth_place }}
-          </td>
-
-          <td>
-            {{ form.sex.errors }}
-            {{ form.sex }}
-          </td>
-
-          <td>
-            {{ form.dan_toc.errors }}
-            {{ form.dan_toc }}
-          </td>
-
-          <td>
-            {{ form.current_address.errors }}
-            {{ form.current_address }}
-          </td>
-
-          <td>
-            {{ form.father_name.errors }}
-            {{ form.father_name }}
-          </td>
-
-          <td>
-            {{ form.mother_name.errors }}
-            {{ form.mother_name }}
-          </td>
-          <td>
-            {{ form.sms_phone.errors }}
-            {{ form.sms_phone }}
-          </td>
-        </tr>
-      </form>
-    {% endif %}
-  </table>
-  <div id="student_placeholder" style="display: none;">
-  </div>
-  <div style="display: none;">
-    <div id="fileupload">
-      <form method="post" action="" enctype="multipart/form-data">
-        <div class="fileupload-buttonbar">
-          {% csrf_token %}
-          <label class="fileinput-button">
-            <span>Chọn file...</span>
-            <input type="file" name="file" multiple>
-          </label>
-          <button type="submit" id="startUpload" class="start">Tải file lên</button>
-        </div>
-      </form>
-      <div class="fileupload-content">
-        <table class="files"></table>
-        <div class="fileupload-progressbar"></div>
-      </div>
-      <div id="errorDetail" class="errorlist errorDiv" style="display: none;">
-      </div>
-      <div class="hint">
-        <p>
-          Chú ý: Phải dùng file Excel theo <a href="{{ MEDIA_URL }}template_files/student_template.xls">mẫu
-          này</a>.
-        </p>
-      </div>
+        {% if pos > 3 %}
+            <a class="ggButton" href="#popupDiv" id="import"> Nhập từ Excel </a>
+            <a class="tiptiphover ggButton"
+               title="Xuất danh sách học sinh ra file Excel."
+               href="{% url school.views.class_generate class.id 'student_list' %}"
+               id="export"> Xuất ra Excel </a>
+        {% endif %}
     </div>
-  </div>
+    {% if pos > 3 %}
+        <div id="tableFunction">
+            <a class="tiptiphover ggButton"
+               href="{% url school.views.organize_students class.id "0" %}"
+               title="Sắp xếp thứ tự học sinh trong lớp">Sắp xếp</a>
+            <button id="delSelected" class="ggButton">Xóa những học sinh đã chọn</button>
+        </div>
+    {% endif %}
+    <table class="styleA fixed_header">
+        <colgroup style="width: 4%;"></colgroup>
+        <colgroup></colgroup>
+        <colgroup style="width: 12%;"></colgroup>
+        <colgroup style="width: 7%"></colgroup>
+        <colgroup></colgroup>
+        <colgroup></colgroup>
+        <colgroup></colgroup>
+        <colgroup></colgroup>
+        <colgroup></colgroup>
+        <colgroup></colgroup>
+        <colgroup></colgroup>
+        <colgroup></colgroup>
 
-  {% upload_js %}
-  <script type="text/javascript" src="/static/js/jquery_file_upload/qlnt_upload_for_student.js"></script>
+        <tr class="thread">
+            {% if pos > 3 %}
+                <th class="leftAlign" title="Chọn cả lớp" class="tiptiphover" style="text-align: center;">
+                    <input type="checkbox" id="checkbox_all"/>
+                </th>
+            {% endif %}
+            <th class="leftAlign"><a
+                    href="{%url school.views.school_index  %}viewClassDetail/{{class.id}}/0/{{next_status}}"
+                    class="tiptiphover" title="Hiển thị theo thứ tự sắp xếp"> STT </a></th>
+            <th class="leftAlign"> Họ</th>
+            <th class="leftAlign"><a
+                    href="{%url school.views.school_index  %}viewClassDetail/{{class.id}}/1/{{next_status}} "
+                    class="tiptiphover" title="Sắp xếp theo tên">Tên</a></th>
+            <th class="leftAlign"><a
+                    href="{%url school.views.school_index  %}viewClassDetail/{{class.id}}/2/{{next_status}}"
+                    class="tiptiphover" title="Sắp xếp ngày sinh">Ngày sinh</a>
+            </th>
+            <th class="leftAlign"> Nơi sinh</th>
+            <th class="leftAlign"><a
+                    href="{%url school.views.school_index  %}viewClassDetail/{{class.id}}/3/{{next_status}}"
+                    class="tiptiphover" title="Sắp xếp giới tính">Giới tính</a>
+            </th>
+            <th class="leftAlign">Dân tộc</th>
+            <th class="leftAlign">Chỗ ở hiện tại</th>
+            <th class="leftAlign">Họ tên bố</th>
+            <th class="leftAlign">Họ tên mẹ</th>
+            <th class="leftAlign">Số điện thoại</th>
+
+        </tr>
+
+        {% for ss in studentList %}
+            <tr class="{{ss.id}}">
+                {% if pos > 3 %}
+                    <td style="text-align: center;">
+                        <input type="checkbox" id="checkbox_{{ss.id}}"/>
+                    </td>
+                {% endif %}
+                <td> {{ forloop.counter }} </td>
+                {% if pos > 1 or student_id == ss.id %}
+                    <td><a title="Xem toàn bộ thông tin chi tiết"
+                           href="{%url school.views.school_index  %}viewStudentDetail/{{ss.id}}">{{ ss.last_name }}</a>
+                    </td>
+                    <td><a title="Xem toàn bộ thông tin chi tiết"
+                           href="{%url school.views.school_index  %}viewStudentDetail/{{ss.id}}">{{ ss.first_name }}</a>
+                    </td>
+                {% else %}
+                    <td> {{ ss.last_name }} </td>
+                    <td> {{ ss.first_name }} </td>
+                {% endif %}
+                <td> {{ ss.birthday|date:"SHORT_DATE_FORMAT" }} </td>
+                <td> {{ ss.birth_place }} </td>
+                <td> {{ ss.sex }} </td>
+                <td> {{ ss.dan_toc }} </td>
+                <td> {{ ss.current_address }} </td>
+                <td> {{ ss.father_name }} </td>
+                <td> {{ ss.mother_name }} </td>
+                <td> {{ ss.sms_phone }}</td>
+
+            </tr>
+        {% endfor %}
+
+        {% if pos > 3 %}
+            <form action="/school/viewClassDetail/{{class.id}}/{{sort_type}}/{{sort_status}}" id="submitform"
+                  method="post">{% csrf_token %}
+                <tr class="form">
+
+                    {{ form.non_field_errors }}
+                    <td></td>
+                    <td><input class="ggButton" type="submit" value="Thêm"/></td>
+                    <td>
+                        {{ form.last_name.errors }}
+                        {{ form.last_name }}
+                    </td>
+                    <td>
+                        {{ form.first_name.errors }}
+                        {{ form.first_name }}
+                    </td>
+
+                    <td>
+                        {{ form.birthday.errors }}
+                        {{ form.birthday }}
+                    </td>
+
+                    <td>
+                        {{ form.birth_place.errors }}
+                        {{ form.birth_place }}
+                    </td>
+
+                    <td>
+                        {{ form.sex.errors }}
+                        {{ form.sex }}
+                    </td>
+
+                    <td>
+                        {{ form.dan_toc.errors }}
+                        {{ form.dan_toc }}
+                    </td>
+
+                    <td>
+                        {{ form.current_address.errors }}
+                        {{ form.current_address }}
+                    </td>
+
+                    <td>
+                        {{ form.father_name.errors }}
+                        {{ form.father_name }}
+                    </td>
+
+                    <td>
+                        {{ form.mother_name.errors }}
+                        {{ form.mother_name }}
+                    </td>
+                    <td>
+                        {{ form.sms_phone.errors }}
+                        {{ form.sms_phone }}
+                    </td>
+                </tr>
+            </form>
+        {% endif %}
+    </table>
+    <div id="student_placeholder" style="display: none;">
+    </div>
+    <div style="display: none;">
+        <div id="fileupload">
+            <form method="post" action="" enctype="multipart/form-data">
+                <div class="fileupload-buttonbar">
+                    {% csrf_token %}
+                    <label class="fileinput-button">
+                        <span>Chọn file...</span>
+                        <input type="file" name="file" multiple>
+                    </label>
+                    <button type="submit" id="startUpload" class="start">Tải file lên</button>
+                </div>
+            </form>
+            <div class="fileupload-content">
+                <table class="files"></table>
+                <div class="fileupload-progressbar"></div>
+            </div>
+            <div id="errorDetail" class="errorlist errorDiv" style="display: none;">
+            </div>
+            <div class="hint">
+                <p>
+                    Chú ý: Phải dùng file Excel theo <a href="{{ MEDIA_URL }}template_files/student_template.xls">mẫu
+                    này</a>.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    {% upload_js %}
+    <script type="text/javascript" src="/static/js/jquery_file_upload/qlnt_upload_for_student.js"></script>
 {% endblock %}
