@@ -67,7 +67,11 @@ urlpatterns = patterns('',
     url(r'printMarkBook/(?P<termNumber>\w+)/(?P<class_id>([0-9-])*)$' , 'school.writeExcel.printMarkBook'), 
     url(r'markExcel/(?P<term_id>\w+)/(?P<subject_id>\w+)$' , 'school.writeExcel.markExcel'), 
     url(r'importMark/(?P<term_id>\w+)/(?P<subject_id>\w+)$' , 'school.importMark.importMark'), 
+    url(r'importMark/(?P<term_id>\w+)/(?P<subject_id>\w+)$' , 'school.importMark.importMark'), 
 
+    url(r'printMarkForClass$' , 'school.writeExcel.printMarkForClass'), 
+    url(r'printMarkForClass/(?P<termNumber>\w+)/(?P<class_id>\w+)$' , 'school.writeExcel.printMarkForClass'), 
+    
     
     #------------------------------------------------------------------
 

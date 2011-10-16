@@ -1,3 +1,12 @@
-﻿<input value ="abc">
-<input value ="{{message|floatformat:"-1"}}">
-{{message}}
+﻿{% extends "base.html" %}
+{% block content %}
+
+    <form name="form1">
+    Click the button to reload the current page.
+    <br><br>
+    Location.hash value: <input type="text" name="text1" size=20>
+    <br>
+    <input type="button" name="load" value="Reload page" onClick='document.location.reload(true)'>
+    <br>
+    </form>
+{% endblock %}

@@ -15,6 +15,7 @@ from xlwt import Workbook, XFStyle, Borders, Font, easyxf ,Alignment
 import xlwt 
 import xlrd
 from xlrd import cellname
+from school.viewCount import convertHlToVietnamese,convertHkToVietnamese
 noneSubject="............................."
 e=0.00000001
 s1=1000
@@ -37,6 +38,7 @@ d2=2000 # kick thuoc cot o trang 31
 d3=6000
 d4=1200 # kich thuoc 1 o diem
 SIZE_PAGE_WIDTH=36200
+A4_WIDTH=24500
 h1 = easyxf(
     'font:name Arial, bold on,height 1000 ;align: vert centre, horz center')
 h2 = easyxf(
@@ -87,11 +89,17 @@ h82 = easyxf(
 'font:name Times New Roman ,height 240 ; align:wrap on,horz left;'# trang 31
 'borders: right thin,left thin,bottom thin,top thin')
 
+h8center = easyxf(
+'font:name Times New Roman ,height 240 ; align:wrap on,horz center')
+
 h9 = easyxf(
 'font:name Times New Roman,bold on ,height 240 ;align:horz centre')# xac nhan
 h91 = easyxf(
 'font:name Times New Roman,bold on ,height 240 ;align:horz centre;'
 'borders: right thin,left thin')
+h92 = easyxf(
+'font:name Times New Roman,bold on ,height 240 ;align:horz centre;'
+'borders: right thin,left thin,bottom thin,top thin')
 
 h10 = easyxf(
 'font:name Times New Roman,bold on ,height 200 ;align:wrap on,horz centre,vert centre ;'
@@ -114,7 +122,17 @@ first_name1 = easyxf(
 last_name1 = easyxf(
 'font:name Times New Roman ,height 220 ;'
 'borders: right no_line,left thin,bottom thin')
+e=0.00000001
 
+def convertDanhHieu(x):
+    if    x=='G' : return 'HSG'
+    elif  x=='TT': return 'HSTT'
+    else : return '' 
+def normalize(x):
+    if x-int(x)<e:
+        return str(int(x))
+    else:
+        return str(x)    
 def report(request):
 
     user = request.user
@@ -948,3 +966,271 @@ def count1Excel(year_id,number,list,sumsumsum,allList):
     tt2= time.time()
     print (tt2-tt1)
     return response
+
+def printMarkToExcel(termNumber,selectedClass,s,pupilList,markList,tkMonList,ddHKList,tbHKList,TBNamList,schoolName,ddHK1List=None):
+    today=datetime.datetime.now()
+    if selectedClass.teacher_id!=None:
+        nameTeacher=selectedClass.teacher_id.last_name+' '+selectedClass.teacher_id.first_name
+    else:
+        nameTeacher=''    
+    x=4
+    y=0
+    i=0
+    numberLine=50
+    print termNumber
+    if termNumber==1:
+        yearString='Học kỳ I - ' + 'Năm học '+ str(selectedClass.year_id.time)+'-'+str(selectedClass.year_id.time+1)
+    else:     
+        yearString='Học kỳ II - '+ 'Năm học '+ str(selectedClass.year_id.time)+'-'+str(selectedClass.year_id.time+1)
+        
+    for p in pupilList:
+        
+        s.write_merge(i*numberLine,i*numberLine,y,y+9,schoolName,h8)        
+        s.write_merge(x+i*numberLine,x+i*numberLine,y,y+9,'PHIẾU BÁO ĐIỂM',h3)        
+        s.write_merge(x+i*numberLine+1,x+i*numberLine+1,y,y+9,yearString,h8center)
+        nameString =u'Họ và tên: '+unicode(p.last_name)+' '+unicode(p.first_name)
+        
+        s.write_merge(x+i*numberLine+3,x+i*numberLine+3,y,y+4,nameString,h8)
+        birthStr='Ngày sinh: '+p.birthday.strftime('%d/%m/%Y')
+        s.write_merge(x+i*numberLine+3,x+i*numberLine+3,y+5,y+6,birthStr,h8)
+        classString=u'Lớp: '+selectedClass.name        
+        s.write_merge(x+i*numberLine+3,x+i*numberLine+3,y+7,y+9,classString,h8)
+        s.write(x+i*numberLine+5,y,'STT',h92)
+        s.write(x+i*numberLine+5,y+1,'Môn học',h92)
+        s.write_merge(x+i*numberLine+5,x+i*numberLine+5,y+2,y+4,'Điểm hệ số 1',h92)
+        s.write_merge(x+i*numberLine+5,x+i*numberLine+5,y+5,y+6,'Điểm hệ số 2',h92)
+        s.write(x+i*numberLine+5,y+7,'KTHK',h92)
+        s.write(x+i*numberLine+5,y+8,'TB',h92)
+        if termNumber==2:
+            s.write(x+i*numberLine+5,y+9,'TBCN',h92)            
+        i+=1
+    j=0
+    for l in markList:
+        i=0
+        j+=1    
+        for m in l:     
+            s.write(x+i*numberLine+5+j,y,j,h82)        
+            s.write(x+i*numberLine+5+j,y+1,m.subject_id.name,h82)
+            hs1str=''
+            if m.mieng_1: hs1str+=normalize(m.mieng_1)+' '         
+            if m.mieng_2: hs1str+=normalize(m.mieng_2)+' '         
+            if m.mieng_3: hs1str+=normalize(m.mieng_3)+' '         
+            if m.mieng_4: hs1str+=normalize(m.mieng_4)+' '         
+            if m.mieng_5: hs1str+=normalize(m.mieng_5)+' '
+                     
+            if m.mlam_1: hs1str+=normalize(m.mlam_1)+' '
+            if m.mlam_2: hs1str+=normalize(m.mlam_2)+' '
+            if m.mlam_3: hs1str+=normalize(m.mlam_3)+' '
+            if m.mlam_4: hs1str+=normalize(m.mlam_4)+' '
+            if m.mlam_5: hs1str+=normalize(m.mlam_5)+' '
+            s.write_merge(x+i*numberLine+5+j,x+i*numberLine+5+j,y+2,y+4,hs1str,h82)
+            
+            hs2str=''
+            if m.mot_tiet_1: hs2str+=normalize(m.mot_tiet_1)+' '         
+            if m.mot_tiet_2: hs2str+=normalize(m.mot_tiet_2)+' '         
+            if m.mot_tiet_3: hs2str+=normalize(m.mot_tiet_3)+' '         
+            if m.mot_tiet_4: hs2str+=normalize(m.mot_tiet_4)+' '         
+            if m.mot_tiet_5: hs2str+=normalize(m.mot_tiet_5)+' '         
+            s.write_merge(x+i*numberLine+5+j,x+i*numberLine+5+j,y+5,y+6,hs2str,h82)
+            ckstr=''
+            if m.ck: ckstr+=normalize(m.ck)+' '         
+            s.write(x+i*numberLine+5+j,y+7,ckstr,h82)
+            tbstr=''
+            if m.tb: tbstr+=str(m.tb)+' '         
+            s.write(x+i*numberLine+5+j,y+8,tbstr,h82)
+            i+=1
+    if termNumber==2:        
+        j=0  
+        for aTKMonList in tkMonList:
+            i=0
+            j+=1      
+            for tkMon in aTKMonList:
+                tkMonStr=''
+                if tkMon.tb_nam!=None: tkMonStr=str(tkMon.tb_nam)
+                s.write(x+i*numberLine+5+j,y+9,tkMonStr,h82)
+                i+=1
+                    
+            
+    i=0  
+    for dd,tbhk,tbNam in zip(ddHKList,tbHKList,TBNamList):
+        if termNumber==1:
+            s.write_merge(x+i*numberLine+7+j,x+i*numberLine+8+j,y,y+1,'Tổng kết HK I',h82)
+        else:    
+            s.write_merge(x+i*numberLine+7+j,x+i*numberLine+8+j,y,y+1,'Tổng kết HK II',h82)
+        s.write(x+i*numberLine+7+j,y+2,'TB',h82)
+        s.write(x+i*numberLine+7+j,y+3,'Học lực',h82)
+        s.write(x+i*numberLine+7+j,y+4,'Hạnh kiểm',h82)
+        s.write(x+i*numberLine+7+j,y+5,'Danh hiệu',h82)
+        s.write(x+i*numberLine+7+j,y+6,'Nghỉ có phép',h82)
+        s.write_merge(x+i*numberLine+7+j,x+i*numberLine+7+j,y+7,y+8,'Nghỉ không phép',h82)
+        
+        s.write(x+i*numberLine+8+j,y+2,tbhk.tb_hk,h82)
+        s.write(x+i*numberLine+8+j,y+3,convertHlToVietnamese(tbhk.hl_hk),h82)
+        
+        if termNumber==1:
+            s.write(x+i*numberLine+8+j,y+4,convertHkToVietnamese(tbNam.term1),h82)
+        else:    
+            s.write(x+i*numberLine+8+j,y+4,convertHkToVietnamese(tbNam.term2),h82)
+            
+        s.write(x+i*numberLine+8+j,y+5,convertDanhHieu(tbhk.danh_hieu_hk),h82)        
+        s.write(x+i*numberLine+8+j,y+6,dd.co_phep,h82)
+        s.write_merge(x+i*numberLine+8+j,x+i*numberLine+8+j,y+7,y+8,dd.khong_phep,h82)
+        
+        s.write_merge(x+i*numberLine+12+j,x+i*numberLine+12+j,y,y+3,'Ý kiến của phụ huynh',h8)    
+        s.write_merge(x+i*numberLine+12+j,x+i*numberLine+12+j,y+5,y+8,'Ý kiến của GVCN',h8)
+        for t in range(1,6):
+            s.write_merge(x+i*numberLine+12+j+t,x+i*numberLine+12+j+t,y,y+3,'......................................................................',h8)    
+            s.write_merge(x+i*numberLine+12+j+t,x+i*numberLine+12+j+t,y+5,y+8,'.....................................................................',h8)
+        dateStr='Ngày ' + str(today.day)+' tháng '+str(today.month)+' năm '+str(today.year)
+
+        s.write_merge(x+i*numberLine+16+j+t,x+i*numberLine+16+j+t,y+6,y+8,dateStr,h8)
+        s.write_merge(x+i*numberLine+17+j+t,x+i*numberLine+17+j+t,y+6,y+8,'Giáo viên chủ nhiệm',h8)
+        s.write_merge(x+i*numberLine+21+j+t,x+i*numberLine+21+j+t,y+6,y+8,nameTeacher,h8)
+        i+=1
+        
+            
+        
+    if termNumber==2:
+        print len(ddHK1List)
+        print len(ddHKList)
+        print len(TBNamList)
+        i=0
+        for dd1,dd2,tbNam in zip(ddHK1List,ddHKList,TBNamList):
+            s.write_merge(x+i*numberLine+9+j,x+i*numberLine+9+j,y,y+1,'Cả năm',h82)
+            s.write(x+i*numberLine+9+j,y+2,tbNam.tb_nam,h82)
+            s.write(x+i*numberLine+9+j,y+3,convertHlToVietnamese(tbNam.hl_nam),h82)
+            s.write(x+i*numberLine+9+j,y+4,convertHkToVietnamese(tbNam.year),h82)
+            s.write(x+i*numberLine+9+j,y+5,convertDanhHieu(tbNam.danh_hieu_nam),h82)
+            if (dd1.co_phep!=None) & (dd2.co_phep!=None):
+                coPhep=dd1.co_phep+dd2.co_phep
+            else:
+                coPhep=''
+                    
+            if (dd1.khong_phep!=None) & (dd2.khong_phep!=None):
+                khongPhep=dd1.khong_phep+dd2.khong_phep
+            else:
+                khongPhep=''    
+                
+            s.write(x+i*numberLine+9+j,y+6,coPhep,h82)
+            s.write_merge(x+i*numberLine+9+j,x+i*numberLine+9+j,y+7,y+8,khongPhep,h82)
+
+            if   tbNam.len_lop:
+                lenLopStr='Thuộc diện: Được lên lớp.'
+            elif tbNam.len_lop==False:
+                lenLopStr='Thuộc diện: Không được lên lớp.'
+            elif tbNam.thi_lai:
+                lenLopStr='Thuộc diện: kiểm tra lại trong hè.'
+            elif tbNam.ren_luyen_lai:                         
+                lenLopStr='Thuộc diện: rèn luyện thêm trong hè.'
+            else:
+                lenLopStr='Thuộc diện: Chưa được xếp loại.'        
+            s.write_merge(x+i*numberLine+11+j,x+i*numberLine+11+j,y,y+3,lenLopStr,h8)
+            i+=1 
+    
+            
+               
+        
+def setSizeOfMarkClass(s,numberPage):
+    s.set_paper_size_code(9)
+    setHorz =[]    
+    for i in range(numberPage):
+        setHorz.append(((i+1)*50,0,255))
+   # s.vert_page_breaks =[]    
+    s.horz_page_breaks = setHorz
+    s1=1000
+    s2=3000
+    s.col(0).width=s1
+    s.col(1).width=s2
+    size = int((A4_WIDTH-s1-s2)/8)
+    for i in range(2,6):
+        s.col(i).width=size
+    s.col(4).width=size+200
+    s.col(6).width=size+1000
+    s.col(7).width=size-500
+    s.col(8).width=size-500
+    s.col(9).width=size-500
+    
+    
+    
+def markForClass(termNumber,class_id):
+    print termNumber
+    tt1 = time.time()
+    if termNumber>2: return
+    selectedClass = Class.objects.get(id=class_id)
+    book = Workbook(encoding = 'utf-8')
+    s    = book.add_sheet('s1',True)
+      
+      
+    markList=[]
+    tkMonList=[]
+    subjectList = Subject.objects.filter(class_id=class_id).order_by("index")
+    pupilList = Pupil.objects.filter(class_id=class_id).order_by("index")
+    
+    for sub in subjectList:
+        l = Mark.objects.filter(subject_id=sub.id,term_id__number=termNumber).order_by("student_id__index")
+        markList.append(l)
+        if termNumber==2:
+            tkMon=TKMon.objects.filter(subject_id=sub.id).order_by("student_id__index")
+            tkMonList.append(tkMon)    
+          
+    ddHKList=TKDiemDanh.objects.filter(student_id__class_id=class_id,term_id__number=termNumber).order_by("student_id__index")
+    tbHKList=TBHocKy.objects.filter(student_id__class_id=class_id,term_id__number=termNumber).order_by("student_id__index")
+    TBNamList      =TBNam  .objects.filter(student_id__class_id=class_id).order_by("student_id__index")
+
+    ddHK1List=None
+    if termNumber==2:
+        ddHK1List=TKDiemDanh.objects.filter(student_id__class_id=class_id,term_id__number=1).order_by("student_id__index")
+        
+    schoolName= selectedClass.year_id.school_id.name
+    setSizeOfMarkClass(s,len(pupilList))
+    printMarkToExcel(termNumber,selectedClass,s,pupilList,markList,tkMonList,ddHKList,tbHKList,TBNamList,schoolName,ddHK1List)
+
+    response = HttpResponse(mimetype='application/ms-excel')
+    
+    name = 'phieuBaoDiem%s.xls' % unicode(selectedClass.name)
+    name1=name.replace(' ','_')
+    response['Content-Disposition'] = u'attachment; filename=%s' % name1
+    book.save(response)
+    tt2= time.time()
+    print (tt2-tt1)
+    print "fffffffffffffff"
+    return response
+         
+def printMarkForClass(request,termNumber=None,class_id=-2):
+    user = request.user
+    if not user.is_authenticated():
+        return HttpResponseRedirect( reverse('login'))
+    
+    message=None
+    currentTerm=get_current_term(request)
+    try:
+        if in_school(request,currentTerm.year_id.school_id) == False:
+            return HttpResponseRedirect('/school')
+    except Exception as e:
+        return HttpResponseRedirect(reverse('index'))
+    
+    if get_position(request) != 4:
+       return HttpResponseRedirect('/school')
+    
+    if termNumber==None:
+        if (currentTerm.number>2):
+            termNumber=2
+        else:
+            termNumber=currentTerm.number    
+        
+    termNumber=int(termNumber)
+    class_id  = int(class_id)
+    classList =Class.objects.filter(year_id=currentTerm.year_id.id)
+     
+    if class_id!=-2 :
+        return markForClass(termNumber,class_id)
+        
+    
+    t = loader.get_template(os.path.join('school','print_mark_for_class.html'))    
+    c = RequestContext(request, {"message":message,
+                                 'classList':classList,
+                                 'termNumber':termNumber,
+                                 'classChoice':class_id,
+                                }
+                       )
+    return HttpResponse(t.render(c))

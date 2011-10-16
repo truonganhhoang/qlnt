@@ -796,6 +796,7 @@ def update(s,primary):
             
         elif (number==17):                    
             m.tb = value
+            
             subject_id = m.subject_id
             student_id = m.student_id
             
