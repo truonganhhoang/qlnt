@@ -15,124 +15,27 @@ from xlwt import Workbook, XFStyle, Borders, Font, easyxf ,Alignment
 import xlwt 
 import xlrd
 from xlrd import cellname
-from school.viewCount import convertHlToVietnamese,convertHkToVietnamese
-noneSubject="............................."
-e=0.00000001
-s1=1000
-s2=5000
-s3=2000
-s4=3000
-m1=3000
-m2=4000
-m3=4000
-m4=1400
-m5=1400
+from school.templateExcel import *
 
-m6=3000
-m7=3000
-m8=3500
-m9=1000
-m10=1400
-d1=1400
-d2=2000 # kick thuoc cot o trang 31  
-d3=6000
-d4=1200 # kich thuoc 1 o diem
-SIZE_PAGE_WIDTH=36200
-A4_WIDTH=24500
-h1 = easyxf(
-    'font:name Arial, bold on,height 1000 ;align: vert centre, horz center')
-h2 = easyxf(
-    'font:name Times New Roman, bold on,height 1000 ;align: vert centre, horz center')
-h3 = easyxf(
-    'font:name Times New Roman, bold on,height 400 ;align: vert centre, horz center')
-h4 = easyxf(
-'font    :name Times New Roman, bold on,height 260 ;align:wrap on, vert centre, horz center;'
-'borders : top thin ,right thin, left thin, bottom thin')
-h41 = easyxf(
-'font    :name Times New Roman, bold on,height 260 ;align:wrap on, horz left;'
-'borders : top thin ,right thin, left thin, bottom thin')
-h40 = easyxf(
-'font    :name Times New Roman, bold on,height 260 ;align:wrap on, vert centre, horz center;')
-
-h5 = easyxf(
-'font:name Times New Roman ,height 240 ;align:wrap on, vert centre, horz center;'
-'borders: top thin,right thin,left thin,bottom thin')
-h6 = easyxf(
-'font:name Times New Roman ,height 240 ;align:wrap on;'
-'borders: right thin,left thin,bottom dotted')
-h61 = easyxf(
-'font:name Times New Roman ,height 240 ;align:horz right;'
-'borders: right thin,left thin,bottom dotted')
-h7 = easyxf(
-'font:name Times New Roman ,height 240 ;align:wrap on;'
-'borders: right thin,left thin,bottom thin')
-h71 = easyxf(
-'font:name Times New Roman ,height 240 ;align:horz right;'
-'borders: right thin,left thin,bottom thin')
-
-h72 = easyxf(
-'font:name Times New Roman ,height 220 ;align:horz right;'
-'borders: right thin,left thin,bottom thin,top thin',
-)
-h73 = easyxf(
-'font:name Times New Roman ,height 220 ;align:horz right;'
-'borders: right thin,left thin,bottom thin,top thin',
-num_format_str='0.00' )
-
-h8 = easyxf(
-'font:name Times New Roman ,height 240 ; align:wrap on,horz left')
-h81 = easyxf(                                    
-'font:name Times New Roman ,height 240 ; align:wrap on,horz left;'# trang 31
-'borders: right thin,left thin')
-
-h82 = easyxf(                                    
-'font:name Times New Roman ,height 240 ; align:wrap on,horz left;'# trang 31
-'borders: right thin,left thin,bottom thin,top thin')
-
-h8center = easyxf(
-'font:name Times New Roman ,height 240 ; align:wrap on,horz center')
-
-h9 = easyxf(
-'font:name Times New Roman,bold on ,height 240 ;align:horz centre')# xac nhan
-h91 = easyxf(
-'font:name Times New Roman,bold on ,height 240 ;align:horz centre;'
-'borders: right thin,left thin')
-h92 = easyxf(
-'font:name Times New Roman,bold on ,height 240 ;align:horz centre;'
-'borders: right thin,left thin,bottom thin,top thin')
-
-h10 = easyxf(
-'font:name Times New Roman,bold on ,height 200 ;align:wrap on,horz centre,vert centre ;'
-'borders: top thin,right thin,left thin,bottom thin')
-
-hh1 = easyxf(
-'font:name Times New Roman,italic on ,height 240 ;align:horz centre;'
-'borders: right thin,left thin')
- 
-first_name = easyxf(
-'font:name Times New Roman ,height 240 ;'
-'borders: right thin,left no_line,bottom dotted')
-last_name = easyxf(
-'font:name Times New Roman ,height 240 ;'
-'borders: right no_line,left thin,bottom dotted')
-
-first_name1 = easyxf(
-'font:name Times New Roman ,height 220 ;'
-'borders: right thin,left no_line,bottom thin')
-last_name1 = easyxf(
-'font:name Times New Roman ,height 220 ;'
-'borders: right no_line,left thin,bottom thin')
-e=0.00000001
-
-def convertDanhHieu(x):
-    if    x=='G' : return 'HSG'
-    elif  x=='TT': return 'HSTT'
-    else : return '' 
-def normalize(x):
-    if x-int(x)<e:
-        return str(int(x))
+def normalize(x,checkNx):
+    if checkNx==0:
+        if x-int(x)<e:
+            return str(int(x))
+        else:
+            return str(x)
     else:
-        return str(x)    
+        if x>=9:
+            return u'G'
+        elif x>=7:
+            return u'K'
+        elif x>=6:
+            return u'TB'
+        elif x>=4:
+            return u'Y'
+        elif x>=0:
+            return u'Kém'
+        else:
+            return  u''   
 def report(request):
 
     user = request.user
@@ -967,7 +870,7 @@ def count1Excel(year_id,number,list,sumsumsum,allList):
     print (tt2-tt1)
     return response
 
-def printMarkToExcel(termNumber,selectedClass,s,pupilList,markList,tkMonList,ddHKList,tbHKList,TBNamList,schoolName,ddHK1List=None):
+def printMarkToExcel(termNumber,selectedClass,checkNxList,s,pupilList,markList,tkMonList,ddHKList,tbHKList,TBNamList,schoolName,ddHK1List=None):
     today=datetime.datetime.now()
     if selectedClass.teacher_id!=None:
         nameTeacher=selectedClass.teacher_id.last_name+' '+selectedClass.teacher_id.first_name
@@ -1012,31 +915,36 @@ def printMarkToExcel(termNumber,selectedClass,s,pupilList,markList,tkMonList,ddH
             s.write(x+i*numberLine+5+j,y,j,h82)        
             s.write(x+i*numberLine+5+j,y+1,m.subject_id.name,h82)
             hs1str=''
-            if m.mieng_1: hs1str+=normalize(m.mieng_1)+' '         
-            if m.mieng_2: hs1str+=normalize(m.mieng_2)+' '         
-            if m.mieng_3: hs1str+=normalize(m.mieng_3)+' '         
-            if m.mieng_4: hs1str+=normalize(m.mieng_4)+' '         
-            if m.mieng_5: hs1str+=normalize(m.mieng_5)+' '
+            if m.mieng_1: hs1str+=normalize(m.mieng_1,checkNxList[j-1])+' '         
+            if m.mieng_2: hs1str+=normalize(m.mieng_2,checkNxList[j-1])+' '         
+            if m.mieng_3: hs1str+=normalize(m.mieng_3,checkNxList[j-1])+' '         
+            if m.mieng_4: hs1str+=normalize(m.mieng_4,checkNxList[j-1])+' '         
+            if m.mieng_5: hs1str+=normalize(m.mieng_5,checkNxList[j-1])+' '
                      
-            if m.mlam_1: hs1str+=normalize(m.mlam_1)+' '
-            if m.mlam_2: hs1str+=normalize(m.mlam_2)+' '
-            if m.mlam_3: hs1str+=normalize(m.mlam_3)+' '
-            if m.mlam_4: hs1str+=normalize(m.mlam_4)+' '
-            if m.mlam_5: hs1str+=normalize(m.mlam_5)+' '
+            if m.mlam_1: hs1str+=normalize(m.mlam_1,checkNxList[j-1])+' '
+            if m.mlam_2: hs1str+=normalize(m.mlam_2,checkNxList[j-1])+' '
+            if m.mlam_3: hs1str+=normalize(m.mlam_3,checkNxList[j-1])+' '
+            if m.mlam_4: hs1str+=normalize(m.mlam_4,checkNxList[j-1])+' '
+            if m.mlam_5: hs1str+=normalize(m.mlam_5,checkNxList[j-1])+' '
             s.write_merge(x+i*numberLine+5+j,x+i*numberLine+5+j,y+2,y+4,hs1str,h82)
             
             hs2str=''
-            if m.mot_tiet_1: hs2str+=normalize(m.mot_tiet_1)+' '         
-            if m.mot_tiet_2: hs2str+=normalize(m.mot_tiet_2)+' '         
-            if m.mot_tiet_3: hs2str+=normalize(m.mot_tiet_3)+' '         
-            if m.mot_tiet_4: hs2str+=normalize(m.mot_tiet_4)+' '         
-            if m.mot_tiet_5: hs2str+=normalize(m.mot_tiet_5)+' '         
+            if m.mot_tiet_1: hs2str+=normalize(m.mot_tiet_1,checkNxList[j-1])+' '         
+            if m.mot_tiet_2: hs2str+=normalize(m.mot_tiet_2,checkNxList[j-1])+' '         
+            if m.mot_tiet_3: hs2str+=normalize(m.mot_tiet_3,checkNxList[j-1])+' '         
+            if m.mot_tiet_4: hs2str+=normalize(m.mot_tiet_4,checkNxList[j-1])+' '         
+            if m.mot_tiet_5: hs2str+=normalize(m.mot_tiet_5,checkNxList[j-1])+' '         
             s.write_merge(x+i*numberLine+5+j,x+i*numberLine+5+j,y+5,y+6,hs2str,h82)
             ckstr=''
-            if m.ck: ckstr+=normalize(m.ck)+' '         
+            if m.ck: ckstr+=normalize(m.ck,checkNxList[j-1])+' '         
             s.write(x+i*numberLine+5+j,y+7,ckstr,h82)
             tbstr=''
-            if m.tb: tbstr+=str(m.tb)+' '         
+            if m.tb:
+                if checkNxList[j-1]==0:
+                    tbstr+=str(m.tb)
+                else:
+                    tbstr=normalize(m.tb,1)
+                             
             s.write(x+i*numberLine+5+j,y+8,tbstr,h82)
             i+=1
     if termNumber==2:        
@@ -1046,7 +954,11 @@ def printMarkToExcel(termNumber,selectedClass,s,pupilList,markList,tkMonList,ddH
             j+=1      
             for tkMon in aTKMonList:
                 tkMonStr=''
-                if tkMon.tb_nam!=None: tkMonStr=str(tkMon.tb_nam)
+                if tkMon.tb_nam!=None:
+                    if checkNxList[j-1]==0: 
+                        tkMonStr=str(tkMon.tb_nam)
+                    else:
+                        tkMonStr=normalize(tkMon.tb_nam,1)    
                 s.write(x+i*numberLine+5+j,y+9,tkMonStr,h82)
                 i+=1
                     
@@ -1163,16 +1075,21 @@ def markForClass(termNumber,class_id):
       
     markList=[]
     tkMonList=[]
-    subjectList = Subject.objects.filter(class_id=class_id).order_by("index")
+    if termNumber==1:
+        subjectList = Subject.objects.filter(class_id=class_id,primary__in=[0,termNumber,3,4]).order_by("index")
+    else:    
+        subjectList = Subject.objects.filter(class_id=class_id).order_by("index")
     pupilList = Pupil.objects.filter(class_id=class_id).order_by("index")
-    
+    checkNxList=[]
     for sub in subjectList:
         l = Mark.objects.filter(subject_id=sub.id,term_id__number=termNumber).order_by("student_id__index")
         markList.append(l)
         if termNumber==2:
             tkMon=TKMon.objects.filter(subject_id=sub.id).order_by("student_id__index")
-            tkMonList.append(tkMon)    
-          
+            tkMonList.append(tkMon)
+        if sub.nx:  checkNxList+=[1]
+        else     :  checkNxList+=[0]  
+    print checkNxList      
     ddHKList=TKDiemDanh.objects.filter(student_id__class_id=class_id,term_id__number=termNumber).order_by("student_id__index")
     tbHKList=TBHocKy.objects.filter(student_id__class_id=class_id,term_id__number=termNumber).order_by("student_id__index")
     TBNamList      =TBNam  .objects.filter(student_id__class_id=class_id).order_by("student_id__index")
@@ -1183,7 +1100,7 @@ def markForClass(termNumber,class_id):
         
     schoolName= selectedClass.year_id.school_id.name
     setSizeOfMarkClass(s,len(pupilList))
-    printMarkToExcel(termNumber,selectedClass,s,pupilList,markList,tkMonList,ddHKList,tbHKList,TBNamList,schoolName,ddHK1List)
+    printMarkToExcel(termNumber,selectedClass,checkNxList,s,pupilList,markList,tkMonList,ddHKList,tbHKList,TBNamList,schoolName,ddHK1List)
 
     response = HttpResponse(mimetype='application/ms-excel')
     

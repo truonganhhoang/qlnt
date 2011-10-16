@@ -88,7 +88,7 @@ def thu11111(request):
     return HttpResponse(t.render(c))
 
 @transaction.commit_on_success                                                              
-def thu111(request):
+def thu1(request):
     t1= time.time()
     list1 = TKMon.objects.filter(student_id__class_id=213)
     for m in list1:
@@ -178,11 +178,10 @@ def thu111(request):
     return HttpResponse(t.render(c))
 
 @transaction.commit_on_success                                                              
-def thu12345(request):
+def thu(request):
     t1= time.time()
     
-    markList = Mark.objects.filter(subject_id__class_id=213)
-    print markList
+    markList = Mark.objects.filter(subject_id__class_id=26)
     for m in markList:
         m.mieng_1 = random.randrange( 7,11 )
         m.mieng_2 = random.randrange( 7,11 )
@@ -204,12 +203,13 @@ def thu12345(request):
         m.ck=random.randrange( 7,11 )
         m.tb=random.randrange( 7,11 )
         m.save() 
-    tkmonList= TKMon.objects.filter(subject_id__class_id=213)
+    tkmonList= TKMon.objects.filter(subject_id__class_id=26)
     for tkmon in tkmonList:
         tkmon.tb_nam=random.randrange( 7,11 )
         tkmon.save()
 
-    hanhKiemList =HanhKiem.objects.filter(student_id__class_id=213)
+    hanhKiemList =TBNam.objects.filter(student_id__class_id=26)
+    print len(hanhKiemList)
     for hk in hanhKiemList:
         t =random.randrange( 1,3 )
         if   t==1: hk.year='T'
@@ -241,7 +241,7 @@ def thu12345(request):
     #print (t2-t1)
     return HttpResponse(t.render(c))
 
-def thu(request):
+def thu1(request):
     t1= time.time()
     
     t = loader.get_template(os.path.join('school','ll.html'))

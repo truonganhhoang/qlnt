@@ -4,49 +4,12 @@ from django.http import HttpResponse, HttpResponseRedirect
 from school.models import *
 from django.shortcuts import render_to_response
 from django.template import RequestContext, loader
-from school.utils import *
 from django.core.urlresolvers import reverse
 import os.path 
 import time 
-from school.writeExcel import *
-def convertMarkToCharacter(x):
-    if x==9:
-        return u'Giỏi'
-    elif x==7:
-        return u'Khá'
-    elif x==6:
-        return u'TB'
-    elif x==4:
-        return u'Yếu'
-    elif x==1:
-        return u'Kém'
-    else:
-        return  u''   
-def convertHlToVietnamese(x):
-    if x=='G':
-        return u'Giỏi'
-    elif x=='K':
-        return u'Khá'
-    elif x=='TB':
-        return u'TB'
-    elif x=='Y':
-        return u'Yếu'
-    elif x=='Kem':
-        return u'Kém'
-    else:
-        return u'Chưa đủ điểm'
-        
-def convertHkToVietnamese(x):
-    if x=='T':
-        return u'Tốt'
-    elif x=='K':
-        return u'Khá'
-    elif x=='TB':
-        return u'TB'
-    elif x=='Y':
-        return u'Yếu'
-    else:
-        return u''    
+from school.utils import *
+from school.templateExcel import *
+from school.writeExcel import count1Excel
 
 def countTotalPractisingInTerm(term_id):
     slList  =[0,0,0,0,0]
