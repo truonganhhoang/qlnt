@@ -16,6 +16,8 @@ body {
     /*padding: 0 0 0 0;*/
     /*margin: 0 0 0 0;*/
     color: #595959;
+    /*background-color: #dddddd;*/
+
     font: 14px/18px Arial, "Times New Roman", verdana, sans-serif;
     /*font: 14px/16px "Lucida Grande", "Lucida Sans", verdana, sans-serif;*/
 	/*font: 14px/18px "Droid Sans", Arial, verdana, sans-serif;*/
@@ -512,21 +514,21 @@ header {
     color: #000000;
     /*background-color: #eff1e4;*/
     /*padding: 0;*/
-    border-bottom: #cccccc thin solid;
+    /*border-bottom: #cccccc thin solid;*/
 }
 
 header img.logo {
-    width: 80px;
-    height: 50px;
+    width: 120px;
+    height: 70px;
     position: absolute;
     top: 10px;
-    left: 5px;
+    left: 100px;
 }
 
 header p {
     position: absolute;
-    top: 10px;
-    left: 100px;
+    top: 15px;
+    left: 300px;
     font: 18px Arial, Helvetica, sans-serif;
     font-weight: bold;
     color: #555555;
@@ -577,13 +579,13 @@ header #topUser ul li a:hover {
 }
 
 nav {
-    height: 22px;
-    position: relative;
-    top: 45px;
+    height: 24px;
+    position: absolute;
+    top: 42px;
     /*bottom: 0px;*/
-    left: 100px;
+    left: 300px;
     /*background-color: #c6d9f9;*/
-    width: auto;
+    /*width: 80;*/
     /*margin-left: auto;*/
     /*margin-right: auto;*/
     /*border-bottom: #e3dcdc thin solid;*/
@@ -601,7 +603,7 @@ nav ul li {
 
 nav ul li a {
     width: auto;
-    height: 22px;
+    height: 24px;
     display: block;
     background: url(../menu/nav_bar_background.png) repeat 0 0;
     /*background-color: #eeeeee;*/
@@ -611,8 +613,8 @@ nav ul li a {
     font-weight: bold;
     text-decoration: none;
     text-align: center;
-    padding: 4px 10px 2px 10px;
-    margin: 0px 1px 0px 0px;
+    padding: 8px 12px 2px 12px;
+    /*margin: 0px 0px 0px 0px;*/
 
     /*border-radius: 2px;*/
 
@@ -635,22 +637,53 @@ nav ul li a:hover {
 }
 
 section#main {
-    margin: 10px 10px 10px 10px;
+    margin: 20px 10px 10px 10px;
+    padding: 10px 10px 10px 10px;
+    background-color: #eeeeee;
+    border: #bbbbbb solid thin;
+    border-radius: 5px;
 }
 
 /*---- CONTENT TOP----*/
 #contentTop {
-    background-color: #FFFFFF;
+    /*background-color: #FFFFFF;*/
+    /*vertical-align: baseline;*/
+    padding-bottom: 3px;
+    border-bottom: #dddddd inset thin;
+}
+
+.flag em {
+    text-indent: 10px;
+    padding: 4px 0 4px 0;
+    margin: -1px 5px -1px -6px;
+    border: solid 1px white;
+    border-right: 0;
+    display: block;
+    -webkit-transform: skew(-10deg,0deg);
+    -moz-transform: skew(-10deg,0deg);
+    -o-transform: skew(-10deg,0deg);
+    transform: skew(-10deg,0deg);
+    font-style: normal;
+    vertical-align: baseline;
+}
+
+.flag, .flag em {
+    background-color: #FFDA4A;
+    background-image: -moz-linear-gradient(left, #FFDA4A, #FFC32C);
+    background-image: -webkit-gradient(linear,left top,right top,color-stop(0, #FFDA4A),color-stop(1, #FFC32C));
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#FFDA4A', EndColorStr='#FFC32C');
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#FFDA4A', EndColorStr='#FFC32C')";
+    vertical-align: baseline;
 }
 
 #contentTop a {
+    vertical-align: baseline;
     text-decoration: none;
-}
-
-#content {
-    width: 100%;
-    position: relative;
-    display: block;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    background: transparent;
 }
 
 div.infoContent {
@@ -692,6 +725,13 @@ div#divList {
     margin: 5px;
     padding: 5px;
     cursor: pointer;
+}
+
+#content {
+    /*width: 100%;*/
+    /*position: relative;*/
+    /*display: block;*/
+    min-height: 450px;
 }
 
 #content h2 {
@@ -760,10 +800,10 @@ div#tabs ul li{
 /*----FOOTER PANEL----*/
 footer {
     position: relative;
-    margin-top: 50px;
+    margin-top: 30px;
     padding: 6px 0 6px;
-    border-top: thin solid #c0c0c0;
-    min-width: 1024px;
+    /*border-top: thin solid #c0c0c0;*/
+    min-width: 980px;
     height: 20px;
     display: block;
 }
@@ -784,39 +824,44 @@ div.autocomplete button{
     width: 21px;
 }
 
-div#classes{
+/* class listing */
+section#classes{
     position: relative;
-    float: left;
-    width: 60%;
+    /*left: 300px;*/
+    top: 10px;
+    /*float: left;*/
+    overflow: hidden;
+    /*width: 60%;*/
     display: block;
 }
 
-div#classes .classDiv{
+section#classes .classDiv{
     float: left;
     width: 150px;
+    height: 40px;
     margin: 3px 6px 6px 0;
     /*padding: 5px;*/
 }
 
-div#classes a{
-    text-decoration: none;
-    border-color: #bbbbbb;
-}
-
-div#classes a:hover{
-    text-decoration: none;
-    background-color: #e17009;
-    background-image: none;
-}
-
-div#classes h3{
+section#classes h3{
     font-size: 14px;
     clear: both;
     padding: 3px 6px 0px 0px;
 }
 
-div#classes h4{
-    padding: 5px 6px 5px;
+section#classes a{
+    text-decoration: none;
+    border-color: #bbbbbb;
+}
+
+section#classes a:hover{
+    text-decoration: none;
+    background-color: #e17009;
+    /*background-image: none;*/
+}
+
+section#classes .classname{
+    padding: 10px;
     font-size: 16px;
     font-family: arial;
     font-weight: bold;
@@ -824,26 +869,24 @@ div#classes h4{
 }
 
 
-div#classes p .dimmer{
-    color: #9f9d9d;
+section#classes .dimmer{
+    color: #555555;
 }
 
-div#classes p{
+section#classes p{
     padding: 5px 10px;
 }
 
-
-div#sitemap {
-    position: relative;
-    overflow: hidden;
-    float: left;
-    width: 20%;
-    margin-right: 20px;
-    border-right: 1px;
-    min-width: 285px;
+aside {
+  background-color:#8CCAF0;
+  border-radius: 5px;
+  width:180px; /*+*/
+  float:right;
+  overflow: hidden;
 }
 
-div#sitemap a {
+aside a {
+    /*position: relative;*/
     float: left;
     text-align: center;
     vertical-align: middle;
@@ -857,11 +900,11 @@ div#sitemap a {
 }
 
 .sitemapitem {
-    width: 80px;
-    height: 80px;
+    width: 70px;
+    height: 70px;
 }
 
-div#sitemap a:hover {
+aside a:hover {
     display: block;
     color: #e17009;
     border-color: #e17009;
@@ -874,7 +917,7 @@ div#sitemap a:hover {
     margin: 6px 6px 6px 0px;
 }
 
-div#sitemap .icon {
+aside .icon {
     width: 48px;
     height: 48px;
     margin: 3px 3px;
