@@ -82,7 +82,7 @@ class TeacherTTCBForm(forms.ModelForm):
 class PupilForm(forms.ModelForm):
     class Meta:
         model = Pupil
-        exclude = ('school_id','user_id','index')
+        exclude = ('school_id','user_id','index', 'classes')
         widgets = {
             'birthday' : DateInput(attrs = {'class':'datepicker'}),
             'school_join_date' : DateInput(attrs = {'class':'datepicker'}),

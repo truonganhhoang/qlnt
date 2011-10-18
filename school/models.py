@@ -331,12 +331,16 @@ class Pupil(BasicPersonInfo):
     classes = models.ManyToManyField(Class, through="Attend", related_name='student_set')
 
     def get_attended_classes(self):
-        classes = Class.objects.filter( pupil__id = self.id)
+        classes = Class.objects.filter(pupil__id=self.id)
         return classes
 
+    def get_attended(self):
+        attended = Attend.objects.filter(pupil__id=self.id)
+        return attended
+
     def current_class(self):
-        classes = Class.objects.filter( pupil__id = self.id,
-                                        attend__leave_time = None)
+        classes = Class.objects.filter(pupil__id=self.id,
+                                       attend__leave_time=None)
         if not classes:
             #print classes
             #raise Exception('InvalidClassSet_%s' % self.id)
@@ -383,6 +387,9 @@ class Attend(models.Model):
     _class = models.ForeignKey(Class, verbose_name=u"Lớp")
     attend_time = models.DateTimeField("Thời gian nhập lớp")
     leave_time = models.DateTimeField("Thời gian rời lớp", null = True, blank= True)
+
+    def get_class(self):
+        return self._class
 
     def __unicode__(self):
         return unicode(self.pupil) + '_' + unicode(self._class)

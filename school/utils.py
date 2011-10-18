@@ -297,6 +297,13 @@ def add_student( student = None, index = 0, start_year = None , year = None,
             userprofile.save()
             st.user_id = user
             st.save()
+            
+            a = Attend()
+            a._class = _class
+            a.pupil = st
+            a.attend_time = date.today()
+            a.leave_time = None
+            a.save()
             _class.max += 1
             _class.save()
 
@@ -862,3 +869,4 @@ def get_student(request):
         return None
     pupil = request.user.pupil
     return pupil
+

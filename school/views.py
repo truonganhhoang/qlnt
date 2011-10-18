@@ -1850,14 +1850,17 @@ def viewClassDetail(request, class_id, sort_type=0, sort_status=0):
 
         elif request.POST[u'request_type'] == u'add':
             start_year = StartYear.objects.get(time = int(date.today().year), school_id = school.id)
-            data = request.POST.copy()
-            data.appendlist('school_join_date',date.today().strftime("%d/%m/%Y"))
-            data.appendlist('ban_dk',u'CB')
-            data.appendlist('quoc_tich',u'Việt Nam')
-            data.appendlist('index',cl.pupil_set.count()+1)
-            data.appendlist('class_id',class_id)
-            data.appendlist('start_year_id',start_year.id)
+            try:
+                data = {'first_name':request.POST['first_name'], 'last_name':request.POST['last_name'], 'birthday':request.POST['birthday'],
+                        'sex':request.POST['sex'], 'birth place': request.POST['birth_place'].strip(), 'current_address':request.POST['current_address'].strip(),
+                        'school_join_date': date.today().strftime("%d/%m/%Y"), 'ban_dk':u'CB', 'quoc_tich':u'Việt Nam', 'index': cl.pupil_set.count()+1,
+                        'class_id':int(class_id), 'start_year_id': start_year.id, 'mother_name':request.POST['mother_name'].strip(), 'father_name':request.POST['father_name'].strip(),
+                        'sms_phone':request.POST['sms_phone']}
+
+            except Exception as e:
+                print e
             form = PupilForm(school.id, data)
+            print data
             if form.is_valid():
                 school_join_date = date.today()
                 birthday = to_date(request.POST['birthday'])
@@ -2790,6 +2793,8 @@ def viewStudentDetail(request, student_id):
                                              'ngay_vao_doi':ngay_vao_doi, 'ngay_vao_doan':ngay_vao_doan,
                                              'ngay_vao_dang':ngay_vao_dang})
                 return HttpResponse(response, mimetype = 'json')
+    attended = pupil.get_attended()
+    print attended
     t = loader.get_template(os.path.join('school', 'student_detail.html'))
     c = RequestContext(request, {   'form': form,
                                     'ttcnform': ttcnform,
@@ -2799,6 +2804,7 @@ def viewStudentDetail(request, student_id):
                                     'message': message,
                                     'id': student_id,
                                     'class':pupil.class_id,
+                                    'attended': attended,
                                     'pos':pos,
                                     'student': pupil,
                                     }
