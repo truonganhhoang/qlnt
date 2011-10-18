@@ -878,9 +878,9 @@ def sendSMSForAPupil(s,user):
                 
         if  (termNumber==2) & (number==17) : number=18
         elif (termNumber==2) & (number==18): number=17  
-        if   number <6  : markStr1+=value+" "
-        elif number <11 : markStr2+=value+" " 
-        elif number <16 : markStr3+=value+" " 
+        if   number <6  : markStr1+=value+"  "
+        elif number <11 : markStr2+=value+"  " 
+        elif number <16 : markStr3+=value+"  " 
         elif number ==16: markStr4+=value+" " 
         elif number ==17: markStr5+=value+" " 
         elif number ==18: markStr6+=value+" " 
@@ -890,10 +890,10 @@ def sendSMSForAPupil(s,user):
     smsString+=to_en1(m.student_id.last_name)+" "+to_en1(m.student_id.first_name)+" nhu sau: "    
     termNumber = m.term_id.number
      
-    if markStr1 !="":  smsString+="Mieng:" + markStr1     
+    if markStr1 !="":  smsString+="mieng:" + markStr1     
     if markStr2 !="":  smsString+="diem 15 phut:" + markStr2     
     if markStr3 !="":  smsString+="diem 45 phut:" + markStr3     
-    if markStr4 !="":  smsString+="Thi cuoi ky:" + markStr4
+    if markStr4 !="":  smsString+="thi cuoi ky:" + markStr4
     
     if markStr5 !="":
         if termNumber==2:
@@ -906,7 +906,7 @@ def sendSMSForAPupil(s,user):
     
     if m.student_id.sms_phone:
         sendSMS(m.student_id.sms_phone,smsString,user)
-    m.save()    
+        m.save()    
     print smsString    
     print len(smsString)
     print user
