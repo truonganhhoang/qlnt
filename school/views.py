@@ -1,4 +1,4 @@
-﻿# -*- coding: utf-8 -*-
+ # -*- coding: utf-8 -*-
 
 # Create your views here.
 import os.path
@@ -1860,7 +1860,7 @@ def viewClassDetail(request, class_id, sort_type=0, sort_status=0):
             except Exception as e:
                 print e
             form = PupilForm(school.id, data)
-            print data
+            #print data
             if form.is_valid():
                 school_join_date = date.today()
                 birthday = to_date(request.POST['birthday'])
@@ -2677,7 +2677,7 @@ def viewStudentDetail(request, student_id):
     ttgdform = ThongTinGiaDinhForm(instance=pupil)
     ttddform = ThongTinDoanDoiForm(student_id,instance=pupil)
     if request.method == 'POST':
-        print request.POST
+        #print request.POST
         data = request.POST.copy()
         if request.POST['request_type'] == 'ttcn':
             data['first_name'] = data['first_name'].strip()
@@ -2794,7 +2794,7 @@ def viewStudentDetail(request, student_id):
                                              'ngay_vao_dang':ngay_vao_dang})
                 return HttpResponse(response, mimetype = 'json')
     attended = pupil.get_attended()
-    print attended
+    #print attended
     t = loader.get_template(os.path.join('school', 'student_detail.html'))
     c = RequestContext(request, {   'form': form,
                                     'ttcnform': ttcnform,
