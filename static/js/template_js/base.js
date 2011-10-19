@@ -53,7 +53,7 @@ $(document).ready(function(){
             "trang web này tốt hơn.");
     }
 
-    $("footer").css('width',$(document).width());
+//    $("footer").css('width',$(document).width());
 
 //    $(document).resize(function(){
 //        if ($('#place_keeper').offset().top + $("footer").outerHeight() <= $(window).height()){
@@ -66,16 +66,16 @@ $(document).ready(function(){
 //    });
 
 
-    
-    var maxHeight = 0;
-    $(".thumb > ul").each(function(){
-        if ($(this).height() > maxHeight){
-            maxHeight = $(this).height();
-        }
-    });
-    $(".thumb > ul").each(function(){
-        $(this).css('height', maxHeight);
-    });
+//
+//    var maxHeight = 0;
+//    $(".thumb > ul").each(function(){
+//        if ($(this).height() > maxHeight){
+//            maxHeight = $(this).height();
+//        }
+//    });
+//    $(".thumb > ul").each(function(){
+//        $(this).css('height', maxHeight);
+//    });
 
     // end setting up
     // xss prevention

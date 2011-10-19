@@ -4,14 +4,14 @@
     {% if user.is_authenticated %}
     {% if user.userprofile.position == 'HIEU_TRUONG' or user.userprofile.position == 'HIEU_PHO' or user.userprofile.position == 'GIAO_VU' %}
       <aside id="sitemap">
-        <h2>Chức năng chính</h2>
+        <h3>Thường dùng</h3>
         <a class="sitemapitem ui-widget-content ui-corner-all" href="{% url school.views.tnc_select %}">
             <img class="icon" src="/static/menu/checklist.png" alt="Điểm danh"/>
             Điểm danh
         </a>
         <a class="sitemapitem ui-widget-content ui-corner-all" href="{% url school.viewMark.markTable %}">
             <img class="icon" src="/static/menu/mark.png" alt="Điểm"/>
-            Vào điểm
+            Điểm 
         </a>
         <a class="sitemapitem ui-widget-content ui-corner-all" href="{% url school.views.hanh_kiem %}">
             <img class="icon" src="/static/menu/medal.png" alt="Hạnh kiểm"/>
@@ -36,11 +36,11 @@
             {% if class.block_id == grade %}
               <a class="classDiv ui-widget-content ui-corner-all"
                  href="{% url school.views.viewClassDetail class.id %}">
-                <span id="{{ class.id }}">
+                <div id="{{ class.id }}">
                   <span class="classname"> {{ class.name }} </span>
                   <span class="dimmer">Sĩ số:</span>
-                  {{ class.number_of_pupils }}
-                </span>
+                  <span>{{ class.number_of_pupils }}</span>
+                </div>
               </a>
             {% endif %}
           {% endfor %}
@@ -91,36 +91,6 @@
                   <img class="icon" src="/static/menu/teachers.png" alt="Giáo viên"/>
                   Giáo viên
               </a>
-
-{#          <div class="thumb">#}
-{#            <h3 class="ui-widget-header ui-corner-top">Lớp học</h3>#}
-{#            <ul class="ui-widget-content ui-corner-bottom">#}
-{#              <li><a href="{% url school.views.classes %}">Danh sách lớp học</a></li>#}
-{#            </ul>#}
-{#          </div>#}
-{#            #}
-{#          <div class="thumb" style="display: none;">#}
-{#            <h3 class="ui-widget-header ui-corner-top">Học sinh</h3>#}
-{#            <ul class="ui-widget-content ui-corner-bottom">#}
-{#              <li><a href="{%  url school.views.nhap_danh_sach_trung_tuyen %}">Nhập từ file Excel</a></li>#}
-{#              <li><a href="{%  url school.views.manual_adding %}">Nhập trực tiếp</a></li>#}
-{#            </ul>#}
-{#          </div>#}
-{#          <div class="thumb">#}
-{#            <h3 class="ui-widget-header ui-corner-top">Giáo viên</h3>#}
-{#            <ul class="ui-widget-content ui-corner-bottom">#}
-{#              <li><a href="{% url school.views.teachers %}">Danh sách giáo viên</a></li>#}
-{#            </ul>#}
-{#          </div>#}
-{##}
-{#          <div class="thumb">#}
-{#            <h3 class="ui-widget-header ui-corner-top">Nhà trường</h3>#}
-{#            <ul class="ui-widget-content ui-corner-bottom">#}
-{#              <li><a href="{% url school.views.info %}" title="Thông tin về trường học">Thông tin trường#}
-{#                học</a></li>#}
-{#              <li><a title="(Đang phát triển..)">Các năm học</a></li>#}
-{#            </ul>#}
-{#          </div>#}
         </div>
 
         <div id="classes">

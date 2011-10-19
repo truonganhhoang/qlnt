@@ -2,7 +2,9 @@
 
 {% block content %}
   {% load pagination_tags %}
-  {% if user.is_authenticated %}
+  {% if not user.is_authenticated %}
+    <h2>Gửi tin nhắn SMS</h2>
+  {% else %}
     <h2>Gửi tin nhắn SMS</h2>
     <a href="{%url school.sms_views.excel_sms%}">Nhập từ file Excel</a>
     <form action="" method="post">{% csrf_token %}
@@ -49,7 +51,7 @@
               }
             </script>
         </tr>
-        <tr>
+        <tr style="display:none">
           <th>Người nhận:</th>
           <td>
             <div style="width:500px; height:200px; overflow: auto; border:solid 1px">
@@ -66,7 +68,7 @@
         </tr>
         <tr>
           <th>
-            Hoặc nhập số điện thoại:
+            Số điện thoại:
           </th>
           <td>
             <p class="errorlist">{{ phone_error }}</p>
@@ -87,12 +89,14 @@
             </script>
           </td>
         </tr>
-        <tr>
-          <td></td>
-          <td>
-            <input text-align="right" type="submit" value="Gửi"/></td>
-        </tr>
+{#        <tr>#}
+{#          <td></td>#}
+{#          <td>#}
+{#        </td>#}
+{#        </tr>#}
       </table>
+    <br>
+      <input text-align="right" class="ggButton" type="submit" value="Gửi"/>
     </form>
   {% endif %}
 {% endblock %}
