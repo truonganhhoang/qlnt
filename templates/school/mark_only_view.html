@@ -1,18 +1,18 @@
-﻿	<table  class="styleA"  width = "100%" id="markTable" >
+﻿	<table  class="styleA"  width = "100%" id="markTable"  >
 		<tr>
 			<th rowspan=2 colspan=1 align="center" width="1%" 
-				style="border-bottom-width:0px;border-right-width:0px" >
+				style="border-bottom-width:0px;border-right-width:0px;padding:0px" >
 				Stt
 			</th>	
 			<th rowspan=2 colspan=1 align="center" width="1%" 
 				style="border-bottom-width:0px;border-left-width:0px" >
 			</th>	
 			
-			<th rowspan=3 colspan=2 align="center" width="20%">
+			<th rowspan=3 colspan=2  width="20%" style="text-align:center">
 				Họ và tên
 			</th>	
 			
-			<th rowspan=3 align="center" width="5%"  >			
+			<th rowspan=3 align="center" width="5%" style="text-align:center" >			
 				Ngày sinh
 			</th>	
 
@@ -69,7 +69,7 @@
 	</tr>
 		
 		<tr>
-		<th width ="1%" title="Click vào đây để chọn tất cả" style="border-right-width:0px; border-top-width:0px" > 
+		<th width ="1%" title="Click vào đây để chọn tất cả" style="border-right-width:1px; border-top-width:1px;text-align:left;padding:1px" > 
 			<input type="checkbox" id="checkAllRow" onclick="checkAll(this)" style="display:none">  
 		</th>
 		
@@ -106,7 +106,7 @@
 	{% ifequal selectedTerm.number 1 %} 
 		{% for p,m,ea,id in list %}	
 		<tr >
-			<td style="text-align: center;" onclick="select(this)" style="border-right-width:0px" >
+			<td align="left" onclick="select(this)" style="border-right-width:0px" >
 			 <input title="Có thể click vào cột họ tên và ngày sinh để chọn cho nhanh hơn" type="checkbox" id="{{forloop.counter}}00" style="display:none" > 	
 			</td>
 			<td title="Click vào đây để chọn học sinh được gửi tin nhắn" align="center" onclick="select(this)" style="border-left-width:0px" >
@@ -188,8 +188,8 @@
 	{% else%}
 		{% for p,m,ea,hk1,tbnam,id in list %}		
 		<tr >
-			<td style="text-align: center;" onclick="select(this)" style="border-right-width:0px" >
-			 <input title="Có thể click vào cột họ tên và ngày sinh để chọn cho nhanh hơn" type="checkbox" id="{{forloop.counter}}00" style="display:none" > 	
+			<td  onclick="select(this)" style="border-right-width:0px" >
+			   <input title="Có thể click vào cột họ tên và ngày sinh để chọn cho nhanh hơn" type="checkbox" id="{{forloop.counter}}00" style="display:none" > 	
 			</td>
 			<td title="Click vào đây để chọn học sinh được gửi tin nhắn" align="center" onclick="select(this)" style="border-left-width:0px" >
 			 {{forloop.counter}}	

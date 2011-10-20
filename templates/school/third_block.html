@@ -4,49 +4,55 @@
 	<button   style="padding: 2px 2px;width: 70px;display:none" id="buttonSave" onclick="update()"  > <div id="messageChanging"  >  </div>  </button>
 	</div>
 
-    <div style="text-align:right;font-size:90%">
-		Dịch chuyển:
-        <input type="radio" name="move" id="ngang2" value="ngang2" 
-               title="Chuyển sang cột tiếp theo bằng ENTER,TAB  hoặc phím mũi tên">
-        Ngang
-
-        <input type="radio" name="move" id="doc" value="doc" checked
-               title="Chuyển xuống hàng tiếp theo bằng ENTER, TAB hoặc phím mũi tên">
-        Dọc
-		{% if  not selectedSubject.nx %}
-			&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp Gõ tắt: ví dụ 75 sẽ thành 7.5, ấn Enter, Tab hoặc mũi tên để sang ô tiếp theo.
-		{% else %}
-			&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp Nhập điểm:G -> Giỏi, K -> Khá, T -> Trung bình, Y -> Yếu, Ke -> Kém.
-		{% endif %}	
-    </div>
-	
-	</form>
-	
-	<script>	
-		m = document.getElementById("{{move}}")
-		if (m) m.checked = true;
-	</script>
-	<table width="100%" >	
-		<tr>
-		<td>
-			<ul>			
-			<button  id="sendSelect" onclick="showMessageTable();" style="margin-buttom: 0px;">Gửi SMS <img src="/static/images/message3.png" > <img src="/static/images/muiten.png" id="messageImage">  </button>
-			<div class="messageTable" id="messageTable" style="display:none;	position:absolute; ">
-				 <li onclick="selectNoSent()">Chọn những điểm chưa nhắn  </li>
-				 <li onclick="selectAllToSend()" >Chọn tất cả   </li>
-				 <li onclick="cancelAll()">Bỏ tất cả            </li>
-				 <li onclick="sendSMS()">Gửi       </li> 						 
-			</div>
-			</ul>
+	<table width="100%" border=0 >	
+	<tr>
+		<td>		
+			Chế độ:
+			<input type="radio" name="ModeTypeMark" value="1" checked onclick="showMessageTable();">Nhập điểm &nbsp&nbsp
+			<input type="radio" name="ModeTypeMark" value="2" onclick="showMessageTable();" >Nhắn tin
 		</td>
-			
+		
+		<td>
+			<div style="text-align:right;font-size:90%">
+				Dịch chuyển:
+				<input type="radio" name="move" id="ngang2" value="ngang2" 
+					   title="Chuyển sang cột tiếp theo bằng ENTER,TAB  hoặc phím mũi tên">
+				Ngang
+
+				<input type="radio" name="move" id="doc" value="doc" checked
+					   title="Chuyển xuống hàng tiếp theo bằng ENTER, TAB hoặc phím mũi tên">
+				Dọc
+				{% if  not selectedSubject.nx %}
+					&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp Gõ tắt: ví dụ 75 sẽ thành 7.5, ấn Enter, Tab hoặc mũi tên để sang ô tiếp theo.
+				{% else %}
+					&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp Nhập điểm:G -> Giỏi, K -> Khá, T -> Trung bình, Y -> Yếu, Ke -> Kém.
+				{% endif %}	
+			</div>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<div id="messageTable" style="display:none;	position:absolute; ">
+				<button onclick="sendSMS()"  class="ggButton"          >Gửi </button>
+				<button onclick="selectNoSent()" class="ggButton"    >Chọn những điểm chưa nhắn </button>
+				<button onclick="selectAllToSend()" class="ggButton" >Chọn tất cả </button>
+				<button onclick="cancelAll()"        class="ggButton"  >Bỏ tất cả </button>
+			</div>				
+		</td>	
+		
 		<td align="right">
 		   {# <a class="ggButton" href="#popupDiv" id="import"> Nhập từ Excel </a>	 #}
 			<a class="ggButton" href="/school/markExcel/{{termChoice}}/{{subjectChoice}}"> Xuất ra excel </a>	
 			
 		</td>	
-		</tr>
+	</tr>
 	</table>	
+	
+	</form>	
+	<script>	
+		m = document.getElementById("{{move}}")
+		if (m) m.checked = true;
+	</script>
 	
     <div style="display:none"  >
         <div id="fileupload">
@@ -81,5 +87,4 @@
 		{% include "school/qlnt_upload_for_student.js" %}
 	</script>	
 	
-	<br>
 	<br>

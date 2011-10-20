@@ -871,6 +871,7 @@ def sendSMSForAPupil(s,user):
     markStr5=""
     markStr6=""
     markStr7=""
+    print m.sent_mark
     for i in range(length-1):                 
         number= int(setOfNumber[i])
         value = setOfValue[i]

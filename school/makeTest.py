@@ -178,7 +178,7 @@ def thu1(request):
     return HttpResponse(t.render(c))
 
 @transaction.commit_on_success                                                              
-def thu(request):
+def thu1(request):
     t1= time.time()
     
     markList = Mark.objects.filter(subject_id__class_id=26)
@@ -241,8 +241,9 @@ def thu(request):
     #print (t2-t1)
     return HttpResponse(t.render(c))
 
-def thu1(request):
+def thu(request):
     t1= time.time()
+    
     
     t = loader.get_template(os.path.join('school','ll.html'))
     t2=time.time()
