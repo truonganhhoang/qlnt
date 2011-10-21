@@ -251,15 +251,15 @@ def getMark(subjectChoice,selectedTerm):
     print "fffffffffffffff"
     print selectedTerm.year_id.school_id.get_setting('lock_time')  
     print timeToEdit    
-    pupilList=Pupil.objects.filter(class_id=class_id).order_by('index')                
+    pupilList=Pupil.objects.filter(class_id=class_id).order_by('index','first_name','last_name','birthday')                
     editList=[]    
     idList=[]    
     tbhk1List=[]
     tbnamList=[]
     if selectedTerm.number==1:            
         i=1   
-        markList     =Mark.objects.filter(term_id=selectedTerm.id,subject_id=subjectChoice).order_by('student_id__index')
-        markTimeList =MarkTime.objects.filter(mark_id__term_id=selectedTerm.id,mark_id__subject_id=subjectChoice).order_by('mark_id__student_id__index') 
+        markList     =Mark.objects.filter(term_id=selectedTerm.id,subject_id=subjectChoice).order_by('student_id__index','student_id__first_name','student_id__last_name','student_id__birthday')
+        markTimeList =MarkTime.objects.filter(mark_id__term_id=selectedTerm.id,mark_id__subject_id=subjectChoice).order_by('mark_id__student_id__index','mark_id__student_id__first_name','mark_id__student_id__last_name','mark_id__student_id__birthday') 
 
         for mt in markTimeList: 
             ea=defineEdit(mt,timeToEdit)            
@@ -273,10 +273,10 @@ def getMark(subjectChoice,selectedTerm):
     else:
         i=1
         beforeTerm   =Term.objects.get(year_id=selectedTerm.year_id,number=1).id
-        markList     =Mark.objects.filter(term_id=selectedTerm.id,subject_id=subjectChoice).order_by('student_id__index')
-        markTimeList =MarkTime.objects.filter(mark_id__term_id=selectedTerm.id,mark_id__subject_id=subjectChoice).order_by('mark_id__student_id__index') 
-        tbhk1List    =Mark.objects.filter(term_id=beforeTerm,subject_id=subjectChoice).order_by('student_id__index')
-        tbnamList    =TKMon.objects.filter(subject_id=subjectChoice).order_by('student_id__index')
+        markList     =Mark.objects.filter(term_id=selectedTerm.id,subject_id=subjectChoice).order_by('student_id__index','student_id__first_name','student_id__last_name','student_id__birthday')
+        markTimeList =MarkTime.objects.filter(mark_id__term_id=selectedTerm.id,mark_id__subject_id=subjectChoice).order_by('mark_id__student_id__index','mark_id__student_id__first_name','mark_id__student_id__last_name','mark_id__student_id__birthday') 
+        tbhk1List    =Mark.objects.filter(term_id=beforeTerm,subject_id=subjectChoice).order_by('student_id__index','student_id__first_name','student_id__last_name','student_id__birthday')
+        tbnamList    =TKMon.objects.filter(subject_id=subjectChoice).order_by('student_id__index','student_id__first_name','student_id__last_name','student_id__birthday')
         
         for mt in markTimeList:                      
             ea=defineEdit(mt,timeToEdit)                
@@ -464,7 +464,7 @@ def markTable(request,term_id=-1,class_id=-1,subject_id=-1,move=None):
     """
     selectedClass=None
     if classChoice !=-1: 
-        subjectList=Subject.objects.filter(class_id=classChoice,primary__in=[0,selectedTerm.number,3]).order_by("index")
+        subjectList=Subject.objects.filter(class_id=classChoice,primary__in=[0,selectedTerm.number,3]).order_by("index",'name')
         selectedClass=Class.objects.get(id=classChoice)   
    
     selectedSubject=None
@@ -639,7 +639,7 @@ def markForAStudent(request,class_id,student_id):
         termChoice =int(request.POST['term'])
         selectedTerm=Term.objects.get(id=termChoice)
         
-    subjectList=selectedClass.subject_set.all().order_by("index")
+    subjectList=selectedClass.subject_set.all().order_by("index",'name')
     
     
     markList=[]
@@ -946,10 +946,10 @@ def capNhapMienGiam(request,class_id, student_id):
     
     
     # nho order
-    subjectList = Subject.objects.filter(class_id=class_id,name__in=['GDQP-AN',u'Thể dục',u'Âm nhạc',u'Mĩ thuật','GDQP']).order_by('index')
-    term1Mark   = Mark.objects.filter(subject_id__class_id=class_id,student_id=student_id,term_id__number=1,subject_id__name__in=['GDQP-AN',u'Thể dục',u'Âm nhạc',u'Mĩ thuật','GDQP']).order_by('subject_id__index')
-    term2Mark   = Mark.objects.filter(subject_id__class_id=class_id,student_id=student_id,term_id__number=2,subject_id__name__in=['GDQP-AN',u'Thể dục',u'Âm nhạc',u'Mĩ thuật','GDQP']).order_by('subject_id__index')
-    tkMonList   = TKMon.objects.filter(subject_id__class_id=class_id,student_id=student_id,subject_id__name__in=['GDQP-AN',u'Thể dục',u'Âm nhạc',u'Mĩ thuật','GDQP']).order_by('subject_id__index')
+    subjectList = Subject.objects.filter(class_id=class_id,name__in=['GDQP-AN',u'Thể dục',u'Âm nhạc',u'Mĩ thuật','GDQP']).order_by('index','name')
+    term1Mark   = Mark.objects.filter(subject_id__class_id=class_id,student_id=student_id,term_id__number=1,subject_id__name__in=['GDQP-AN',u'Thể dục',u'Âm nhạc',u'Mĩ thuật','GDQP']).order_by('subject_id__index','subject_id__name')
+    term2Mark   = Mark.objects.filter(subject_id__class_id=class_id,student_id=student_id,term_id__number=2,subject_id__name__in=['GDQP-AN',u'Thể dục',u'Âm nhạc',u'Mĩ thuật','GDQP']).order_by('subject_id__index','subject_id__name')
+    tkMonList   = TKMon.objects.filter(subject_id__class_id=class_id,student_id=student_id,subject_id__name__in=['GDQP-AN',u'Thể dục',u'Âm nhạc',u'Mĩ thuật','GDQP']).order_by('subject_id__index','subject_id__name')
     # cam xoa  2 dong nay. Xoa se sai ngay
     for term1,term2,tkMon,s in zip(term1Mark,term2Mark,tkMonList,subjectList):
         pass

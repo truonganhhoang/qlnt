@@ -724,7 +724,7 @@ def count1(request,year_id=None,number=None,type=None,):
                                  
     return HttpResponse(t.render(c))
 def listSubject(year_id):
-    subjectList=Subject.objects.filter(class_id__year_id=year_id).order_by("index")
+    subjectList=Subject.objects.filter(class_id__year_id=year_id).order_by("index",'name')
     list=[]
     for s in subjectList:
         if not (s.name in list):
