@@ -435,7 +435,7 @@ def xepLoaiHlTheoLop(request,class_id,termNumber):
     
     #classList     =Class.objects.filter(year_id=idYear)    
     selectedYear  =selectedClass.year_id
-    pupilList     =Pupil.objects.filter(class_id=class_id).order_by('index','first_name,','last_name','birthday')    
+    pupilList     =Pupil.objects.filter(class_id=class_id).order_by('index','first_name','last_name','birthday')    
 
     
     yearString = str(selectedYear.time)+"-"+str(selectedYear.time+1)

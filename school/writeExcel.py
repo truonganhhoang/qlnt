@@ -470,7 +470,7 @@ def printPage30(class_id,book):
            else:     
                s.write(i+5,j+3,'',h71)
                
-    tbNamList = TBNam.objects.filter(student_id__class_id=class_id).order_by('student_id__index','student_id__first_name','student_id__last_name','student_id__birthday','subject_id__index','subject_id__name')
+    tbNamList = TBNam.objects.filter(student_id__class_id=class_id).order_by('student_id__index','student_id__first_name','student_id__last_name','student_id__birthday')
     for (i,tbNam) in enumerate(tbNamList):
         str1 ="" 
         if tbNam.tb_nam !=None: str1 =str(tbNam.tb_nam)  
