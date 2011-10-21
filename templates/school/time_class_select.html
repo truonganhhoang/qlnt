@@ -1,5 +1,11 @@
 {% extends "base.html" %}
 
+{% block backward_link %}
+  <a href="{% url school.views.school_index %}"> Trang chủ </a>
+  > <a href="{% url school.views.school_index %}classes">Toàn trường</a>
+  > Điểm danh
+{% endblock %}
+
 {% block content %}
   <script>
      $(document).ready(function(){

@@ -245,10 +245,11 @@ $(document).ready(function(){
             Đóng: function(){ $(this).dialog('close');}
         },
         autoOpen: false,
+        position:'center',
         width: 440,
         height: 370,
-        maxWidth: 500,
-        maxHeight: 450,
+//        maxWidth: 500,
+//        maxHeight: 450,
         title: "Góp ý"
     });
 

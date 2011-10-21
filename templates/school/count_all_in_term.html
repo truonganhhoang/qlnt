@@ -1,11 +1,13 @@
-﻿  {% extends "base.html"%}  
+﻿{% extends "base.html"%}
+
+
 {% block content %}
 	{% if message != None %}
-	{{message}}
+  	{{message}}
 	{% endif %}
-<p align="center" style="font-size:25px"> <b> Thống kê xếp loại học kỳ {{selectedTerm.number}} <br> <br>
-	 Năm học :{{ yearString}}  </b>
-<p>
+  <p align="center" style="font-size:25px"> <b> Thống kê xếp loại học kỳ {{selectedTerm.number}} <br> <br>
+     Năm học :{{ yearString}}  </b>
+  <p>
 	
 <br>
 <br>

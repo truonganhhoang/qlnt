@@ -3,20 +3,20 @@
 
 {% block backward_link %}
 	{% if user.userprofile.position != "GIAO_VIEN" %}
-		<a href="/school/classes"> Toàn trường  </a> > 
+    <a href="{% url school.views.school_index %}"> Trang chủ </a>
+    > <a href="/school/classes"> Toàn trường  </a>
 		{% if selectedClass %}
-			<a href="/school/viewClassDetail/{{selectedClass.id}}"> {{selectedClass.name}}  </a> > 
+			> <a href="/school/viewClassDetail/{{selectedClass.id}}"> {{selectedClass.name}}  </a>
 		{% endif %}
 		{% if selectedSubject %}
-			{{selectedSubject.name}}  
+			> {{selectedSubject.name}}
 		{% endif %}
 	{% else %}
-        <a href="/school/markForTeacher">Điểm</a> 
+    <a href="{% url school.views.school_index %}"> Trang chủ </a>
+    > <a href="/school/markForTeacher">Điểm</a>
 		{% if selectedSubject %}
-			>
-			{{selectedSubject.name}}-{{selectedSubject.class_id.name}}
+			> {{selectedSubject.name}}-{{selectedSubject.class_id.name}}
 		{% endif %}
-	
 	{% endif %}
 {% endblock %} 
 
@@ -25,22 +25,22 @@
 {% block content %}
 
   <script language="JavaScript" type="text/javascript">
-    function submitSubject() 
+    function submitSubject()
 	{
 		if (document.info.subject.value != -1) 
 			if (document.info.move && document.info.move[0].checked)
-					window.location.href="/school/markTable/"+{{termChoice}}+"/"+{{classChoice}}+"/"+document.info.subject.value+"/ngang2";
+					window.location.href="/school/markTable/"  +  {{termChoice}} + "/" + {{classChoice}} + "/" + document.info.subject.value + "/ngang2";
 				else	
-					window.location.href="/school/markTable/"+{{termChoice}}+"/"+{{classChoice}}+"/"+document.info.subject.value;
+					window.location.href="/school/markTable/"  +  {{termChoice}} + "/" + {{classChoice}} + "/" + document.info.subject.value;
 				
 	}
-    function submitSubject1() 
+    function submitSubject1()
 	{
 		if (document.info.subject.value != -1) 
 			if (document.info.move && document.info.move[0].checked)
-					window.location.href="/school/markForTeacher/"+{{termChoice}}+"/"+document.info.subject.value+"/ngang2";
+					window.location.href="/school/markForTeacher/" + {{termChoice}} + "/" + document.info.subject.value + "/ngang2";
 				else	
-					window.location.href="/school/markForTeacher/"+{{termChoice}}+"/"+document.info.subject.value;
+					window.location.href="/school/markForTeacher/" + {{termChoice}} + "/" + document.info.subject.value;
 				
 	}
 	
@@ -50,7 +50,7 @@
 		{	
 			document.info.subject.value =-1;
 			//document.info.submit();
-			window.location.href="/school/markTable/"+{{termChoice}}+"/"+document.info.class1.value;
+			window.location.href="/school/markTable/" + {{termChoice}} + "/" + document.info.class1.value;
 		}	
 	}
 	function submitTerm()
@@ -63,23 +63,18 @@
 			window.location.href="/school/markForTeacher/"+document.info.term.value;
 		
 	}
-	
-	
-  </script>
+	</script>
   
-    {% include  "school/first_block_js.html" %}
-
+  {% include  "school/first_block_js.html" %}
 
 <form action="/school/markTable" name="info" method="post" id='myform'
     onsubmit="return false">{% csrf_token %}
-	<input type="hidden" name="submitChoice" value="">
+	<input type="hidden" name="submitChoice" value="" style="display: none;">
 
-	<div id="myDiv2" > </div> 
-	<div id="myDiv3" > </div> 
+	<div id="myDiv2" > </div>
+	<div id="myDiv3" > </div>
 	
-    <h2>Bảng điểm 
-	
-	   học kỳ
+    <h2>Bảng điểm học kỳ
 		<select name="term" onchange="submitTerm();">
         {% for term in termList %}
 			<option value={{ term.id }} selected> {{ term }} </option>

@@ -22,17 +22,17 @@
 
 
 
-	<div id="myDiv"> </div>  	
-	<div id="myDiv2"> </div>  	
-	<div id="myDiv3"> </div>  	
-	<div id="myDiv1"> </div>  	
+	<div id="myDiv" > </div>
+	<div id="myDiv2" > </div>
+	<div id="myDiv3" > </div>
+	<div id="myDiv1" > </div>
 	<h2>Bảng điểm lớp <b>{{ selectedClass.name }}</b>
             môn {{selectedSubject.name}}&nbsp
 			học kỳ&nbsp
-		<select name="term" onchange="submitTerm();">				
+		<select name="term" onchange="submitTerm();">
 			{% for term in termList %}
-					<option   value={{ term.id }} selected> {{ term}} </option>	
-			{% endfor %}				
+					<option   value={{ term.id }} selected> {{ term}} </option>
+			{% endfor %}
 		</select>
 	</h2>
 	

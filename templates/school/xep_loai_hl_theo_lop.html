@@ -1,16 +1,17 @@
 ﻿{% extends "base.html"%}
 {% block backward_link %}
-	<a href="/school/classes"> Toàn trường  </a> > 
-	<a href="/school/viewClassDetail/{{selectedClass.id}}"> {{selectedClass.name}}  </a> > 
-	Tổng kết điểm
+  <a href="{% url school.views.school_index %}"> Trang chủ </a>
+	> <a href="/school/classes"> Toàn trường  </a>
+	> <a href="/school/viewClassDetail/{{selectedClass.id}}"> {{selectedClass.name}}  </a>
+	> Tổng kết điểm
 	{% if number == 1 %}
 		kỳ I
 	{% else %}
-	{% if number == 2 %}
-		kỳ II
-	{% else %}
-		cả năm
-	{% endif %}
+    {% if number == 2 %}
+      kỳ II
+    {% else %}
+      cả năm
+    {% endif %}
 	{% endif %}
 		
 {% endblock %} 

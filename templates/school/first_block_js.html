@@ -9,7 +9,7 @@
 	else enableSendSMS = 0;
 	
 	
-	if ( {{selectedTerm.number}}== 2 )
+	if ("{{selectedTerm.number}}" == 2)
 		isSecondTerm = 1;
 	else	
 		isSecondTerm = 0; 
@@ -56,7 +56,6 @@
 			}	
 	
 function catchEnter(e)
-
 {
 	  	
       if (!e) e = window.event; 

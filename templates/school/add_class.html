@@ -1,7 +1,9 @@
 ﻿{% extends "base.html" %}
 
 {% block backward_link %}
-    <a href="{% url school.views.school_index %}classes"> Toàn trường</a> > Thêm lớp
+  <a href="{% url school.views.school_index %}"> Trang chủ </a>
+  > <a href="{% url school.views.school_index %}classes">Toàn trường</a>
+  > Thêm lớp
 {% endblock %}
 
 {% block content %}
@@ -63,10 +65,7 @@
                     {{ form.year_id }}
                 </td>
             </tr>
-
-
         </table>
-        <br>
         <input class="ggButton" type="submit" id="submit" title="" value="Thêm"/>
     </form>
 {% endblock %}

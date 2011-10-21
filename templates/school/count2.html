@@ -1,28 +1,32 @@
 ﻿{% extends "base.html" %}
 
 {% block backward_link %}
-  <div id="termString">
-    <a href="/school/report"> Báo cáo, thống kê </a> >
+  <a href="{% url school.views.school_index %}"> Trang chủ </a>
+  > <a href="/school/report"> Báo cáo, thống kê </a> 
+  > <div id="termString">
     {% if type == 1 %}
-      <a href="/school/count2/{{type}}"> Thống kê điểm trung bình </a> >
+{#      <a href="/school/count2/{{type}}"> #}
+        Điểm trung bình
+{#      </a> >#}
     {% else %}
       {% if type == 2 %}
-        <a href="/school/count2/{{type}}"> Thống kê điểm thi cuối kì </a> >
-
+{#        <a href="/school/count2/{{type}}"> #}
+          Điểm thi cuối kì
+{#        </a> #}
       {% endif %}
     {% endif %}
-    {% if number == 1 %}
-      Học kì I
-      {% else %}
-      {% if number == 2 %}
-        Học kì II
-      {% else %}
-        Cả năm
-      {% endif %}
-    {% endif %}
-    {% if  subjectName %}
-      {{ subjectName }}
-    {% endif %}
+{#    {% if number == 1 %}#}
+{#      Học kì I#}
+{#      {% else %}#}
+{#      {% if number == 2 %}#}
+{#        Học kì II#}
+{#      {% else %}#}
+{#        Cả năm#}
+{#      {% endif %}#}
+{#    {% endif %}#}
+{#    {% if  subjectName %}#}
+{#      {{ subjectName }}#}
+{#    {% endif %}#}
   </div>
 {% endblock %}
 

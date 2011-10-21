@@ -231,8 +231,10 @@
 
 
         {% if pos >= 4 %}
-            <input type="submit" class="ggButton submitbutton" value="Lưu"/>
+            <input type="submit" class="submitbutton ggButton " value="Lưu"/>
+
             <a href="{%url school.views.school_index %}addclass" class="ggButton">Thêm lớp học</a>
+
         {% endif %}
     </form>
     <div style="display: None;"></div>

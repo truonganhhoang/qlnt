@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="/static/css/jquery-ui-1.8.14.custom.css" type="text/css" media="screen"/>
     <link rel="stylesheet" href="/static/css/jquery_file_upload/jquery.fileupload-ui.css" type="text/css"
           media="screen"/>
+    <link href="/static/css/layout.css" rel="stylesheet" type="text/css"/>
     <link href="/static/css/style.css" rel="stylesheet" type="text/css"/>
   {% endblock %}
 
@@ -29,6 +30,23 @@
   <script type="text/javascript" src="/static/js/Class.create.js"></script>
   <script type="text/javascript" src="/static/js/jquery-encoder-0.1.0.js"></script>
   <script type="text/javascript" src="/static/js/template_js/base.js"></script>
+
+  <script type="text/javascript">
+
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-5180820-2']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script');
+      ga.type = 'text/javascript';
+      ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0];
+      s.parentNode.insertBefore(ga, s);
+    })();
+
+  </script>
 
   {% block js %}
     <!-- For extra js -->
@@ -50,7 +68,7 @@
           {{ user.userprofile.organization.name }}
         {% endif %}
       {% else %}
-        Quản lý nhà trường
+        Dịch vụ phần mềm Quản lý Nhà trường
       {% endif %}
     </p>
   </div>
@@ -60,14 +78,16 @@
   {#        {% endif %}#}
   {#    </p>#}
 
-  <div id="topUser">
+  <div id="user-menu">
     <ul>
       {% if user.is_authenticated %}
-        <li><a href="/profiles/{{user.username}}" title="Xem hồ sơ người sử dụng"> {{ user.username }}</a></li>
-        <li><a href="/school/password_change">Đổi mật khẩu</a></li>
-        {% if user.userprofile.username_change == 0 %}
-          <li><a href="/school/username_change">Đổi tên tài khoản</a></li>
-        {% endif %}
+        <li><a href="/profiles/{{user.username}}"
+               title="Sửa thông tin người sử dụng, đổi mật khẩu, đổi tên tài khoản.">
+          {{ user.last_name }} {{ user.first_name }} ({{ user.username }})</a></li>
+        {#        <li><a href="/school/password_change">Đổi mật khẩu</a></li>#}
+        {#        {% if user.userprofile.username_change == 0 %}#}
+        {#          <li><a href="/school/username_change">Đổi tên tài khoản</a></li>#}
+        {#        {% endif %}#}
         <li><a href="{%url django.contrib.auth.views.logout %}" title="Thoát ra khỏi hệ thống">Đăng xuất</a></li>
       {% else %}
         <li><a href="{%url app.views.login %}" title="Đăng nhập để sử dụng hệ thống">Đăng nhập</a></li>
@@ -78,101 +98,100 @@
 
   <nav id="navTop">
     <ul>
-      {% if user.is_authenticated %}
+      {% if not user.is_authenticated %}
+        {# Chưa đăng nhập vào hệ thống #}
+        <li><a class="ui-corner-left"
+               href="{%url app.views.login %}" title="Đăng nhập để sử dụng hệ thống">Đăng nhập</a></li>
+        <li><a href="/help" title="Xem hướng dẫn sử dụng">Trợ giúp</a></li>
+        <li><a href="{%url app.views.feedback %}" title="Gửi thông tin về hệ thống">Liên hệ</a></li>
+      {% else %}
         {% if user.is_superuser %}
-          <li><a
-                  class="ui-corner-left"
-                  href="/admin" title="Mở trình quản trị sẵn có của hệ thống">Quản trị CSDL</a></li>
-          {#                    <li><a href="{%url app.views.list_org %}" title="Quản lý tổ chức của các đơn vị">Tổ chức</a></li>#}
-          {#                    <li><a href="{% url app.views.school_admin_add %}">Người quản trị trường</a></li>#}
-        {% endif %}
+          <li><a class="ui-corner-left"
+                 href="/admin" title="Mở trình quản trị sẵn có của hệ thống">Quản trị CSDL</a></li>
+        {% else %}
+          {% if user.userprofile.position == 'GIAM_DOC_SO' or user.userprofile.position == 'TRUONG_PHONG' %}
+            <li><a class="ui-corner-left"
+                   title="Xem các đơn vị trực thuộc">Đơn vị trực thuộc</a></li>
+            <li><a title="Xem thống kê báo cáo tổng hợp">Báo cáo</a></li>
+          {% endif %}
 
-        {% if user.userprofile.position == 'GIAM_DOC_SO' or user.userprofile.position == 'TRUONG_PHONG' %}
-          <li><a
-                  class="ui-corner-left"
-                  title="Xem các đơn vị trực thuộc">Đơn vị trực thuộc</a></li>
-          <li><a title="Xem thống kê báo cáo tổng hợp">Báo cáo</a></li>
-        {% endif %}
+          {# Người sử dụng cấp trường       #}
+          {% if user.userprofile.position == 'HIEU_TRUONG' or user.userprofile.position == 'HIEU_PHO' or user.userprofile.position == 'GIAO_VIEN' or user.userprofile.position == 'GIAO_VU' or user.userprofile.position == 'HOC_SINH' %}
+            {% if user.userprofile.organization.status != 0 %}
+              {% if user.userprofile.position == 'HIEU_TRUONG'  or user.userprofile.position == 'HIEU_PHO' %}
+                <li><a class="ui-corner-left"
+                       href="{%url school.views.school_index %}" title="Trở về trang đầu">
+                  {{ user.userprofile.organization.get_status }}</a></li>
+                <!-- <li><a href="{%url school.views.years %}" title="Xem năm học khác, học kỳ khác">Các năm</a></li>  -->
+                <li><a href="{%url school.views.classes %}" title="Quản lý lớp học">Lớp học</a></li>
 
-        {# Người sử dụng cấp trường       #}
-        {% if user.userprofile.position == 'HIEU_TRUONG' or user.userprofile.position == 'HIEU_PHO' or user.userprofile.position == 'GIAO_VIEN' or user.userprofile.position == 'GIAO_VU' or user.userprofile.position == 'HOC_SINH' %}
-          <li><a
-                  class="ui-corner-left"
-                  href="{%url school.views.school_index %}" title="Trở về trang đầu">
-            {#                      Trang chủ#}
-            {{ user.userprofile.organization.get_status }}
-          </a></li>
-          {% if user.userprofile.organization.status != 0 %}
-            <!-- <li><a href="{%url school.views.years %}" title="Xem năm học khác, học kỳ khác">Các năm</a></li>  -->
-            <li><a href="{%url school.views.classes %}" title="Quản lý lớp học">Lớp học</a></li>
-            {#            <li><a href="{%url school.views.teachers %}" title="Quản lý giáo viên">Giáo viên</a></li>#}
-            {% if user.userprofile.position == 'HIEU_TRUONG'  or user.userprofile.position == 'HIEU_PHO' %}
-              {# Khi chưa khởi  tạo năm học #}
-              {% if user.userprofile.organization.status == 0  or user.userprofile.organization.status == 3 %}
-                <li><a href="{%url school.views.setup %}"
-                       title="Khai báo thông tin trường học và tạo nhanh các lớp học">Thông tin trường học</a>
-                </li>
-              {% endif %}
-
-              {% if user.userprofile.organization.status != 0 %}
-                {#                  <li><a href="{%url school.views.b1  %}/import"#}
-                {#                         title="Nhập danh sách học sinh từ file hoặc nhập trực tiếp">Học sinh</a></li>#}
-                {#              <li><a href="{%url school.views.classify %}" title="Phân học sinh đã nhập vào các lớp">Phân lớp</a></li>#}
-                <!-- <li><a href="" title="Phân công giáo viên dạy lớp nào, môn nào">Phân công giảng dạy</a></li>  -->
-                <li><a href="/school/report"
-                       title="Xem thông tin thống kê, báo cáo tổng hợp"
-                       class="tiptiphover ">Báo cáo</a></li>
-
-                <li><a href="{%url school.viewFinish.finish %}"
-                       title="Tính điểm tổng kết toàn trường và kết thúc học kỳ">Tổng kết</a>
-                </li>
-              {% endif %}
-
-              {% else %}
-              {% if user.userprofile.position == 'GIAO_VIEN' %}
-                <li><a href="/school/markForTeacher">Điểm</a></li>
+                {# Khi chưa khởi  tạo năm học #}
+                {% if user.userprofile.organization.status == 3 %}
+                  <li><a class="ui-corner-left"
+                         href="{%url school.views.setup %}"
+                         title="Khai báo thông tin trường học và tạo nhanh các lớp học">
+                    Thông tin trường học</a></li>
                 {% else %}
-                {% if user.userprofile.position == 'HOC_SINH' %}
-                  <li><a href="{% url school.views.viewStudentDetail user.pupil.id %}">Hồ sơ cá nhân</a></li>
-                {% else %}
-                  {% if user.userprofile.position == 'GIAO_VU' %}
-                  {% endif %}
+                  <li><a href="{%url school.writeExcel.report %}"
+                         title="Xem thống kê, báo cáo tổng hợp"
+                         class="tiptiphover">Báo cáo</a></li>
+
+                  <li><a href="{%url school.viewFinish.finish %}"
+                         title="Tính điểm tổng kết toàn trường và kết thúc học kỳ">Tổng kết</a></li>
                 {% endif %}
+                {% else %}
+                {% if user.userprofile.position == 'GIAO_VIEN' %}
+                  <li><a class="ui-corner-left"
+                         href="{%url school.views.school_index %}" title="Trở về trang đầu">
+                    {{ user.userprofile.organization.get_status }}</a></li>
+                    <!-- <li><a href="{%url school.views.years %}" title="Xem năm học khác, học kỳ khác">Các năm</a></li>  -->
+
+                    <li><a href="{%url school.views.classes %}" title="Quản lý lớp học">Lớp học</a></li>
+
+                    <li><a href="{% url school.viewMark.markForTeacher %}">Điểm</a></li>
+                  {% else %}
+                  {% if user.userprofile.position == 'HOC_SINH' %}
+                    <li><a class="ui-corner-left"
+                           href="{% url school.views.viewStudentDetail user.pupil.id %}">Hồ sơ cá nhân</a></li>
+                  {% else %}
+                    {% if user.userprofile.position == 'GIAO_VU' %}
+                    {% endif %}
+                  {% endif %}
+                  <li><a href="{%url school.views.classes %}" title="Quản lý lớp học">Lớp học</a></li>
+                {% endif %}
+              {% endif %}
+            {% else %}
+              {# Khi chưa khởi  tạo năm học #}
+              {% if user.userprofile.organization.status == 0 %}
+                <li><a class="ui-corner-left"
+                       href="{%url school.views.setup %}"
+                       title="Khai báo thông tin trường học và tạo nhanh các lớp học">
+                  Thông tin trường học</a></li>
+              {% endif %}
+
+              {% if user.userprofile.position == 'GIAO_VIEN' or user.userprofile.position == 'HIEU_TRUONG' or user.userprofile.position == 'HIEU_PHO' or user.userprofile.position == 'GIAO_VU' %}
+                <li><a href="{%url school.sms_views.manual_sms %}" title="Gửi tin nhắn SMS">Nhắn tin</a></li>
               {% endif %}
             {% endif %}
           {% endif %}
-
-          {% if user.userprofile.position == 'GIAO_VIEN' or user.userprofile.position == 'HIEU_TRUONG' or user.userprofile.position == 'HIEU_PHO' or user.userprofile.position == 'GIAO_VU' %}
-            <li><a
-                    href="{%url school.sms_views.manual_sms %}" title="Gửi tin nhắn SMS">Nhắn tin</a></li>
-          {% endif %}
-
         {% endif %}
-      {% else %}
-        {# Chưa đăng nhập vào hệ thống #}
-        <li><a
-                class="ui-corner-left"
-                href="{%url app.views.login %}" title="Đăng nhập để sử dụng hệ thống">Đăng nhập</a></li>
-        <li><a href="/help" title="Xem hướng dẫn sử dụng">Trợ giúp</a></li>
-        <li><a href="{%url app.views.feedback %}" title="Gửi thông tin về hệ thống">Liên hệ</a></li>
       {% endif %}
-      <li><a
-              class=" ui-corner-right"
-              style="color:#f3f48d;"
-              href="#feedbackDiv"
-              id="feedback"
-              title="Góp ý hoặc báo lỗi về hệ thống">Góp ý</a></li>
+      <li><a class=" ui-corner-right"
+             style="color:#f3f48d;"
+             href="#feedbackDiv"
+             id="feedback"
+             title="Góp ý hoặc báo lỗi về hệ thống">Góp ý</a></li>
     </ul>
   </nav>
 </header>
 
 <section id="main">
   {#    {% block main %}#}
-  <div  id="contentTop">
-{#    <em>#}
+  <div id="nav-path">
+    {#    <em>#}
     {% block backward_link %}
     {% endblock %}
-{#    </em>#}
+    {#    </em>#}
   </div>
   <div id="content">
     {% block content %}
@@ -199,7 +218,8 @@
 </div>
 
 <footer>
-  <p class="copyright">©2011 by Viettel Telecom and Vietnam National University, Hanoi. <a href="/app/contact">Liên hệ</a></p>
+  <p class="copyright">©2011 by Viettel Telecom and Vietnam National University, Hanoi. <a href="/app/contact">Liên
+    hệ</a></p>
 </footer>
 
 </body>

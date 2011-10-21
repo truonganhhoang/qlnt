@@ -6,8 +6,10 @@
 {% endif %}
 
 {% block backward_link %}
-    <a href="{% url school.views.school_index %}classes"> Toàn trường</a> > <a
-        href="{% url school.views.school_index %}viewClassDetail/{{ class.id }}"> {{ class }} </a> > Môn học
+  <a href="{% url school.views.school_index %}"> Trang chủ </a>
+  > <a href="{% url school.views.school_index %}classes"> Toàn trường</a>
+  > <a href="{% url school.views.school_index %}viewClassDetail/{{ class.id }}"> {{ class }} </a>
+  > Môn học
 {% endblock %}
 
 {% block content %}

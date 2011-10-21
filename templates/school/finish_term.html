@@ -1,14 +1,14 @@
 ﻿{% extends "base.html" %}
 
 {% block backward_link %}
-  <a href="/school/finish">Tổng kết</a>  >
-  <a>{% ifequal selectedTerm.number 1 %}
-    Học kỳ I
+  <a href="{% url school.views.school_index %}"> Trang chủ </a>
+  > <a href="/school/finish">Tổng kết</a> 
+  {% ifequal selectedTerm.number 1 %}
+    > Học kỳ I
   {% else %}
-    Học kỳ II
+    > Học kỳ II
   {% endifequal %}
-  năm học {{ yearString }}
-  </a>
+{#  năm học {{ yearString }}#}
 {% endblock %}
 
 

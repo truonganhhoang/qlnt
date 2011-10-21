@@ -1,9 +1,12 @@
 ﻿{% extends "base.html" %}
 
 {% block backward_link %}
-    {% if pos > 1 %}
-    <a href="{% url school.views.school_index %}classes"> Toàn trường</a> > <a href="{% url school.views.school_index %}viewClassDetail/{{ class.id }}"> {{ class }} </a> > Hạnh kiểm
-    {% endif %}
+  <a href="{% url school.views.school_index %}"> Trang chủ </a>
+  {% if pos > 1 %}
+    > <a href="{% url school.views.school_index %}classes"> Toàn trường</a>
+    > <a href="{% url school.views.school_index %}viewClassDetail/{{ class.id }}"> {{ class }} </a>
+    > Hạnh kiểm
+  {% endif %}
 {% endblock %}
 {% block content %}
     {% if pos > 2 %}

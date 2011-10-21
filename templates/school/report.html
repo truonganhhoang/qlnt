@@ -1,7 +1,9 @@
 ﻿{% extends "base.html" %}
 
 {% block backward_link %}
-  <a href="/school/report">Báo cáo</a>  >
+  <a href="{% url school.views.school_index %}"> Trang chủ </a>
+  > Báo cáo, thống kê
+{#  <a href="/school/report">Báo cáo, thống kê</a>  >#}
 {% endblock %}
 
 {% block content %}

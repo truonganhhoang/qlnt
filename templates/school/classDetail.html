@@ -6,8 +6,9 @@
         {#    <a href="{% url school.views.school_index %}classes"> Toàn trường</a>#}
         {#      > {{ class }}#}
         <form action="" name="info" method="post">{% csrf_token %}
-            <a href="{% url school.views.school_index %}classes"> Toàn trường</a>
-            > Lớp
+          <a href="{% url school.views.school_index %}"> Trang chủ </a>
+          > <a href="{% url school.views.school_index %}classes"> Toàn trường</a>
+          > Lớp
             <select name="class" onchange="submitClass()">
                 <option value=-1> {{ class }} </option>
                 {% for c in cl %}
@@ -259,7 +260,7 @@
     </div>
     {% if pos > 3 %}
         <div id="tableFunction">
-            <a class="tiptiphover ggButton"
+            <a class="ggButton tiptiphover "
                href="{% url school.views.organize_students class.id "0" %}"
                title="Sắp xếp thứ tự học sinh trong lớp">Sắp xếp</a>
             <button id="delSelected" class="ggButton">Xóa những học sinh đã chọn</button>

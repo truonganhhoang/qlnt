@@ -1,24 +1,28 @@
 ﻿{% extends "base.html"%}  
 
 {% block backward_link %}
-	<a href="/school/report"> Báo cáo, thống kê  </a>  > 
-	<a href="/school/printMarkForClass"> In phiếu báo điểm </a> >
-	{% if number == 1 %}
-		Học kỳ I
-	{% else %}
-	{% if number == 2 %}
-		Học kỳ II
-	{% else %}
-		Cả năm
-	{% endif %}
-	{% endif %}
-	
+  <a href="{% url school.views.school_index %}"> Trang chủ </a>
+	> <a href="/school/report"> Báo cáo, thống kê  </a>
+  > In phiếu báo điểm
+{#	<a href="/school/printMarkForClass"> #}
+{#  In phiếu báo điểm#}
+{#  </a> >#}
+{#	{% if number == 1 %}#}
+{#		Học kỳ I#}
+{#	{% else %}#}
+{#	{% if number == 2 %}#}
+{#		Học kỳ II#}
+{#	{% else %}#}
+{#		Cả năm#}
+{#	{% endif %}#}
+{#	{% endif %}#}
+{#	#}
 {% endblock %}
 
 
 {% block content %}
 <br>
-Xuất ra excel
+Học kỳ
 <script>
 function reset()
 {
@@ -30,9 +34,8 @@ function submit(tb)
 	if (tb.value!="-2")
 		window.location.href="/school/printMarkForClass/"+value1+"/"+tb.value;
 }
-	
 </script>
-<select id="mode" onchange="reset()" >
+<select id="mode" onchange="reset()">
     <option value ="1" > Học kỳ I  </option>
     <option value ="2" > Học kỳ II    </option>	 
 </select>
@@ -46,6 +49,11 @@ Lớp
 	{% endfor %}
 		<option value="-1">Toàn trường </option>
 </select>
+<br>
+  <br>
+  <p>
+(Chọn kỳ và lớp để tải file báo cáo Excel về. Sau đó bạn có thể mở file Excel xem báo cáo trên máy.)
+    </p>
 
 <script>
 	document.getElementById("mode").value={{termNumber}}; 

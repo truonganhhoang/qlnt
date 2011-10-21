@@ -1,17 +1,19 @@
 ﻿{% extends "base.html" %}
 
 {% block backward_link %}
-  <a href="/school/report"> Báo cáo, thống kê </a>  >
-  <a href="/school/count1"> Thống kê học lực, hạnh kiểm, danh hiệu </a> >
-  {% if number == 1 %}
-    Học kỳ I
-    {% else %}
-    {% if number == 2 %}
-      Học kỳ II
-    {% else %}
-      Cả năm
-    {% endif %}
-  {% endif %}
+  <a href="{% url school.views.school_index %}"> Trang chủ </a> 
+  > <a href="/school/report"> Báo cáo, thống kê </a>
+  > Học lực, hạnh kiểm, danh hiệu
+{#  <a href="/school/count1"> Học lực, hạnh kiểm, danh hiệu </a> >#}
+{#  {% if number == 1 %}#}
+{#    Học kỳ I#}
+{#    {% else %}#}
+{#    {% if number == 2 %}#}
+{#      Học kỳ II#}
+{#    {% else %}#}
+{#      Cả năm#}
+{#    {% endif %}#}
+{#  {% endif %}#}
 {% endblock %}
 
 {% block content %}

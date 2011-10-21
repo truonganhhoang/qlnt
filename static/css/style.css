@@ -1,35 +1,5 @@
 /* CSS Document */
 
-* {
-    margin: 0;
-    padding: 0
-}
-
-html {
-    width: 100%;
-    min-width: 980px;
-}
-
-body {
-    /*width: 100%;*/
-    /*height: 100%;*/
-    /*padding: 0 0 0 0;*/
-    /*margin: 0 0 0 0;*/
-    color: #595959;
-    /*background-color: #eeeeee;*/
-    background-color: #ffffff;
-
-    font: 14px/18px Arial, "Times New Roman", verdana, sans-serif;
-    /*font: 14px/16px "Lucida Grande", "Lucida Sans", verdana, sans-serif;*/
-	/*font: 14px/18px "Droid Sans", Arial, verdana, sans-serif;*/
-}
-
-article, aside, canvas, figure, figure img, figcaption, hgroup,
-footer, header, nav, section, audio, video {
-    display: block;
-}
-
-
 #popupDiv {
     margin: 20px;
 }
@@ -451,7 +421,7 @@ a.ggButton{
 div#submenu {
     position: relative;
     text-align: left;
-    padding: 10px 10px 10px 3px;
+    padding: 10px 0px 10px 0px;
     margin-bottom: 3px;
     border-bottom: 1px solid #a49b9b;
     display: block;
@@ -459,7 +429,7 @@ div#submenu {
 
 div#tableFunction {
     position: relative;
-    text-align: left;
+    text-align: right;
     margin-bottom: 3px;
 }
 
@@ -489,152 +459,6 @@ div.errorDiv{
 
 .buttonClass {
     padding: 2px;
-}
-
-/*
-|-----------------------------------------------|
-|                                    userTop    |   header
-|                 nav                           |
-|-----------------------------------------------|
-|          content                              |
-|                                               |    section main
-|                                               |
-|                                               |
-|                                               |
-|-----------------------------------------------|
-|            footer                             |   footer
-|-----------------------------------------------|
-*/
-
-/*----TOP PANEL----*/
-header {
-    width: 100%;
-    height: 73px;
-    position: relative;
-    /*margin: 0 auto;*/ 
-    color: #000000;
-    /*background-color: #eff1e4;*/
-    /*padding: 0;*/
-    /*border-bottom: #cccccc thin solid;*/
-}
-
-header img.logo {
-    width: 120px;
-    height: 70px;
-    position: absolute;
-    top: 10px;
-    left: 100px;
-}
-
-header p {
-    position: absolute;
-    top: 15px;
-    left: 300px;
-    font: 18px Arial, Helvetica, sans-serif;
-    font-weight: bold;
-    color: #555555;
-}
-
-header p#detail {
-    position: absolute;
-    left: 100px;
-    top: 23px;
-    /*font-weight: bold;*/
-    font-size: 13px;
-    color: #555555;
-}
-
-header #topUser {
-    width: auto;
-    height: 20px;
-    position: absolute;
-    top: 0;
-    right: 1px;
-}
-
-header #topUser ul {
-    width: auto;
-    height: 20px;
-}
-
-header #topUser ul li {
-    width: auto;
-    height: 30px;
-    float: left;
-}
-
-header #topUser ul li a {
-    width: auto;
-    height: 20px;
-    display: block;
-    color: #0066cc;
-    text-decoration: none;
-    text-align: center;
-    padding: 4px 8px 4px;
-    font-size: 13px;
-}
-
-header #topUser ul li a:hover {
-    background: #e17009;
-    color: #ffffff;
-    text-decoration: none;
-}
-
-nav {
-    height: 32px;
-    position: absolute;
-    top: 45px;
-    left: 300px;
-    background-color: #79b7e7;
-    border-radius: 6px
-}
-
-nav ul li {
-    width: auto;
-    float: left;
-}
-
-nav ul li a {
-    height: 22px;
-    display: block;
-    background: url(../menu/nav_bar_background.png) repeat 0 0;
-    color: #FFFFFF;
-    font-weight: bold;
-    text-decoration: none;
-    text-align: center;
-    padding: 8px 12px 2px 12px;
-    margin: 0px 1px 0px 0px;
-}
-
-nav ul li a:hover {
-    background: #e17009;
-}
-
-section#main {
-    margin: 20px 10px 10px 10px;
-    padding: 10px 10px 10px 10px;
-    /*background-color: #FFFFFF;*/
-    background-color: #eeeeee;
-    border: #aaaaaa solid thin;
-    border-radius: 5px;
-}
-
-/*---- CONTENT TOP----*/
-#contentTop {
-    /*background-color: #FFFFFF;*/
-    /*vertical-align: baseline;*/
-    padding-bottom: 3px;
-    border-bottom: #dddddd inset thin;
-}
-
-#contentTop a {
-    vertical-align: baseline;
-    text-decoration: none;
-    margin: 0;
-    padding: 0;
-    border: 0;
-    font-size: 100%;
-    background: transparent;
 }
 
 div.infoContent {
@@ -678,69 +502,6 @@ div#divList {
     cursor: pointer;
 }
 
-#content {
-    /*width: 100%;*/
-    /*position: relative;*/
-    /*display: block;*/
-    min-height: 450px;
-}
-
-#content h2 {
-    color: #555555;
-    padding: 10px 0px;
-    font-size: 18px;
-}
-
-#content h2 span {
-    /*background: #fff;*/
-    color: #555555;
-}
-/*
-#content h3 {
-    color: #4d94d7;
-    font: 20px/20px Georgia, "Times New Roman", Times, serif;
-    padding: 15px 0 0 0;
-}
-
-#content h3 span {
-    background: #fff;
-    color: #4d94d7;
-}
-
-*/
-#content h4 {
-    color: #4d94d7;
-    font: 18px/18px Georgia, "Times New Roman", Times, serif;
-    padding: 15px 0 0 0;
-}
-
-#content p {
-    padding: 3px 0 0;
-}
-
-#content p span {
-    background: #fff;
-    color: #046598;
-    font-weight: bold;
-}
-
-#content ul {
-    width: auto;
-    margin: 5px 0 0;
-}
-
-#content ul li {
-    width: auto;
-}
-
-#content ul li a {
-    height: 20px;
-    /*text-decoration: underline; */
-    padding: 0 0 0 0;
-}
-
-#content ul li a:hover {
-}
 
 div#tabs ul li{
     padding-top: 5px;
@@ -772,107 +533,16 @@ div.autocomplete button{
     width: 21px;
 }
 
-/* class listing */
-section#classes{
-    overflow: hidden;
-    display: block;
-}
-
-section#classes .classDiv{
-    float: left;
-    width: 150px;
-    height: 40px;
-    margin: 5px 10px 10px 0px;
-    padding: 5px 3px 3px 3px;
-    text-align: center;
-}
-
-section#classes h3{
-    font-size: 14px;
-    clear: both;
-    padding: 3px 6px 0px 0px;
-}
-
-section#classes a{
-    text-decoration: none;
-    border-color: #bbbbbb;
-}
-
-section#classes a:hover{
-    text-decoration: none;
-    background-color: #e17009;
-    background-image: none;
-}
-
-section#classes .classname{
-    /*position: relative;*/
-    /*top: 5px;*/
-    /*left: 5px;*/
-    display: block;
-    padding: 0px 0px 3px 0px;;
-    font-size: 16px;
-    font-family: arial;
-    font-weight: bold;
-    color: #0066cc;
-}
-
-section#classes .dimmer{
-    color: #555555;
-}
-
-aside {
-    background-color:#a6c9e2;
-    border-radius: 5px;
-    width:180px; /*+*/
-    float:right;
-    overflow: hidden;
-    margin: 10px 0px;
-    border: #c0c0c0 ridge thin;
-    padding: 3px 3px 3px 3px;
-}
-
-aside a {
-    /*position: relative;*/
-    float: left;
-    text-align: center;
-    vertical-align: middle;
-    text-decoration: none;
-    color: #0066cc;
-    vertical-align: bottom;
-    display: block;
-    border-color: #bbbbbb;
-    font-size: 13px;
-    margin: 3px 3px;
-    padding: 3px 3px;
-}
-
-aside a:hover {
-    display: block;
-    background-color: #e17009;
-    background-image: none;
-}
-
-aside .sitemapitem {
-    width: 70px;
-    height: 70px;
-}
-
-
-aside .icon {
-    width: 48px;
-    height: 48px;
-    margin: 3px 3px;
-}
 
 
 /* HELP page */
 div#help {
-    height:auto;
-    -moz-column-width: 16em;
-    -moz-column-gap: 1em;
-    -webkit-column-width: 16em;
-    -webkit-column-gap: 1em;
-    text-align: justify;
+    /*height:auto;*/
+    /*-moz-column-width: 16em;*/
+    /*-moz-column-gap: 1em;*/
+    /*-webkit-column-width: 16em;*/
+    /*-webkit-column-gap: 1em;*/
+    /*text-align: justify;*/
 }
 
 div#help p, h3 {

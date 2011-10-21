@@ -1,9 +1,10 @@
 ﻿{% extends "base.html"%}
 
 {% block backward_link %}
-	<a href="/school/classes"> Toàn trường  </a> > 
-	<a href="/school/viewClassDetail/{{selectedClass.id}}"> {{selectedClass.name}}  </a> > 
-	Xếp loại lớp		
+  <a href="{% url school.views.school_index %}"> Trang chủ </a>
+	> <a href="/school/classes"> Toàn trường  </a>
+	> <a href="/school/viewClassDetail/{{selectedClass.id}}"> {{selectedClass.name}}  </a>
+  > Xếp loại lớp
 {% endblock %} 
 
 

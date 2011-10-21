@@ -1,8 +1,9 @@
 ﻿{% extends "base.html"%}
 
 {% block backward_link %}
-  <a href="/school/finish">Tổng kết</a>  >
-  <a> Tổng kết năm học {{yearString}} </a>
+  <a href="{% url school.views.school_index %}"> Trang chủ </a>
+  > <a href="/school/finish">Tổng kết</a>
+  > Năm học {{yearString}}
 {% endblock %}
 
 {% block content %}
@@ -24,16 +25,13 @@
 {% endif %}
 
 
-<h2> Tổng kết năm học {{yearString}}
+<h2>
+  Tổng kết năm học {{yearString}} (<span style="color:red;">Năm học đang diễn ra</span>)
 </h2>
 
-<br>
-<form action=""  name="info" method="post" id='myform' 
+<form action=""  name="info" method="post" id='myform'
 	 >{% csrf_token %}    
 	 {% ifnotequal currentTerm.number 3 %}	 
-		Thông tin năm học:
-		<span style="color:red;"> Đang diễn ra</span>	
-		<br>
 		<br>
 		<input class="ggButton" type="submit"  name="finishTerm" value="Khóa sổ điểm và kết thúc năm học" title="Sau khi click thì trạng thái trường sẽ chuyển sang kì tiếp theo và khóa sổ điểm đối với giáo viên ">
 		<input class="ggButton" type="submit"  name="tongKet" value="Tính tổng kết cả trường" >
