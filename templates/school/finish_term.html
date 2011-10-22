@@ -37,23 +37,31 @@
       II
     {% endifequal %}
     năm học {{ yearString }}
+
+
+    {% ifequal selectedTerm currentTerm %}
+       (<span style="color:red;">Học kỳ đang diễn ra</span>)
+    {% else %}
+      (<span style="color:red;">Học kỳ đã kết thúc</span>)
+    {% endifequal %}
+
   </h2>
 
   <form action="/school/finishTerm/{{selectedTerm.id}}" name="info" method="post" id='myform'>{% csrf_token %}
     {% ifequal selectedTerm currentTerm %}
-      <p>Thông tin học kỳ: <span style="color:red;"> Đang diễn ra</span></p>
-      <br>
+{#      <p>Thông tin học kỳ: <span style="color:red;"> Đang diễn ra</span></p>#}
+{#      <br>#}
 
-	  {% ifequal selectedTerm.number 1 %}		
-			<input class="ggButton" type="submit" name="finishTerm" value="Khóa sổ điểm và chuyển sang kỳ tiếp theo"
-             title="Khi chọn thì trường sẽ chuyển sang kì tiếp theo và khóa sổ điểm đối với giáo viên.">
-	  {% endifequal %}		
-	  <input class="ggButton" type="submit" name="tongKet" value="Tính tổng kết cả trường">
+      {% ifequal selectedTerm.number 1 %}
+        <input class="ggButton" type="submit" name="finishTerm" value="Khóa sổ điểm và chuyển sang kỳ tiếp theo"
+               title="Khi chọn thì trường sẽ chuyển sang kì tiếp theo và khóa sổ điểm đối với giáo viên.">
+      {% endifequal %}
+      <input class="ggButton" type="submit" name="tongKet" value="Tính tổng kết cả trường">
     {% endifequal %}
     
     {% ifnotequal selectedTerm currentTerm %}
-      <p>Thông tin học kỳ: <span style="color:red;"> Đã kết thúc </span></p>
-      <br>
+{#      <p>Thông tin học kỳ: <span style="color:red;"> Đã kết thúc </span></p>#}
+{#      <br>#}
       <input class="ggButton" type="submit" name="finishTerm" value="Khôi phục về trạng thái học kỳ trước"
              title="Chuyển trạng thái học kỳ về trước để giáo viên có thể chỉnh sửa điểm của học sinh ở kỳ này">
     {% endifnotequal %}
