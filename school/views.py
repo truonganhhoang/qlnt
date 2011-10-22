@@ -1,4 +1,4 @@
- # -*- coding: utf-8 -*-
+﻿# -*- coding: utf-8 -*-
 
 # Create your views here.
 import os.path
@@ -595,7 +595,7 @@ def classify(request):
     return render_to_response( CLASSIFY, { 'message':message, 'student_list':student_list, 'form':form, 'nothing':nothing},
                                context_instance = RequestContext(request))
 
-#----------------------------------------------------------------------------------------------------------------- 
+#-----------------------------------------------------------------------------------------------------------------
 #----------- Exporting from Excel -------------------------------------
 
 def class_generate(request, class_id, object):
@@ -1600,7 +1600,7 @@ def classes(request):
                     pass
             else:
                 teacher_id = None
-                
+
             if not teacher or not tc:
                 try:
                     data = {'name':c.name, 'year_id':c.year_id.id,

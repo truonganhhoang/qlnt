@@ -198,8 +198,10 @@ class SettingForm(forms.Form):
         self.request = kwargs.pop('request')
         super(SettingForm, self).__init__(*args, **kwargs)
         self.fields['lock_time'] = forms.IntegerField(label=u"Thời gian khóa điểm(Giờ):", required = True) #
-        self.fields['class_labels'] = forms.CharField(label=u"Danh sách lớp học:", max_length = 512,
+        self.fields['class_labels'] = forms.CharField(label=u"Danh sách lớp học:",
+                                                      max_length = 512,
                                                       validators=[validate_class_label],
+                                                      widget= forms.Textarea,
                                                       required = False)
         
     def save_to_model(self):

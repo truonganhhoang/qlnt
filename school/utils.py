@@ -254,12 +254,6 @@ def add_student( student = None, index = 0, start_year = None , year = None,
     if 'uu_tien' in student:
         uu_tien = student['uu_tien']
     else: uu_tien = ''
-    if 'current_address' in student:
-        current_address = student['current_address']
-    else: current_address = None
-    if 'birth_place' in student:
-        birth_place = student['birth_place']
-    else: birth_place = None
     if 'ban_dk' in student:
         ban = student['ban_dk']
     else: ban = None
@@ -313,13 +307,8 @@ def add_student( student = None, index = 0, start_year = None , year = None,
             userprofile.save()
             st.user_id = user
             st.save()
-            
-            a = Attend()
-            a._class = _class
-            a.pupil = st
-            a.attend_time = date.today()
-            a.leave_time = None
-            a.save()
+            st.join_class(_class)
+
             _class.max += 1
             _class.save()
 
@@ -362,7 +351,6 @@ def add_student( student = None, index = 0, start_year = None , year = None,
                 for subject in subjects:
                     tkmon = TKMon(student_id = st, subject_id = subject)
                     tkmon.save()
-            print 'add_student', st
             transaction.commit()
             return st
 
@@ -489,6 +477,7 @@ def add_many_students( student_list = None,
             number_of_change += 1
         elif not force_update:
             st.save()
+            st.join_class(_class)
         if not force_update:
             hk = HanhKiem( year_id = year, student_id = st)
             hk.save()
