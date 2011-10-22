@@ -83,6 +83,19 @@ def convertMarkToCharacter(x):
         return u'Kém'
     else:
         return  u''   
+def convertMarkToCharacter1(x):
+    if x==9:
+        return u'G'
+    elif x==7:
+        return u'K'
+    elif x==6:
+        return u'TB'
+    elif x==4:
+        return u'Y'
+    elif x==1:
+        return u'Kem'
+    else:
+        return  u''   
 def convertHlToVietnamese(x):
     if x=='G':
         return u'Giỏi'

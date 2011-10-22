@@ -157,17 +157,21 @@ def calculateOverallMarkTerm(class_id,termNumber):
     length=len(subjectList)
     i=0   
     vtMonChuyen=-1
-    
+    checkComment=[0]*len(subjectList)
     for s in subjectList:
         if s.hs==3:  vtMonChuyen=i
                     
         if    s.name.lower().__contains__(u'toán'):
             vtMonToan=i
         elif  s.name.lower().__contains__(u'văn'):
-            vtMonVan=i    
+            vtMonVan=i
+        if s.nx:
+            checkComment[i]=1        
         i+=1    
     i=0
-    j=0  
+    j=0
+    print len(subjectList)  
+    print checkComment
     # cam xoa dong nay
     for tt in tbHocKyList:
         pass
@@ -192,11 +196,12 @@ def calculateOverallMarkTerm(class_id,termNumber):
             monToan=m
         elif t==vtMonVan   :  
             monVan =m
-             
         if (m.tb !=None):
             if m.mg==False:
-                markSum += m.tb*subjectList[t].hs
-                factorSum +=subjectList[t].hs 
+                if checkComment[t]==0:
+                    print t
+                    markSum += m.tb*subjectList[t].hs
+                    factorSum +=subjectList[t].hs 
                   
                 if m.tb<minMark:
                     minMark=m.tb
@@ -206,6 +211,8 @@ def calculateOverallMarkTerm(class_id,termNumber):
         if (t==length-1):
              
             if  ok:
+                print markSum
+                print factorSum
                 if factorSum==0:     
                     tbHocKy.tb_hk=None
                     tbHocKy.hl_hk=None
@@ -324,9 +331,10 @@ def calculateOverallMarkYear(class_id=7):
             monVan =m
              
         if m.tb_nam !=None:
-            if m.mg==False:    
-                markSum += m.tb_nam*subjectList[t].hs
-                factorSum +=subjectList[t].hs 
+            if m.mg==False: 
+                if subjectList[t].nx==False:   
+                    markSum += m.tb_nam*subjectList[t].hs
+                    factorSum +=subjectList[t].hs 
                   
                 if m.tb_nam<minMark:
                     minMark=m.tb_nam
@@ -375,32 +383,6 @@ def calculateOverallMarkYear(class_id=7):
        
     return pupilNoSum,noHanhKiem    
 # xep loai hoc ky cua mot lop
-def convertMarkToCharacter(x):
-    if x==9:
-        return u'Giỏi'
-    elif x==7:
-        return u'Khá'
-    elif x==6:
-        return u'TB'
-    elif x==4:
-        return u'Yếu'
-    elif x==1:
-        return u'Kém'
-    else:
-        return  u''   
-def convertHlToVietnamese(x):
-    if x=='G':
-        return u'Giỏi'
-    elif x=='K':
-        return u'Khá'
-    elif x=='TB':
-        return u'TB'
-    elif x=='Y':
-        return u'Yếu'
-    elif x=='Kem':
-        return u'Kém'
-    else:
-        return u'Chưa đủ điểm'    
 
 def xepLoaiHlTheoLop(request,class_id,termNumber):
     t1=time.time()
@@ -461,8 +443,8 @@ def xepLoaiHlTheoLop(request,class_id,termNumber):
         
     if termNumber<3:        
 
-        subjectList=Subject.objects.filter(class_id=class_id,primary__in=[0,termNumber,3]).order_by("index",'name')    
-        markList = Mark.objects.filter(subject_id__class_id=class_id,term_id__number=termNumber,subject_id__primary__in=[0,termNumber,3]).order_by('student_id__index','student_id__first_name','student_id__last_name','student_id__birthday','subject_id__index','subject_id__name') 
+        subjectList=Subject.objects.filter(class_id=class_id,primary__in=[0,termNumber,3,4]).order_by("index",'name')    
+        markList = Mark.objects.filter(subject_id__class_id=class_id,term_id__number=termNumber,subject_id__primary__in=[0,termNumber,3,4]).order_by('student_id__index','student_id__first_name','student_id__last_name','student_id__birthday','subject_id__index','subject_id__name') 
         tbHocKyList = TBHocKy.objects.filter(student_id__class_id=class_id,term_id__number=termNumber).order_by('student_id__index','student_id__first_name','student_id__last_name','student_id__birthday')
         hkList      = TBNam.objects.filter(student_id__class_id=class_id).order_by('student_id__index','student_id__first_name','student_id__last_name','student_id__birthday')
         hkList1 =[]
@@ -477,21 +459,22 @@ def xepLoaiHlTheoLop(request,class_id,termNumber):
 
         i=0    
         for m in markList:
-            if i % length ==0:
+            t= i % length
+            if t ==0:
                 markOfAPupil=[]
             if m.mg:
                   markOfAPupil.append("MG")
             elif m.tb==None:    
                   markOfAPupil.append("")
-            else:                  
+            elif subjectList[t].nx:
+                markOfAPupil.append(convertMarkToCharacter1(m.tb))
+            else:            
                 markOfAPupil.append(m.tb)        
             
-            if i % length==0:            
+            if t==0:            
                 tempList.append(markOfAPupil) 
             i+=1
  
-        #markOfAPupil.append(convertHlToVietnamese(tbHocKy.hl_hk))
-                                    
         list=zip(pupilList,tempList,tbHocKyList,hkList1)    
     else:
         calculateTKMon(class_id)
@@ -504,22 +487,23 @@ def xepLoaiHlTheoLop(request,class_id,termNumber):
 
         i=0    
         for m in markList:
-            if i % length ==0:
+            t= i % length
+            if t ==0:
                 markOfAPupil=[]
                 
             if m.mg:
                   markOfAPupil.append("MG")
             elif m.tb_nam==None:    
                   markOfAPupil.append("")
+            elif subjectList[t].nx:
+                markOfAPupil.append(convertMarkToCharacter1(m.tb_nam))
             else:                  
                 markOfAPupil.append(m.tb_nam)        
             
-            if i % length==0:            
+            if t==0:            
                 tempList.append(markOfAPupil) 
             i+=1
  
-        #markOfAPupil.append(convertHlToVietnamese(tbHocKy.hl_hk))
-                                    
         list=zip(pupilList,tempList,tbNamList,tbNamList)    
         
     
