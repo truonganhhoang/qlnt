@@ -165,7 +165,7 @@ class MoveClassForm(forms.Form):
             block = current_class.block_id
             self.fields['move_to'] = forms.ModelChoiceField(required=True,label=u'Chuyển tới',
                                     queryset=Class.objects.filter(block_id = block).exclude(id = current_class.id))
-            
+        
 class SchoolForm(forms.Form):
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop('request')

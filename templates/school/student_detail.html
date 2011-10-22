@@ -186,12 +186,15 @@
                 url: $(this).attr("action"),
                 global: false,
                 error: function(){
-                    $("input").attrs('disabled',false);
+                    $("input").attr('disabled',false);
                 },
                 success: function(response){
                     location.reload(true);
                 }
             };
+            $("#notify").text('Hệ thống đang chuyển lớp cho học sinh.\n Xin bạn vui lòng chờ');
+            $("#notify").show();
+            $("input").attr('disabled',true);
             $.ajax(arg);
             return false;
         });

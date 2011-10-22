@@ -1,10 +1,128 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-        "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-    <title></title>
-</head>
-<body>
-
-</body>
-</html>
+{% extends "base.html" %}
+{% block content %}
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $("#source_id").change(function(){
+                $(this).children("option[value=-1]").remove();
+                $("#notify").showNotification("Đang tải dữ liệu xin vui lòng chờ");
+                var data = {request_type:'source',
+                            class_id: $(this).val()
+                            };
+                var arg = {
+                    data : data,
+                    type: "POST",
+                    dataType: "json",
+                    url: "/school/movestudents",
+                    global: false,
+                    success: function(json){
+                        $("#target_id").empty();
+                        $("div.table").empty();
+                        $("#target_id").append(json.ClassList);
+                        $("div.table").append(json.table);
+                        $("#selectAll").show();
+                        $("#moveSelected").show();
+                    }
+                };
+                $.ajax(arg);
+                return false;
+            });
+            var moveSelected = function() {
+                if ($("#target_id").val() == -1){
+                    alert("Bạn chưa chọn lớp để học sinh chuyển tới");
+                    return false;
+                }
+                if (!$("#checkbox_all").is(':checked')) {
+                    alert("Bạn chưa chọn học sinh nào để chuyển lớp.");
+                    return false;
+                }
+                var answer = confirm('Bạn có muốn chuyển những học sinh đã chọn');
+                if (!answer) return false;
+                $("#moveSelected").attr('disabled',true);
+                var data = '';
+                $(".selected").each(function() {
+                    data = data + $(this).attr('class').split(' ')[0] + '-';
+                });
+                $("#notify").text("Hệ thống đang chuyển học sinh.\nQuá trình có thể diễn ra lâu xin bạn vui lòng chờ.");
+                $("#notify").show();
+                var arg = { type:"POST",
+                    url: "/school/movestudents",
+                    global: false,
+                    data: {data:data, request_type:'move',
+                        target:$("#target_id").val()
+                    },
+                    datatype:"json",
+                    success: function() {
+                        $("#notify").showNotification("Đã chuyển xong");
+                        $("#moveSelected").attr('disabled',false)
+                        $(".selected").remove();
+                        $("#checkbox_all").prop("checked",false);
+                    }
+                };
+                $.ajax(arg);
+                return false;
+            };
+            var select = function() {
+                if (!$(this).hasClass('thread') && !$(this).hasClass('form') && !$(this).hasClass('function')) {
+                    var id = $(this).attr('class').split(' ')[0];
+                    var checkboxid = '#checkbox_' + id;
+                    var checkboxall = '#checkbox_all';
+                    if ($(this).hasClass('selected')) {
+                        $(this).removeClass('selected');
+                        $(checkboxid).prop("checked", false);
+                        var n = $("input:checked").length;
+                        if (n == 1) $(checkboxall).prop("checked", false);
+                    } else {
+                        $(this).addClass('selected');
+                        $(checkboxid).prop("checked", true);
+                        $(checkboxall).prop("checked", true);
+                    }
+                }
+            };
+            $("tr").live("click",select);
+            $("#checkbox_all").live("click",function() {
+                var checkboxall = '#checkbox_all';
+                if ($(checkboxall).is(':checked')) {
+                    $("tr").each(function() {
+                        var id = $(this).attr('class').split(' ')[0];
+                        if (!$(this).hasClass('selected'))
+                            $(this).trigger('click');
+                    });
+                }
+                else {
+                    $("tr").each(function() {
+                        var id = $(this).attr('class').split(' ')[0];
+                        var checkboxid = '#checkbox_' + id;
+                        if ($(this).hasClass('selected'))
+                            $(this).trigger('click');
+                    });
+                }
+            });
+            $("#selectAll").live("click",function() {
+                $("tr").each(select);
+                return false;
+            });
+            $("#moveSelected").click(moveSelected);
+        });
+    </script>
+    <h2> Chuyển lớp </h2>
+    <div>
+    <br>
+        Từ lớp: <select name="source" id="source_id">
+            <option value="-1"> ------ </option>
+            {% for cl in classList %}
+                <option value="{{ cl.id }}">{{ cl }}</option>
+            {% endfor %}
+            <option value="0"> Chưa phân lớp </option>
+        </select>
+        Đến lớp: <select name="target" id="target_id">
+            <option> ------ </option>
+        </select>
+    </div>
+    <br>
+    <button id="selectAll" class="ggButton" style="display: none;"> Đảo chọn </button>
+    <button class="ggButton" id="moveSelected" style="display: none"> Chuyển những học sinh đã chọn </button>
+    <br>
+    <div class="table">
+    
+    </div>
+{% endblock %}

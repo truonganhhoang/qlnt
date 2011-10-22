@@ -8,6 +8,7 @@ from django.core import serializers
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.shortcuts import render_to_response
+from django.template.loader import render_to_string
 from django.template import RequestContext, loader
 from django.core.exceptions import *
 from django.middleware.csrf import get_token
@@ -3755,6 +3756,47 @@ def move_one_student(request, student_id):
     return HttpResponse(t.render(c))
 
 def move_students(request):
-    t = loader.get_template(os.path.join('school', 'move_students.htmnl'))
-    c = RequestContext(request,{})
+    user = request.user
+    if not user.is_authenticated():
+        return HttpResponseRedirect(reverse('login'))
+    try:
+        school = get_school(request)
+    except Exception :
+        return HttpResponseRedirect(reverse('index'))
+    if get_position(request) < 4:
+        return HttpResponseRedirect('/')
+    year = school.year_set.latest('time')
+    message = ''
+    classList = Class.objects.filter(year_id = year).order_by('name')
+    if request.is_ajax():
+        if request.method == 'POST':
+            print request.POST
+            if request.POST['request_type'] == u'source':
+                class_id = int(request.POST['class_id'])
+                if not class_id:
+                    responseClassList = classList
+                    studentList = school.pupil_set.filter(class_id = None)
+                else:
+                    _class = Class.objects.get(id=class_id)
+                    studentList = school.pupil_set.filter(class_id = class_id)
+                    responseClassList = classList.filter(block_id=_class.block_id).exclude(id = class_id)
+                list = '<option value=-1> ------ </option>'
+                for cl in responseClassList:
+                    list = list + "<option value=" + str(cl.id) + ">" + str(cl) + "</option>"
+                table = render_to_string(os.path.join('school','classTable.html'),{'list':studentList})
+                data = simplejson.dumps( {'message': message,'ClassList': list,'table':table})
+                return HttpResponse(data, mimetype = 'json')
+            if request.POST['request_type'] == u'move':
+                new_class = Class.objects.get(id = request.POST['target'])
+                data = request.POST[u'data']
+                data = data.split('-')
+                for e in data:
+                    if e.strip():
+                        student = Pupil.objects.get(id__exact = int(e))
+                        move_student(school,student,new_class)
+                        student.join_class(new_class)
+                return HttpResponse()
+    t = loader.get_template(os.path.join('school', 'move_students.html'))
+    c = RequestContext(request,{'classList':classList,
+                                'message':message})
     return HttpResponse(t.render(c))
