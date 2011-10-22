@@ -123,6 +123,8 @@ urlpatterns = patterns('',
     url(r'username_change$', 'school.views.username_change'),
     url(r'student/account/(?P<student_id>\w+)$','school.views.student_account'),
     url(r'teacher/account/(?P<teacher_id>\w+)$','school.views.teacher_account'),
+    url(r'movestudent/(?P<student_id>\w+)$','school.views.move_one_student'),
+    url(r'movestudents$','school.views.move_students'),
 
     url(r'generate/(?P<class_id>\w+)/(?P<object>\w+)/$','school.views.class_generate', name = 'class_generate'),
     url(r'generate_teacher/(?P<type>\w+)/$','school.views.teacher_generate', name = 'teacher_generate'),

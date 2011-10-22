@@ -1,6 +1,7 @@
 ﻿{% block content %}
     <script>
         $(document).ready(function() {
+            $("div.hide").show();
             $("#tabs{{team.id}}").tabs({
                 tabTemplate: "<li><a href='{href}'>{label}</a> <span class='ui-icon ui-icon-close'>xóa</span></li>",
                 ajaxOptions: {
@@ -175,14 +176,14 @@
         });
     </script>
     {% if pos > 3 %}
-        <div id="d{{team.id}}" title="Thêm nhóm mới">
+        <div id="d{{team.id}}" title="Thêm nhóm mới" style="display: none;">
             <form id ="ag{{team.id}}">
                 <label>Tên nhóm</label>
                 <input type="text" name="group_title" id="group_title{{team.id}}" value="" class="group_title{{team.id}} ui-widget-content ui-corner-all"/>
             </form>
         </div>
 
-        <div id="d3{{ team.id }}" title="Đổi tên">
+        <div id="d3{{ team.id }}" title="Đổi tên" style="display: none;">
             <form id="rn">
                 <label >Tên nhóm</label>
                 <input type="hidden" id="group_id_rename{{ team.id }}" class="group_id_rename{{ team.id }}"/>
@@ -191,7 +192,7 @@
         </div>
     {% endif %}
 
-    <div id="tabs{{team.id}}">
+    <div id="tabs{{team.id}}" style="display: none;" class="hide">
         <ul>
             <li><a href="/school/teachers_in_team/{{ team.id }}">{{ team.name }}</a></li>
             {% for g in groupList %}

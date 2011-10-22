@@ -178,6 +178,23 @@
             $.ajax(arg);
             return false;
         });
+        $("form.moveStudent").live("submit", function() {
+            var data = $(this).serialize();
+            var arg = {
+                data:data,
+                type: $(this).attr("method"),
+                url: $(this).attr("action"),
+                global: false,
+                error: function(){
+                    $("input").attrs('disabled',false);
+                },
+                success: function(response){
+                    location.reload(true);
+                }
+            };
+            $.ajax(arg);
+            return false;
+        });
     });
 </script>
 
@@ -204,6 +221,7 @@
 			<li><a title="Cập nhập miễn giảm"  href="/school/capNhapMienGiam/{{class.id}}/{{id}}">Miễn giảm</a> </li>
             {% if pos > 3 %}
                 <li><a href="/school/student/account/{{ id }}">Tài khoản</a> </li>
+                <li><a href="/school/movestudent/{{ id }}">Chuyển lớp</a></li>
             {% endif %}
         </ul>
         <div id = "tabs-1">

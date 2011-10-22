@@ -1,0 +1,17 @@
+{% block content %}
+    <script type="text/javascript">
+        $(document).ready(function(){
+           $("input").click(function(){
+               $(this).attr('disabled',true);
+           });
+        });
+    </script>
+    {{ message }}
+    <form action="/school/movestudent/{{ student.id }}" method="post" class="moveStudent">
+    {% csrf_token %}
+        <table class="styleA">
+        {{ form.as_table }}
+        </table>
+    <input class="ggButton" type="submit" value="Chuyển">
+    </form>
+{% endblock %}

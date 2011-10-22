@@ -192,19 +192,22 @@ def move_student(school, student, new_class):
         student.index = index
         student.save()
         return
-    if old_class.block.number != new_class.block.number:
+    if old_class.block_id.number != new_class.block_id.number:
         raise Exception("chuyển học sinh tới lớp không cùng khối")
     else:
         subjects = old_class.subject_set.all()
-        for subject in subjects:
-            subject_in_new_class = new_class.subject_set.filter( type__exact = subject.type, name_exact = subject.name)
+        for _subject in subjects:
+            print _subject
+            subject_in_new_class = new_class.subject_set.get( type__exact = _subject.type, name__exact = _subject.name)
             if subject_in_new_class:
-                the_mark = subject.mark_set.filter( student_id__exact = student)
-                the_mark.subject_id = subject_in_new_class
-                the_mark.save()
-                tkmon = subject.tkmon_set.filter( student_id__exact = student)
-                tkmon.subject_id = subject_in_new_class
-                tkmon.save()
+                the_marks = _subject.mark_set.filter( student_id__exact = student)
+                for the_mark in the_marks:
+                    the_mark.subject_id = subject_in_new_class
+                    the_mark.save()
+                tkmons = _subject.tkmon_set.filter( student_id__exact = student)
+                for tkmon in tkmons:
+                    tkmon.subject_id = subject_in_new_class
+                    tkmon.save()
             else:
                 print student, "chuyển từ ", find.class_id, " sang ", _class
                 print "nhưng môn học: ", subject, " không có."

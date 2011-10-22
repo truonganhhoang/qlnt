@@ -21,6 +21,7 @@
 
   <script>
     $(document).ready(function() {
+        $("#tabs").show();
         $("#tabs").tabs({
             ajaxOptions: {
                 error: function( xhr, status, index, anchor ) {
@@ -54,7 +55,7 @@
         });
     });
   </script>
-    <div id="tabs">
+    <div id="tabs" style="display: none;">
         <ul>
             <li></li>
             <li><a href="classtab">Cả trường</a></li>

@@ -352,21 +352,27 @@ class Pupil(BasicPersonInfo):
         current = self.current_class()
         try:
             if current:
-                relationship = Attend.objects.filter(pupil = self, _class = current)
+                relationship = Attend.objects.filter(pupil = self, _class = current, leave_time = None)
                 print relationship
                 if len(relationship) == 1:
                     if current != _class:
                         relationship[0].leave_time = date.today()
                         relationship[0].save()
-                        Attend.objects.create(pupil = self,
+                        new_attend = Attend.objects.create(pupil = self,
                                               _class = _class,
                                               attend_time = date.today(),
                                               leave_time = None )
+                        new_attend.save()
+                        self.class_id = _class
+                        self.save()
                 elif not relationship:
-                    Attend.objects.create(pupil = self,
+                    new_attend = Attend.objects.create(pupil = self,
                                           _class = _class,
                                           attend_time = date.today(),
                                           leave_time = None )
+                    new_attend.save()
+                    self.class_id = _class
+                    self.save()
                 else:
                     print relationship
                     raise Exception(u'InvalidClassSet_%s' % self.id)

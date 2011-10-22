@@ -1576,7 +1576,7 @@ def classes(request):
 
     pos = get_position(request)
     if pos == 1:
-        url = '/school/viewClassDetail/' + str(get_student(request).class_id.id)
+        url = '/school/viewClassDetail/' + str(get_student(request).current_class().id)
         return HttpResponseRedirect(url)
     message = None
     school = get_school(request)
@@ -1638,7 +1638,7 @@ def classtab(request, block_id=0):
 
         pos = get_position(request)
         if pos == 1:
-            url = '/school/viewClassDetail/' + str(get_student(request).class_id.id)
+            url = '/school/viewClassDetail/' + str(get_student(request).current_class().id)
             return HttpResponseRedirect(url)
         message = None
         school = get_school(request)
@@ -2669,7 +2669,7 @@ def viewStudentDetail(request, student_id):
     message = None
     pupil = Pupil.objects.get(id=student_id)
     school_id = pupil.school_id.id
-    if not in_school(request, pupil.class_id.block_id.school_id):
+    if not in_school(request, pupil.current_class().block_id.school_id):
         return HttpResponseRedirect('/')
     form = PupilForm (school_id, instance=pupil)
     ttcnform = ThongTinCaNhanForm(school_id, instance=pupil)
@@ -2803,7 +2803,7 @@ def viewStudentDetail(request, student_id):
                                     'ttddform': ttddform,
                                     'message': message,
                                     'id': student_id,
-                                    'class':pupil.class_id,
+                                    'class':pupil.current_class(),
                                     'attended': attended,
                                     'pos':pos,
                                     'student': pupil,
@@ -3089,12 +3089,12 @@ def diem_danh_hs(request, student_id, view_type = 0):
         return HttpResponseRedirect(reverse('login'))
     pos = get_position(request)
     pupil = Pupil.objects.get(id=student_id)
-    if pos == 3 and not gvcn(request,pupil.class_id):
+    if pos == 3 and not gvcn(request,pupil.current_class()):
         pos = 1
     if pos < 1:
         return HttpResponseRedirect('/')
     term = None
-    c = pupil.class_id
+    c = pupil.current_class()
     if not in_school(request, c.block_id.school_id):
         return HttpResponseRedirect('/')
     term = get_current_term(request)
@@ -3162,7 +3162,7 @@ def tk_dd_lop(class_id, term_id):
 
 def tk_diem_danh(student_id, term_id):
     pupil = Pupil.objects.get(id=student_id)
-    c = pupil.class_id
+    c = pupil.current_class()
     ts = DiemDanh.objects.filter(student_id=student_id, term_id=term_id).count()
     cp = DiemDanh.objects.filter(student_id=student_id, term_id=term_id, loai=u'C').count()
     kp = ts - cp
@@ -3281,7 +3281,7 @@ def deleteStudentInClass(request, student_id):
     except Pupil.DoesNotExist:
         return HttpResponseRedirect('/')
 
-    class_id = student.class_id
+    class_id = student.current_class()
     if not in_school(request, class_id.block_id.school_id):
         return HttpResponseRedirect('/')
     if get_position(request) < 4:
@@ -3329,7 +3329,7 @@ def deleteStudentInSchool(request, student_id):
 
     #    message = "Đã xóa xong."
     sub = Pupil.objects.get(id=student_id)
-    if not in_school(request, sub.class_id.block_id.school_id):
+    if not in_school(request, sub.current_class().block_id.school_id):
 
         return HttpResponseRedirect('/')
     if get_position(request) < 4:
@@ -3348,10 +3348,10 @@ def khen_thuong(request, student_id):
         return HttpResponseRedirect(reverse('index'))
 
     sub = Pupil.objects.get(id=student_id)
-    if not in_school(request, sub.class_id.block_id.school_id):
+    if not in_school(request, sub.current_class().block_id.school_id):
         return HttpResponseRedirect('/')
     pos = get_position(request)
-    if pos == 3 and gvcn(request,sub.class_id):
+    if pos == 3 and gvcn(request,sub.current_class()):
         pos = 4
     if get_position(request) < 1:
         return HttpResponseRedirect('/')
@@ -3374,15 +3374,15 @@ def add_khen_thuong(request, student_id):
 
     form = KhenThuongForm(student_id)
     pupil = Pupil.objects.get(id=student_id)
-    if not in_school(request, pupil.class_id.block_id.school_id):
+    if not in_school(request, pupil.current_class().block_id.school_id):
         return HttpResponseRedirect('/')
     pos = get_position(request)
-    if pos == 3 and gvcn(request,pupil.class_id):
+    if pos == 3 and gvcn(request,pupil.current_class()):
         pos = 4
     if pos < 4:
         return HttpResponseRedirect('/')
     url = "/school/khenthuong/"+str(student_id) + "/add"
-    cl = Class.objects.get(id__exact=pupil.class_id.id)
+    cl = Class.objects.get(id__exact=pupil.current_class().id)
     term = get_current_term(request)
     if request.method == 'POST':
         form = KhenThuongForm(student_id, request.POST)
@@ -3409,10 +3409,10 @@ def delete_khen_thuong(request, kt_id):
 
     kt = KhenThuong.objects.get(id=kt_id)
     student = kt.student_id
-    if not in_school(request, student.class_id.block_id.school_id):
+    if not in_school(request, student.current_class().block_id.school_id):
         return HttpResponseRedirect('/')
     pos = get_position(request)
-    if pos == 3 and gvcn(request,pupil.class_id):
+    if pos == 3 and gvcn(request,pupil.current_class()):
         pos = 4
     if pos < 4:
         return HttpResponseRedirect('/')
@@ -3432,10 +3432,10 @@ def edit_khen_thuong(request, kt_id):
 
     kt = KhenThuong.objects.get(id=kt_id)
     pupil = kt.student_id
-    if not in_school(request, pupil.class_id.block_id.school_id):
+    if not in_school(request, pupil.current_class().block_id.school_id):
         return HttpResponseRedirect('/')
     pos = get_position(request)
-    if pos == 3 and gvcn(request,pupil.class_id):
+    if pos == 3 and gvcn(request,pupil.current_class()):
         pos = 4
     if pos < 4:
         return HttpResponseRedirect('/')
@@ -3466,10 +3466,10 @@ def ki_luat(request, student_id):
         return HttpResponseRedirect(reverse('index'))
 
     student = Pupil.objects.get(id=student_id)
-    if not in_school(request, student.class_id.block_id.school_id):
+    if not in_school(request, student.current_class().block_id.school_id):
         return HttpResponseRedirect('/')
     pos = get_position(request)
-    if pos == 3 and gvcn(request,student.class_id):
+    if pos == 3 and gvcn(request,student.current_class()):
         pos = 4
     if get_position(request) < 1:
         return HttpResponseRedirect('/')
@@ -3492,15 +3492,15 @@ def add_ki_luat(request, student_id):
 
     form = KiLuatForm(student_id)
     pupil = Pupil.objects.get(id=student_id)
-    if not in_school(request, pupil.class_id.block_id.school_id):
+    if not in_school(request, pupil.current_class().block_id.school_id):
         return HttpResponseRedirect('/')
     pos = get_position(request)
-    if pos == 3 and gvcn(request,pupil.class_id):
+    if pos == 3 and gvcn(request,pupil.current_class()):
         pos = 4
     if pos < 4:
         return HttpResponseRedirect('/')
     url = "/school/kiluat/"+str(student_id) + "/add"
-    cl = Class.objects.get(id__exact=pupil.class_id.id)
+    cl = Class.objects.get(id__exact=pupil.current_class().id)
     term = get_current_term(request)
     if request.method == 'POST':
         form = KiLuatForm(student_id,request.POST)
@@ -3527,10 +3527,10 @@ def delete_ki_luat(request, kt_id):
 
     kt = KiLuat.objects.get(id=kt_id)
     student = kt.student_id
-    if not in_school(request, student.class_id.block_id.school_id):
+    if not in_school(request, student.current_class().block_id.school_id):
         return HttpResponseRedirect('/')
     pos = get_position(request)
-    if pos == 3 and gvcn(request,pupil.class_id):
+    if pos == 3 and gvcn(request,pupil.current_class()):
         pos = 4
     if pos < 4:
         return HttpResponseRedirect('/')
@@ -3551,10 +3551,10 @@ def edit_ki_luat(request, kt_id):
     kt = KiLuat.objects.get(id=kt_id)
 
     pupil = kt.student_id
-    if not in_school(request, pupil.class_id.block_id.school_id):
+    if not in_school(request, pupil.current_class().block_id.school_id):
         return HttpResponseRedirect('/')
     pos = get_position(request)
-    if pos == 3 and gvcn(request,pupil.class_id):
+    if pos == 3 and gvcn(request,pupil.current_class()):
         pos = 4
     if pos < 4:
         return HttpResponseRedirect('/')
@@ -3725,4 +3725,36 @@ def viewSubjectDetail (request, subject_id):
                                     'sub': sub,
                                     'pos':pos,
                                     })
+    return HttpResponse(t.render(c))
+
+def move_one_student(request, student_id):
+    user = request.user
+    if not user.is_authenticated():
+        return HttpResponseRedirect(reverse('login'))
+    try:
+        school = get_school(request)
+    except Exception :
+        return HttpResponseRedirect(reverse('index'))
+    if get_position(request) < 4:
+        return HttpResponseRedirect('/')
+    student = Pupil.objects.get(id = student_id)
+    message = ''
+    form = MoveClassForm(student)
+    if request.method == 'POST':
+        form = MoveClassForm(student,request.POST)
+        if form.is_valid():
+            new_class = Class.objects.get(id = request.POST['move_to'])
+            move_student(school,student,new_class)
+            student.join_class(new_class)
+            form = MoveClassForm(student)
+            message = 'Bạn đã chuyển thành công lớp cho học sinh ' + str(student) + '.'
+    t = loader.get_template(os.path.join('school', 'move_one_student.html'))
+    c = RequestContext(request, { 'student':student,
+                                 'message': message,
+                                 'form':form,})
+    return HttpResponse(t.render(c))
+
+def move_students(request):
+    t = loader.get_template(os.path.join('school', 'move_students.htmnl'))
+    c = RequestContext(request,{})
     return HttpResponse(t.render(c))

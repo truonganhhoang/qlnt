@@ -157,7 +157,15 @@ class ThongTinDoanDoiForm(forms.ModelForm):
         model = Pupil
         fields = {'doi','ngay_vao_doi','doan','ngay_vao_doan','dang','ngay_vao_dang'}
 
-        
+class MoveClassForm(forms.Form):
+    def __init__(self, student, *args, **kw):
+        super(MoveClassForm,self).__init__(*args, **kw)
+        current_class = student.current_class()
+        if current_class != None:
+            block = current_class.block_id
+            self.fields['move_to'] = forms.ModelChoiceField(required=True,label=u'Chuyển tới',
+                                    queryset=Class.objects.filter(block_id = block).exclude(id = current_class.id))
+            
 class SchoolForm(forms.Form):
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop('request')
