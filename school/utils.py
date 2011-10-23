@@ -166,13 +166,15 @@ def make_default_password( raw_password):
 # student: Pupil object,
 # old_class: Class object,
 # new_class: Class object,
+@transaction.commit_on_success
 def move_student(school, student, new_class):
-    old_class = student.class_id
+    old_class = student.current_class()
+    print old_class, 'old_class'
+    print new_class, 'new_class'
     if not new_class:
-        return
+        return None
     if not old_class:
         _class = new_class
-        index = new_class.pupil_set.count()+1
         subjects = _class.subject_set.all()
         year = school.year_set.latest('time')
         for subject in subjects:
@@ -188,17 +190,14 @@ def move_student(school, student, new_class):
             tkmon.student_id = student
             tkmon.subject_id = subject
             tkmon.save()
-        student.class_id = new_class
-        student.index = index
-        student.save()
-        return
+        student.join_class(new_class)
+        return student
     if old_class.block_id.number != new_class.block_id.number:
         raise Exception("chuyển học sinh tới lớp không cùng khối")
     else:
         subjects = old_class.subject_set.all()
         for _subject in subjects:
-            print _subject
-            subject_in_new_class = new_class.subject_set.get( type__exact = _subject.type, name__exact = _subject.name)
+            subject_in_new_class = new_class.subject_set.get( type__exact = _subject.type)
             if subject_in_new_class:
                 the_marks = _subject.mark_set.filter( student_id__exact = student)
                 for the_mark in the_marks:
@@ -209,11 +208,11 @@ def move_student(school, student, new_class):
                     tkmon.subject_id = subject_in_new_class
                     tkmon.save()
             else:
-                print student, "chuyển từ ", find.class_id, " sang ", _class
-                print "nhưng môn học: ", subject, " không có."
+                print student, "move from ", find.class_id, " to ", _class
+                print "But: ", subject, " does not exist."
                 #raise Exception("Subject does not exist")   
-    student.class_id = new_class
-    student.save()
+        student.join_class(new_class)
+        return student
 
 
 # This function will handle a change of students in a particular class

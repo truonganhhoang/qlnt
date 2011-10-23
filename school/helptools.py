@@ -19,7 +19,10 @@ def convert_data_1n_mn(request):
     students = Pupil.objects.all()
     for student in students:
         _class = student.class_id
-        student.join_class(_class)
+        if not _class:
+            print student, student.get_school()
+        else:
+            student.join_class(_class, student.school_join_date)
     message = 'Done'
     context = RequestContext(request)
     return render_to_response( SYNC_RESULT, { 'message' : message},
@@ -233,7 +236,7 @@ def check_logic(request):
             number = 0
             classes = Class.objects.all()
             for _class in classes:
-                expected_tkmon_number = _class.subject_set.count() * _class.pupil_set.count()
+                expected_tkmon_number = _class.subject_set.count() * _class.students().count()
                 tkmon_number = 0
                 subjects = Subject.objects.filter( class_id = _class)
                 for subject in subjects:
@@ -242,7 +245,7 @@ def check_logic(request):
                     message += r'<li>'+unicode(_class.year_id.school_id) + ':'\
                                + unicode(_class)+':' \
                                + str(expected_tkmon_number) + '----' + str(tkmon_number) + r'</li>'
-                number += _class.subject_set.count() * _class.pupil_set.count()
+                number += _class.subject_set.count() * _class.students().count()
             message += r'<li>' + 'Expected tkmon: ' + str(number) + r'</li>'
             message += ':' + str(TKMon.objects.count())
             tkmons = TKMon.objects.all()

@@ -339,44 +339,67 @@ class Pupil(BasicPersonInfo):
         return attended
 
     def current_class(self):
-        classes = Class.objects.filter(pupil__id=self.id,
-                                       attend__leave_time=None)
-        if not classes:
+        attends = Attend.objects.filter(pupil=self, leave_time=None)
+        if not attends:
             #print classes
             #raise Exception('InvalidClassSet_%s' % self.id)
             pass
         else:
-            return classes[0]
+            return attends[0]._class
 
-    def join_class(self, _class):
+    def join_class(self, _class, time = None):
+        print 'in join_class'
+        if not time:
+            time = date.today()
         current = self.current_class()
         try:
             if current:
-                relationship = Attend.objects.filter(pupil = self, _class = current, leave_time = None)
-                print relationship
+                print current
+                print _class
+                relationship = Attend.objects.filter(pupil=self, _class=current, leave_time=None)
+                print '->',relationship, 'relationships'
                 if len(relationship) == 1:
+                    print 'go in there'
                     if current != _class:
                         relationship[0].leave_time = date.today()
                         print relationship[0]
                         relationship[0].save()
-                        new_attend = Attend.objects.create(pupil = self,
+                        print relationship[0].leave_time, 'leave_time'
+                        Attend.objects.create(pupil = self,
                                               _class = _class,
-                                              attend_time = date.today(),
+                                              attend_time = time,
                                               leave_time = None )
-                        new_attend.save()
+                        self.index = _class.max + 1
+                        _class.max += 1
+                        _class.save()
                         self.class_id = _class
                         self.save()
                 elif not relationship:
-                    new_attend = Attend.objects.create(pupil = self,
+                    Attend.objects.create(pupil = self,
                                           _class = _class,
-                                          attend_time = date.today(),
+                                          attend_time = time,
                                           leave_time = None )
-                    new_attend.save()
                     self.class_id = _class
+                    self.index = _class.max + 1
+                    _class.max += 1
+                    _class.save()
                     self.save()
                 else:
                     print relationship
                     raise Exception(u'InvalidClassSet_%s' % self.id)
+            else:
+                #this only use for converting from 1n to nm
+                #TODO delete this section after removing class_id
+                current = self.class_id
+                Attend.objects.create(pupil = self,
+                                      _class = _class,
+                                      attend_time = date.today(),
+                                      leave_time = None )
+                self.class_id = _class
+                self.index = _class.max + 1
+                _class.max += 1
+                _class.save()
+                self.save()
             return self
         except Exception as e:
             print e

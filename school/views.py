@@ -1910,34 +1910,34 @@ def viewClassDetail(request, class_id, sort_type=0, sort_status=0):
                 return HttpResponse(data, mimetype='json')
     if int(sort_type) == 0:
         if int(sort_status) == 0:
-            studentList = cl.pupil_set.order_by('index','first_name', 'last_name','birthday')
+            studentList = cl.students().order_by('index','first_name', 'last_name','birthday')
         else:
-            studentList = cl.pupil_set.order_by('index','-first_name', '-last_name','-birthday')
+            studentList = cl.students().order_by('index','-first_name', '-last_name','-birthday')
     if int(sort_type) == 1:
         if int(sort_status) == 0:
-            studentList = cl.pupil_set.order_by('first_name', 'last_name','birthday')
+            studentList = cl.students().order_by('first_name', 'last_name','birthday')
         else:
-            studentList = cl.pupil_set.order_by('-first_name', '-last_name','-birthday')
+            studentList = cl.students().order_by('-first_name', '-last_name','-birthday')
     if int(sort_type) == 2:
         if int(sort_status) == 0:
-            studentList = cl.pupil_set.order_by('birthday')
+            studentList = cl.students().order_by('birthday')
         else:
-            studentList = cl.pupil_set.order_by('-birthday')
+            studentList = cl.students().order_by('-birthday')
     if int(sort_type) == 3:
         if int(sort_status) == 0:
-            studentList = cl.pupil_set.order_by('sex')
+            studentList = cl.students().order_by('sex')
         else:
-            studentList = cl.pupil_set.order_by('-sex')
+            studentList = cl.students().order_by('-sex')
     if int(sort_type) == 4:
         if int(sort_status) == 0:
-            studentList = cl.pupil_set.order_by('ban_dk')
+            studentList = cl.students().order_by('ban_dk')
         else:
-            studentList = cl.pupil_set.order_by('-ban_dk')
+            studentList = cl.students().order_by('-ban_dk')
     if int(sort_type) == 5:
         if int(sort_status) == 0:
-            studentList = cl.pupil_set.order_by('school_join_date')
+            studentList = cl.students().order_by('school_join_date')
         else:
-            studentList = cl.pupil_set.order_by('-school_join_date')
+            studentList = cl.students().order_by('-school_join_date')
 
     tmp = get_student(request)
     inCl = inClass(request, class_id)

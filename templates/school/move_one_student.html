@@ -1,15 +1,6 @@
 {% block content %}
     {{ message }}
-    <form action="/school/movestudent/{{ student.id }}" method="post" class="moveStudent">
-    {% csrf_token %}
-        <table class="styleA">
-        {{ form.as_table }}
-        </table>
-    <input class="ggButton" type="submit" value="Chuyển">
-    </form>
-
-    <div>
-        <h2> Lịch sử chuyển lớp </h2>
+    <div  style="float: left;">
         <table class="styleA">
             <tr>
                 <th class="leftAlign"> Lớp </th>
@@ -21,12 +12,23 @@
                     <td> {{ a.get_class }}</td>
                     <td> {{ a.attend_time|date:"SHORT_DATE_FORMAT" }}</td>
                     <td> {% if a.leave_time != None %}
-                            {{ a.leave_time|date:"SHORT_DATE_FORMAT" }}
-                        {% endif %}
+                        {{ a.leave_time|date:"SHORT_DATE_FORMAT" }}
+                    {% endif %}
                     </td>
                 </tr>
             {% endfor %}
         </table>
     </div>
+
+    <div style="float: left;  margin: 0 10px 0 10px;">
+        <form action="/school/movestudent/{{ student.id }}" method="post" class="moveStudent">
+            {% csrf_token %}
+            <table class="styleA" >
+                {{ form.as_table }}
+            </table>
+            <input class="ggButton" type="submit" value="Chuyển">
+        </form>
+    </div>
+    <div style="clear: both;"></div>
 
 {% endblock %}
