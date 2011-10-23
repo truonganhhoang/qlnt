@@ -88,18 +88,18 @@ def thu11111(request):
     return HttpResponse(t.render(c))
 
 @transaction.commit_on_success                                                              
-def thu1(request):
+def thu(request):
     t1= time.time()
-    list1 = TKMon.objects.filter(student_id__class_id=213)
+    list1 = TKMon.objects.filter(student_id__class_id=30)
+    print len(list1)/14
     for m in list1:
         m.tb_nam=random.randrange( 6,10)
        # m.save()
     for m in list1:
         m.save()
            
-    list = Mark.objects.filter(subject_id=2828)
+    list = Mark.objects.filter(subject_id__class_id=30)
     for m in list:
-        """
         m.mieng_1 = random.randrange( 7,11 )
         m.mieng_2 = random.randrange( 7,11 )
         m.mieng_3 = random.randrange( 7,11 )
@@ -162,10 +162,9 @@ def thu1(request):
         mt.ck=None
         mt.tb=None
         mt.save()
-        print to_en1(m.student_id.first_name)
+        """
     for m in list:
         m.save()
-    print list       
     
     t = loader.get_template(os.path.join('school','ll.html'))
     t2=time.time()
@@ -241,7 +240,7 @@ def thu1(request):
     #print (t2-t1)
     return HttpResponse(t.render(c))
 
-def thu(request):
+def thu1(request):
     t1= time.time()
     
     

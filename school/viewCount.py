@@ -730,7 +730,7 @@ def listSubject(year_id):
         if not (s.name in list):
             list.append(s.name)
     return list 
-def count2(request,type=None,year_id=None,number=None,index=-1):
+def count2(request,type=None,modeView=None,year_id=None,number=None,index=-1):
     tt1=time.time()
     """
     user = request.user
@@ -747,8 +747,10 @@ def count2(request,type=None,year_id=None,number=None,index=-1):
     if get_position(request) != 4:
        return HttpResponseRedirect('/school')
     """
+    selectedTerm =get_current_term(request)
+    currentNumber=selectedTerm.number
     if year_id==None:
-        selectedTerm =get_current_term(request)
+        
         selectedYear =get_current_year(request)
         year_id   = selectedTerm.year_id.id
         if selectedTerm.number==3:            
@@ -764,59 +766,121 @@ def count2(request,type=None,year_id=None,number=None,index=-1):
     subjectList=listSubject(year_id)
     number=int(number)
     type=int(type)
+    modeView=int(modeView)
     sumsumsum=0
     allList=[]
     list=[]
     subjectName=[]        
     if index!=-1:
-        print "fuc"
         subjectName = subjectList[int(index)-1]
-        blockList = Block.objects.filter(school_id=selectedYear.school_id)  
         level =[11,7.995,6.495,4.995,3.495,-1]
         sumsumsum=0
         allSlList=[0,0,0,0,0]
         allPtList=[0,0,0,0,0]
         list=[]        
-        for b in blockList:
-            classList = Class.objects.filter(block_id=b,year_id=selectedYear.id)
-            totalSlList=[0,0,0,0,0]
-            totalPtList=[0,0,0,0,0]  
-            sumsum=0
-            list1=[]
-            for c in classList:
+        if modeView==1:
+            blockList = Block.objects.filter(school_id=selectedYear.school_id)  
+            for b in blockList:
+                classList = Class.objects.filter(block_id=b,year_id=selectedYear.id)
+                totalSlList=[0,0,0,0,0]
+                totalPtList=[0,0,0,0,0]  
+                sumsum=0
+                list1=[]
+                for c in classList:
+                    slList=[0,0,0,0,0]
+                    ptList=[0,0,0,0,0]
+                    
+                    selectedSubjectList = Subject.objects.filter(name=subjectName,class_id=c.id)
+                    if len(selectedSubjectList)==0: continue
+                    else: selectedSubject=selectedSubjectList[0]
+                    
+                    if type==1:
+                        if number<3:
+                            for i in range(5):
+                                slList[i]=Mark.objects.filter(term_id=term_id,subject_id=selectedSubject.id,tb__lt=level[i],tb__gt=level[i+1]).count()
+                        else:
+                            for i in range(5):
+                                slList[i]=TKMon.objects.filter(subject_id=selectedSubject.id,tb_nam__lt=level[i],tb_nam__gt=level[i+1]).count()
+                    elif type==2:            
+                        for i in range(5):
+                            slList[i]=Mark.objects.filter(term_id=term_id,subject_id=selectedSubject.id,ck__lt=level[i],ck__gt=level[i+1]).count()
+                                
+                    sum=Pupil.objects.filter(class_id=c.id).count()                    
+                    for i in range(5):
+                        if sum!=0:
+                            ptList[i]=float(slList[i])/sum*100
+                        totalSlList[i]+=slList[i]
+                        allSlList[i]+=slList[i]
+                    if sum!=0:    
+                        print sum,slList,ptList
+                    
+                    if selectedSubject.teacher_id:    
+                        teacherName=selectedSubject.teacher_id.last_name+' '+selectedSubject.teacher_id.first_name
+                        list1.append([c.name,sum,teacherName,zip(slList,ptList)])
+                    else:                            
+                        list1.append([c.name,sum,' ',zip(slList,ptList)])
+                    sumsum+=sum
+                    sumsumsum+=sum
+                        
+                if sumsum!=0:  
+					for i in range(5):
+						totalPtList[i]=float(totalSlList[i])/sumsum *100                
+                list.append(['Khối '+str(b.number),sumsum,zip(totalSlList,totalPtList),list1])
+                    
+       #######################################################################        
+        elif modeView==2:            
+            selectedSubjectList =Subject.objects.filter(name=subjectName,class_id__year_id=year_id,teacher_id__isnull=False).order_by('teacher_id__first_name','teacher_id__last_name')
+            length=len(selectedSubjectList)
+            previousTeacher=None
+            for (ii,s) in enumerate(selectedSubjectList):
+                ok=False
                 slList=[0,0,0,0,0]
                 ptList=[0,0,0,0,0]
+                teacherName = s.teacher_id.last_name+' '+s.teacher_id.first_name                        
+                if  s.teacher_id !=previousTeacher:
+                    if ii!=0:
+                        if sumsum!=0:  
+                            for i in range(5):
+                                totalPtList[i]=float(totalSlList[i])/sumsum *100
+                        list.append(['Tổng',sumsum,zip(totalSlList,totalPtList),list1])
+                    
+                    totalSlList=[0,0,0,0,0]
+                    totalPtList=[0,0,0,0,0]
+                    sumsum=0
+                    list1=[]
+                    if ii==length-1:
+                        ok=True
+                previousTeacher=s.teacher_id        
                 if type==1:
                     if number<3:
                         for i in range(5):
-                            slList[i]=Mark.objects.filter(term_id=term_id,subject_id__name=subjectName,subject_id__class_id=c.id,tb__lt=level[i],tb__gt=level[i+1]).count()
+                            slList[i]=Mark.objects.filter(term_id=term_id,subject_id=s.id,tb__lt=level[i],tb__gt=level[i+1]).count()
                     else:
                         for i in range(5):
-                            slList[i]=TKMon.objects.filter(subject_id__class_id=c.id,subject_id__name=subjectName,tb_nam__lt=level[i],tb_nam__gt=level[i+1]).count()
+                            slList[i]=TKMon.objects.filter(subject_id=s.id,tb_nam__lt=level[i],tb_nam__gt=level[i+1]).count()
                 elif type==2:            
                     for i in range(5):
-                        slList[i]=Mark.objects.filter(term_id=term_id,subject_id__name=subjectName,subject_id__class_id=c.id,ck__lt=level[i],ck__gt=level[i+1]).count()
-                            
-                sum=Pupil.objects.filter(class_id=c.id).count()                    
+                        slList[i]=Mark.objects.filter(term_id=term_id,subject_id=s.id,ck__lt=level[i],ck__gt=level[i+1]).count()
+  
+                sum=Pupil.objects.filter(class_id=s.class_id.id).count()                    
                 for i in range(5):
                     if sum!=0:
                         ptList[i]=float(slList[i])/sum*100
                     totalSlList[i]+=slList[i]
                     allSlList[i]+=slList[i]
-                if sum!=0:    
-                    print sum,slList,ptList
                     
-                list1.append([c.name,sum,zip(slList,ptList)])                        
+                list1.append([s.class_id.name,sum,teacherName,zip(slList,ptList)])
                 sumsum+=sum
                 sumsumsum+=sum
+                if ok:    
+                    if sumsum!=0:  
+                        for i in range(5):
+                            totalPtList[i]=float(totalSlList[i])/sumsum *100                
+                    list.append(['Tổng',sumsum,zip(totalSlList,totalPtList),list1])
                     
-            if sumsum!=0:  
-                for i in range(5):
-                    totalPtList[i]=float(totalSlList[i])/sumsum *100                
-            list.append([b,sumsum,zip(totalSlList,totalPtList),list1])
         if sumsumsum!=0:    
-            for i in range(5):
-                allPtList[i]=float(allSlList[i])/sumsumsum *100
+           for i in range(5):
+               allPtList[i]=float(allSlList[i])/sumsumsum *100
         allList=zip(allSlList,allPtList)
     tt2=time.time()
     print tt2-tt1
@@ -831,8 +895,7 @@ def count2(request,type=None,year_id=None,number=None,index=-1):
                                  'allList':allList,
                                  'sumsumsum':sumsumsum,
                                  'subjectName':subjectName,
+                                 'currentNumber':currentNumber,
+                                 'modeView':modeView,
                                  })
-                                 
-                                
-                       
     return HttpResponse(t.render(c))
