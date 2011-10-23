@@ -870,6 +870,125 @@ def count1Excel(year_id,number,list,sumsumsum,allList):
     print (tt2-tt1)
     return response
 
+def count2Excel(year_id,number,subjectName,type,modeView,list,allList,sumsumsum):
+    tt1 = time.time()
+    
+    book = Workbook(encoding = 'utf-8')
+    selectedYear = Year.objects.get(id=year_id)
+    if number==1:
+        str1='HKI'
+        str2=u'HỌC KỲ I NĂM HỌC '+str(selectedYear.time)+'-'+str(selectedYear.time+1)
+    elif number==2:
+        str1='HKII'
+        str2=u'HỌC KỲ II NĂM HỌC '+str(selectedYear.time)+'-'+str(selectedYear.time+1)
+    else:
+        str1='CaNam'        
+        str2=u'CẢ NĂM NĂM HỌC '+str(selectedYear.time)+'-'+str(selectedYear.time+1)
+    if   (type==1) & (modeView==1):
+        str3='TBTheoLop'        
+        titleString=u'THỐNG KÊ ĐIỂM TRUNG BÌNH THEO LỚP-MÔN '+unicode(subjectName.upper()) 
+    elif (type==1) & (modeView==2):
+        str3='TBTheoGiaoVien'        
+        titleString=u'THỐNG KÊ ĐIỂM TRUNG BÌNH THEO GIÁO VIÊN-MÔN '+unicode(subjectName.upper())
+    elif (type==2) & (modeView==1):      
+        str3='ThiTheoLop'        
+        titleString=u'THỐNG KÊ ĐIỂM THI CUỐI KÌ THEO LỚP-MÔN '+unicode(subjectName.upper()) 
+    elif (type==2) & (modeView==2):      
+        str3='ThiTheoGiaoVien'        
+        titleString=u'THỐNG KÊ ĐIỂM THI CUỐI KÌ THEO GIÁO VIÊN-MÔN '+unicode(subjectName.upper())
+         
+    sheetName ='tkDiem'+str3+str1+str(selectedYear.time)+'-'+str(selectedYear.time+1) 
+    s=book.add_sheet('tkDiem',True)
+    s.set_portrait(0)
+    s.col(0).width=s1    
+    size = (SIZE_PAGE_WIDTH-s1)/16 
+    s.col(1).width=2*size
+    s.col(2).width=size
+    s.col(3).width=3*size    
+    for i in range(4,13):
+        if i % 2==1:
+            s.col(i).width = size-100
+        else:    
+            s.col(i).width = size+100
+            
+    s.write_merge(2,2,0,12,titleString,h40)
+    s.write_merge(3,3,0,12,str2,h40)
+    x=5
+    y=1    
+    s.write_merge(x,x+2,y-1,y-1,u'STT',h4)    
+    s.write_merge(x,x+2,y,y,u'Lớp',h4)    
+    s.write_merge(x,x+2,y+1,y+1,u'Sĩ\nSố',h4)    
+    s.write_merge(x,x+2,y+2,y+2,u'Giáo viên\ngiảng dạy',h4)    
+    s.write_merge(x,x,y+3,y+12,u'Học lực',h4)    
+        
+    s.write_merge(x+1,x+1,y+3,y+4,'Giỏi',h4)
+    s.write_merge(x+1,x+1,y+5,y+6,'Khá',h4)
+    s.write_merge(x+1,x+1,y+7,y+8,'TB',h4)
+    s.write_merge(x+1,x+1,y+9,y+10,'Yếu',h4)
+    s.write_merge(x+1,x+1,y+11,y+12,'Kém',h4)
+    
+    for i in range(5):
+        s.write(x+2,y+2*i+3,'sl',h4)
+        s.write(x+2,y+2*i+4,'%' ,h4)
+    
+    
+    i=0
+    for b,sum,total,list1 in list:
+        stt=0
+        for name,ss,teacherName,l in list1:
+            i+=1
+            stt+=1                
+            s.write(x+i+2,y-1,stt,h82)
+            s.write(x+i+2,y,name,h82)
+            s.write(x+i+2,y+1,ss,h72)
+            s.write(x+i+2,y+2,teacherName,h82)
+            j=0
+            for u,v in l :
+                v=round(v+e, 2)
+                s.write(x+i+2,y+2*j+3,u,h72)
+                s.write(x+i+2,y+2*j+4,v,h73)
+                j+=1
+                
+        i+=1
+        str11=b
+        s.write(x+i+2,y-1,'',h41)
+        s.write(x+i+2,y,str11,h41)
+        s.write(x+i+2,y+1,sum,h72)        
+        s.write(x+i+2,y+2,'',h41)
+        j=0
+        for u,v in total:
+            v=round(v+e, 2)                            
+            s.write(x+i+2,y+2*j+3,u,h72)
+            s.write(x+i+2,y+2*j+4,v,h73)
+            j+=1
+        i+=1
+        s.write(x+i+2,y-1,'',h41)
+        s.write(x+i+2,y,'',h5)
+        s.write(x+i+2,y+1,'',h72)        
+        s.write(x+i+2,y+2,'',h72)        
+        j=0
+        for u,v in total:
+            s.write(x+i+2,y+2*j+3,'',h72)
+            s.write(x+i+2,y+2*j+4,'',h72)
+            j+=1
+    i+=1    
+    s.write(x+i+2,y,u'Toàn trường',h41)
+    s.write(x+i+2,y+1,sumsumsum,h72)
+    s.write(x+i+2,y+2,'',h72)
+    j=0
+    for u,v in allList:
+        v=round(v+e, 2)        
+        s.write(x+i+2,y+2*j+3,u,h72)
+        s.write(x+i+2,y+2*j+4,v,h73)
+        j+=1  
+        
+    response = HttpResponse(mimetype='application/ms-excel')
+    response['Content-Disposition'] = u'attachment; filename=%s.xls' % sheetName
+    book.save(response)
+    tt2= time.time()
+    print (tt2-tt1)
+    return response
+
 def printMarkToExcel(termNumber,selectedClass,checkNxList,s,pupilList,markList,tkMonList,ddHKList,tbHKList,TBNamList,schoolName,ddHK1List=None):
     today=datetime.datetime.now()
     if selectedClass.teacher_id!=None:

@@ -33,28 +33,39 @@
 
 {% block content %}
   <br>
-  Học kì
-  <select id="term" style="width:100px">
-    <option value='1'> Học kì I</option>
-    <option value='2'> Học kì II</option>
-    {% if type == 1 %}
-      <option value='3'> Cả năm</option>
-    {% endif %}
-  </select>
-  &nbsp&nbsp&nbsp&nbsp
-  Thống kê theo
-  <select id="modeView" style="width:100px">
-    <option value='1'> Lớp, khối</option>
-    <option value='2'> Giáo viên</option>
-  </select>
-  &nbsp&nbsp&nbsp&nbspMôn
-  
-  <select id="subject">
-    <option value="-1"> Chọn môn</option>
-    {% for s in subjectList %}
-      <option value="{{forloop.counter}}"> {{ s }} </option>
-    {% endfor %}
-  </select>
+<table width="100%" >
+<tr>
+	<td>
+	  Học kì
+	  <select id="term" style="width:100px">
+		<option value='1'> Học kì I</option>
+		<option value='2'> Học kì II</option>
+		{% if type == 1 %}
+		  <option value='3'> Cả năm</option>
+		{% endif %}
+	  </select>
+	  &nbsp&nbsp&nbsp&nbsp
+	  Thống kê theo
+	  <select id="modeView" style="width:100px">
+		<option value='1'> Lớp</option>
+		<option value='2'> Giáo viên</option>
+	  </select>
+	  &nbsp&nbsp&nbsp&nbspMôn
+	  
+	  <select id="subject">
+		<option value="-1"> Chọn môn</option>
+		{% for s in subjectList %}
+		  <option value="{{forloop.counter}}"> {{ s }} </option>
+		{% endfor %}
+	  </select>
+	</td>
+	{% if index != -1 %}
+		<td align="right">	
+			<a class="ggButton" href="/school/count2/{{type}}/{{modeView}}/{{year_id}}/{{number}}/{{index}}/1">Xuất ra excel </a> 
+		</td>
+	{% endif %}	
+</tr>
+</table>	
   <br>
   <br>
   <br>

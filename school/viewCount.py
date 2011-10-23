@@ -9,7 +9,7 @@ import os.path
 import time 
 from school.utils import *
 from school.templateExcel import *
-from school.writeExcel import count1Excel
+from school.writeExcel import count1Excel,count2Excel
 
 def countTotalPractisingInTerm(term_id):
     slList  =[0,0,0,0,0]
@@ -730,7 +730,7 @@ def listSubject(year_id):
         if not (s.name in list):
             list.append(s.name)
     return list 
-def count2(request,type=None,modeView=None,year_id=None,number=None,index=-1):
+def count2(request,type=None,modeView=None,year_id=None,number=None,index=-1,isExcel=None):
     tt1=time.time()
     """
     user = request.user
@@ -832,6 +832,7 @@ def count2(request,type=None,modeView=None,year_id=None,number=None,index=-1):
             selectedSubjectList =Subject.objects.filter(name=subjectName,class_id__year_id=year_id,teacher_id__isnull=False).order_by('teacher_id__first_name','teacher_id__last_name')
             length=len(selectedSubjectList)
             previousTeacher=None
+            print selectedSubjectList
             for (ii,s) in enumerate(selectedSubjectList):
                 ok=False
                 slList=[0,0,0,0,0]
@@ -848,8 +849,8 @@ def count2(request,type=None,modeView=None,year_id=None,number=None,index=-1):
                     totalPtList=[0,0,0,0,0]
                     sumsum=0
                     list1=[]
-                    if ii==length-1:
-                        ok=True
+                if ii==length-1:
+                    ok=True
                 previousTeacher=s.teacher_id        
                 if type==1:
                     if number<3:
@@ -882,6 +883,9 @@ def count2(request,type=None,modeView=None,year_id=None,number=None,index=-1):
            for i in range(5):
                allPtList[i]=float(allSlList[i])/sumsumsum *100
         allList=zip(allSlList,allPtList)
+        if isExcel=='1':
+            return count2Excel(year_id,number,subjectName,type,modeView,list,allList,sumsumsum)
+             
     tt2=time.time()
     print tt2-tt1
     t = loader.get_template(os.path.join('school','count2.html'))    

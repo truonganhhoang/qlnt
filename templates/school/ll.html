@@ -1,15 +1,4 @@
 ﻿{% extends "base.html" %}
 {% block content %}
-
-    <form name="form1">
-    Click the button to reload the current page.
-    <br><br>
-    Location.hash value: <input type="text" name="text1" size=20>
-    <br>
-    <input type="button" name="load" value="Reload page" onClick='document.location.reload(true)'>
-    <br>
-    </form>
+ok
 {% endblock %}
-order_by('index','first_name','last_name','birthday')
-order_by('student_id__index','student_id__first_name','student_id__last_name','student_id__birthday')
-.order_by('student_id__index','student_id__first_name','student_id__last_name','student_id__birthday','subject_id__index','subject_id__name')
