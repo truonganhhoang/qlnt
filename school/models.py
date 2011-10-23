@@ -575,10 +575,10 @@ class KiLuat(models.Model):
 class HanhKiem(models.Model):
     student_id = models.ForeignKey(Pupil, verbose_name = "Học sinh")
     year_id = models.ForeignKey(Year, verbose_name = "Năm học")    
-    term1 = models.CharField("Kì 1",max_length = 2, choices = HK_CHOICES, null=True,blank=True)
-    term2 = models.CharField("Kì 2",max_length = 2, choices = HK_CHOICES, null=True,blank=True)
-    year = models.CharField("Cả năm",max_length = 2, choices = HK_CHOICES, null=True,blank=True)
-    #danh dau ren luyen lai trong giai doan he
+#    term1 = models.CharField("Kì 1",max_length = 2, choices = HK_CHOICES, null=True,blank=True)
+#    term2 = models.CharField("Kì 2",max_length = 2, choices = HK_CHOICES, null=True,blank=True)
+#    year = models.CharField("Cả năm",max_length = 2, choices = HK_CHOICES, null=True,blank=True)
+#    #danh dau ren luyen lai trong giai doan he
     ren_luyen_lai=models.NullBooleanField("Rèn luyện lại", blank = True, null = True)
     hk_ren_luyen_lai=models.CharField("Hạnh kiểm rèn luyện lại", null=True, blank=True, max_length = 2, choices = HK_CHOICES)
     class Meta:

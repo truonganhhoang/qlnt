@@ -602,15 +602,15 @@ def markForAStudent(request,class_id,student_id):
     try:
         if in_school(request,selectedClass.year_id.school_id) == False:
             return HttpResponseRedirect('/school')
-    
+
     except Exception as e:
         return HttpResponseRedirect(reverse('index'))
 
     message = None
     student=Pupil.objects.get(id=student_id)
 
-    ok=False    
-    
+    ok=False
+
     position = get_position(request)
     """
     if position ==4: ok=True
@@ -619,66 +619,66 @@ def markForAStudent(request,class_id,student_id):
         if selectedClass.teacher_id != None:
             if selectedClass.teacher_id.user_id.id == request.user.id:
                 ok=True
-                
-    if request.user.id==student.user_id.id: ok =True                 
+
+    if request.user.id==student.user_id.id: ok =True
     if (not ok):
         return HttpResponseRedirect('/school')
     """
-    
-    
+
+
     studentName=student.last_name+" "+student.first_name
-    
+
     yearChoice=selectedClass.year_id.id
 
-    selectedTerm=get_current_term(request)    
+    selectedTerm=get_current_term(request)
     termChoice  =selectedTerm.id
-    
+
     termList= Term.objects.filter(year_id=yearChoice,number__lt=3).order_by('number')
-    
+
     if request.method == 'POST':
         termChoice =int(request.POST['term'])
         selectedTerm=Term.objects.get(id=termChoice)
-        
+
     subjectList=selectedClass.subject_set.all().order_by("index",'name')
-    
-    
+
+
     markList=[]
     tbnamList=[]
     tbhk1List=[]
     list=[]
     tbhk1=None
-    tbhk2=None    
+    tbhk2=None
     tbCaNam=None
-    if selectedTerm.number==2:    
+    if selectedTerm.number==2:
         for s in subjectList:
-            m=s.mark_set.get(student_id=student_id,term_id__number=2)            
+            m=s.mark_set.get(student_id=student_id,term_id__number=2)
             markList.append(m)
-            
+
             tbnam=s.tkmon_set.get(student_id=student_id).tb_nam
             tbnamList.append(tbnam)
-                
+
             hk1=s.mark_set.get(student_id=student_id,term_id__number=1).tb
-            
+
             tbhk1List.append(hk1)
-            
+
         list=zip(subjectList,markList,tbhk1List,tbnamList)
         tbhk1  =student.tbhocky_set.get(term_id__year_id=yearChoice,term_id__number=1)
         tbhk2  =student.tbhocky_set.get(term_id__year_id=yearChoice,term_id__number=2)
-        tbCaNam=student.tbnam_set.get(year_id=yearChoice)    
+        tbCaNam=student.tbnam_set.get(year_id=yearChoice)
     else:
-        if     selectedTerm.number==1:    
+        if     selectedTerm.number==1:
             for s in subjectList:
                 m=s.mark_set.get(student_id=student_id,term_id=termChoice)
-                
+
                 markList.append(m)
-                
-            list=zip(subjectList,markList)        
+
+            list=zip(subjectList,markList)
             tbhk1=student.tbhocky_set.get(term_id=termChoice)
-                                    
-        
+
+
     t = loader.get_template(os.path.join('school','mark_for_a_student.html'))
-    
-    c = RequestContext(request, { 
+
+    c = RequestContext(request, {
                                 'message' : message,
                                 'class_id':class_id,
                                 'student_id':student_id,
@@ -695,7 +695,7 @@ def markForAStudent(request,class_id,student_id):
                                 'tbCaNam':tbCaNam,
                                 }
                        )
-    
+
 
     return HttpResponse(t.render(c))
 

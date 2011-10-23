@@ -3793,6 +3793,7 @@ def move_students(request):
                 new_class = Class.objects.get(id = request.POST['target'])
                 data = request.POST[u'data']
                 data = data.split('-')
+                print data, new_class
                 for e in data:
                     if e.strip():
                         student = Pupil.objects.get(id__exact = int(e))

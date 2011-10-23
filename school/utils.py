@@ -174,6 +174,7 @@ def move_student(school, student, new_class):
     if not new_class:
         return None
     if not old_class:
+        print 'wtf going into there?'
         _class = new_class
         subjects = _class.subject_set.all()
         year = school.year_set.latest('time')
@@ -195,21 +196,30 @@ def move_student(school, student, new_class):
     if old_class.block_id.number != new_class.block_id.number:
         raise Exception("chuyển học sinh tới lớp không cùng khối")
     else:
+        print 'going to transfer marks'
         subjects = old_class.subject_set.all()
+        print subjects
         for _subject in subjects:
-            subject_in_new_class = new_class.subject_set.get( type__exact = _subject.type)
-            if subject_in_new_class:
-                the_marks = _subject.mark_set.filter( student_id__exact = student)
-                for the_mark in the_marks:
-                    the_mark.subject_id = subject_in_new_class
-                    the_mark.save()
+            try:
+                subject_in_new_class = new_class.subject_set.get( type__exact = _subject.type)
+                print 'subject', _subject, 'class_id',_subject.class_id
+                print 'subject_in_new_class', subject_in_new_class
+                print _subject.mark_set.all()
+                marks = _subject.mark_set.filter( student_id__exact = student)
+                print 'MARKS:', marks
+                for mark in marks:
+                    print mark
+                    mark.subject_id = subject_in_new_class
+                    mark.save()
                 tkmons = _subject.tkmon_set.filter( student_id__exact = student)
                 for tkmon in tkmons:
+                    print tkmon
                     tkmon.subject_id = subject_in_new_class
                     tkmon.save()
-            else:
-                print student, "move from ", find.class_id, " to ", _class
-                print "But: ", subject, " does not exist."
+            except Exception as e:
+                print e
+                print student, "move from ", find.class_id, " to ", new_class
+                print "But: ", _subject, " does not exist."
                 #raise Exception("Subject does not exist")   
         student.join_class(new_class)
         return student
