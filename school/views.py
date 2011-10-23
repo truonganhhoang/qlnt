@@ -5,7 +5,7 @@ import os.path
 import datetime
 from django.core.paginator import *
 from django.core import serializers
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponseNotAllowed
 from django.core.urlresolvers import reverse
 from django.shortcuts import render_to_response
 from django.template.loader import render_to_string
@@ -3738,22 +3738,26 @@ def move_one_student(request, student_id):
         return HttpResponseRedirect(reverse('index'))
     if get_position(request) < 4:
         return HttpResponseRedirect('/')
-    student = Pupil.objects.get(id = student_id)
-    message = ''
-    form = MoveClassForm(student)
-    if request.method == 'POST':
-        form = MoveClassForm(student,request.POST)
-        if form.is_valid():
-            new_class = Class.objects.get(id = request.POST['move_to'])
-            move_student(school,student,new_class)
-            student.join_class(new_class)
-            form = MoveClassForm(student)
-            message = 'Bạn đã chuyển thành công lớp cho học sinh ' + str(student) + '.'
-    t = loader.get_template(os.path.join('school', 'move_one_student.html'))
-    c = RequestContext(request, { 'student':student,
-                                 'message': message,
-                                 'form':form,})
-    return HttpResponse(t.render(c))
+    if request.is_ajax():
+        student = Pupil.objects.get(id = student_id)
+        message = ''
+        form = MoveClassForm(student)
+        attends = student.get_attended()
+        if request.method == 'POST':
+            form = MoveClassForm(student,request.POST)
+            if form.is_valid():
+                new_class = Class.objects.get(id = request.POST['move_to'])
+                student.join_class(new_class)
+                move_student(school,student,new_class)
+                form = MoveClassForm(student)
+                message = 'Bạn đã chuyển thành công lớp cho học sinh ' + str(student) + '.'
+        t = loader.get_template(os.path.join('school', 'move_one_student.html'))
+        c = RequestContext(request, { 'student':student,
+                                     'message': message,
+                                     'form':form,
+                                     'attends':attends})
+        return HttpResponse(t.render(c))
+    return HttpResponseNotAllowed('Không được phép')
 
 def move_students(request):
     user = request.user
@@ -3793,8 +3797,8 @@ def move_students(request):
                 for e in data:
                     if e.strip():
                         student = Pupil.objects.get(id__exact = int(e))
-                        move_student(school,student,new_class)
                         student.join_class(new_class)
+                        move_student(school,student,new_class)
                 return HttpResponse()
     t = loader.get_template(os.path.join('school', 'move_students.html'))
     c = RequestContext(request,{'classList':classList,

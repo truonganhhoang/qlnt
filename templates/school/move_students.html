@@ -51,9 +51,13 @@
                         target:$("#target_id").val()
                     },
                     datatype:"json",
+                    error: function(){
+                        $("#notify").showNotification("Có lỗi xảy ra.");
+                        $("#moveSelected").attr('disabled',false);
+                    },
                     success: function() {
-                        $("#notify").showNotification("Đã chuyển xong");
-                        $("#moveSelected").attr('disabled',false)
+                        $("#notify").showNotification("Đã chuyển xong.");
+                        $("#moveSelected").attr('disabled',false);
                         $(".selected").remove();
                         $("#checkbox_all").prop("checked",false);
                     }

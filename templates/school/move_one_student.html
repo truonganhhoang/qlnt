@@ -7,4 +7,26 @@
         </table>
     <input class="ggButton" type="submit" value="Chuyển">
     </form>
+
+    <div>
+        <h2> Lịch sử chuyển lớp </h2>
+        <table class="styleA">
+            <tr>
+                <th class="leftAlign"> Lớp </th>
+                <th class="leftAlign"> Thời gian nhập lớp </th>
+                <th class="leftAlign"> Thời gian rời lớp </th>
+            </tr>
+            {% for a in attends %}
+                <tr>
+                    <td> {{ a.get_class }}</td>
+                    <td> {{ a.attend_time|date:"SHORT_DATE_FORMAT" }}</td>
+                    <td> {% if a.leave_time != None %}
+                            {{ a.leave_time|date:"SHORT_DATE_FORMAT" }}
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+
 {% endblock %}

@@ -357,6 +357,7 @@ class Pupil(BasicPersonInfo):
                 if len(relationship) == 1:
                     if current != _class:
                         relationship[0].leave_time = date.today()
+                        print relationship[0]
                         relationship[0].save()
                         new_attend = Attend.objects.create(pupil = self,
                                               _class = _class,
@@ -392,7 +393,7 @@ class Attend(models.Model):
     pupil = models.ForeignKey(Pupil, verbose_name=u"Học sinh")
     _class = models.ForeignKey(Class, verbose_name=u"Lớp")
     attend_time = models.DateTimeField("Thời gian nhập lớp")
-    leave_time = models.DateTimeField("Thời gian rời lớp", null = True, blank= True)
+    leave_time = models.DateTimeField("Thời gian rời lớp", null = True)
 
     def get_class(self):
         return self._class

@@ -231,20 +231,6 @@
             <form action="/school/viewStudentDetail/{{id}}" method="post" class="student_detail">{% csrf_token %}
                 <table class = "styleA" >
                 {{ ttcnform.as_table }}
-                {% if attended %}
-                <tr>
-                    <th>Các lớp học</th>
-                    <td>
-                        {% for ia in attended %}
-                            {% if ia.leave_time%}
-                                Lớp {{ ia.get_class}} từ {{ ia.attend_time|date:"SHORT_DATE_FORMAT" }} đến {{ ia.leave_time|date:"SHORT_DATE_FORMAT" }}
-                            {%else%}
-                                Lớp {{ ia.get_class}} từ {{ ia.attend_time|date:"SHORT_DATE_FORMAT" }} đến nay
-                            {% endif %}
-                        {% endfor %}
-                    </td>
-                </tr>
-                {% endif %}
                 </table>
 
                 {% if pos > 3 %}
