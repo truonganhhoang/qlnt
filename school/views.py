@@ -3773,7 +3773,6 @@ def move_students(request):
     classList = Class.objects.filter(year_id = year).order_by('name')
     if request.is_ajax():
         if request.method == 'POST':
-            print request.POST
             if request.POST['request_type'] == u'source':
                 class_id = int(request.POST['class_id'])
                 if not class_id:
@@ -3793,7 +3792,6 @@ def move_students(request):
                 new_class = Class.objects.get(id = request.POST['target'])
                 data = request.POST[u'data']
                 data = data.split('-')
-                print data, new_class
                 for e in data:
                     if e.strip():
                         student = Pupil.objects.get(id__exact = int(e))

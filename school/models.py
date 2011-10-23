@@ -348,23 +348,16 @@ class Pupil(BasicPersonInfo):
             return attends[0]._class
 
     def join_class(self, _class, time = None):
-        print 'in join_class'
         if not time:
             time = date.today()
         current = self.current_class()
         try:
             if current:
-                print current
-                print _class
                 relationship = Attend.objects.filter(pupil=self, _class=current, leave_time=None)
-                print '->',relationship, 'relationships'
                 if len(relationship) == 1:
-                    print 'go in there'
                     if current != _class:
                         relationship[0].leave_time = date.today()
-                        print relationship[0]
                         relationship[0].save()
-                        print relationship[0].leave_time, 'leave_time'
                         Attend.objects.create(pupil = self,
                                               _class = _class,
                                               attend_time = time,
