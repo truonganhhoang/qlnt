@@ -3747,7 +3747,6 @@ def move_one_student(request, student_id):
             form = MoveClassForm(student,request.POST)
             if form.is_valid():
                 new_class = Class.objects.get(id = request.POST['move_to'])
-                student.join_class(new_class)
                 move_student(school,student,new_class)
                 form = MoveClassForm(student)
                 message = 'Bạn đã chuyển thành công lớp cho học sinh ' + str(student) + '.'
@@ -3797,7 +3796,6 @@ def move_students(request):
                 for e in data:
                     if e.strip():
                         student = Pupil.objects.get(id__exact = int(e))
-                        student.join_class(new_class)
                         move_student(school,student,new_class)
                 return HttpResponse()
     t = loader.get_template(os.path.join('school', 'move_students.html'))
