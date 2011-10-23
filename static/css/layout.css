@@ -7,7 +7,7 @@
 * a {
     padding: 3px 0px 3px 0px;
     text-decoration: none;
-    color: #0066cc;
+    color: #0c3d6f;
 }
 
 * a:hover {
@@ -83,6 +83,7 @@ header p {
     font: 120% Arial, Helvetica, sans-serif;
     font-weight: bold;
     color: #666666;
+    text-shadow: #c4baba 0 0 1px;
 }
 
 header p#detail {
@@ -125,7 +126,7 @@ header #user-menu ul li a {
 }
 
 header #user-menu ul li a:hover {
-    background: #fe6c4f;
+    background: #ff856c;
     color: #ffffff;
     text-decoration: none;
     border-radius: 2px;
@@ -139,6 +140,8 @@ nav {
     top: 50px;
     left: 300px;
     height: 32px;
+    /*color: #0a549e;*/
+    text-shadow: #0a549e 0 -1px 0;
     /*background-color: #0066ff;*/
     border-radius: 6px;
 
@@ -162,7 +165,7 @@ nav ul li a {
 }
 
 nav ul li a:hover {
-    background: #fe6c4f;
+    background: #ff856c;
     text-decoration: none;
 }
 
@@ -222,7 +225,7 @@ aside a {
 
 aside a:hover {
     text-decoration: none;
-    background-color: #fe6c4f;
+    background-color: #ff856c;
     background-image: none;
 }
 
@@ -353,11 +356,12 @@ section#classes .classDiv{
     float: left;
     width: 80px;
     height: 40px;
-    margin: 5px 10px 10px 0px;
+    margin: 5px 10px 10px 0;
     padding: 5px 3px 3px 3px;
     text-align: center;
     border: #bbbbbb thin solid;
     border-radius: 5px;
+    text-shadow: #0a549e 0 1px 0;
 }
 
 section#classes h3{
@@ -373,7 +377,7 @@ section#classes a{
 
 section#classes a:hover{
     /*text-decoration: none;*/
-    background-color: #fe6c4f;
+    background-color: #ff856c;
     background-image: none;
 }
 

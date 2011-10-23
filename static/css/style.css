@@ -59,13 +59,13 @@ ul {
     font-family: Arial, Helvetica, sans-serif;
     font-size: 14px;
     color: #333333;
-	background:#FFFFFF;	
+    background:#FFFFFF;
     border: 1px solid #999999;
     border-collapse: collapse;
-	position:absolute; 
+    position:absolute;
     margin-top: 0px;
     cursor: pointer;
-	z-index:200; 
+    z-index:200;
 }
 
 .messageTable li:hover {
@@ -78,7 +78,7 @@ table.styleC {
     font-size: 14px;
     border: 1px solid #999999;
     border-collapse: collapse;
-    background-color:  #e2edef; 
+    background-color:  #e2edef;
 }
 
 table.styleC th {
@@ -94,7 +94,7 @@ table.styleC tr {
 table.styleC td {
     border: 1px solid #a9c6c9;
     width: 90px;
-	height:24px;
+    height:24px;
 }
 
 
@@ -127,7 +127,7 @@ table.styleB tr:nth-child(even) {
 
 table.styleB td {
     border: 1px solid #a9c6c9;
-	height:24px;
+    height:24px;
 }
 
 table.styleB td.normal {
@@ -154,7 +154,7 @@ table.styleB tr.selected {
     background-color: #f3f48d;
 }
 table.styleB tr.highLight {
-	background-color:  #D9FFF0;
+    background-color:  #D9FFF0;
 }
 
 input[type=text]{
@@ -166,18 +166,18 @@ input.highLight {
     cursor: pointer;
     border: 0;
     width: 100%;
-	height:24px;
+    height:24px;
     margin-top: 0;
     margin-bottom: 0;
     margin-left: 0;
-	background-color:  #D9FFF0;
+    background-color:  #D9FFF0;
 }
 
 input.mark {
     cursor: pointer;
     border: 0;
     width: 100%;
-	height:24px;
+    height:24px;
     margin-top: 0;
     margin-bottom: 0;
     margin-left: 0;
@@ -187,7 +187,7 @@ input.mark1 {
     cursor: pointer;
     border: 0;
     width: 100%;
-	height:24px;
+    height:24px;
     margin-top: 0;
     margin-bottom: 0;
     margin-left: 0;
@@ -198,7 +198,7 @@ input.selected {
     cursor: pointer;
     border: 0;
     width: 100%;
-	height:24px;
+    height:24px;
     margin-top: 0;
     margin-bottom: 0;
     margin-left: 0;
@@ -209,7 +209,7 @@ input.sent {
     cursor: pointer;
     border: 0;
     width: 100%;
-	height:24px;
+    height:24px;
     margin-top: 0;
     margin-bottom: 0;
     margin-left: 0;
@@ -219,9 +219,9 @@ input.noedit {
     cursor: pointer;
     border: 0;
     width: 100%;
-	height:24px;
+    height:24px;
     background-color:  #e2edef;
-	
+
 }
 
 
@@ -229,18 +229,27 @@ table.styleA {
     font-family: Arial, Helvetica, sans-serif;
     font-size: 14px;
     color: #333333;
-    border: 1px solid #999999;
+    border: 1px solid #6e6a6a;
     border-collapse: collapse;
     border-spacing: 0;
     margin-bottom: 10px;
+    text-shadow: 0 1px 0 #e2f9fb;
     /*width: 980px;*/
 }
 
 table.styleA th {
     background-color: #c3dde0;
     padding: 8px;
-    border: 1px solid #a9c6c9;
+    border: 1px solid #a1acb0;
     text-align: right;
+    /*color: #e2f9fb;*/
+    text-shadow: 0 1px 0 #bfedf2;
+    background-image: -webkit-gradient(linear,left top,left bottom,from(#c3dde0),to(#71a9b0));
+    background-image: -webkit-linear-gradient(top,#c3dde0,#71a9b0);
+    background-image: -moz-linear-gradient(top,#c3dde0,#71a9b0);
+    background-image: -ms-linear-gradient(top,#c3dde0,#71a9b0);
+    background-image: -o-linear-gradient(top,#c3dde0,#71a9b0);
+
 }
 
 table.styleA th.leftAlign {
@@ -305,11 +314,29 @@ table.styleDetail th {
 table.styleA tr:nth-child(odd) {
     background-color: #d8eef1;
     cursor: pointer;
+    background-image: -webkit-gradient(linear,left top,left bottom,from(#d8eef1),to(#a8d6dd));
+    background-image: -webkit-linear-gradient(top,#d8eef1,#a8d6dd);
+    background-image: -moz-linear-gradient(top,#d8eef1,#a8d6dd);
+    background-image: -ms-linear-gradient(top,#d8eef1,#a8d6dd);
+    background-image: -o-linear-gradient(top,#d8eef1,#a8d6dd);
+
 }
 
 table.styleA tr:nth-child(even) {
     background-color: #e2edef;
     cursor: pointer;
+    /*background-image: -webkit-gradient(linear,left top,left bottom,from(#e2edef),to(#b5d3d9));*/
+    /*background-image: -webkit-linear-gradient(top,#e2edef,#b5d3d9);*/
+    /*background-image: -moz-linear-gradient(top,#e2edef,#b5d3d9);*/
+    /*background-image: -ms-linear-gradient(top,#e2edef,#b5d3d9);*/
+    /*background-image: -o-linear-gradient(top,#e2edef,#b5d3d9);*/
+    /**/
+    background-image: -webkit-gradient(linear,left top,left bottom,from(#d8eef1),to(#a8d6dd));
+    background-image: -webkit-linear-gradient(top,#d8eef1,#a8d6dd);
+    background-image: -moz-linear-gradient(top,#d8eef1,#a8d6dd);
+    background-image: -ms-linear-gradient(top,#d8eef1,#a8d6dd);
+    background-image: -o-linear-gradient(top,#d8eef1,#a8d6dd);
+
 }
 
 table.styleA tr.thead {
@@ -318,19 +345,35 @@ table.styleA tr.thead {
 }
 
 table.styleA tr:hover {
-    background-color: #f0f1c3;
+    background-color: #a8d6dd;
+    background-image: -webkit-gradient(linear,left top,left bottom,from(#eff3f4),to(#bad9de));
+    background-image: -webkit-linear-gradient(top,#eff3f4,#bad9de);
+    background-image: -moz-linear-gradient(top,#eff3f4,#bad9de);
+    background-image: -ms-linear-gradient(top,#eff3f4,#bad9de);
+    background-image: -o-linear-gradient(top,#eff3f4,#bad9de);
 }
 
 table.styleA tr.focused {
-    background-color: #e6f577;
+    background-color: #d0e055;
+    background-image: -webkit-gradient(linear,left top,left bottom,from(#e6f577),to(#d0e055));
+    background-image: -webkit-linear-gradient(top,#e6f577,#d0e055);
+    background-image: -moz-linear-gradient(top,#e6f577,#d0e055);
+    background-image: -ms-linear-gradient(top,#e6f577,#d0e055);
+    background-image: -o-linear-gradient(top,#e6f577,#d0e055);
 }
 
 table.styleA tr.selected {
-    background-color: #f5f681;
+    background-color: #dedf4c;
+    background-image: -webkit-gradient(linear,left top,left bottom,from(#f5f681),to(#dedf4c));
+    background-image: -webkit-linear-gradient(top,#f5f681,#dedf4c);
+    background-image: -moz-linear-gradient(top,#f5f681,#dedf4c);
+    background-image: -ms-linear-gradient(top,#f5f681,#dedf4c);
+    background-image: -o-linear-gradient(top,#f5f681,#dedf4c);
 }
 
 table.styleA tr.endblock{
     background-color: #FFFFFF;
+
 }
 
 table.styleA td {
@@ -372,12 +415,17 @@ table.setting {
     display: inline-block;
     filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#4D90FE', EndColorStr = '#4787ED');
     color: #ffffff;
-    font-size: 13px;
+    font-size: 14px;
     font-weight: bold;
     padding: 3px 12px;
     margin-right: 3px;
     cursor: pointer;
     text-decoration: none;
+    text-shadow: #0a549e 0 -1px 0;
+}
+
+button.ggButton{
+    padding: 4px 12px;
 }
 
 a.ggButton{
@@ -385,12 +433,12 @@ a.ggButton{
 }
 
 .ggButton:hover {
-    background-color: #75a8fa;
-    background-image: -webkit-gradient(linear, left top, left bottom, from(#75a8fa), to(#4787ED));
-    background-image: -webkit-linear-gradient(top, #75a8fa, #4787ED);
-    background-image: -moz-linear-gradient(top, #75a8fa, #4787ED);
-    background-image: -ms-linear-gradient(top, #75a8fa, #4787ED);
-    background-image: -o-linear-gradient(top, #75a8fa, #4787ED);
+    background-color: #364f78;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#364f78), to(#4787ED));
+    background-image: -webkit-linear-gradient(top, #364f78, #4787ED);
+    background-image: -moz-linear-gradient(top, #364f78, #4787ED);
+    background-image: -ms-linear-gradient(top, #364f78, #4787ED);
+    background-image: -o-linear-gradient(top, #364f78, #4787ED);
     text-decoration: none;
 
 }
@@ -403,8 +451,10 @@ a.ggButton{
     background-image: -moz-linear-gradient(top, #c6d9f9, #92abd4);
     background-image: -ms-linear-gradient(top, #c6d9f9, #92abd4);
     background-image: -o-linear-gradient(top, #c6d9f9, #92abd4);
+    border: 1px solid #8cb6fa;
     color: #7c7676;
     cursor: default;
+    text-shadow: none;
 }
 
 .ggButton.disabled {
@@ -414,8 +464,10 @@ a.ggButton{
     background-image: -moz-linear-gradient(top, #c6d9f9, #92abd4);
     background-image: -ms-linear-gradient(top, #c6d9f9, #92abd4);
     background-image: -o-linear-gradient(top, #c6d9f9, #92abd4);
+    border: 1px solid #8cb6fa;
     color: #7c7676;
     cursor: default;
+    text-shadow: none;
 }
 
 div#submenu {
@@ -546,7 +598,7 @@ div#help {
 }
 
 div#help p, h3 {
-	padding: 5px;
+    padding: 5px;
 }
 
 .leftAlign{
@@ -587,7 +639,7 @@ table.dataform input {
 }
 
 /*table.dataform tr {*/
-    /*padding: 2px;*/
-    /*border: 1px solid #a9c6c9;*/
+/*padding: 2px;*/
+/*border: 1px solid #a9c6c9;*/
 /*}*/
 
