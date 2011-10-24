@@ -48,10 +48,10 @@ var applyListener = function(){
 $(document).ready(function(){
     // setting up css to render page in the right way
 
-    if ($.browser.msie ){
-        alert("Bạn đang dùng trình duyệt MS Internet Explorer, hãy dùng trình duyệt Firefox hoặc Chrome để hiển thị " +
-            "trang web này tốt hơn.");
-    }
+{#    if ($.browser.msie ){#}
+{#        alert("Bạn đang dùng trình duyệt MS Internet Explorer, hãy dùng trình duyệt Firefox hoặc Chrome để hiển thị " +#}
+{#            "trang web này tốt hơn.");#}
+{#    }#}
 
 //    $("footer").css('width',$(document).width());
 
