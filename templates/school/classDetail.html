@@ -251,7 +251,10 @@
         {% endif %}
 
         {% if pos > 3 %}
-            <a class="ggButton" href="#popupDiv" id="import"> Nhập từ Excel </a>
+            <a class="tiptiphover ggButton"
+               title="Nhập danh sách học sinh từ file Excel"
+               href="#popupDiv"
+               id="import" > Nhập từ Excel </a>
             <a class="tiptiphover ggButton"
                title="Xuất danh sách học sinh ra file Excel."
                href="{% url school.views.class_generate class.id 'student_list' %}"

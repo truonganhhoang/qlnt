@@ -21,7 +21,7 @@
             <img class="icon" src="/static/menu/medal.png" alt="Hạnh kiểm"/>
             Hạnh kiểm
         </a>
-        <p><hr></p>
+        <p/><hr>
         <a class="item" href="{% url school.views.teachers %}">
             <img class="icon" src="/static/menu/teachers.png" alt="Giáo viên"/>
             Giáo viên
@@ -90,14 +90,7 @@
                     <span class="classname"> {{ subject.class_id }} </span>
                     <span class="dimmer">Điểm</span>
                     <span>{{ subject.name }}</span>
-{#                <a class="classDiv ui-widget-content ui-corner-all"#}
-{#                   href="{% url school.views.viewClassDetail class.id %}">#}
-{#                  <div id="{{ class.id }}">#}
-{#                    <span class="classname"> {{ class.name }} </span>#}
-{#                    <span class="dimmer">Sĩ số:</span>#}
-{#                    <span>{{ class.number_of_pupils }}</span>#}
-{#                  </div>#}
-{#                </a>#}
+
               </a>
             {% endfor %}
           {% endif %}

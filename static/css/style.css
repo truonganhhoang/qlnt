@@ -117,7 +117,7 @@ table.styleB th.selected {
 
 table.styleB tr:nth-child(odd) {
     background-color: #FFFFFF;
-    cursor: pointer;
+    /*cursor: progress;*/
 }
 
 table.styleB tr:nth-child(even) {
@@ -226,45 +226,45 @@ input.noedit {
 
 
 table.styleA {
-    font-family: Arial, Helvetica, sans-serif;
+    /*font-family: Arial, Helvetica, sans-serif;*/
     font-size: 14px;
     color: #333333;
-    border: 1px solid #6e6a6a;
+    /*border: 1px solid #6e6a6a;*/
     border-collapse: collapse;
     border-spacing: 0;
     margin-bottom: 10px;
     text-shadow: 0 1px 0 #e2f9fb;
     /*width: 980px;*/
+    border-radius: 5px;
 }
 
 table.styleA th {
-    background-color: #c3dde0;
+    background-color: #dddddd;
     padding: 8px;
     border: 1px solid #a1acb0;
     text-align: right;
     /*color: #e2f9fb;*/
     text-shadow: 0 1px 0 #bfedf2;
-    background-image: -webkit-gradient(linear,left top,left bottom,from(#c3dde0),to(#71a9b0));
-    background-image: -webkit-linear-gradient(top,#c3dde0,#71a9b0);
-    background-image: -moz-linear-gradient(top,#c3dde0,#71a9b0);
-    background-image: -ms-linear-gradient(top,#c3dde0,#71a9b0);
-    background-image: -o-linear-gradient(top,#c3dde0,#71a9b0);
+    /*background-image: -webkit-gradient(linear,left top,left bottom,from(#c3dde0),to(#71a9b0));*/
+    /*background-image: -webkit-linear-gradient(top,#c3dde0,#71a9b0);*/
+    /*background-image: -moz-linear-gradient(top,#c3dde0,#71a9b0);*/
+    /*background-image: -ms-linear-gradient(top,#c3dde0,#71a9b0);*/
+    /*background-image: -o-linear-gradient(top,#c3dde0,#71a9b0);*/
 
 }
 
 table.styleA th.leftAlign {
-    background-color: #c3dde0;
+    /*background-color: #c3dde0;*/
     padding: 8px;
-    border: 1px solid #a9c6c9;
     text-align: left;
 }
 
 
 table.styleA th.mark {
-    background-color: #c3dde0;
+    /*background-color: #c3dde0;*/
     width: 40px;
     padding: 8px 0;
-    border: 1px solid #a9c6c9;
+    border: 1px solid #eeeeee;
 }
 
 table.styleA td.lastname {
@@ -312,45 +312,39 @@ table.styleDetail th {
 }
 
 table.styleA tr:nth-child(odd) {
-    background-color: #d8eef1;
-    cursor: pointer;
-    background-image: -webkit-gradient(linear,left top,left bottom,from(#d8eef1),to(#a8d6dd));
-    background-image: -webkit-linear-gradient(top,#d8eef1,#a8d6dd);
-    background-image: -moz-linear-gradient(top,#d8eef1,#a8d6dd);
-    background-image: -ms-linear-gradient(top,#d8eef1,#a8d6dd);
-    background-image: -o-linear-gradient(top,#d8eef1,#a8d6dd);
+    background-color: #eeeeee;
+    /*cursor: pointer;*/
+    /*background-image: -webkit-gradient(linear,left top,left bottom,from(#d8eef1),to(#a8d6dd));*/
+    /*background-image: -webkit-linear-gradient(top,#d8eef1,#a8d6dd);*/
+    /*background-image: -moz-linear-gradient(top,#d8eef1,#a8d6dd);*/
+    /*background-image: -ms-linear-gradient(top,#d8eef1,#a8d6dd);*/
+    /*background-image: -o-linear-gradient(top,#d8eef1,#a8d6dd);*/
 
 }
 
 table.styleA tr:nth-child(even) {
-    background-color: #e2edef;
-    cursor: pointer;
-    /*background-image: -webkit-gradient(linear,left top,left bottom,from(#e2edef),to(#b5d3d9));*/
-    /*background-image: -webkit-linear-gradient(top,#e2edef,#b5d3d9);*/
-    /*background-image: -moz-linear-gradient(top,#e2edef,#b5d3d9);*/
-    /*background-image: -ms-linear-gradient(top,#e2edef,#b5d3d9);*/
-    /*background-image: -o-linear-gradient(top,#e2edef,#b5d3d9);*/
-    /**/
-    background-image: -webkit-gradient(linear,left top,left bottom,from(#d8eef1),to(#a8d6dd));
-    background-image: -webkit-linear-gradient(top,#d8eef1,#a8d6dd);
-    background-image: -moz-linear-gradient(top,#d8eef1,#a8d6dd);
-    background-image: -ms-linear-gradient(top,#d8eef1,#a8d6dd);
-    background-image: -o-linear-gradient(top,#d8eef1,#a8d6dd);
+    background-color: #ffffff;
+    /*cursor: pointer;*/
+    /*background-image: -webkit-gradient(linear,left top,left bottom,from(#d8eef1),to(#a8d6dd));*/
+    /*background-image: -webkit-linear-gradient(top,#d8eef1,#a8d6dd);*/
+    /*background-image: -moz-linear-gradient(top,#d8eef1,#a8d6dd);*/
+    /*background-image: -ms-linear-gradient(top,#d8eef1,#a8d6dd);*/
+    /*background-image: -o-linear-gradient(top,#d8eef1,#a8d6dd);*/
 
 }
 
 table.styleA tr.thead {
     background-color: #aacbd0;
-    cursor: auto;
+    /*cursor: auto;*/
 }
 
 table.styleA tr:hover {
     background-color: #a8d6dd;
-    background-image: -webkit-gradient(linear,left top,left bottom,from(#eff3f4),to(#bad9de));
-    background-image: -webkit-linear-gradient(top,#eff3f4,#bad9de);
-    background-image: -moz-linear-gradient(top,#eff3f4,#bad9de);
-    background-image: -ms-linear-gradient(top,#eff3f4,#bad9de);
-    background-image: -o-linear-gradient(top,#eff3f4,#bad9de);
+    /*background-image: -webkit-gradient(linear,left top,left bottom,from(#eff3f4),to(#bad9de));*/
+    /*background-image: -webkit-linear-gradient(top,#eff3f4,#bad9de);*/
+    /*background-image: -moz-linear-gradient(top,#eff3f4,#bad9de);*/
+    /*background-image: -ms-linear-gradient(top,#eff3f4,#bad9de);*/
+    /*background-image: -o-linear-gradient(top,#eff3f4,#bad9de);*/
 }
 
 table.styleA tr.focused {
@@ -373,14 +367,13 @@ table.styleA tr.selected {
 
 table.styleA tr.endblock{
     background-color: #FFFFFF;
-
 }
 
 table.styleA td {
     border-width: 1px;
     padding: 4px 2px 4px 2px;
     border-style: solid;
-    border-color: #a9c6c9;
+    border-color: #dddddd;
     text-align: left;
     vertical-align: bottom;
 }
@@ -398,8 +391,6 @@ table.setting {
     margin-bottom: 10px;
     padding: 10px;
 }
-
-
 
 .ggButton {
     background-color: #4D90FE;
@@ -559,20 +550,6 @@ div#tabs ul li{
     padding-top: 5px;
     padding-right: 5px;
     padding-left: 5px;
-}
-
-/*----FOOTER PANEL----*/
-footer {
-    position: relative;
-    margin-top: 30px;
-    height: 20px;
-    display: block;
-}
-
-footer p {
-    color: #666666;
-    font-size: 80%;
-    text-align: center
 }
 
 input.ui-autocomplete-input{

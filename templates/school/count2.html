@@ -4,7 +4,6 @@
 <div id="termString">
   <a href="{% url school.views.school_index %}"> Trang chủ </a>
   > <a href="/school/report"> Báo cáo, thống kê </a> 
-  > 
     {% if type == 1 %}
       <a href="/school/count2/{{type}}/1"> 
         Điểm trung bình
@@ -16,23 +15,33 @@
         </a> >
       {% endif %}
     {% endif %}
-    {% if number == 1 %}
-      Học kì I
-      {% else %}
-      {% if number == 2 %}
-        Học kì II
-      {% else %}
-        Cả năm
-      {% endif %}
-    {% endif %}
-    {% if  subjectName %}
-      {{ subjectName }}
-    {% endif %}
+
+{#    {% if number == 1 %}#}
+{#      Học kì I#}
+{#      {% else %}#}
+{#      {% if number == 2 %}#}
+{#        Học kì II#}
+{#      {% else %}#}
+{#        Cả năm#}
+{#      {% endif %}#}
+{#    {% endif %}#}
+{#    {% if  subjectName %}#}
+{#      {{ subjectName }}#}
+{#    {% endif %}#}
   </div>
 {% endblock %}
 
 {% block content %}
-  <br>
+ <h2>
+  {% if type == 1 %}
+    Điểm trung bình
+  {% else %}
+    {% if type == 2 %}
+      Điểm thi cuối kỳ
+    {% endif %}
+  {% endif %}
+   </h2>
+
 <table width="100%" >
 <tr>
 	<td>

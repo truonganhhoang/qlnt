@@ -55,22 +55,31 @@
 
 <body>
 <header>
-  <a href="{%url school.views.school_index %}">
-    <img src="/static/css/images/logo.png" class="logo" alt="logo"
-         title="{{ user.userprofile.organization.name }}"/>
-  </a>
-  <div id="dynamic_name">
-    <p id="head_title">
+
+<section id="hearder-bar">
+  <div id="school-info">
+{#  <div id="main-title">#}
+    <ul>
       {% if user.is_authenticated %}
         {% if user.is_superuser %}
           Quản trị hệ thống
         {% else %}
-          {{ user.userprofile.organization.name }}
+          <p id="school-name">
+            {{ user.userprofile.organization.name }}
+          </p>
+              <li><a href="{% url school.views.info %}">[sửa]</a></li>
         {% endif %}
       {% else %}
         Dịch vụ phần mềm Quản lý Nhà trường
       {% endif %}
-    </p>
+
+      <li><p>
+        {{ user.userprofile.organization.get_status }}</p></li>
+        <li><a>[đổi]</a></li>
+    
+    <li><a href="/help" title="Xem hướng dẫn sử dụng">Trợ giúp</a></li>
+  </ul>
+{#  </div>#}
   </div>
   {#    <p id="detail">#}
   {#        {% if user.userprofile.position == 'HIEU_TRUONG' or user.userprofile.position == 'HIEU_PHO' or user.userprofile.position == 'GIAO_VIEN' or user.userprofile.position == 'GIAO_VU' or user.userprofile.position == 'HOC_SINH' %}#}
@@ -78,7 +87,14 @@
   {#        {% endif %}#}
   {#    </p>#}
 
-  <div id="user-menu">
+
+  <a href="{%url school.views.school_index %}">
+    <img src="/static/css/images/logo.png" class="logo" alt="logo"
+         title="{{ user.userprofile.organization.name }}"/>
+  </a>
+
+
+  <div id="user-info">
     <ul>
       {% if user.is_authenticated %}
         <li><a href="/profiles/{{user.username}}"
@@ -92,10 +108,9 @@
       {% else %}
         <li><a href="{%url app.views.login %}" title="Đăng nhập để sử dụng hệ thống">Đăng nhập</a></li>
       {% endif %}
-      <li><a href="/help" title="Xem hướng dẫn sử dụng">Trợ giúp</a></li>
     </ul>
   </div>
-
+</section>
   <nav id="navTop">
     <ul>
       {% if not user.is_authenticated %}
