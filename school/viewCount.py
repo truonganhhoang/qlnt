@@ -646,7 +646,7 @@ def count1(request,year_id=None,number=None,type=None,):
     notFinishAll    =0
     allSlList=[0,0,0,0,0,0,0,0,0,0,0]
     allPtList=[0,0,0,0,0,0,0,0,0,0,0]
-    
+    allList=[]
     sumsumsum=0  
     for b in blockList:
         classList = Class.objects.filter(block_id=b,year_id=selectedYear.id)
@@ -656,7 +656,7 @@ def count1(request,year_id=None,number=None,type=None,):
         sumsum=0      
         for c in classList:
             if int(number)<3:
-                aslList,aptList,sum =countLearningInClassInTerm(c.id,term_id)
+                aslList,aptList,sum   =countLearningInClassInTerm(c.id,term_id)
                 aslList1,aptList1,sum =countPractisingInClassInTerm(c.id,term_id)
                 aslList2,aptList2,sum =countAllInClassInTerm(c.id,term_id)
             else: 
@@ -706,7 +706,7 @@ def count1(request,year_id=None,number=None,type=None,):
         if message!='':
             message+=', '
         message+=unicode(notFinishAll)+ u' hs chưa xét danh hiệu'
-    if message!=0:
+    if message!=None:
         message=u'Còn ' +message         
     tt2=time.time()
     print tt2-tt1
