@@ -6,12 +6,12 @@
   > <a href="/school/report"> Báo cáo, thống kê </a> 
   > 
     {% if type == 1 %}
-      <a href="/school/count2/{{type}}"> 
+      <a href="/school/count2/{{type}}/1"> 
         Điểm trung bình
       </a> >
     {% else %}
       {% if type == 2 %}
-        <a href="/school/count2/{{type}}"> 
+        <a href="/school/count2/{{type}}/1"> 
           Điểm thi cuối kì
         </a> >
       {% endif %}
@@ -46,7 +46,7 @@
 	  </select>
 	  &nbsp&nbsp&nbsp&nbsp
 	  Thống kê theo
-	  <select id="modeView" style="width:100px">
+	  <select id="modeView" style="width:100px" multiple="multiple" size="2" >
 		<option value='1'> Lớp</option>
 		<option value='2'> Giáo viên</option>
 	  </select>
