@@ -270,7 +270,11 @@ class Class(models.Model):
     block_id = models.ForeignKey(Block, verbose_name = "Khối(*)")
     teacher_id = models.OneToOneField(Teacher, verbose_name = "Giáo viên chủ nhiệm", null = True, blank = True) #field nay chi dung de phan quyen, vi vay chi gan 1 gia tri nhan dang
     
-    
+    def teacher(self):
+        if self.teacher_id:
+            return unicode(self.teacher_id)
+        else:
+            return None
     def __unicode__(self):
         return self.name
 
