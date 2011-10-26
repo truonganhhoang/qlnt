@@ -572,10 +572,13 @@ div#help {
     /*-webkit-column-width: 16em;*/
     /*-webkit-column-gap: 1em;*/
     /*text-align: justify;*/
+    color: #444444;
+
 }
 
 div#help p, h3 {
     padding: 5px;
+    color: #999999;
 }
 
 .leftAlign{

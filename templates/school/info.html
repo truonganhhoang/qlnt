@@ -19,7 +19,7 @@
                         $.ajaxSetup({
                             global: false
                         });
-                        $("#main-title").load('{% url school.views.school_index %} #school-name');
+                        $("#school-info").load('{% url school.views.school_index %} #school-name');
                         $.ajaxSetup({
                             global: true
                         });

@@ -1,4 +1,11 @@
 {% extends "base.html" %}
+
+{% block backward_link %}
+  <a href="{% url school.views.school_index %}"> Trang chủ </a>
+  > Chuyển lớp
+{% endblock %}
+
+
 {% block content %}
     <script type="text/javascript">
         $(document).ready(function(){

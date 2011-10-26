@@ -58,7 +58,6 @@
 
 <section id="hearder-bar">
   <div id="school-info">
-{#  <div id="main-title">#}
     <ul>
       {% if user.is_authenticated %}
         {% if user.is_superuser %}
@@ -67,7 +66,9 @@
           <p id="school-name">
             {{ user.userprofile.organization.name }}
           </p>
-              <li><a href="{% url school.views.info %}">[sửa]</a></li>
+              <li><a href="{% url school.views.info %}"
+                      title="Sửa thông tin và tham số thiết lập về trường học">
+                sửa</a></li>
         {% endif %}
       {% else %}
         Dịch vụ phần mềm Quản lý Nhà trường
@@ -75,11 +76,10 @@
 
       <li><p>
         {{ user.userprofile.organization.get_status }}</p></li>
-        <li><a>[đổi]</a></li>
+        <li><a title="Chuyển sang học kỳ khác">đổi</a></li>
     
     <li><a href="/help" title="Xem hướng dẫn sử dụng">Trợ giúp</a></li>
   </ul>
-{#  </div>#}
   </div>
   {#    <p id="detail">#}
   {#        {% if user.userprofile.position == 'HIEU_TRUONG' or user.userprofile.position == 'HIEU_PHO' or user.userprofile.position == 'GIAO_VIEN' or user.userprofile.position == 'GIAO_VU' or user.userprofile.position == 'HOC_SINH' %}#}
@@ -135,8 +135,11 @@
             {% if user.userprofile.organization.status != 0 %}
               {% if user.userprofile.position == 'HIEU_TRUONG'  or user.userprofile.position == 'HIEU_PHO' %}
                 <li><a class="ui-corner-left"
-                       href="{%url school.views.school_index %}" title="Trở về trang đầu">
-                  {{ user.userprofile.organization.get_status }}</a></li>
+                       href="{%url school.views.school_index %}"
+                       title="Trở về trang đầu">
+{#                  {{ user.userprofile.organization.get_status }}#}
+                  Trang đầu
+                </a></li>
                 <!-- <li><a href="{%url school.views.years %}" title="Xem năm học khác, học kỳ khác">Các năm</a></li>  -->
                 <li><a href="{%url school.views.classes %}" title="Quản lý lớp học">Lớp học</a></li>
 
@@ -184,9 +187,9 @@
                   Thông tin trường học</a></li>
               {% endif %}
 
-              {% if user.userprofile.position == 'GIAO_VIEN' or user.userprofile.position == 'HIEU_TRUONG' or user.userprofile.position == 'HIEU_PHO' or user.userprofile.position == 'GIAO_VU' %}
-                <li><a href="{%url school.sms_views.manual_sms %}" title="Gửi tin nhắn SMS">Nhắn tin</a></li>
-              {% endif %}
+            {% endif %}
+            {% if user.userprofile.position == 'GIAO_VIEN' or user.userprofile.position == 'HIEU_TRUONG' or user.userprofile.position == 'HIEU_PHO' or user.userprofile.position == 'GIAO_VU' %}
+              <li><a href="{%url school.sms_views.manual_sms %}" title="Gửi tin nhắn SMS">Nhắn tin</a></li>
             {% endif %}
           {% endif %}
         {% endif %}

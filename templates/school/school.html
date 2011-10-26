@@ -1,123 +1,135 @@
 {% extends "base.html" %}
 
 {% block backward_link %}
-    Trang chủ
+  Trang chủ
 {% endblock %}
 {% block js %}
-    <script type="text/javascript" src="/static/js/template_js/school.js"></script>
+  <script type="text/javascript" src="/static/js/template_js/school.js"></script>
 {% endblock %}
 
 {% block content %}
-    {% if user.is_authenticated %}
-        {% if user.userprofile.position == 'HIEU_TRUONG' or user.userprofile.position == 'HIEU_PHO' or user.userprofile.position == 'GIAO_VU' %}
-            <aside title="Một số chức năng khác của hệ thống">
-                {#        <p>Các chức năng</p>#}
-                <a class="item" href="{% url school.views.tnc_select %}">
-                    <img class="icon" src="/static/menu/checklist.png" alt="Điểm danh"/>
-                    Điểm danh
-                </a>
-                <a class="item" href="{% url school.viewMark.markTable %}">
-                    <img class="icon" src="/static/menu/mark.png" alt="Điểm"/>
-                    Điểm
-                </a>
-                <a class="item" href="{% url school.views.hanh_kiem %}">
-                    <img class="icon" src="/static/menu/medal.png" alt="Hạnh kiểm"/>
-                    Hạnh kiểm
-                </a>
-                <hr>
-                <a class="item" href="{% url school.views.teachers %}">
-                    <img class="icon" src="/static/menu/teachers.png" alt="Giáo viên"/>
-                    Giáo viên
-                </a>
-                <a class="item" href="{% url school.views.info %}"
-                   title="Khai báo thông tin về trường học">
-                    <img class="icon" src="/static/menu/settings.png" alt="Thông tin trường"/>
-                    Thiết lập
-                </a>
-            </aside>
+  {% if user.is_authenticated %}
+    {% if user.userprofile.position == 'HIEU_TRUONG' or user.userprofile.position == 'HIEU_PHO' or user.userprofile.position == 'GIAO_VU' %}
+      <aside title="Một số chức năng khác của hệ thống">
+        {#        <p>Các chức năng</p>#}
+        <a class="item" href="{% url school.views.tnc_select %}">
+          <img class="icon" src="/static/menu/checklist.png" alt="Điểm danh"/>
+          Điểm danh
+        </a>
+        <a class="item" href="{% url school.viewMark.markTable %}">
+          <img class="icon" src="/static/menu/mark.png" alt="Điểm"/>
+          Điểm
+        </a>
+        <a class="item" href="{% url school.views.hanh_kiem %}">
+          <img class="icon" src="/static/menu/medal.png" alt="Hạnh kiểm"/>
+          Hạnh kiểm
+        </a>
 
-            <section id="classes">
-                {#        <h2>Các lớp học</h2>#}
-                {% for grade in grades %}
-                    <h3>Các lớp khối {{ grade.number }}</h3>
-                    {% for class in classes %}
-                        {% if class.block_id == grade %}
-                            <a class="classDiv ggButton"
-                               href="{% url school.views.viewClassDetail class.id %}">
-                                <div id="{{ class.id }}">
-                                    <span class="classname"> {{ class.name }} </span>
-                                    <span class="dimmer">Sĩ số:</span>
-                                    {{ class.number_of_pupils }}
-                                    <br>
-                                    <span class="dimmer">CN:</span>
-                                    {% if class.teacher %}
-                                        {{ class.teacher }}
-                                    {% else  %}
-                                        Chưa có
-                                    {% endif %}
-                                </div>
-                            </a>
-                        {% endif %}
-                    {% endfor %}
-                {% endfor %}
-            </section >
+        <p>
+        <hr>
+        <a class="item" href="{% url school.views.teachers %}">
+          <img class="icon" src="/static/menu/teachers.png" alt="Giáo viên"/>
+          Giáo viên
+        </a>
+        <a class="item" href="{% url school.views.info %}"
+           title="Khai báo thông tin về trường học">
+          <img class="icon" src="/static/menu/settings.png" alt="Thông tin trường"/>
+          Thiết lập
+        </a>
 
-            {% else %}
+        <a class="item" href="{% url school.views.move_students %}"
+           title="Chuyển lớp, chuyển trường">
+          <img class="icon" src="/static/menu/transfer.png" alt="Chuyển lớp"/>
+          Chuyển lớp
+        </a>
 
-            {% if user.userprofile.position == 'GIAO_VIEN' %}
-                <aside>
-                    <p>Chức năng khác</p>
-                    <a class="item"
-                       href="{% url school.views.classes %}"
-                       title="Danh sách các lớp học">
-                        <img class="icon" src="/static/menu/school.png" alt="Lớp học"/>
-                        Lớp học
-                    </a>
+      </aside>
 
-                    <a class="item"
-                       href="{%  url school.views.nhap_danh_sach_trung_tuyen %}"
-                       title="Nhập danh sách học sinh từ Excel">
-                        <img class="icon" src="/static/menu/classroom.png" alt="Nhập học sinh"/>
-                        Học sinh
-                    </a>
-
-                    <a class="item"
-                       href="{% url school.views.teachers %}"
-                       title="Danh sách giáo viên">
-                        <img class="icon" src="/static/menu/teachers.png" alt="Giáo viên"/>
-                        Giáo viên
-                    </a>
-                </aside>
-
-                <section id="classes">
-                    {% if not teaching_subjects %}
-                        <h2>(Bạn đang không giảng dạy lớp nào.)</h2>
-                    {% else %}
-                        <h2>Các lớp giảng dạy</h2>
-                        {% for subject in teaching_subjects %}
-                            <a class="classDiv"
-                               href="{% url school.viewMark.markForTeacher term.id subject.id %}">
-                                <span class="classname"> {{ subject.class_id }} </span>
-                                <span class="dimmer">Điểm</span>
-                                <span>{{ subject.name }}</span>
-
-                            </a>
-                        {% endfor %}
-                    {% endif %}
-
-                    {% if teaching_class %}
-                        <h2>Lớp chủ nhiệm: {{ teaching_class }}</h2>
-                    {% else %}
-                        <h2>(Bạn không chủ nhiệm lớp nào.)</h2>
-                    {% endif %}
-
-
-                </section>
-            {% else %}
-                {% if user.userprofile.position == 'HOC_SINH' %}
-                {% endif %}
+      <section id="classes">
+        {#        <h2>Các lớp học</h2>#}
+        {% for grade in grades %}
+          <h3>Các lớp khối {{ grade.number }}</h3>
+          {% for class in classes %}
+            {% if class.block_id == grade %}
+              <a class="classDiv ggButton"
+                 href="{% url school.views.viewClassDetail class.id %}">
+                <div id="{{ class.id }}">
+                  <span class="classname"> {{ class.name }} </span>
+                  <div style="font-size: 85%;">
+                    <div class="dimmer" style="float:left;clear:left">
+                      SS:{{ class.number_of_pupils }}</div>
+                    <div class="dimmer" style="float:left;clear:left">
+                      CN:
+                      {% if class.teacher %}
+                        {{ class.teacher }}
+                      {% else %}
+                        Chưa có
+                      {% endif %}
+                    </div>
+                  </div>
+                </div>
+              </a>
             {% endif %}
+          {% endfor %}
+        {% endfor %}
+      </section>
+
+      {% else %}
+
+      {% if user.userprofile.position == 'GIAO_VIEN' %}
+        <aside>
+          <p>Chức năng khác</p>
+          <a class="item"
+             href="{% url school.views.classes %}"
+             title="Danh sách các lớp học">
+            <img class="icon" src="/static/menu/school.png" alt="Lớp học"/>
+            Lớp học
+          </a>
+
+          <a class="item"
+             href="{%  url school.views.nhap_danh_sach_trung_tuyen %}"
+             title="Nhập danh sách học sinh từ Excel">
+            <img class="icon" src="/static/menu/classroom.png" alt="Nhập học sinh"/>
+            Học sinh
+          </a>
+
+          <a class="item"
+             href="{% url school.views.teachers %}"
+             title="Danh sách giáo viên">
+            <img class="icon" src="/static/menu/teachers.png" alt="Giáo viên"/>
+            Giáo viên
+          </a>
+        </aside>
+
+        <section id="classes">
+          {% if not teaching_subjects %}
+            <h2>(Bạn đang không giảng dạy lớp nào.)</h2>
+          {% else %}
+            <h2>Các lớp giảng dạy</h2>
+            {% for subject in teaching_subjects %}
+              <a class="classDiv"
+                 href="{% url school.viewMark.markForTeacher term.id subject.id %}">
+                <span class="classname"> {{ subject.class_id }} </span>
+                <span class="dimmer">Điểm</span>
+                <span>{{ subject.name }}</span>
+
+              </a>
+            {% endfor %}
+          {% endif %}
+
+          {% if teaching_class %}
+            <h2>Lớp chủ nhiệm: {{ teaching_class }}</h2>
+          {% else %}
+            <h2>(Bạn không chủ nhiệm lớp nào.)</h2>
+          {% endif %}
+
+
+        </section>
+      {% else %}
+        {% if user.userprofile.position == 'HOC_SINH' %}
         {% endif %}
+      {% endif %}
     {% endif %}
+  {% endif %}
 {% endblock %}
 
