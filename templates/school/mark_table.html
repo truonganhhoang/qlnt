@@ -2,8 +2,8 @@
  
 
 {% block backward_link %}
+  <a href="{% url school.views.school_index %}"> Trang chủ </a>
 	{% if user.userprofile.position != "GIAO_VIEN" %}
-    <a href="{% url school.views.school_index %}"> Trang chủ </a>
     > <a href="/school/classes"> Toàn trường  </a>
 		{% if selectedClass %}
 			> <a href="/school/viewClassDetail/{{selectedClass.id}}"> {{selectedClass.name}}  </a>
@@ -12,7 +12,6 @@
 			> {{selectedSubject.name}}
 		{% endif %}
 	{% else %}
-    <a href="{% url school.views.school_index %}"> Trang chủ </a>
     > <a href="/school/markForTeacher">Điểm</a>
 		{% if selectedSubject %}
 			> {{selectedSubject.name}}-{{selectedSubject.class_id.name}}

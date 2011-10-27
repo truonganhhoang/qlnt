@@ -187,8 +187,11 @@
             {% for class, f, n in list %}
                 <tr class="{{class.id}}">
                     <td> {{ forloop.counter }}</td>
-                    <td><a
-                            href="{%url school.views.school_index  %}viewClassDetail/{{class.id}}">{{ class.name }} </a></td>
+                    <td>
+                    <a href="{%url school.views.school_index  %}viewClassDetail/{{class.id}}">
+                        {{ class.name }}
+                    </a>
+                    </td>
                     <td> {{ n }} </td>
                     {% if pos >= 4 %}
                         <td>

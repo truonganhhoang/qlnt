@@ -1,7 +1,10 @@
 {% extends "base.html" %}
+{% block backward_link %}
+  <a href="{% url school.views.school_index %}"> Trang chủ </a>
+  > Thông tin về trường
+{% endblock %}
 
 {% block content %}
-
     {% if user.userprofile.position == 'HIEU_TRUONG' or user.userprofile.position == 'HIEU_PHO' %}
         <script type="text/javascript" >
 
@@ -19,7 +22,8 @@
                         $.ajaxSetup({
                             global: false
                         });
-                        $("#school-info").load('{% url school.views.school_index %} #school-name');
+{#                        $("#school-info").load('{% url school.views.school_index %} #school-name');#}
+                        $("#header-bar").load('{% url school.views.school_index %} #school-info');
                         $.ajaxSetup({
                             global: true
                         });
@@ -62,35 +66,30 @@
                 });
 
             });
-
         </script>
-    {% endif %}
-
-
-    {% if user.userprofile.position == 'HIEU_TRUONG' or user.userprofile.position == 'HIEU_PHO' %}
+      <h2>Thông tin trường học</h2>
         <form action="{%url school.views.info %}" method="post">{% csrf_token %}
             {% if message != None %}
                 {{message}}
                 <br/>
             {% endif %}
-            <div class="leftInfoDiv">
-                <h2>Thông tin trường học</h2>
-                <div class="infoContent">
-                    <table class="styleA setting">
+            <div class="info-box">
+                <h3>Thông tin trường học</h3>
+{#                <div class="infoContent">#}
+                    <table class="styleA styleDetail">
                         {{ form.as_table }}
                     </table>
-                </div>
+{#                </div>#}
             </div>
-            <div class="rightInfoDiv">
-                <h2>Thiết lập thông số</h2>
-                <div class="infoContent">
-                    <table class="styleA setting">
+            <div class="info-box">
+                <h3>Thiết lập thông số</h3>
+{#                <div class="infoContent">#}
+                    <table class="styleA styleDetail">
                         {{ setting_form.as_table }}
                     </table>
-                </div>
+{#                </div>#}
             </div>
-            <div style="clear: both;"></div>
-            <div style="padding: 10px;">
+            <div style="padding: 10px;clear: both;">
                 <input type="submit" id="submit" class="ggButton" name="submit" value="Lưu lại" />
                 <input type="reset"  id="cancel" class="ggButton" name="cancel" value="Hủy" />
             </div>

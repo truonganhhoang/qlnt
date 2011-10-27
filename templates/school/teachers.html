@@ -2,7 +2,13 @@
 
 {% load upload_tags %}
 
+{% block backward_link %}
+  <a href="{% url school.views.school_index %}"> Trang chủ </a>
+  > Giáo viên
+{% endblock %}
+
 {% block content %}
+  <h2>Danh sách giáo viên</h2>
     <style>
 	    #tabs { margin-top: 1em; }
 	    #tabs li .ui-icon-close { float: left; margin: 0.1em 0.2 0 0; cursor: pointer; }

@@ -229,7 +229,7 @@
         </ul>
         <div id = "tabs-1">
             <form action="/school/viewStudentDetail/{{id}}" method="post" class="student_detail">{% csrf_token %}
-                <table class = "styleA" >
+                <table class = "styleA styleDetail" >
                     {{ ttcnform.as_table }}
                 </table>
                 {% if pos > 3 %}
@@ -240,7 +240,7 @@
         </div>
         <div id = "tabs-2">
             <form action="/school/viewStudentDetail/{{id}}" method="post" class="student_detail ttll">{% csrf_token %}
-                <table class = "styleA">
+                <table class = "styleA styleDetail">
                     {{ ttllform.as_table }}
                 </table>
                 {% if pos > 3 or pos == 1 %}
@@ -251,7 +251,7 @@
         </div>
         <div id = "tabs-3">
             <form action="/school/viewStudentDetail/{{id}}" method="post" class="student_detail">{% csrf_token %}
-                <table class = "styleA">
+                <table class = "styleA styleDetail">
                     {{ ttgdform.as_table }}
                 </table>
                 {% if pos > 3 %}
@@ -262,7 +262,7 @@
         </div>
         <div id = "tabs-4">
             <form action="/school/viewStudentDetail/{{id}}" method="post" class="student_detail">{% csrf_token %}
-                <table class = "styleA">
+                <table class = "styleA styleDetail">
                     {{ ttddform.as_table }}
                 </table>
                 {% if pos > 3 %}

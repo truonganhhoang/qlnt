@@ -1,4 +1,8 @@
 {% extends "base.html" %}
+{% block backward_link %}
+  <a href="{% url school.views.school_index %}"> Trang chủ </a>
+  > Năm học
+{% endblock %}
 {% block content %}
 	<h2>Các năm học</h2> 
 	<ul>

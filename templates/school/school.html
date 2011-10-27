@@ -3,6 +3,7 @@
 {% block backward_link %}
   Trang chủ
 {% endblock %}
+
 {% block js %}
   <script type="text/javascript" src="/static/js/template_js/school.js"></script>
 {% endblock %}
@@ -48,7 +49,7 @@
       <section id="classes">
         {#        <h2>Các lớp học</h2>#}
         {% for grade in grades %}
-          <h3>Các lớp khối {{ grade.number }}</h3>
+          <h3>Khối {{ grade.number }}</h3>
           {% for class in classes %}
             {% if class.block_id == grade %}
               <a class="classDiv ggButton"

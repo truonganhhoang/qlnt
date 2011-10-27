@@ -133,9 +133,17 @@ section#hearder-bar {
     display: block;
     text-decoration: none;
     text-align: center;
-    padding: 4px 0px 4px 0px;
     margin-right: 20px;
     border: transparent 1px solid;
+    border-radius: 3px;
+    padding: 4px 3px 4px 3px;
+}
+
+#school-info ul li a {
+    font-size: 90%;
+}
+
+#user-info ul li a {
 }
 
 header ul li a:hover {
@@ -348,7 +356,7 @@ aside p {
 #content h3 {
     color: #666666;
     clear: left;
-    padding: 10px 0 0 0;
+    padding: 5px 0 0px 0;
 }
 
 #content h3 span {
@@ -450,28 +458,15 @@ section#classes a:hover, nav ul li a:hover, aside a:hover, section#hearder-bar a
 section#classes .classname{
     display: block;
     float:left;
-    /*padding: 0px 0px 3px 0px;;*/
     font-size: 16px;
     font-family: arial;
     font-weight: bold;
-    /*font-weight: 100;*/
     color: white;
 }
 
 section#classes .dimmer{
-    /*color: #02779E;*/
-    /*color: #A6D7E3;*/
-    /*color: #DC471A;*/
-    /*color: #EB540A;*/
-    /*color: #F8EDE8;*/
-
-    color: #DED4B9;
-    color: #46433A;
-    color: #CE534D;
-    color: #64B6B1;
-
     font-weight: 100;
-    color: #dddddd;
+    color: #eeeeee;
 }
 
 /*----FOOTER PANEL----*/

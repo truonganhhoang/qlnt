@@ -1,23 +1,20 @@
 {% extends "base.html" %}
 
+{% block backward_link %}
+  <a href="{% url school.views.school_index %}"> Trang chủ </a>
+  > <a href="/profiles/{{user.username}}"
+                 title="Sửa thông tin người sử dụng, đổi mật khẩu, đổi tên tài khoản.">
+    Người sử dụng
+    </a>
+  > Sửa hồ sơ
+{% endblock %}
+
 {% block content %}
   {% if user.is_authenticated and user.username == profile.user.username %}
-    <h2>Thông tin tài khoản: {{ user }}</h2>
+    <h2>Sửa thông tin tài khoản: {{ user }}</h2>
 
     <form method="POST" action="" enctype="multipart/form-data"> {% csrf_token %}
       <table class="dataform">
-{#        <tr>#}
-{#          <th>Họ và tên</th>#}
-{#          <td> {{ profile.user.first_name }} {{ profile.user.last_name }}</td>#}
-{#        </tr>#}
-{#        <tr>#}
-{#          <th>Tổ chức</th>#}
-{#          <td> {{ profile.organization }}</td>#}
-{#        </tr>#}
-{#        <tr>#}
-{#          <th>Vị trí</th>#}
-{#          <td> {{ profile.position }}</td>#}
-{#        </tr>#}
         <tr>
           <th><label for="id_phone">Điện thoại di động</label></th>
           <td><input id="id_phone" type="text" name="phone" maxlength="20" value="{{ profile.phone }}"/></td>
@@ -26,13 +23,8 @@
           <th><label for="id_notes">Ghi chú</label></th>
           <td><input id="id_notes" type="text" name="notes" maxlength="255" value="{{ profile.notes}}"/></td>
         </tr>
-
-        <tr>
-          <th></th>
-          <td><input type="submit" name="submit" value="Lưu" id="submit">
-          <td>
-        </tr>
       </table>
+    <input type="submit" class="ggButton" name="submit" value="Lưu" id="submit">
     </form>
     </div>
   {% endif %}

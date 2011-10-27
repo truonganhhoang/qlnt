@@ -1,5 +1,10 @@
 {% extends "base.html" %}
 
+{% block backward_link %}
+  <a href="{% url school.views.school_index %}"> Trang chủ </a>
+  > Liên hệ 
+{% endblock %}
+
 {% block content %}
     <h2>Liên hệ</h2>
     Để đăng ký sử dụng hoặc góp ý xin vui lòng

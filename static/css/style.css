@@ -227,9 +227,10 @@ input.noedit {
 
 table.styleA {
     /*font-family: Arial, Helvetica, sans-serif;*/
+    margin: 5px 0 5px 0;
     font-size: 14px;
     color: #333333;
-    /*border: 1px solid #6e6a6a;*/
+    border: 1px solid #cccccc;
     border-collapse: collapse;
     border-spacing: 0;
     margin-bottom: 10px;
@@ -239,18 +240,21 @@ table.styleA {
 }
 
 table.styleA th {
-    background-color: #dddddd;
+    background-color: #eeeeee;
     padding: 8px;
-    border: 1px solid #a1acb0;
     text-align: right;
-    /*color: #e2f9fb;*/
     text-shadow: 0 1px 0 #bfedf2;
-    /*background-image: -webkit-gradient(linear,left top,left bottom,from(#c3dde0),to(#71a9b0));*/
-    /*background-image: -webkit-linear-gradient(top,#c3dde0,#71a9b0);*/
-    /*background-image: -moz-linear-gradient(top,#c3dde0,#71a9b0);*/
-    /*background-image: -ms-linear-gradient(top,#c3dde0,#71a9b0);*/
-    /*background-image: -o-linear-gradient(top,#c3dde0,#71a9b0);*/
+    border-bottom: thin #dddddd inset;
+    border-left: thin #dddddd inset;
+    border-right: thin #dddddd inset;
+}
 
+table.styleA td {
+    border-left: thin #dddddd inset;
+    border-right: thin #dddddd inset;
+    padding: 4px 2px 4px 2px;
+    text-align: left;
+    vertical-align: bottom;
 }
 
 table.styleA th.leftAlign {
@@ -300,51 +304,26 @@ table.styleA select {
     margin: 2px 2px 0 2px;
 }
 
-
 table.styleA input[type="text"] {
     font-size: 15px;
     width: 95%;
 }
 
-
-table.styleDetail th {
-    text-align: right;
-}
-
 table.styleA tr:nth-child(odd) {
     background-color: #eeeeee;
-    /*cursor: pointer;*/
-    /*background-image: -webkit-gradient(linear,left top,left bottom,from(#d8eef1),to(#a8d6dd));*/
-    /*background-image: -webkit-linear-gradient(top,#d8eef1,#a8d6dd);*/
-    /*background-image: -moz-linear-gradient(top,#d8eef1,#a8d6dd);*/
-    /*background-image: -ms-linear-gradient(top,#d8eef1,#a8d6dd);*/
-    /*background-image: -o-linear-gradient(top,#d8eef1,#a8d6dd);*/
-
 }
 
 table.styleA tr:nth-child(even) {
     background-color: #ffffff;
-    /*cursor: pointer;*/
-    /*background-image: -webkit-gradient(linear,left top,left bottom,from(#d8eef1),to(#a8d6dd));*/
-    /*background-image: -webkit-linear-gradient(top,#d8eef1,#a8d6dd);*/
-    /*background-image: -moz-linear-gradient(top,#d8eef1,#a8d6dd);*/
-    /*background-image: -ms-linear-gradient(top,#d8eef1,#a8d6dd);*/
-    /*background-image: -o-linear-gradient(top,#d8eef1,#a8d6dd);*/
 
 }
 
 table.styleA tr.thead {
     background-color: #aacbd0;
-    /*cursor: auto;*/
 }
 
 table.styleA tr:hover {
     background-color: #a8d6dd;
-    /*background-image: -webkit-gradient(linear,left top,left bottom,from(#eff3f4),to(#bad9de));*/
-    /*background-image: -webkit-linear-gradient(top,#eff3f4,#bad9de);*/
-    /*background-image: -moz-linear-gradient(top,#eff3f4,#bad9de);*/
-    /*background-image: -ms-linear-gradient(top,#eff3f4,#bad9de);*/
-    /*background-image: -o-linear-gradient(top,#eff3f4,#bad9de);*/
 }
 
 table.styleA tr.focused {
@@ -369,28 +348,42 @@ table.styleA tr.endblock{
     background-color: #FFFFFF;
 }
 
-table.styleA td {
-    border-width: 1px;
-    padding: 4px 2px 4px 2px;
-    border-style: solid;
-    border-color: #dddddd;
-    text-align: left;
-    vertical-align: bottom;
+
+table.styleDetail th {
+    text-align: right;
+    border: none;
 }
 
-table.setting {
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 14px;
-    color: #333333;
-    border: 1px solid #999999;
-    border-radius: 3px;
-    -moz-border-radius: 2px;
-    -webkit-border-radius: 2px;
-    border-collapse: collapse;
-    border-spacing: 0;
-    margin-bottom: 10px;
-    padding: 10px;
+table.styleDetail td {
+    /*border: #bbbbbb thin solid;*/
+    border: none;
+    margin:5px;
 }
+
+table.styleDetail tr {
+    margin:5px;
+}
+
+table.styleDetail input {
+    padding: 4px;
+    margin: 0px;
+}
+
+
+
+/*table.setting {*/
+    /*font-family: Arial, Helvetica, sans-serif;*/
+    /*font-size: 14px;*/
+    /*color: #333333;*/
+    /*border: 1px solid #999999;*/
+    /*border-radius: 3px;*/
+    /*-moz-border-radius: 2px;*/
+    /*-webkit-border-radius: 2px;*/
+    /*border-collapse: collapse;*/
+    /*border-spacing: 0;*/
+    /*margin-bottom: 10px;*/
+    /*padding: 10px;*/
+/*}*/
 
 .ggButton {
     background-color: #4D90FE;
@@ -504,22 +497,31 @@ div.errorDiv{
     padding: 2px;
 }
 
-div.infoContent {
-    width: 100%;
-    display: inline-block;
-}
+/*div.infoContent {*/
+    /*width: 100%;*/
+    /*display: inline-block;*/
+/*}*/
 
-div.rightInfoDivMain {
-    text-align: left;
-}
+/*div.rightInfoDivMain {*/
+    /*text-align: left;*/
+/*}*/
 
-div.leftInfoDiv, div.rightInfoDiv, div.confirmation, div.startYear {
+div.leftInfoDiv, div.rightInfoDiv, div.confirmation, div.startYear, div.info-box {
     position: relative;
     width: auto;
     padding: 5px;
     float: left;
 }
 
+div.info-box {
+    position: relative;
+    width: auto;
+    float: left;
+    /*padding: 5px;*/
+    /*margin: 5px;*/
+    /*border: #bbbbbb solid thin;*/
+    /*border-radius: 5px;*/
+}
 
 div#divList {
     -webkit-column-count: 4;

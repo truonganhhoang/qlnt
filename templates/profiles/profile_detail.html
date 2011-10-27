@@ -1,5 +1,10 @@
 {% extends "base.html" %}
 
+{% block backward_link %}
+  <a href="{% url school.views.school_index %}"> Trang chủ </a>
+  > Người sử dụng
+{% endblock %}
+
 {% block content %}
   {% if user.username == profile.user.username %}
     <h2>Thông tin tài khoản: {{ user.username }}</h2>
