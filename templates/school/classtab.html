@@ -7,129 +7,129 @@
         <script>
             $(document).ready(function() {
                 (function($) {
-                $.widget("ui.combobox", {
-                    _create: function() {
-                        var self = this,
+                    $.widget("ui.combobox", {
+                        _create: function() {
+                            var self = this,
                                 select = this.element.hide(),
                                 selected = select.children(":selected"),
                                 value = selected.val() ? selected.text() : "";
-                        var input = this.input = $("<input>")
-                                .insertAfter(select)
-                                .val(value)
-                                .addClass("ui-widget ui-widget-content ui-corner-left")
-                                .autocomplete({
-                                    delay: 0,
-                                    minLength: 0,
-                                    source: function(request, response) {
-                                        var matcher = new RegExp($.ui.autocomplete.escapeRegex(request.term), "i");
-                                        response(select.children("option").map(function() {
-                                            var text = $(this).text();
-                                            if (this.value && ( !request.term || matcher.test(text) ))
-                                                return {
-                                                    label: text.replace(
-                                                            new RegExp(
-                                                                    "(?![^&;]+;)(?!<[^<>]*)(" +
-                                                                            $.ui.autocomplete.escapeRegex(request.term) +
-                                                                            ")(?![^<>]*>)(?![^&;]+;)", "gi"
-                                                            ), "<strong>$1</strong>"),
-                                                    value: text,
-                                                    option: this
-                                                };
-                                        }));
-                                    },
-                                    select: function(event, ui) {
-                                        ui.item.option.selected = true;
-                                        self._trigger("selected", event, {
-                                            item: ui.item.option
-                                        });
-                                        this.value = ui.item.option.text;
-                                        var attr = $(this).parents("tr").attr('id');
-                                        var teacher = ui.item.option.value;
-                                        $(this).parents("td").children("#id_teacher_id").val(teacher);
-                                        $(this).parents("td").children(".all_teacher").val(teacher);
-                                        var id = $(this).parents("tr").attr('class').split(' ')[0];
-                                        var data = { id: id, teacher_id:teacher, request_type:'update'};
-                                        var arg = { type:"POST",
-                                            url:"",
-                                            data: data,
-                                            datatype:"json",
-                                            success:done,
-                                            error:function(){
-                                                $(".submitbutton").attr("disabled", false);
-                                            }
-                                        };
-                                        $.ajax(arg);
-                                        return false;
+                            var input = this.input = $("<input>")
+                                    .insertAfter(select)
+                                    .val(value)
+                                    .addClass("ui-widget ui-widget-content ui-corner-left")
+                                    .autocomplete({
+                                        delay: 0,
+                                        minLength: 0,
+                                        source: function(request, response) {
+                                            var matcher = new RegExp($.ui.autocomplete.escapeRegex(request.term), "i");
+                                            response(select.children("option").map(function() {
+                                                var text = $(this).text();
+                                                if (this.value && ( !request.term || matcher.test(text) ))
+                                                    return {
+                                                        label: text.replace(
+                                                                new RegExp(
+                                                                        "(?![^&;]+;)(?!<[^<>]*)(" +
+                                                                                $.ui.autocomplete.escapeRegex(request.term) +
+                                                                                ")(?![^<>]*>)(?![^&;]+;)", "gi"
+                                                                ), "<strong>$1</strong>"),
+                                                        value: text,
+                                                        option: this
+                                                    };
+                                            }));
+                                        },
+                                        select: function(event, ui) {
+                                            ui.item.option.selected = true;
+                                            self._trigger("selected", event, {
+                                                item: ui.item.option
+                                            });
+                                            this.value = ui.item.option.text;
+                                            var attr = $(this).parents("tr").attr('id');
+                                            var teacher = ui.item.option.value;
+                                            $(this).parents("td").children("#id_teacher_id").val(teacher);
+                                            $(this).parents("td").children(".all_teacher").val(teacher);
+                                            var id = $(this).parents("tr").attr('class').split(' ')[0];
+                                            var data = { id: id, teacher_id:teacher, request_type:'update'};
+                                            var arg = { type:"POST",
+                                                url:"",
+                                                data: data,
+                                                datatype:"json",
+                                                success:done,
+                                                error:function(){
+                                                    $(".submitbutton").attr("disabled", false);
+                                                }
+                                            };
+                                            $.ajax(arg);
+                                            return false;
 
-                                        ;
-                                    },
-                                    change: function(event, ui) {
-                                        if (!ui.item) {
-                                            var matcher = new RegExp("^" + $.ui.autocomplete.escapeRegex($(this).val()) + "$", "i"),
-                                                    valid = false;
-                                            select.children("option").each(function() {
-                                                if ($(this).text().match(matcher)) {
-                                                    this.selected = valid = true;
+                                            ;
+                                        },
+                                        change: function(event, ui) {
+                                            if (!ui.item) {
+                                                var matcher = new RegExp("^" + $.ui.autocomplete.escapeRegex($(this).val()) + "$", "i"),
+                                                        valid = false;
+                                                select.children("option").each(function() {
+                                                    if ($(this).text().match(matcher)) {
+                                                        this.selected = valid = true;
+                                                        return false;
+                                                    }
+                                                });
+                                                if (!valid) {
+                                                    // remove invalid value, as it didn't match anything
+                                                    $(this).val("");
+                                                    select.val("");
+                                                    input.data("autocomplete").term = "";
                                                     return false;
                                                 }
-                                            });
-                                            if (!valid) {
-                                                // remove invalid value, as it didn't match anything
-                                                $(this).val("");
-                                                select.val("");
-                                                input.data("autocomplete").term = "";
-                                                return false;
                                             }
                                         }
-                                    }
-                                });
+                                    });
 
-                        input.data("autocomplete")._renderItem = function(ul, item) {
-                            return $("<li></li>")
-                                    .data("item.autocomplete", item)
-                                    .append("<a>" + item.label + "</a>")
-                                    .appendTo(ul);
-                        };
+                            input.data("autocomplete")._renderItem = function(ul, item) {
+                                return $("<li></li>")
+                                        .data("item.autocomplete", item)
+                                        .append("<a>" + item.label + "</a>")
+                                        .appendTo(ul);
+                            };
 
-                        this.button = $("<button type='button'>&nbsp;</button>")
-                                .attr("tabIndex", -1)
-                                .attr("title", "Danh sách giáo viên")
-                                .insertAfter(input)
-                                .button({
-                                    icons: {
-                                        primary: "ui-icon-triangle-1-s"
-                                    },
-                                    text: false
-                                })
-                                .removeClass("ui-corner-all")
-                                .addClass("ui-corner-right ui-button-icon")
-                                .click(function() {
-                                    // close if already visible
-                                    if (input.autocomplete("widget").is(":visible")) {
-                                        input.autocomplete("close");
-                                        return;
-                                    }
+                            this.button = $("<button type='button'>&nbsp;</button>")
+                                    .attr("tabIndex", -1)
+                                    .attr("title", "Danh sách giáo viên")
+                                    .insertAfter(input)
+                                    .button({
+                                        icons: {
+                                            primary: "ui-icon-triangle-1-s"
+                                        },
+                                        text: false
+                                    })
+                                    .removeClass("ui-corner-all")
+                                    .addClass("ui-corner-right ui-button-icon")
+                                    .click(function() {
+                                        // close if already visible
+                                        if (input.autocomplete("widget").is(":visible")) {
+                                            input.autocomplete("close");
+                                            return;
+                                        }
 
-                                    // work around a bug (likely same cause as #5265)
-                                    $(this).blur();
+                                        // work around a bug (likely same cause as #5265)
+                                        $(this).blur();
 
-                                    // pass empty string as value to search for, displaying all results
-                                    input.autocomplete("search", "");
-                                    input.focus();
-                                });
-                    }
+                                        // pass empty string as value to search for, displaying all results
+                                        input.autocomplete("search", "");
+                                        input.focus();
+                                    });
+                        }
+                    });
+                })(jQuery);
+
+                $("select[name=teacher_id]").each(function() {
+                    $(this).hide();
                 });
-            })(jQuery);
 
-            $("select[name=teacher_id]").each(function() {
-                $(this).hide();
-            });
-
-            $(function() {
-                $(".combobox").each(function() {
-                    $(this).combobox();
+                $(function() {
+                    $(".combobox").each(function() {
+                        $(this).combobox();
+                    });
                 });
-            });
                 var note = '';
                 var done = function(json) {
                     if (json.message != null && json.message != '') {
@@ -209,7 +209,7 @@
                                 </select>
                             </div>
                         </td>
-                    {% else %}
+                        {% else %}
                         <td>
                             {% if class.teacher_id %}
                                 {{ class.teacher_id }}
@@ -224,7 +224,7 @@
                             <td><a class="ggButton delete" href="{%url school.views.school_index  %}deleteClass/{{class.id}}/{{block_id}}"> xóa </a></td>
                         {% else %}
                             <td><a class="ggButton"
-                                                  onclick="alert( 'Lớp vẫn còn học sinh, vui lòng xóa hết học sinh trước' );">
+                                   onclick="alert( 'Lớp vẫn còn học sinh, vui lòng xóa hết học sinh trước' );">
                                 xóa </a></td>
                         {% endifequal %}
                     {% endif %}

@@ -461,10 +461,11 @@ class Mark(models.Model):
     mot_tiet_4 = models.FloatField("Điểm 1 tiết 4", null = True, blank = True, validators = [validate_mark])
     mot_tiet_5 = models.FloatField("Điểm 1 tiết 5", null = True, blank = True, validators = [validate_mark])
     ck = models.FloatField("Điểm thi cuối kì", null = True, blank = True, validators = [validate_mark])
-    mg = models.BooleanField("Miễn giảm",default = False)
+    mg = models.BooleanField("Miễn giảm", default = False)
     tb = models.FloatField("Điểm trung bình", null = True, blank = True, validators = [validate_mark])
     
-    sent_mark=models.CharField("đánh dấu đã gửi tin nhắn",max_length=19,default="0000000000000000000")
+    sent_mark=models.CharField("Đánh dấu đã gửi tin nhắn",max_length=19,default="0000000000000000000")
+    current=models.BooleanField("Thuộc lớp hiện tại", default=True )
     
     subject_id = models.ForeignKey(Subject, verbose_name = "Môn")
     student_id = models.ForeignKey(Pupil, verbose_name = "Học sinh", null = True, blank = True)        
@@ -524,7 +525,9 @@ class TKMon(models.Model):
     thi_lai = models.BooleanField("Có thi lại", blank = True, default = False)
     diem_thi_lai=models.FloatField("Điểm thi lại", null = True, blank = True, validators = [validate_mark])
     # all fields can be null
-    
+    current=models.BooleanField("Thuộc lớp hiện tại", default=True )
+
+
     subject_id = models.ForeignKey(Subject, verbose_name = "Môn")
     student_id = models.ForeignKey(Pupil, verbose_name = "Học sinh")
     
