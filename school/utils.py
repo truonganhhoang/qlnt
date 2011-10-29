@@ -215,7 +215,7 @@ def move_student(school, student, new_class):
                     tk.current = False
                     tk.save()
 
-        subject_in_new_class = new_class.subject_set.get( type__exact = _subject.type)
+        subject_in_new_class = new_class.subject_set.all()
         for _subject in subject_in_new_class:
             marks = _subject.mark_set.filter( student_id__exact = student )
             if marks.len() == 0:
