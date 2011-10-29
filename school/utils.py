@@ -218,7 +218,7 @@ def move_student(school, student, new_class):
         subject_in_new_class = new_class.subject_set.all()
         for _subject in subject_in_new_class:
             marks = _subject.mark_set.filter( student_id__exact = student )
-            if marks.len() == 0:
+            if marks.count() == 0:
                 for i in range(1,3):
                     term1 = year.term_set.get( number__exact = i)
                     the_mark = Mark()
