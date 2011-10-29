@@ -3604,23 +3604,23 @@ def hanh_kiem(request, class_id = 0, sort_type = 0, sort_status = 0):
     if gvcn(request, class_id) == 1:
         pos = 4
     message = None
-    pupilList = c.pupil_set.order_by('index')
+    pupilList = c.student_set.filter(attend__leave_time = None).order_by('index')
     term = get_current_term(request)
     if int(sort_type) == 1:
         if not int(sort_status):
-            pupilList = c.pupil_set.order_by('first_name', 'last_name')
+            pupilList = c.student_set.filter(attend__leave_time = None).order_by('first_name', 'last_name')
         else:
-            pupilList = c.pupil_set.order_by('-first_name', '-last_name')
+            pupilList = c.student_set.filter(attend__leave_time = None).order_by('-first_name', '-last_name')
     if int(sort_type) == 2:
         if not int(sort_status):
-            pupilList = c.pupil_set.order_by('birthday')
+            pupilList = c.student_set.filter(attend__leave_time = None).order_by('birthday')
         else:
-            pupilList = c.pupil_set.order_by('-birthday')
+            pupilList = c.student_set.filter(attend__leave_time = None).order_by('-birthday')
     if int(sort_type) == 3:
         if not int(sort_status):
-            pupilList = c.pupil_set.order_by('sex')
+            pupilList = c.student_set.filter(attend__leave_time = None).order_by('sex')
         else:
-            pupilList = c.pupil_set.order_by('-sex')
+            pupilList = c.student_set.filter(attend__leave_time = None).order_by('-sex')
 
     #tk_dd_lop(class_id, term.id)
     form = []
