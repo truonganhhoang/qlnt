@@ -220,7 +220,7 @@ def move_student(school, student, new_class):
             marks = _subject.mark_set.filter( student_id__exact = student )
             if marks.count() == 0:
                 for i in range(1,3):
-                    term1 = year.term_set.get( number__exact = i)
+                    term1 = new_class.year_id.term_set.get( number__exact = i)
                     the_mark = Mark()
                     the_mark.student_id = student
                     the_mark.subject_id = _subject
