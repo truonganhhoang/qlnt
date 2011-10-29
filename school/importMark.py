@@ -17,38 +17,50 @@ import datetime
 import random
 LOCK_MARK =False
 ENABLE_CHANGE_MARK=True
-def validate(s):
+def validate(s,isNx):
     x=11
     y=4
-    for i in range(x,s.nrows):
-        for j in range(4,20):
-            try:
-                print "ffffffffffffffffffffffff"
-                value = str(s.cell(i,j).value)
-                value = value.replace(' ','')
-                if len(value) !=0:
-                    value1 = float(value)
-                    
-                    if (value1<0) | (value1>10):
-                        return  u'Điểm ở ô '+cellname(i,j)+u' không nằm trong [0,10] '
-                    
-            except Exception as e:
-                return u'Điểm ở ô '+cellname(i,j)+u' không hợp lệ'
-
-            
-            
-    return '' 
-def process(s,x,y,mark,time,timeNow,timeToEdit,position):
+    if isNx==False:
+        for i in range(x,s.nrows):
+            for j in range(4,20):
+                try:
+                    value = str(s.cell(i,j).value)
+                    value = value.replace(' ','')
+                    if len(value) !=0:
+                        value1 = float(value)                    
+                        if (value1<0) | (value1>10):
+                            return  u'Điểm ở ô '+cellname(i,j)+u' không nằm trong [0,10] '
+                        
+                except Exception as e:
+                    return u'Điểm ở ô '+cellname(i,j)+u' không hợp lệ'
+        return ''
+    else: 
+        for i in range(x,s.nrows):
+            for j in range(4,23):
+                try:
+                    value = str(s.cell(i,j).value)
+                    value = value.replace(' ','').lower()
+                    if len(value)!=0:
+                        if (value!='g') & (value!='k') & (value!='tb') & (value!='y') & (value!='kem') & (value!='kém') :
+                            return  u'Lỗi ở ô '+cellname(i,j)+u'. Chỉ dùng các kí tự sau để cho điểm G,K,TB,Y,Kem.'
+                        
+                except Exception as e:
+                    return u'Lỗi ở ô '+cellname(i,j)+ u'. Chỉ dùng các kí tự sau để cho điểm G,K,TB,Y,Kem.'
+        return '' 
+    
+def process(s,x,y,mark,time,timeNow,timeToEdit,position,isNx):
     value = str(s.cell(x,y).value)
+    value = value.replace(' ','')
+    if (len(value)==0):
+        return '',None,None
+                        
     if (time!=None) & (position!=4) :
         if (timeNow-time).total_seconds()/60 > timeToEdit:
             if (float(value)!=mark):
-                print "ffff"
                 return u" Ô "+cellname(x,y)+ u' không được sửa điểm.',None,None
-                
-    if (len(value)==0):
-        return '',None,None                    
-    else              : 
+    if isNx :
+        return '',convertCharToDigit(value),timeNow
+    else:            
         return '',float(value),timeNow
 @transaction.commit_on_success            
 def importMark(request,term_id,subject_id):
@@ -75,9 +87,8 @@ def importMark(request,term_id,subject_id):
     
     t1= time.time()
     timeToEdit = int(selectedSubject.class_id.year_id.school_id.get_setting('lock_time'))*60
-
     timeNow =datetime.datetime.now()
-       
+    selectedTerm=Term.objects.get(id=term_id)   
     absentMessage=''
     editMarkMessage=''
     numberOk =0
@@ -87,17 +98,18 @@ def importMark(request,term_id,subject_id):
         filepath = os.path.join(TEMP_FILE_LOCATION, filename)       
         book = xlrd.open_workbook(filepath)                
         s = book.sheet_by_index(0)        
-        validateMessage = validate(s)
-                
+        validateMessage = validate(s,selectedSubject.nx)
+        isNx=selectedSubject.nx        
         if validateMessage=='': 
             markList  = Mark.objects.filter(subject_id=subject_id,term_id=term_id).order_by('student_id__index','student_id__first_name','student_id__last_name','student_id__birthday')
             pupilList = Pupil.objects.filter(class_id=selectedSubject.class_id).order_by('index','first_name','last_name','birthday')
-            markTimeList =MarkTime.objects.filter(mark_id__term_id=term_id,mark_id__subject_id=subject_id).order_by('mark_id__student_id__index','mark_id__student_id__first_name','mark_id__student_id__last_name','mark_id__student_id__birthday') 
+            markTimeList =MarkTime.objects.filter(mark_id__term_id=term_id,mark_id__subject_id=subject_id).order_by('mark_id__student_id__index','mark_id__student_id__first_name','mark_id__student_id__last_name','mark_id__student_id__birthday')
+            if (isNx & (selectedTerm.number==2)):
+                tkMonList=TKMon.objects.filter(subject_id=subject_id).order_by('student_id__index','student_id__first_name','student_id__last_name','student_id__birthday')
             x=11
             y=0
             list = zip(pupilList,markList,markTimeList)
             for p,m,mt in list:
-                print mt.id
                 pass
             
             for i in range(x,s.nrows):
@@ -111,41 +123,55 @@ def importMark(request,term_id,subject_id):
                 for p,m,mt in list:
                     if (p.last_name==lastName) & (p.first_name==firstName) & (p.birthday.strftime('%d/%m/%Y')== birthday):
                         ok=True                        
-                        editMarkMessage,m.mieng_1,mt.mieng_1=process(s,i,y+4,m.mieng_1,mt.mieng_1,timeNow,timeToEdit,position)        
+                        editMarkMessage,m.mieng_1,mt.mieng_1=process(s,i,y+4,m.mieng_1,mt.mieng_1,timeNow,timeToEdit,position,isNx)        
                         if editMarkMessage !='': break
-                        editMarkMessage,m.mieng_2,mt.mieng_2=process(s,i,y+5,m.mieng_2,mt.mieng_2,timeNow,timeToEdit,position)        
+                        editMarkMessage,m.mieng_2,mt.mieng_2=process(s,i,y+5,m.mieng_2,mt.mieng_2,timeNow,timeToEdit,position,isNx)        
                         if editMarkMessage !='': break
-                        editMarkMessage,m.mieng_3,mt.mieng_3=process(s,i,y+6,m.mieng_3,mt.mieng_3,timeNow,timeToEdit,position)        
+                        editMarkMessage,m.mieng_3,mt.mieng_3=process(s,i,y+6,m.mieng_3,mt.mieng_3,timeNow,timeToEdit,position,isNx)        
                         if editMarkMessage !='': break
-                        editMarkMessage,m.mieng_4,mt.mieng_4=process(s,i,y+7,m.mieng_4,mt.mieng_4,timeNow,timeToEdit,position)        
+                        editMarkMessage,m.mieng_4,mt.mieng_4=process(s,i,y+7,m.mieng_4,mt.mieng_4,timeNow,timeToEdit,position,isNx)        
                         if editMarkMessage !='': break
-                        editMarkMessage,m.mieng_5,mt.mieng_5=process(s,i,y+8,m.mieng_5,mt.mieng_5,timeNow,timeToEdit,position)        
+                        editMarkMessage,m.mieng_5,mt.mieng_5=process(s,i,y+8,m.mieng_5,mt.mieng_5,timeNow,timeToEdit,position,isNx)        
                         if editMarkMessage !='': break
                            
-                        editMarkMessage,m.mlam_1,mt.mlam_1=process(s,i,y+9,m.mlam_1,mt.mlam_1,timeNow,timeToEdit,position)        
+                        editMarkMessage,m.mlam_1,mt.mlam_1=process(s,i,y+9,m.mlam_1,mt.mlam_1,timeNow,timeToEdit,position,isNx)        
                         if editMarkMessage !='': break
-                        editMarkMessage,m.mlam_2,mt.mlam_2=process(s,i,y+10,m.mlam_2,mt.mlam_2,timeNow,timeToEdit,position)        
+                        editMarkMessage,m.mlam_2,mt.mlam_2=process(s,i,y+10,m.mlam_2,mt.mlam_2,timeNow,timeToEdit,position,isNx)        
                         if editMarkMessage !='': break
-                        editMarkMessage,m.mlam_3,mt.mlam_3=process(s,i,y+11,m.mlam_3,mt.mlam_3,timeNow,timeToEdit,position)        
+                        editMarkMessage,m.mlam_3,mt.mlam_3=process(s,i,y+11,m.mlam_3,mt.mlam_3,timeNow,timeToEdit,position,isNx)        
                         if editMarkMessage !='': break
-                        editMarkMessage,m.mlam_4,mt.mlam_4=process(s,i,y+12,m.mlam_4,mt.mlam_4,timeNow,timeToEdit,position)        
+                        editMarkMessage,m.mlam_4,mt.mlam_4=process(s,i,y+12,m.mlam_4,mt.mlam_4,timeNow,timeToEdit,position,isNx)        
                         if editMarkMessage !='': break
-                        editMarkMessage,m.mlam_5,mt.mlam_5=process(s,i,y+13,m.mlam_5,mt.mlam_5,timeNow,timeToEdit,position)        
+                        editMarkMessage,m.mlam_5,mt.mlam_5=process(s,i,y+13,m.mlam_5,mt.mlam_5,timeNow,timeToEdit,position,isNx)        
                         if editMarkMessage !='': break
                         
-                        editMarkMessage,m.mot_tiet_1,mt.mot_tiet_1=process(s,i,y+14,m.mot_tiet_1,mt.mot_tiet_1,timeNow,timeToEdit,position)        
+                        editMarkMessage,m.mot_tiet_1,mt.mot_tiet_1=process(s,i,y+14,m.mot_tiet_1,mt.mot_tiet_1,timeNow,timeToEdit,position,isNx)        
                         if editMarkMessage !='': break
-                        editMarkMessage,m.mot_tiet_2,mt.mot_tiet_2=process(s,i,y+15,m.mot_tiet_2,mt.mot_tiet_2,timeNow,timeToEdit,position)        
+                        editMarkMessage,m.mot_tiet_2,mt.mot_tiet_2=process(s,i,y+15,m.mot_tiet_2,mt.mot_tiet_2,timeNow,timeToEdit,position,isNx)        
                         if editMarkMessage !='': break
-                        editMarkMessage,m.mot_tiet_3,mt.mot_tiet_3=process(s,i,y+16,m.mot_tiet_3,mt.mot_tiet_3,timeNow,timeToEdit,position)        
+                        editMarkMessage,m.mot_tiet_3,mt.mot_tiet_3=process(s,i,y+16,m.mot_tiet_3,mt.mot_tiet_3,timeNow,timeToEdit,position,isNx)        
                         if editMarkMessage !='': break
-                        editMarkMessage,m.mot_tiet_4,mt.mot_tiet_4=process(s,i,y+17,m.mot_tiet_4,mt.mot_tiet_4,timeNow,timeToEdit,position)        
+                        editMarkMessage,m.mot_tiet_4,mt.mot_tiet_4=process(s,i,y+17,m.mot_tiet_4,mt.mot_tiet_4,timeNow,timeToEdit,position,isNx)        
                         if editMarkMessage !='': break
-                        editMarkMessage,m.mot_tiet_5,mt.mot_tiet_5=process(s,i,y+18,m.mot_tiet_5,mt.mot_tiet_5,timeNow,timeToEdit,position)                    
+                        editMarkMessage,m.mot_tiet_5,mt.mot_tiet_5=process(s,i,y+18,m.mot_tiet_5,mt.mot_tiet_5,timeNow,timeToEdit,position,isNx)                    
                         if editMarkMessage !='': break
-                        editMarkMessage,m.ck,mt.ck=process(s,i,y+19,m.ck,mt.ck,timeNow,timeToEdit,position)
-                        break
-                    
+                        editMarkMessage,m.ck,mt.ck=process(s,i,y+19,m.ck,mt.ck,timeNow,timeToEdit,position,isNx)
+                        
+                        if isNx:
+                            if selectedTerm.number==1:
+                                print "f1"
+                                editMarkMessage,m.tb,mt.tb=process(s,i,y+20,m.tb,mt.tb,timeNow,timeToEdit,position,isNx)
+                            else:    
+                                print "f2"
+                                editMarkMessage,m.tb,mt.tb=process(s,i,y+21,m.tb,mt.tb,timeNow,timeToEdit,position,isNx)
+                                for p,tkMon in zip(pupilList,tkMonList):
+                                    if (p.last_name==lastName) & (p.first_name==firstName) & (p.birthday.strftime('%d/%m/%Y')== birthday):
+                                        editMarkMessage,tkMon.tb_nam,tkMon.time=process(s,i,y+22,tkMon.tb_nam,tkMon.time,timeNow,timeToEdit,position,isNx)
+                                        tkMon.save()
+                                        break
+                                    
+                                    
+                        break        
                 if (editMarkMessage!=''): break    
                 if not ok:
                     absentMessage+='<tr>'+u'<td>' +lastName+' '+firstName+u'</td>'+u'<td>'+unicode(birthday)+u'</td>'+'</tr>'

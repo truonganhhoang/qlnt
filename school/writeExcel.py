@@ -17,8 +17,10 @@ import xlrd
 from xlrd import cellname
 from school.templateExcel import *
 
-def normalize(x,checkNx):
+def normalize(x,checkNx,isRound=None):
     if checkNx==0:
+        if isRound:
+            return str(x)
         if x-int(x)<e:
             return str(int(x))
         else:
@@ -33,7 +35,7 @@ def normalize(x,checkNx):
         elif x>=4:
             return u'Y'
         elif x>=0:
-            return u'Kém'
+            return u'Kem'
         else:
             return  u''   
 def report(request):
@@ -713,36 +715,40 @@ def markExcel(request,term_id,subject_id):
         hk1List =  Mark.objects.filter(subject_id=subject_id,term_id__number=1).order_by('student_id__index','student_id__first_name','student_id__last_name','student_id__birthday') 
         cnList  =  TKMon.objects.filter(subject_id=subject_id).order_by('student_id__index','student_id__first_name','student_id__last_name','student_id__birthday')
     markList = Mark.objects.filter(subject_id=subject_id,term_id=term_id).order_by('student_id__index','student_id__first_name','student_id__last_name','student_id__birthday')
-    
+    if selectedSubject.nx==True:
+        checkNx=1
+    else:
+        checkNx=0
+            
     for (i,m) in enumerate(markList):
         strs=['']*20
         if i % 5 !=4: h=h61
         else        : h=h71
         
         strs[0] =m.student_id.birthday.strftime('%d/%m/%Y')       
-        if m.mieng_1!=None: strs[1]=m.mieng_1
-        if m.mieng_2!=None: strs[2]=m.mieng_2
-        if m.mieng_3!=None: strs[3]=m.mieng_3
-        if m.mieng_4!=None: strs[4]=m.mieng_4
-        if m.mieng_5!=None: strs[5]=m.mieng_5
-        if m.mlam_1 !=None: strs[6]=m.mlam_1
-        if m.mlam_2 !=None: strs[7]=m.mlam_2
-        if m.mlam_3 !=None: strs[8]=m.mlam_3
-        if m.mlam_4 !=None: strs[9]=m.mlam_4
-        if m.mlam_5 !=None: strs[10]=m.mlam_5
-        if m.mot_tiet_1!=None: strs[11]=m.mot_tiet_1
-        if m.mot_tiet_2!=None: strs[12]=m.mot_tiet_2
-        if m.mot_tiet_3!=None: strs[13]=m.mot_tiet_3
-        if m.mot_tiet_4!=None: strs[14]=m.mot_tiet_4
-        if m.mot_tiet_5!=None: strs[15]=m.mot_tiet_5        
-        if m.ck!=None: strs[16]=m.ck
-        if m.tb!=None: strs[17]=str(m.tb)
+        if m.mieng_1!=None: strs[1]=normalize(m.mieng_1,checkNx)
+        if m.mieng_2!=None: strs[2]=normalize(m.mieng_2,checkNx)
+        if m.mieng_3!=None: strs[3]=normalize(m.mieng_3,checkNx)
+        if m.mieng_4!=None: strs[4]=normalize(m.mieng_4,checkNx)
+        if m.mieng_5!=None: strs[5]=normalize(m.mieng_5,checkNx)
+        if m.mlam_1 !=None: strs[6]=normalize(m.mlam_1,checkNx)
+        if m.mlam_2 !=None: strs[7]=normalize(m.mlam_2,checkNx)
+        if m.mlam_3 !=None: strs[8]=normalize(m.mlam_3,checkNx)
+        if m.mlam_4 !=None: strs[9]=normalize(m.mlam_4,checkNx)
+        if m.mlam_5 !=None: strs[10]=normalize(m.mlam_5,checkNx)
+        if m.mot_tiet_1!=None: strs[11]=normalize(m.mot_tiet_1,checkNx)
+        if m.mot_tiet_2!=None: strs[12]=normalize(m.mot_tiet_2,checkNx)
+        if m.mot_tiet_3!=None: strs[13]=normalize(m.mot_tiet_3,checkNx)
+        if m.mot_tiet_4!=None: strs[14]=normalize(m.mot_tiet_4,checkNx)
+        if m.mot_tiet_5!=None: strs[15]=normalize(m.mot_tiet_5,checkNx)        
+        if m.ck!=None: strs[16]=normalize(m.ck,checkNx)
+        if m.tb!=None: strs[17]=normalize(m.tb,checkNx,1)
         
         if selectedTerm.number==2:
             strs[18]=strs[17]
             strs[17]=''
-            if hk1List[i].tb!=None    :strs[17]=str(hk1List[i].tb)
-            if cnList[i].tb_nam!=None :strs[19]=str(cnList[i].tb_nam)
+            if hk1List[i].tb!=None    :strs[17]=normalize(hk1List[i].tb,checkNx,1)
+            if cnList[i].tb_nam!=None :strs[19]=normalize(cnList[i].tb_nam,checkNx,1)
         
         s.write(11+i,0,i+1,h)
         if i % 5!=4:

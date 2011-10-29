@@ -109,6 +109,22 @@ def convertHlToVietnamese(x):
         return u'Kém'
     else:
         return u'Chưa đủ điểm'
+def convertCharToDigit(x):
+    print x
+    x=x.lower()
+    print x
+    if x=='g':
+        return 9
+    elif x=='k':
+        return 7
+    elif x=='tb':
+        return 6
+    elif x=='y':
+        return 4
+    elif (x=='kem') | (x=='kém')  :
+        return 1
+    else:
+        raise Exception('Error. Please contact with luulethe@gmail.com')
         
 def convertHkToVietnamese(x):
     if x=='T':
