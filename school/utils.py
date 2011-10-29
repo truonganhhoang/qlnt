@@ -219,15 +219,26 @@ def move_student(school, student, new_class):
         for _subject in subject_in_new_class:
             marks = _subject.mark_set.filter( student_id__exact = student )
             if marks.count() == 0:
-                for i in range(1,3):
-                    term1 = new_class.year_id.term_set.get( number__exact = i)
-                    the_mark = Mark()
-                    the_mark.student_id = student
-                    the_mark.subject_id = _subject
-                    the_mark.term_id = term1
-                    the_mark.save()
-                tkmon = TKMon(student_id = student, subject_id = _subject)
-                tkmon.save()
+                old_mark = student.mark_set.filter( subject_id__type = _subject.type)
+                if old_mark.count() == 0:
+                    for i in range(1,3):
+                        term1 = new_class.year_id.term_set.get( number__exact = i)
+                        the_mark = Mark()
+                        the_mark.student_id = student
+                        the_mark.subject_id = _subject
+                        the_mark.term_id = term1
+                        the_mark.save()
+                    tkmon = TKMon(student_id = student, subject_id = _subject)
+                    tkmon.save()
+                else:
+                    for m in old_mark:
+                        m.subject_id = _subject
+                        m.current = True
+                        m.save()
+                    tk = student.tkmon_set.get( subject_id__type = _subject.type)
+                    tk.current = True
+                    tk.subject_id = _subject
+                    tk.save()
 
         student.join_class(new_class)
         return student

@@ -3743,6 +3743,10 @@ def move_one_student(request, student_id):
         message = ''
         form = MoveClassForm(student)
         attends = student.get_attended()
+        check = []
+        for a in attends:
+            check.append(a.history_check())
+        attendlist = zip(attends,check)
         if request.method == 'POST':
             if request.POST['request_type'] == 'movestudent':
                 form = MoveClassForm(student,request.POST)
@@ -3756,15 +3760,15 @@ def move_one_student(request, student_id):
                     history = attends.get(id = request.POST['id'])
                 except DoesNotExist:
                     return
-                history.delete()
+                delete_history(history)
                 return HttpResponse()
         t = loader.get_template(os.path.join('school', 'move_one_student.html'))
         c = RequestContext(request, { 'student':student,
                                      'message': message,
                                      'form':form,
-                                     'attends':attends})
+                                     'attendlist':attendlist})
         return HttpResponse(t.render(c))
-    return HttpResponseNotAllowed('Không được phép')
+    return HttpResponseNotAllowed('Không được phép truy cập')
 
 def move_students(request):
     user = request.user

@@ -419,10 +419,10 @@ class Attend(models.Model):
         return self._class
 
     def history_check(self):
-        mark = self.pupil.mark_set()
+        mark = self.pupil.mark_set.all()
         for m in mark:
             if not m.current:
-                if m.subject_id.class_id == history._class:
+                if m.subject_id.class_id == self._class:
                     return True
         return False
 

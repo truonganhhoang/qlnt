@@ -8,7 +8,7 @@
                 <th class="leftAlign"> Thời gian rời lớp </th>
                 <th class="leftAlign"> </th>
             </tr>
-            {% for a in attends %}
+            {% for a,c in attendlist %}
                 <tr>
                     <td> {{ a.get_class }}</td>
                     <td> {{ a.attend_time|date:"SHORT_DATE_FORMAT" }}</td>
@@ -17,7 +17,7 @@
                     {% endif %}
                     </td>
                     {% if a.leave_time != None %}
-                        {% if a.history_check %}
+                        {% if c %}
                             <td> <button class="{{ a.id }} ggButton history warning" > Xóa </button> </td>
                         {% else %}
                             <td> <button class="{{ a.id }} ggButton history" > Xóa </button> </td>
