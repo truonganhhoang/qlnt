@@ -418,6 +418,14 @@ class Attend(models.Model):
     def get_class(self):
         return self._class
 
+    def history_check(self):
+        mark = self.pupil.mark_set()
+        for m in mark:
+            if not m.current:
+                if m.subject_id.class_id == history._class:
+                    return True
+        return False
+
     def __unicode__(self):
         return unicode(self.pupil) + '_' + unicode(self._class)
 

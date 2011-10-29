@@ -6,6 +6,7 @@
                 <th class="leftAlign"> Lớp </th>
                 <th class="leftAlign"> Thời gian nhập lớp </th>
                 <th class="leftAlign"> Thời gian rời lớp </th>
+                <th class="leftAlign"> </th>
             </tr>
             {% for a in attends %}
                 <tr>
@@ -15,6 +16,15 @@
                         {{ a.leave_time|date:"SHORT_DATE_FORMAT" }}
                     {% endif %}
                     </td>
+                    {% if a.leave_time != None %}
+                        {% if a.history_check %}
+                            <td> <button class="{{ a.id }} ggButton history warning" > Xóa </button> </td>
+                        {% else %}
+                            <td> <button class="{{ a.id }} ggButton history" > Xóa </button> </td>
+                        {% endif %}
+                    {% else %}
+                        <td> </td>
+                    {% endif %}
                 </tr>
             {% endfor %}
         </table>
@@ -26,6 +36,7 @@
             <table class="styleA" >
                 {{ form.as_table }}
             </table>
+            <input style="display: none" name="request_type" value="movestudent">
             <input class="ggButton" type="submit" value="Chuyển">
         </form>
     </div>

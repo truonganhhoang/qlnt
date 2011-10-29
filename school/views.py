@@ -3744,12 +3744,20 @@ def move_one_student(request, student_id):
         form = MoveClassForm(student)
         attends = student.get_attended()
         if request.method == 'POST':
-            form = MoveClassForm(student,request.POST)
-            if form.is_valid():
-                new_class = Class.objects.get(id = request.POST['move_to'])
-                move_student(school,student,new_class)
-                form = MoveClassForm(student)
-                message = 'Bạn đã chuyển thành công lớp cho học sinh ' + str(student) + '.'
+            if request.POST['request_type'] == 'movestudent':
+                form = MoveClassForm(student,request.POST)
+                if form.is_valid():
+                    new_class = Class.objects.get(id = request.POST['move_to'])
+                    move_student(school,student,new_class)
+                    form = MoveClassForm(student)
+                    message = 'Bạn đã chuyển thành công lớp cho học sinh ' + str(student) + '.'
+            elif request.POST['request_type'] == 'delete_history':
+                try:
+                    history = attends.get(id = request.POST['id'])
+                except DoesNotExist:
+                    return
+                history.delete()
+                return HttpResponse()
         t = loader.get_template(os.path.join('school', 'move_one_student.html'))
         c = RequestContext(request, { 'student':student,
                                      'message': message,

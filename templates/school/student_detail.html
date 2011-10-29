@@ -198,6 +198,26 @@
                 $.ajax(arg);
                 return false;
             });
+           $("button.history").live("click", function(){
+               if ($(this).hasClass("warning")){
+                   var ans = confirm("Trong lịch sử này có điểm cũ của học sinh.\n Nếu bạn xóa toàn bộ điểm này sẽ mất.\n Bạn có muốn xóa không?");
+                   if (!ans) return false;
+               }
+               var id = $(this).attr("class").split(" ")[0];
+               var data = {request_type:'delete_history',
+                            id : id
+                };
+               var arg = {data:data,
+                        url:"/school/movestudent/{{ student.id }}",
+                        type: 'POST',
+                        success: function(){
+                            $("#notify").showNotification("Đã xóa xong")
+                            var select = "button.history." + id;
+                            $(select).parents("tr").remove();
+                        }
+                };
+               $.ajax(arg);
+           });
         });
     </script>
 
