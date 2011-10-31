@@ -45,7 +45,8 @@ def sendSMS(phone,content,user):
             time = '/'.join([str(datetime.date.today().day),
                              str(datetime.date.today().month),
                              str(datetime.date.today().year) ])
-            content =to_en1(u'Trường ' + unicode(school) + u': Ngày ' + str(time) + '.\n' + content)
+            content =to_en1(u'Trường ' + unicode(school) + u': Ngày ' + str(time) + u'TK:' +
+                            unicode(user)  + '.\n' + content)
             s = sms(phone=phone, content=content, sender=user, recent=True, success=True)
             s.save()
 
@@ -92,7 +93,7 @@ def getUserFromPhone(phone):
         try:
             if phone == u.get_profile().phone:
                 return u
-        except:
+        except Exception as e:
             pass
     return ""
 
