@@ -284,11 +284,7 @@ class Class(models.Model):
 
     #this function will return list of students those are studying in this class
     def students(self):
-        latest_year = self.year_id.school_id.year_set.latest('time')
-        if self.year_id == latest_year:
-            return self.student_set.filter(attend__leave_time = None)
-        else:
-            return self.student_set.filter(attend__finish_class = True)
+        return self.student_set.filter(attend__is_member = True)
 
 
     def number_of_pupils(self):
@@ -365,6 +361,7 @@ class Pupil(BasicPersonInfo):
                 if len(relationship) == 1:
                     if current != _class:
                         relationship[0].leave_time = date.today()
+                        relationship[0].is_member = False
                         relationship[0].save()
                         Attend.objects.create(pupil = self,
                                               _class = _class,
@@ -418,7 +415,8 @@ class Attend(models.Model):
     _class = models.ForeignKey(Class, verbose_name=u"Lớp")
     attend_time = models.DateTimeField("Thời gian nhập lớp")
     leave_time = models.DateTimeField("Thời gian rời lớp", null = True)
-    finish_class = models.BooleanField("Học xong lớp", default= False)
+    is_member = models.BooleanField("Học xong lớp", default= True) #this field take value True when student is
+                                                                    #member of this class that attend class till the end
     def get_class(self):
         return self._class
 
