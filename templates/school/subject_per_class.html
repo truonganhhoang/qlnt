@@ -388,7 +388,7 @@
                             {{ f.teacher_id }}
                             <div class="ui-widget major_teacher autocomplete">
                                 <select class="combobox" style="margin-left: 5px;">
-                                    <option value="">Select one...</option>
+                                    <option value="">Chọn một...</option>
                                     {% for iteacher in teachers %}
                                         {% if  forloop.counter == forloop.parentloop.counter %}
                                             {% for teacher in iteacher %}
@@ -406,7 +406,7 @@
 
                             <div class="ui-widge all_teacher autocomplete">
                                 <select class="combobox" style="margin-left: 5px;">
-                                    <option value="">Select one...</option>
+                                    <option value="">Chọn một...</option>
                                     {% for teacher in allteacher %}
                                         {% if teacher == ss.teacher_id %}
                                             <option selected="selected" value="{{ teacher.id}}">{{ teacher }}</option>
@@ -468,7 +468,7 @@
                         {{ form.teacher_id }}
                         <div class="ui-widget autocomplete">
                             <select class="combobox">
-                                <option value="">Select one...</option>
+                                <option value="">Chọn một...</option>
                                 {% for teacher in allteacher %}
                                     <option value="{{ teacher.id}}">{{ teacher }}</option>
                                 {% endfor %}

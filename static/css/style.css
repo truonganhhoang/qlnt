@@ -73,6 +73,8 @@ ul {
     cursor: pointer;
 }
 
+
+/*-------------------*/
 table.styleC {
     font-family: Arial, Helvetica, sans-serif;
     font-size: 14px;
@@ -97,6 +99,7 @@ table.styleC td {
     height:24px;
 }
 
+/*-------------------*/
 
 table.styleB {
     font-family: Arial, Helvetica, sans-serif;
@@ -157,10 +160,12 @@ table.styleB tr.highLight {
     background-color:  #D9FFF0;
 }
 
+
+
+/*-------------------*/
 input[type=text]{
     border: 1px solid #999999;
 }
-
 
 input.highLight {
     cursor: pointer;
@@ -225,6 +230,7 @@ input.noedit {
 }
 
 
+/*-------------------*/
 table.styleA {
     /*font-family: Arial, Helvetica, sans-serif;*/
     margin: 5px 0 5px 0;
@@ -234,7 +240,7 @@ table.styleA {
     border-collapse: collapse;
     border-spacing: 0;
     margin-bottom: 10px;
-    text-shadow: 0 1px 0 #e2f9fb;
+    /*text-shadow: 0 1px 0 #e2f9fb;*/
     /*width: 980px;*/
     border-radius: 5px;
 }
@@ -243,15 +249,14 @@ table.styleA th {
     background-color: #eeeeee;
     padding: 8px;
     text-align: right;
-    text-shadow: 0 1px 0 #bfedf2;
-    border-bottom: thin #dddddd inset;
-    border-left: thin #dddddd inset;
-    border-right: thin #dddddd inset;
+    /*text-shadow: 0 1px 0 #bfedf2;*/
+    border: thin #dddddd inset;
 }
 
 table.styleA td {
-    border-left: thin #dddddd inset;
-    border-right: thin #dddddd inset;
+    border: thin #dddddd inset;
+    /*border-left: thin #dddddd inset;*/
+    /*border-right: thin #dddddd inset;*/
     padding: 4px 2px 4px 2px;
     text-align: left;
     vertical-align: bottom;
@@ -285,9 +290,9 @@ table.styleA td.sent {
     background-color: #B2FFDB;
 }
 
-table.styleA td.selected {
-    background-color: #f3f48d;
-}
+/*table.styleA td.selected {*/
+    /*background-color: #f3f48d;*/
+/*}*/
 
 #sortable tr {
     min-height: 1.5em;
@@ -318,30 +323,31 @@ table.styleA tr:nth-child(even) {
 
 }
 
-table.styleA tr.thead {
-    background-color: #aacbd0;
-}
+/*table.styleA tr.thead {*/
+    /*background-color: #aacbd0;*/
+/*}*/
 
-table.styleA tr:hover {
-    background-color: #a8d6dd;
-}
+/*table.styleA tr:hover {*/
+    /*background-color: #a8d6dd;*/
+/*}*/
 
-table.styleA tr.focused {
-    background-color: #d0e055;
-    background-image: -webkit-gradient(linear,left top,left bottom,from(#e6f577),to(#d0e055));
-    background-image: -webkit-linear-gradient(top,#e6f577,#d0e055);
-    background-image: -moz-linear-gradient(top,#e6f577,#d0e055);
-    background-image: -ms-linear-gradient(top,#e6f577,#d0e055);
-    background-image: -o-linear-gradient(top,#e6f577,#d0e055);
-}
+/*table.styleA tr.focused {*/
+    /*background-color: #d0e055;*/
+    /*background-image: -webkit-gradient(linear,left top,left bottom,from(#e6f577),to(#d0e055));*/
+    /*background-image: -webkit-linear-gradient(top,#e6f577,#d0e055);*/
+    /*background-image: -moz-linear-gradient(top,#e6f577,#d0e055);*/
+    /*background-image: -ms-linear-gradient(top,#e6f577,#d0e055);*/
+    /*background-image: -o-linear-gradient(top,#e6f577,#d0e055);*/
+/*}*/
 
 table.styleA tr.selected {
-    background-color: #dedf4c;
-    background-image: -webkit-gradient(linear,left top,left bottom,from(#f5f681),to(#dedf4c));
-    background-image: -webkit-linear-gradient(top,#f5f681,#dedf4c);
-    background-image: -moz-linear-gradient(top,#f5f681,#dedf4c);
-    background-image: -ms-linear-gradient(top,#f5f681,#dedf4c);
-    background-image: -o-linear-gradient(top,#f5f681,#dedf4c);
+    background-color: #fbec88;
+    /*background-color: #dedf4c;*/
+    /*background-image: -webkit-gradient(linear,left top,left bottom,from(#f5f681),to(#dedf4c));*/
+    /*background-image: -webkit-linear-gradient(top,#f5f681,#dedf4c);*/
+    /*background-image: -moz-linear-gradient(top,#f5f681,#dedf4c);*/
+    /*background-image: -ms-linear-gradient(top,#f5f681,#dedf4c);*/
+    /*background-image: -o-linear-gradient(top,#f5f681,#dedf4c);*/
 }
 
 table.styleA tr.endblock{

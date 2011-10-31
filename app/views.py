@@ -150,6 +150,8 @@ def login(request, template_name='app/login.html',
             # Okay, security checks complete. Log the user in.
             auth_login(request, form.get_user())
 
+            log_action(request, form.get_user(), "logged in")
+
             if request.session.test_cookie_worked():
                 request.session.delete_test_cookie()
 

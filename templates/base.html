@@ -114,17 +114,17 @@
     <ul>
       {% if not user.is_authenticated %}
         {# Chưa đăng nhập vào hệ thống #}
-        <li><a class="ui-corner-left"
+        <li><a class="tiptiphover ui-corner-left"
                href="{%url app.views.login %}" title="Đăng nhập để sử dụng hệ thống">Đăng nhập</a></li>
-        <li><a href="/help" title="Xem hướng dẫn sử dụng">Trợ giúp</a></li>
-        <li><a href="{%url app.views.feedback %}" title="Gửi thông tin về hệ thống">Liên hệ</a></li>
+        <li><a class="tiptiphover" href="/help" title="Xem hướng dẫn sử dụng">Trợ giúp</a></li>
+        <li><a class="tiptiphover" href="{%url app.views.feedback %}" title="Gửi thông tin về hệ thống">Liên hệ</a></li>
         {% else %}
         {% if user.is_superuser %}
-          <li><a class="ui-corner-left"
+          <li><a class="tiptiphover ui-corner-left"
                  href="/admin" title="Mở trình quản trị sẵn có của hệ thống">Quản trị CSDL</a></li>
           {% else %}
           {% if user.userprofile.position == 'GIAM_DOC_SO' or user.userprofile.position == 'TRUONG_PHONG' %}
-            <li><a class="ui-corner-left"
+            <li><a class="tiptiphover ui-corner-left"
                    title="Xem các đơn vị trực thuộc">Đơn vị trực thuộc</a></li>
             <li><a title="Xem thống kê báo cáo tổng hợp">Báo cáo</a></li>
           {% endif %}
@@ -133,18 +133,18 @@
           {% if user.userprofile.position == 'HIEU_TRUONG' or user.userprofile.position == 'HIEU_PHO' or user.userprofile.position == 'GIAO_VIEN' or user.userprofile.position == 'GIAO_VU' or user.userprofile.position == 'HOC_SINH' %}
             {% if user.userprofile.organization.status != 0 %}
               {% if user.userprofile.position == 'HIEU_TRUONG'  or user.userprofile.position == 'HIEU_PHO' %}
-                <li><a class="ui-corner-left"
+                <li><a class="tiptiphover ui-corner-left"
                        href="{%url school.views.school_index %}"
                        title="Trở về trang đầu">
                   {#                  {{ user.userprofile.organization.get_status }}#}
                   Trang đầu
                 </a></li>
                 <!-- <li><a href="{%url school.views.years %}" title="Xem năm học khác, học kỳ khác">Các năm</a></li>  -->
-                <li><a href="{%url school.views.classes %}" title="Quản lý lớp học">Lớp học</a></li>
+                <li><a class="tiptiphover" href="{%url school.views.classes %}" title="Quản lý lớp học">Lớp học</a></li>
 
                 {# Khi chưa khởi  tạo năm học #}
                 {% if user.userprofile.organization.status == 3 %}
-                  <li><a class="ui-corner-left"
+                  <li><a class="tiptiphover ui-corner-left"
                          href="{%url school.views.setup %}"
                          title="Khai báo thông tin trường học và tạo nhanh các lớp học">
                     Thông tin trường học</a></li>
@@ -153,34 +153,34 @@
                          title="Xem thống kê, báo cáo tổng hợp"
                          class="tiptiphover">Báo cáo</a></li>
 
-                  <li><a href="{%url school.viewFinish.finish %}"
+                  <li><a class="tiptiphover" href="{%url school.viewFinish.finish %}"
                          title="Tính điểm tổng kết toàn trường và kết thúc học kỳ">Tổng kết</a></li>
                 {% endif %}
                 {% else %}
                 {% if user.userprofile.position == 'GIAO_VIEN' %}
-                  <li><a class="ui-corner-left"
+                  <li><a class="tiptiphover ui-corner-left"
                          href="{%url school.views.school_index %}" title="Trở về trang đầu">
                     {{ user.userprofile.organization.get_status }}</a></li>
                   <!-- <li><a href="{%url school.views.years %}" title="Xem năm học khác, học kỳ khác">Các năm</a></li>  -->
 
-                  <li><a href="{%url school.views.classes %}" title="Quản lý lớp học">Lớp học</a></li>
+                  <li><a class="tiptiphover" href="{%url school.views.classes %}" title="Quản lý lớp học">Lớp học</a></li>
 
-                  <li><a href="{% url school.viewMark.markForTeacher %}">Điểm</a></li>
+                  <li><a class="tiptiphover" href="{% url school.viewMark.markForTeacher %}">Điểm</a></li>
                   {% else %}
                   {% if user.userprofile.position == 'HOC_SINH' %}
-                    <li><a class="ui-corner-left"
+                    <li><a class="tiptiphover ui-corner-left"
                            href="{% url school.views.viewStudentDetail user.pupil.id %}">Hồ sơ cá nhân</a></li>
                   {% else %}
                     {% if user.userprofile.position == 'GIAO_VU' %}
                     {% endif %}
                   {% endif %}
-                  <li><a href="{%url school.views.classes %}" title="Quản lý lớp học">Lớp học</a></li>
+                  <li><a class="tiptiphover" href="{%url school.views.classes %}" title="Quản lý lớp học">Lớp học</a></li>
                 {% endif %}
               {% endif %}
             {% else %}
               {# Khi chưa khởi  tạo năm học #}
               {% if user.userprofile.organization.status == 0 %}
-                <li><a class="ui-corner-left"
+                <li><a class="tiptiphover ui-corner-left"
                        href="{%url school.views.setup %}"
                        title="Khai báo thông tin trường học và tạo nhanh các lớp học">
                   Thông tin trường học</a></li>
@@ -188,12 +188,12 @@
 
             {% endif %}
             {% if user.userprofile.position == 'GIAO_VIEN' or user.userprofile.position == 'HIEU_TRUONG' or user.userprofile.position == 'HIEU_PHO' or user.userprofile.position == 'GIAO_VU' %}
-              <li><a href="{%url school.sms_views.manual_sms %}" title="Gửi tin nhắn SMS">Nhắn tin</a></li>
+              <li><a class="tiptiphover" href="{%url school.sms_views.manual_sms %}" title="Gửi tin nhắn SMS">Nhắn tin</a></li>
             {% endif %}
           {% endif %}
         {% endif %}
       {% endif %}
-      <li><a class=" ui-corner-right"
+      <li><a class="tiptiphover ui-corner-right"
              style="color:#f3f48d;"
              href="#feedbackDiv"
              id="feedback"
@@ -235,6 +235,7 @@
 </div>
 
 <footer>
+  <div id="menu"><a href="#">Về đầu trang</a></div>
   <p class="copyright">©2011 by Viettel Telecom and Vietnam National University, Hanoi. <a href="/app/contact">Liên
     hệ</a></p>
 </footer>

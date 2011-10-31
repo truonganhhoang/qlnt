@@ -407,23 +407,15 @@ section#classes{
 
 section#classes .classDiv{
     float: left;
-    /*width: 80px;*/
-    /*height: 40px;*/
     margin: 5px 10px 10px 0;
-    padding: 5px 3px 3px 3px;
+    padding: 3px 3px 3px 3px;
     text-align: center;
     border-radius: 5px;
     text-shadow: #0a549e 0 1px 0;
 }
 
-section#classes h3{
-    font-size: 14px;
-    clear: both;
-    /*padding: 3px 0px 0px 0px;*/
-}
-
 section#classes a, nav ul li a, aside a{
-    color: white
+    color: white;
     text-shadow: 1px 1px 2px #333333;
     position: relative;
     border: thin solid #547ec2;
@@ -455,7 +447,7 @@ section#classes a:hover, nav ul li a:hover, aside a:hover, section#hearder-bar a
     background: linear-gradient(top, #F3A934 0%, #EE9227 100%);
 }
 
-section#classes .classname{
+section#classes .class-name{
     display: block;
     float:left;
     font-size: 16px;
@@ -464,9 +456,21 @@ section#classes .classname{
     color: white;
 }
 
-section#classes .dimmer{
+section#classes .class-pupils-total{
+    display: block;
+    float:right;
+    color: yellow;
+    padding: 2px;
+    border: #547ec2 solid thin;
+    border-radius: 20px;
+    min-width: 20px;
+}
+
+
+section#classes .class-main-teacher{
     font-weight: 100;
     color: #eeeeee;
+    font-size:80%;
 }
 
 /*----FOOTER PANEL----*/
@@ -475,16 +479,17 @@ footer {
     margin-top: 20px;
     height: 20px;
     display: block;
+    font-size: 80%;
+}
 
-    /*position:fixed;*/
-    /*left:0px;*/
-    /*bottom:0px;*/
-    /*width:100%;*/
+footer div#menu {
+    float:left;
+    margin: 0px 20px
 }
 
 footer p {
+    margin: 0px;
     color: #666666;
-    font-size: 80%;
     text-align: center
 }
 

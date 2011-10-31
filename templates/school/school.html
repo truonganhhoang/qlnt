@@ -55,19 +55,20 @@
               <a class="classDiv ggButton"
                  href="{% url school.views.viewClassDetail class.id %}">
                 <div id="{{ class.id }}">
-                  <span class="classname"> {{ class.name }} </span>
-                  <div style="font-size: 85%;">
-                    <div class="dimmer" style="float:left;clear:left">
-                      SS:{{ class.number_of_pupils }}</div>
-                    <div class="dimmer" style="float:left;clear:left">
-                      CN:
+                  <span class="class-name"> {{ class.name }} </span>
+{#                  <div style="font-size: 85%;">#}
+                    <div class="class-pupils-total" title="Sĩ số">
+{#                      SS:#}
+                      {{ class.number_of_pupils }}</div>
+                    <div class="class-main-teacher" style="float:left;clear:left" title="Giáo viên chủ nhiệm">
+{#                      CN:#}
                       {% if class.teacher %}
                         {{ class.teacher }}
                       {% else %}
                         Chưa có
                       {% endif %}
                     </div>
-                  </div>
+{#                  </div>#}
                 </div>
               </a>
             {% endif %}

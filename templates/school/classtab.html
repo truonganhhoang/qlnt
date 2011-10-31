@@ -196,9 +196,10 @@
                     {% if pos >= 4 %}
                         <td>
                             {{ f.teacher_id }}
-                            <div class="ui-widge all_teacher autocomplete">
+{#                            <div class="ui-widget all_teacher autocomplete">#}
+                            <div class="all_teacher autocomplete">
                                 <select class="combobox" style="margin-left: 5px;">
-                                    <option value="">Select one...</option>
+                                    <option value="">Chọn một...</option>
                                     {% for teacher in teachers %}
                                         {% if teacher == class.teacher_id %}
                                             <option selected="selected" value="{{ teacher.id}}">{{ teacher }}</option>
@@ -221,7 +222,9 @@
                     <td> {{ class.year_id }} </td>
                     {% if pos >= 4 %}
                         {% ifequal n  0 %}
-                            <td><a class="ggButton delete" href="{%url school.views.school_index  %}deleteClass/{{class.id}}/{{block_id}}"> xóa </a></td>
+                            <td>
+                              <a class="ggButton delete" href="{%url school.views.school_index  %}deleteClass/{{class.id}}/{{block_id}}">
+                                xóa </a></td>
                         {% else %}
                             <td><a class="ggButton"
                                    onclick="alert( 'Lớp vẫn còn học sinh, vui lòng xóa hết học sinh trước' );">

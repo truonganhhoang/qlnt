@@ -929,3 +929,21 @@ def get_student(request):
         return None
     pupil = request.user.pupil
     return pupil
+
+
+def log_action(request, object, change_message):
+    '''
+    Log an entry to Django admin's log
+    '''
+    from django.contrib.admin.models import LogEntry
+    from django.contrib.contenttypes.models import ContentType
+
+    LogEntry.objects.log_action(
+        user_id         = request.user.id,
+        content_type_id = ContentType.objects.get_for_model(object).pk,
+        object_id       = object.pk,
+        object_repr     = change_message, # Message you want to show in admin action list
+        change_message  = "app-log", # I used same
+        action_flag     = 4
+    )
+
