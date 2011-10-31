@@ -289,7 +289,7 @@ class Class(models.Model):
 
     def number_of_pupils(self):
         try:
-            return self.pupil_set.count()
+            return self.student_set.count()
         except Exception :
             return 0
 
