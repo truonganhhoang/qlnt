@@ -8,7 +8,6 @@ from school.widgets import *
 import xlrd
     
 from django.conf import settings
-from activity import models
 
 TEMP_FILE_LOCATION = settings.TEMP_FILE_LOCATION
 EXPORTED_FILE_LOCATION = settings.EXPORTED_FILE_LOCATION
