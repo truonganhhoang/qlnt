@@ -4,6 +4,10 @@
     margin: 20px;
 }
 
+div.tr{
+    padding-top: 10px;
+}
+
 div.notify-widget-pane {
     text-align: center;
     position: fixed;

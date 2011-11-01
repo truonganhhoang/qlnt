@@ -1,0 +1,18 @@
+/* CSS Document */
+div.verticalLabel{
+    width: 70px;
+    float: left;
+    text-align: right;
+}
+
+div.verticalContent{
+    padding-left: 10px;
+    float: left;
+}
+
+textarea.smsTextarea{
+    width: 400px;
+    max-width: 400px;
+    color: white;
+    font-size: 11pt;
+}

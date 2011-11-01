@@ -9,6 +9,8 @@ from django.conf import settings
 DEBUG = True
 TEMPLATE_DEBUG = True
 
+VERSION = 0.6
+
 ADMINS = (
     ('admin', 'qlnt@googlegroups.com'),
 )

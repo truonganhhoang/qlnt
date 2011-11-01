@@ -15,10 +15,26 @@ import xlrd
 import xlwt
 
 #TEMP_FILE_LOCATION = os.path.join(os.path.dirname(__file__), 'uploaded')
-
+MANUAL_SMS = os.path.join('sms', 'manual_sms.html')
 
 def manual_sms(request):
-    pass
+    try:
+        school = get_school(request)
+        user = request.user
+    except Exception as e:
+        return HttpResponseRedirect( reverse('index'))
+    permission = get_permission(request)
+    if not permission in [u'HIEU_TRUONG',u'HIEU_PHO', u'GIAO_VIEN']:
+        return HttpResponseRedirect(reverse('school_index'))
+    teachers = User.objects.filter(userprofile__organization = school,
+                                   userprofile__position__in = ['GIAO_VIEN', 'HIEU_PHO', 'HIEU_TRUONG'] )
+    students = User.objects.filter(userprofile__organization = school,
+                                   userprofile__position = 'HOC_SINH' )
+    context = RequestContext(request)
+    return render_to_response(MANUAL_SMS, {'teachers':teachers,
+                                    'students':students,
+                                    'user': user},
+                       context_instance = context)
 
 def excel_sms(request):
     if request.method == 'POST':

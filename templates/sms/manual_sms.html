@@ -1,115 +1,71 @@
 {% extends "base.html" %}
-{% load pagination_tags %}
+
+{% block css %}
+    <link href="/static/css/template_css/sms.css" rel="stylesheet" type="text/css"/>
+{% endblock %}
+
+{% block backward_link %}
+    <a href="{% url school.views.school_index %}"> Trang chủ </a>
+    > Nhắn tin
+{% endblock %}
 
 {% block content %}
-  {% if user.is_authenticated %}
-    <h4>Gửi tin nhắn mới - <a href="/sms/excel_sms/">Gửi tin nhắn từ file Excel</a></h4>
-    <form action="" method="post">{% csrf_token %}
-      <table>
-        <col width="160">
-        <tr>
-          <td>
-            Nội dung
-          </td>
-          <td>
-            <p class="errorlist">{{ content_error }}</p>
-            <font><br/>
-              <small><b>Lưu ý:</b> Nội dung tin nhắn chỉ được phép chứa tối đa 160 ký tự.</small>
-              <br>
-              <textarea onKeyPress="return taLimit(this)" onKeyUp="return taCount(this,'myCounter')" name="content"
-                        rows=7 wrap="physical" cols=60></textarea><br/>
-              Số ký tự còn lại <B><SPAN id=myCounter>160</SPAN></B>.</font>
-            <script language="Javascript">
-              /**
-               * DHTML textbox character counter script. Courtesy of SmartWebby.com (http://www.smartwebby.com/dhtml/)
-               */
+    <h2> Nhắn tin </h2>
+    <div class="numberSelector">
+        <div class="switcher">
 
-              maxL = 160;
-              var bName = navigator.appName;
-              function taLimit(taObj) {
-                if (taObj.value.length == maxL) return false;
-                return true;
-              }
+        </div>
+        <div class="users">
+            <div class="teachers">
 
-              function taCount(taObj, Cnt) {
-                objCnt = createObject(Cnt);
-                objVal = taObj.value;
-                if (objVal.length > maxL) objVal = objVal.substring(0, maxL);
-                if (objCnt) {
-                  if (bName == "Netscape") {
-                    objCnt.textContent = maxL - objVal.length;
-                  }
-                  else {
-                    objCnt.innerText = maxL - objVal.length;
-                  }
-                }
-                return true;
-              }
-              function createObject(objId) {
-                if (document.getElementById) return document.getElementById(objId);
-                else if (document.layers) return eval("document." + objId);
-                else if (document.all) return eval("document.all." + objId);
-                else return eval("document." + objId);
-              }
-            </script>
-        </tr>
-        <tr>
-          <td>Hãy chọn người nhận</td>
-          <td><br/>
-            <!--
-				<select multiple="multiple" name="receiver" size="10">
-				{% for u in user_list %}
-					<option value="{{ u.username }}">{{ u.last_name }} {{u.first_name }}</option>
-				{% endfor %}
-				</select>
-				 -->
-
-            <div style="width:440px; height:200px; overflow: auto; border:solid 1px">
-              {% for u in user_list %}
-                {% if u.last_name or u.first_name %}
-                  <input type="checkbox" name="receiver" value="{{ u }}">{{ u.last_name }} {{ u.first_name }}
-                {% else %}
-                  <input type="checkbox" name="receiver" value="{{ u }}">{{ u }}
-                {% endif %}
-                <br>
-              {% endfor %}
             </div>
-          </td>
-        </tr>
-        <tr>
-        <tr>
-          <td>
-            Hoặc nhập số điện thoại
-          </td>
-          <td>
-            <br/>
-            <p class="errorlist">{{ phone_error }}</p>
-            <font><br/>
-              <small><b>Lưu ý:</b> Các ký tự hỗ trợ: "0-9" "," ";" và dầu cách.<br/>
-                Số điện thoại người nhận phân cách bằng dấu dấu cách hoặc ";" hoặc ",".
-              </small>
-              <br>
-              <textarea name="phone" value="12" onkeypress="return onlyNumbers();" rows="7" wrap="physical"
-                        cols="60"></textarea>
-              <script language="JavaScript">
-                function onlyNumbers(evt) {
-                  var e = event || evt; // for trans-browser compatibility
-                  var charCode = e.which || e.keyCode;
+            <div class="students">
 
-                  if (charCode > 32 && (charCode < 48 || charCode > 57) && charCode != 44 && charCode != 59)
-                    return false;
+            </div>
+        </div>
+    </div>
+    <aside style="width: 500px; padding: 10px;">
+        <div class="mainSMS">
+            <div class="from tr">
+                <div class="verticalLabel">
+                    <b style="width: 70px;">Từ:</b>
+                </div>
+                <div class="verticalContent" style="padding-left: 10px; float: left;">
+                    <b>{{ user }}</b>
+                </div>
+            </div>
+            <div class="placeHolder" style="clear: both;"></div>
+            <div class="to tr">
+                <div class="verticalLabel">
+                    <label for="smsTo" style="vertical-align: top;">
+                        <b style="vertical-align: top; width: 50px;">Tới:</b>
+                    </label>
+                </div>
+                <div class="verticalContent">
+                    <textarea class="smsTo item smsTextarea" id="smsTo"></textarea>
+                </div>
+            </div>
+            <div class="placeHolder" style="clear: both;"></div>
+            <div class="sms tr">
+                <div class="verticalLabel">
+                    <label for="smsContext" style="vertical-align: top;">
+                        <b style="vertical-align: top; width: 50px;">Nội dung:</b>
+                    </label>
+                </div>
+                <div class="verticalContent">
+                    <textarea class="smsContext item smsTextarea" id="smsContext"></textarea>
+                </div>
+            </div>
+            <div class="placeHolder" style="clear: both;"></div>
+            <div class="buttons tr">
+                <div class="verticalLabel">
+                    <p>&nbsp</p>
+                </div>
+                <div class="verticalContent">
+                    <button class="ggButton" id="send">Gửi</button>
+                </div>
 
-                  return true;
-
-                }
-              </script>
-          </td>
-        </tr>
-        <td></td>
-        <td><br/>
-          <input text-align="right" type="submit" value="Gửi"/></td>
-        </tr>
-      </table>
-    </form>
-  {% endif %}
+            </div>
+        </div>
+    </aside>
 {% endblock %}

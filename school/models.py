@@ -391,7 +391,7 @@ class Pupil(BasicPersonInfo):
                 current = self.class_id
                 Attend.objects.create(pupil = self,
                                       _class = _class,
-                                      attend_time = date.today(),
+                                      attend_time = time,
                                       leave_time = None )
                 self.class_id = _class
                 self.index = _class.max + 1
