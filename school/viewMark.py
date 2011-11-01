@@ -19,24 +19,6 @@ from viewFinish import *
 LOCK_MARK =False
 ENABLE_CHANGE_MARK=True
 e=0.00000001
-
-var = '''
-def thu(request):
-
-    t1=time.time()
-    for i in range(20000000):
-        j=1
-    t2=time.time()
-    print (t2-t1)
-    t = loader.get_template(os.path.join('school','thu.html'))
-
-    c = RequestContext(request, {
-                                }
-                       )
-
-
-    return HttpResponse(t.render(c))
-'''
 class MarkID:
     def __init__(self,d1,d2,d3,d4,d5,d6,d7,d8,d9,d10,d11,d12,d13,d14,d15,d16,d17,d18,d19):
         self.d1=d1
@@ -80,70 +62,7 @@ class Editable:
         self.a17=a17
         self.a18=a18
         self.a19=a19
-        
-def checkChangeMark(class_id):
-    return (not LOCK_MARK) and ENABLE_CHANGE_MARK
 
-                    
-def saveMarkHasComment(request,selectedTerm,markList,idList,tbhk1ListObjects,tbnamListObjects):
-            i=0
-            for m in markList:
-                id=idList[i]
-
-                t1=str(id.d1)    
-                t3=request.POST[t1]
-
-                if t3.isspace() or (len(t3)==0) :                
-                    m.mieng_1=None
-                else:
-                    tt=float(t3)
-                    m.mieng_1=tt
-                    
-                t1=str(id.d2)    
-                t3=request.POST[t1]
-
-                if t3.isspace() or (len(t3)==0) :                
-                    m.mot_tiet_1=None
-                else:
-                    tt=float(t3)
-                    m.mot_tiet_1=tt
-
-                t1=str(id.d3)    
-                t3=request.POST[t1]
-
-                if t3.isspace() or (len(t3)==0) :                
-                    m.ck=None
-                else:
-                    tt=float(t3)
-                    m.ck=tt
-
-                t1=str(id.d4)    
-                t3=request.POST[t1]
-
-                if t3.isspace() or (len(t3)==0) :                
-                    m.tb=None
-                else:
-                    tt=float(t3)
-                    m.tb=tt
-
-                if (selectedTerm.number==2):
-                    
-                    t1=str(id.d5)    
-                    t3=request.POST[t1]
-
-                    if t3.isspace() or (len(t3)==0) :
-                        tbnamListObjects[i].tb_nam=None
-                        tbnamListObjects[i].save()
-                    else:
-
-                        tt=float(t3)
-                        tbnamListObjects[i].tb_nam=tt
-                        tbnamListObjects[i].save()
-                
-                
-                    
-                m.save()
-                i=i+1    
 #cac chuc nang:
 #hien thu bang diem cua mot lop, cho edit roi save lai
 
@@ -238,29 +157,23 @@ def defineEdit(mt,timeToEdit):
         a19=1
         return Editable(a1,a2,a3,a4,a5, a6,a7,a8,a9,a10, a11,a12,a13,a14,a15 ,a16,a17,a18,a19)
         ###########################################################    
-    
-        
-        
-        
-        
+            
 def getMark(subjectChoice,selectedTerm):
     
     selectedSubject = Subject.objects.get(id= subjectChoice)
     class_id = selectedSubject.class_id.id
     timeToEdit = int(selectedTerm.year_id.school_id.get_setting('lock_time'))*60
-    print "fffffffffffffff"
-    print selectedTerm.year_id.school_id.get_setting('lock_time')  
-    print timeToEdit    
-    pupilList=Pupil.objects.filter(class_id=class_id).order_by('index','first_name','last_name','birthday')                
+    print "lock time:",selectedTerm.year_id.school_id.get_setting('lock_time')
+      
+    pupilList=Pupil.objects.filter(classes=class_id,attend__is_member=True).order_by('index','first_name','last_name','birthday')
     editList=[]    
     idList=[]    
     tbhk1List=[]
     tbnamList=[]
     if selectedTerm.number==1:            
         i=1   
-        markList     =Mark.objects.filter(term_id=selectedTerm.id,subject_id=subjectChoice).order_by('student_id__index','student_id__first_name','student_id__last_name','student_id__birthday')
-        markTimeList =MarkTime.objects.filter(mark_id__term_id=selectedTerm.id,mark_id__subject_id=subjectChoice).order_by('mark_id__student_id__index','mark_id__student_id__first_name','mark_id__student_id__last_name','mark_id__student_id__birthday') 
-
+        markList     =Mark.objects.filter(term_id=selectedTerm.id,subject_id=subjectChoice,current=True).order_by('student_id__index','student_id__first_name','student_id__last_name','student_id__birthday')
+        markTimeList =MarkTime.objects.filter(mark_id__term_id=selectedTerm.id,mark_id__subject_id=subjectChoice,mark_id__current=True).order_by('mark_id__student_id__index','mark_id__student_id__first_name','mark_id__student_id__last_name','mark_id__student_id__birthday') 
         for mt in markTimeList: 
             ea=defineEdit(mt,timeToEdit)            
             editList.append(ea)                
@@ -273,10 +186,10 @@ def getMark(subjectChoice,selectedTerm):
     else:
         i=1
         beforeTerm   =Term.objects.get(year_id=selectedTerm.year_id,number=1).id
-        markList     =Mark.objects.filter(term_id=selectedTerm.id,subject_id=subjectChoice).order_by('student_id__index','student_id__first_name','student_id__last_name','student_id__birthday')
-        markTimeList =MarkTime.objects.filter(mark_id__term_id=selectedTerm.id,mark_id__subject_id=subjectChoice).order_by('mark_id__student_id__index','mark_id__student_id__first_name','mark_id__student_id__last_name','mark_id__student_id__birthday') 
-        tbhk1List    =Mark.objects.filter(term_id=beforeTerm,subject_id=subjectChoice).order_by('student_id__index','student_id__first_name','student_id__last_name','student_id__birthday')
-        tbnamList    =TKMon.objects.filter(subject_id=subjectChoice).order_by('student_id__index','student_id__first_name','student_id__last_name','student_id__birthday')
+        markList     =Mark.objects.filter(term_id=selectedTerm.id,subject_id=subjectChoice,current=True).order_by('student_id__index','student_id__first_name','student_id__last_name','student_id__birthday')
+        markTimeList =MarkTime.objects.filter(mark_id__term_id=selectedTerm.id,mark_id__subject_id=subjectChoice,mark_id__current=True).order_by('mark_id__student_id__index','mark_id__student_id__first_name','mark_id__student_id__last_name','mark_id__student_id__birthday') 
+        tbhk1List    =Mark.objects.filter(term_id=beforeTerm,subject_id=subjectChoice,current=True).order_by('student_id__index','student_id__first_name','student_id__last_name','student_id__birthday')
+        tbnamList    =TKMon.objects.filter(subject_id=subjectChoice,current=True).order_by('student_id__index','student_id__first_name','student_id__last_name','student_id__birthday')
         
         for mt in markTimeList:                      
             ea=defineEdit(mt,timeToEdit)                
@@ -289,134 +202,14 @@ def getMark(subjectChoice,selectedTerm):
         list=zip(pupilList,markList,editList,tbhk1List,tbnamList,idList)
     return   list
 
-    
-def markForASubject(request,subject_id):
-    
-    user = request.user
-    if not user.is_authenticated():
-        return HttpResponseRedirect( reverse('login'))
-
-    selectedSubject = Subject.objects.get(id=subject_id)
-    try:
-        if in_school(request,selectedSubject.class_id.year_id.school_id) == False:
-            return HttpResponseRedirect('/school')
-
-    except Exception as e:
-        return HttpResponseRedirect(reverse('index'))
-
-    ok=False        
-    position = get_position(request)
-    """
-    if position ==4: ok=True
-    #kiem tra xem giao vien nay co phai day lop nay khong ?
-    if position ==3:
-        if selectedSubject.teacher_id != None:
-            if selectedSubject.teacher_id.user_id.id == request.user.id:
-                ok=True
-                                
-    if (not ok):
-        return HttpResponseRedirect('/school')
-
-    """
-    enableChangeMark=2
-    enableSendSMS   =True
-    if    position ==4: pass
-    elif position == 3:
-        # kiem tra giao vien chu nhiem
-        enableChangeMark=0
-        enableSendSMS   =False
-        if selectedSubject.class_id.teacher_id:
-            if selectedSubject.class_id.teacher_id.user_id.id == request.user.id:
-                enableChangeMark=0
-                enableSendSMS   =True
-          
-        if selectedSubject.teacher_id != None:
-            if selectedSubject.teacher_id.user_id.id == request.user.id:
-                enableChangeMark=1
-                enableSendSMS   =True
-    elif position == 1:
-        enableChangeMark=0
-        enableSendSMS   =False
-    #enableChangeMark=checkChangeMark(subject_id)
-    
-    print "fffffffffffffffff",enableChangeMark
-    message = None                
-    subjectChoice=subject_id
-    hsSubject=-1    
-        
-    markList=[]
-    editList=[]    
-    tbnamList=[]
-    
-    tbhk1List=[]
-    tbhk1ListObjects=[]
-    tbnamListObjects=[]
-    list=None
-    idList=[]
-    move=None    
-    selectedClass=Class.objects.get(id=selectedSubject.class_id.id)    
-    yearChoice=selectedClass.year_id.id
-    
-    #selectedClass.year_id.school_id.status=2
-        
-    selectedTerm=get_current_term(request)    
-    termChoice  =selectedTerm.id    
-    termList= Term.objects.filter(year_id=yearChoice,number__lt=3).order_by('number')
-    
-    
-    hsSubject=int(Subject.objects.get(id=subjectChoice).hs)    
-    
-
-    if request.method == 'POST':        
-        if request.POST.get('move'):
-             move=request.POST['move']          
-        termChoice =int(request.POST['term'])
-        selectedTerm=Term.objects.get(id=termChoice)
-        list=getMark(selectedSubject.class_id.id,subjectChoice,selectedTerm)
-
-        if (request.POST['submitChoice']=="luulai") & (hsSubject==0):
-            saveMarkHasComment(request,selectedTerm,markList,idList,tbhk1ListObjects,tbnamListObjects)
-                
-
-    else:
-        list=getMark(selectedSubject.class_id.id,subjectChoice,selectedTerm)
-        
-                        
-    if list!=None:        
-        lengthList=list.__len__() 
-         
-    t = loader.get_template(os.path.join('school','mark_for_a_subject.html'))
-    
-    c = RequestContext(request, { 
-                                'message' : message,
-                                'enableChangeMark':enableChangeMark,
-                                'enableSendSMS':enableSendSMS,
-                                'selectedClass':selectedClass,
-
-                                'termList':termList,
-                                'list':list,
-                                                                  
-                                'termChoice':termChoice,                              
-                                'subjectChoice':subjectChoice,
-                                'selectedTerm':selectedTerm,
-                                'selectedSubject':selectedSubject,
-                                'hsSubject':hsSubject,
-                                'lengthList':lengthList,
-                                'move':move,
-                                }
-                       )
-    
-
-    return HttpResponse(t.render(c))
-
-#@transaction.commit_on_success          
+#@transaction.commit_on_success    
+      
 def markTable(request,term_id=-1,class_id=-1,subject_id=-1,move=None):
     tt1=time.time()
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect( reverse('login'))
-
-
+    
     termChoice    = term_id
     classChoice   = class_id    
     subjectChoice = subject_id
@@ -426,7 +219,6 @@ def markTable(request,term_id=-1,class_id=-1,subject_id=-1,move=None):
             selectedTerm=Term.objects.get(year_id=selectedTerm.year_id,number=2)
             
     else             :  selectedTerm=Term.objects.get(id=termChoice) 
-
 
     try:        
         if in_school(request,selectedTerm.year_id.school_id) == False:
@@ -438,33 +230,20 @@ def markTable(request,term_id=-1,class_id=-1,subject_id=-1,move=None):
     if get_position(request) != 4:
        return HttpResponseRedirect('/school')
 
-
-    enableChangeMark=checkChangeMark(class_id)
     enableChangeMark=True
     enableSendSMS   =True    
     message = None            
     list=None
-    hsSubject=-1
     subjectList=None
-    
-    
-            
     termChoice = selectedTerm.id    
     yearChoice = selectedTerm.year_id.id
             
     termList= Term.objects.filter(year_id=yearChoice,number__lt=3).order_by('number')    
     classList = Class.objects.filter(year_id=yearChoice).order_by("block_id","id")
     
-
-    """    
-    if selectedClass.year_id.school_id.status==1:
-        termList=Term.objects.filter(year_id=yearChoice,number=1).order_by('number')
-    else:    
-        termList=Term.objects.filter(year_id=yearChoice,number__lt=3).order_by('number')    
-    """
     selectedClass=None
     if classChoice !=-1: 
-        subjectList=Subject.objects.filter(class_id=classChoice,primary__in=[0,selectedTerm.number,3]).order_by("index",'name')
+        subjectList=Subject.objects.filter(class_id=classChoice,primary__in=[0,selectedTerm.number,3,4]).order_by("index",'name')
         selectedClass=Class.objects.get(id=classChoice)   
    
     selectedSubject=None
@@ -472,7 +251,7 @@ def markTable(request,term_id=-1,class_id=-1,subject_id=-1,move=None):
     if subjectChoice!=-1:
         selectedSubject=Subject.objects.get(id=subjectChoice)    
         list=getMark(subjectChoice,selectedTerm)
-    
+            
     lengthList=0            
     if list!=None:        
         lengthList=list.__len__()  
@@ -496,7 +275,6 @@ def markTable(request,term_id=-1,class_id=-1,subject_id=-1,move=None):
                                 'selectedTerm':selectedTerm,
                                 'selectedClass':selectedClass,
                                 'selectedSubject':selectedSubject,
-                                'class_id':class_id,
                                 
                                 'lengthList':lengthList,
                                 'move':move,
@@ -526,15 +304,11 @@ def markForTeacher(request,term_id=-1,subject_id=-1,move=None):
         
     except Exception as e:
         return HttpResponseRedirect('/school')
-        
-    
-    #enableChangeMark=checkChangeMark(class_id)
+
     enableChangeMark=True
-    enableSendSMS   =True    
-    
+    enableSendSMS   =True        
     message = None            
     list=None
-    hsSubject=-1
     subjectList=None
     
     currentTerm =get_current_term(request) 
@@ -554,7 +328,7 @@ def markForTeacher(request,term_id=-1,subject_id=-1,move=None):
             
     termList= Term.objects.filter(year_id=yearChoice,number__lt=3).order_by('number')    
     
-    subjectList=Subject.objects.filter(teacher_id=idTeacher,class_id__year_id=yearChoice,primary__in=[0,selectedTerm.number,3])
+    subjectList=Subject.objects.filter(teacher_id=idTeacher,class_id__year_id=yearChoice,primary__in=[0,selectedTerm.number,3,4])
     
     if subjectChoice!=-1:
         list=getMark(subjectChoice,selectedTerm)    
@@ -589,9 +363,6 @@ def markForTeacher(request,term_id=-1,subject_id=-1,move=None):
 
     return HttpResponse(t.render(c))
 
-
-
-
 def markForAStudent(request,class_id,student_id):
 
     user = request.user
@@ -612,7 +383,7 @@ def markForAStudent(request,class_id,student_id):
     ok=False
 
     position = get_position(request)
-    """
+    
     if position ==4: ok=True
     #kiem tra xem giao vien nay co phai chu nhiem lop nay khong
     if position ==3:
@@ -623,8 +394,6 @@ def markForAStudent(request,class_id,student_id):
     if request.user.id==student.user_id.id: ok =True
     if (not ok):
         return HttpResponseRedirect('/school')
-    """
-
 
     studentName=student.last_name+" "+student.first_name
 
@@ -943,9 +712,6 @@ def capNhapMienGiam(request,class_id, student_id):
         pos = 4
     if (get_position(request) < 1):
         return HttpResponseRedirect('/')
-    
-    
-    # nho order
     subjectList = Subject.objects.filter(class_id=class_id,name__in=['GDQP-AN',u'Thể dục',u'Âm nhạc',u'Mĩ thuật','GDQP']).order_by('index','name')
     term1Mark   = Mark.objects.filter(subject_id__class_id=class_id,student_id=student_id,term_id__number=1,subject_id__name__in=['GDQP-AN',u'Thể dục',u'Âm nhạc',u'Mĩ thuật','GDQP']).order_by('subject_id__index','subject_id__name')
     term2Mark   = Mark.objects.filter(subject_id__class_id=class_id,student_id=student_id,term_id__number=2,subject_id__name__in=['GDQP-AN',u'Thể dục',u'Âm nhạc',u'Mĩ thuật','GDQP']).order_by('subject_id__index','subject_id__name')
@@ -1011,5 +777,3 @@ def capNhapMienGiam(request,class_id, student_id):
                                 }
                        )
     return HttpResponse(t.render(c))
-def convertMarkToCharacter1():
-    return 'chao'
