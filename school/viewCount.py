@@ -203,11 +203,11 @@ def countPractisingInClassInTerm(class_id,term_id):
     year_id = selectedTerm.year_id
     if selectedTerm.number ==1:
         for i in range(string.__len__()):
-            slList[i]=TBNam.objects.filter(year_id=year_id,student_id__class_id=class_id,term1=string[i]).count()
+            slList[i]=TBNam.objects.filter(year_id=year_id,student_id__classes=class_id,term1=string[i]).count()
             sum+=slList[i]
     else:        
         for i in range(string.__len__()):
-            slList[i]=TBNam.objects.filter(year_id=year_id,student_id__class_id=class_id,term2=string[i]).count()
+            slList[i]=TBNam.objects.filter(year_id=year_id,student_id__classes=class_id,term2=string[i]).count()
             sum+=slList[i]
             
     if sum!=0:    
@@ -274,7 +274,7 @@ def countPractisingInClassInYear(class_id):
     sum=0.0
     string=['T','K','TB','Y',None]
     for i in range(string.__len__()):
-        slList[i]=TBNam.objects.filter(student_id__class_id=class_id,year=string[i]).count()
+        slList[i]=TBNam.objects.filter(student_id__classes=class_id,year=string[i]).count()
         sum+=slList[i]
     if sum!=0:    
         for i in range(string.__len__()):
@@ -338,7 +338,7 @@ def countLearningInClassInTerm(class_id,term_id):
     sum=0.0
     string=['G','K','TB','Y','Kem',None]
     for i in range(string.__len__()):
-        slList[i]=TBHocKy.objects.filter(term_id=term_id,hl_hk=string[i],student_id__class_id=class_id).count()
+        slList[i]=TBHocKy.objects.filter(term_id=term_id,hl_hk=string[i],student_id__classes=class_id).count()
         sum+=slList[i]
     if sum!=0:    
         for i in range(string.__len__()):
@@ -404,7 +404,7 @@ def countLearningInClassInYear(class_id):
     sum=0.0
     string=['G','K','TB','Y','Kem',None]
     for i in range(string.__len__()):
-        slList[i]=TBNam.objects.filter(student_id__class_id=class_id,hl_nam=string[i]).count()
+        slList[i]=TBNam.objects.filter(student_id__classes=class_id,hl_nam=string[i]).count()
         sum+=slList[i]
     if sum!=0:    
         for i in range(string.__len__()):
@@ -468,7 +468,7 @@ def countAllInClassInTerm(class_id,term_id):
     sum=0.0
     string=['G','TT','K',None]
     for i in range(string.__len__()):
-        slList[i]=TBHocKy.objects.filter(term_id=term_id,student_id__class_id=class_id,danh_hieu_hk=string[i]).count()
+        slList[i]=TBHocKy.objects.filter(term_id=term_id,student_id__classes=class_id,danh_hieu_hk=string[i]).count()
         sum+=slList[i]
     if sum!=0:    
         for i in range(string.__len__()):
@@ -532,19 +532,19 @@ def countAllInClassInYear(class_id):
     slList=[0,0,0,0]
     ptList=[0,0,0,0]
 
-    slList[0]=TBNam.objects.filter(student_id__class_id=class_id,danh_hieu_nam='G').count()
-    slList[1]=TBNam.objects.filter(student_id__class_id=class_id,danh_hieu_nam='TT').count()
-    slList[3]=TBNam.objects.filter(student_id__class_id=class_id,danh_hieu_nam=None).count()
+    slList[0]=TBNam.objects.filter(student_id__classes=class_id,danh_hieu_nam='G').count()
+    slList[1]=TBNam.objects.filter(student_id__classes=class_id,danh_hieu_nam='TT').count()
+    slList[3]=TBNam.objects.filter(student_id__classes=class_id,danh_hieu_nam=None).count()
     #slList[2]=    
-    #slList[2]=TBNam.objects.filter(year_id=year_id,student_id__class_id=class_id,len_lop=True).count()
-    #slList[3]=TBNam.objects.filter(year_id=year_id,student_id__class_id=class_id,len_lop=False).count()
-    #slList[4]=TBNam.objects.filter(year_id=year_id,student_id__class_id=class_id,thi_lai=True).count()
-    #slList[5]=TBNam.objects.filter(year_id=year_id,student_id__class_id=class_id,ren_luyen_lai=True).count()    
-    #sl1=TBNam.objects.filter(year_id=year_id,student_id__class_id=class_id,len_lop=True).count()
-    #sl2=TBNam.objects.filter(year_id=year_id,student_id__class_id=class_id,len_lop=False).count()
-    #sl3=TBNam.objects.filter(year_id=year_id,student_id__class_id=class_id,thi_lai=True).count()
-    #sl4=TBNam.objects.filter(year_id=year_id,student_id__class_id=class_id,ren_luyen_lai=True).count()    
-    sum = Pupil.objects.filter(class_id=class_id).count()
+    #slList[2]=TBNam.objects.filter(year_id=year_id,student_id__classes=class_id,len_lop=True).count()
+    #slList[3]=TBNam.objects.filter(year_id=year_id,student_id__classes=class_id,len_lop=False).count()
+    #slList[4]=TBNam.objects.filter(year_id=year_id,student_id__classes=class_id,thi_lai=True).count()
+    #slList[5]=TBNam.objects.filter(year_id=year_id,student_id__classes=class_id,ren_luyen_lai=True).count()    
+    #sl1=TBNam.objects.filter(year_id=year_id,student_id__classes=class_id,len_lop=True).count()
+    #sl2=TBNam.objects.filter(year_id=year_id,student_id__classes=class_id,len_lop=False).count()
+    #sl3=TBNam.objects.filter(year_id=year_id,student_id__classes=class_id,thi_lai=True).count()
+    #sl4=TBNam.objects.filter(year_id=year_id,student_id__classes=class_id,ren_luyen_lai=True).count()    
+    sum = Pupil.objects.filter(classes=class_id,attend__is_member=True).count()
 
     #slList[2] = sum-sl1-sl2-sl3-sl4            
         
@@ -797,15 +797,15 @@ def count2(request,type=None,modeView=None,year_id=None,number=None,index=-1,isE
                     if type==1:
                         if number<3:
                             for i in range(5):
-                                slList[i]=Mark.objects.filter(term_id=term_id,subject_id=selectedSubject.id,tb__lt=level[i],tb__gt=level[i+1]).count()
+                                slList[i]=Mark.objects.filter(term_id=term_id,subject_id=selectedSubject.id,tb__lt=level[i],tb__gt=level[i+1],current=True).count()
                         else:
                             for i in range(5):
-                                slList[i]=TKMon.objects.filter(subject_id=selectedSubject.id,tb_nam__lt=level[i],tb_nam__gt=level[i+1]).count()
+                                slList[i]=TKMon.objects.filter(subject_id=selectedSubject.id,tb_nam__lt=level[i],tb_nam__gt=level[i+1],current=True).count()
                     elif type==2:            
                         for i in range(5):
-                            slList[i]=Mark.objects.filter(term_id=term_id,subject_id=selectedSubject.id,ck__lt=level[i],ck__gt=level[i+1]).count()
+                            slList[i]=Mark.objects.filter(term_id=term_id,subject_id=selectedSubject.id,ck__lt=level[i],ck__gt=level[i+1],current=True).count()
                                 
-                    sum=Pupil.objects.filter(class_id=c.id).count()                    
+                    sum=Pupil.objects.filter(classes=c.id,attend__is_member=True).count()                    
                     for i in range(5):
                         if sum!=0:
                             ptList[i]=float(slList[i])/sum*100
@@ -855,15 +855,15 @@ def count2(request,type=None,modeView=None,year_id=None,number=None,index=-1,isE
                 if type==1:
                     if number<3:
                         for i in range(5):
-                            slList[i]=Mark.objects.filter(term_id=term_id,subject_id=s.id,tb__lt=level[i],tb__gt=level[i+1]).count()
+                            slList[i]=Mark.objects.filter(term_id=term_id,subject_id=s.id,tb__lt=level[i],tb__gt=level[i+1],current=True).count()
                     else:
                         for i in range(5):
-                            slList[i]=TKMon.objects.filter(subject_id=s.id,tb_nam__lt=level[i],tb_nam__gt=level[i+1]).count()
+                            slList[i]=TKMon.objects.filter(subject_id=s.id,tb_nam__lt=level[i],tb_nam__gt=level[i+1],current=True).count()
                 elif type==2:            
                     for i in range(5):
-                        slList[i]=Mark.objects.filter(term_id=term_id,subject_id=s.id,ck__lt=level[i],ck__gt=level[i+1]).count()
+                        slList[i]=Mark.objects.filter(term_id=term_id,subject_id=s.id,ck__lt=level[i],ck__gt=level[i+1],current=True).count()
   
-                sum=Pupil.objects.filter(class_id=s.class_id.id).count()                    
+                sum=Pupil.objects.filter(classes=s.class_id.id,attend__is_member=True).count()                    
                 for i in range(5):
                     if sum!=0:
                         ptList[i]=float(slList[i])/sum*100

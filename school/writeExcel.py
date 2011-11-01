@@ -82,7 +82,7 @@ def printASubject(class_id,termNumber,s,mon,x,y,ls,number):
     s.write(x+2,y,u'M',h5)
     s.write(x+2,y+1,u'v',h5)
     
-    monList    = Mark .objects.filter(student_id__class_id=class_id,subject_id__name=mon,term_id__number=termNumber).order_by('student_id__index','student_id__first_name','student_id__last_name','student_id__birthday')
+    monList    = Mark .objects.filter(student_id__classes=class_id,subject_id__name=mon,term_id__number=termNumber).order_by('student_id__index','student_id__first_name','student_id__last_name','student_id__birthday')
 
     i=0    
     for m in monList:
@@ -148,7 +148,7 @@ def printName(class_id,s,x,y,mode=0):
         s.write_merge(x,x+3,y+1,y+2,u'Họ và tên',h4)
         x=x+1
     
-    pupilList = Pupil.objects.filter(class_id=class_id).order_by('index','first_name','last_name','birthday')
+    pupilList = Pupil.objects.filter(classes=class_id,attend__is_member=True).order_by('index','first_name','last_name','birthday')
     i=0
     for p in pupilList:
         i +=1
@@ -249,8 +249,8 @@ def printPage20(class_id,termNumber,s,length,subjectList):
     
     selectedClass = Class.objects.get(id=class_id)
     
-    tbhkList = TBHocKy.objects.filter(student_id__class_id=class_id,term_id__number=termNumber)
-    hkList   = TBNam.objects.filter(student_id__class_id=class_id,year_id=selectedClass.year_id)
+    tbhkList = TBHocKy.objects.filter(student_id__classes=class_id,term_id__number=termNumber)
+    hkList   = TBNam.objects.filter(student_id__classes=class_id,year_id=selectedClass.year_id)
     
     i=-1
     for (i,(tbhk,hk)) in enumerate(zip(tbhkList,hkList)):
@@ -328,7 +328,7 @@ def printPage31(class_id,s,tbNamList,x,y):
     s.write_merge(x+1,x+4,y+11,y+11,u'Danh hiệu\n HSG,\nHSTT',h10)
     s.write_merge(x+1,x+4,y+12,y+12,u'TỔNG HỢP CHUNG',h10)
     
-    #hanhKiemList =HanhKiem.objects.filter(student_id__class_id=class_id).order_by('student_id__index')
+    #hanhKiemList =HanhKiem.objects.filter(student_id__classes=class_id).order_by('student_id__index')
     llSauHe=0
     for (i,(tbNam)) in enumerate(tbNamList):
         if i % 5 != 4: h=h6
@@ -436,8 +436,8 @@ def printPage30(class_id,book):
     s.write_merge(3,4,length+5,length+5,'',h10)
     s.write_merge(3,4,length+6,length+6,'',h10)
     
-    markList = TKMon.objects.filter(subject_id__class_id=class_id).order_by('student_id__index','student_id__first_name','student_id__last_name','student_id__birthday')
-    numberPupil = Pupil.objects.filter(class_id=class_id).count()
+    markList = TKMon.objects.filter(subject_id__class_id=class_id,current=True).order_by('student_id__index','student_id__first_name','student_id__last_name','student_id__birthday')
+    numberPupil = Pupil.objects.filter(classes=class_id,attend__is_member=True).count()
     for (t,m) in enumerate(markList):
         
         i = t % length
@@ -472,7 +472,7 @@ def printPage30(class_id,book):
            else:     
                s.write(i+5,j+3,'',h71)
                
-    tbNamList = TBNam.objects.filter(student_id__class_id=class_id).order_by('student_id__index','student_id__first_name','student_id__last_name','student_id__birthday')
+    tbNamList = TBNam.objects.filter(student_id__classes=class_id).order_by('student_id__index','student_id__first_name','student_id__last_name','student_id__birthday')
     for (i,tbNam) in enumerate(tbNamList):
         str1 ="" 
         if tbNam.tb_nam !=None: str1 =str(tbNam.tb_nam)  
@@ -712,9 +712,9 @@ def markExcel(request,term_id,subject_id):
         s.write(10,20,'HK I',h4)    
         s.write(10,21,'HK II',h4)    
         s.write(10,22,'CN',h4)   
-        hk1List =  Mark.objects.filter(subject_id=subject_id,term_id__number=1).order_by('student_id__index','student_id__first_name','student_id__last_name','student_id__birthday') 
-        cnList  =  TKMon.objects.filter(subject_id=subject_id).order_by('student_id__index','student_id__first_name','student_id__last_name','student_id__birthday')
-    markList = Mark.objects.filter(subject_id=subject_id,term_id=term_id).order_by('student_id__index','student_id__first_name','student_id__last_name','student_id__birthday')
+        hk1List =  Mark.objects.filter(subject_id=subject_id,term_id__number=1,current=True).order_by('student_id__index','student_id__first_name','student_id__last_name','student_id__birthday') 
+        cnList  =  TKMon.objects.filter(subject_id=subject_id,current=True).order_by('student_id__index','student_id__first_name','student_id__last_name','student_id__birthday')
+    markList = Mark.objects.filter(subject_id=subject_id,term_id=term_id,current=True).order_by('student_id__index','student_id__first_name','student_id__last_name','student_id__birthday')
     if selectedSubject.nx==True:
         checkNx=1
     else:
@@ -1204,24 +1204,24 @@ def markForClass(termNumber,class_id):
         subjectList = Subject.objects.filter(class_id=class_id,primary__in=[0,termNumber,3,4]).order_by("index",'name')
     else:    
         subjectList = Subject.objects.filter(class_id=class_id).order_by("index",'name')
-    pupilList = Pupil.objects.filter(class_id=class_id).order_by('index','first_name','last_name','birthday')
+    pupilList = Pupil.objects.filter(classes=class_id,attend__is_member=True).order_by('index','first_name','last_name','birthday')
     checkNxList=[]
     for sub in subjectList:
-        l = Mark.objects.filter(subject_id=sub.id,term_id__number=termNumber).order_by('student_id__index','student_id__first_name','student_id__last_name','student_id__birthday')
+        l = Mark.objects.filter(subject_id=sub.id,term_id__number=termNumber,current=True).order_by('student_id__index','student_id__first_name','student_id__last_name','student_id__birthday')
         markList.append(l)
         if termNumber==2:
-            tkMon=TKMon.objects.filter(subject_id=sub.id).order_by('student_id__index','student_id__first_name','student_id__last_name','student_id__birthday')
+            tkMon=TKMon.objects.filter(subject_id=sub.id,current=True).order_by('student_id__index','student_id__first_name','student_id__last_name','student_id__birthday')
             tkMonList.append(tkMon)
         if sub.nx:  checkNxList+=[1]
         else     :  checkNxList+=[0]  
     print checkNxList      
-    ddHKList=TKDiemDanh.objects.filter(student_id__class_id=class_id,term_id__number=termNumber).order_by('student_id__index','student_id__first_name','student_id__last_name','student_id__birthday')
-    tbHKList=TBHocKy.objects.filter(student_id__class_id=class_id,term_id__number=termNumber).order_by('student_id__index','student_id__first_name','student_id__last_name','student_id__birthday')
-    TBNamList      =TBNam  .objects.filter(student_id__class_id=class_id).order_by('student_id__index','student_id__first_name','student_id__last_name','student_id__birthday')
+    ddHKList=TKDiemDanh.objects.filter(student_id__classes=class_id,term_id__number=termNumber).order_by('student_id__index','student_id__first_name','student_id__last_name','student_id__birthday')
+    tbHKList=TBHocKy.objects.filter(student_id__classes=class_id,term_id__number=termNumber).order_by('student_id__index','student_id__first_name','student_id__last_name','student_id__birthday')
+    TBNamList      =TBNam  .objects.filter(student_id__classes=class_id).order_by('student_id__index','student_id__first_name','student_id__last_name','student_id__birthday')
 
     ddHK1List=None
     if termNumber==2:
-        ddHK1List=TKDiemDanh.objects.filter(student_id__class_id=class_id,term_id__number=1).order_by('student_id__index','student_id__first_name','student_id__last_name','student_id__birthday')
+        ddHK1List=TKDiemDanh.objects.filter(student_id__classes=class_id,term_id__number=1).order_by('student_id__index','student_id__first_name','student_id__last_name','student_id__birthday')
         
     schoolName= selectedClass.year_id.school_id.name
     setSizeOfMarkClass(s,len(pupilList))

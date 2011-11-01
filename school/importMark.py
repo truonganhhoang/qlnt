@@ -101,11 +101,11 @@ def importMark(request,term_id,subject_id):
         validateMessage = validate(s,selectedSubject.nx)
         isNx=selectedSubject.nx        
         if validateMessage=='': 
-            markList  = Mark.objects.filter(subject_id=subject_id,term_id=term_id).order_by('student_id__index','student_id__first_name','student_id__last_name','student_id__birthday')
-            pupilList = Pupil.objects.filter(class_id=selectedSubject.class_id).order_by('index','first_name','last_name','birthday')
-            markTimeList =MarkTime.objects.filter(mark_id__term_id=term_id,mark_id__subject_id=subject_id).order_by('mark_id__student_id__index','mark_id__student_id__first_name','mark_id__student_id__last_name','mark_id__student_id__birthday')
+            markList  = Mark.objects.filter(subject_id=subject_id,term_id=term_id,current=True).order_by('student_id__index','student_id__first_name','student_id__last_name','student_id__birthday')
+            pupilList = Pupil.objects.filter(classes=selectedSubject.class_id,attend__is_member=True).order_by('index','first_name','last_name','birthday')
+            markTimeList =MarkTime.objects.filter(mark_id__term_id=term_id,mark_id__subject_id=subject_id,mark_id__current=True).order_by('mark_id__student_id__index','mark_id__student_id__first_name','mark_id__student_id__last_name','mark_id__student_id__birthday')
             if (isNx & (selectedTerm.number==2)):
-                tkMonList=TKMon.objects.filter(subject_id=subject_id).order_by('student_id__index','student_id__first_name','student_id__last_name','student_id__birthday')
+                tkMonList=TKMon.objects.filter(subject_id=subject_id,current=True).order_by('student_id__index','student_id__first_name','student_id__last_name','student_id__birthday')
             x=11
             y=0
             list = zip(pupilList,markList,markTimeList)

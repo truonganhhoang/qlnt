@@ -88,9 +88,9 @@ def thu11111(request):
     return HttpResponse(t.render(c))
 
 @transaction.commit_on_success                                                              
-def thu(request):
+def thu1(request):
     t1= time.time()
-    list1 = TKMon.objects.filter(student_id__class_id=30)
+    list1 = TKMon.objects.filter(student_id__class_id=27)
     print len(list1)/14
     for m in list1:
         m.tb_nam=random.randrange( 6,10)
@@ -98,7 +98,7 @@ def thu(request):
     for m in list1:
         m.save()
            
-    list = Mark.objects.filter(subject_id__class_id=30)
+    list = Mark.objects.filter(subject_id__class_id=27)
     for m in list:
         m.mieng_1 = random.randrange( 7,11 )
         m.mieng_2 = random.randrange( 7,11 )
@@ -177,10 +177,10 @@ def thu(request):
     return HttpResponse(t.render(c))
 
 @transaction.commit_on_success                                                              
-def thu1(request):
+def thu(request):
     t1= time.time()
     
-    markList = Mark.objects.filter(subject_id__class_id=26)
+    markList = Mark.objects.filter(subject_id__class_id=27)
     for m in markList:
         m.mieng_1 = random.randrange( 7,11 )
         m.mieng_2 = random.randrange( 7,11 )
@@ -202,12 +202,12 @@ def thu1(request):
         m.ck=random.randrange( 7,11 )
         m.tb=random.randrange( 7,11 )
         m.save() 
-    tkmonList= TKMon.objects.filter(subject_id__class_id=26)
+    tkmonList= TKMon.objects.filter(subject_id__class_id=27)
     for tkmon in tkmonList:
-        tkmon.tb_nam=random.randrange( 7,11 )
+        tkmon.tb_nam=random.randrange( 2,8 )
         tkmon.save()
 
-    hanhKiemList =TBNam.objects.filter(student_id__class_id=26)
+    hanhKiemList =TBNam.objects.filter(student_id__class_id=27)
     print len(hanhKiemList)
     for hk in hanhKiemList:
         t =random.randrange( 1,3 )
@@ -243,6 +243,18 @@ def thu1(request):
 def thu1(request):
     t1= time.time()
     
+    attends=Attend.objects.filter(_class=26,is_member=True)
+    for a in attends :
+        pass
+    #attends=Attend.objects.filter(_class=26,is_member=False)
+    attends[0].is_member=False
+    attends[0].save()
+    """
+    for a in attends :
+        a.is_member=True
+        a.save()
+    """    
+    print len(attends)
     
     t = loader.get_template(os.path.join('school','ll.html'))
     t2=time.time()
