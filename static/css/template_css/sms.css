@@ -13,6 +13,13 @@ div.verticalContent{
 textarea.smsTextarea{
     width: 400px;
     max-width: 400px;
-    color: white;
+    color: #000000;
     font-size: 11pt;
+    border: 1px solid #666666;
+    background: #ffffff;
+    background: -moz-linear-gradient(top, #FFFFFF 0%, #F4F4F4 100%);
+    background: -webkit-linear-gradient(top, #FFFFFF 0%, #F4F4F4 100%);
+    background: -o-linear-gradient(top, #FFFFFF 0%, #F4F4F4 100%);
+    background: -ms-linear-gradient(top, #FFFFFF 0%, #F4F4F4 100%);
+    background: linear-gradient(top, #FFFFFF 0%, #F4F4F4 100%);
 }

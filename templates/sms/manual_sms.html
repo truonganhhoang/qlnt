@@ -11,20 +11,8 @@
 
 {% block content %}
     <h2> Nhắn tin </h2>
-    <div class="numberSelector">
-        <div class="switcher">
 
-        </div>
-        <div class="users">
-            <div class="teachers">
-
-            </div>
-            <div class="students">
-
-            </div>
-        </div>
-    </div>
-    <aside style="width: 500px; padding: 10px;">
+    <aside style="width: 500px; padding: 10px; float: left;">
         <div class="mainSMS">
             <div class="from tr">
                 <div class="verticalLabel">
@@ -68,4 +56,24 @@
             </div>
         </div>
     </aside>
+
+    <aside style="min-width: 400px; padding: 10px; ">
+        <div class="numberSelector">
+            <div class="switcher">
+                <input type="radio" id="switcherTeacher" name="radio" checked="checked" />
+                <label for="switcherTeacher">Cán bộ</label>
+                <input type="radio" id="switcherStudent" name="radio" />
+                <label for="switcherStudent">Học sinh</label>
+            </div>
+            <div class="users">
+                <div class="teachers">
+
+                </div>
+                <div class="students">
+
+                </div>
+            </div>
+        </div>
+    </aside>
+
 {% endblock %}
