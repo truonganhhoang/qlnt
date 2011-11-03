@@ -604,8 +604,8 @@ class TBHocKy(models.Model):
 
     number_subject=models.SmallIntegerField("số lượng môn",null=True,blank=True, default=0)
     number_finish =models.SmallIntegerField("số lượng môn đã tổng kết xong", default=0)
-    
-    
+    sent = models.BooleanField("Sent", default=False)
+
     tb_hk = models.FloatField("Trung bình học kì", validators = [validate_mark], null = True, blank = True)        
     hl_hk = models.CharField("Học lực", max_length = 3, choices = HL_CHOICES, null = True, blank = True)
     danh_hieu_hk = models.CharField("Danh hiệu", max_length = 2, choices = DH_CHOICES, null = True, blank = True)
@@ -644,10 +644,9 @@ class TBNam(models.Model):
     thi_lai = models.NullBooleanField("Thi lại", null=True,blank=True)
     tb_thi_lai=models.FloatField("Trung bình thi lại", null = True, blank = True, validators = [validate_mark])
     hl_thi_lai=models.CharField("Học lực thi lại", null = True, blank=True, max_length = 3, choices = HL_CHOICES)
-    
+    sent = models.BooleanField("Sent", default=False)
     #len_lop_sau_he=models.NullBooleanField(null=True,blank = True,choices =LENLOP_CHOICES)
 
-    
     class Meta:
         verbose_name = "Trung bình năm"
         verbose_name_plural = "Trung bình năm"
@@ -683,4 +682,3 @@ class TKDiemDanh(models.Model):
     
     def __unicode__(self):
         return self.student_id.__unicode__()
-        

@@ -177,7 +177,7 @@ def thu1(request):
     return HttpResponse(t.render(c))
 
 @transaction.commit_on_success                                                              
-def thu(request):
+def thu1(request):
     t1= time.time()
     
     markList = Mark.objects.filter(subject_id__class_id=27)
@@ -240,20 +240,14 @@ def thu(request):
     #print (t2-t1)
     return HttpResponse(t.render(c))
 
-def thu1(request):
+def thu(request):
     t1= time.time()
     
-    attends=Attend.objects.filter(_class=26,is_member=True)
-    for a in attends :
-        pass
+    attends=Attend.objects.filter(is_member=True)
     #attends=Attend.objects.filter(_class=26,is_member=False)
+    print attends[0].id, attends[0].is_member
     attends[0].is_member=False
-    attends[0].save()
-    """
-    for a in attends :
-        a.is_member=True
-        a.save()
-    """    
+    attends[0].save(force_update=True)
     print len(attends)
     
     t = loader.get_template(os.path.join('school','ll.html'))
@@ -264,6 +258,5 @@ def thu1(request):
                                  'x':x,
                                 }
                        )
-
     #print (t2-t1)
     return HttpResponse(t.render(c))

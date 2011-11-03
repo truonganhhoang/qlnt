@@ -56,7 +56,6 @@ class Organization(models.Model):
     address = models.CharField("Địa chỉ", max_length=255, blank=True, null=True) #
     phone = models.CharField("Điện thoại", max_length=20, blank=True, null=True)
     email = models.EmailField(max_length=50, blank=True, null=True)
-    user_admin = models.ManyToManyField(User, through='Membership')
     class Meta:
         verbose_name_plural = "Tổ chức"
 
@@ -135,12 +134,6 @@ class Organization(models.Model):
 
     def __unicode__(self):
         return self.name
-
-
-class Membership(models.Model):
-    user_admin = models.ForeignKey(User)
-    org = models.ForeignKey(Organization)
-
 
 class OrganizationForm(forms.Form):
     name = forms.CharField(max_length=100) #tên đơn vị. tổ chức
