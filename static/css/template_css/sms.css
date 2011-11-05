@@ -23,3 +23,7 @@ textarea.smsTextarea{
     background: -ms-linear-gradient(top, #FFFFFF 0%, #F4F4F4 100%);
     background: linear-gradient(top, #FFFFFF 0%, #F4F4F4 100%);
 }
+
+.progressbar{
+    background: url(pbar-ani.gif);
+}

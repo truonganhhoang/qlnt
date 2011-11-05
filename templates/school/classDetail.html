@@ -1,14 +1,21 @@
 {% extends "base.html" %}
 {% load upload_tags %}
 
+{% block css %}
+    <link href="/static/css/template_css/sms.css?0.6" rel="stylesheet" type="text/css"/>
+{% endblock %}
+{% block js %}
+    <script type="text/javascript" src="/static/js/template_js/class_detail.js?0.6"></script>
+{% endblock %}
+
 {% block backward_link %}
     {% if pos > 1 %}
         {#    <a href="{% url school.views.school_index %}classes"> Toàn trường</a>#}
         {#      > {{ class }}#}
         <form action="" name="info" method="post">{% csrf_token %}
-          <a href="{% url school.views.school_index %}"> Trang chủ </a>
-          > <a href="{% url school.views.school_index %}classes"> Toàn trường</a>
-          > Lớp
+            <a href="{% url school.views.school_index %}"> Trang chủ </a>
+            > <a href="{% url school.views.school_index %}classes"> Toàn trường</a>
+            > Lớp
             <select name="class" onchange="submitClass()">
                 <option value=-1> {{ class }} </option>
                 {% for c in cl %}
@@ -25,160 +32,6 @@
     <h2>Lớp {{ class }} </h2>
 
     <script>
-        $(document).ready(function() {
-            var note = '';
-            $("#notify").ajaxSuccess(function(event, request, settings, json) {
-                if (json.message != null && json.message != '' && json.message != 'OK') {
-                    $(this).html("<ul>" + json.message + "</ul>");
-                    $(this).delay(1000).fadeOut(10000);
-                }
-                else if (json.message == 'OK') {
-                    $(this).text('Đã lưu');
-                    $(this).delay(1000).fadeOut('fast');
-                    location.reload('true');
-                }
-
-            });
-
-            $("#submitform").bind('submit', function() {
-                var d = $(this).serialize();
-                d = d + '&request_type=add';
-                var self = $(this);
-                var theLast = self.prev();
-                var arg = {data: d,
-                    type: $(this).attr('method'),
-                    url: $(this).attr('action'),
-                    success:function(json) {
-                        if (!json.success) {
-                            $("#notify").showNotification(json.message, 3000);
-                        } else {
-                            $.ajaxSetup({
-                                global: false
-                            });
-                            $("#student_placeholder").load("{% url school.views.student 0 %}" + json.student_id + " tr",
-                                    function() {
-                                        $.ajaxSetup({
-                                            global: true
-                                        });
-                                        var newStudent = $("#student_placeholder > tr");
-                                        newStudent.insertBefore(self).click(select);
-                                        var stt = parseInt(theLast.find('td:eq(1)').text());
-                                        if (stt) newStudent.find('td:eq(1)').text(stt + 1);
-                                        else newStudent.find('td:eq(1)').text(1);
-                                        $("#notify").showNotification(json.message);
-                                        $(".form").find('input:text').val('');
-                                        $(".form").find('input#id_dan_toc').val('Kinh');
-                                    })
-
-                        }
-                    }
-                };
-                $.ajax(arg);
-                return false;
-            });
-
-            $("#import").click(function() {
-                $("#fileupload").dialog('open');
-            });
-
-            $("#fileupload").dialog({
-                modal : true,
-                buttons: {
-                    Đóng: function() {
-                        location.reload('true');
-                        $(this).dialog('close');
-                    }
-                },
-                autoOpen: false,
-                width: 700,
-                height: 400,
-                maxWidth: 700,
-                maxHeight: 400,
-                title: "Nhập học sinh từ file Excel"
-            });
-
-            function isNumeric(input) {
-                return (input - 0) == input && input.length > 0;
-            }
-
-            var select = function() {
-                if (!$(this).hasClass('thread') && !$(this).hasClass('form') && !$(this).hasClass('function')) {
-                    var id = $(this).attr('class').split(' ')[0];
-                    var checkboxid = '#checkbox_' + id;
-                    var checkboxall = '#checkbox_all';
-                    if ($(this).hasClass('selected')) {
-                        $(this).removeClass('selected');
-                        $(checkboxid).prop("checked", false);
-                        var n = $("input:checked").length;
-                        if (n == 1) $(checkboxall).prop("checked", false);
-                    } else {
-                        $(this).addClass('selected');
-                        $(checkboxid).prop("checked", true);
-                        $(checkboxall).prop("checked", true);
-                    }
-                }
-            };
-            var delSelected = function() {
-                if (!$("#checkbox_all").is(':checked')) {
-                    alert("Bạn chưa chọn học sinh nào để xóa");
-                    return false;
-                }
-                var answer = confirm('Bạn có muốn xóa những học sinh đã chọn');
-                if (!answer) return false;
-                var data = '';
-                $(".selected").each(function() {
-                    data = data + $(this).attr('class').split(' ')[0] + '-';
-                });
-                $("#notify").text("Đang xóa...");
-                $("#notify").show();
-                var arg = { type:"POST",
-                    url:"",
-                    global: false,
-                    data: {data:data, request_type:'del'},
-                    datatype:"json",
-                    success: function() {
-                        $("#notify").showNotification("Đã xóa xong");
-                        location.reload('true');
-                    }
-                };
-                $.ajax(arg);
-                return false;
-            };
-            $("#delSelected").click(delSelected);
-
-            // individual listener
-            $("tr").each(function() {
-                $(this).click(select);
-            });
-
-            $("#checkbox_all").click(function() {
-                var checkboxall = '#checkbox_all';
-                if ($(checkboxall).is(':checked')) {
-                    $("tr").each(function() {
-                        var id = $(this).attr('class').split(' ')[0];
-                        var checkboxid = '#checkbox_' + id;
-                        if (!$(this).hasClass('selected'))
-                            $(this).trigger('click');
-                    });
-                }
-                else {
-                    $("tr").each(function() {
-                        var id = $(this).attr('class').split(' ')[0];
-                        var checkboxid = '#checkbox_' + id;
-                        if ($(this).hasClass('selected'))
-                            $(this).trigger('click');
-                    });
-                }
-            });
-            $("#selectAll").click(function() {
-                $("tr").each(select);
-                return false;
-            });
-            $("input.datepicker").datepicker("option", "yearRange", '{{ year_range }}');
-            $("input.datepicker").datepicker("option", "defaultDate", '{{ default_date }}');
-
-        });
-
         function submitClass() {
             if (document.info.class.value !={{class.id}})
                 if (document.info.class.value != -1) {
@@ -189,20 +42,7 @@
         function confirmDelete() {
             return confirm("Bạn có chắc chắn xóa toàn bộ thông tin của học sinh không?");
         }
-
     </script>
-    {#  <form action="" name="info" method="post">{% csrf_token %}#}
-    {#      <h2>Lớp#}
-    {#          <select name="class" onchange="submitClass()">#}
-    {#              <option value=-1> {{ class }} </option>#}
-    {#              {% for c in cl %}#}
-    {#                  {% if c.id != class.id %}#}
-    {#                      <option value={{ c.id }}> {{ c }}</option>#}
-    {#                  {% endif %}#}
-    {#              {% endfor %}#}
-    {#          </select>#}
-    {#      </h2>#}
-    {#  </form>#}
 
     {% if message != None %}
         <a>{{ message }}</a>
@@ -266,6 +106,8 @@
             <a class="ggButton tiptiphover "
                href="{% url school.views.organize_students class.id "0" %}"
                title="Sắp xếp thứ tự học sinh trong lớp">Sắp xếp</a>
+            <button id="textSms" class="tiptiphover ggButton"
+                    title="Nhắn tin đến những học sinh đã chọn">SMS</button>
             <button id="delSelected" class="tiptiphover ggButton"
                     title="Xóa những học sinh đang được chọn">Xóa chọn</button>
         </div>
@@ -274,12 +116,12 @@
         <colgroup style="width: 4%;"></colgroup>
         <colgroup></colgroup>
         <colgroup style="width: 12%;"></colgroup>
-        <colgroup style="width: 7%"></colgroup>
+        <colgroup style="width: 6%"></colgroup>
+        <colgroup style="width: 8%"></colgroup>
         <colgroup></colgroup>
         <colgroup></colgroup>
-        <colgroup></colgroup>
-        <colgroup></colgroup>
-        <colgroup></colgroup>
+        <colgroup style="width: 5%"></colgroup>
+        <colgroup style="width: 8%; min-width: 97px;"></colgroup>
         <colgroup></colgroup>
         <colgroup></colgroup>
         <colgroup></colgroup>
@@ -307,10 +149,10 @@
                     class="tiptiphover" title="Sắp xếp giới tính">Giới tính</a>
             </th>
             <th class="leftAlign">Dân tộc</th>
+            <th class="leftAlign">Số điện thoại</th>
             <th class="leftAlign">Chỗ ở hiện tại</th>
             <th class="leftAlign">Họ tên bố</th>
             <th class="leftAlign">Họ tên mẹ</th>
-            <th class="leftAlign">Số điện thoại</th>
 
         </tr>
 
@@ -337,11 +179,10 @@
                 <td> {{ ss.birth_place }} </td>
                 <td> {{ ss.sex }} </td>
                 <td> {{ ss.dan_toc }} </td>
+                <td class="smsPhone"> {{ ss.sms_phone }}</td>
                 <td> {{ ss.current_address }} </td>
                 <td> {{ ss.father_name }} </td>
                 <td> {{ ss.mother_name }} </td>
-                <td> {{ ss.sms_phone }}</td>
-
             </tr>
         {% endfor %}
 
@@ -431,6 +272,68 @@
                 </p>
             </div>
         </div>
+    </div>
+    <div id="smsWindow" class="popup" style="display: none; z-index: 2000;">
+        <aside style="width: 350px; padding: 10px; float: right; background-color: #f5f5f5; margin-top: 0;">
+            <div id="smsClose" style="width: 100%;">
+                <span class="ui-icon ui-icon-circle-close" style="float: right; width: 17px; height: 20px;"></span>
+            </div>
+            <div class="placeholder" style="clear: both;"></div>
+
+            <div class="mainSMS">
+                <div class="from tr">
+                    <div class="verticalLabel">
+                        <b style="width: 70px;">Từ:</b>
+                    </div>
+                    <div class="verticalContent" style="padding-left: 10px; float: left;">
+                        <b>{{ user.last_name }} {{ user.first_name }} ({{ user }})</b>
+                    </div>
+                </div>
+                <div class="placeHolder" style="clear: both;"></div>
+                <div class="to tr">
+                    <div class="verticalLabel">
+                        <label for="smsTo" style="vertical-align: top;">
+                            <b style="vertical-align: top; width: 50px;">Tới:</b>
+                        </label>
+                    </div>
+                    <div class="verticalContent">
+                        <button id="showChosenStudent">Chưa chọn học sinh nào</button>
+                    </div>
+                </div>
+                <div class="placeHolder" style="clear: both;"></div>
+                <div class="sms tr">
+                    <div class="verticalLabel">
+                        <label for="smsContent" style="vertical-align: top;">
+                            <b style="vertical-align: top; width: 50px;">Nội dung:</b>
+                        </label>
+                    </div>
+                    <div class="verticalContent">
+                        <textarea class="smsContext item smsTextarea" id="smsContent" style="width: 250px; max-width: 250px;"></textarea>
+                    </div>
+                </div>
+                <div class="placeHolder" style="clear: both;"></div>
+                <div class="buttons tr">
+                    <div class="verticalLabel">
+                        <p>&nbsp</p>
+                    </div>
+                    <div class="verticalContent">
+                        <button class="ggButton" id="send" disabled="disabled">Gửi</button>
+                    </div>
+
+                </div>
+                <div class="placeHolder" style="clear: both;"></div>
+                <div class="tr">
+                    <div class="verticalLabel">
+                        <p>&nbsp</p>
+                    </div>
+                    <div class="verticalContent progressbar ui-widget ui-widget-content ui-corner-all"
+                         id="smsProgressbar"
+                         style="display: none; height: 15px; margin-left: 10px; padding-left: 0;">
+                    </div>
+                </div>
+            </div>
+        </aside>
+        <div class="placeholder" style="clear: both;"></div>
     </div>
 
     {% upload_js %}

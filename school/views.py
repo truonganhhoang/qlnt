@@ -1838,16 +1838,51 @@ def viewClassDetail(request, class_id, sort_type=0, sort_status=0):
     form = PupilForm(school.id)
 
     if request.method == 'POST':
-        if request.is_ajax() and request.POST[u'request_type'] == u'del':
-            data = request.POST[u'data']
-            data = data.split('-')
-            for e in data:
-                if e.strip():
-                    std = Pupil.objects.get(id__exact = int(e))
-                    completely_del_student(std)
+        if request.is_ajax():
+            if request.POST[u'request_type'] == u'del':
+                data = request.POST[u'data']
+                data = data.split('-')
+                for e in data:
+                    if e.strip():
+                        std = Pupil.objects.get(id__exact = int(e))
+                        completely_del_student(std)
 
-            data = simplejson.dumps({'success': True})
-            return HttpResponse(data, mimetype='json')
+                data = simplejson.dumps({'success': True})
+                return HttpResponse(data, mimetype='json')
+            elif request.POST[u'request_type'] == u'send_sms':
+                try:
+                    content = request.POST[u'content'].strip()
+                    student_list = request.POST[u'student_list']
+                    student_list = student_list.split("-")
+                    sts = []
+                    for student in student_list:
+                        if student:
+                            sts.append(int(student))
+                    students = Pupil.objects.filter(id__in=sts)
+                    print students
+                    number_of_sent = 0
+                    number_of_blank = 0
+                    number_of_failed = 0
+                    for student in students:
+                        if student.sms_phone:
+                            try:
+                                if sendSMS(student.sms_phone, to_en1(content), user) == '1':
+                                    number_of_sent += 1
+                                else:
+                                    number_of_failed += 1
+                            except Exception as e:
+                                number_of_failed += 1
+                        else:
+                            number_of_blank += 1
+                    data = simplejson.dumps({
+                        'number_of_sent': number_of_sent,
+                        'number_of_blank': number_of_blank,
+                        'number_of_failed': number_of_failed
+                    })
+                    return HttpResponse(data, mimetype='json')
+                except Exception as e:
+                    print e
+                    raise e
 
         elif request.POST[u'request_type'] == u'add':
             start_year = StartYear.objects.get(time = int(date.today().year), school_id = school.id)

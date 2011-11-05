@@ -6,10 +6,10 @@
 {% endif %}
 
 {% block backward_link %}
-  <a href="{% url school.views.school_index %}"> Trang chủ </a>
-  > <a href="{% url school.views.school_index %}classes"> Toàn trường</a>
-  > <a href="{% url school.views.school_index %}viewClassDetail/{{ class.id }}"> {{ class }} </a>
-  > Môn học
+    <a href="{% url school.views.school_index %}"> Trang chủ </a>
+    > <a href="{% url school.views.school_index %}classes"> Toàn trường</a>
+    > <a href="{% url school.views.school_index %}viewClassDetail/{{ class.id }}"> {{ class }} </a>
+    > Môn học
 {% endblock %}
 
 {% block content %}
@@ -44,9 +44,9 @@
                 $.widget("ui.combobox", {
                     _create: function() {
                         var self = this,
-                                select = this.element.hide(),
-                                selected = select.children(":selected"),
-                                value = selected.val() ? selected.text() : "";
+                            select = this.element.hide(),
+                            selected = select.children(":selected"),
+                            value = selected.val() ? selected.text() : "";
                         var input = this.input = $("<input>")
                                 .insertAfter(select)
                                 .val(value)
@@ -85,7 +85,7 @@
 
                                         if (typeof attr !== 'undefined' && attr !== false && attr !== 'subject_form') {
                                             var id = $(this).parents("tr").attr('id').split(' ')[0];
-                                            var data = { id: id, teacher: teacher, request_type:'teacher'}
+                                            var data = { id: id, teacher: teacher, request_type:'teacher'};
                                             var arg = { type:"POST",
                                                 url:"",
                                                 data: data,
@@ -98,7 +98,7 @@
                                             $.ajax(arg);
                                             return false;
                                         }
-                                        ;
+
                                     },
                                     change: function(event, ui) {
                                         if (!ui.item) {
@@ -276,7 +276,7 @@
 
             $(".major_teacher").each(function(){
                 if ($(this).parents("td").children("#id_teacher_id").val()==''){
-                   $(this).parents("td").children(".all_teacher").hide();
+                    $(this).parents("td").children(".all_teacher").hide();
                 }
                 else if ($(this).children("select").val()==''){
                     $(this).hide();
@@ -380,7 +380,7 @@
                     </td>
                     {% if pos > 3 %}
                         <td style="text-align: center;" ><a title="Chỉnh sửa thông tin môn học"
-                                                                       href="{%url school.views.school_index  %}viewSubjectDetail/{{ss.id}}">{{ ss.name }}</a>
+                                                            href="{%url school.views.school_index  %}viewSubjectDetail/{{ss.id}}">{{ ss.name }}</a>
                         </td>
                         <td style="text-align: center;"> {{ f.type }} </td>
                         <td style="text-align: center;" > {{ f.hs }} </td>
@@ -416,18 +416,18 @@
                                     {% endfor %}
                                 </select>
                             </div>
-                        
-                        <select  class="range" style ="float:left; width: 90px; margin-left: 5px;">
-                            <option value="1"  >Cả trường </option>
-                            <option value="2" selected="selected">{{ ss.name }}</option>
-                        </select>
+
+                            <select  class="range" style ="float:left; width: 90px; margin-left: 5px;">
+                                <option value="1"  >Cả trường </option>
+                                <option value="2" selected="selected">{{ ss.name }}</option>
+                            </select>
 
                         </td>
                         <td style="text-align: center;"> {{ f.primary }} </td>
                         <td style="text-align: center;"> {{ f.nx }} </td>
                         <td ><a class="ggButton"
-                                          href="{%url school.views.school_index  %}deleteSubject/{{ss.id}}"
-                                          onclick="return confirmDelete();">xóa</a></td>
+                                href="{%url school.views.school_index  %}deleteSubject/{{ss.id}}"
+                                onclick="return confirmDelete();">xóa</a></td>
                         {% else %}
                         <td style="text-align: center;" > {{ ss.name }}</td>
                         <td style="text-align: center;" > {{ ss.type }}</td>
@@ -489,14 +489,14 @@
 
         </table>
     </form>
-{#    {% if pos > 3 %}#}
-{#        <table border="0" align="center">#}
-{#            <tr>#}
-{#                <td align="left">&nbsp</td>#}
-{#                <td align="right"><a href="">Xuất ra Excel </a></td>#}
-{#            </tr>#}
-{#        </table>#}
-{#    {% endif %}#}
+    {#    {% if pos > 3 %}#}
+    {#        <table border="0" align="center">#}
+    {#            <tr>#}
+    {#                <td align="left">&nbsp</td>#}
+    {#                <td align="right"><a href="">Xuất ra Excel </a></td>#}
+    {#            </tr>#}
+    {#        </table>#}
+    {#    {% endif %}#}
     <p id="ajax_to" style="display: none;">{% url school.views.change_index 'subject' class.id %}</p>
     <p id="redirect_link" style="display: none;">{% url school.views.subjectPerClass class.id %}</p>
 {% endblock %}
