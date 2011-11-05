@@ -85,7 +85,7 @@ $(document).ready(function() {
                 $(this).removeClass('selected');
                 $(checkboxid).prop("checked", false);
                 var n = $("input:checked").length;
-                if (n == 1) {
+                if (n == 1 || n==0) {
                     $(checkboxall).prop("checked", false);
                     $("#showChosenStudent").html("Chưa chọn học sinh nào");
                     $("#send").attr('disabled', 'disabled');
@@ -194,6 +194,11 @@ $(document).ready(function() {
                 success: function(json) {
                     $("#notify").showNotification("Đã gửi "+ json.number_of_sent +" tin nhắn");
                     $("#smsProgressbar").hide();
+                    var html = "<ul><li>";
+                    html += json.number_of_blank + " học sinh không có số điện thoại.</li>";
+                    html += "<li>"+json.number_of_failed + " học sinh không gửi được tin nhắn</li></ul>";
+                    $("#smsErrorDetail").css('width', $("#smsContent").css('width'));
+                    $("#smsErrorDetail").html(html).show();
                 },
                 error: function(){
                     $("#notify").showNotification("Gặp lỗi khi gửi tin nhắn");
