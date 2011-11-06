@@ -194,14 +194,16 @@ $(document).ready(function() {
                 success: function(json) {
                     $("#notify").showNotification("Đã gửi "+ json.number_of_sent +" tin nhắn");
                     $("#smsProgressbar").hide();
-                    var html = "<ul>";
-                    if (parseInt(json.number_of_blank) > 0)
-                        html += "<li>" + json.number_of_blank + " học sinh không có số điện thoại.</li>";
-                    if (parseInt(json.number_of_failed) > 0)
-                        html += "<li>"+json.number_of_failed + " học sinh không gửi được tin nhắn</li>";
-                    html += "</ul>";
-                    $("#smsErrorDetail").css('width', $("#smsContent").css('width'));
-                    $("#smsErrorDetail").html(html).show();
+                    if (json.number_of_blank != '0' && json.number_of_failed != '0'){
+                        var html = "<ul>";
+                        if (parseInt(json.number_of_blank) > 0)
+                            html += "<li>" + json.number_of_blank + " học sinh không có số điện thoại.</li>";
+                        if (parseInt(json.number_of_failed) > 0)
+                            html += "<li>"+json.number_of_failed + " học sinh không gửi được tin nhắn</li>";
+                        html += "</ul>";
+                        $("#smsErrorDetail").css('width', $("#smsContent").css('width'));
+                        $("#smsErrorDetail").html(html).show();
+                    }
                 },
                 error: function(){
                     $("#notify").showNotification("Gặp lỗi khi gửi tin nhắn");
