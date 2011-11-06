@@ -168,11 +168,11 @@ $(document).ready(function() {
             smsWindow.css('position', 'absolute');
             smsWindow.css('top', buttonOffsetTop + 30);
             smsWindow.css('left', contentWidth - smsWindowWidth + 30);
-            smsWindow.fadeIn(500);
-        } else $("#smsWindow").fadeOut(500);
+            smsWindow.fadeIn(400);
+        } else $("#smsWindow").fadeOut(400);
     });
     $("#smsClose").click(function(){
-        $("#smsWindow").fadeOut(500);
+        $("#smsWindow").fadeOut(400);
     });
     $("#send").click(function(){
         var content = $("#smsContent").val();
@@ -194,9 +194,12 @@ $(document).ready(function() {
                 success: function(json) {
                     $("#notify").showNotification("Đã gửi "+ json.number_of_sent +" tin nhắn");
                     $("#smsProgressbar").hide();
-                    var html = "<ul><li>";
-                    html += json.number_of_blank + " học sinh không có số điện thoại.</li>";
-                    html += "<li>"+json.number_of_failed + " học sinh không gửi được tin nhắn</li></ul>";
+                    var html = "<ul>";
+                    if (parseInt(json.number_of_blank) > 0)
+                        html += "<li>" + json.number_of_blank + " học sinh không có số điện thoại.</li>";
+                    if (parseInt(json.number_of_failed) > 0)
+                        html += "<li>"+json.number_of_failed + " học sinh không gửi được tin nhắn</li>";
+                    html += "</ul>";
                     $("#smsErrorDetail").css('width', $("#smsContent").css('width'));
                     $("#smsErrorDetail").html(html).show();
                 },
