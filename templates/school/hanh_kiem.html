@@ -86,10 +86,11 @@
     {% if pos > 1 %}
         <h2> Hạnh kiểm lớp
         <select name="class" onchange="submitClass()">
-            <option value = -1> {{class}} </option>
             {% for cl in classList %}
                 {%if cl.id != class.id%}
-                <option  value={{cl.id }}> {{cl}}</option>
+                <option value={{cl.id }}> {{cl}}</option>
+                {% else %}
+                    <option selected="selected" value={{cl.id }}> {{cl}}</option>
                 {%endif%}
             {% endfor %}
         </select>

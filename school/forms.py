@@ -336,7 +336,7 @@ class DateAndClassForm(forms.Form):
     
     def __init__(self, year_id, *args, **kwargs):
         super(DateAndClassForm, self).__init__(*args, **kwargs)
-        self.fields['class_id'] = forms.ModelChoiceField(queryset = Class.objects.filter(year_id = year_id),
+        self.fields['class_id'] = forms.ModelChoiceField(queryset = Class.objects.filter(year_id = year_id).order_by('name'),
                                                          label = u'lớp')
     
 class UploadImportFileForm(forms.Form):

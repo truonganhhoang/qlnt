@@ -1834,7 +1834,7 @@ def viewClassDetail(request, class_id, sort_type=0, sort_status=0):
     message = None
     school = cl.block_id.school_id
     cyear = get_current_year(request)
-    classList = cyear.class_set.all()
+    classList = cyear.class_set.all().order_by('name')
     form = PupilForm(school.id)
 
     if request.method == 'POST':
@@ -2949,7 +2949,7 @@ def diem_danh(request, class_id, day, month, year):
                 return HttpResponse(data, mimetype = 'json')
         else:
             raise Exception('StrangeRequestMethod')
-    pupilList = Pupil.objects.filter(class_id=class_id).order_by('index','first_name', 'last_name')
+    pupilList = Pupil.objects.filter(attend___class=class_id,attend__is_member=True).order_by('index','first_name', 'last_name')
     time = date(int(year), int(month), int(day))
     term = get_current_term(request)
     form = []
@@ -3055,7 +3055,7 @@ def ds_nghi(request, class_id, day, month, year):
     if (pos == 3 and not gvcn(request,class_id)):
         pos = 2
     cl  = Class.objects.get(id=class_id)
-    pupilList = Pupil.objects.filter(class_id=class_id).order_by('first_name', 'last_name')
+    pupilList = Pupil.objects.filter(attend___class=class_id,attend__is_member=True).order_by('first_name', 'last_name')
     time = date(int(year), int(month), int(day))
     term = get_current_term(request)
     dncdata = {'date':date(int(year),int(month),int(day)),'class_id':class_id}
@@ -3625,7 +3625,7 @@ def hanh_kiem(request, class_id = 0, sort_type = 0, sort_status = 0):
         return HttpResponseRedirect(reverse('index'))
 
     year = get_current_year(request)
-    classList = year.class_set.all()
+    classList = year.class_set.all().order_by('name');
     if class_id == 0:
         for cl in classList:
             return HttpResponseRedirect('/school/hanhkiem/'+str(cl.id))

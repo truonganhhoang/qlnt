@@ -17,10 +17,11 @@
             > <a href="{% url school.views.school_index %}classes"> Toàn trường</a>
             > Lớp
             <select name="class" onchange="submitClass()">
-                <option value=-1> {{ class }} </option>
                 {% for c in cl %}
                     {% if c.id != class.id %}
                         <option value={{ c.id }}> {{ c }}</option>
+                    {% else %}
+                        <option selected="selected" value={{ c.id }}> {{ c }}</option>
                     {% endif %}
                 {% endfor %}
             </select>
