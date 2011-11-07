@@ -30,14 +30,12 @@ $(document).ready(function() {
                     $.ajaxSetup({
                         global: false
                     });
-                    alert("/school/getStudent/" + json.student_id + "/");
                     $("#student_placeholder").load("/school/getStudent/" + json.student_id + "/",
                             function() {
                                 $.ajaxSetup({
                                     global: true
                                 });
                                 var newStudent = $("#student_placeholder").find("tr");
-                                console.log(newStudent);
                                 newStudent.insertBefore(self).click(select);
                                 var stt = parseInt(theLast.find('td:eq(1)').text());
                                 if (stt) newStudent.find('td:eq(1)').text(stt + 1);
