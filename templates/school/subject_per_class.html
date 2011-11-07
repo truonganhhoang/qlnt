@@ -223,7 +223,8 @@
             });
 
             $("select[name=teacher_id]").each(function() {
-                $(this).hide();
+                //$(this).hide();
+                $(this).addClass("combobox");
             });
 
             $("input[name=hs]").each(function() {
@@ -385,7 +386,7 @@
                         <td style="text-align: center;"> {{ f.type }} </td>
                         <td style="text-align: center;" > {{ f.hs }} </td>
                         <td style="text-align: center;" >
-                            {{ f.teacher_id }}
+
                             <div class="ui-widget major_teacher autocomplete">
                                 <select class="combobox" style="margin-left: 5px;">
                                     <option value="">Chọn một...</option>
@@ -405,16 +406,7 @@
                             </div>
 
                             <div class="ui-widge all_teacher autocomplete">
-                                <select class="combobox" style="margin-left: 5px;">
-                                    <option value="">Chọn một...</option>
-                                    {% for teacher in allteacher %}
-                                        {% if teacher == ss.teacher_id %}
-                                            <option selected="selected" value="{{ teacher.id}}">{{ teacher }}</option>
-                                        {% else %}
-                                            <option value="{{ teacher.id}}">{{ teacher }}</option>
-                                        {% endif %}
-                                    {% endfor %}
-                                </select>
+                                {{ f.teacher_id }}
                             </div>
 
                             <select  class="range" style ="float:left; width: 90px; margin-left: 5px;">
@@ -465,14 +457,8 @@
 
                     <td style="text-align: center;" >
                         {{ form.teacher_id.errors }}
-                        {{ form.teacher_id }}
                         <div class="ui-widget autocomplete">
-                            <select class="combobox">
-                                <option value="">Chọn một...</option>
-                                {% for teacher in allteacher %}
-                                    <option value="{{ teacher.id}}">{{ teacher }}</option>
-                                {% endfor %}
-                            </select>
+                            {{ form.teacher_id }}
                         </div>
                     </td>
                     <td style="text-align: center;">

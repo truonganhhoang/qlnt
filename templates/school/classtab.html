@@ -122,7 +122,8 @@
                 })(jQuery);
 
                 $("select[name=teacher_id]").each(function() {
-                    $(this).hide();
+                    //$(this).hide();
+                    $(this).addClass("combobox");
                 });
 
                 $(function() {
@@ -195,19 +196,9 @@
                     <td> {{ n }} </td>
                     {% if pos >= 4 %}
                         <td>
-                            {{ f.teacher_id }}
 {#                            <div class="ui-widget all_teacher autocomplete">#}
                             <div class="all_teacher autocomplete">
-                                <select class="combobox" style="margin-left: 5px;">
-                                    <option value="">Chọn một...</option>
-                                    {% for teacher in teachers %}
-                                        {% if teacher == class.teacher_id %}
-                                            <option selected="selected" value="{{ teacher.id}}">{{ teacher }}</option>
-                                        {% else %}
-                                            <option value="{{ teacher.id}}">{{ teacher }}</option>
-                                        {% endif %}
-                                    {% endfor %}
-                                </select>
+                                {{ f.teacher_id }}
                             </div>
                         </td>
                         {% else %}
