@@ -2669,7 +2669,7 @@ def subjectPerClass(request, class_id, sort_type=4, sort_status=0):
     sfl = []
     teachers = []
     year = get_current_year(request)
-    classList = year.class_set.all()
+    classList = year.class_set.all().order_by('name')
     for s in subjectList:
         sfl.append(SubjectForm(school.id, instance=s))
         teachers.append(school.teacher_set.filter(major__contains=s.name))
