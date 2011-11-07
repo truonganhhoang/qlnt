@@ -2713,11 +2713,11 @@ def viewStudentDetail(request, student_id):
     ttgdform = ThongTinGiaDinhForm(instance=pupil)
     ttddform = ThongTinDoanDoiForm(student_id,instance=pupil)
     if request.method == 'POST':
-        #print request.POST
         data = request.POST.copy()
         if request.POST['request_type'] == 'ttcn':
             data['first_name'] = data['first_name'].strip()
             data['last_name'] = data['last_name'].strip()
+            data['start_year_id'] = pupil.start_year_id_id
             ttcnform = ThongTinCaNhanForm(school_id, data, instance=pupil)
             if ttcnform.is_valid():
                 ttcnform.save()

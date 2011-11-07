@@ -103,7 +103,7 @@ class PupilForm(forms.ModelForm):
 class ThongTinCaNhanForm(forms.ModelForm):
     class Meta:
         model = Pupil
-        fields = ('last_name','first_name','birthday','sex','class_id','start_year_id','birth_place','dan_toc','ton_giao','uu_tien','quoc_tich','home_town','ban_dk','school_join_date','school_join_mark')
+        fields = ('last_name','first_name','birthday','sex','start_year_id','birth_place','dan_toc','ton_giao','uu_tien','quoc_tich','home_town','ban_dk','school_join_date','school_join_mark')
         widgets = {
             'birthday' : DateInput(attrs = {'class':'datepicker'}),
             'school_join_date' : DateInput(attrs = {'class':'datepicker'})
@@ -114,7 +114,6 @@ class ThongTinCaNhanForm(forms.ModelForm):
         school = Organization.objects.get(id = school_id)
         year_id = school.year_set.latest('time').id
         self.fields['start_year_id'] = forms.ModelChoiceField(queryset = StartYear.objects.filter(school_id = school_id),label='Khóa')
-        self.fields['class_id'] = forms.ModelChoiceField(queryset = Class.objects.filter(year_id = year_id),label='Lớp')
         for field in self.fields:
             self.fields[field].widget.attrs['disabled'] = 'disabled'
 

@@ -23,7 +23,8 @@
             });
             {% if pos > 3 %}
                 $("input").attr('disabled',false);
-                $("select[name!=class_id]").attr('disabled',false);
+                $("select").attr('disabled',false);
+                $("select[name=start_year_id]").attr('disabled',true);
             {% endif %}
             $("#id_father_name").each(function(){
                 if ($(this).val() == ''){
