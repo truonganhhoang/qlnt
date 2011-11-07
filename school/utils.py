@@ -24,6 +24,8 @@ def to_date(value):
         v = value.split('.')
     result = None
     try:
+        if int(v[2])<1990:
+            raise Exception("PharseDateException")
         result = date(int(v[2]), int(v[1]), int(v[0]))
     except Exception as e:
         print e

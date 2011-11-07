@@ -1884,65 +1884,68 @@ def viewClassDetail(request, class_id, sort_type=0, sort_status=0):
                     print e
                     raise e
 
-        elif request.POST[u'request_type'] == u'add':
-            start_year = StartYear.objects.get(time = int(date.today().year), school_id = school.id)
-            try:
-                data = {'first_name':request.POST['first_name'], 'last_name':request.POST['last_name'], 'birthday':request.POST['birthday'],
-                        'sex':request.POST['sex'], 'birth place': request.POST['birth_place'].strip(), 'current_address':request.POST['current_address'].strip(),
-                        'school_join_date': date.today().strftime("%d/%m/%Y"), 'ban_dk':u'CB', 'quoc_tich':u'Việt Nam', 'index': cl.pupil_set.count()+1,
-                        'class_id':int(class_id), 'start_year_id': start_year.id, 'mother_name':request.POST['mother_name'].strip(), 'father_name':request.POST['father_name'].strip(),
-                        'sms_phone':request.POST['sms_phone']}
-
-            except Exception as e:
-                print e
-            form = PupilForm(school.id, data)
-            #print data
-            if form.is_valid():
-                school_join_date = date.today()
-                birthday = to_date(request.POST['birthday'])
-                data['birthday'] = birthday
-                _class = Class.objects.get(id=class_id)
-                index = _class.max + 1
-                student = add_student( student=data, start_year=start_year,
-                                       year=get_current_year(request),
-                                       _class=_class,
-                                       index= index,
-                                       term=get_current_term(request),
-                                       school=get_school(request),
-                                       school_join_date=school_join_date)
-                message = u'Bạn vừa thêm 1 học sinh'
-                data = simplejson.dumps({'message':message, 'success': True, 'student_id': student.id})
-                return HttpResponse(data, mimetype = 'json')
-                #form = PupilForm(school.id)
-            else:
-                message = ''
+            elif request.POST[u'request_type'] == u'add':
+                start_year = StartYear.objects.get(time = int(date.today().year), school_id = school.id)
                 try:
+                    data = {'first_name':request.POST['first_name'], 'last_name':request.POST['last_name'], 'birthday':request.POST['birthday'],
+                            'sex':request.POST['sex'], 'birth place': request.POST['birth_place'].strip(), 'current_address':request.POST['current_address'].strip(),
+                            'school_join_date': date.today().strftime("%d/%m/%Y"), 'ban_dk':u'CB', 'quoc_tich':u'Việt Nam', 'index': cl.pupil_set.count()+1,
+                            'class_id':int(class_id), 'start_year_id': start_year.id, 'mother_name':request.POST['mother_name'].strip(), 'father_name':request.POST['father_name'].strip(),
+                            'sms_phone':request.POST['sms_phone']}
+
+                except Exception as e:
+                    print e
+                form = PupilForm(school.id, data)
+                #print data
+                if form.is_valid():
+                    school_join_date = date.today()
                     birthday = to_date(request.POST['birthday'])
-                    if birthday >= date.today():
-                        message += u'<li> ' + u'Ngày không hợp lệ' + u'</li>'
+                    print birthday, 'birthday'
+                    data['birthday'] = birthday
+                    _class = Class.objects.get(id=class_id)
+                    index = _class.max + 1
+                    student = add_student( student=data, start_year=start_year,
+                                           year=get_current_year(request),
+                                           _class=_class,
+                                           index= index,
+                                           term=get_current_term(request),
+                                           school=get_school(request),
+                                           school_join_date=school_join_date)
+                    message = u'Bạn vừa thêm 1 học sinh'
+                    data = simplejson.dumps({'message':message, 'success': True, 'student_id': student.id})
+                    return HttpResponse(data, mimetype = 'json')
+                    #form = PupilForm(school.id)
+                else:
+                    message = ''
+                    print 'checked'
+                    try:
+                        birthday = to_date(request.POST['birthday'])
+                        print birthday, 'birthday_2'
+                        if birthday >= date.today():
+                            message += u'<li> ' + u'Ngày không hợp lệ' + u'</li>'
 
-                    find = start_year.pupil_set.filter( first_name__exact = request.POST['first_name'])\
-                    .filter(last_name__exact = request.POST['last_name'])\
-                    .filter(birthday__exact = birthday)
-                    if find:
-                        message += u'<li> ' + u'Học sinh đã tồn tại' + u'</li>'
-                except Exception as e:
-                    message = u'<li> ' + u'Chưa nhập hoặc nhập không đúng định dạng "ngày/tháng/năm" ' + u'</li>'
-                    print e
+                        find = start_year.pupil_set.filter( first_name__exact = request.POST['first_name'])\
+                        .filter(last_name__exact = request.POST['last_name'])\
+                        .filter(birthday__exact = birthday)
+                        if find:
+                            message += u'<li> ' + u'Học sinh đã tồn tại' + u'</li>'
+                    except Exception as e:
+                        message = u'<li> ' + u'Chưa nhập hoặc nhập không đúng định dạng "ngày/tháng/năm" ' + u'</li>'
+                        print e
 
-                try:
-                    if data['sms_phone']:
-                        validate_phone(data['sms_phone'])
-                except Exception as e:
-                    message = u'<li> ' + u'Số điện thoại không tồn tại' + u'</li>'
-                    print e
+                    try:
+                        if data['sms_phone']:
+                            validate_phone(data['sms_phone'])
+                    except Exception as e:
+                        message = u'<li> ' + u'Số điện thoại không tồn tại' + u'</li>'
+                        print e
 
 
-                if not request.POST['first_name']:
-                    message += u'<li> ' + u'Ô tên là bắt buộc' + u'</li>'
+                    if not request.POST['first_name']:
+                        message += u'<li> ' + u'Ô tên là bắt buộc' + u'</li>'
 
-                data = simplejson.dumps({'message': message})
-                return HttpResponse(data, mimetype='json')
+                    data = simplejson.dumps({'message': message})
+                    return HttpResponse(data, mimetype='json')
     if int(sort_type) == 0:
         if int(sort_status) == 0:
             studentList = cl.students().order_by('index','first_name', 'last_name','birthday')
@@ -2738,6 +2741,7 @@ def viewStudentDetail(request, student_id):
                 ttddfrom.save()
                 message = 'Bạn đã cập nhật thành công thông tin đoàn đội'
     if request.is_ajax():
+        print request.POST
         if request.method == 'POST':
             if request.POST['request_type'] == 'ttcn':
                 first_name = ''
