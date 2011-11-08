@@ -101,6 +101,14 @@
                href="{% url school.views.class_generate class.id 'student_list' %}"
                id="export"> Xuất ra Excel </a>
         {% endif %}
+        {% if pos > 3 %}
+            <a class="tiptiphover ggButton"
+               title="Nhắn tin kết quả học tập."
+			   href="/school/sendSMSResult/{{class.id}}">
+			   Nhắn tin kết quả học tập
+			</a>   
+			
+		{% endif %}
     </div>
     {% if pos > 3 %}
         <div id="tableFunction">
