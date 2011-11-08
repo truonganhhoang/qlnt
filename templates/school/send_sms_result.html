@@ -53,7 +53,7 @@
 				data: {data:data, request_type:'del'},
 				datatype:"json",
 				success: function(json) {
-					$("#notify").showNotification(json.result);
+					$("#notify").showNotification(json.result,5000);
 					successStrings=json.successString.split('-');
 					for(s in successStrings)
 					{
@@ -151,6 +151,11 @@
 			<th>
 				Danh hiệu
 			</th>
+			{% if termNumber == 3 %}
+				<th>
+					Xếp loại
+				</th>
+			{% endif %}	
 			<th>
 				Trạng thái
 			</th>
@@ -193,7 +198,7 @@
 				</td>				
 			{% else %}
 				<td>
-					{{ tb.tb_nam }}
+					{{ tb.tb_nam|floatformat:"1"  }}
 				</td>
 				
 				<td>
@@ -205,6 +210,28 @@
 				<td>
 					{{ tb.danh_hieu_nam|convertDHToVietnamese}}
 				</td>
+			{% if termNumber == 3 %}
+				<td>
+					{% if tb.len_lop %}
+						Lên lớp
+					{% else %}	
+					{% if tb.len_lop != None %}
+						Không lên lớp
+					{% else %}
+					{% if tb.thi_lai %}
+						Kt lại
+					{% else %}
+					{% if tb.ren_luyen_lai %}
+						rèn luyện thêm
+					{% else %}
+						&nbsp
+					{% endif %} 	
+					{% endif %} 	
+					{% endif %} 	
+					{% endif %} 	
+						
+				</td>
+			{% endif %}
 			
 			{% endif %}
 				{% if tb.sent %}
