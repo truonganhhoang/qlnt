@@ -40,3 +40,24 @@ def convertMarkToCharacter(x):
         return u'Kém'
     else:
         return  u''   
+@register.filter
+def convertHKToVietnamese(x):
+    if x=='T':
+        return u'Tốt' 
+    elif x=='K':
+        return u'Khá'
+    elif x=='TB':
+        return u'TB'
+    elif x=='Y':
+        return u'Yếu'
+    else:
+        return u''    
+@register.filter
+def convertDHToVietnamese(x):
+    if x=='G':
+        return u'HSG' 
+    elif x=='TT':
+        return u'HSTT'
+    else:
+        return u''    
+  

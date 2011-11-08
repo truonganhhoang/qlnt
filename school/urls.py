@@ -28,6 +28,9 @@ urlpatterns = patterns('',
     
     url(r'saveMark$','school.viewMark.saveMark'),
     url(r'sendSMSMark$','school.viewMark.sendSMSMark'),
+    url(r'sendSMSResult/(?P<class_id>\w+)/(?P<termNumber>\w+)$','school.viewFinish.sendSMSResult'),
+    url(r'sendSMSResult/(?P<class_id>\w+)$','school.viewFinish.sendSMSResult'),
+    
     url(r'saveHocLai$','school.viewFinish.saveHocLai'),
     url(r'saveRenLuyenThem$','school.viewFinish.saveRenLuyenThem'),
     

@@ -21,23 +21,8 @@
     </div>
 </div>
 
-
-	
-{#	<h2> Bảng điểm tổng kết   #}
-{#			{% ifequal number 1 %} #}
-{#				học kỳ I           #}    
-{#			{% else %} #}
-{#			{% ifequal number 2 %} #}
-{#				học kỳ II #}
-{#			{% else %}#}
-{#				cả năm#}
-{#			{% endifequal %}	#}
-{#			{% endifequal %}	#}
-{#			lớp #}
-{#			{{selectedClass.name}}			#}
-{#			năm học:{{yearString}} #}
-{#	</h2> #}
-			
+{% load mark %}
+				
 	
 	<br>
 	<form name="info" >
@@ -104,7 +89,7 @@
 						</td>
 					{% endifequal %}	
 				{% endfor %}
-				{% ifnotequal number  3 %}  
+			{% ifnotequal termNumber  3 %}  
 				<td>
 					{% if tbhocky.tb_hk  %}
 						{{tbhocky.tb_hk}}
@@ -113,56 +98,17 @@
 					{% endif %}	
 				</td>	
 				<td>
-					{% ifequal tbhocky.hl_hk "G" %}
-						Giỏi
-					{% else %} 	
-					{% ifequal tbhocky.hl_hk "K" %}
-						Khá
-					{% else %} 							
-					{% ifequal tbhocky.hl_hk "TB" %}
-						TB
-					{% else %} 							
-					{% ifequal tbhocky.hl_hk "Y" %}
-						Yếu
-					{% else %} 							
-					{% ifequal tbhocky.hl_hk "Kem" %}
-						Kém
-					{% endifequal %}	
-					{% endifequal %}	
-					{% endifequal %}	
-					{% endifequal %}	
-					{% endifequal %}	
+					{{tbhocky.hl_hk|convertHlToVietnamese}}
 				</td>	
 				<td>
-					{% ifequal hk "T"  %}
-						Tốt
-					{% else %}	
-					{% ifequal hk "K"  %}
-						Khá
-					{% else %}	
-					{% ifequal hk "TB"  %}
-						TB
-					{% else %}	
-					{% ifequal hk "Y"  %}
-						Yếu
-					{% endifequal %}	
-					{% endifequal %}	
-					{% endifequal %}	
-					{% endifequal %}	
-						
+					{{hk|convertHKToVietnamese}}
 				</td>	
 				
 				<td>
-					{% ifequal tbhocky.danh_hieu_hk "G" %}
-						HSG
-					{% else %}	
-					{% ifequal tbhocky.danh_hieu_hk "TT" %}
-						HSTT
-					{% endifequal %}	
-					{% endifequal %}	
+					{{tbhocky.danh_hieu_hk|convertDHToVietnamese}}
 				</td>	
 				
-				{% else %}
+			{% else %}
 				<td>
 					{% if tbhocky.tb_nam %}
 						{{tbhocky.tb_nam}}
@@ -172,55 +118,16 @@
 				</td>	
 				
 				<td>
-					{% ifequal tbhocky.hl_nam "G" %}
-						Giỏi
-					{% else %} 	
-					{% ifequal tbhocky.hl_nam "K" %}
-						Khá
-					{% else %} 							
-					{% ifequal tbhocky.hl_nam "TB" %}
-						TB
-					{% else %} 							
-					{% ifequal tbhocky.hl_nam "Y" %}
-						Yếu
-					{% else %} 							
-					{% ifequal tbhocky.hl_nam "Kem" %}
-						Kém
-					{% endifequal %}	
-					{% endifequal %}	
-					{% endifequal %}	
-					{% endifequal %}	
-					{% endifequal %}	
+					{{tbhocky.hl_nam|convertHlToVietnamese}}
 				</td>
 				<td>
-					{% ifequal hk.year "T"  %}
-						Tốt
-					{% else %}	
-					{% ifequal hk.year "K"  %}
-						Khá
-					{% else %}	
-					{% ifequal hk.year "TB"  %}
-						TB
-					{% else %}	
-					{% ifequal hk.year "Y"  %}
-						Yếu
-					{% endifequal %}	
-					{% endifequal %}	
-					{% endifequal %}	
-					{% endifequal %}	
-						
+					{{hk.year|convertHKToVietnamese}}						
 				</td>	
 				
 				<td>
-					{% ifequal tbhocky.danh_hieu_nam "G" %}
-						HSG
-					{% else %}	
-					{% ifequal tbhocky.danh_hieu_nam "TT" %}
-						HSTT
-					{% endifequal %}	
-					{% endifequal %}	
+					{{tbhocky.danh_hieu_nam|convertDHToVietnamese}}
 				</td>	
-				{% endifnotequal %}	
+			{% endifnotequal %}	
 				
 			</tr>
 		{% endfor %}
@@ -241,7 +148,7 @@
 			window.location.href="/school/xepLoaiHlTheoLop/"+{{selectedClass.id}}+"/"+this.value;
 		})
 	});
-	document.getElementById({{number}}).checked=true;	
+	document.getElementById({{termNumber}}).checked=true;	
 </script>
 	
 {% endblock %}
