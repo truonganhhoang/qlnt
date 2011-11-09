@@ -24,7 +24,7 @@
                                             var matcher = new RegExp($.ui.autocomplete.escapeRegex(request.term), "i");
                                             response(select.children("option").map(function() {
                                                 var text = $(this).text();
-                                                if (this.value && ( !request.term || matcher.test(text) ))
+                                                if ((this.value || selected.val()) && ( !request.term || matcher.test(text) ))
                                                     return {
                                                         label: text.replace(
                                                                 new RegExp(
@@ -196,7 +196,6 @@
                     <td> {{ n }} </td>
                     {% if pos >= 4 %}
                         <td>
-{#                            <div class="ui-widget all_teacher autocomplete">#}
                             <div class="all_teacher autocomplete">
                                 {{ f.teacher_id }}
                             </div>
