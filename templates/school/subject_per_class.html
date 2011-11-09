@@ -58,7 +58,7 @@
                                         var matcher = new RegExp($.ui.autocomplete.escapeRegex(request.term), "i");
                                         response(select.children("option").map(function() {
                                             var text = $(this).text();
-                                            if (this.value && ( !request.term || matcher.test(text) ))
+                                            if ((this.value||selected.val())&& ( !request.term || matcher.test(text) ))
                                                 return {
                                                     label: text.replace(
                                                             new RegExp(
@@ -276,7 +276,7 @@
             });
 
             $(".major_teacher").each(function(){
-                if ($(this).parents("td").children("#id_teacher_id").val()==''){
+                if ($(this).parents("td").children(".all_teacher").children("#id_teacher_id").val()==''){
                     $(this).parents("td").children(".all_teacher").hide();
                 }
                 else if ($(this).children("select").val()==''){
@@ -390,7 +390,7 @@
 
                             <div class="ui-widget major_teacher autocomplete">
                                 <select class="combobox" style="margin-left: 5px;">
-                                    <option value="">Chọn một...</option>
+                                    <option value="">----------</option>
                                     {% for iteacher in teachers %}
                                         {% if  forloop.counter == forloop.parentloop.counter %}
                                             {% for teacher in iteacher %}
