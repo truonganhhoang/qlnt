@@ -199,6 +199,7 @@ def feedback(request):
             #print message
             #send_email( subject = subject, message = message,
             #                          to_addr= ['vu.tran54@gmail.com', 'truonganhhoang@gmail.com'])
+            Feedback.objects.create(content = content, title = url, email = school)
             thread.start_new_thread(send_email, (subject, message, GMAIL_LOGIN, ['vu.tran54@gmail.com', 'truonganhhoang@gmail.com','luulethe@gmail.com']))
             return HttpResponse(simplejson.dumps({'success': True}), mimetype='json')
         else:
