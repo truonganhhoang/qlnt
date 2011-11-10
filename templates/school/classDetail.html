@@ -109,24 +109,31 @@
                href="{% url school.views.class_generate class.id 'student_list' %}"
                id="export"> Xuất ra Excel </a>
         {% endif %}
-        {% if pos > 3 or gvcn == 1 %}
+    </div>
+    {% if pos > 3 or gvcn == 1 %}
+        <div id="tableFunction">
             <a class="tiptiphover ggButton"
                title="Nhắn tin kết quả học tập."
 			   href="/school/sendSMSResult/{{class.id}}">
 			   Nhắn tin kết quả học tập
-			</a>   
-			
-		{% endif %}
-    </div>
-    {% if pos > 3 %}
-        <div id="tableFunction">
-            <a class="ggButton tiptiphover "
-               href="{% url school.views.organize_students class.id "0" %}"
-               title="Sắp xếp thứ tự học sinh trong lớp">Sắp xếp</a>
-            <button id="textSms" class="tiptiphover ggButton"
-                    title="Nhắn tin đến những học sinh đã chọn">SMS</button>
-            <button id="delSelected" class="tiptiphover ggButton"
-                    title="Xóa những học sinh đang được chọn">Xóa chọn</button>
+			</a>   			
+			{% if pos == 3 %}
+               <a class="tiptiphover ggButton" title="In phiếu báo điểm." 
+			   href="/school/printMarkForClass/1">
+			   Phiếu báo điểm kì I	</a>   
+               <a class="tiptiphover ggButton" title="In phiếu báo điểm." 
+			   href="/school/printMarkForClass/2">
+			   Phiếu báo điểm kì II	</a>   
+
+			{% else %}
+				<a class="ggButton tiptiphover "
+				   href="{% url school.views.organize_students class.id "0" %}"
+				   title="Sắp xếp thứ tự học sinh trong lớp">Sắp xếp</a>
+				<button id="textSms" class="tiptiphover ggButton"
+						title="Nhắn tin đến những học sinh đã chọn">SMS</button>
+				<button id="delSelected" class="tiptiphover ggButton"
+						title="Xóa những học sinh đang được chọn">Xóa chọn</button>
+			{% endif %}		
         </div>
     {% endif %}
     <table class="styleA fixed_header">

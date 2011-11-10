@@ -69,12 +69,13 @@ urlpatterns = patterns('',
     url(r'count2/(?P<type>\w+)/(?P<modeView>\w+)/(?P<year_id>\w+)/(?P<number>\w+)/(?P<index>\w+)/(?P<isExcel>\w+)$','school.viewCount.count2'),
     
     url(r'printMarkBook$' , 'school.writeExcel.printMarkBook'), 
-    url(r'printMarkBook/(?P<termNumber>\w+)/(?P<class_id>([0-9-])*)$' , 'school.writeExcel.printMarkBook'), 
+    url(r'printMarkBook/(?P<termNumber>\w+)/(?P<class_id>\w+)$' , 'school.writeExcel.printMarkBook'), 
     url(r'markExcel/(?P<term_id>\w+)/(?P<subject_id>\w+)$' , 'school.writeExcel.markExcel'), 
     url(r'importMark/(?P<term_id>\w+)/(?P<subject_id>\w+)$' , 'school.importMark.importMark'), 
     url(r'importMark/(?P<term_id>\w+)/(?P<subject_id>\w+)$' , 'school.importMark.importMark'), 
 
     url(r'printMarkForClass$' , 'school.writeExcel.printMarkForClass'), 
+    url(r'printMarkForClass/(?P<termNumber>\w+)$' , 'school.writeExcel.printMarkForClass'), 
     url(r'printMarkForClass/(?P<termNumber>\w+)/(?P<class_id>\w+)$' , 'school.writeExcel.printMarkForClass'), 
     
     

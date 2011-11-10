@@ -549,38 +549,45 @@ def markBookClass(class_id):
     print (tt2-tt1)
     return response
 
-def printMarkBook(request,termNumber=1,class_id=-2):
+def printMarkBook(request,termNumber=None,class_id=-2):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect( reverse('login'))
     
     message=None
-    year_id=None
-    if year_id==None:
-        year_id=get_current_year(request).id
-    
-    selectedYear =Year.objects.get(id=year_id)    
+    currentTerm=get_current_term(request)
     try:
-        if in_school(request,selectedYear.school_id) == False:
+        if in_school(request,currentTerm.year_id.school_id) == False:
             return HttpResponseRedirect('/school')
     except Exception as e:
         return HttpResponseRedirect(reverse('index'))
-    
-    if get_position(request) != 4:
+    teaching_class=None
+    if get_position(request)==3:        
+        teaching_class = user.teacher.teaching_class()
+        if teaching_class==None:
+            return HttpResponseRedirect('/school')
+        else:
+            class_id=teaching_class.id
+    elif get_position(request) != 4:
        return HttpResponseRedirect('/school')
-    
-    
+
+    if termNumber==None:
+        if currentTerm.number==3:
+            termNumber==2
+        else:
+            termNumber= currentTerm.number    
+        
     class_id  = int(class_id)
-    classList =Class.objects.filter(year_id=selectedYear) 
+    classList =Class.objects.filter(year_id=currentTerm.year_id) 
     if class_id!=-2 :
         return markBookClass(class_id)
-        
-    
+            
     t = loader.get_template(os.path.join('school','print_mark_book.html'))    
     c = RequestContext(request, {"message":message,
                                  'classList':classList,
                                  'termNumber':termNumber,
                                  'classChoice':class_id,
+                                 'teaching_class':teaching_class,
                                 }
                        )
     return HttpResponse(t.render(c))
@@ -1239,6 +1246,7 @@ def markForClass(termNumber,class_id):
     return response
          
 def printMarkForClass(request,termNumber=None,class_id=-2):
+    
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect( reverse('login'))
@@ -1250,21 +1258,27 @@ def printMarkForClass(request,termNumber=None,class_id=-2):
             return HttpResponseRedirect('/school')
     except Exception as e:
         return HttpResponseRedirect(reverse('index'))
-    
-    if get_position(request) != 4:
-       return HttpResponseRedirect('/school')
-    
-    if termNumber==None:
-        if (currentTerm.number>2):
-            termNumber=2
+    teaching_class=None
+    if get_position(request)==3:        
+        teaching_class = user.teacher.teaching_class()
+        if teaching_class==None:
+            return HttpResponseRedirect('/school')
         else:
-            termNumber=currentTerm.number    
+            class_id=teaching_class.id
+    elif get_position(request) != 4:
+       return HttpResponseRedirect('/school')
+
+    if termNumber==None:
+        if currentTerm.number==3:
+            termNumber==2
+        else:
+            termNumber= currentTerm.number    
         
     termNumber=int(termNumber)
     class_id  = int(class_id)
     classList =Class.objects.filter(year_id=currentTerm.year_id.id)
      
-    if class_id!=-2 :
+    if (class_id!=-2):
         return markForClass(termNumber,class_id)
         
     
@@ -1273,6 +1287,7 @@ def printMarkForClass(request,termNumber=None,class_id=-2):
                                  'classList':classList,
                                  'termNumber':termNumber,
                                  'classChoice':class_id,
+                                 'teaching_class':teaching_class,
                                 }
                        )
     return HttpResponse(t.render(c))
