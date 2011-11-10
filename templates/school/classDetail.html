@@ -1,9 +1,6 @@
 {% extends "base.html" %}
 {% load upload_tags %}
 
-{% block css %}
-    <link href="/static/css/template_css/sms.css?0.6" rel="stylesheet" type="text/css"/>
-{% endblock %}
 {% block js %}
     <script type="text/javascript" src="/static/js/template_js/class_detail.js?0.6"></script>
 {% endblock %}
@@ -340,7 +337,7 @@
                         </label>
                     </div>
                     <div class="verticalContent">
-                        <textarea class="smsContext item smsTextarea"
+                        <textarea class="smsContext item popupTextarea"
                                   id="smsContent"
                                   rows="7"
                                   style="width: 250px; max-width: 250px; height: 100px;"></textarea>

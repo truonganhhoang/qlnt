@@ -13,7 +13,7 @@
           media="screen"/>
     <link href="/static/css/layout.css?0.6" rel="stylesheet" type="text/css"/>
     <link href="/static/css/style.css?0.6" rel="stylesheet" type="text/css"/>
-
+    <link href="/static/css/template_css/popup.css?0.6" rel="stylesheet" type="text/css"/>
     {% block css %}
         <!-- For extra css -->
     {% endblock %}
@@ -189,9 +189,9 @@
                             {% endif %}
 
                         {% endif %}
-                        {% if user.userprofile.position == 'GIAO_VIEN' or user.userprofile.position == 'HIEU_TRUONG' or user.userprofile.position == 'HIEU_PHO' or user.userprofile.position == 'GIAO_VU' %}
-                            <li><a class="tiptiphover" href="{%url school.sms_views.manual_sms %}" title="Gửi tin nhắn SMS">Nhắn tin</a></li>
-                        {% endif %}
+{#                        {% if user.userprofile.position == 'GIAO_VIEN' or user.userprofile.position == 'HIEU_TRUONG' or user.userprofile.position == 'HIEU_PHO' or user.userprofile.position == 'GIAO_VU' %}#}
+{#                            <li><a class="tiptiphover" href="{%url school.sms_views.manual_sms %}" title="Gửi tin nhắn SMS">Nhắn tin</a></li>#}
+{#                        {% endif %}#}
                     {% endif %}
                 {% endif %}
             {% endif %}
@@ -220,15 +220,40 @@
 </section>
 
 <div id="place_keeper" style="clear: both;"></div>
-<div style="display: none;">
-    <div class="feedback" id="feedbackDiv" style="resize: None;">
-        <br>
-        <label for="feedback_content">Nội dung góp ý:</label>
-        <br>
+<div id="feedbackWindow" class="popup" style="display: none; z-index: 2000;">
+    <aside style="width: 450px; padding: 10px; float: right; background-color: #f5f5f5; margin-top: 0;">
+        <div id="feedbackClose" style="width: 100%;">
+            <span class="ui-icon ui-icon-circle-close" style="float: right; width: 17px; height: 20px;"></span>
+        </div>
+        <div class="placeholder" style="clear: both;"></div>
+        <div class="mainFeedback">
+            <div class="feedback tr">
+                <div class="verticalLabel">
+                    <label for="feedbackContent" style="vertical-align: top;">
+                        <b style="vertical-align: top; width: 50px;">Nội dung:</b>
+                    </label>
+                </div>
+                <div class="verticalContent">
+                    <textarea class="feedbackContext item popupTextarea"
+                              id="feedbackContent"
+                              rows="7"
+                              style="width: 350px; max-width: 350px; height: 300px;"></textarea>
+                </div>
+            </div>
+            <div class="placeHolder" style="clear: both;"></div>
+            <div class="buttons tr">
+                <div class="verticalLabel">
+                    <p>&nbsp;</p>
+                </div>
+                <div class="verticalContent">
+                    <button class="ggButton" id="sendFeedback">Gửi</button>
+                </div>
 
-        <p class="errorlist" id="feedback_message"></p>
-        <textarea name="feedback_content" id="feedback_content" rows="10" cols="40"></textarea>
-    </div>
+            </div>
+            <div class="placeHolder" style="clear: both;"></div>
+        </div>
+    </aside>
+    <div class="placeholder" style="clear: both;"></div>
 </div>
 <div class="notify-widget-pane">
     <div class="notify" id="notify" style="display: none;">

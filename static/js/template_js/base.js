@@ -3,7 +3,7 @@
  * User: vutran
  * Date: 8/4/11
  * Time: 6:05 AM
- * 
+ *
  */
 
 var applyListener = function(){
@@ -98,8 +98,8 @@ $(document).ready(function(){
     $.fn.is_harmful = function(origin){
         origin = toAscii(origin);
         origin = origin.replace(/\//g,' ').replace(/-/g,' ')
-                       .replace('@',' ').replace('Nhanh:','')
-                       .replace('nhanh:','');
+                .replace('@',' ').replace('Nhanh:','')
+                .replace('nhanh:','');
         if ($.encoder.encodeForHTML($.encoder.canonicalize(origin)) != origin ) return true;
         return $.encoder.encodeForJavascript($.encoder.canonicalize(origin)) != origin;
 
@@ -143,9 +143,9 @@ $(document).ready(function(){
     // end jquery global function
 
     $.datepicker.setDefaults(
-        $.extend(
-            $.datepicker.regional['vi']
-        )
+            $.extend(
+                    $.datepicker.regional['vi']
+            )
     );
 
 
@@ -213,45 +213,50 @@ $(document).ready(function(){
     });
 
     $("#feedback").click(function(){
-        $("#feedbackDiv").dialog('open');
+        if ($("#feedbackWindow").css('display') == 'none'){
+            var buttonOffsetTop = $(this).offset().top;
+            var contentWidth = parseInt($("#content").css('width'));
+            var feedbackWindow = $("#feedbackWindow");
+            var feedbackWindowWidth = parseInt(feedbackWindow.css('width'));
+            feedbackWindow.css('position', 'absolute');
+            feedbackWindow.css('top', buttonOffsetTop + 35);
+            feedbackWindow.css('left', contentWidth - feedbackWindowWidth + 30);
+            feedbackWindow.slideDown(350);
+        } else $("#feedbackWindow").slideUp(350);
+        return false;
     });
 
-    var done = function(){
-        $("#feedbackDiv").dialog('close');
-        $("#feedback_content").val('');
-    };
+    $("#feedbackClose").click(function(){
+        $("#feedbackWindow").fadeOut(400);
+    });
 
-
-    $("#feedbackDiv").dialog({
-        modal : true,
-        buttons: {
-            Gửi: function(){
-                var data = $("#feedback_content").val();
-                if ( data == ''){
-                    $("#feedback_message").text("Bạn vui lòng điền nội dung để góp ý.");
-                } else {
-                    var feedback_url = window.location.href;
-                    var arg = { type:"POST",
-                        url:"/app/feedback/",
-                        data:{content: data,
-                              feedback_url: feedback_url},
-                        datatype:"json",
-                        success: done
-                    };
-                    $.ajax(arg);
-
+    $("#sendFeedback").click(function(){
+        var content = $("#feedbackContent").val();
+        console.log(content);
+        if (content.replace(/ /g,'') == ''){
+            $("#notify").showNotification("Nội dung còn trống", 3000);
+        } else {
+            var feedbackUrl = window.location.href;
+            var arg = {
+                type:"POST",
+                global: false,
+                url:"/app/feedback/",
+                data:{content: content,
+                    feedback_url: feedbackUrl},
+                datatype:"json",
+                success: function(json){
+                    if (json.success){
+                        $("#feedbackWindow").fadeOut(400);
+                        $("#notify").showNotification("Đã gửi góp ý", 3000);
+                    } else {
+                        $("#notify").showNotification("Không gửi được góp ý lên máy chủ", 2000);
+                    }
                 }
-            },
-            Đóng: function(){ $(this).dialog('close');}
-        },
-        autoOpen: false,
-        position:'center',
-        width: 440,
-        height: 370,
-//        maxWidth: 500,
-//        maxHeight: 450,
-        title: "Góp ý"
-    });
+            };
+            $.ajax(arg);
+        }
 
+        return false;
+    });
 });
 

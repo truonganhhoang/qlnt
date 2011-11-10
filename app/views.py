@@ -12,6 +12,7 @@ from app.models import UserForm, Organization, UserProfile, ChangePasswordForm, 
 import django.template
 from django import forms
 from django.shortcuts import render_to_response
+from django.utils import simplejson
 #from objectpermission.decorators import object_permission_required
 from django.contrib.auth import REDIRECT_FIELD_NAME, login as auth_login
 
@@ -199,7 +200,7 @@ def feedback(request):
             #send_email( subject = subject, message = message,
             #                          to_addr= ['vu.tran54@gmail.com', 'truonganhhoang@gmail.com'])
             thread.start_new_thread(send_email, (subject, message, GMAIL_LOGIN, ['vu.tran54@gmail.com', 'truonganhhoang@gmail.com','luulethe@gmail.com']))
-            return HttpResponse({'done': True})
+            return HttpResponse(simplejson.dumps({'success': True}), mimetype='json')
         else:
             form = FeedbackForm(request.POST) # A form bound to the POST data
             if form.is_valid():
