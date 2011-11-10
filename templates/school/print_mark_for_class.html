@@ -26,8 +26,7 @@ Học kỳ
 <script>
 function reset()
 {
-	if (document.getElementById("classList"))
-		document.getElementById("classList").value="-2";
+	document.getElementById("classList").value="-2";
 }
 function submit(tb)
 {
@@ -40,30 +39,25 @@ function submit(tb)
     <option value ="1" > Học kỳ I  </option>
     <option value ="2" > Học kỳ II    </option>	 
 </select>
-{% if not teaching_class %}
-	&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-	Lớp
-	<select id="classList" onchange="submit(this)" >
-			<option value="-2" >Chọn lớp </option>
-		{% for c in classList %}
-			<option value="{{c.id}}">{{c.name}}  </option>	
-		{% endfor %}
-			<option value="-1">Toàn trường </option>
-	</select>
-	<br>
-	<br>
-	<p>
-		(Chọn kỳ và lớp để tải file báo cáo Excel về. Sau đó bạn có thể mở file Excel xem báo cáo trên máy.)
+
+&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+Lớp
+<select id="classList" onchange="submit(this)" >
+		<option value="-2" >Chọn lớp </option>
+	{% for c in classList %}
+		<option value="{{c.id}}">{{c.name}}  </option>	
+	{% endfor %}
+		<option value="-1">Toàn trường </option>
+</select>
+<br>
+  <br>
+  <p>
+(Chọn kỳ và lớp để tải file báo cáo Excel về. Sau đó bạn có thể mở file Excel xem báo cáo trên máy.)
     </p>
-{% else %}	
-	&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-	<button class="ggButton"> Xuất ra excel </button>
-{% endif %}
 
 <script>
 	document.getElementById("mode").value={{termNumber}}; 
-	if (document.getElementById("classList")) 
-		document.getElementById("classList").value={{classChoice}}; 	
+	document.getElementById("classList").value={{classChoice}}; 	
 </script>
 	
 	
