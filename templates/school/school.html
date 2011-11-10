@@ -122,6 +122,13 @@
           {% if teaching_class %}
             <h2>Lớp chủ nhiệm: 
 			<a  href="school/viewClassDetail/{{teaching_class.id}}" > {{ teaching_class }} </a></h2>
+			<h2>Điểm lớp chủ nhiệm: </h2> 
+            {% for subject in head_subjects %}
+              <a class="classDiv"
+                 href="school/markForTeacher/2/{{term.id}}/{{subject.id}}">
+                <span>{{ subject.name }}</span>
+              </a>
+            {% endfor %}
           {% else %}
             <h2>(Bạn không chủ nhiệm lớp nào.)</h2>
           {% endif %}

@@ -12,7 +12,7 @@
 			> {{selectedSubject.name}}
 		{% endif %}
 	{% else %}
-    > <a href="/school/markForTeacher">Điểm</a>
+    > <a href="/school/markForTeacher/{{type}}">Điểm</a>
 		{% if selectedSubject %}
 			> {{selectedSubject.name}}-{{selectedSubject.class_id.name}}
 		{% endif %}

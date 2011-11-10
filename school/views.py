@@ -65,13 +65,19 @@ def school_index(request):
         return render_to_response(SCHOOL,{'classes': classes,
                                           'grades': grades}, context_instance=context)
     elif user_type == 'GIAO_VIEN':
-        teaching_subjects = Subject.objects.filter(teacher_id = user.teacher)
+        teaching_subjects = Subject.objects.filter(teacher_id = user.teacher).order_by("class_id__block_id__number","index")
         teaching_class = user.teacher.teaching_class()
         term = get_current_term(request)
+        if term.number==3:
+            term =Term.objects.get(year_id=term.year_id,number=2) 
+        head_subjects=None
+        if teaching_class:
+            head_subjects=Subject.objects.filter(class_id=teaching_class).order_by("index")
         context = RequestContext(request)
 
         return render_to_response(SCHOOL,{'teaching_subjects': teaching_subjects,
-                                          'term': term, 'teaching_class': teaching_class},
+                                          'term': term, 'teaching_class': teaching_class,
+                                          'head_subjects':head_subjects},
                                   context_instance=context)
     elif user_type  == 'HOC_SINH':
         return HttpResponseRedirect(reverse('student_detail', args=[user.pupil.id]))

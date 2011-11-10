@@ -313,10 +313,9 @@ def markForTeacher(request,type=1,term_id=-1,subject_id=-1,move=None):
     enableSendSMS   =True        
     message = None            
     list=None
-    subjectList=None
-    
+    subjectList=None    
     currentTerm =get_current_term(request) 
-    
+    if type==None: type=1
     if termChoice==-1:  
         selectedTerm=currentTerm
         if selectedTerm.number ==3:
