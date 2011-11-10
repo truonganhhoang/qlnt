@@ -58,14 +58,20 @@
         {% if pos > 3 %}
             <a title="Nhập hoặc chỉnh sửa điểm của tất cả các môn trong lớp" class="tiptiphover ggButton"
                href="{%url school.views.school_index  %}markTable/{{currentTerm.id}}/{{class.id}}">Điểm</a>
-        {% endif %}
-
+        {% else %}
+		{% if gvcn %}
+            <a title="Xem điểm các môn do người dùng chủ nhiệm" class="tiptiphover ggButton"
+               href="/school/markForTeacher/2/{{currentTerm.id}}">Điểm</a>
+		{% endif %}			
+		{% endif %}
+		
+		
         {% if pos > 2 %}
             <a title="Đánh giá hạnh kiểm học sinh trong lớp" class="tiptiphover ggButton"
                href="{%url school.views.school_index  %}hanhkiem/{{class.id}}">Hạnh kiểm</a>
         {% endif %}
 
-        {% if pos > 3 %}
+        {% if pos > 3 or gvcn == 1 %}
             {% ifequal class.year_id.school_id.status 1 %}
                 <a title="Tính trung bình học lực của cả lớp" class="tiptiphover ggButton"
                    href="{%url school.views.school_index  %}xepLoaiHlTheoLop/{{class.id}}/1">
@@ -96,12 +102,14 @@
                title="Nhập danh sách học sinh từ file Excel"
                href="#popupDiv"
                id="import" > Nhập từ Excel </a>
+        {% endif %}
+        {% if pos > 3 or gvcn == 1 %}
             <a class="tiptiphover ggButton"
                title="Xuất danh sách học sinh ra file Excel."
                href="{% url school.views.class_generate class.id 'student_list' %}"
                id="export"> Xuất ra Excel </a>
         {% endif %}
-        {% if pos > 3 %}
+        {% if pos > 3 or gvcn == 1 %}
             <a class="tiptiphover ggButton"
                title="Nhắn tin kết quả học tập."
 			   href="/school/sendSMSResult/{{class.id}}">

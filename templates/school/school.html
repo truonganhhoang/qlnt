@@ -110,7 +110,7 @@
             <h2>Các lớp giảng dạy</h2>
             {% for subject in teaching_subjects %}
               <a class="classDiv"
-                 href="{% url school.viewMark.markForTeacher term.id subject.id %}">
+                 href="school/markForTeacher/1/{{term.id}}/{{subject.id}}">
                 <span class="classname"> {{ subject.class_id }} </span>
                 <span class="dimmer">Điểm</span>
                 <span>{{ subject.name }}</span>
@@ -120,7 +120,8 @@
           {% endif %}
 
           {% if teaching_class %}
-            <h2>Lớp chủ nhiệm: {{ teaching_class }}</h2>
+            <h2>Lớp chủ nhiệm: 
+			<a  href="school/viewClassDetail/{{teaching_class.id}}" > {{ teaching_class }} </a></h2>
           {% else %}
             <h2>(Bạn không chủ nhiệm lớp nào.)</h2>
           {% endif %}

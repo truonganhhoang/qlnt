@@ -286,7 +286,7 @@ def markTable(request,term_id=-1,class_id=-1,subject_id=-1,move=None):
 
     return HttpResponse(t.render(c))
 
-def markForTeacher(request,term_id=-1,subject_id=-1,move=None):
+def markForTeacher(request,type=1,term_id=-1,subject_id=-1,move=None):
     tt1=time.time()
     user = request.user
     if not user.is_authenticated():
@@ -299,9 +299,13 @@ def markForTeacher(request,term_id=-1,subject_id=-1,move=None):
         selectedSubject=None
         if subjectChoice!=-1:
             selectedSubject=Subject.objects.get(id=subjectChoice)    
-            if idTeacher != selectedSubject.teacher_id.id:
-                return HttpResponseRedirect('/school')
-        
+            if int(type)==1:
+                if idTeacher != selectedSubject.teacher_id.id:
+                    return HttpResponseRedirect('/school')
+            else:
+                if selectedSubject.class_id.teacher_id.id != idTeacher:
+                    print  selectedSubject.class_id.teacher_id   
+                    return HttpResponseRedirect('/school')        
     except Exception as e:
         return HttpResponseRedirect('/school')
 
@@ -322,14 +326,21 @@ def markForTeacher(request,term_id=-1,subject_id=-1,move=None):
     
     if (selectedTerm.year_id.time<currentTerm.year_id.time) | ((selectedTerm.year_id.time==currentTerm.year_id.time) & (selectedTerm.number<currentTerm.number)):
         enableChangeMark=False
-                    
     termChoice = selectedTerm.id    
     yearChoice = selectedTerm.year_id.id
             
     termList= Term.objects.filter(year_id=yearChoice,number__lt=3).order_by('number')    
-    
-    subjectList=Subject.objects.filter(teacher_id=idTeacher,class_id__year_id=yearChoice,primary__in=[0,selectedTerm.number,3,4])
-    
+    if int(type)==1:
+        subjectList=Subject.objects.filter(teacher_id=idTeacher,class_id__year_id=yearChoice,primary__in=[0,selectedTerm.number,3,4]).order_by("class_id__block_id__number","index")
+    else:
+        teaching_class=request.user.teacher.teaching_class()
+        subjectList=Subject.objects.filter(class_id=teaching_class,primary__in=[0,selectedTerm.number,3,4]).order_by("index")
+        if subjectChoice!=-1:
+            if selectedSubject.teacher_id==None:
+                enableChangeMark=False
+            elif  selectedSubject.teacher_id.id != idTeacher:
+                enableChangeMark=False
+
     if subjectChoice!=-1:
         list=getMark(subjectChoice,selectedTerm)    
     lengthList=0            
@@ -339,6 +350,7 @@ def markForTeacher(request,term_id=-1,subject_id=-1,move=None):
     t = loader.get_template(os.path.join('school','mark_table.html'))    
     c = RequestContext(request, { 
                                 'message' : message,
+                                'type':type,
                                 'enableChangeMark':enableChangeMark,
                                 'enableSendSMS':enableChangeMark,
 
