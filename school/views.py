@@ -685,8 +685,9 @@ def class_generate(request, class_id, object):
         sheet.write(4,5,'Dân tộc', style_bold)
         sheet.write(4,6,'Chỗ ở hiện tại', style_bold)
         sheet.write(4,7,'Số điện thoại', style_bold)
-        sheet.write(4,8,'Ghi chú', style_bold)
-        sheet.write(4,9, 'Tên tài khoản', style_bold)
+        sheet.write(4,8,'Số điện thoại nhắn tin', style_bold)
+        sheet.write(4,9,'Ghi chú', style_bold)
+        sheet.write(4,10, 'Tên tài khoản', style_bold)
         row = 5
         for student in student_list:
             sheet.row(row).height = 350
@@ -698,8 +699,9 @@ def class_generate(request, class_id, object):
             sheet.write(row, 5, student.dan_toc, style)
             sheet.write(row, 6, student.current_address, style)
             sheet.write(row, 7, student.phone, style)
-            sheet.write(row, 8, '', style)
-            sheet.write(row, 9, student.user_id.username, style)
+            sheet.write(row, 8, student.sms_phone, style)
+            sheet.write(row, 9, '', style)
+            sheet.write(row, 10, student.user_id.username, style)
             row +=1
             #return HttpResponse
         response = HttpResponse(mimetype='application/ms-excel')
