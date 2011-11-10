@@ -153,7 +153,7 @@
         <tr class="thread">
             {% if pos > 3 %}
                 <th class="leftAlign" title="Chọn cả lớp" class="tiptiphover" style="text-align: center;">
-                    <input type="checkbox" id="checkbox_all"/>
+                    <input type="checkbox" id="checkbox_all" class="studentCheckbox"/>
                 </th>
             {% endif %}
             <th class="leftAlign"><a
@@ -184,7 +184,7 @@
             <tr class="{{ss.id}}">
                 {% if pos > 3 %}
                     <td style="text-align: center;">
-                        <input type="checkbox" id="checkbox_{{ss.id}}"/>
+                        <input type="checkbox" id="checkbox_{{ss.id}}" class="studentCheckbox"/>
                     </td>
                 {% endif %}
                 <td> {{ forloop.counter }} </td>
@@ -327,18 +327,29 @@
                 <div class="placeHolder" style="clear: both;"></div>
                 <div class="sms tr">
                     <div class="verticalLabel">
+                        &nbsp;
+                    </div>
+                    <div class="verticalContent">
+                        <input type="checkbox" id="includeStudentName" checked="checked" style="float: left;">
+                        &nbsp;Gửi kèm theo tên học sinh
+                    </div>
+                    <div class="placeholder" style="clear: both;"></div>
+                    <div class="verticalLabel">
                         <label for="smsContent" style="vertical-align: top;">
                             <b style="vertical-align: top; width: 50px;">Nội dung:</b>
                         </label>
                     </div>
                     <div class="verticalContent">
-                        <textarea class="smsContext item smsTextarea" id="smsContent" style="width: 250px; max-width: 250px;"></textarea>
+                        <textarea class="smsContext item smsTextarea"
+                                  id="smsContent"
+                                  rows="7"
+                                  style="width: 250px; max-width: 250px; height: 100px;"></textarea>
                     </div>
                 </div>
                 <div class="placeHolder" style="clear: both;"></div>
                 <div class="buttons tr">
                     <div class="verticalLabel">
-                        <p>&nbsp</p>
+                        <p>&nbsp;</p>
                     </div>
                     <div class="verticalContent">
                         <button class="ggButton" id="send" disabled="disabled">Gửi</button>
@@ -351,7 +362,6 @@
                         <p>&nbsp</p>
                     </div>
                     <div id="smsErrorDetail" class=" verticalContent errorlist errorDiv" style="display: none;">
-
                     </div>
                 </div>
                 <div class="placeHolder" style="clear: both;"></div>

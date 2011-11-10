@@ -49,7 +49,7 @@ def sendSMS(phone,content,user):
                             unicode(user)  + '.\n' + content)
             s = sms(phone=phone, content=content, sender=user, recent=True, success=True)
             s.save()
-
+            print content
             client = Client(url, username = username, password = password)
             message = \
         '''<?xml version="1.0" encoding="UTF-8"?>

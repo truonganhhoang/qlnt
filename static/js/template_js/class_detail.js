@@ -31,19 +31,20 @@ $(document).ready(function() {
                         global: false
                     });
                     $("#student_placeholder").load("/school/getStudent/" + json.student_id + "/",
-                            function() {
-                                $.ajaxSetup({
-                                    global: true
-                                });
-                                var newStudent = $("#student_placeholder").find("tr");
-                                newStudent.insertBefore(self).click(select);
-                                var stt = parseInt(theLast.find('td:eq(1)').text());
-                                if (stt) newStudent.find('td:eq(1)').text(stt + 1);
-                                else newStudent.find('td:eq(1)').text(1);
-                                $("#notify").showNotification(json.message);
-                                $(".form").find('input:text').val('');
-                                $(".form").find('input#id_dan_toc').val('Kinh');
-                            })
+                        function() {
+                            $.ajaxSetup({
+                                global: true
+                            });
+                            var newStudent = $("#student_placeholder").find("tr");
+                            newStudent.insertBefore(self).click(select);
+                            var stt = parseInt(theLast.find('td:eq(1)').text());
+                            if (stt) newStudent.find('td:eq(1)').text(stt + 1);
+                            else newStudent.find('td:eq(1)').text(1);
+                            $(".form").find('input:text').val('');
+                            $(".form").find('input#id_dan_toc').val('Kinh');
+                            $("#notify").showNotification(json.message);
+                                                        
+                        })
 
                 }
             }
@@ -84,7 +85,7 @@ $(document).ready(function() {
             if ($(this).hasClass('selected')) {
                 $(this).removeClass('selected');
                 $(checkboxid).prop("checked", false);
-                var n = $("input:checked").length;
+                var n = $("input.studentCheckbox:checked").length;
                 if (n == 1 || n==0) {
                     $(checkboxall).prop("checked", false);
                     $("#showChosenStudent").html("Chưa chọn học sinh nào");
@@ -96,7 +97,7 @@ $(document).ready(function() {
                 $(this).addClass('selected');
                 $(checkboxid).prop("checked", true);
                 $(checkboxall).prop("checked", true);
-                var n = $("input:checked").length;
+                var n = $("input.studentCheckbox:checked").length;
                 $("#showChosenStudent").html( (n-1).toString() + " học sinh");
                 $("#send").removeAttr('disabled');
             }
@@ -168,8 +169,8 @@ $(document).ready(function() {
             smsWindow.css('position', 'absolute');
             smsWindow.css('top', buttonOffsetTop + 30);
             smsWindow.css('left', contentWidth - smsWindowWidth + 30);
-            smsWindow.fadeIn(400);
-        } else $("#smsWindow").fadeOut(400);
+            smsWindow.slideDown(400);
+        } else $("#smsWindow").slideUp(400);
     });
     $("#smsClose").click(function(){
         $("#smsWindow").fadeOut(400);
@@ -189,12 +190,13 @@ $(document).ready(function() {
                 global: false,
                 data: { content:content,
                     request_type:'send_sms',
+                    include_name: $("#includeStudentName").is(':checked'),
                     student_list:studentList},
                 datatype:"json",
                 success: function(json) {
                     $("#notify").showNotification("Đã gửi "+ json.number_of_sent +" tin nhắn");
                     $("#smsProgressbar").hide();
-                    if (json.number_of_blank != '0' && json.number_of_failed != '0'){
+                    if (json.number_of_blank != '0' || json.number_of_failed != '0'){
                         var html = "<ul>";
                         if (parseInt(json.number_of_blank) > 0)
                             html += "<li>" + json.number_of_blank + " học sinh không có số điện thoại.</li>";

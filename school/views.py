@@ -1858,8 +1858,10 @@ def viewClassDetail(request, class_id, sort_type=0, sort_status=0):
             elif request.POST[u'request_type'] == u'send_sms':
                 try:
                     content = request.POST[u'content'].strip()
+                    include_name = request.POST[u'include_name']
                     student_list = request.POST[u'student_list']
                     student_list = student_list.split("-")
+                    print request.POST
                     sts = []
                     for student in student_list:
                         if student:
@@ -1872,10 +1874,18 @@ def viewClassDetail(request, class_id, sort_type=0, sort_status=0):
                     for student in students:
                         if student.sms_phone:
                             try:
-                                if sendSMS(student.sms_phone, to_en1(content), user) == '1':
-                                    number_of_sent += 1
+                                if include_name == 'true':
+                                    if sendSMS(student.sms_phone,to_en1('(' + student.first_name + ')' + content),
+                                               user) == '1':
+                                        number_of_sent += 1
+                                    else:
+                                        number_of_failed += 1
                                 else:
-                                    number_of_failed += 1
+                                    print 'temp'
+                                    if sendSMS(student.sms_phone, to_en1(content), user) == '1':
+                                        number_of_sent += 1
+                                    else:
+                                        number_of_failed += 1
                             except Exception as e:
                                 number_of_failed += 1
                         else:
@@ -1885,6 +1895,7 @@ def viewClassDetail(request, class_id, sort_type=0, sort_status=0):
                         'number_of_blank': number_of_blank,
                         'number_of_failed': number_of_failed
                     })
+                    print data
                     return HttpResponse(data, mimetype='json')
                 except Exception as e:
                     print e
