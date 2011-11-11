@@ -64,6 +64,7 @@ TINH_CHOICRES = ((1,u'An Giang'),(2,u'Bà Rịa-Vũng Tàu'),(3,u'Bạc Liêu'),
     (47,u'Quảng Nam'),(48,u'Quảng Ngãi'),(49,u'Quảng Ninh'),(50,u'Quảng Trị'),(51,u'Sóc Trăng'),(52,u'Sơn La'),
     (53,u'Tây Ninh'),(54,u'Thái Bình'),(55,u'Thái Nguyên'),(56,u'Thanh Hóa'),(57,u'Thừa Thiên-Huế'),
     (58,u'Tiền Giang'),(59,u'Trà Vinh'),(60,u'Tuyên Quang'),(61,u'Vĩnh Long'),(62,u'Vĩnh Phúc'),(63,u'Yên Bái'))
+DAY_CHOICE =((2, u'Thu 2'), (2, u'Thu 2'), (3, u'Thu 3'), (4, u'Thu 4'), (5, u'Thu 5'), (6, u'Thu 6'), (7, u'Thu 7'))
 
 def this_year():
     return int(date.today().year)
@@ -285,6 +286,9 @@ class Class(models.Model):
             return unicode(self.teacher_id)
         else:
             return None
+    def strip_name(self):
+        return self.name.lower().replace(' ', '')
+    
     def __unicode__(self):
         return self.name
 
@@ -460,6 +464,9 @@ class Subject(models.Model):
     
     def __unicode__(self):
         return self.name
+
+    def strip_name(self):
+        return self.name.lower().replace(' ', '')
     
     #class Admin: pass
 
@@ -689,6 +696,15 @@ class TKDiemDanh(models.Model):
     class Meta:
         verbose_name = "Tổng kết điểm danh"
         verbose_name_plural = "Tổng kết điểm danh"
-    
+
     def __unicode__(self):
         return self.student_id.__unicode__()
+
+class TKB(models.Model):
+    class_id = models.ForeignKey(Class, verbose_name= "Lop")
+    day = models.SmallIntegerField("Thu", choices=DAY_CHOICE)
+    period_1 = models.ForeignKey(Subject, related_name="Tiet 1", blank = True, null = True)
+    period_2 = models.ForeignKey(Subject, related_name="Tiet 2", blank = True, null = True)
+    period_3 = models.ForeignKey(Subject, related_name="Tiet 3", blank = True, null = True)
+    period_4 = models.ForeignKey(Subject, related_name="Tiet 4", blank = True, null = True)
+    period_5 = models.ForeignKey(Subject, related_name="Tiet 5", blank = True, null = True)

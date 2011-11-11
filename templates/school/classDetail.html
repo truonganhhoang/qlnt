@@ -52,6 +52,9 @@
                href="{%url school.views.school_index  %}diemdanh/{{class.id}}">Điểm danh</a>
         {% endif %}
 
+        <a title="Xem thời khóa biểu lớp" class="tiptiphover ggButton"
+               href="/school/timeTable/{{class.id}}">Thời khóa biểu</a>
+
         {% if pos > 3 %}
             <a title="Nhập hoặc chỉnh sửa điểm của tất cả các môn trong lớp" class="tiptiphover ggButton"
                href="{%url school.views.school_index  %}markTable/{{currentTerm.id}}/{{class.id}}">Điểm</a>

@@ -1,0 +1,171 @@
+{% extends "base.html" %}
+{% load upload_tags %}
+
+{% block backward_link %}
+    <a href="{% url school.views.school_index %}"> Trang chủ </a>
+    > <a href="{% url school.views.school_index %}classes">Toàn trường</a>
+    > Thời khóa biểu
+{% endblock %}
+{% block content %}
+    {% if pos > 1 %}
+        <script>
+            $(document).ready(function() {
+                $("#import").click(function() {
+                    $("#fileupload").dialog('open');
+                });
+
+                $("#fileupload").dialog({
+                    modal : true,
+                    buttons: {
+                        Đóng: function() {
+                            location.reload('true');
+                            $(this).dialog('close');
+                        }
+                    },
+                    autoOpen: false,
+                    width: 700,
+                    height: 400,
+                    maxWidth: 700,
+                    maxHeight: 400,
+                    title: "Nhập TKB toàn trường từ file Excel"
+                });
+            });
+        </script>
+
+        <script language="JavaScript" type="text/javascript">
+            function submitClass() {
+                if (document.info.classChange.value !={{class.id}}) {
+                    window.location = "{%url school.views.school_index  %}timeTable/" + document.info.classChange.value;
+                }
+            }
+        </script>
+    {% endif %}
+
+    <div id="submenu">
+        {% if pos > 3 %}
+            <a class="tiptiphover ggButton"
+               title="Nhập TKB toàn trường từ file Excel"
+               href="#popupDiv"
+               id="import"> Nhập từ Excel </a>
+        {% endif %}
+    </div>
+
+    <form action="" name="info" method="post">{% csrf_token %}
+        {% if pos > 1 %}
+            <h2> Thời khóa biểu lớp
+                <select name="classChange" onchange="submitClass()">
+                    {% for cl in classList %}
+                        {% if cl.id != class.id %}
+                            <option value={{ cl.id }}> {{ cl }}</option>
+                        {% else %}
+                            <option selected="selected" value={{ cl.id }}> {{ cl }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            </h2>
+        {% else %}
+            <h2> Thời khóa biểu lớp {{ class }}</h2>
+        {% endif %}
+    </form>
+
+    {% if not timeTable %}
+        Chưa có thời khóa biểu
+    {% else %}
+        <table class="styleA fixed_header">
+            <colgroup style="width: 5%;"></colgroup>
+            <colgroup style="width: 12%;"></colgroup>
+            <colgroup style="width: 12%;"></colgroup>
+            <colgroup style="width: 12%;"></colgroup>
+            <colgroup style="width: 12%;"></colgroup>
+            <colgroup style="width: 12%;"></colgroup>
+            <tr>
+                <th>Thứ</th>
+                <th>Tiết 1</th>
+                <th>Tiết 2</th>
+                <th>Tiết 3</th>
+                <th>Tiết 4</th>
+                <th>Tiết 5</th>
+            </tr>
+            {% for t in timeTable %}
+                <tr>
+                    <th>Thu {{ t.day }}</th>
+                    {% if t.period_1  %}
+                        <td>
+                            <p></p><a href="{% url school.views.school_index %}viewSubjectDetail/{{ t.period_1.id }}">{{ t.period_1 }}</a></p>
+                            <p>GV: {{ t.period_1.teacher_id }}</p>
+                        </td>
+                    {% else %}
+                        <td> </td>
+                    {% endif %}
+
+                    {% if t.period_2  %}
+                        <td>
+                            <p></p><a href="{% url school.views.school_index %}viewSubjectDetail/{{ t.period_2.id }}">{{ t.period_2 }}</a></p>
+                            <p>GV: {{ t.period_2.teacher_id }}</p>
+                        </td>
+                    {% else %}
+                        <td> </td>
+                    {% endif %}
+
+                    {% if t.period_3  %}
+                        <td>
+                            <p></p><a href="{% url school.views.school_index %}viewSubjectDetail/{{ t.period_3.id }}">{{ t.period_3 }}</a></p>
+                            <p>GV: {{ t.period_3.teacher_id }}</p>
+                        </td>
+                    {% else %}
+                        <td> </td>
+                    {% endif %}
+
+                    {% if t.period_4  %}
+                        <td>
+                            <p></p><a href="{% url school.views.school_index %}viewSubjectDetail/{{ t.period_4.id }}">{{ t.period_4 }}</a></p>
+                            <p>GV: {{ t.period_4.teacher_id }}</p>
+                        </td>
+                    {% else %}
+                        <td> </td>
+                    {% endif %}
+
+                    {% if t.period_5  %}
+                        <td>
+                            <p></p><a href="{% url school.views.school_index %}viewSubjectDetail/{{ t.period_5.id }}">{{ t.period_5 }}</a></p>
+                            <p>GV: {{ t.period_5.teacher_id }}</p>
+                        </td>
+                    {% else %}
+                        <td> </td>
+                    {% endif %}
+
+                </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+
+
+    <div style="display: none;">
+        <div id="fileupload">
+            <form method="post" action="" enctype="multipart/form-data">
+                <div class="fileupload-buttonbar">
+                    {% csrf_token %}
+                    <label class="fileinput-button">
+                        <span>Chọn file...</span>
+                        <input type="file" name="file" multiple>
+                    </label>
+                    <button type="submit" id="startUpload" class="start">Tải file lên</button>
+                </div>
+            </form>
+            <div class="fileupload-content">
+                <table class="files"></table>
+                <div class="fileupload-progressbar"></div>
+            </div>
+            <div id="errorDetail" class="errorlist errorDiv" style="display: none;">
+            </div>
+            <div class="hint">
+                <p>
+                    Chú ý: Phải dùng file Excel theo <a href="{{ MEDIA_URL }}template_files/ThoiKhoaBieu_template.xls">mẫu
+                    này</a>.
+                </p>
+            </div>
+        </div>
+    </div>
+    {% upload_js %}
+    <script type="text/javascript" src="/static/js/jquery_file_upload/qlnt_upload_for_tkb.js"></script>
+{% endblock %}

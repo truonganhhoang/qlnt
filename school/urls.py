@@ -134,7 +134,6 @@ urlpatterns = patterns('',
 
     url(r'generate/(?P<class_id>\w+)/(?P<object>\w+)/$','school.views.class_generate', name = 'class_generate'),
     url(r'generate_teacher/(?P<type>\w+)/$','school.views.teacher_generate', name = 'teacher_generate'),
-
     url(r'start_year/import/student/(?P<class_id>\w+)/(?P<request_type>\w+)$', 'school.views.student_import'),
     url(r'start_year/import$', 'school.views.nhap_danh_sach_trung_tuyen'),
     url(r'start_year/import/list$', 'school.views.danh_sach_trung_tuyen', name = "imported_list"),
@@ -147,7 +146,8 @@ urlpatterns = patterns('',
     url(r'deleteStudentInClass/(?P<student_id>\w+)', 'school.views.deleteStudentInClass'),
     url(r'deleteClass/(?P<class_id>\w+)/(?P<block_id>\w+)$', 'school.views.deleteClass'),
     url(r'deleteAllStudentsInClass/(?P<class_id>\w+)$','school.views.deleteAllStudentsInClass'),
-
+    url(r'import/timeTable$','school.views.import_timeTable'),
+    url(r'timeTable/(?P<class_id>\w+)$','school.views.timeTable'),
 
     #top menu
     url(r'years/$', 'school.views.years', name = "years"),
