@@ -255,7 +255,7 @@ def markTable(request,term_id=-1,class_id=-1,subject_id=-1,move=None):
     lengthList=0            
     if list!=None:        
         lengthList=list.__len__()  
-          
+    type=1      
     t = loader.get_template(os.path.join('school','mark_table.html'))
     
     c = RequestContext(request, { 
@@ -278,6 +278,7 @@ def markTable(request,term_id=-1,class_id=-1,subject_id=-1,move=None):
                                 
                                 'lengthList':lengthList,
                                 'move':move,
+                                'type':type,
                                 }
                        )
     
