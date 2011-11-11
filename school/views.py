@@ -69,7 +69,7 @@ def school_index(request):
         teaching_class = user.teacher.teaching_class()
         term = get_current_term(request)
         if term.number==3:
-            term =Term.objects.get(year_id=term.year_id,number=2) 
+            term =Term.objects.get(year_id=term.year_id,number=2)
         head_subjects=None
         if teaching_class:
             head_subjects=Subject.objects.filter(class_id=teaching_class).order_by("index")
@@ -596,7 +596,7 @@ def classify(request):
                     count +=1
             message = u'Bạn vừa phân lớp thành công cho ' + str(count) + u' học sinh.'
         else:
-            message = u'Xảy ra trục trặc  trong quá trình nhập dữ liệu.'
+            message = u'Xảy ra trục trặc trong quá trình nhập dữ liệu.'
         student_list = startyear.pupil_set.filter( class_id__exact = None).order_by('first_name')
     form = ClassifyForm( student_list = student_list, class_list= _class_list)
     return render_to_response( CLASSIFY, { 'message':message, 'student_list':student_list, 'form':form, 'nothing':nothing},
@@ -910,12 +910,12 @@ def process_file(file_name, task):
             name = sheet.cell(r, c_ten).value.strip()
             name = ' '.join([i.capitalize() for i in name.split(' ')])
             if not name.strip():
-                message += u'<li>Ô ' + sheet.cell((r, c_ten)) + u':Trống. </li>'
+                message += u'<li>Ô ' + unicode(cellname(r, c_ten)) + u':Trống. </li>'
                 continue
             number += 1
             birthday = sheet.cell(r, c_ngay_sinh).value
             if not birthday:
-                message += u'<li>Ô ' + sheet.cell((r, c_ngay_sinh)) + u':Trống. Học sinh: ' + name + u' không đủ thông tin.</li>'
+                message += u'<li>Ô ' + unicode(cellname(r, c_ngay_sinh)) + u':Trống. Học sinh: ' + name + u' không đủ thông tin.</li>'
                 continue
             if c_gioi_tinh>-1:
                 gt = sheet.cell(r, c_gioi_tinh).value.strip().capitalize()
@@ -945,7 +945,7 @@ def process_file(file_name, task):
                     try:
                         validate_phone(sms_phone)
                     except Exception as e:
-                        message += u'<li>Ô ' + sheet.cell((r, c_ngay_sinh)) + u':   Số điện thoại không hợp lệ ' + u'</li>'
+                        message += u'<li>Ô ' + unicode(cellname(r, c_ngay_sinh)) + u':   Số điện thoại không hợp lệ ' + u'</li>'
                         sms_phone = ''
                         print e
             try:
@@ -957,7 +957,7 @@ def process_file(file_name, task):
                     birthday = date(*date_value[:3])
             except Exception as e:
                 print e
-                message += u'<li>Ô ' + sheet.cell((r, c_ngay_sinh)) + u':Không đúng định dạng "ngày/tháng/năm" ' + u'</li>'
+                message += u'<li>Ô ' + unicode(cellname(r, c_ngay_sinh)) + u':Không đúng định dạng "ngày/tháng/năm" ' + u'</li>'
                 continue
             data = {'fullname': name,
                     'birthday': birthday,
@@ -1047,12 +1047,12 @@ def process_file(file_name, task):
             name = sheet.cell(r, c_ten).value.strip()
             name = ' '.join([i.capitalize() for i in name.split(' ')])
             if not name.strip():
-                message += u'<li>Ô ' + sheet.cell((r, c_ten)) + u':Trống. </li>'
+                message += u'<li>Ô ' + unicode(cellname(r, c_ten)) + u':Trống. </li>'
                 continue
             number += 1
             birthday = sheet.cell(r, c_ngay_sinh).value
             if not birthday:
-                message += u'<li>Ô ' + sheet.cell((r, c_ngay_sinh)) + u':Trống. </li>'
+                message += u'<li>Ô ' + unicode(cellname(r, c_ngay_sinh)) + u':Trống. </li>'
                 birthday = None
             if c_gioi_tinh>-1:
                 gt = sheet.cell(r, c_gioi_tinh).value.strip().capitalize()
@@ -1082,7 +1082,7 @@ def process_file(file_name, task):
                         birthday = date(*date_value[:3])
                 except Exception as e:
                     print e
-                    message += u'<li>Ô ' + sheet.cell((r, c_ngay_sinh)) + u':Không đúng định dạng "ngày/tháng/năm" ' + u'</li>'
+                    message += u'<li>Ô ' + unicode(cellname(r, c_ngay_sinh)) + u':Không đúng định dạng "ngày/tháng/năm" ' + u'</li>'
                     continue
 
             data = {'fullname': name,
@@ -1188,11 +1188,11 @@ def student_import( request, class_id, request_type='' ):
 
 
         except Exception as e:
-            message = u'Lỗi  trong quá trình lưu cơ sở dữ liệu'
+            message = u'Lỗi trong quá trình lưu cơ sở dữ liệu'
 
         student_confliction = ''
         if existing_student:
-            student_confliction = u'Có %s học sinh không được nhập do đã tồn tại  trong hệ thống' % len(existing_student)
+            student_confliction = u'Có %s học sinh không được nhập do đã tồn tại trong hệ thống' % len(existing_student)
             request.session['saving_import_student'] = existing_student
         data = [{'name': file.name, 'url': filename,
                  'sizef':file.size,
@@ -1305,11 +1305,11 @@ def teacher_import( request, request_type = ''):
 
         except Exception as e:
             print e
-            message = u'Lỗi  trong quá trình lưu cơ sở dữ liệu'
+            message = u'Lỗi trong quá trình lưu cơ sở dữ liệu'
 
         teacher_confliction = ''
         if existing_teacher:
-            teacher_confliction = u'Có %s giáo viên không được nhập do đã tồn tại  trong hệ thống' % len(existing_teacher)
+            teacher_confliction = u'Có %s giáo viên không được nhập do đã tồn tại trong hệ thống' % len(existing_teacher)
             request.session['saving_import_teacher'] = saving_import_teacher
         data = [{'name': file.name, 'url': filename,
                  'sizef':file.size,
@@ -1357,7 +1357,7 @@ def nhap_danh_sach_trung_tuyen(request):
                     return HttpResponseRedirect(reverse('imported_list'))
                     # end if error in save_file_name
         else:
-            message = u'Gặp lỗi  trong quá trình tải file lên server'
+            message = u'Gặp lỗi trong quá trình tải file lên server'
     form = UploadImportFileForm(class_list=_class_list)
     context = RequestContext(request, {'form':form, 'message': message})
     return render_to_response(NHAP_DANH_SACH_TRUNG_TUYEN, context_instance=context)
@@ -2221,7 +2221,7 @@ def teachers_tab(request, sort_type=1, sort_status=0):
                 birthday = to_date(request.POST['birthday'])
                 try:
                     test = school.teacher_set.get(first_name__exact=data['first_name'], last_name__exact=data['last_name'],birthday__exact=birthday)
-                    message = 'Giáo viên này đã tồn tại  trong hệ thống'
+                    message = 'Giáo viên này đã tồn tại trong hệ thống'
                 except ObjectDoesNotExist:
                     add_teacher(first_name=data['first_name'], last_name=data['last_name'], school=get_school(request), birthday=birthday,
                                 sex=data['sex'], home_town=data['home_town'], team_id =team, major=data['major'])
@@ -3902,11 +3902,11 @@ def processFileTKB(request, file_name):
     if start_col == -1:
         return {'error': u'File tải lên phải có cột "Thứ".'}, u'File tải lên phải có cột "Thứ".'
         # start_row != 0
-    
+
     school = get_school(request)
     year = school.year_set.latest('time')
     message = u'<ul>'
-    
+
     for c in range(start_col + 2, sheet.ncols):
         try:
             className = sheet.cell(start_row, c).value.strip().lower().replace(' ', '')
@@ -3924,7 +3924,7 @@ def processFileTKB(request, file_name):
         except Exception as e:
             print e
             return {'error': u'File tải lên không phải file Excel'}
-        
+
         for d in range(2, 8):
             try:
                 try:
@@ -4034,9 +4034,9 @@ def import_timeTable(request):
     filename = save_file(request.FILES.get('file'), request.session)
     message = None
     process_file_message = None
-    
+
     result, process_file_message = processFileTKB(request, filename)
-    
+
     if 'error' in result:
         success = False
         message = result['error']
@@ -4071,7 +4071,7 @@ def timeTable(request, class_id):
     year = school.year_set.latest('time')
     classList = Class.objects.filter(year_id = year).order_by('name')
     cl = Class.objects.get(id = class_id)
-    
+
     timeTables=TKB.objects.filter(class_id = class_id).order_by('day')
     t = loader.get_template(os.path.join('school', 'time_table.html'))
     c = RequestContext(request,{'timeTable':timeTables,
