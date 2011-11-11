@@ -54,6 +54,16 @@ LENLOP_CHOICES=((True,u'Được lên lớp'),(False,u'Không được lên lớ
 SCHOOL_ACTION_STATUS=((0, u'Trường mới'),(1, u'Đang học kì 1'), (2, u'Đang học kì 2'), (3, u'Đang nghỉ hè'))
 CLASS_ACTION_STATUS=((1, u'Đang học kì 1'), (2, u'Đang học kì 2'), (3, u'Đang nghỉ hè'))
 ACTIVE_CHOICES=((True,u'Đang diễn ra'),(False,u'Đã kết thúc'))
+TINH_CHOICRES = ((1,u'An Giang'),(2,u'Bà Rịa-Vũng Tàu'),(3,u'Bạc Liêu'),(4,u'Bắc Cạn'),(5,u'Bắc Giang'),(6,u'Bắc Ninh'),
+    (7,u'Bến Tre'),(8,u'Bình Dương'),(9,u'Bình Định'),(10,u'Bình Phước'),(11,u'Bình Thuận'),(12,u'Cà Mau'),
+    (13,u'Cao Bằng'),(14,u'Cần Thơ'),(15,u'Đà Nẵng'),(16,u'Đắk Lắk'),(17,u'Đắk Nông'),(18,u'Điện Biên'),(19,u'Đồng Nai'),
+    (20,u'Đồng Tháp'),(21,u'Gia Lai'),(22,u'Hà Giang'),(23,u'Hà Nam'),(24,u'Hà Nội'),(25,u'Hà Tĩnh'),(26,u'Hải Dương'),
+    (27,u'Hải Dương'),(28,u'Hải Phòng'),(29,u'Hồ Chí Minh'),(30,u'Hậu Giang'),(31,u'Hưng Yên'),(32,u'Khánh Hòa'),
+    (33,u'Kiên Giang'),(34,u'Kom Tum'),(35,u'Lai Châu'),(36,u'Lào Cai'),(37,u'Lạng Sơn'),(38,u'Lâm Đồng'),(39,u'Long An'),
+    (40,u'Nam Định'),(41,u'Nghệ An'),(42,u'Ninh Bình'),(43,u'Ninh Thuận'),(44,u'Phú Thọ'),(45,u'Phú Yên'),(46,u'Quảng Bình'),
+    (47,u'Quảng Nam'),(48,u'Quảng Ngãi'),(49,u'Quảng Ninh'),(50,u'Quảng Trị'),(51,u'Sóc Trăng'),(52,u'Sơn La'),
+    (53,u'Tây Ninh'),(54,u'Thái Bình'),(55,u'Thái Nguyên'),(56,u'Thanh Hóa'),(57,u'Thừa Thiên-Huế'),
+    (58,u'Tiền Giang'),(59,u'Trà Vinh'),(60,u'Tuyên Quang'),(61,u'Vĩnh Long'),(62,u'Vĩnh Phúc'),(63,u'Yên Bái'))
 
 def this_year():
     return int(date.today().year)
