@@ -666,7 +666,12 @@ def markExcel(request,term_id,subject_id):
     if position==4:
         pass
     elif position ==3:
-        if (selectedSubject.teacher_id.id != request.user.teacher.id):  
+        try:
+            if (selectedSubject.class_id.teacher_id.id==request.user.teacher.id):
+                pass
+            elif (selectedSubject.teacher_id.id != request.user.teacher.id):  
+                return HttpResponseRedirect('/school')
+        except Exception as e:    
             return HttpResponseRedirect('/school')
     else:    
             return HttpResponseRedirect('/school')

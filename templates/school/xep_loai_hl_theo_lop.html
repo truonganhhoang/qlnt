@@ -48,8 +48,17 @@
 				Ngày sinh
 			</th>	
 			{% for s in subjectList %}
-				<th  rowspan=2 align="center" >
-				{{s.name}}
+				
+				<th  rowspan=2 class="mark" >
+					{% if s.name == 'GDQP-AN' %}
+						GD<br>QP<br>AN
+					{% else %}	
+					{% if s.name == 'GDCD' %}
+						GD<br>CD
+					{% else %} 
+						{{s.name}}
+					{% endif %}	
+					{% endif %}	
 				</th>				
 			{% endfor %}	
 			<th rowspan=2 width ="" align="center" >
