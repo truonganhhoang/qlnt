@@ -1,0 +1,140 @@
+{% extends "base.html" %}
+{% block js %}
+    <script type="text/javascript" src="/static/js/template_js/register.js?0.6"></script>
+{% endblock %}
+{% block content %}
+    <h2>Đăng ký tài khoản Trường Mình</h2>
+    <div id="introduce">
+        <p>Tài khoản Trường Mình sẽ giúp bạn đăng nhập vào dịch vụ
+            <a href="{%url views.index %}">Trường Mình</a>.
+            Nếu bạn đã có tài khoản, hãy đăng nhập <a href="{%url app.views.login  %}">tại đây.</a></p>
+    </div>
+    {{ message }}
+    <form action="" id="registerForm" method="post">{% csrf_token %}
+        <div id="register" class="register">
+            <aside style="width: 450px; padding: 10px;float: left; background-color: #f5f5f5; margin-top: 10px;">
+                <div class="mainFeedback">
+                    <div class="feedback tr">
+                        <div class="verticalLabel">
+                            <label for="registerName" style="vertical-align: top;">
+                                <b style="vertical-align: top; width: 150px;">Họ và tên(*):</b>
+                            </label>
+                        </div>
+                        <div class="verticalContent">
+                            <input type="text"
+                                   id="registerName"
+                                   class="tiptipfocus"
+                                   title="Họ và tên Hiệu trưởng hoặc Hiệu phó"
+                                   style="width: 250px; max-width: 250px; padding: 4px;">
+                        </div>
+                    </div>
+                    <div class="placeHolder" style="clear: both;"></div>
+                    <div class="feedback tr">
+                        <div class="verticalLabel">
+                            <label for="registerEmail" style="vertical-align: top;">
+                                <b style="vertical-align: top; width: 150px;">Email(*):</b>
+                            </label>
+                        </div>
+                        <div class="verticalContent">
+                            <input type="text"
+                                   id="registerEmail"
+                                   class="tiptipfocus"
+                                   title="Email để gửi thông tin tài khoản"
+                                   style="width: 250px; max-width: 250px; padding: 4px;">
+                        </div>
+                    </div>
+                    <div class="placeHolder" style="clear: both;"></div>
+                    <div class="feedback tr">
+                        <div class="verticalLabel">
+                            <label for="registerPhone" style="vertical-align: top;">
+                                <b style="vertical-align: top; width: 150px;">Số điện thoại:</b>
+                            </label>
+                        </div>
+                        <div class="verticalContent">
+                            <input type="text"
+                                   id="registerPhone"
+                                   style="width: 250px; max-width: 250px; padding: 4px;">
+                        </div>
+                    </div>
+                    <div class="placeHolder" style="clear: both;"></div>
+
+                    <div class="feedback tr">
+                        <div class="verticalLabel">
+                            <label for="registerSchoolName" style="vertical-align: top;">
+                                <b style="vertical-align: top; width: 150px;">Tên trường(*):</b>
+                            </label>
+                        </div>
+                        <div class="verticalContent">
+                            <input type="text"
+                                   id="registerSchoolName"
+                                   class="tiptipfocus"
+                                   title="Bạn nên điền tên đầy đủ của trường. Ví dụ 'THPT Tên trường' thay vì 'Tên trường'"
+                                   style="width: 250px; max-width: 250px; padding: 4px;">
+                        </div>
+                    </div>
+                    <div class="placeHolder" style="clear: both;"></div>
+                    <div class="feedback tr">
+                        <div class="verticalLabel">
+                            <label for="registerSchoolLevel" style="vertical-align: top;">
+                                <b style="vertical-align: top; width: 150px;">Cấp(*):</b>
+                            </label>
+                        </div>
+                        <div class="verticalContent">
+                            <select id="registerSchoolLevel" style="padding: 4px;">
+                                {% for key,level in level_list %}
+                                    <option value="{{ key }}" selected="selected">{{ level }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="placeHolder" style="clear: both;"></div>
+                    <div class="feedback tr">
+                        <div class="verticalLabel">
+                            <label for="registerSchoolAddress" style="vertical-align: top;">
+                                <b style="vertical-align: top; width: 150px;">Địa chỉ:</b>
+                            </label>
+                        </div>
+                        <div class="verticalContent">
+                            <input type="text" id="registerSchoolAddress" style="width: 250px; max-width: 250px; padding: 4px;">
+                        </div>
+                    </div>
+                    <div class="placeHolder" style="clear: both;"></div>
+                    <div class="feedback tr">
+                        <div class="verticalLabel">
+                            <label for="registerSchoolProvince" style="vertical-align: top;">
+                                <b>Tỉnh/Thành phố(*):</b>
+                            </label>
+                        </div>
+                        <div class="verticalContent">
+                            <select id="registerSchoolProvince" style="padding: 4px;">
+                                {% for key,province in province_list %}
+                                    <option value="{{ key }}">{{ province }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="placeHolder" style="clear: both;"></div>
+                    <div class="feedback tr"  id="registerNotice" style="display: none;">
+                        <div class="verticalLabel">
+                            &nbsp;
+                        </div>
+                        <div class="verticalContent">
+                            <p>Các thông tin của bạn sẽ được ban quản trị xem xét thực tế, nếu trường bạn đăng ký là có thật, chúng tôi sẽ gửi tài khoản vào địa chỉ email bạn đã đăng ký. Cảm ơn bạn đã lựa chọn dịch vụ của chúng tôi.</p>
+                        </div>
+                    </div>
+                    <div class="placeHolder" style="clear: both;"></div>
+
+                    <div class="buttons tr">
+                        <div class="verticalLabel">
+                            <p>&nbsp;</p>
+                        </div>
+                        <div class="verticalContent">
+                            <button class="ggButton" id="sendRegister">Gửi</button>
+                        </div>
+                    </div>
+                    <div class="placeHolder" style="clear: both;"></div>
+                </div>
+            </aside>
+        </div>
+    </form>
+{% endblock %}
