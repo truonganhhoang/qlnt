@@ -20,7 +20,11 @@ d1=1400
 d2=2000 # kick thuoc cot o trang 31  
 d3=6000
 d4=1200 # kich thuoc 1 o diem
+FIRSTNAME_WIDTH =5000
+LASTNAME_WIDTH  =2000
+BIRTHDAY_WIDTH  =3000
 SIZE_PAGE_WIDTH=36200
+SIZE_PAGE_WIDTH1=22000
 A4_WIDTH=24500
 h1 = easyxf(
     'font:name Arial, bold on,height 1000 ;align: vert centre, horz center')

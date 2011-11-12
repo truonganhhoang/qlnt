@@ -1006,7 +1006,7 @@ def count2Excel(year_id,number,subjectName,type,modeView,list,allList,sumsumsum)
     tt2= time.time()
     print (tt2-tt1)
     return response
-
+# in phieu bao diem
 def printMarkToExcel(termNumber,selectedClass,checkNxList,s,pupilList,markList,tkMonList,ddHKList,tbHKList,TBNamList,schoolName,ddHK1List=None):
     today=datetime.datetime.now()
     if selectedClass.teacher_id!=None:
@@ -1296,3 +1296,76 @@ def printMarkForClass(request,termNumber=None,class_id=-2):
                                 }
                        )
     return HttpResponse(t.render(c))
+ 
+def printHanhKiemExcel(list,termNumber,type,currentTerm):
+    
+    book = Workbook(encoding = 'utf-8')
+    numberLine=50
+    print termNumber
+    
+    if termNumber==1:
+        str1='HKI'
+        str2=u'HỌC KỲ I NĂM HỌC '+str(currentTerm.year_id.time)+'-'+str(currentTerm.year_id.time+1)
+    elif termNumber==2:
+        str1='HKII'
+        str2=u'HỌC KỲ II NĂM HỌC '+str(currentTerm.year_id.time)+'-'+str(currentTerm.year_id.time+1)
+    else:
+        str1='CaNam'        
+        str2=u'CẢ NĂM NĂM HỌC '+str(currentTerm.year_id.time)+'-'+str(currentTerm.year_id.time+1)
+        
+    if   (type==1): 
+        str3='dshsGioi'        
+        titleString=u'DANH SÁCH HỌC SINH GIỎI  ' 
+    elif (type==2): 
+        str3='dshsTienTien'        
+        titleString=u'DANH SÁCH HỌC SINH TIÊN TIẾN'
+    elif (type==3):       
+        str3='dshsGioiVaTienTien'        
+        titleString=u'DANH SÁCH HỌC SINH GIỎI VÀ TIÊN TIẾN' 
+         
+    sheetName =str3+str1+str(currentTerm.year_id.time)+'-'+str(currentTerm.year_id.time+1)     
+    s=book.add_sheet('DSHS ',True)
+    s.col(0).width=s1    
+    s.col(1).width=FIRSTNAME_WIDTH
+    s.col(2).width=FIRSTNAME_WIDTH
+    s.col(3).width=LASTNAME_WIDTH    
+    s.col(4).width=BIRTHDAY_WIDTH    
+    s.col(5).width=SIZE_PAGE_WIDTH1-s1-2*FIRSTNAME_WIDTH-LASTNAME_WIDTH-BIRTHDAY_WIDTH    
+            
+    s.write_merge(2,2,0,5,titleString,h40)
+    s.write_merge(3,3,0,5,str2,h40)
+    x=5
+    y=0    
+    s.write(x,y,u'STT',h4)    
+    s.write(x,y+1,u'Lớp',h4)    
+    s.write_merge(x,x,y+2,y+3,u'Họ và tên',h4)    
+    s.write(x,y+4,u'Ngày sinh',h4)    
+    s.write(x,y+5,u'Danh hiệu',h4)  
+    i=1  
+    for c,danhHieus in list:
+        j=1
+        for dh in danhHieus:
+            s.write(x+i,y,j,h82)
+            s.write(x+i,y+1,c,h82)
+            s.write(x+i,y+2,dh.student_id.last_name,last_name1)
+            s.write(x+i,y+3,dh.student_id.first_name,first_name1)
+            s.write(x+i,y+4,dh.student_id.birthday.strftime('%d/%m/%Y'),h82)
+            if termNumber<3:
+                s.write(x+i,y+5,convertDanhHieu(dh.danh_hieu_hk),h82)
+            else:    
+                s.write(x+i,y+5,convertDanhHieu(dh.danh_hieu_nam),h82)
+            j+=1
+            i+=1
+        if danhHieus:    
+            s.write(x+i,y,'',h82)
+            s.write(x+i,y+1,'',h82)
+            s.write(x+i,y+2,'',last_name1)
+            s.write(x+i,y+3,'',first_name1)
+            s.write(x+i,y+4,'',h82)
+            s.write(x+i,y+5,'',h82)
+            i+=1
+               
+    response = HttpResponse(mimetype='application/ms-excel')
+    response['Content-Disposition'] = u'attachment; filename=%s.xls' % sheetName
+    book.save(response)
+    return response

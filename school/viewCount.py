@@ -9,7 +9,7 @@ import os.path
 import time 
 from school.utils import *
 from school.templateExcel import *
-from school.writeExcel import count1Excel,count2Excel
+from school.writeExcel import count1Excel,count2Excel,printHanhKiemExcel
 
 def countTotalPractisingInTerm(term_id):
     slList  =[0,0,0,0,0]
@@ -606,21 +606,21 @@ def countAllInYear(request,year_id):
 
 
 def count1(request,year_id=None,number=None,type=None,):
-    """
+    
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect( reverse('login'))
 
-    selectedTerm=Term.objects.get(id=term_id)    
+    currentTerm=get_current_term(request)    
     try:
-        if in_school(request,selectedTerm.year_id.school_id) == False:
+        if in_school(request,currentTerm.year_id.school_id) == False:
             return HttpResponseRedirect('/school')
     except Exception as e:
         return HttpResponseRedirect(reverse('index'))
 
     if get_position(request) != 4:
        return HttpResponseRedirect('/school')
-    """
+    
     tt1=time.time()
     message=None
     if year_id==None:
@@ -701,7 +701,7 @@ def count1(request,year_id=None,number=None,type=None,):
     if notFinishPractising!=0:
         if message!='':
             message+=', '
-        message+=unicode(notFinishLearning)+ u' hs chưa có hạnh kiểm'     
+        message+=unicode(notFinishPractising)+ u' hs chưa có hạnh kiểm'     
     if notFinishAll!=0:
         if message!='':
             message+=', '
@@ -732,21 +732,20 @@ def listSubject(year_id):
     return list 
 def count2(request,type=None,modeView=None,year_id=None,number=None,index=-1,isExcel=None):
     tt1=time.time()
-    """
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect( reverse('login'))
 
-    selectedTerm=Term.objects.get(id=term_id)    
+    currentTerm=get_current_term(request)    
     try:
-        if in_school(request,selectedTerm.year_id.school_id) == False:
+        if in_school(request,currentTerm.year_id.school_id) == False:
             return HttpResponseRedirect('/school')
     except Exception as e:
         return HttpResponseRedirect(reverse('index'))
 
     if get_position(request) != 4:
        return HttpResponseRedirect('/school')
-    """
+    
     selectedTerm =get_current_term(request)
     currentNumber=selectedTerm.number
     if year_id==None:
@@ -901,5 +900,59 @@ def count2(request,type=None,modeView=None,year_id=None,number=None,index=-1,isE
                                  'subjectName':subjectName,
                                  'currentNumber':currentNumber,
                                  'modeView':modeView,
+                                 })
+    return HttpResponse(t.render(c))
+def printDanhHieu(request,termNumber=None,type=None,isExcel=None):
+    tt1=time.time()
+    
+    user = request.user
+    if not user.is_authenticated():
+        return HttpResponseRedirect( reverse('login'))
+    currentTerm = get_current_term(request)
+    try:
+        if in_school(request,currentTerm.year_id.school_id) == False:
+            return HttpResponseRedirect('/school')
+    except Exception as e:
+        return HttpResponseRedirect(reverse('index'))
+
+    if get_position(request) != 4:
+       return HttpResponseRedirect('/school')
+
+    if termNumber==None:
+        termNumber=currentTerm.number    
+    list=[]                
+    if type!=None:
+        print "fff"
+        
+        termNumber=int(termNumber)
+        type = int(type)
+        blockList = Block.objects.filter(school_id=currentTerm.year_id.school_id)  
+        for b in blockList:
+            classList = Class.objects.filter(block_id=b,year_id=currentTerm.year_id.id)
+            for c in classList:
+                if int(termNumber)<3:
+                    if   type==1:
+                        danhHieus=TBHocKy.objects.filter(student_id__classes=c.id,term_id__number=termNumber,danh_hieu_hk='G').order_by("student_id__index")
+                    elif type==2:                        
+                        danhHieus=TBHocKy.objects.filter(student_id__classes=c.id,term_id__number=termNumber,danh_hieu_hk='TT').order_by("student_id__index")
+                    elif type==3:                        
+                        danhHieus=TBHocKy.objects.filter(student_id__classes=c.id,term_id__number=termNumber,danh_hieu_hk__in=['G','TT']).order_by("danh_hieu_hk","student_id__index")
+                else:        
+                    if   type==1:
+                        danhHieus=TBNam.objects.filter(student_id__classes=c.id,danh_hieu_nam='G').order_by("student_id__index")
+                    elif type==2:                        
+                        danhHieus=TBNam.objects.filter(student_id__classes=c.id,danh_hieu_nam='TT').order_by("student_id__index")
+                    elif type==3:                        
+                        danhHieus=TBNam.objects.filter(student_id__classes=c.id,danh_hieu_nam__in=['G','TT']).order_by("danh_hieu_nam","student_id__index")
+                list.append((c.name,danhHieus))    
+    if isExcel:
+        return printHanhKiemExcel(list,termNumber,type,currentTerm)            
+    tt2=time.time()
+    print tt2-tt1
+    t = loader.get_template(os.path.join('school','print_danh_hieu.html'))    
+    c = RequestContext(request, {
+                                 'list':list,
+                                 'type':type,
+                                 'termNumber':termNumber,                                 
                                  })
     return HttpResponse(t.render(c))
