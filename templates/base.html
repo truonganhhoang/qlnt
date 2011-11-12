@@ -108,6 +108,7 @@
                     <li><a href="{%url django.contrib.auth.views.logout %}" title="Thoát ra khỏi hệ thống">Đăng xuất</a></li>
                 {% else %}
                     <li><a href="{%url app.views.login %}" title="Đăng nhập để sử dụng hệ thống">Đăng nhập</a></li>
+                    <li><a href="{%url app.views.register %}" title="Đăng ký tài khoản">Đăng ký</a></li>
                 {% endif %}
             </ul>
         </div>
@@ -205,18 +206,15 @@
 </header>
 
 <section id="main">
-    {#    {% block main %}#}
     <div id="nav-path">
-        {#    <em>#}
         {% block backward_link %}
         {% endblock %}
-        {#    </em>#}
     </div>
     <div id="content">
         {% block content %}
         {% endblock %}
     </div>
-    {#    {% endblock %}#}
+    <div class="placeholder" style="clear: both;"></div>
 </section>
 
 <div id="place_keeper" style="clear: both;"></div>
@@ -228,7 +226,7 @@
         <div class="placeholder" style="clear: both;"></div>
         <div class="mainFeedback">
             <div class="feedback tr">
-                <div class="verticalLabel">
+                <div class="verticalLabel" style="width: 100px;">
                     <label for="feedbackContent" style="vertical-align: top;">
                         <b style="vertical-align: top; width: 50px;">Nội dung:</b>
                     </label>
@@ -237,18 +235,17 @@
                     <textarea class="feedbackContext item popupTextarea"
                               id="feedbackContent"
                               rows="7"
-                              style="width: 350px; max-width: 350px; height: 300px;"></textarea>
+                              style="width: 300px; max-width: 300px; height: 300px;"></textarea>
                 </div>
             </div>
             <div class="placeHolder" style="clear: both;"></div>
             <div class="buttons tr">
-                <div class="verticalLabel">
+                <div class="verticalLabel" style="width: 100px;">
                     <p>&nbsp;</p>
                 </div>
                 <div class="verticalContent">
                     <button class="ggButton" id="sendFeedback">Gửi</button>
                 </div>
-
             </div>
             <div class="placeHolder" style="clear: both;"></div>
         </div>

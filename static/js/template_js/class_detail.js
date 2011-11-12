@@ -31,20 +31,20 @@ $(document).ready(function() {
                         global: false
                     });
                     $("#student_placeholder").load("/school/getStudent/" + json.student_id + "/",
-                        function() {
-                            $.ajaxSetup({
-                                global: true
-                            });
-                            var newStudent = $("#student_placeholder").find("tr");
-                            newStudent.insertBefore(self).click(select);
-                            var stt = parseInt(theLast.find('td:eq(1)').text());
-                            if (stt) newStudent.find('td:eq(1)').text(stt + 1);
-                            else newStudent.find('td:eq(1)').text(1);
-                            $(".form").find('input:text').val('');
-                            $(".form").find('input#id_dan_toc').val('Kinh');
-                            $("#notify").showNotification(json.message);
-                                                        
-                        })
+                            function() {
+                                $.ajaxSetup({
+                                    global: true
+                                });
+                                var newStudent = $("#student_placeholder").find("tr");
+                                newStudent.insertBefore(self).click(select);
+                                var stt = parseInt(theLast.find('td:eq(1)').text());
+                                if (stt) newStudent.find('td:eq(1)').text(stt + 1);
+                                else newStudent.find('td:eq(1)').text(1);
+                                $(".form").find('input:text').val('');
+                                $(".form").find('input#id_dan_toc').val('Kinh');
+                                $("#notify").showNotification(json.message);
+
+                            })
 
                 }
             }
@@ -161,6 +161,7 @@ $(document).ready(function() {
     });
 
     $("#textSms").click(function(){
+        // setting up layout
         if ($("#smsWindow").css('display') == 'none'){
             var buttonOffsetTop = $(this).offset().top;
             var contentWidth = parseInt($("#content").css('width'));

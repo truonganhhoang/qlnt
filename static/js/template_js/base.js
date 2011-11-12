@@ -25,8 +25,10 @@ var applyListener = function(){
     });
 
     $("input:text").live('focus',function(){
-        $(this).select();
-        return false;
+        if (!$(this).hasClass('tiptipfocus')){
+            $(this).select();
+            return false;
+        }
     });
 
     $('*[class~="tiptipclick"]').tipTip({
@@ -41,7 +43,10 @@ var applyListener = function(){
         activation: "hover",
         delay: 1500
     });
-
+    $('*[class~="tiptipfocus"]').tipTip({
+        activation: "focus",
+        delay: 100
+    });
 };
 
 
@@ -258,5 +263,7 @@ $(document).ready(function(){
 
         return false;
     });
+
+
 });
 

@@ -6,6 +6,7 @@ import thread
 from email.mime.text import MIMEText
 from django.conf import settings
 from django.http import HttpResponse, HttpResponseRedirect
+from django.template import RequestContext, loader
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from app.models import UserForm, Organization, UserProfile, ChangePasswordForm, FeedbackForm, AuthenticationForm, Feedback, ResetPassword, ResetPasswordForm
@@ -20,6 +21,9 @@ from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_protect
 
 from school.utils import *
+from school.models import *
+
+REGISTER = os.path.join('app', 'register.html')
 
 def user_add(request):
     if request.method == 'POST':
@@ -92,6 +96,50 @@ def list_org (request):
     c = django.template.RequestContext(request, {'list_s':list_s, 'list_p': list_p, 'list_t':list_t})
     return HttpResponse(t.render(c))
 
+def register(request):
+    try:
+        if request.user.is_authenticated():
+            return HttpResponseRedirect(reverse('school_index'))
+        else:
+            message = ''
+            if request.method == 'POST':
+                data = request.POST.copy()
+                data['status'] = 'CHUA_CAP'
+                print data
+                register_form = RegisterForm(data= data)
+                if register_form.is_valid():
+                    register_form.save()
+                    message = u'Bạn đã đăng ký thành công. Tài khoản của bạn sẽ được gửi vào email sớm nhất có thể.'
+                    success = True
+                    if request.is_ajax():
+                        response = simplejson.dumps({
+                            'success': success,
+                            'message': message
+                        })
+                        return HttpResponse(response, mimetype='json')
+                else:
+                    message = u"Có lỗi ở thông tin nhập vào"
+                    success = False
+                    for e in register_form:
+                        if e.errors:
+                            print e
+                    if request.is_ajax():
+                        response = simplejson.dumps({
+                            'success': success,
+                            'message': message
+                        })
+                        return HttpResponse(response, mimetype='json')
+            province_list = TINH_CHOICES
+            level_list = KHOI_CHOICES
+            context = RequestContext(request)
+            return render_to_response(REGISTER,
+                                      {'province_list': province_list,
+                                       'level_list': level_list,
+                                       'message': message},
+                                      context_instance = context)
+    except Exception as e:
+        print e
+        raise e
 # quyendt
 @csrf_protect
 @never_cache

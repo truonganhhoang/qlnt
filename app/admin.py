@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
 from django.forms.formsets import formset_factory
-from app.models import Organization, UserProfile, Feedback
+from app.models import *
 #, SchoolYear, Semester
 
 class UserProfileAdmin(admin.ModelAdmin):
@@ -36,3 +36,4 @@ class FeedbackAdmin(admin.ModelAdmin):
     list_per_page = 20
     
 admin.site.register(Feedback, FeedbackAdmin)
+admin.site.register(Register)

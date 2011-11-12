@@ -174,7 +174,6 @@ def info(request):
             phone=''
             lock_time =''
             class_labels = ''
-            print data
             if request.is_ajax():
                 form = SchoolForm(data, request = request)
                 setting_form = SettingForm(data, request=request)
