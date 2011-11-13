@@ -112,7 +112,7 @@
                     $("#id_ngay_vao_dang").removeAttr('disabled');
                 }
             });
-            var update_student_detail = function(json) {
+            var updateStudentDetail = function(json) {
                 $("#notify").showNotification(json.message);
                 if (json.response_type == 'ttcn') {
                     $("#id_first_name").parents("td").append(json.first_name);
@@ -145,7 +145,7 @@
                     data : data,
                     type: $(this).attr("method"),
                     url: $(this).attr("action"),
-                    success: update_student_detail,
+                    success: updateStudentDetail,
                     global: false
                 };
                 $.ajax(arg);
@@ -264,7 +264,7 @@
                 <table class = "styleA styleDetail">
                     {{ ttllform.as_table }}
                 </table>
-                {% if pos > 3 or pos == 1 %}
+                {% if pos > 3 %}
                     <input type="hidden" name="request_type" value="ttll">
                     <input class="ggButton" type="submit" value="Lưu"/>
                 {% endif %}
