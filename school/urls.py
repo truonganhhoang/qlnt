@@ -1,5 +1,4 @@
-from school import views, helptools
-from django.conf.urls.defaults import patterns, url 
+from django.conf.urls.defaults import patterns, url
 
 
 urlpatterns = patterns('',

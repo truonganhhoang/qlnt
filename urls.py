@@ -14,12 +14,10 @@ urlpatterns = patterns('',
     url(r'^login/$', 'app.views.login', name = "login"),
     url(r'^logout/$', 'django.contrib.auth.views.logout', {'template_name': 'app/logout.html'}, name = "logout"),
     url(r'^register/$', 'app.views.register', name = 'register'),
-    #(r'^accounts/$', 'django.views.generic.simple.redirect_to', {'url': '/'}),
-    #(r'^accounts/profile/$', 'django.views.generic.simple.redirect_to', {'url': '/'}),
- 
-    # Uncomment the admin/doc line below to enable admin documentation:
-    # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
-
+    url(r'^manageRegister/$', 'app.views.manage_register', name='manage_register'),
+    url(r'^manageRegister/(?P<sort_by_date>\w+)/$', 'app.views.manage_register'),
+    url(r'^manageRegister/(?P<sort_by_date>\w+)/(?P<sort_by_status>\w+)/$', 'app.views.manage_register'),
+    
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
     

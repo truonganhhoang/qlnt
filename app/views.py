@@ -4,6 +4,7 @@ import urlparse
 import smtplib
 import thread
 from email.mime.text import MIMEText
+from datetime import date
 from django.conf import settings
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import RequestContext, loader
@@ -24,6 +25,7 @@ from school.utils import *
 from school.models import *
 
 REGISTER = os.path.join('app', 'register.html')
+MANAGE_REGISTER = os.path.join('app', 'manage_register.html')
 
 def user_add(request):
     if request.method == 'POST':
@@ -47,7 +49,7 @@ class SchoolAdminAddForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super(SchoolAdminAddForm, self).__init__(*args, **kwargs)
         users = [i.user for i in UserProfile.objects.all() if i.organization is None or i.organization.level == 'T']
-        
+
         for u in User.objects.all():
             if u in users:
                 continue
@@ -63,7 +65,7 @@ class SchoolAdminAddForm(forms.Form):
 
     full_name = forms.ChoiceField()
     school = forms.ChoiceField()
-   
+
 def school_admin_add(request):
     form = SchoolAdminAddForm(request.POST)
     if request.method == 'POST':
@@ -77,9 +79,9 @@ def school_admin_add(request):
         user = []
         for u in user_all:
             try:
-                if (u.get_profile().position != 'HOC_SINH'):
+                if u.get_profile().position != 'HOC_SINH':
                     user.append(u)
-            except:
+            except Exception as e:
                 pass
 
     t = django.template.loader.get_template(os.path.join('app', 'school_admin_add.html'))
@@ -91,7 +93,7 @@ def list_org (request):
     list_s = Organization.objects.filter(level = 'S')
     list_p = Organization.objects.filter(level = 'P')
     list_t = Organization.objects.filter(level = 'T')
-    
+
     t = django.template.loader.get_template(os.path.join('app', 'list_org.html'))
     c = django.template.RequestContext(request, {'list_s':list_s, 'list_p': list_p, 'list_t':list_t})
     return HttpResponse(t.render(c))
@@ -105,7 +107,7 @@ def register(request):
             if request.method == 'POST':
                 data = request.POST.copy()
                 data['status'] = 'CHUA_CAP'
-                print data
+                data['register_date'] = date.today()
                 register_form = RegisterForm(data= data)
                 if register_form.is_valid():
                     register_form.save()
@@ -133,10 +135,119 @@ def register(request):
             level_list = KHOI_CHOICES
             context = RequestContext(request)
             return render_to_response(REGISTER,
-                                      {'province_list': province_list,
-                                       'level_list': level_list,
-                                       'message': message},
+                    {'province_list': province_list,
+                     'level_list': level_list,
+                     'message': message},
                                       context_instance = context)
+    except Exception as e:
+        print e
+        raise e
+
+def manage_register(request, sort_by_date=0, sort_by_status=0):
+    try:
+        if not request.user.is_superuser:
+            return HttpResponseRedirect( reverse('school_index'))
+        if request.method == 'POST':
+            if request.is_ajax():
+                request_type = request.POST['request_type']
+                if request_type == 'del':
+                    ids = request.POST['data'].split('-')
+                    print ids
+                    try:
+                        for id in ids:
+                            if id:
+                                register = Register.objects.get(id= int(id))
+                                register.delete()
+                        message = u'Xóa thành công'
+                        success = True
+                        data = simplejson.dumps({
+                            'message': message,
+                            'success': success
+                        })
+                        return HttpResponse(data, mimetype='json')
+                    except Exception as e:
+                        print e
+                        message = u'Không thể xóa đăng ký'
+                        success = False
+                        data = simplejson.dumps({
+                            'message': message,
+                            'success': success
+                        })
+                        return HttpResponse(data, mimetype='json')
+                elif request_type == 'create_acc':
+                    ids = request.POST['data'].split('-')
+                    print ids
+                    try:
+                        account_info = ''
+                        for id in ids:
+                            if id:
+                                register = Register.objects.get(id= int(id))
+                                org_name = register.school_name
+                                org_level = 'T'
+                                org_school_level = register.school_level
+                                org_status = 0
+                                org_manager_name = register.register_name
+                                org_address = register.school_address
+                                school = Organization.objects.create(
+                                                            name= org_name,
+                                                            level= org_level,
+                                                            school_level= org_school_level,
+                                                            status= org_status,
+                                                            manager_name= org_manager_name,
+                                                            address= org_address
+                                                        )
+                                user = User()
+                                user.username = make_username( full_name=org_manager_name)
+                                user.password = make_default_password( user.username )
+                                user.save()
+                                userprofile = UserProfile()
+                                userprofile.user = user
+                                userprofile.organization = school
+                                userprofile.position = 'HIEU_TRUONG'
+                                userprofile.save()
+                                register.status = 'DA_CAP'
+                                register.default_user_name = user.username
+                                register.default_password = user.password
+                                register.save()
+                                #TODO send an email about account information to customers.
+                                account_info += str(id) + '-' + user.username + ','
+                        message = u'Tạo tài khoản thành công'
+                        success = True
+                        data = simplejson.dumps({
+                            'message': message,
+                            'account_info': account_info,
+                            'success': success
+                        })
+                        print data
+                        return HttpResponse(data, mimetype='json')
+                    except Exception as e:
+                        print e
+                        message = u'Tạo tài khoản không thành công'
+                        success = False
+                        data = simplejson.dumps({
+                            'message': message,
+                            'success': success
+                        })
+                        return HttpResponse(data, mimetype='json')
+                else:
+                    raise Exception("BadRequest")
+        if sort_by_date: sort_by_date = '-'
+        else: sort_by_date = ''
+        if sort_by_status: sort_by_status = '-'
+        else: sort_by_status = ''
+
+        registers = Register.objects.order_by(sort_by_date+'register_date', sort_by_status+'status')
+        if sort_by_date == '-': sort_by_date = 0
+        else: sort_by_date = 1
+        if sort_by_status == '-': sort_by_status = 0
+        else: sort_by_status = 1
+        context = RequestContext(request)
+        return render_to_response(MANAGE_REGISTER, {
+            'registers': registers,
+            'short_by_date': sort_by_date,
+            'short_by_status': sort_by_status
+        }, context_instance = context)
+
     except Exception as e:
         print e
         raise e
@@ -159,11 +270,11 @@ def change_password(request,
         form = password_change_form(user=request.user)
     context = {
         'form': form,
-    }
+        }
     context.update(extra_context or {})
     return render_to_response(template_name, context,
                               context_instance=django.template.RequestContext(request, current_app=current_app))
-    
+
 # quyendt
 def change_password_done(request):
     t = django.template.loader.get_template(os.path.join('app', 'change_password_done.html'))
@@ -176,7 +287,7 @@ def change_password_done(request):
 def login(request, template_name='app/login.html',
           redirect_field_name=REDIRECT_FIELD_NAME,
           authentication_form=AuthenticationForm):
-    
+
     """
     login the system
     """
@@ -217,15 +328,15 @@ def login(request, template_name='app/login.html',
     return render_to_response(template_name, context,
                               context_instance=django.template.RequestContext(request))
 
-GMAIL_LOGIN = 'qlnt.feedback@gmail.com' 
-GMAIL_PASSWORD = 'freeschool2011'     
-def send_email(subject, message, from_addr=GMAIL_LOGIN, to_addr= None): 
-    msg = MIMEText(message.encode('utf-8'), _charset='utf-8') 
+GMAIL_LOGIN = 'qlnt.feedback@gmail.com'
+GMAIL_PASSWORD = 'freeschool2011'
+def send_email(subject, message, from_addr=GMAIL_LOGIN, to_addr= None):
+    msg = MIMEText(message.encode('utf-8'), _charset='utf-8')
     server = smtplib.SMTP('smtp.gmail.com',587) #port 465 or 587 
-    server.ehlo() 
-    server.starttls() 
-    server.ehlo() 
-    server.login(GMAIL_LOGIN,GMAIL_PASSWORD) 
+    server.ehlo()
+    server.starttls()
+    server.ehlo()
+    server.login(GMAIL_LOGIN,GMAIL_PASSWORD)
     for to_address in to_addr:
         msg['Subject'] = subject
         msg['From'] = from_addr
@@ -254,11 +365,11 @@ def feedback(request):
             form = FeedbackForm(request.POST) # A form bound to the POST data
             if form.is_valid():
                 c = Feedback(fullname = form.cleaned_data['fullname'] ,
-                              phone = form.cleaned_data['phone'],
-                              email = form.cleaned_data['email'],
-                              title = form.cleaned_data['title'],
-                              content = form.cleaned_data['content'],
-                              )
+                             phone = form.cleaned_data['phone'],
+                             email = form.cleaned_data['email'],
+                             title = form.cleaned_data['title'],
+                             content = form.cleaned_data['content'],
+                             )
                 c.save()
                 return HttpResponseRedirect('/app/contact') # Redirect after POST
     else:
@@ -282,11 +393,11 @@ def reset_password_request(request):
                 r = ResetPassword(username = username, code = code)
                 r.save()
                 #sendMail() #todo
-    
+
 def is_reset_pass_request_valid(username, code):
     return False
     #todo
-    
+
 def reset_password(request):
     '''reset password if email is valid'''
     if request.method == 'GET':

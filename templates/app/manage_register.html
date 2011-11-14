@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block js %}
+    <script type="text/javascript" src="/static/js/template_js/manage_register.js?0.6"></script>
+{% endblock %}
+{% block content %}
+    <h2>Danh sách đăng ký tài khoản khách hàng</h2>
+    {% if registers %}
+        <div id="tableFunction">
+            <button id="createSelected" class="tiptiphover ggButton"
+                    title="Tạo tài khoản cho những đăng ký đã chọn">Tạo tài khoản</button>
+            <button id="delSelected" class="tiptiphover ggButton"
+                    title="Xóa những học sinh đang được chọn">Xóa chọn</button>
+        </div>
+        <table class="main-table" id="registerTable">
+            <colgroup></colgroup>
+            <colgroup></colgroup>
+            <colgroup></colgroup>
+            <colgroup></colgroup>
+            <colgroup></colgroup>
+            <colgroup></colgroup>
+            <colgroup></colgroup>
+            <colgroup></colgroup>
+            <colgroup></colgroup>
+            <colgroup></colgroup>
+
+            <tr class="thread">
+                <th title="Chọn tất cả" class="tiptiphover" style="text-align: center;">
+                    <input type="checkbox" id="checkbox_all" class="registerCheckbox"/>
+                </th>
+                <th style="text-align: center">STT</th>
+                <th style="text-align: center">
+                    <a href="{% url app.views.manage_register %}{{ short_by_date }}/{{ short_by_status }}">
+                        Trạng thái
+                    </a>
+                </th>
+                <th style="text-align: center">Người đăng ký</th>
+                <th style="text-align: center">Số điện thoại</th>
+                <th style="text-align: center">Tên trường</th>
+                <th style="text-align: center">Cấp</th>
+                <th style="text-align: center">Địa chỉ</th>
+                <th style="text-align: center">Tỉnh/Thành phố</th>
+                <th style="text-align: center">
+                    <a href="{% url app.views.manage_register %}{{ short_by_date }}/{{ short_by_status }}">
+                        Ngày đăng ký
+                    </a>
+                </th>
+                <th style="text-align: center" class="accountInfo">Tài khoản</th>
+                <th style="text-align: center" class="accountInfo">Mật khẩu</th>
+
+            </tr>
+            {% for register in registers  %}
+                <tr class="{{ register.id }}">
+                    <td style="text-align: center; padding-left: 4px;">
+                        <input type="checkbox" id="checkbox_{{register.id}}" class="registerCheckbox"/>
+                    </td>
+                    <td style="text-align: center">{{ forloop.counter }}</td>
+                    <td style="padding-left: 4px;">{{ register.get_status_display }}</td>
+                    <td style="padding-left: 4px;">{{ register.register_name }}</td>
+                    <td style="padding-left: 4px;">{{ register.phone }}</td>
+                    <td style="padding-left: 4px;">{{ register.school_name }}</td>
+                    <td style="text-align: center;">{{ register.get_school_level_display }}</td>
+                    <td style="padding-left: 4px;">{{ register.school_address }}</td>
+                    <td style="padding-left: 4px;">{{ register.get_school_province_display }}</td>
+                    <td style="padding-left: 4px;">{{ register.register_date|date:"SHORT_DATE_FORMAT" }}</td>
+                </tr>
+
+            {% endfor %}
+
+        </table>
+    {% else %}
+        <p>Không có đăng ký nào</p>
+    {% endif %}
+
+{% endblock %}

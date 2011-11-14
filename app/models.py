@@ -7,6 +7,7 @@ from ConfigParser import SafeConfigParser
 import os
 import codecs
 from django.conf import settings
+from datetime import date
 SCHOOL_SETTING_FOLDER = settings.SCHOOL_SETTING_FOLDER
 
 ORGANIZATION_LEVEL_CHOICES = (('T', u'Trường'),
@@ -282,7 +283,9 @@ class Register(models.Model):
     school_address = models.CharField(u"Địa chỉ", max_length=250, blank=True)
     school_province = models.CharField(u"Tỉnh/Thành phố", max_length=150, choices=TINH_CHOICES)
     status = models.CharField(u"Trạng thái", max_length=150, default='CHUA_CAP', choices=REGISTER_STATUS_CHOICES)
-
+    register_date = models.DateField(u"Ngày đăng ký", default=date.today() )
+    default_user_name = models.CharField(u'Tài khoản mặc định', max_length=250, blank=True)
+    default_password = models.CharField(u'Mật khẩu mặc định', max_length=250, blank=True)
     def __unicode__(self):
         return '-'.join([unicode(self.register_name), unicode(self.school_name)])
     

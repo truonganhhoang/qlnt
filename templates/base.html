@@ -131,6 +131,9 @@
                 {% if user.is_superuser %}
                     <li><a class="tiptiphover ui-corner-left"
                            href="/admin" title="Mở trình quản trị sẵn có của hệ thống">Quản trị CSDL</a></li>
+                    <li><a class="tiptiphover"
+                           href="{%url app.views.manage_register %}"
+                           title="Quản lý đăng ký người dùng">Quản lý đăng ký</a></li>
                     {% else %}
                     {% if user.userprofile.position == 'GIAM_DOC_SO' or user.userprofile.position == 'TRUONG_PHONG' %}
                         <li><a class="tiptiphover ui-corner-left"

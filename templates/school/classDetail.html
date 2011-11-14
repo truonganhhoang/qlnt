@@ -53,20 +53,20 @@
                href="{%url school.views.school_index  %}diemdanh/{{class.id}}">Điểm danh</a>
         {% endif %}
 
-        <a title="Xem thời khóa biểu lớp" class="tiptiphover ggButton"
-               href="/school/timeTable/{{class.id}}">Thời khóa biểu</a>
 
         {% if pos > 3 %}
             <a title="Nhập hoặc chỉnh sửa điểm của tất cả các môn trong lớp" class="tiptiphover ggButton"
                href="{%url school.views.school_index  %}markTable/{{currentTerm.id}}/{{class.id}}">Điểm</a>
         {% else %}
-		{% if gvcn %}
-            <a title="Xem điểm các môn do người dùng chủ nhiệm" class="tiptiphover ggButton"
-               href="/school/markForTeacher/2/{{currentTerm.id}}">Điểm</a>
-		{% endif %}			
-		{% endif %}
-		
-		
+            {% if gvcn %}
+                <a title="Xem điểm các môn do người dùng chủ nhiệm" class="tiptiphover ggButton"
+                   href="/school/markForTeacher/2/{{currentTerm.id}}">Điểm</a>
+            {% endif %}
+        {% endif %}
+        <a title="Xem thời khóa biểu lớp" class="tiptiphover ggButton"
+           href="/school/timeTable/{{class.id}}">Thời khóa biểu</a>
+
+
         {% if pos > 2 %}
             <a title="Đánh giá hạnh kiểm học sinh trong lớp" class="tiptiphover ggButton"
                href="{%url school.views.school_index  %}hanhkiem/{{class.id}}">Hạnh kiểm</a>
@@ -125,7 +125,6 @@
                <a class="tiptiphover ggButton" title="In phiếu báo điểm kỳ II"
 			   href="/school/printMarkForClass/2">
 			   Phiếu báo điểm kì II	</a>   
-
 			{% else %}
         <button id="textSms" class="tiptiphover ggButton"
             title="Nhắn tin đến những học sinh đã chọn">Nhắn tin</button>
