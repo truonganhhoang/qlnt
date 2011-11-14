@@ -1,7 +1,7 @@
 ﻿  
 {% block content %}
 {% if user.userprofile.position == 'HIEU_TRUONG' or user.userprofile.position == 'HIEU_PHO' %}
-	<table class="styleA">
+	<table class="dataform">
 	<tr>
 		<th> Môn </th>
 		<th> Hình thức miễn giảm </th>
@@ -122,7 +122,7 @@
 {% else %}
 {% if user.userprofile.position == 'GIAO_VIEN' or user.userprofile.position == 'HOC_SINH' %}		
 	{% if coMienGiam %}
-		<table class="styleA">
+		<table class="main-table">
 			<tr>
 				<th> Môn </th>
 				<th> Hình thức miễn giảm </th>
@@ -149,7 +149,7 @@
 		{% endfor %}			
 		</table>		
 	{% else %}
-		Không có môn nào được miển giảm.
+		Không có môn nào được miễn giảm.
 	{% endif %}
 	
 {% endif %}

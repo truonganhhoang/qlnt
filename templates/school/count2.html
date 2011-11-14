@@ -5,12 +5,12 @@
   <a href="{% url school.views.school_index %}"> Trang chủ </a>
   > <a href="/school/report"> Báo cáo, thống kê </a> 
     {% if type == 1 %}
-      <a href="/school/count2/{{type}}/1"> 
+      > <a href="/school/count2/{{type}}/1">
        > Điểm trung bình
       </a> >
     {% else %}
       {% if type == 2 %}
-        <a href="/school/count2/{{type}}/1"> 
+        > <a href="/school/count2/{{type}}/1">
          > Điểm thi cuối kì
         </a> >
       {% endif %}
@@ -79,7 +79,7 @@
   <br>
   <br>
   {% if index != -1 %}
-    <table width="100%" class="styleA">
+    <table width="100%" class="main-table">
       <tr>
         <th rowspan=2 width="12%" align="center">
           Lớp
@@ -245,7 +245,7 @@
 			var subjectIndex = $('#subject').val();			
 			var modeView     = $('#modeView').val();
 			if (subjectIndex != '-1')
-				window.location.href = "/school/count2/"+{{type}}+'/'+modeView+'/'+{{year_id}} +
+				window.location.href = "/school/count2/" + {{type}}+'/'+modeView+'/'+{{year_id}} +
 					"/" + termNumber + '/' + subjectIndex;
 		})
 			

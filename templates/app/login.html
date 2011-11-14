@@ -1,11 +1,15 @@
 {% extends "base.html" %}
 {% load i18n %}
 
+{% block backward_link %}
+  <a href="{% url school.views.school_index %}"> Trang chủ </a>
+  > Đăng nhập
+{% endblock %}
+
 {% block content %}
     <h2>Đăng nhập</h2>
     <form action="{{ app_path }}" method="post" id="login-form">{% csrf_token %}
       <table class="dataform">
-        <col>
         <tr>
           <th>Tên đăng nhập</th>
           <td>
@@ -27,7 +31,7 @@
         <tr>
           <th></th>
           <td>
-            <input type="submit" value="Đăng nhập"/>
+            <input class="ggButton" type="submit" value="Đăng nhập"/>
           </td>
         </tr>
       </table>

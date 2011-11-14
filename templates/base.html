@@ -67,10 +67,16 @@
                         <p id="school-name">
                             {{ user.userprofile.organization.name }}
                         </p>
-                        <li><a href="{% url school.views.info %}"
+
+                        {% if user.userprofile.position == 'HIEU_TRUONG'  or user.userprofile.position == 'HIEU_PHO' or user.userprofile.position == 'GIAO_VU'%}
+                          <li><a href="{% url school.views.info %}"
                                title="Sửa thông tin và tham số thiết lập về trường học">
                             sửa</a></li>
-
+                        {% else %}
+                            <li><a href="{% url school.views.info %}"
+                                 title="Xem thông tin và tham số thiết lập về trường học">
+                              xem</a></li>
+                        {% endif %}
                         <li><p>
                             {{ user.userprofile.organization.get_status }}</p></li>
                         <li><a title="Chuyển sang học kỳ khác">đổi</a></li>
@@ -140,7 +146,7 @@
                                        href="{%url school.views.school_index %}"
                                        title="Trở về trang đầu">
                                     {#                  {{ user.userprofile.organization.get_status }}#}
-                                    Trang đầu
+                                    Trang chủ
                                 </a></li>
                                 <!-- <li><a href="{%url school.views.years %}" title="Xem năm học khác, học kỳ khác">Các năm</a></li>  -->
                                 <li><a class="tiptiphover" href="{%url school.views.classes %}" title="Quản lý lớp học">Lớp học</a></li>

@@ -77,7 +77,7 @@
 		{% endif %}
 		
 		{% if user.userprofile.position == 'TRUONG_PHONG' %}
-			<h4>Các trường trực thuộc </h4>
+			<strong>Các trường trực thuộc </strong>
 			{% for t in list_t %}
 				{% if t.upper_organization == user.get_profile.organization %}
 					- {{ t.name }}

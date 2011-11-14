@@ -5,6 +5,7 @@
 {% endblock %}
 
 {% block content %}
+  <h2>Thông tin về trường</h2>
     {% if user.userprofile.position == 'HIEU_TRUONG' or user.userprofile.position == 'HIEU_PHO' %}
         <script type="text/javascript" >
 
@@ -67,16 +68,16 @@
 
             });
         </script>
-        <h2>Thông tin trường học</h2>
+{#        <h2>Thông tin trường học</h2>#}
         <form action="{%url school.views.info %}" method="post">{% csrf_token %}
             {% if message != None %}
                 {{message}}
                 <br/>
             {% endif %}
             <div class="info-box">
-                <h3>Thông tin trường học</h3>
+                <h3>Thông tin cơ bản</h3>
                 {#                <div class="infoContent">#}
-                <table class="styleA styleDetail">
+                <table class="dataform">
                     {{ form.as_table }}
                 </table>
                 {#                </div>#}
@@ -84,7 +85,7 @@
             <div class="info-box">
                 <h3>Thiết lập thông số</h3>
                 {#                <div class="infoContent">#}
-                <table class="styleA styleDetail">
+                <table class="dataform">
                     {{ setting_form.as_table }}
                 </table>
                 {#                </div>#}
@@ -97,13 +98,12 @@
 
     {% else %}
         <div>
-            <h2>Thông tin trường học</h2>
             {% if message != None %}
                 {{message}}
                 <br/>
             {% endif %}
 
-            <table class="styleA">
+            <table class="dataform">
                 <tr>
                     <th> Tên trường: </th>
                     <td> {{ school.name }}</td>

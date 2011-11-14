@@ -14,7 +14,7 @@
     {% if user.userprofile.username_change == 0 %}
         <p style="color:#FF0000"> <b>Chú ý</b> tên tài khoản chỉ được thay đổi <b>một</b> lần duy nhất.</p>
         <form action="/school/username_change" method="post">{% csrf_token %}
-            <table class="styleA">
+            <table class="dataform">
                 {{ message }}
                 {{ form.as_table }}
             </table>

@@ -1,10 +1,10 @@
 ﻿{% block content %}
-<table border = 0 align = "center" width = "100%">
-</table>
-<br>
+{#<table border = 0 align = "center" width = "100%">#}
+{#</table>#}
+{#<br>#}
 <form action="{{ url }}" method="post" class="onPage">{% csrf_token %}
     {{ form.non_field_errors }}
-    <table class="styleA">
+    <table class="dataform">
 	    {{ form.as_table }}
 	 </table>
    {% if message != None %}

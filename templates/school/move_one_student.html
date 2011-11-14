@@ -1,7 +1,7 @@
 {% block content %}
     {{ message }}
     <div  style="float: left;">
-        <table class="styleA">
+        <table class="main-table">
             <tr>
                 <th class="leftAlign"> Lớp </th>
                 <th class="leftAlign"> Thời gian nhập lớp </th>
@@ -33,7 +33,7 @@
     <div style="float: left;  margin: 0 10px 0 10px;">
         <form action="/school/movestudent/{{ student.id }}" method="post" class="moveStudent">
             {% csrf_token %}
-            <table class="styleA" >
+            <table class="dataform" >
                 {{ form.as_table }}
             </table>
             <input style="display: none" name="request_type" value="movestudent">

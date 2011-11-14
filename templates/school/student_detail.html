@@ -1,11 +1,14 @@
 {% extends "base.html" %}
 
 {% block backward_link %}
-    <a href="{% url school.views.school_index %}"> Trang chủ </a>
     {% if pos > 1 %}
+      <a href="{% url school.views.school_index %}"> Trang chủ </a>
         > <a href="{% url school.views.school_index %}classes"> Toàn trường</a>
         > <a href="{% url school.views.school_index %}viewClassDetail/{{ class.id }}"> {{ class }} </a>
         > {{ student }}
+    {% else %}
+      <a href="{% url school.views.school_index %}"> Hồ sơ cá nhân </a>
+      > <a href="{% url school.views.school_index %}viewClassDetail/{{ class.id }}"> {{ class }} </a>
     {% endif %}
 {% endblock %}
 
@@ -250,7 +253,7 @@
         </ul>
         <div id = "tabs-1">
             <form action="/school/viewStudentDetail/{{id}}" method="post" class="student_detail">{% csrf_token %}
-                <table class = "styleA styleDetail" >
+                <table class="dataform" >
                     {{ ttcnform.as_table }}
                 </table>
                 {% if pos > 3 %}
@@ -261,7 +264,7 @@
         </div>
         <div id = "tabs-2">
             <form action="/school/viewStudentDetail/{{id}}" method="post" class="student_detail ttll">{% csrf_token %}
-                <table class = "styleA styleDetail">
+                <table class = "dataform">
                     {{ ttllform.as_table }}
                 </table>
                 {% if pos > 3 %}
@@ -272,7 +275,7 @@
         </div>
         <div id = "tabs-3">
             <form action="/school/viewStudentDetail/{{id}}" method="post" class="student_detail">{% csrf_token %}
-                <table class = "styleA styleDetail">
+                <table class = "dataform">
                     {{ ttgdform.as_table }}
                 </table>
                 {% if pos > 3 %}
@@ -283,7 +286,7 @@
         </div>
         <div id = "tabs-4">
             <form action="/school/viewStudentDetail/{{id}}" method="post" class="student_detail">{% csrf_token %}
-                <table class = "styleA styleDetail">
+                <table class = "dataform">
                     {{ ttddform.as_table }}
                 </table>
                 {% if pos > 3 %}

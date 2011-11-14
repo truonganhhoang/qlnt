@@ -58,7 +58,7 @@
     {% endif %}
     <h2>Danh sách giáo viên</h2>
         <form action="/school/teachers_tab" id ="submitform" method="post">{% csrf_token %}
-            <table class="styleA">
+            <table class="main-table">
                 {% if pos > 3 %}
                     <colgroup style="width: 5%;"></colgroup>
                 {% endif %}

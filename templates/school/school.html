@@ -56,19 +56,17 @@
                  href="{% url school.views.viewClassDetail class.id %}">
                 <div id="{{ class.id }}">
                   <span class="class-name"> {{ class.name }} </span>
-{#                  <div style="font-size: 85%;">#}
-                    <div class="class-pupils-total" title="Sĩ số">
-{#                      SS:#}
+                    <div class="class-pupils-total tiptiphover" title="Sĩ số">
                       {{ class.number_of_pupils }}</div>
-                    <div class="class-main-teacher" style="float:left;clear:left" title="Giáo viên chủ nhiệm">
-{#                      CN:#}
                       {% if class.teacher %}
+                        <div class="class-main-teacher tiptiphover" title="Giáo viên chủ nhiệm">
                         {{ class.teacher }}
+                        </div>
                       {% else %}
-                        Chưa có
+                        <div class="class-main-teacher tiptiphover" title="Chưa gán giáo viên chủ nhiệm">
+                        ...
+                        </div>
                       {% endif %}
-                    </div>
-{#                  </div>#}
                 </div>
               </a>
             {% endif %}

@@ -97,7 +97,7 @@
     <div id="tabs1">
         <form action="/school/viewTeacherDetail/{{id}}" method="post">{% csrf_token %}
             {{ ttcnform.non_field_errors }}
-            <table class="styleA">
+            <table class="dataform">
                 {{ ttcnform.as_table }}
             </table>
             <input type="hidden" value="ttcn" name="request_type">
@@ -110,7 +110,7 @@
     <div id="tabs2">
         <form action="/school/viewTeacherDetail/{{id}}" method="post">{% csrf_token %}
             {{ ttllform.non_field_errors }}
-            <table class="styleA">
+            <table class="dataform">
                 {{ ttllform.as_table }}
             </table>
             <input type="hidden" value="ttll" name="request_type">
@@ -124,7 +124,7 @@
     <div id="tabs3">
         <form action="/school/viewTeacherDetail/{{ id }}" method="post">{% csrf_token %}
             {{ ttcbform.non_field_errors }}
-            <table class="styleA">
+            <table class="dataform">
                 {{ ttcbform.as_table }}
             </table>
             <input type="hidden" value="ttcb" name="request_type">

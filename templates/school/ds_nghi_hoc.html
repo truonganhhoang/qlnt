@@ -1,5 +1,14 @@
 {% extends "base.html" %}
 
+{% block backward_link %}
+  <a href="{% url school.views.school_index %}"> Trang chủ </a>
+  > <a href="{% url school.views.school_index %}classes"> Toàn trường</a>
+  > <a href="{% url school.views.school_index %}viewClassDetail/{{ cl.id }}"> {{ cl }} </a>
+  > <a href="{% url school.views.school_index %}diemdanh/{{ cl.id }}"> Điểm danh </a>
+  > Học sinh nghỉ học
+{% endblock %}
+
+
 {% block content %}
 
     <script>
@@ -164,7 +173,7 @@
     <button id="sendSelected" class="ggButton">Gửi SMS cho những học sinh đã chọn</button>
     <a class="ggButton" href="{%url school.views.school_index  %}diemdanh/{{class_id}}/{{day}}/{{month}}/{{year}}"> Quay lại </a>
 {% endif %}
-<table class="styleA" >
+<table class="main-table" >
     {% if pos > 2%}
         <colgroup style="width: 3%;"></colgroup>
     {% endif %}

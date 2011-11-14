@@ -55,7 +55,7 @@ $(function () {
 			if (data.result[0].absentMessage!='')
 			{
 				$("#errorDetail").append("Không có họ tên hoặc ngày sinh của những học sinh sau:<br>");								
-				$("#errorDetail").append("<table class='styleA'>"+data.result[0].absentMessage+"</table>");			
+				$("#errorDetail").append("<table class='main-table'>"+data.result[0].absentMessage+"</table>");
 				$("#errorDetail").show();			
 			}	
 			if (data.result[0].validateMessage!='')		

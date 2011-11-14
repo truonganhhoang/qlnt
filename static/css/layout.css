@@ -57,17 +57,17 @@ footer, header, nav, section, audio, video {
 /*----TOP PANEL----*/
 header {
     width: 100%;
-    height: 73px;
+    height: 72px;
     position: relative;
     color: #000000;
 }
 
 header img.logo {
     position: absolute;
-    top: 44px;
+    top: 50px;
     left: 100px;
     /*width: 300px;*/
-    height: 44px;
+    height: 36px;
     border: none;
     text-align: center;
 }
@@ -137,11 +137,9 @@ section#hearder-bar {
     border: transparent 1px solid;
     border-radius: 3px;
     padding: 4px 3px 4px 3px;
-}
-
-#school-info ul li a {
     font-size: 90%;
 }
+
 
 #user-info ul li a {
 }
@@ -158,11 +156,7 @@ nav {
     position: absolute;
     top: 50px;
     right: 100px;
-    height: 32px;
-    /*color: #0a549e;*/
-    /*text-shadow: #0a549e 0 -1px 0;*/
-    /*background-color: #0066ff;*/
-    border-radius: 6px;
+    border-radius: 5px;
 
 }
 
@@ -172,13 +166,13 @@ nav ul li {
 }
 
 nav ul li a {
-    height: 22px;
+    height: 20px;
     display: block;
     color: #FFFFFF;
     font-weight: bold;
     text-decoration: none;
     text-align: center;
-    padding: 8px 16px 2px 16px;
+    padding: 6px 16px 6px 16px;
     width: auto;
     /*color: white;*/
     /*text-shadow: 1px 1px 2px #333333;*/
@@ -282,7 +276,7 @@ aside p {
 
 #content h2 {
     color: #666666;
-    padding: 10px 0px;
+    padding: 12px 0px 6px 0px;
     font-size: 18px;
     clear:both;
 }
@@ -292,7 +286,7 @@ aside p {
     margin: -10px -10px 0px -10px;
     padding: 5px 0px 0px 10px;
     height: 24px;
-    background-color: #dddddd;
+    background-color: #cccccc;
     border-radius: 5px 5px 0 0;
     /*-moz-box-shadow: 0 1px 5px #9e4f08, inset 0 1px 0 rgba(255, 255, 255, 0.2);*/
     /*-webkit-box-shadow: 0 1px 5px #9e4f08, inset 0 1px 0 rgba(255, 255, 255, 0.2);*/
@@ -305,45 +299,6 @@ aside p {
     background: linear-gradient(top, #F3A934 0%, #EE9227 100%);
 }
 
-/*#nav-path {*/
-    /*font-size: 90%;*/
-    /*height: 20px;*/
-    /*width: auto;*/
-    /*padding: 4px 18px;*/
-    /*margin: 0 0px 6px -18px;*/
-    /*border: 1px solid #9C4D14;*/
-    /*color: white;*/
-    /*text-shadow: 1px 1px 5px #9C4D14;*/
-    /*position: relative;*/
-    /*-moz-box-shadow: 0 1px 5px #9e4f08, inset 0 1px 0 rgba(255, 255, 255, 0.2);*/
-    /*-webkit-box-shadow: 0 1px 5px #9e4f08, inset 0 1px 0 rgba(255, 255, 255, 0.2);*/
-    /*box-shadow: 0 1px 5px #9e4f08, inset 0 1px 0 rgba(255, 255, 255, 0.2);*/
-    /*background: #F3A934;*/
-    /*background: -moz-linear-gradient(top, #F3A934 0%, #EE9227 100%);*/
-    /*background: -webkit-linear-gradient(top, #F3A934 0%, #EE9227 100%);*/
-    /*background: -o-linear-gradient(top, #F3A934 0%, #EE9227 100%);*/
-    /*background: -ms-linear-gradient(top, #F3A934 0%, #EE9227 100%);*/
-    /*background: linear-gradient(top, #F3A934 0%, #EE9227 100%);*/
-
-    /*border-radius: 3px 3px 3px 0;*/
-/*}*/
-
-/*#nav-path::after {*/
-    /*content: "";*/
-    /*display: block;*/
-    /*width: 0px;*/
-    /*height: 0px;*/
-    /*border-bottom: 6px solid transparent;*/
-    /*border-top: 6px solid transparent;*/
-    /*border-left: 6px solid #9C4D14;*/
-    /*position: absolute;*/
-    /*top: 24px;*/
-    /*left: 2px;*/
-    /*-webkit-transform: rotate(-45deg);*/
-    /*-moz-transform: rotate(-45deg);*/
-    /*-ms-transform: rotate(-45deg);*/
-    /*transform: rotate(-45deg);*/
-/*}*/
 
 
 
@@ -356,7 +311,7 @@ aside p {
 #content h3 {
     color: #666666;
     clear: left;
-    padding: 5px 0 0px 0;
+    padding: 10px 0 0 0;
 }
 
 #content h3 span {
@@ -366,8 +321,7 @@ aside p {
 
 #content h4 {
     color: #595f64;
-    font: 18px/18px Georgia, "Times New Roman", Times, serif;
-    padding: 15px 0 0 0;
+    padding: 10px 0 0 0;
 }
 
 #content p {
@@ -411,12 +365,12 @@ section#classes .classDiv{
     padding: 3px 3px 3px 3px;
     text-align: center;
     border-radius: 5px;
-    text-shadow: #0a549e 0 1px 0;
+    /*text-shadow: #0a549e 0 1px 0;*/
 }
 
 section#classes a, nav ul li a, aside a{
     color: white;
-    text-shadow: 1px 1px 2px #333333;
+    /*text-shadow: 1px 1px 2px #333333;*/
     position: relative;
     border: thin solid #547ec2;
     /*-moz-box-shadow: 0 1px 3px #547ec2, inset 0 1px 0 rgba(255, 255, 255, 0.2);*/
@@ -457,10 +411,10 @@ section#classes .class-name{
 }
 
 section#classes .class-pupils-total{
-    display: block;
+    margin:-3px -3px;
     float:right;
     color: yellow;
-    padding: 2px;
+    padding: 1px;
     border: #547ec2 solid thin;
     border-radius: 20px;
     min-width: 20px;
@@ -468,15 +422,18 @@ section#classes .class-pupils-total{
 
 
 section#classes .class-main-teacher{
-    font-weight: 100;
+    margin:3px 0px 0 0;
     color: #eeeeee;
     font-size:80%;
+    float:left;
+    clear:left;
 }
 
 /*----FOOTER PANEL----*/
 footer {
     position: relative;
     margin-top: 20px;
+    margin-bottom: 20px;
     height: 20px;
     display: block;
     font-size: 80%;
@@ -493,3 +450,43 @@ footer p {
     text-align: center
 }
 
+/*3d ribbon*/
+/*#nav-path {*/
+    /*font-size: 90%;*/
+    /*height: 20px;*/
+    /*width: auto;*/
+    /*padding: 4px 18px;*/
+    /*margin: 0 0px 6px -18px;*/
+    /*border: 1px solid #9C4D14;*/
+    /*color: white;*/
+    /*text-shadow: 1px 1px 5px #9C4D14;*/
+    /*position: relative;*/
+    /*-moz-box-shadow: 0 1px 5px #9e4f08, inset 0 1px 0 rgba(255, 255, 255, 0.2);*/
+    /*-webkit-box-shadow: 0 1px 5px #9e4f08, inset 0 1px 0 rgba(255, 255, 255, 0.2);*/
+    /*box-shadow: 0 1px 5px #9e4f08, inset 0 1px 0 rgba(255, 255, 255, 0.2);*/
+    /*background: #F3A934;*/
+    /*background: -moz-linear-gradient(top, #F3A934 0%, #EE9227 100%);*/
+    /*background: -webkit-linear-gradient(top, #F3A934 0%, #EE9227 100%);*/
+    /*background: -o-linear-gradient(top, #F3A934 0%, #EE9227 100%);*/
+    /*background: -ms-linear-gradient(top, #F3A934 0%, #EE9227 100%);*/
+    /*background: linear-gradient(top, #F3A934 0%, #EE9227 100%);*/
+
+    /*border-radius: 3px 3px 3px 0;*/
+/*}*/
+
+/*#nav-path::after {*/
+    /*content: "";*/
+    /*display: block;*/
+    /*width: 0px;*/
+    /*height: 0px;*/
+    /*border-bottom: 6px solid transparent;*/
+    /*border-top: 6px solid transparent;*/
+    /*border-left: 6px solid #9C4D14;*/
+    /*position: absolute;*/
+    /*top: 24px;*/
+    /*left: 2px;*/
+    /*-webkit-transform: rotate(-45deg);*/
+    /*-moz-transform: rotate(-45deg);*/
+    /*-ms-transform: rotate(-45deg);*/
+    /*transform: rotate(-45deg);*/
+/*}*/

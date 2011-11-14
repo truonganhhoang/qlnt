@@ -6,7 +6,7 @@
 	{% if user.is_authenticated %}
 		<a href="{%url school.sms_views.sent_sms %}">Những tin nhắn gửi đi thành công</a>&nbsp-&nbsp
 		<a href="{%url school.sms_views.failed_sms %}">Những tin nhắn gửi đi thất bại</a>
-		<h4>Danh sách tin nhắn không được gửi đi:</h4>
+		<h3>Danh sách tin nhắn không được gửi đi:</h3>
 		<small><b>Ghi chú - x</b>: Số điện thoại không thuộc Người sử dụng nào.</small>
 		{% if sms_list %}
             {% autopaginate sms_list 30 %}

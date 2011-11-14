@@ -235,45 +235,34 @@ input.noedit {
 
 
 /*-------------------*/
-table.styleA {
-    /*font-family: Arial, Helvetica, sans-serif;*/
+table.main-table {
     margin: 5px 0 5px 0;
     font-size: 14px;
     color: #333333;
-    border: 1px solid #cccccc;
+    border: solid #cccccc thin;
     border-collapse: collapse;
     border-spacing: 0;
     margin-bottom: 10px;
-    /*text-shadow: 0 1px 0 #e2f9fb;*/
     /*width: 980px;*/
     border-radius: 5px;
 }
 
-table.styleA th {
-    background-color: #eeeeee;
-    padding: 8px;
-    text-align: right;
-    /*text-shadow: 0 1px 0 #bfedf2;*/
-    border: thin #dddddd inset;
+table.main-table th {
+    padding: 8px 4px;
+    background-color: #dddddd;
+    border: thin #cccccc solid;
+    font-size: 13px;
 }
 
-table.styleA td {
+table.main-table td {
     border: thin #dddddd inset;
-    /*border-left: thin #dddddd inset;*/
-    /*border-right: thin #dddddd inset;*/
-    padding: 4px 2px 4px 2px;
+    padding: 4px;
     text-align: left;
     vertical-align: bottom;
 }
 
-table.styleA th.leftAlign {
-    /*background-color: #c3dde0;*/
-    padding: 8px;
-    text-align: left;
-}
 
-
-table.styleA th.mark {
+table.main-table th.mark {
     /*background-color: #c3dde0;*/
     width: 40px;
     padding: 8px 0; 
@@ -282,84 +271,57 @@ table.styleA th.mark {
 	text-align:center;
 }
 
-table.styleA td.lastname {
+table.main-table td.lastname {
     width: 120px;
     border-right: 0;
 }
 
-table.styleA td.firstname {
+table.main-table td.firstname {
     width: 50px;
     border-left: 0;
 }
 
-table.styleA td.sent {
+table.main-table td.sent {
     background-color: #B2FFDB;
 }
 
-/*table.styleA td.selected {*/
-    /*background-color: #f3f48d;*/
-/*}*/
 
 #sortable tr {
     min-height: 1.5em;
 }
 
-table.styleA input {
-    font-size: 15px;
+table.main-table input {
+    /*font-size: 15px;*/
     padding:2px;
 }
 
-table.styleA select {
+table.main-table select {
     font-size: 13px;
     height: 23px;
     margin: 2px 2px 0 2px;
 }
 
-table.styleA input[type="text"] {
+table.main-table input[type="text"] {
     font-size: 15px;
     width: 95%;
 }
 
-table.styleA tr:nth-child(odd) {
+table.main-table tr:nth-child(odd) {
     background-color: #eeeeee;
 }
 
-table.styleA tr:nth-child(even) {
+table.main-table tr:nth-child(even) {
     background-color: #ffffff;
 
 }
 
-/*table.styleA tr.thead {*/
-    /*background-color: #aacbd0;*/
-/*}*/
-
-/*table.styleA tr:hover {*/
-    /*background-color: #a8d6dd;*/
-/*}*/
-
-/*table.styleA tr.focused {*/
-    /*background-color: #d0e055;*/
-    /*background-image: -webkit-gradient(linear,left top,left bottom,from(#e6f577),to(#d0e055));*/
-    /*background-image: -webkit-linear-gradient(top,#e6f577,#d0e055);*/
-    /*background-image: -moz-linear-gradient(top,#e6f577,#d0e055);*/
-    /*background-image: -ms-linear-gradient(top,#e6f577,#d0e055);*/
-    /*background-image: -o-linear-gradient(top,#e6f577,#d0e055);*/
-/*}*/
-
-table.styleA tr.selected {
+table.main-table tr.selected {
     background-color: #fbec88;
-    /*background-color: #dedf4c;*/
-    /*background-image: -webkit-gradient(linear,left top,left bottom,from(#f5f681),to(#dedf4c));*/
-    /*background-image: -webkit-linear-gradient(top,#f5f681,#dedf4c);*/
-    /*background-image: -moz-linear-gradient(top,#f5f681,#dedf4c);*/
-    /*background-image: -ms-linear-gradient(top,#f5f681,#dedf4c);*/
-    /*background-image: -o-linear-gradient(top,#f5f681,#dedf4c);*/
 }
 
-table.styleA tr.endblock{
+table.main-table tr.endblock{
     background-color: #FFFFFF;
 }
-
 
 table.styleDetail th {
     text-align: right;
@@ -411,13 +373,13 @@ table.styleDetail input {
     display: inline-block;
     filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#4D90FE', EndColorStr = '#4787ED');
     color: #ffffff;
-    font-size: 14px;
-    font-weight: bold;
+    font-size: 13px;
+    /*font-weight: bold;*/
     padding: 3px 12px;
     margin-right: 3px;
     cursor: pointer;
     text-decoration: none;
-    text-shadow: #0a549e 0 -1px 0;
+    /*text-shadow: #0a549e 0 -1px 0;*/
 }
 
 button.ggButton{
@@ -526,9 +488,9 @@ div.leftInfoDiv, div.rightInfoDiv, div.confirmation, div.startYear, div.info-box
 }
 
 div.info-box {
-    position: relative;
-    width: auto;
-    float: left;
+    /*position: relative;*/
+    /*width: auto;*/
+    /*float: left;*/
     /*padding: 5px;*/
     /*margin: 5px;*/
     /*border: #bbbbbb solid thin;*/
@@ -606,30 +568,33 @@ div#help p, h3 {
 }
 
 
-div#help h2 {
-    -webkit-column-break-before: always;
-    -moz-column-break-before: always;
-    /*column-break-before:always;*/
-    /*break-before: column;*/
-}
-
 table.dataform {
-    margin: 3px 3px;
-    background-color:  #e2edef;
+    margin: 10px 0px;
+    border: #dddddd thin solid;
+    background-color:  #eeeeee;
 }
 
 table.dataform th {
-    padding: 10px;
-    background-color:  #EAF2F3;
+    padding: 5px;
     font-size: 14px;
     text-align: right;
+    color: #666666;
 }
 
-table.dataform input {
-    padding: 3px;
+table.dataform td {
+    /*background-color:  #ffffff;*/
+    padding: 5px;
+    font-size: 14px;
+    text-align: left;
+}
+
+table.dataform input, table.dataform select, table.dataform textarea {
+    padding: 5px;
     font-size: 14px;
     /*border: 1px solid #a9c6c9;*/
-    /*text-align: left;*/
+    text-align: left;
+    background-color:  #ffffff;
+    border-color:  #bbbbbb;
 }
 
 /*table.dataform tr {*/

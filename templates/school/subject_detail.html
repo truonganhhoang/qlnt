@@ -17,7 +17,7 @@
         {{ message }} <br>
     {% endif %}
     <form action="/school/viewSubjectDetail/{{sub.id}}" method="post">{% csrf_token %}
-        <table class="styleA styleDetail">
+        <table class="dataform">
             {{ form.as_table }}
         </table>
         <input type="submit" class="ggButton" value="Lưu"/>

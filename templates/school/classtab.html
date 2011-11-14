@@ -174,13 +174,13 @@
         </script>
     {% endif %}
     <form class="submitform" action="/school/classtab/{{block_id}}" method="post">{% csrf_token %}
-        <table class="styleA" width="100%">
+        <table class="main-table" width="100%">
             <tr>
                 <th class="leftAlign"> STT </th>
-                <th class="leftAlign"> Tên Lớp </th>
+                <th class="leftAlign"> Lớp </th>
                 <th class="leftAlign"> Sỹ số </th>
-                <th class="leftAlign"> Giáo Viên Chủ Nhiệm </th>
-                <th class="leftAlign"> Năm </th>
+                <th class="leftAlign"> Giáo viên chủ nhiệm </th>
+                <th class="leftAlign"> Năm học</th>
                 {% if pos >= 4 %}
                     <th class="leftAlign"></th>
                 {% endif %}
@@ -216,9 +216,14 @@
                               <a class="ggButton delete" href="{%url school.views.school_index  %}deleteClass/{{class.id}}/{{block_id}}">
                                 xóa </a></td>
                         {% else %}
-                            <td><a class="ggButton"
-                                   onclick="alert( 'Lớp vẫn còn học sinh, vui lòng xóa hết học sinh trước' );">
-                                xóa </a></td>
+                            <td style="tiptiphover" title="Không được xóa các lớp vẫn còn học sinh">
+{#                              <a class="ggButton" title="Lớp vẫn còn học sinh, vui lòng xóa hết học sinh trước"#}
+{#                                    disabled="disabled"#}
+{#                                   onclick="alert('Lớp vẫn còn học sinh, vui lòng xóa hết học sinh trước');"#}
+{#                              >#}
+{#                              xóa</a>#}
+                              ...
+                            </td>
                         {% endifequal %}
                     {% endif %}
                 </tr>

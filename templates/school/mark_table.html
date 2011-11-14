@@ -37,9 +37,9 @@
 	{
 		if (document.info.subject.value != -1) 
 			if (document.info.move && document.info.move[0].checked)
-					window.location.href="/school/markForTeacher/"+{{type}}+"/" +{{termChoice}} + "/" + document.info.subject.value + "/ngang2";
+					window.location.href="/school/markForTeacher/" + {{type}} + "/" +{{termChoice}} + "/" + document.info.subject.value + "/ngang2";
 				else	
-					window.location.href="/school/markForTeacher/"+{{type}}+"/" +{{termChoice}} + "/" + document.info.subject.value;
+					window.location.href="/school/markForTeacher/" + {{type}} + "/" +{{termChoice}} + "/" + document.info.subject.value;
 				
 	}
 	
@@ -59,7 +59,7 @@
 		if (position!="GIAO_VIEN")
 			window.location.href="/school/markTable/"+document.info.term.value;
 		else	
-			window.location.href="/school/markForTeacher/"+{{type}}+"/"+document.info.term.value;		
+			window.location.href="/school/markForTeacher/" + {{type}}+ "/" +document.info.term.value;
 	}
 	</script>
   
