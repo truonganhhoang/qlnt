@@ -9,7 +9,7 @@ import os.path
 import time 
 from school.utils import *
 from school.templateExcel import *
-from school.writeExcel import count1Excel,count2Excel,printHanhKiemExcel
+from school.writeExcel import count1Excel,count2Excel,printHanhKiemExcel,printNoPassExcel
 
 def countTotalPractisingInTerm(term_id):
     slList  =[0,0,0,0,0]
@@ -926,9 +926,9 @@ def printDanhHieu(request,termNumber=None,type=None,isExcel=None):
         
         termNumber=int(termNumber)
         type = int(type)
-        blockList = Block.objects.filter(school_id=currentTerm.year_id.school_id)  
+        blockList = Block.objects.filter(school_id=currentTerm.year_id.school_id).order_by("number")  
         for b in blockList:
-            classList = Class.objects.filter(block_id=b,year_id=currentTerm.year_id.id)
+            classList = Class.objects.filter(block_id=b,year_id=currentTerm.year_id.id).order_by("id")
             for c in classList:
                 if int(termNumber)<3:
                     if   type==1:
@@ -956,3 +956,48 @@ def printDanhHieu(request,termNumber=None,type=None,isExcel=None):
                                  'termNumber':termNumber,                                 
                                  })
     return HttpResponse(t.render(c))
+
+def printNoPass(request,type=None,isExcel=None):
+    tt1=time.time()
+    
+    user = request.user
+    if not user.is_authenticated():
+        return HttpResponseRedirect( reverse('login'))
+    currentYear = get_current_year(request)
+    try:
+        if in_school(request,currentYear.school_id) == False:
+            return HttpResponseRedirect('/school')
+    except Exception as e:
+        return HttpResponseRedirect(reverse('index'))
+
+    if get_position(request) != 4:
+       return HttpResponseRedirect('/school')
+    if type==None:
+        type=1
+    list=[]       
+             
+    type = int(type)
+    blockList = Block.objects.filter(school_id=currentYear.school_id).order_by("number")  
+    
+    for b in blockList:
+        classList = Class.objects.filter(block_id=b,year_id=currentYear.school_id).order_by("id")
+        for c in classList:
+            if   type==1:
+                pupils=TBNam.objects.filter(student_id__classes=c.id,len_lop=False).order_by("student_id__index")
+            elif type==2:                        
+                pupils=TBNam.objects.filter(student_id__classes=c.id,thi_lai=True).order_by("student_id__index")
+            elif type==3:                        
+                pupils=TBNam.objects.filter(student_id__classes=c.id,ren_luyen_lai=True).order_by("student_id__index")
+            list.append((c.name,pupils))
+                
+    if isExcel:
+        return printNoPassExcel(list,type,currentYear)            
+    tt2=time.time()
+    print tt2-tt1
+    t = loader.get_template(os.path.join('school','print_no_pass.html'))    
+    c = RequestContext(request, {
+                                 'list':list,
+                                 'type':type,
+                                 })
+    return HttpResponse(t.render(c))
+

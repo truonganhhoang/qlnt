@@ -1,0 +1,129 @@
+﻿{% extends "base.html" %}
+
+{% block backward_link %}
+  <a href="{% url school.views.school_index %}"> Trang chủ </a>
+  > <a href="/school/report"> Báo cáo, thống kê </a> 
+  > Danh sách không lên lớp, thi lại, rèn luyện thêm	
+ {% endblock %}
+
+{% block content %}
+	<br>
+	<table width="100%">
+	<tr>
+		<td>
+			<form name="info" >
+				<INPUT TYPE="radio" NAME="type" id='1' value="1">Không lên lớp &nbsp&nbsp&nbsp&nbsp&nbsp     	
+				<INPUT TYPE="radio" NAME="type" id='2'value="2">Thi lại&nbsp&nbsp&nbsp&nbsp&nbsp
+				<INPUT TYPE="radio" NAME="type" id='3'value="3">Rèn luyện thêm 
+			</form>
+		</td>	
+		<td align="right">
+			<a href="/school/printNoPass/{{type}}/1" class="ggButton"> Xuất ra excel </a> 
+		</td>
+	</tr>
+	</table>	
+	<br>
+	<br>
+	{% load mark %}
+{% if type != None %}
+	<table width="100%" class="main-table">
+	<tr>
+        <th width="1%"  >
+          STT
+        </th>
+        <th width="10%">
+          Lớp
+        </th>
+        <th colspan=2>
+          Họ và tên
+        </th>
+        <th width="1%" >
+          Ngày sinh
+        </th>
+        <th >
+          Thuộc diện
+        </th>		
+	</tr>
+	{% for c,tbNams in list %}
+		{% for tbNam in tbNams %}
+			<tr>
+				<td> 
+					{{forloop.counter}}	
+				</td>		
+				<td> 
+					{{c}} 
+				</td>
+				<td class="lastname" >
+					{{tbNam.student_id.last_name}}
+				</td>	
+				<td class="firstname" >
+					{{tbNam.student_id.first_name}}
+				</td>	
+				<td  >
+					{{tbNam.student_id.birthday|date:"SHORT_DATE_FORMAT"}}
+				</td>	
+				<td>
+					{% if tbNam.len_lop %}
+						Được lên lớp	
+							{% if tbNam.thi_lai %}
+								(Sau khi kt lại)
+							{% else %}
+							{% if tbNam.ren_luyen_lai %}
+								(Sau rèn luyện thêm trong hè)
+							{% endif %}	
+							{% endif %}								
+					{% else  %}					
+					{% if tbNam.len_lop != None  %}
+						Ở lại lớp 
+							{% if tbNam.thi_lai %}
+								(Sau khi kt lại)
+							{% else %}
+							{% if tbNam.ren_luyen_lai %}
+								(Sau rèn luyện thêm trong hè)
+							{% endif %}	
+							{% endif %}														
+					{% else %}
+					{% if tbNam.thi_lai  %}
+						Thi lại
+					{% else %}	
+					{% if tbNam.ren_luyen_lai %}
+						Rèn luyện thêm trong hè
+					{% else %}
+						Chưa được xếp loại						
+					{% endif %}	
+					{% endif %}	
+					{% endif %}	
+					{% endif %}	
+				</td>
+			</tr>
+		{% endfor %}	
+		{% if danhHieus %}
+			<tr>
+				<td> &nbsp
+				</td>
+				<td>
+				</td>
+				<td class="lastname">
+				</td>
+				<td class="firstname">
+				</td>
+				<td>
+				</td>
+				<td>
+				</td>
+			</tr>
+			
+		{% endif %}	
+	{% endfor %}
+	</table>
+{% endif %}
+
+<script>	
+	$(document).ready(function() {
+		$('input[type=radio]').change(function() {
+			window.location.href="/school/printNoPass/"+this.value;
+		})
+	});
+	document.getElementById({{type}}).checked=true;	
+</script>
+{% endblock %}

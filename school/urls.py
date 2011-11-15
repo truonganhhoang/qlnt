@@ -80,6 +80,9 @@ urlpatterns = patterns('',
     url(r'printDanhHieu$' , 'school.viewCount.printDanhHieu'), 
     url(r'printDanhHieu/(?P<termNumber>\w+)/(?P<type>\w+)$' , 'school.viewCount.printDanhHieu'), 
     url(r'printDanhHieu/(?P<termNumber>\w+)/(?P<type>\w+)/(?P<isExcel>\w+)$' , 'school.viewCount.printDanhHieu'), 
+    url(r'printNoPass$' , 'school.viewCount.printNoPass'), 
+    url(r'printNoPass/(?P<type>\w+)$' , 'school.viewCount.printNoPass'), 
+    url(r'printNoPass/(?P<type>\w+)/(?P<isExcel>\w+)$' , 'school.viewCount.printNoPass'), 
     
     #------------------------------------------------------------------
 

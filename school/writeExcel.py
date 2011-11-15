@@ -1369,3 +1369,72 @@ def printHanhKiemExcel(list,termNumber,type,currentTerm):
     response['Content-Disposition'] = u'attachment; filename=%s.xls' % sheetName
     book.save(response)
     return response
+
+def printNoPassExcel(list,type,currentYear):
+    
+    book = Workbook(encoding = 'utf-8')
+    str2=u'CẢ NĂM NĂM HỌC '+str(currentYear.time)+'-'+str(currentYear.time+1)
+        
+    if   (type==1): 
+        str3='khongLenLop'        
+        titleString=u'DANH SÁCH HỌC SINH KHÔNG LÊN LỚP  ' 
+    elif (type==2): 
+        str3='thiLai'        
+        titleString=u'DANH SÁCH HỌC SINH THI LẠI'
+    elif (type==3):       
+        str3='renLuyenThem'        
+        titleString=u'DANH SÁCH HỌC SINH RÈN LUYỆN THÊM TRONG HÈ' 
+         
+    sheetName =str3+str(currentYear.time)+'-'+str(currentYear.time+1)     
+    s=book.add_sheet('DSHS ',True)
+    s.col(0).width=s1    
+    s.col(1).width=FIRSTNAME_WIDTH
+    s.col(2).width=FIRSTNAME_WIDTH
+    s.col(3).width=LASTNAME_WIDTH    
+    s.col(4).width=BIRTHDAY_WIDTH    
+    s.col(5).width=SIZE_PAGE_WIDTH1-s1-2*FIRSTNAME_WIDTH-LASTNAME_WIDTH-BIRTHDAY_WIDTH    
+            
+    s.write_merge(2,2,0,5,titleString,h40)
+    s.write_merge(3,3,0,5,str2,h40)
+    x=5
+    y=0    
+    s.write(x,y,u'STT',h4)    
+    s.write(x,y+1,u'Lớp',h4)    
+    s.write_merge(x,x,y+2,y+3,u'Họ và tên',h4)    
+    s.write(x,y+4,u'Ngày sinh',h4)    
+    s.write(x,y+5,u'Thuộc diện',h4)  
+    i=1  
+    for c,tbNams in list:
+        j=1
+        for tbNam in tbNams:
+            s.write(x+i,y,i,h82)
+            s.write(x+i,y+1,c,h82)
+            s.write(x+i,y+2,tbNam.student_id.last_name,last_name1)
+            s.write(x+i,y+3,tbNam.student_id.first_name,first_name1)
+            s.write(x+i,y+4,tbNam.student_id.birthday.strftime('%d/%m/%Y'),h82)
+                
+            if  tbNam.len_lop:
+                if tbNam.thi_lai:                        
+                    s.write(x+i,y+5,'lên lớp(sau khi kt lại)',h82)
+                elif tbNam.ren_luyen_lai:    
+                    s.write(x+i,y+5,'lên lớp(sau rèn luyện thêm trong hè)',h82)
+                else:    
+                    s.write(x+i,y+5,'lên lớp',h82)
+            elif  tbNam.len_lop==False:
+                if tbNam.thi_lai:                        
+                    s.write(x+i,y+5,'Ở lại lớp(sau khi kt lại)',h82)
+                elif tbNam.ren_luyen_lai:    
+                    s.write(x+i,y+5,'Ở lại lớp(sau rèn luyện thêm trong hè)',h82)
+                else:    
+                    s.write(x+i,y+5,'Ở lại lớp',h82)
+            elif tbNam.thi_lai:        
+                s.write(x+i,y+5,'thi lại',h82)
+            elif tbNam.ren_luyen_lai:
+                s.write(x+i,y+5,'rèn luyện thêm trong hè',h82)    
+            j+=1
+            i+=1
+               
+    response = HttpResponse(mimetype='application/ms-excel')
+    response['Content-Disposition'] = u'attachment; filename=%s.xls' % sheetName
+    book.save(response)
+    return response
