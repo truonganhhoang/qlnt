@@ -25,7 +25,7 @@
   <br>
   <br>
   &nbsp &nbsp<b>Hạnh kiểm:</b>
-  <table class="styleB" width="98%">
+  <table class="main-table" width="98%">
     <tr>
       <th width="14%">
       </th>
@@ -71,7 +71,7 @@
   {#-------------------------------------------------------------------------#}
   <br>
   &nbsp &nbsp<b>Học lực: </b>
-  <table class="styleB" width="98%">
+  <table class="main-table" width="98%">
     <tr>
       <th width="14%">
       </th>
@@ -123,7 +123,7 @@
   {#--------------------------------------------------------------------------#}
   <br>
   &nbsp &nbsp<b>Danh hiệu: </b>
-  <table class="styleB" width="98%">
+  <table class="main-table" width="98%">
     <tr>
       <th width="14%">
       </th>
@@ -174,7 +174,7 @@
     <br>
     &nbsp &nbsp<b>Hạnh kiểm: </b> <br>
     <br>
-    <table class="styleB" width="98%">
+    <table class="main-table" width="98%">
       <tr>
         <th width="14%">
         </th>
@@ -221,7 +221,7 @@
     <br>
     &nbsp &nbsp<b>Học lực:</b><br> <br>
     <br>
-    <table class="styleB" width="98%">
+    <table class="main-table" width="98%">
       <tr>
         <th width="14%">
         </th>
@@ -275,7 +275,7 @@
     <br>
     &nbsp &nbsp<b>Danh hiệu:</b><br> <br>
     <br>
-    <table class="styleB" width="98%">
+    <table class="main-table" width="98%">
       <tr>
         <th width="14%">
         </th>
@@ -318,7 +318,7 @@
     <br>
     &nbsp &nbsp<b>Xếp loại:</b><br> <br>
     <br>
-    <table class="styleB" width="98%">
+    <table class="main-table" width="98%">
       <tr>
         <th width="14%">
         </th>
@@ -371,11 +371,11 @@
   <span style="font-size:18px"> <b> <u>B. XEM CHI TIẾT </u></b></span>
   <br>
   <br>
-  <table class="styleB" width="98%">
+  <table class="main-table" width="98%">
     <tr>
 
       <td width="33%">
-        <p> Học kỳ I : </p>
+        <p> Học kỳ I: </p>
         <ul>
           <li><a href="{%url school.views.school_index  %}countPractisingInTerm/{{firstTerm.id}}"> Hạnh kiểm</a></li>
           <li><a href="{%url school.views.school_index  %}countLearningInTerm/{{firstTerm.id}}"> Học lực</a></li>
@@ -386,7 +386,7 @@
       <td width="33%">
         </ul>
         {% ifnotequal currentTerm.number 1 %}
-          <p> Học kỳ II :</p>
+          <p> Học kỳ II:</p>
           <ul>
             <li><a href="{%url school.views.school_index  %}countPractisingInTerm/{{secondTerm.id}}"> Hạnh kiểm</a></li>
             <li><a href="{%url school.views.school_index  %}countLearningInTerm/{{secondTerm.id}}"> Học lực</a></li>
@@ -395,7 +395,7 @@
           </td>
 
           <td width="33%">
-            <p> Cả năm : </p>
+            <p> Cả năm: </p>
             <ul>
               <li><a href="{%url school.views.school_index  %}countPractisingInYear/{{selectedYear.id}}"> Hạnh kiểm</a>
               </li>
@@ -406,7 +406,7 @@
 
             {% else %}
 
-            <p> Học kỳ II :</p>
+            <p> Học kỳ II:</p>
             <ul>
               <li><a title="Đang trong học kỳ I nên chức năng này đã bị vô hiệu hóa"> Hạnh kiểm</a></li>
               <li><a title="Đang trong học kỳ I nên chức năng này đã bị vô hiệu hóa"> Học lực</a></li>
@@ -415,7 +415,7 @@
           </td>
 
           <td width="33%">
-          <p> Cả năm : </p>
+          <p> Cả năm: </p>
           <ul>
             <li><a title="Đang trong học kỳ I nên chức năng này đã bị vô hiệu hóa"> Hạnh kiểm</a></li>
             <li><a title="Đang trong học kỳ I nên chức năng này đã bị vô hiệu hóa"> Học lực</a></li>

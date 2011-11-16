@@ -61,7 +61,7 @@
 						if (document.getElementById(id))
 							{
 								document.getElementById(id).innerHTML='Đã gửi';	
-								document.getElementById(id).className='sent';	
+								document.getElementById(id).className='mark-sent';
 							}							
 					}
 				}
@@ -96,7 +96,7 @@
 				//var id = $(this).attr('class').split(' ')[0];
 				var id =this.rowIndex;
 				var sentId     = '#sent_' + id;
-				if ($(sentId).hasClass('sent'))
+				if ($(sentId).hasClass('mark-sent'))
 				{
 					if ($(this).hasClass('selected'))
 						$(this).trigger('click');
@@ -235,7 +235,7 @@
 			
 			{% endif %}
 				{% if tb.sent %}
-				<td class="sent" id="sent_{{forloop.counter}}" >
+				<td class="mark-sent" id="sent_{{forloop.counter}}" >
 					Đã gửi
 				</td>	
 				{% else %}	

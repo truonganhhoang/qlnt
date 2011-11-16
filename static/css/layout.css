@@ -361,7 +361,7 @@ section#classes{
 
 section#classes .classDiv{
     float: left;
-    margin: 5px 10px 10px 0;
+    margin: 5px 5px 0px 0px;
     padding: 3px 3px 3px 3px;
     text-align: center;
     border-radius: 5px;

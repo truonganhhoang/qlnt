@@ -8,7 +8,7 @@
 		{% if sms_list %}
 			<h3>Các tin nhắn đã được gửi đi:</h3>
             {% autopaginate sms_list 30 %}
-			<table class="styleB">
+			<table class="main-table">
 				<tr >
 				<th >Số điện thoại</th>
 				<th >Người nhận</th>				
@@ -32,7 +32,7 @@
 		{% if sms_list_failed %}
 			<h3>Các tin nhắn không gửi được:</h3>
             {% autopaginate sms_list 30 %}
-			<table class="styleB">
+			<table class="main-table">
 				<tr >
 				<th >Số điện thoại</th>
 				<th >Người nhận</th>

@@ -10,6 +10,7 @@
 
 
 {% block content %}
+  <h2>Nhập điểm thi lại</h2>
 {% if message %}
 	{{message}}
 {% else%}
@@ -76,7 +77,7 @@
 		<br>
 		{{tbNam.student_id.last_name}} &nbsp {{tbNam.student_id.first_name}}
 		
-		<table class="styleC">
+		<table class="main-table">
 		<tr>
 			{% for tkMon in tkMonList %}
 			
@@ -142,11 +143,11 @@
 			
 			{% ifequal tbNam.tb_thi_lai None %}
 				<td >
-					<input class="noedit" type="text" id="t{{tbNam.id}}"  readonly="readonly">				
+					<input class="mark-noedit" type="text" id="t{{tbNam.id}}"  readonly="readonly">
 				</td>
 			{% else %}	
 				<td >
-					<input class="noedit" type="text" id="t{{tbNam.id}}"  value="{{tbNam.tb_thi_lai}}" readonly="readonly">				
+					<input class="mark-noedit" type="text" id="t{{tbNam.id}}"  value="{{tbNam.tb_thi_lai}}" readonly="readonly">
 				</td>
 			{% endifequal %}	
 			<td>

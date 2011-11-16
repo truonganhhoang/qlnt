@@ -36,7 +36,7 @@
 		<input class = "tiptiphover ggButton" title="Tính điểm trung bình của cả lớp" type="submit" value="Tính điểm trung bình" />
 	</form>
 	<br>
-	<table class="main-table">
+	<table id="mark-table" class="main-table">
 		<tr>
 			<th rowspan=2 align="center" style="width:4px" >
 				Stt
@@ -49,13 +49,13 @@
 			</th>	
 			{% for s in subjectList %}
 				
-				<th  rowspan=2 class="mark" >
+				<th  rowspan=2 class="mark-column" >
 					{% if s.name == 'GDQP-AN' %}
 						GD<br>QP<br>AN
 					{% else %}	
 					{% if s.name == 'GDCD' %}
 						GD<br>CD
-					{% else %} 
+					{% else %}
 						{{s.name}}
 					{% endif %}	
 					{% endif %}	
@@ -154,7 +154,7 @@
 <script>	
 	$(document).ready(function() {
 		$('input[type=radio]').change(function() {
-			window.location.href="/school/xepLoaiHlTheoLop/"+{{selectedClass.id}}+"/"+this.value;
+			window.location.href="/school/xepLoaiHlTheoLop/" + {{selectedClass.id}}+ "/" +this.value;
 		})
 	});
 	document.getElementById({{termNumber}}).checked=true;	
