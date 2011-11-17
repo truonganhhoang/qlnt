@@ -77,17 +77,6 @@ ul {
     cursor: pointer;
 }
 
-/*-------------------*/
-input[type=text]{
-    border: 1px solid #999999;
-}
-
-
-/*table.main-table input.mark, table.main-table input.mark1, table.main-table input.sent, table.main-table input.mark-noedit{*/
-    /*cursor: pointer;*/
-    /*border: 0;*/
-    /*width: 100%;*/
-/*}*/
 
 /*table.main-table input.mark, table.main-table input.mark1 {*/
     /*background-color: transparent;*/
@@ -130,11 +119,9 @@ table.main-table {
     margin-bottom: 10px;
     /*width: 980px;*/
     border-radius: 5px;
-
-    -moz-box-shadow: 1px 1px 5px #888888;
-    -webkit-box-shadow: 1px 1px 5px #888888;
-    box-shadow: 1px 1px 5px #888888;
-
+    -moz-box-shadow: 1px 1px 2px #888888;
+    -webkit-box-shadow: 1px 1px 2px #888888;
+    box-shadow: 1px 1px 2px #888888;
 }
 
 table.main-table th {
@@ -196,7 +183,7 @@ table.main-table td.selected {
     min-height: 1.5em;
 }
 
-table.main-table input {
+table.main-table input{
     /*font-size: 15px;*/
     padding:2px;
 }
@@ -236,7 +223,7 @@ table.styleB {
     font-size: 14px;
     border: 1px solid #999999;
     border-collapse: collapse;
-    width: 980px;
+    /*width: 980px;*/
 }
 
 table.styleB th {
@@ -291,15 +278,66 @@ table.styleB tr.highLight {
     background-color:  #D9FFF0;
 }
 
+input.highLight {
+    cursor: pointer;
+    border: 0;
+    width: 100%;
+    height:24px;
+    margintop: 0;
+    marginbottom: 0;
+    marginleft: 0;
+    backgroundcolor:  #D9FFF0;
+}
+
+input.mark {
+    cursor: pointer;
+    border: 0;
+    width: 100%;
+    height:24px;
+    margintop: 0;
+    marginbottom: 0;
+    marginleft: 0;
+}
+
+input.mark1 {
+    cursor: pointer;
+    border: 0;
+    width: 100%;
+    height:24px;
+    margintop: 0;
+    marginbottom: 0;
+    marginleft: 0;
+    backgroundcolor: #EBF3F4;
+}
+
 input.selected {
     cursor: pointer;
     border: 0;
     width: 100%;
     height:24px;
-    margin-top: 0;
-    margin-bottom: 0;
-    margin-left: 0;
-    background-color: #f3f48d;
+    margintop: 0;
+    marginbottom: 0;
+    marginleft: 0;
+    backgroundcolor: #f3f48d;
+}
+
+input.sent {
+    cursor: pointer;
+    border: 0;
+    width: 100%;
+    height:24px;
+    margintop: 0;
+    marginbottom: 0;
+    marginleft: 0;
+    backgroundcolor: #B2FFDB;
+}
+input.noedit {
+    cursor: pointer;
+    border: 0;
+    width: 100%;
+    height:24px;
+    backgroundcolor:  #e2edef;
+
 }
 
 /*table.setting {*/
@@ -428,14 +466,6 @@ div.errorDiv{
     padding: 2px;
 }
 
-/*div.infoContent {*/
-    /*width: 100%;*/
-    /*display: inline-block;*/
-/*}*/
-
-/*div.rightInfoDivMain {*/
-    /*text-align: left;*/
-/*}*/
 
 div.leftInfoDiv, div.rightInfoDiv, div.confirmation, div.startYear, div.info-box {
     position: relative;
@@ -499,14 +529,7 @@ div.autocomplete button{
 
 /* HELP page */
 div#help {
-    /*height:auto;*/
-    /*-moz-column-width: 16em;*/
-    /*-moz-column-gap: 1em;*/
-    /*-webkit-column-width: 16em;*/
-    /*-webkit-column-gap: 1em;*/
-    /*text-align: justify;*/
-    color: #444444;
-
+    color: #333333;
 }
 
 div#help p, h3 {
@@ -527,7 +550,7 @@ div#help p, h3 {
 
 table.dataform {
     margin: 10px 0px;
-    border: #dddddd thin solid;
+    border: #ffffff thin groove;
     background-color:  #eeeeee;
     
     -moz-box-shadow: 1px 1px 5px #888888;
@@ -552,10 +575,7 @@ table.dataform td {
 table.dataform input, table.dataform select, table.dataform textarea {
     padding: 5px;
     font-size: 14px;
-    /*border: 1px solid #a9c6c9;*/
+    border: 1px solid #bbbbbb;
     text-align: left;
     background-color:  #ffffff;
-    border-color:  #bbbbbb;
 }
-
-
