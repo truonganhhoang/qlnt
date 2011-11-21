@@ -50,7 +50,7 @@
 			{% for s in subjectList %}
 				
 				<th  rowspan=2 class="mark-column" >
-					{% if s.name == 'GDQP-AN' %}
+					{% if s.name == 'GDQP-AN' or  s.name == 'GDQP' %}
 						GD<br>QP<br>AN
 					{% else %}	
 					{% if s.name == 'GDCD' %}

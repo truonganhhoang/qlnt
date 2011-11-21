@@ -150,7 +150,16 @@ def defineHlNam(tb,monChuyen,monToan,monVan,minMark):
 #def overallForAStudentInTerm(markList,tbHocKy,vtMonChuyen,vtMonToan,vtMonVan):
 @transaction.commit_on_success
 def calculateOverallMarkTerm(class_id,termNumber):
-
+    
+    selectedClass=Class.objects.get(id=class_id)
+    selectedTerm =Term.objects.get(year_id=selectedClass.year_id,number=termNumber)     
+    ddhkList    =TKDiemDanh.objects.filter(student_id__classes=class_id,term_id=selectedTerm).order_by('student_id__index','student_id__first_name','student_id__last_name','student_id__birthday')
+    for ddhk in ddhkList:        
+        ddhk.co_phep=DiemDanh.objects.filter(student_id=ddhk.student_id,term_id=selectedTerm,loai=u'Có phép').count()
+        ddhk.khong_phep=DiemDanh.objects.filter(student_id=ddhk.student_id,term_id=selectedTerm,loai=u'Không phép').count()
+        ddhk.tong_so=ddhk.co_phep+ddhk.khong_phep
+        ddhk.save()
+        
     pupilNoSum =0
     subjectList=Subject.objects.filter(class_id=class_id,primary__in=[0,termNumber]).order_by('index','name')    
     markList = Mark.objects.filter(subject_id__class_id=class_id,term_id__number=termNumber,current=True,subject_id__primary__in=[0,termNumber]).order_by('student_id__index','student_id__first_name','student_id__last_name','student_id__birthday','subject_id__index','subject_id__name') 
@@ -199,7 +208,6 @@ def calculateOverallMarkTerm(class_id,termNumber):
         if (m.tb !=None):
             if m.mg==False:
                 if checkComment[t]==0:
-                    print t
                     markSum += m.tb*subjectList[t].hs
                     factorSum +=subjectList[t].hs 
                   
@@ -529,15 +537,18 @@ def xepLoaiLop(class_id):
     for tbNam,ddhk1,ddhk2 in zip(tbNamList,ddhk1List,ddhk2List):
         i+=1
         
-        ddhk1.tong_so=DiemDanh.objects.filter(student_id=tbNam.student_id,term_id__number=1).count()
-        ddhk2.tong_so=DiemDanh.objects.filter(student_id=tbNam.student_id,term_id__number=2).count()
+        #ddhk1.tong_so=DiemDanh.objects.filter(student_id=tbNam.student_id,term_id__number=1).count()
+        #ddhk2.tong_so=DiemDanh.objects.filter(student_id=tbNam.student_id,term_id__number=2).count()
         if tbNam.year==None     : noHk+=1
         if tbNam.hl_nam==None: noHl+=1
         
-                        
-        if (tbNam.hl_nam==None) |(tbNam.year==None):
-            tbNam.danh_hieu_nam=None            
+        if (ddhk1.tong_so!=None) & (ddhk2.tong_so!=None):          
             tbNam.tong_so_ngay_nghi=ddhk1.tong_so+ddhk2.tong_so
+        if tbNam.tong_so_ngay_nghi==None:
+            continue                
+        if (tbNam.hl_nam==None) |(tbNam.year==None):
+            tbNam.danh_hieu_nam=None  
+                
             if tbNam.tong_so_ngay_nghi>45:
                 tbNam.len_lop=False
                 tbNam.thi_lai=None
@@ -561,8 +572,7 @@ def xepLoaiLop(class_id):
                 tbNam.danh_hieu_nam='TT'
             else:
                 tbNam.danh_hieu_nam='K'
-        
-            tbNam.tong_so_ngay_nghi=ddhk1.tong_so+ddhk2.tong_so
+                
             
             if tbNam.tong_so_ngay_nghi>45:
                 tbNam.len_lop=False
