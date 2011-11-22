@@ -692,10 +692,10 @@ class TKDiemDanh(models.Model):
         return self.student_id.__unicode__()
 
 class TKB(models.Model):
-    class_id = models.ForeignKey(Class, verbose_name= "Lop")
-    day = models.SmallIntegerField("Thu", choices=DAY_CHOICE)
-    period_1 = models.ForeignKey(Subject, related_name="Tiet 1", blank = True, null = True)
-    period_2 = models.ForeignKey(Subject, related_name="Tiet 2", blank = True, null = True)
-    period_3 = models.ForeignKey(Subject, related_name="Tiet 3", blank = True, null = True)
-    period_4 = models.ForeignKey(Subject, related_name="Tiet 4", blank = True, null = True)
-    period_5 = models.ForeignKey(Subject, related_name="Tiet 5", blank = True, null = True)
+    class_id = models.ForeignKey(Class, verbose_name= "Lớp")
+    day = models.SmallIntegerField("Thứ", choices=DAY_CHOICE)
+    period_1 = models.ForeignKey(Subject, related_name="Tiết 1", blank = True, null = True)
+    period_2 = models.ForeignKey(Subject, related_name="Tiết 2", blank = True, null = True)
+    period_3 = models.ForeignKey(Subject, related_name="Tiết 3", blank = True, null = True)
+    period_4 = models.ForeignKey(Subject, related_name="Tiết 4", blank = True, null = True)
+    period_5 = models.ForeignKey(Subject, related_name="Tiết 5", blank = True, null = True)

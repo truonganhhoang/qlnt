@@ -433,3 +433,15 @@ class UsernameChangeForm(forms.Form):
             self.user.save()
             self.user.userprofile.save()
         return self.user
+
+class TKBForm(forms.ModelForm):
+    class Meta:
+        model = TKB
+        #field = ['class_id', 'day', 'period_1', 'period_2', 'period_3', 'period_4', 'period_5']
+    def __init__(self, class_id, *args, **kwargs):
+        super(TKBForm,self).__init__(*args, **kwargs)
+        self.fields['period_1'] = forms.ModelChoiceField(required = False, queryset = Subject.objects.filter(class_id = class_id), label=u'Tiết 1')
+        self.fields['period_2'] = forms.ModelChoiceField(required = False, queryset = Subject.objects.filter(class_id = class_id), label=u'Tiết 2')
+        self.fields['period_3'] = forms.ModelChoiceField(required = False, queryset = Subject.objects.filter(class_id = class_id), label=u'Tiết 3')
+        self.fields['period_4'] = forms.ModelChoiceField(required = False, queryset = Subject.objects.filter(class_id = class_id), label=u'Tiết 4')
+        self.fields['period_5'] = forms.ModelChoiceField(required = False, queryset = Subject.objects.filter(class_id = class_id), label=u'Tiết 5')

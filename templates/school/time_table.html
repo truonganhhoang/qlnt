@@ -30,6 +30,113 @@
                     maxHeight: 400,
                     title: "Nhập TKB toàn trường từ file Excel"
                 });
+
+                $(".submitbutton").attr("disabled", true);
+
+                $("select[name=period_1]").each(function() {
+                    $(this).change(function() {
+                        var day = $(this).parents("tr").attr('id').split(' ')[0];
+                        var val = $(this).val();
+                        var data = { day: day, sub : val, request_type:'period_1'}
+                        var arg = { type:"POST",
+                            url:"",
+                            data: data,
+                            datatype:"json",
+                            error: function() {
+                                $(".submitbutton").attr('disabled', false);
+                                $(".submitbutton").val('Lưu lại');
+                            },
+                            success: function() {
+                            }
+                        };
+                        $.ajax(arg);
+                        return false;
+                    });
+                });
+
+                $("select[name=period_2]").each(function() {
+                    $(this).change(function() {
+                        var day = $(this).parents("tr").attr('id').split(' ')[0];
+                        var val = $(this).val();
+                        var data = { day: day, sub : val, request_type:'period_2'}
+                        var arg = { type:"POST",
+                            url:"",
+                            data: data,
+                            datatype:"json",
+                            error: function() {
+                                $(".submitbutton").attr('disabled', false);
+                                $(".submitbutton").val('Lưu lại');
+                            },
+                            success: function() {
+                            }
+                        };
+                        $.ajax(arg);
+                        return false;
+                    });
+                });
+
+                $("select[name=period_3]").each(function() {
+                    $(this).change(function() {
+                        var day = $(this).parents("tr").attr('id').split(' ')[0];
+                        var val = $(this).val();
+                        var data = { day: day, sub : val, request_type:'period_3'}
+                        var arg = { type:"POST",
+                            url:"",
+                            data: data,
+                            datatype:"json",
+                            error: function() {
+                                $(".submitbutton").attr('disabled', false);
+                                $(".submitbutton").val('Lưu lại');
+                            },
+                            success: function() {
+                            }
+                        };
+                        $.ajax(arg);
+                        return false;
+                    });
+                });
+
+                $("select[name=period_4]").each(function() {
+                    $(this).change(function() {
+                        var day = $(this).parents("tr").attr('id').split(' ')[0];
+                        var val = $(this).val();
+                        var data = { day: day, sub : val, request_type:'period_4'}
+                        var arg = { type:"POST",
+                            url:"",
+                            data: data,
+                            datatype:"json",
+                            error: function() {
+                                $(".submitbutton").attr('disabled', false);
+                                $(".submitbutton").val('Lưu lại');
+                            },
+                            success: function() {
+                            }
+                        };
+                        $.ajax(arg);
+                        return false;
+                    });
+                });
+
+                $("select[name=period_5]").each(function() {
+                    $(this).change(function() {
+                        var day = $(this).parents("tr").attr('id').split(' ')[0];
+                        var val = $(this).val();
+                        var data = { day: day, sub : val, request_type:'period_5'}
+                        var arg = { type:"POST",
+                            url:"",
+                            data: data,
+                            datatype:"json",
+                            error: function() {
+                                $(".submitbutton").attr('disabled', false);
+                                $(".submitbutton").val('Lưu lại');
+                            },
+                            success: function() {
+                            }
+                        };
+                        $.ajax(arg);
+                        return false;
+                    });
+                });
             });
         </script>
 
@@ -72,6 +179,7 @@
     {% if not timeTable %}
         Chưa có thời khóa biểu
     {% else %}
+    <form action="/school/timeTable/{{class.id}}" method="post">{% csrf_token %}
         <table class="main-table fixed_header">
             <colgroup style="width: 5%;"></colgroup>
             <colgroup style="width: 12%;"></colgroup>
@@ -87,57 +195,80 @@
                 <th>Tiết 4</th>
                 <th>Tiết 5</th>
             </tr>
-            {% for t in timeTable %}
-                <tr>
+            {% for t, f in list %}
+                <tr  id = "{{ t.day }}">
                     <th>Thứ {{ t.day }}</th>
-                    {% if t.period_1  %}
-                        <td>
-                            <p></p><a href="{% url school.views.school_index %}viewSubjectDetail/{{ t.period_1.id }}">{{ t.period_1 }}</a></p>
-                            <p>GV: {{ t.period_1.teacher_id }}</p>
-                        </td>
+                    {% if pos < 4  %}
+                        {%  if t.period_1 %}
+                            <td>
+                                <p>{{ t.period_1 }}</p>
+                                <p>GV: {{ t.period_1.teacher_id }}</p>
+                            </td>
+                        {% else %}
+                            <td> </td>
+                        {% endif %}
                     {% else %}
-                        <td> </td>
+                        <td> {{f.period_1}}</td>
                     {% endif %}
 
-                    {% if t.period_2  %}
-                        <td>
-                            <p></p><a href="{% url school.views.school_index %}viewSubjectDetail/{{ t.period_2.id }}">{{ t.period_2 }}</a></p>
-                            <p>GV: {{ t.period_2.teacher_id }}</p>
-                        </td>
+                    {% if pos < 4  %}
+                        {%  if t.period_2 %}
+                            <td>
+                                <p><{{ t.period_2 }}</p>
+                                <p>GV: {{ t.period_2.teacher_id }}</p>
+                            </td>
+                        {% else %}
+                            <td> </td>
+                        {% endif %}
                     {% else %}
-                        <td> </td>
+                        <td> {{f.period_2}}</td>
                     {% endif %}
 
-                    {% if t.period_3  %}
-                        <td>
-                            <p></p><a href="{% url school.views.school_index %}viewSubjectDetail/{{ t.period_3.id }}">{{ t.period_3 }}</a></p>
-                            <p>GV: {{ t.period_3.teacher_id }}</p>
-                        </td>
+
+                    {% if pos < 4  %}
+                        {%  if t.period_3 %}
+                            <td>
+                                <p>{{ t.period_3 }}</p>
+                                <p>GV: {{ t.period_3.teacher_id }}</p>
+                            </td>
+                        {% else %}
+                            <td> </td>
+                        {% endif %}
                     {% else %}
-                        <td> </td>
+                        <td> {{f.period_3}}</td>
                     {% endif %}
 
-                    {% if t.period_4  %}
-                        <td>
-                            <p></p><a href="{% url school.views.school_index %}viewSubjectDetail/{{ t.period_4.id }}">{{ t.period_4 }}</a></p>
-                            <p>GV: {{ t.period_4.teacher_id }}</p>
-                        </td>
+                    {% if pos < 4  %}
+                        {%  if t.period_4 %}
+                            <td>
+                                <p>{{ t.period_4 }}</p>
+                                <p>GV: {{ t.period_4.teacher_id }}</p>
+                            </td>
+                        {% else %}
+                            <td> </td>
+                        {% endif %}
                     {% else %}
-                        <td> </td>
+                        <td> {{f.period_4}}</td>
                     {% endif %}
 
-                    {% if t.period_5  %}
-                        <td>
-                            <p></p><a href="{% url school.views.school_index %}viewSubjectDetail/{{ t.period_5.id }}">{{ t.period_5 }}</a></p>
-                            <p>GV: {{ t.period_5.teacher_id }}</p>
-                        </td>
+                    {% if pos < 4  %}
+                        {%  if t.period_5 %}
+                            <td>
+                                <p>{{ t.period_5 }}</p>
+                                <p>GV: {{ t.period_5.teacher_id }}</p>
+                            </td>
+                        {% else %}
+                            <td> </td>
+                        {% endif %}
                     {% else %}
-                        <td> </td>
+                        <td> {{f.period_5}}</td>
                     {% endif %}
 
                 </tr>
             {% endfor %}
         </table>
+    <input type="submit" class="ggButton submitbutton" value="Đã lưu"/>
+    </form>
     {% endif %}
 
 
