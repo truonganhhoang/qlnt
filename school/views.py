@@ -4084,11 +4084,19 @@ def timeTable(request, class_id):
             print request.POST
             d = int(request.POST['day'])
             t = cl.tkb_set.get(day = d)
-            if request.POST['request_type'] == 'period_1' : t.period_1 = Subject.objects.get(id = int(request.POST['sub']))
-            if request.POST['request_type'] == 'period_2' : t.period_2 = Subject.objects.get(id = int(request.POST['sub']))
-            if request.POST['request_type'] == 'period_3' : t.period_3 = Subject.objects.get(id = int(request.POST['sub']))
-            if request.POST['request_type'] == 'period_4' : t.period_4 = Subject.objects.get(id = int(request.POST['sub']))
-            if request.POST['request_type'] == 'period_5' : t.period_5 = Subject.objects.get(id = int(request.POST['sub']))
+            if request.POST['sub']:
+                if request.POST['request_type'] == 'period_1' : t.period_1 = Subject.objects.get(id = int(request.POST['sub']))
+                if request.POST['request_type'] == 'period_2' : t.period_2 = Subject.objects.get(id = int(request.POST['sub']))
+                if request.POST['request_type'] == 'period_3' : t.period_3 = Subject.objects.get(id = int(request.POST['sub']))
+                if request.POST['request_type'] == 'period_4' : t.period_4 = Subject.objects.get(id = int(request.POST['sub']))
+                if request.POST['request_type'] == 'period_5' : t.period_5 = Subject.objects.get(id = int(request.POST['sub']))
+            else:
+                if request.POST['request_type'] == 'period_1' : t.period_1 = None
+                if request.POST['request_type'] == 'period_2' : t.period_2 = None
+                if request.POST['request_type'] == 'period_3' : t.period_3 = None
+                if request.POST['request_type'] == 'period_4' : t.period_4 = None
+                if request.POST['request_type'] == 'period_5' : t.period_5 = None
+                
             t.save()
             
             
