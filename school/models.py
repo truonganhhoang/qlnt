@@ -3,6 +3,7 @@ from django.core.exceptions import ValidationError
 from datetime import date
 
 from app.models import *
+from school.utils import *
 
 LOAI_CHOICES = ((0,u'Tính cả 2 kỳ'),(1,u'Chỉ tính kì 1'),(2,u'Chỉ tính kì 2'),(3,u'Cộng vào điểm TB(NN2)'),(4,u'Không tính điểm'))
 SUBJECT_TYPES = (('-1',u'Chọn môn'),(u'Toán',u'Toán'),
@@ -297,6 +298,8 @@ class Class(models.Model):
             return self.students().count()
         except Exception :
             return 0
+
+        
 
     class Meta:
         verbose_name = "Lớp"

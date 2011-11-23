@@ -88,17 +88,21 @@ $(document).ready(function() {
                 var n = $("input.studentCheckbox:checked").length;
                 if (n == 1 || n==0) {
                     $(checkboxall).prop("checked", false);
+                }
+                var numberOfSelected = $("tr.selected").length;
+                if (numberOfSelected == 0){
                     $("#showChosenStudent").html("Chưa chọn học sinh nào");
                     $("#send").attr('disabled', 'disabled');
                 } else {
-                    $("#showChosenStudent").html( (n-1).toString() + " học sinh");
+                    $("#showChosenStudent").html( (numberOfSelected).toString() + " học sinh");
                 }
             } else {
                 $(this).addClass('selected');
                 $(checkboxid).prop("checked", true);
                 $(checkboxall).prop("checked", true);
                 var n = $("input.studentCheckbox:checked").length;
-                $("#showChosenStudent").html( (n-1).toString() + " học sinh");
+                var numberOfSelected = $("tr.selected").length;
+                $("#showChosenStudent").html( (numberOfSelected).toString() + " học sinh");
                 $("#send").removeAttr('disabled');
             }
         }

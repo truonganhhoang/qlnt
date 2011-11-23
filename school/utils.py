@@ -1,15 +1,15 @@
-    # -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 import os.path
 import datetime
 import unicodedata
 
-from school.models import *
 from django.contrib.auth.models import User
 from django.contrib.auth.models import get_hexdigest
 from django.core.exceptions import *
 from django.db import transaction
-
 from django.conf import settings
+from school.models import *
+
 TEMP_FILE_LOCATION = settings.TEMP_FILE_LOCATION
 
 
@@ -899,12 +899,13 @@ def save_file(file):
     return 'sms_input.xls'
 #this function check whether the current user is the gvcn of the class with class_id or not
 def gvcn(request, class_id):
-    if (request.user.userprofile.position != 'GIAO_VIEN'):
+    from school.models import Class
+    if request.user.userprofile.position != 'GIAO_VIEN':
         return 0
-    if isinstance(class_id,Class):
+    if isinstance(class_id, Class):
         cClass = class_id
     else:
-        cClass = Class.objects.get(id=class_id)
+        cClass = Class.objects.get(id=int(class_id))
     if cClass.teacher_id and (cClass.teacher_id.user_id == request.user):
         return 1
     return 0
@@ -934,9 +935,9 @@ def get_student(request):
 
 
 def log_action(request, object, change_message):
-    '''
+    """
     Log an entry to Django admin's log
-    '''
+    """
     from django.contrib.admin.models import LogEntry
     from django.contrib.contenttypes.models import ContentType
 

@@ -1834,7 +1834,7 @@ def viewClassDetail(request, class_id, sort_type=0, sort_status=0):
     year_min = int(date.today().year)- cl.block_id.number - 8
     year_range = '' + str(year_min) + ':' + str(year_max)
     default_date = str(-cl.block_id.number-6) + 'y -' + str(int(date.today().month)-1) + 'm-'+ str(int(date.today().day)-1)
-    cn=gvcn(request, class_id)
+    cn=gvcn(request, cl)
     inCl=inClass(request, class_id)
     if not in_school(request, cl.block_id.school_id):
         return HttpResponseRedirect('/')
