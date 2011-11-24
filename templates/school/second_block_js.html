@@ -362,17 +362,14 @@ function calculateNewArray(newAr)
 				var name = i*100+j;
 				if (document.getElementById(name).value!=undefined)
 				{
-					table.rows[i+2].cells[j+4].className="";
-					if (i% 2 ==1)
-						document.getElementById(name).className="mark1";
-					else 	
-						document.getElementById(name).className="mark";
+					table.rows[i+2].cells[j+4].className="normal";
+					document.getElementById(name).className="mark";
 				}
 				else	
 				if (j<17)
 					table.rows[i+2].cells[j+4].className="noedit";
 				else	
-					table.rows[i+2].cells[j+4].className="";
+					table.rows[i+2].cells[j+4].className="normal";
 			}	
 	}
 	function showMessageTable()
@@ -472,10 +469,7 @@ function calculateNewArray(newAr)
 					
 						var name = i*100+j;
 						if (document.getElementById(name).value!=undefined)
-							if (i% 2==1)
-								document.getElementById(name).className="mark1";
-							else	
-								document.getElementById(name).className="mark";
+							document.getElementById(name).className="mark";
 					}			
 		for(var i=1;i<length;i++)
 		{
@@ -548,12 +542,7 @@ function calculateNewArray(newAr)
 						
 						document.getElementById(name).className="sent";
 					else
-					{	
-						if (rowIndex % 2==1)
-							document.getElementById(name).className="mark1";
-						else
-							document.getElementById(name).className="mark";						
-					}		
+						document.getElementById(name).className="mark";						
 				}
 				else				
 				if (sentMark[rowIndex-2][cellIndex-4]==1)
@@ -702,12 +691,9 @@ function calculateNewArray(newAr)
 							if (j<17)
 								table.rows[i+2].cells[j+4].className="noedit";
 							else	
-								table.rows[i+2].cells[j+4].className="";
-								
-							if (i % 2==1)
-								document.getElementById(name).className="mark1";
-							else 	
-								document.getElementById(name).className="mark";
+								table.rows[i+2].cells[j+4].className="";								
+
+							document.getElementById(name).className="mark";
 						}
 						else
 							table.rows[i+2].cells[j+4].className="noedit";
@@ -803,10 +789,7 @@ function calculateNewArray(newAr)
 			if  (sentMark[x][y])
 				cellInput.className="sent";
 			else	
-				if (x % 2==1)
-					cellInput.className="mark1";
-				else		
-					cellInput.className="mark";
+				cellInput.className="mark";
 					
 			if (sentMark[x][y]==1)
 				tb.className="sent";
@@ -830,18 +813,6 @@ function calculateNewArray(newAr)
 		else
 			selectAllToSend();
 	}
-	for (var i=1;i<length;i++)
-		if (i % 2==1)
-		{
-			for (var j=1;j<20;j++)
-			{
-				var name =  i*100+j;
-				var temp = document.getElementById(name);
-				if (temp)
-					if (temp.value!=undefined)
-						temp.className="mark1";
-			}
-		}	
 	
 	for (var i=1;i<length;i++)
 		for (var j=1;j<17;j++)

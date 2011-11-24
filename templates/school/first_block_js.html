@@ -167,7 +167,6 @@ window.onload = function() {
 	{
 		if (activeMode==1) return;
 		var number = parseInt(tb.id/100);	
-		//alert(number+"ff");	
 		var table =document.getElementById("markTable");
 		table.rows[number+2].className="";
 		if (isSecondTerm==0) var  numberRow = 18;
@@ -188,9 +187,6 @@ window.onload = function() {
 					temp.className = "";
 			}	
 			else
-			if (number % 2==1)
-				temp.className = "mark1";
-			else	
 				temp.className = "mark";				
 		}	
 	}

@@ -132,7 +132,7 @@ table.main-table th {
 }
 
 table.main-table td {
-    border: thin #dddddd inset;
+    border: thin #dddddd inset; 
     padding: 4px;
     text-align: left;
     vertical-align: bottom;
@@ -158,16 +158,27 @@ table.main-table td.firstname {
     /*background-color: #FFFFFF;*/
 /*}*/
 
+table.main-table td.normal {
+    padding: 0px;
+}
 table.main-table td.noedit {
     color: #999999;
+    padding: 0px;
 }
 
 table.main-table td.sent {
-    color: #006600;
+    background-color: #B2FFDB;
+    padding: 0px;
 }
 
 table.main-table td.selected {
     background-color: #f3f48d;
+    padding: 0px;
+}
+
+table.main-table td.highLight {
+    background-color:  #D9FFF0;
+    padding: 0px;
 }
 
 /*table.main-table td.highLight {*/
@@ -195,7 +206,7 @@ table.main-table select {
 }
 
 table.main-table input[type="text"] {
-    font-size: 15px;
+    /*font-size: 15px; */
     width: 95%;
 }
 
@@ -216,65 +227,7 @@ table.main-table tr.endblock{
     background-color: #FFFFFF;
 }
 
-
-/* mark tables */
-table.styleB {
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 14px;
-    border: 1px solid #999999;
-    border-collapse: collapse;
-    /*width: 980px;*/
-}
-
-table.styleB th {
-    padding: 2px;
-    background-color: #c3dde0;
-    border: 1px solid #a9c6c9;
-}
-
-table.styleB th.selected {
-    background-color: #f3f48d;
-}
-
-table.styleB tr:nth-child(odd) {
-    background-color: #FFFFFF;
-    /*cursor: progress;*/
-}
-
-table.styleB tr:nth-child(even) {
-    background-color:  #EAF2F3;
-    cursor: pointer;
-}
-
-table.styleB td {
-    border: 1px solid #a9c6c9;
-    height:24px;
-}
-
-table.styleB td.normal {
-    background-color: #FFFFFF;
-}
-
-table.styleB td.noedit {
-    background-color:  #F4F4F4 ;
-}
-
-table.styleB td.sent {
-    background-color: #B2FFDB;
-}
-
-table.styleB td.selected {
-    background-color: #f3f48d;
-}
-
-table.styleB td.highLight {
-    background-color:  #D9FFF0;
-}
-
-table.styleB tr.selected {
-    background-color: #f3f48d;
-}
-table.styleB tr.highLight {
+table.main-table tr.highLight {
     background-color:  #D9FFF0;
 }
 
@@ -282,61 +235,57 @@ input.highLight {
     cursor: pointer;
     border: 0;
     width: 100%;
-    height:24px;
-    margintop: 0;
-    marginbottom: 0;
-    marginleft: 0;
-    backgroundcolor:  #D9FFF0;
+    height:22px;
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    margin-right: 0;
+    background-color:  #D9FFF0;
+    border: solid #cccccc thin;	
 }
 
 input.mark {
     cursor: pointer;
-    border: 0;
+    border: 0px;
     width: 100%;
-    height:24px;
-    margintop: 0;
-    marginbottom: 0;
-    marginleft: 0;
+    height:22px;
+    background-color:  transparent;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    margin-left: 0px;
+    margin-right: 0;
 }
 
-input.mark1 {
-    cursor: pointer;
-    border: 0;
-    width: 100%;
-    height:24px;
-    margintop: 0;
-    marginbottom: 0;
-    marginleft: 0;
-    backgroundcolor: #EBF3F4;
-}
 
 input.selected {
     cursor: pointer;
-    border: 0;
+    border: 0px;
     width: 100%;
-    height:24px;
-    margintop: 0;
-    marginbottom: 0;
-    marginleft: 0;
-    backgroundcolor: #f3f48d;
+    height:22px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    margin-left: 0px;
+    margin-right: 0;
+    background-color: #f3f48d;
 }
 
 input.sent {
     cursor: pointer;
     border: 0;
     width: 100%;
-    height:24px;
-    margintop: 0;
-    marginbottom: 0;
-    marginleft: 0;
-    backgroundcolor: #B2FFDB;
+    height:22px;
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    margin-right: 0;
+    background-color: #B2FFDB;
 }
 input.noedit {
     cursor: pointer;
     border: 0;
     width: 100%;
-    height:24px;
-    backgroundcolor:  #e2edef;
+    height:22px;
+    background-color:  #e2edef;
 
 }
 
