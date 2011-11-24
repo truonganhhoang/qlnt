@@ -316,6 +316,7 @@ def add_student( student = None, index = 0, start_year = None , year = None,
         return None
     else:    # the student does not exist
         try:
+            print 'damn'
             st = Pupil()
             st.first_name = first_name
             st.last_name = last_name
