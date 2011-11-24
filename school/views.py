@@ -1832,7 +1832,8 @@ def viewClassDetail(request, class_id, sort_type=0, sort_status=0):
 
     year_max = int(date.today().year)- cl.block_id.number - 4
     year_min = int(date.today().year)- cl.block_id.number - 8
-    year_range = '' + str(year_min) + ':' + str(year_max)
+    year_range = str(year_min) + ':' + str(year_max)
+    print year_min, year_max
     default_date = str(-cl.block_id.number-6) + 'y -' + str(int(date.today().month)-1) + 'm-'+ str(int(date.today().day)-1)
     cn=gvcn(request, cl)
     inCl=inClass(request, class_id)

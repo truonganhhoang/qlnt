@@ -224,7 +224,5 @@ $(document).ready(function() {
 
         return false;
     });
-    $("input.datepicker").datepicker("option", "yearRange", '{{ year_range }}');
-    $("input.datepicker").datepicker("option", "defaultDate", '{{ default_date }}');
 
 });

@@ -386,4 +386,11 @@
 
     {% upload_js %}
     <script type="text/javascript" src="/static/js/jquery_file_upload/qlnt_upload_for_student.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $("input.datepicker").datepicker("option", "yearRange", '{{ year_range }}');
+            $("input.datepicker").datepicker("option", "defaultDate", '{{ default_date }}');
+        });
+
+    </script>
 {% endblock %}
