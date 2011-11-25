@@ -1566,8 +1566,10 @@ def teacher_account(request, teacher_id):
     teacher = user.userprofile.organization.teacher_set.get(id = teacher_id)
     url = '/school/teacher/account/' + teacher_id
     if request.method == 'POST':
+        print teacher.user_id.username
         teacher.user_id.set_password(teacher.user_id.username)
-        teacher.save()
+
+        teacher.user_id.save()
         message = 'Mật khẩu của giáo viên đã được tạo lại giống tên tài khoản'
     t = loader.get_template(os.path.join('school','account.html'))
     c = RequestContext(request, {'account':teacher.user_id.username,'url':url,'message':message})
