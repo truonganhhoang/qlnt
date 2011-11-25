@@ -152,16 +152,16 @@ window.onload = function() {
 	{
 		if (activeMode==1) return;
 		var number = parseInt(tb.id/100);	
-		var table =document.getElementById("markTable");
+		var table = document.getElementById("markTable");
 		//alert(number+"cccc");	
-		table.rows[number+2].className="highLight";
-		for(var i=1;i<20;i++)
-		{
-			var name = number*100+i;
-			var temp = document.getElementById(name);
-			if (temp)
-				temp.className = "highLight";
-		}	
+		table.rows[number+2].className="high-light";
+//		for(var i=1;i<20;i++)
+//		{
+//			var name = number*100+i;
+//			var temp = document.getElementById(name);
+//			if (temp)
+//				temp.className = "highLight";
+//		}
 	}	
 	function loseHighLight(tb)
 	{

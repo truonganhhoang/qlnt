@@ -15,7 +15,7 @@
 		<td>
 			<div style="text-align:right;font-size:90%">
 				Dịch chuyển:
-				<input type="radio" name="move" id="ngang2" value="ngang2" 
+				<input type="radio" name="move" id="ngang2" value="ngang2" style="tiptiphover"
 					   title="Chuyển sang cột tiếp theo bằng ENTER,TAB  hoặc phím mũi tên">
 				Ngang
 
@@ -23,7 +23,7 @@
 					   title="Chuyển xuống hàng tiếp theo bằng ENTER, TAB hoặc phím mũi tên">
 				Dọc
 				{% if  not selectedSubject.nx %}
-					&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp Gõ tắt: ví dụ 75 sẽ thành 7.5, ấn Enter, Tab hoặc mũi tên để sang ô tiếp theo.
+					&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp Gõ tắt: ví dụ 75 sẽ thành 7.5.
 				{% else %}
 					&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp Nhập điểm:G -> Giỏi, K -> Khá, T -> Trung bình, Y -> Yếu, Ke -> Kém.
 				{% endif %}	
@@ -33,10 +33,10 @@
 	<tr>
 		<td>
 			<div id="messageTable" style="display:none;	position:absolute; ">
-				<button onclick="sendSMS()"  class="ggButton"          >Gửi </button>
-				<button onclick="selectNoSent()" class="ggButton"    >Chọn những điểm chưa nhắn </button>
-				<button onclick="selectAllToSend()" class="ggButton" >Chọn tất cả </button>
-				<button onclick="cancelAll()"        class="ggButton"  >Bỏ tất cả </button>
+				<button onclick="sendSMS()"  class="ggButton">Gửi</button>
+				<button onclick="selectNoSent()" class="ggButton">Chọn các điểm chưa nhắn</button>
+				<button onclick="selectAllToSend()" class="ggButton">Chọn tất</button>
+				<button onclick="cancelAll()"        class="ggButton">Bỏ chọn tất</button>
 			</div>				
 		</td>	
 		
@@ -45,8 +45,7 @@
 				<a class="ggButton" href="#popupDiv" id="import"> Nhập từ Excel </a>	 
 			{% endif %}	
 			<a class="ggButton" href="/school/markExcel/{{termChoice}}/{{subjectChoice}}"> Xuất ra excel </a>	
-			
-		</td>	
+		</td>
 	</tr>
 	</table>	
 	
@@ -89,4 +88,4 @@
 		{% include "school/qlnt_upload_for_student.js" %}
 	</script>	
 	
-	<br>
+{#	<br>#}

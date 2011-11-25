@@ -78,71 +78,56 @@ ul {
 }
 
 
-/*table.main-table input.mark, table.main-table input.mark1 {*/
-    /*background-color: transparent;*/
-    /*border-bottom: #aaaaaa dashed thin;*/
-/*}*/
-
-/*table.main-table input.sent {*/
-    /*color: #199d5d;*/
-/*}*/
-
-/*table.main-table input.mark-noedit {*/
-    /*color: #bbbbbb;*/
-/*}*/
-
-/*table.main-table  input.selected {*/
-    /*background-color: transparent;*/
-    /*border: transparent;*/
-/*}*/
-
-/*input.selected {*/
-    /*cursor: pointer;*/
-    /*border: 0;*/
-    /*width: 100%;*/
-    /*height:24px;*/
-    /*margin-top: 0;*/
-    /*margin-bottom: 0;*/
-    /*margin-left: 0;*/
-    /*background-color: #f3f48d;*/
-/*}*/
-
-
-/*-------------------*/
+/*--- main-tables ----------------*/
 table.main-table {
+    font-family: arial;
     margin: 5px 0 5px 0;
     font-size: 14px;
     color: #333333;
-    border: solid #cccccc thin;
+    border: #cccccc thin solid;
     border-collapse: collapse;
-    border-spacing: 0;
-    margin-bottom: 10px;
-    /*width: 980px;*/
     border-radius: 5px;
-    -moz-box-shadow: 1px 1px 2px #888888;
-    -webkit-box-shadow: 1px 1px 2px #888888;
-    box-shadow: 1px 1px 2px #888888;
+    border-spacing: 0px;
+    /*-moz-box-shadow: 1px 1px 2px #888888;*/
+    /*-webkit-box-shadow: 1px 1px 2px #888888;*/
+    /*box-shadow: 1px 1px 2px #888888;*/
 }
-
+/* header */
 table.main-table th {
     padding: 8px 4px;
     background-color: #dddddd;
-    border: thin #cccccc solid;
+    border: #cccccc thin solid;
     font-size: 13px;
 }
 
+/* rows */
+table.main-table tr:nth-child(odd) {
+    background-color: #eeeeee;
+}
+
+table.main-table tr:nth-child(even) {
+    background-color: #ffffff;
+}
+
+table.main-table tr.selected {
+    background-color: #fbec88;
+}
+
+table.main-table tr.endblock{
+    background-color: #FFFFFF;
+}
+
+table.main-table tr.high-light {
+    background-color: #faefa5;
+}
+
+/* cells */
 table.main-table td {
-    border: thin #dddddd inset; 
+    border: #dddddd thin solid;
     padding: 4px;
     text-align: left;
     vertical-align: bottom;
 }
-
-
-/*table.main-table th.mark-column {*/
-    /*width: 40px;*/
-    /*padding: 8px 0;*/
-/*}*/
 
 table.main-table td.lastname {
     width: 120px;
@@ -155,94 +140,70 @@ table.main-table td.firstname {
 }
 
 /*table.main-table td.normal {*/
-    /*background-color: #FFFFFF;*/
+
 /*}*/
 
-table.main-table td.normal {
-    padding: 0px;
-}
 table.main-table td.noedit {
     color: #999999;
-    padding: 0px;
 }
 
 table.main-table td.sent {
     background-color: #B2FFDB;
-    padding: 0px;
 }
 
 table.main-table td.selected {
     background-color: #f3f48d;
+}
+
+/* controls */
+table.main-table input{
+    /*font-size: 15px;*/
+    padding:3px;
+    border: #CCCCCC thin solid;
+}
+
+table.main-table select {
+    padding:2px;
+    /*border: #CCCCCC thin solid;*/
+}
+
+input.ui-autocomplete-input{
+    float: left;
+    border: none;
+    height: 16px;
     padding: 0px;
 }
 
-table.main-table td.highLight {
-    background-color:  #D9FFF0;
-    padding: 0px;
+div.autocomplete button{
+    float: left;
+    height: 24px;
+    border-left: none;
+    background: transparent;
+    /*width: 21px;*/
 }
 
-/*table.main-table td.highLight {*/
-    /*background-color:  #D9FFF0;*/
-/*}*/
 
-/*table.main-table tr.highLight {*/
-    /*background-color:  #D9FFF0;*/
-/*}*/
+#markTable input{
+    margin:-4px -3px ;
+    /*padding:4px;*/
+    border: 0px;
+}
 
+/* ------------- end main-table -----------------*/
 
 #sortable tr {
     min-height: 1.5em;
 }
 
-table.main-table input{
-    /*font-size: 15px;*/
-    padding:2px;
-}
-
-table.main-table select {
-    font-size: 13px;
-    height: 23px;
-    margin: 2px 2px 0 2px;
-}
-
-table.main-table input[type="text"] {
-    /*font-size: 15px; */
-    width: 95%;
-}
-
-table.main-table tr:nth-child(odd) {
-    background-color: #eeeeee;
-}
-
-table.main-table tr:nth-child(even) {
-    background-color: #ffffff;
-
-}
-
-table.main-table tr.selected {
-    background-color: #fbec88;
-}
-
-table.main-table tr.endblock{
-    background-color: #FFFFFF;
-}
-
-table.main-table tr.highLight {
-    background-color:  #D9FFF0;
-}
-
-input.highLight {
-    cursor: pointer;
-    border: 0;
-    width: 100%;
-    height:22px;
-    margin-top: 0;
-    margin-bottom: 0;
-    margin-left: 0;
-    margin-right: 0;
-    background-color:  #D9FFF0;
-    border: solid #cccccc thin;	
-}
+/*input.highLight {*/
+    /*cursor: pointer;*/
+    /*border: 0;*/
+    /*width: 100%;*/
+    /*height:22px;*/
+    /*margin: 0;*/
+    /*background-color:  #D9FFF0;*/
+    /*border: solid #cccccc thin;	*/
+/*}*/
 
 input.mark {
     cursor: pointer;
@@ -262,10 +223,7 @@ input.selected {
     border: 0px;
     width: 100%;
     height:22px;
-    margin-top: 0px;
-    margin-bottom: 0px;
-    margin-left: 0px;
-    margin-right: 0;
+    margin: 0px;
     background-color: #f3f48d;
 }
 
@@ -274,12 +232,10 @@ input.sent {
     border: 0;
     width: 100%;
     height:22px;
-    margin-top: 0;
-    margin-bottom: 0;
-    margin-left: 0;
-    margin-right: 0;
+    margin: 0px;
     background-color: #B2FFDB;
 }
+
 input.noedit {
     cursor: pointer;
     border: 0;
@@ -302,75 +258,6 @@ input.noedit {
     /*margin-bottom: 10px;*/
     /*padding: 10px;*/
 /*}*/
-
-.ggButton {
-    background-color: #4D90FE;
-    background-image: -webkit-gradient(linear, left top, left bottom, from(#4D90FE), to(#4787ED));
-    background-image: -webkit-linear-gradient(top, #4D90FE, #4787ED);
-    background-image: -moz-linear-gradient(top, #4D90FE, #4787ED);
-    background-image: -ms-linear-gradient(top, #4D90FE, #4787ED);
-    background-image: -o-linear-gradient(top, #4D90FE, #4787ED);
-    border: 1px solid #3079ED;
-    border-radius: 2px;
-    -moz-border-radius: 2px;
-    -webkit-border-radius: 2px;
-    display: inline-block;
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#4D90FE', EndColorStr = '#4787ED');
-    color: #ffffff;
-    font-size: 13px;
-    /*font-weight: bold;*/
-    padding: 3px 12px;
-    margin-right: 3px;
-    cursor: pointer;
-    text-decoration: none;
-    /*text-shadow: #0a549e 0 -1px 0;*/
-}
-
-button.ggButton{
-    padding: 4px 12px;
-}
-
-a.ggButton{
-    color: white;
-}
-
-.ggButton:hover {
-    background-color: #364f78;
-    background-image: -webkit-gradient(linear, left top, left bottom, from(#364f78), to(#4787ED));
-    background-image: -webkit-linear-gradient(top, #364f78, #4787ED);
-    background-image: -moz-linear-gradient(top, #364f78, #4787ED);
-    background-image: -ms-linear-gradient(top, #364f78, #4787ED);
-    background-image: -o-linear-gradient(top, #364f78, #4787ED);
-    text-decoration: none;
-
-}
-
-.ggButton:disabled {
-
-    background-color: #c6d9f9;
-    background-image: -webkit-gradient(linear, left top, left bottom, from(#c6d9f9), to(#92abd4));
-    background-image: -webkit-linear-gradient(top, #c6d9f9, #92abd4);
-    background-image: -moz-linear-gradient(top, #c6d9f9, #92abd4);
-    background-image: -ms-linear-gradient(top, #c6d9f9, #92abd4);
-    background-image: -o-linear-gradient(top, #c6d9f9, #92abd4);
-    border: 1px solid #8cb6fa;
-    color: #7c7676;
-    cursor: default;
-    text-shadow: none;
-}
-
-.ggButton.disabled {
-    background-color: #c6d9f9;
-    background-image: -webkit-gradient(linear, left top, left bottom, from(#c6d9f9), to(#92abd4));
-    background-image: -webkit-linear-gradient(top, #c6d9f9, #92abd4);
-    background-image: -moz-linear-gradient(top, #c6d9f9, #92abd4);
-    background-image: -ms-linear-gradient(top, #c6d9f9, #92abd4);
-    background-image: -o-linear-gradient(top, #c6d9f9, #92abd4);
-    border: 1px solid #8cb6fa;
-    color: #7c7676;
-    cursor: default;
-    text-shadow: none;
-}
 
 div#submenu {
     position: relative;
@@ -417,6 +304,7 @@ div.errorDiv{
 
 
 div.leftInfoDiv, div.rightInfoDiv, div.confirmation, div.startYear, div.info-box {
+    margin-right: 20px;
     position: relative;
     width: auto;
     padding: 5px;
@@ -463,17 +351,6 @@ div#tabs ul li{
     padding-right: 5px;
     padding-left: 5px;
 }
-
-input.ui-autocomplete-input{
-    float: left;
-}
-
-div.autocomplete button{
-    float: left;
-    height: 23px;
-    width: 21px;
-}
-
 
 
 /* HELP page */
@@ -527,4 +404,60 @@ table.dataform input, table.dataform select, table.dataform textarea {
     border: 1px solid #bbbbbb;
     text-align: left;
     background-color:  #ffffff;
+}
+
+
+.ggButton {
+    background-color: #4D90FE;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#4D90FE), to(#4787ED));
+    background-image: -webkit-linear-gradient(top, #4D90FE, #4787ED);
+    background-image: -moz-linear-gradient(top, #4D90FE, #4787ED);
+    background-image: -ms-linear-gradient(top, #4D90FE, #4787ED);
+    background-image: -o-linear-gradient(top, #4D90FE, #4787ED);
+    border: 1px solid #3079ED;
+    border-radius: 2px;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    display: inline-block;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#4D90FE', EndColorStr = '#4787ED');
+    color: #ffffff;
+    font-size: 13px;
+    /*font-weight: bold;*/
+    padding: 3px 15px;
+    margin-right: 3px;
+    cursor: pointer;
+    text-decoration: none;
+    /*text-shadow: #0a549e 1px 0px 1px;*/
+}
+
+button.ggButton{
+    padding: 4px 12px;
+}
+
+a.ggButton{
+    color: #ffffff;
+}
+
+.ggButton:hover {
+    background-color: #364f78;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#364f78), to(#4787ED));
+    background-image: -webkit-linear-gradient(top, #364f78, #4787ED);
+    background-image: -moz-linear-gradient(top, #364f78, #4787ED);
+    background-image: -ms-linear-gradient(top, #364f78, #4787ED);
+    background-image: -o-linear-gradient(top, #364f78, #4787ED);
+    text-decoration: none;
+
+}
+
+.ggButton:disabled {
+    background-color: #c6d9f9;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#c6d9f9), to(#92abd4));
+    background-image: -webkit-linear-gradient(top, #c6d9f9, #92abd4);
+    background-image: -moz-linear-gradient(top, #c6d9f9, #92abd4);
+    background-image: -ms-linear-gradient(top, #c6d9f9, #92abd4);
+    background-image: -o-linear-gradient(top, #c6d9f9, #92abd4);
+    border: 1px solid #8cb6fa;
+    color: #7c7676;
+    cursor: default;
+    text-shadow: none;
 }

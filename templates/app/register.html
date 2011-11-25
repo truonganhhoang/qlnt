@@ -3,17 +3,17 @@
     <script type="text/javascript" src="/static/js/template_js/register.js?0.6"></script>
 {% endblock %}
 {% block content %}
-    <h2>Đăng ký tài khoản Trường Mình</h2>
+    <h2>Đăng ký sử dụng cho trường mới</h2>
     <div id="introduce">
-        <p>Tài khoản Trường Mình sẽ giúp bạn đăng nhập vào dịch vụ
-            <a href="{%url views.index %}">Trường Mình</a>.
-            Nếu bạn đã có tài khoản, hãy đăng nhập <a href="{%url app.views.login  %}">tại đây.</a></p>
+        <p>Đăng ký này sẽ giúp nhà trường có tài khoản quản trị để sử dụng dịch vụ phần mềm
+            <a href="{%url views.index %}">Trường Mình</a> này. Sau khi bạn điền thông tin, chúng tôi sẽ duyệt và
+          cấp tài khoản và nhà trường có thể sử dụng được ngay.
+        Nếu bạn đã có tài khoản, hãy đăng nhập <a href="{%url app.views.login  %}">tại đây.</a></p>
     </div>
     {{ message }}
     <form action="" id="registerForm" method="post">{% csrf_token %}
-        <div id="register" class="register">
-            <aside style="width: 450px; padding: 10px;float: left; background-color: #f5f5f5; margin-top: 10px;">
-                <div class="mainFeedback">
+        <div id="register" class="dataform">
+                <div class="dataform">
                     <div class="feedback tr">
                         <div class="verticalLabel">
                             <label for="registerName" style="vertical-align: top;">
@@ -134,7 +134,6 @@
                     </div>
                     <div class="placeHolder" style="clear: both;"></div>
                 </div>
-            </aside>
         </div>
     </form>
 {% endblock %}
