@@ -1,6 +1,12 @@
 {% extends "base.html" %}
 {% load upload_tags %}
-
+{% block css %}
+    <style type="text/css">
+        input[type="text"]{
+            width: 90%;
+        }
+    </style>
+{% endblock %}
 {% block js %}
     <script type="text/javascript" src="/static/js/template_js/class_detail.js?0.6"></script>
 {% endblock %}
@@ -162,16 +168,16 @@
             {% endif %}
             <th class="leftAlign"><a
                     href="{%url school.views.school_index  %}viewClassDetail/{{class.id}}/0/{{next_status}}"
-                    class="tiptiphover" title="Hiển thị theo thứ tự sắp xếp"> STT </a></th>
-            <th class="leftAlign"> Họ</th>
-            <th class="leftAlign"><a
+                    class="tiptiphover" title="Hiển thị theo thứ tự sắp xếp">STT</a></th>
+            <th class="leftAlign" id="thLastName">Họ</th>
+            <th class="leftAlign" id="thFirstName"><a
                     href="{%url school.views.school_index  %}viewClassDetail/{{class.id}}/1/{{next_status}} "
                     class="tiptiphover" title="Sắp xếp theo tên">Tên</a></th>
-            <th class="leftAlign"><a
+            <th class="leftAlign" id="thBirthday"><a
                     href="{%url school.views.school_index  %}viewClassDetail/{{class.id}}/2/{{next_status}}"
                     class="tiptiphover" title="Sắp xếp ngày sinh">Ngày sinh</a>
             </th>
-            <th class="leftAlign"> Nơi sinh</th>
+            <th class="leftAlign" id=""> Nơi sinh</th>
             <th class="leftAlign"><a
                     href="{%url school.views.school_index  %}viewClassDetail/{{class.id}}/3/{{next_status}}"
                     class="tiptiphover" title="Sắp xếp giới tính">Giới tính</a>
@@ -216,12 +222,11 @@
 
         {% if pos > 3 %}
             <form action="/school/viewClassDetail/{{class.id}}/{{sort_type}}/{{sort_status}}" id="submitform"
-                  method="post">{% csrf_token %}
-                <tr class="form">
+                  method="post" >{% csrf_token %}
+                <tr class="form" id="trForm">
 
                     {{ form.non_field_errors }}
-                    <td></td>
-                    <td><input class="ggButton" type="submit" value="Thêm"/></td>
+                    <td colspan="2"><input class="ggButton" type="submit" value="Thêm"/></td>
                     <td>
                         {{ form.last_name.errors }}
                         {{ form.last_name }}

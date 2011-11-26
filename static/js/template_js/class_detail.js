@@ -1,6 +1,15 @@
 
 
 $(document).ready(function() {
+    // setup layout
+    console.log('start');
+    var form = $("#submitform");
+    $("#trForm").find("input").each(function(){
+        var td = $(this).parent("td");
+        console.log(td.css('width'));
+        $(this).css('width', parseInt(td.css('width')) - 6);
+    });
+    // end setting up
     var note = '';
     $("#notify").ajaxSuccess(function(event, request, settings, json) {
         if (json.message != null && json.message != '' && json.message != 'OK') {
