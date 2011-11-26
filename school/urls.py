@@ -153,6 +153,7 @@ urlpatterns = patterns('',
     url(r'deleteAllStudentsInClass/(?P<class_id>\w+)$','school.views.deleteAllStudentsInClass'),
     url(r'import/timeTable$','school.views.import_timeTable'),
     url(r'timeTable/(?P<class_id>\w+)$','school.views.timeTable'),
+    url(r'timeTableSchool$','school.views.timeTable_school'),
 
     #top menu
     url(r'years/$', 'school.views.years', name = "years"),

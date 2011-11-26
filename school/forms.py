@@ -445,3 +445,8 @@ class TKBForm(forms.ModelForm):
         self.fields['period_3'] = forms.ModelChoiceField(required = False, queryset = Subject.objects.filter(class_id = class_id), label=u'Tiết 3')
         self.fields['period_4'] = forms.ModelChoiceField(required = False, queryset = Subject.objects.filter(class_id = class_id), label=u'Tiết 4')
         self.fields['period_5'] = forms.ModelChoiceField(required = False, queryset = Subject.objects.filter(class_id = class_id), label=u'Tiết 5')
+        self.fields['period_6'] = forms.ModelChoiceField(required = False, queryset = Subject.objects.filter(class_id = class_id), label=u'Tiết 6')
+        self.fields['period_7'] = forms.ModelChoiceField(required = False, queryset = Subject.objects.filter(class_id = class_id), label=u'Tiết 7')
+        self.fields['period_8'] = forms.ModelChoiceField(required = False, queryset = Subject.objects.filter(class_id = class_id), label=u'Tiết 8')
+        self.fields['period_9'] = forms.ModelChoiceField(required = False, queryset = Subject.objects.filter(class_id = class_id), label=u'Tiết 9')
+        self.fields['period_10'] = forms.ModelChoiceField(required = False, queryset = Subject.objects.filter(class_id = class_id), label=u'Tiết 10')

@@ -701,3 +701,8 @@ class TKB(models.Model):
     period_3 = models.ForeignKey(Subject, related_name="Tiết 3", blank = True, null = True)
     period_4 = models.ForeignKey(Subject, related_name="Tiết 4", blank = True, null = True)
     period_5 = models.ForeignKey(Subject, related_name="Tiết 5", blank = True, null = True)
+    period_6 = models.ForeignKey(Subject, related_name="Tiết 6", blank = True, null = True)
+    period_7 = models.ForeignKey(Subject, related_name="Tiết 7", blank = True, null = True)
+    period_8 = models.ForeignKey(Subject, related_name="Tiết 8", blank = True, null = True)
+    period_9 = models.ForeignKey(Subject, related_name="Tiết 9", blank = True, null = True)
+    period_10 = models.ForeignKey(Subject, related_name="Tiết 10", blank = True, null = True)

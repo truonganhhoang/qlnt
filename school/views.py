@@ -1664,7 +1664,7 @@ def classtab(request, block_id=0):
         num = []
         for c in classList:
             cfl.append(ClassForm(school_id, instance=c))
-            num.append(c.pupil_set.count())
+            num.append(c.students().count())
         list = zip(classList, cfl, num)
         if request.method == 'POST':
             if request.is_ajax() and request.POST['request_type'] == u'update':
@@ -3993,6 +3993,60 @@ def processFileTKB(request, file_name):
             if not sb and subjectName:
                 message += u'<li>Không tồn tại môn ' + sheet.cell(r + 4, c).value + u' trong lớp ' + sheet.cell(start_row, c).value.strip() + u'</li>'
 
+            sb = None
+            subjectName = sheet.cell(r + 5, c).value.strip().lower().replace(' ', '')
+            for _sb in sbj:
+                if _sb.strip_name() == subjectName:
+                    sb = _sb
+                    break
+            t.period_6 = sb
+            if not sb and subjectName:
+                message += u'<li>Không tồn tại môn ' + sheet.cell(r + 5, c).value + u' trong lớp ' + sheet.cell(start_row, c).value.strip() + u'</li>'
+
+            sb = None
+            subjectName = sheet.cell(r + 6, c).value.strip().lower().replace(' ', '')
+            for _sb in sbj:
+                if _sb.strip_name() == subjectName:
+                    sb = _sb
+                    break
+            t.period_7 = sb
+            if not sb and subjectName:
+                message += u'<li>Không tồn tại môn ' + sheet.cell(r + 6, c).value + u' trong lớp ' + sheet.cell(
+                    start_row, c).value.strip() + u'</li>'
+
+            sb = None
+            subjectName = sheet.cell(r + 7, c).value.strip().lower().replace(' ', '')
+            for _sb in sbj:
+                if _sb.strip_name() == subjectName:
+                    sb = _sb
+                    break
+            t.period_8 = sb
+            if not sb and subjectName:
+                message += u'<li>Không tồn tại môn ' + sheet.cell(r + 7, c).value + u' trong lớp ' + sheet.cell(
+                    start_row, c).value.strip() + u'</li>'
+
+            sb = None
+            subjectName = sheet.cell(r + 8, c).value.strip().lower().replace(' ', '')
+            for _sb in sbj:
+                if _sb.strip_name() == subjectName:
+                    sb = _sb
+                    break
+            t.period_9 = sb
+            if not sb and subjectName:
+                message += u'<li>Không tồn tại môn ' + sheet.cell(r + 8, c).value + u' trong lớp ' + sheet.cell(
+                    start_row, c).value.strip() + u'</li>'
+
+            sb = None
+            subjectName = sheet.cell(r + 9, c).value.strip().lower().replace(' ', '')
+            for _sb in sbj:
+                if _sb.strip_name() == subjectName:
+                    sb = _sb
+                    break
+            t.period_10 = sb
+            if not sb and subjectName:
+                message += u'<li>Không tồn tại môn ' + sheet.cell(r + 9, c).value + u' trong lớp ' + sheet.cell(
+                    start_row, c).value.strip() + u'</li>'
+
             t.save()
 
     message += u'</ul>'
@@ -4021,7 +4075,6 @@ def import_timeTable(request):
                 file = request.FILES.get('file')
             except KeyError:
                 return HttpResponseBadRequest( "AJAX request not valid" )
-            print '111'
         else:
             is_raw = False
             if len(request.FILES) == 1:
@@ -4042,7 +4095,6 @@ def import_timeTable(request):
     if 'error' in result:
         success = False
         message = result['error']
-        #print '8888888888888888888'
         data = [{'name': file.name,
                  'url': filename,
                  'sizef': file.size,
@@ -4067,16 +4119,20 @@ def timeTable(request, class_id):
         school = get_school(request)
     except Exception :
         return HttpResponseRedirect(reverse('index'))
-    if get_position(request) < 2:
+    pos = get_position(request);
+    if pos < 1:
+        return HttpResponseRedirect('/')
+    if pos == 1 and inClass(request, class_id) == 0:
         return HttpResponseRedirect('/')
 
     year = school.year_set.latest('time')
     classList = Class.objects.filter(year_id = year).order_by('name')
     cl = Class.objects.get(id = class_id)
 
-    timeTables=TKB.objects.filter(class_id = class_id).order_by('day')
-    if not timeTables:
-        for d in range(1, 6):
+    for d in range(2, 8):
+        try:
+            tmp = cl.tkb_set.get(day = d)
+        except Exception as e:
             t = TKB()
             t.day = d
             t.class_id = cl
@@ -4093,12 +4149,22 @@ def timeTable(request, class_id):
                 if request.POST['request_type'] == 'period_3' : t.period_3 = Subject.objects.get(id = int(request.POST['sub']))
                 if request.POST['request_type'] == 'period_4' : t.period_4 = Subject.objects.get(id = int(request.POST['sub']))
                 if request.POST['request_type'] == 'period_5' : t.period_5 = Subject.objects.get(id = int(request.POST['sub']))
+                if request.POST['request_type'] == 'period_6' : t.period_6 = Subject.objects.get(id = int(request.POST['sub']))
+                if request.POST['request_type'] == 'period_7' : t.period_7 = Subject.objects.get(id = int(request.POST['sub']))
+                if request.POST['request_type'] == 'period_8' : t.period_8 = Subject.objects.get(id = int(request.POST['sub']))
+                if request.POST['request_type'] == 'period_9' : t.period_9 = Subject.objects.get(id = int(request.POST['sub']))
+                if request.POST['request_type'] == 'period_10' : t.period_10 = Subject.objects.get(id = int(request.POST['sub']))
             else:
                 if request.POST['request_type'] == 'period_1' : t.period_1 = None
                 if request.POST['request_type'] == 'period_2' : t.period_2 = None
                 if request.POST['request_type'] == 'period_3' : t.period_3 = None
                 if request.POST['request_type'] == 'period_4' : t.period_4 = None
                 if request.POST['request_type'] == 'period_5' : t.period_5 = None
+                if request.POST['request_type'] == 'period_6' : t.period_6 = None
+                if request.POST['request_type'] == 'period_5' : t.period_7 = None
+                if request.POST['request_type'] == 'period_8' : t.period_8 = None
+                if request.POST['request_type'] == 'period_9' : t.period_9 = None
+                if request.POST['request_type'] == 'period_10' : t.period_10 = None
                 
             t.save()
             
@@ -4138,18 +4204,109 @@ def timeTable(request, class_id):
                     t.period_5=None
                 t.save()
 
+                plist = request.POST.getlist('period_6')
+                if plist[d-2]:
+                    t.period_6=Subject.objects.get(id = int(plist[d-2]))
+                else:
+                    t.period_6=None
+                t.save()
 
-            
-    timeTables=TKB.objects.filter(class_id = class_id).order_by('day')
+                plist = request.POST.getlist('period_7')
+                if plist[d-2]:
+                    t.period_7=Subject.objects.get(id = int(plist[d-2]))
+                else:
+                    t.period_7=None
+                t.save()
+
+                plist = request.POST.getlist('period_5')
+                if plist[d-2]:
+                    t.period_8=Subject.objects.get(id = int(plist[d-2]))
+                else:
+                    t.period_8=None
+                t.save()
+
+                plist = request.POST.getlist('period_9')
+                if plist[d-2]:
+                    t.period_9=Subject.objects.get(id = int(plist[d-2]))
+                else:
+                    t.period_9=None
+                t.save()
+
+                plist = request.POST.getlist('period_10')
+                if plist[d-2]:
+                    t.period_10=Subject.objects.get(id = int(plist[d-2]))
+                else:
+                    t.period_10=None
+                t.save()
+
+    timeTables = TKB.objects.filter(class_id=class_id).order_by('day')
     TKBForms = []
     for t in timeTables:
         TKBForms.append(TKBForm(class_id, instance=t))
+    lesson = []
+    week = []
+    for d in range(1, 11):
+        lesson.append(d)
+    for w in range(2, 8):
+        week.append(w)
+    subject = cl.subject_set.all()
+
     list = zip(timeTables, TKBForms)
     t = loader.get_template(os.path.join('school', 'time_table.html'))
-    c = RequestContext(request,{'timeTable':timeTables,
-                                'list' : list,
+    c = RequestContext(request, {'list': list,
+                                 'subject' : subject,
+                                 'lesson': lesson,
+                                 'week' : week,
                                 'pos':get_position(request),
                                 'classList':classList,
                                 'class':cl,
                                 })
     return HttpResponse(t.render(c))
+
+def timeTable_school(request):
+    user = request.user
+    if not user.is_authenticated():
+        return HttpResponseRedirect(reverse('login'))
+    try:
+        school = get_school(request)
+    except Exception :
+        return HttpResponseRedirect(reverse('index'))
+    pos = get_position(request);
+    if pos < 1:
+        return HttpResponseRedirect('/')
+    if pos == 1 and inClass(request) == 0:
+        return HttpResponseRedirect('/')
+
+    year = school.year_set.latest('time')
+    classList = Class.objects.filter(year_id = year).order_by('name')
+    table = []
+    for cl in classList:
+        tcl = cl.tkb_set.all()
+        if not (tcl.count() == 6):
+            for d in range(2, 8):
+                try:
+                    tmp = cl.tkb_set.get(day = d)
+                except Exception as e:
+                    t = TKB()
+                    t.day = d
+                    t.class_id = cl
+                    t.save()
+        tcl = cl.tkb_set.all()
+        table.append(tcl)
+
+    lesson = []
+    week = []
+    for d in range(1, 11):
+        lesson.append(d)
+    for w in range(2, 8):
+        week.append(w)
+    list = zip(classList, table)
+    t = loader.get_template(os.path.join('school', 'time_table_school.html'))
+    c = RequestContext(request, {'list': list,
+                                'pos':get_position(request),
+                                'lesson': lesson,
+                                 'week' : week,
+                                'classList':classList,
+                                })
+    return HttpResponse(t.render(c))
+    
