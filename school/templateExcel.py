@@ -20,12 +20,20 @@ d1=1400
 d2=2000 # kick thuoc cot o trang 31  
 d3=6000
 d4=1200 # kich thuoc 1 o diem
-FIRSTNAME_WIDTH =5000
-LASTNAME_WIDTH  =2000
+STT_WIDTH=1000
+FIRSTNAME_WIDTH =2000
+LASTNAME_WIDTH  =5000
 BIRTHDAY_WIDTH  =3000
+PLACE_WIDTH=4000
+SEX_WIDTH=1500
+DAN_TOC_WIDTH=2500
+UU_TIEN_WIDTH=5800
+
 SIZE_PAGE_WIDTH=36200
 SIZE_PAGE_WIDTH1=22000
 A4_WIDTH=24500
+A3_WIDTH=36200
+
 h1 = easyxf(
     'font:name Arial, bold on,height 1000 ;align: vert centre, horz center')
 h2 = easyxf(
@@ -95,6 +103,8 @@ h10 = easyxf(
 hh1 = easyxf(
 'font:name Times New Roman,italic on ,height 240 ;align:horz centre;'
 'borders: right thin,left thin')
+hh2 = easyxf(
+'font:name Times New Roman,italic on ,height 240 ;align:horz centre;')
  
 first_name = easyxf(
 'font:name Times New Roman ,height 240 ;'
@@ -109,3 +119,20 @@ first_name1 = easyxf(
 last_name1 = easyxf(
 'font:name Times New Roman ,height 220 ;'
 'borders: right no_line,left thin,bottom thin')
+
+f1 = easyxf(
+    'font:name Times New Roman, bold on,height 500 ;align: vert centre, horz center')
+f2 = easyxf(
+    'font:name Times New Roman, bold on,height 300 ;align: vert centre, horz center')
+f3 = easyxf(
+    'font:name Times New Roman, bold on,height 280 ;align: vert centre, horz left')
+f4 = easyxf(
+    'font:name Times New Roman, bold on,height 280 ;align: vert centre, horz center')
+f5 = easyxf(
+'font    :name Times New Roman, bold on,height 260 ;align:wrap on, vert centre, horz center;'
+'borders :top thin,right thin, left thin')
+
+f6 = easyxf(
+'font    :name Times New Roman, italic on,height 220 ;align:wrap on, vert centre, horz center;'
+'borders : right thin, left thin,bottom thin')
+

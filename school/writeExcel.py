@@ -530,15 +530,190 @@ def printInTerm(class_id,book,termNumber):
         printPage14(class_id,s,termNumber,i,subjectList[2*i].name,noneSubject,(i+1)*70,0,ls)
     
     printPage20(class_id,termNumber,ls,length,subjectList)
+def printFirstPage(class_id,book):
+    x=0
+    y=0
+    selectedClass=Class.objects.get(id=class_id)
+    yearString='Năm hoc:'+str(selectedClass.year_id.time)+'-'+str(selectedClass.year_id.time+1)
+    className =u'Lớp: '+selectedClass.name
+    
+    s=book.add_sheet('Bia',True)
+    s.set_paper_size_code(8)
+    size=A3_WIDTH/7
+    for i in range(7):
+        s.col(i).width=size
+        
+    s.write_merge(x,x,y,y+6,'BỘ GIÁO DỤC VÀ ĐÀO TẠO',f2)
+    s.write_merge(x+1,x+1,y,y+6,'SỞ GIÁO DỤC VÀ ĐÀO TẠO',f4)
+    s.write_merge(x+2,x+2,y,y+6,'..................................................',f4)
+    s.write_merge(x+30,x+30,y,y+6,'SỔ GỌI TÊN VÀ GHI ĐIỂM',f1)
+    if (selectedClass.block_id.number<=9) & (selectedClass.block_id.number>=6):        
+        s.write_merge(x+1,x+1,y,y+6,'SỞ GIÁO DỤC VÀ ĐÀO TẠO',f4)
+        s.write_merge(x+2,x+2,y,y+6,'..................................................',f4)
+        s.write_merge(x+32,x+32,y,y+6,'TRUNG HỌC CƠ SỞ',f4)
+        s.write_merge(x+40,x+40,y,y+6,'TRƯỜNG TRUNG HỌC CƠ SỞ',f4)
+        s.write_merge(x+41,x+41,y,y+6,selectedClass.year_id.school_id.name,f4)
+        s.write_merge(x+50,x+50,y,y+3,'Xã(phường, thị trấn):....................................',f3)
+        s.write_merge(x+50,x+50,y+4,y+6,'Huyện(quận,TX,TP thuộc tỉnh):...........................',f3)
+        s.write_merge(x+52,x+52,y+0,y+6,'Tỉnh/TP:.................................................................................',f3)
+        s.write_merge(x+54,x+54,y,y+3,className,f3)
+        s.write_merge(x+54,x+54,y+4,y+6,yearString,f3)
+    elif (selectedClass.block_id.number >= 10):        
+        s.write_merge(x+32,x+32,y,y+6,'TRUNG HỌC PHỔ THÔNG',f4)
+        s.write_merge(x+40,x+40,y,y+6,'TRƯỜNG TRUNG HỌC PHỔ THÔNG',f4)
+        s.write_merge(x+41,x+41,y,y+6,selectedClass.year_id.school_id.name,f4)
+        s.write_merge(x+50,x+50,y,y+3,'Huyện(quận,TX,TP thuộc tỉnh)....................................',f3)
+        s.write_merge(x+50,x+50,y+4,y+6,'Tỉnh/TP:..............................',f3)
+        s.write_merge(x+54,x+54,y,y+1,className,f3)
+        s.write_merge(x+54,x+54,y+2,y+3,'Ban:.........................',f3)
+        s.write_merge(x+54,x+54,y+4,y+6,yearString,f3)
+        s.write_merge(x+58,x+58,y,y+6,'Các môn học tự chọn nâng cao(nếu là ban Cơ bản):',f3)
+    
+    s.write_merge(x+62,x+62,y,y+2,'Giáo viên chủ nhiệm',h9)
+    s.write_merge(x+63,x+63,y,y+2,'(Ký và ghi rõ họ, tên)',hh2)
+    s.write_merge(x+62,x+62,y+4,y+6,'Hiệu trưởng',h9)
+    s.write_merge(x+63,x+63,y+4,y+6,'(Ký, ghi rõ họ, tên và đóng dấu)',hh2)
 
+def printPage2(class_id,book):
+    x=0
+    y=0
+    selectedClass=Class.objects.get(id=class_id)    
+    s=book.add_sheet('SYLL',True)
+    s.set_paper_size_code(8)
+    s.col(0).width=STT_WIDTH
+    s.col(1).width=LASTNAME_WIDTH
+    s.col(2).width=FIRSTNAME_WIDTH
+    s.col(3).width=BIRTHDAY_WIDTH
+    s.col(4).width=PLACE_WIDTH
+    s.col(5).width=SEX_WIDTH
+    s.col(6).width=DAN_TOC_WIDTH
+    s.col(7).width=UU_TIEN_WIDTH
+    s.col(8).width=A3_WIDTH- STT_WIDTH - LASTNAME_WIDTH - FIRSTNAME_WIDTH - BIRTHDAY_WIDTH-PLACE_WIDTH-SEX_WIDTH-DAN_TOC_WIDTH - UU_TIEN_WIDTH
+    
+    s.col(9).width=1000
+    s.col(10).width=STT_WIDTH
+    s.col(11).width=(A3_WIDTH-2*STT_WIDTH)/6
+    s.col(12).width=(A3_WIDTH-2*STT_WIDTH)/6
+    s.col(13).width=(A3_WIDTH-2*STT_WIDTH)/6
+    s.col(14).width=(A3_WIDTH-2*STT_WIDTH)/6    
+    s.col(15).width=(A3_WIDTH-2*STT_WIDTH)/3
+    s.row(3).width=1000
+    s.vert_page_breaks = [(9,0,65500)]    
+    s.horz_page_breaks = []
+    
+    
+    s.write_merge(x,x,y,y+8,'SƠ YẾU LÝ LỊCH HỌC SINH',h3)        
+    s.write_merge(x+1,x+4,y,y,u'Số\nTT',h4)
+    s.write_merge(x+1,x+4,y+1,y+2,u'Họ và tên',h4)
+    s.write_merge(x+1,x+4,y+3,y+3,u'Ngày,\ntháng,\nnăm sinh',h4)
+    s.write_merge(x+1,x+4,y+4,y+4,u'Nơi sinh',h4)
+    s.write_merge(x+1,x+4,y+5,y+5,u'Nam\nnữ',h4)
+    s.write_merge(x+1,x+4,y+6,y+6,u'Dân tộc',h4)
+    s.write_merge(x+1,x+4,y+7,y+7,u'Con LS, con TB, con BB,\n con của người được hưởng\n chế độ như TB, con GĐ\n có công với CM ',h10)
+    s.write_merge(x+1,x+4,y+8,y+8,u'Chỗ ở hiện nay ',h4)
+    
+    s.write_merge(x,x,y+10,y+15,'SƠ YẾU LÝ LỊCH HỌC SINH',h3)        
+    s.write_merge(x+1,x+4,y+10,y+10,u'Số\nTT ',h4)
+    s.write_merge(x+1,x+2,y+11,y+12,u'Họ và tên cha, nghề nghiệp ',f5)
+    s.write_merge(x+1,x+2,y+13,y+14,u'Họ và tên mẹ , nghề nghiệp ',f5)
+    s.write_merge(x+1,x+2,y+15,y+15,u'Những thay đổi cần chý ý của học sinh ',f5)
+
+    s.write_merge(x+3,x+4,y+11,y+12,u'(hoặc người giám hộ) ',f6)
+    s.write_merge(x+3,x+4,y+13,y+14,u'(hoặc người giám hộ) ',f6)
+    if selectedClass.block_id.number>=10:
+        comment ='(hoàn cảnh gia đình, nới ở, sức khỏe,\n chuyển ban trong quá trình học tập)'
+    elif selectedClass.block_id.number>=6:        
+        comment ='(hoàn cảnh gia đình, nới ở, sức khỏe)'
+    s.write_merge(x+3,x+4,y+15,y+15,comment,f6)
+    x=x+1
+    
+    pupilList = Pupil.objects.filter(classes=class_id,attend__is_member=True).order_by('index','first_name','last_name','birthday')
+    i=0
+    for p in pupilList:
+        i +=1
+        if i % 5 !=0:
+            s.write(x+i+3,y,i,h6)
+            s.write(x+i+3,y+1,p.last_name,last_name)
+            s.write(x+i+3,y+2,p.first_name,first_name)
+            s.write(x+i+3,y+3,p.birthday.strftime('%d/%m/%Y'),h6)
+            s.write(x+i+3,y+4,p.birth_place,h6)
+            s.write(x+i+3,y+5,p.sex,h6)
+            s.write(x+i+3,y+6,p.dan_toc,h6)
+            s.write(x+i+3,y+7,p.uu_tien,h6)
+            s.write(x+i+3,y+8,p.current_address,h6)
+            
+            s.write(x+i+3,y+10,i,h6)
+            s.write(x+i+3,y+11,p.father_name,last_name)
+            s.write(x+i+3,y+12,p.father_job,first_name)            
+            s.write(x+i+3,y+13,p.mother_name,last_name)
+            s.write(x+i+3,y+14,p.mother_job,first_name)
+            s.write(x+i+3,y+15,"",h6)
+        else:    
+            s.write(x+i+3,y,i,h7)
+            s.write(x+i+3,y+1,p.last_name,last_name1)
+            s.write(x+i+3,y+2,p.first_name,first_name1)
+            s.write(x+i+3,y+3,p.birthday.strftime('%d/%m/%Y'),h7)
+            s.write(x+i+3,y+4,p.birth_place,h7)
+            s.write(x+i+3,y+5,p.sex,h7)
+            s.write(x+i+3,y+6,p.dan_toc,h7)
+            s.write(x+i+3,y+7,p.uu_tien,h7)
+            s.write(x+i+3,y+8,p.current_address,h7)
+
+            s.write(x+i+3,y+10,i,h7)
+            s.write(x+i+3,y+11,p.father_name,last_name1)
+            s.write(x+i+3,y+12,p.father_job,first_name1)            
+            s.write(x+i+3,y+13,p.mother_name,last_name1)
+            s.write(x+i+3,y+14,p.mother_job,first_name1)
+            s.write(x+i+3,y+15,"",h7)
+        
+    for t in range(i+1,56):
+        if t % 5 !=0:
+            s.write(x+t+3,y,t,h6)
+            s.write(x+t+3,y+1,"",last_name)
+            s.write(x+t+3,y+2,"",first_name)
+            s.write(x+t+3,y+3,"",h6)
+            s.write(x+t+3,y+4,"",h6)
+            s.write(x+t+3,y+5,"",h6)
+            s.write(x+t+3,y+6,"",h6)
+            s.write(x+t+3,y+7,"",h6)
+            s.write(x+t+3,y+8,"",h6)
+            
+            s.write(x+t+3,y+10,t,h6)
+            s.write(x+t+3,y+11,"",last_name)
+            s.write(x+t+3,y+12,"",first_name)            
+            s.write(x+t+3,y+13,"",last_name)
+            s.write(x+t+3,y+14,"",first_name)
+            s.write(x+t+3,y+15,"",h6)
+        else:    
+            s.write(x+t+3,y,t,h7)
+            s.write(x+t+3,y+1,"",last_name1)
+            s.write(x+t+3,y+2,"",first_name1)
+            s.write(x+t+3,y+3,"",h7)
+            s.write(x+t+3,y+4,"",h7)
+            s.write(x+t+3,y+5,"",h7)
+            s.write(x+t+3,y+6,"",h7)
+            s.write(x+t+3,y+7,"",h7)
+            s.write(x+t+3,y+8,"",h7)
+
+            s.write(x+t+3,y+10,t,h7)
+            s.write(x+t+3,y+11,"",last_name1)
+            s.write(x+t+3,y+12,"",first_name1)            
+            s.write(x+t+3,y+13,"",last_name1)
+            s.write(x+t+3,y+14,"",first_name1)
+            s.write(x+t+3,y+15,"",h7)
+            
+        
 def markBookClass(class_id):
     tt1 = time.time()
     book = Workbook(encoding = 'utf-8')
-        
+    
+    printFirstPage(class_id,book)   
+    printPage2(class_id,book) 
     printInTerm(class_id,book,1)
     printInTerm(class_id,book,2)
     printPage30(class_id,book)
-    book.set_active_sheet(0)
+    
+    book.set_active_sheet(1)
     selectedClass=Class.objects.get(id=class_id)
     response = HttpResponse(mimetype='application/ms-excel')
     name = 'soGhiDiemGoiTen%s.xls' % unicode(selectedClass.name)
@@ -1326,11 +1501,11 @@ def printHanhKiemExcel(list,termNumber,type,currentTerm):
     sheetName =str3+str1+str(currentTerm.year_id.time)+'-'+str(currentTerm.year_id.time+1)     
     s=book.add_sheet('DSHS ',True)
     s.col(0).width=s1    
-    s.col(1).width=FIRSTNAME_WIDTH
-    s.col(2).width=FIRSTNAME_WIDTH
-    s.col(3).width=LASTNAME_WIDTH    
+    s.col(1).width=LASTNAME_WIDTH
+    s.col(2).width=LASTNAME_WIDTH
+    s.col(3).width=FIRSTNAME_WIDTH    
     s.col(4).width=BIRTHDAY_WIDTH    
-    s.col(5).width=SIZE_PAGE_WIDTH1-s1-2*FIRSTNAME_WIDTH-LASTNAME_WIDTH-BIRTHDAY_WIDTH    
+    s.col(5).width=SIZE_PAGE_WIDTH1-s1-2*LASTNAME_WIDTH-FIRSTNAME_WIDTH-BIRTHDAY_WIDTH    
             
     s.write_merge(2,2,0,5,titleString,h40)
     s.write_merge(3,3,0,5,str2,h40)
@@ -1388,11 +1563,11 @@ def printNoPassExcel(list,type,currentYear):
     sheetName =str3+str(currentYear.time)+'-'+str(currentYear.time+1)     
     s=book.add_sheet('DSHS ',True)
     s.col(0).width=s1    
-    s.col(1).width=FIRSTNAME_WIDTH
-    s.col(2).width=FIRSTNAME_WIDTH
-    s.col(3).width=LASTNAME_WIDTH    
+    s.col(1).width=LASTNAME_WIDTH
+    s.col(2).width=LASTNAME_WIDTH
+    s.col(3).width=FIRSTNAME_WIDTH    
     s.col(4).width=BIRTHDAY_WIDTH    
-    s.col(5).width=SIZE_PAGE_WIDTH1-s1-2*FIRSTNAME_WIDTH-LASTNAME_WIDTH-BIRTHDAY_WIDTH    
+    s.col(5).width=SIZE_PAGE_WIDTH1-s1-2*LASTNAME_WIDTH-FIRSTNAME_WIDTH-BIRTHDAY_WIDTH    
             
     s.write_merge(2,2,0,5,titleString,h40)
     s.write_merge(3,3,0,5,str2,h40)
