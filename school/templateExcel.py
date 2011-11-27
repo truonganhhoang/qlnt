@@ -136,3 +136,19 @@ f6 = easyxf(
 'font    :name Times New Roman, italic on,height 220 ;align:wrap on, vert centre, horz center;'
 'borders : right thin, left thin,bottom thin')
 
+f7 = easyxf(
+'font    :name Times New Roman, italic on,bold on,height 260 ;align:wrap on, vert centre, horz left;')
+f71 = easyxf(
+'font    :name Times New Roman, italic on,bold on,height 260 ;align:wrap on, vert centre, horz right;')
+
+f8 = easyxf(
+'font:name Times New Roman ,height 240 ,bold on;align: vert centre, horz center;'
+'borders: right no_line,left thin,bottom thin,top thin')
+
+f81 = easyxf(
+'font:name Times New Roman ,height 240 ;'
+'borders: right thin,left no_line,bottom no_line,top thin')
+
+f82 = easyxf(
+'font:name Times New Roman ,height 240 ;'
+'borders: right thin,left no_line,bottom thin,top no_line')

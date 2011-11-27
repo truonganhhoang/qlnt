@@ -206,8 +206,6 @@ def printPage14(class_id,s,termNumber,n1,mon1,mon2,x,y,ls):
     str =u'Trong trang này có......... điểm được sửa chữa,'+u' trong đó môn: '+ mon1+u'....... điểm'
     if mon2!=noneSubject:
         str+=', '+ mon2+u'.......điểm'       
-    print x+max+5
-    print y+max+5          
     s.write_merge(x+max+5,x+max+5,y+0,y+8,str,h8)
     
     s.write_merge(x+max+5,x+max+5,y+9,y+12,u'Ký xác nhận của',h9)
@@ -597,7 +595,6 @@ def printPage2(class_id,book):
     s.col(13).width=(A3_WIDTH-2*STT_WIDTH)/6
     s.col(14).width=(A3_WIDTH-2*STT_WIDTH)/6    
     s.col(15).width=(A3_WIDTH-2*STT_WIDTH)/3
-    s.row(3).width=1000
     s.vert_page_breaks = [(9,0,65500)]    
     s.horz_page_breaks = []
     
@@ -702,18 +699,139 @@ def printPage2(class_id,book):
             s.write(x+t+3,y+14,"",first_name1)
             s.write(x+t+3,y+15,"",h7)
             
+def printDiemDanh(class_id,book):
+    x=0
+    y=0
+    line=70
+    selectedClass=Class.objects.get(id=class_id)    
+    s=book.add_sheet('DD',True)
+    s.set_paper_size_code(8)
+    s.col(0).width=STT_WIDTH
+    s.col(1).width=LASTNAME_WIDTH
+    s.col(2).width=FIRSTNAME_WIDTH
+    size = (A3_WIDTH-STT_WIDTH-LASTNAME_WIDTH - FIRSTNAME_WIDTH) / 34
+    for i in range(3,37):
+        s.col(i).width=size
+    setHorz =[]    
+    for i in range(10):
+        setHorz.append(((i+1)*line,0,255))
+    s.vert_page_breaks =[]    
+    s.horz_page_breaks = setHorz
         
+    
+    pupilList = Pupil.objects.filter(classes=class_id,attend__is_member=True).order_by('index','first_name','last_name','birthday')    
+    for (pg,month) in enumerate(range(7,17)):
+        if month<=11:
+            monthString = 'Tháng '+str(month % 12 +1)+' năm ' + str(selectedClass.year_id.time)
+        else:            
+            monthString = 'Tháng '+str(month % 12 +1)+' năm ' + str(selectedClass.year_id.time+1)
+        sumPupilString='Tổng số học sinh của lớp '+str(len(pupilList))
+        
+        s.write_merge(x+pg*line,x+pg*line,y,y+2,monthString,f7)
+        s.write_merge(x+pg*line,x+pg*line,y+3,y+36,sumPupilString,f71)
+        s.write_merge(x+pg*line+1,x+pg*line+4,y,y,'Số\nTT',h4)
+        
+        s.write_merge(x+pg*line+1,x+pg*line+4,y+1,y+1,'Họ và tên',f8)
+        s.write_merge(x+pg*line+1,x+pg*line+2,y+2,y+2,'Ngày',f81)
+        s.write_merge(x+pg*line+3,x+pg*line+4,y+2,y+2,'Thứ',f82)
+        for i in range(1,32):
+            s.write_merge(x+pg*line+1,x+pg*line+2,y+i+2,y+i+2,i,h5)
+            s.write_merge(x+pg*line+3,x+pg*line+4,y+i+2,y+i+2,"",h5)
+            
+        s.write_merge(x+pg*line+1,x+pg*line+2,y+34,y+36,'TS ngày\nnghỉ',h5)
+        s.write_merge(x+pg*line+3,x+pg*line+4,y+34,y+34,'TS',h5)
+        s.write_merge(x+pg*line+3,x+pg*line+4,y+35,y+35,'p',h5)
+        s.write_merge(x+pg*line+3,x+pg*line+4,y+36,y+36,'k',h5)
+        
+        i=0
+        for p in pupilList:
+            i+=1
+            if i % 5 !=0:
+                s.write(x+pg*line+i+4,y,i,h6)
+                s.write(x+pg*line+i+4,y+1,p.last_name,last_name)
+                s.write(x+pg*line+i+4,y+2,p.first_name,first_name)
+                for j in range(31):
+                    s.write(x+pg*line+i+4,y+j+3,'',h6)                    
+            else:    
+                s.write(x+pg*line+i+4,y,i,h7)
+                s.write(x+pg*line+i+4,y+1,p.last_name,last_name1)
+                s.write(x+pg*line+i+4,y+2,p.first_name,first_name1)
+                for j in range(31):
+                    s.write(x+pg*line+i+4,y+j+3,'',h7)                    
+        
+        for t in range(i+1,56):
+            if t % 5 !=0:
+                s.write(x+pg*line+t+4,y,t,h6)
+                s.write(x+pg*line+t+4,y+1,"",last_name)
+                s.write(x+pg*line+t+4,y+2,"",first_name)
+                for j in range(34):
+                    s.write(x+pg*line+t+4,y+j+3,'',h6)                    
+            else:    
+                s.write(x+pg*line+t+4,y,t,h7)
+                s.write(x+pg*line+t+4,y+1,"",last_name1)
+                s.write(x+pg*line+t+4,y+2,"",first_name1)
+                for j in range(34):
+                    s.write(x+pg*line+t+4,y+j+3,'',h7)                    
+    #diemDanhList=DiemDanh.objects.filter(student_id__clases=class_id,student_id__attend__is_member=True)
+    beginDay=datetime.date(selectedClass.year_id.time,8,1)
+    endDay  =datetime.date(selectedClass.year_id.time+1,6,1)
+    print beginDay
+    print endDay
+    print ""
+    tong=0
+    sum=[0]*10
+    for i in range(10):
+        sum[i]=[0]*34
+    for (i,p) in enumerate(pupilList):
+        diemDanhList=DiemDanh.objects.filter(student_id=p.id,time__gte=beginDay,time__lt=endDay)
+        #diemDanhList=DiemDanh.objects.filter(student_id=p.id)
+        tongCoPhep=[0]*13
+        tongKoPhep=[0]*13
+        for dd in diemDanhList:
+            print dd.time,' ',to_en1(dd.student_id.first_name),' ',dd.id
+            month=dd.time.month
+            if month >=8:
+                month=month-8
+            else:
+                month=month+4
+            loai=''        
+            if dd.loai==u'Có phép':
+                tongCoPhep[month]+=1
+                loai='p'
+            else:    
+                tongKoPhep[month]+=1
+                loai='k'                
+            xPos=x+month*line + i +5
+            yPos=dd.time.day+2
+            if loai!= '':
+                s.write(xPos,yPos,loai,h6)
+                sum[month][yPos-3]+=1
+                sum[month][31]+=1
+                if loai=='p':
+                    sum[month][32]+=1
+                else:    
+                    sum[month][33]+=1
+        for j in range(10):
+            s.write(x+j*line+i+5,35,tongCoPhep[j],h6)
+            s.write(x+j*line+i+5,36,tongKoPhep[j],h6)
+            s.write(x+j*line+i+5,34,tongKoPhep[j]+tongCoPhep[j],h6)
+    for j in range(10):
+        s.write_merge(x+j*line+59,x+j*line+59,1,2,'Tổng số',h7)
+        for t in range(34):
+            s.write(x+j*line+59,t+3,sum[j][t],h7)
+            
 def markBookClass(class_id):
     tt1 = time.time()
     book = Workbook(encoding = 'utf-8')
     
-    printFirstPage(class_id,book)   
+    printFirstPage(class_id,book)       
     printPage2(class_id,book) 
+    printDiemDanh(class_id,book)
     printInTerm(class_id,book,1)
     printInTerm(class_id,book,2)
     printPage30(class_id,book)
     
-    book.set_active_sheet(1)
+    book.set_active_sheet(2)
     selectedClass=Class.objects.get(id=class_id)
     response = HttpResponse(mimetype='application/ms-excel')
     name = 'soGhiDiemGoiTen%s.xls' % unicode(selectedClass.name)
