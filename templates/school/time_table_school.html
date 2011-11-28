@@ -6,6 +6,7 @@
     > <a href="{% url school.views.school_index %}classes">Toàn trường</a>
     > Thời khóa biểu toàn trường
 {% endblock %}
+
 {% block content %}
     {% if pos > 3 %}
         <script>
@@ -31,7 +32,6 @@
                 });
             });
         </script>
-
     {% endif %}
 
     <div id="submenu">
@@ -46,7 +46,7 @@
     <h2> Thời khóa biểu toàn trường </h2>
 
 
-    <table class="main-table">
+    <table class="main-table" id="school-timetable">
         <colgroup style="width: 5%;"></colgroup>
         <colgroup style="width: 5%;"></colgroup>
         <colgroup style="width: 12%;"></colgroup>
@@ -213,7 +213,7 @@
                         <span>Chọn file...</span>
                         <input type="file" name="file" multiple>
                     </label>
-                    <button type="submit" id="startUpload" class="start">Tải file lên</button>
+{#                    <button type="submit" id="startUpload" class="start">Tải file lên</button>#}
                 </div>
             </form>
             <div class="fileupload-content">
@@ -222,12 +222,10 @@
             </div>
             <div id="errorDetail" class="errorlist errorDiv" style="display: none;">
             </div>
-            <div class="hint">
-                <p>
-                    Chú ý: Phải dùng file Excel theo <a href="{{ MEDIA_URL }}template_files/ThoiKhoaBieu_template.xls">mẫu
-                    này</a>.
-                </p>
-            </div>
+            <p>
+                Chú ý: Phải dùng file Excel theo <a href="{{ MEDIA_URL }}template_files/ThoiKhoaBieu_template.xls">mẫu
+                này</a>.
+            </p>
         </div>
     </div>
     {% upload_js %}

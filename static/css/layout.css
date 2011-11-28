@@ -171,23 +171,15 @@ nav ul li a {
     font-weight: bold;
     text-decoration: none;
     text-align: center;
-    padding: 6px 16px 6px 16px;
+    padding: 8px 14px 4px;
     width: auto;
-    /*color: white;*/
-    /*text-shadow: 1px 1px 2px #333333;*/
-    /*position: relative;*/
-    /*border: thin solid #547ec2;*/
-    /*-moz-box-shadow: 0 1px 3px #547ec2, inset 0 1px 0 rgba(255, 255, 255, 0.2);*/
-    /*-webkit-box-shadow: 0 1px 3px #2c4e83, inset 0 1px 0 rgba(255, 255, 255, 0.2);*/
-    /*box-shadow: 0 1px 3px #6395e5, inset 0 1px 0 rgba(255, 255, 255, 0.2);*/
-    /*background: #547ec2;*/
-    /*background: -moz-linear-gradient(top, #6395e5 0%, #547ec2 100%);*/
-    /*background: -webkit-linear-gradient(top, #6395e5 0%, #547ec2 100%);*/
-    /*background: -o-linear-gradient(top, #6395e5 0%, #547ec2 100%);*/
-    /*background: -ms-linear-gradient(top, #6395e5 0%, #547ec2 100%);*/
-    /*background: linear-gradient(top, #02779E 0%, #64B6B1 100%);*/
 }
 
+nav ul li a img {
+    margin-top:-4px;
+    width:24px;
+    height:24px;
+}
 /*nav ul li a:hover {*/
     /*background: #ff856c;*/
     /*text-decoration: none;*/
@@ -237,9 +229,9 @@ aside .item {
 aside .icon {
     width: 48px;
     height: 48px;
-    background: #ffffff;
+    background: transparent;
     border-radius: 5px;
-    border: #c0c0c0 ridge thin;
+    /*border: #c0c0c0 ridge thin;*/
 }
 
 aside a {

@@ -78,7 +78,7 @@ ul {
 }
 
 
-/*--- main-tables ----------------*/
+/*--- main-table ----------------*/
 table.main-table {
     font-family: arial;
     margin: 5px 0 5px 0;
@@ -189,7 +189,16 @@ div.autocomplete button{
     border: 0px;
 }
 
+table.main-table#school-timetable td p {
+    padding: 0px;
+    font-size: 13px;
+}
+
 /* ------------- end main-table -----------------*/
+
+
+
+
 
 #sortable tr {
     min-height: 1.5em;
