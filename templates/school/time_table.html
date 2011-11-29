@@ -333,7 +333,7 @@
     </form>
 
     <form action="/school/timeTable/{{class.id}}" method="post">{% csrf_token %}
-    <table class="main-table">
+    <table class="main-table" id="school-timetable">
     <colgroup style="width: 5%;"></colgroup>
     <colgroup style="width: 12%;"></colgroup>
     <colgroup style="width: 12%;"></colgroup>
@@ -362,7 +362,7 @@
                                 <td>
                                     <p>{{ t.period_1 }}</p>
 
-                                    <p>GV: {{ t.period_1.teacher_id }}</p>
+                                    <p title="Giáo viên">{{ t.period_1.teacher_id }}</p>
                                 </td>
                             {% else %}
                                 <td></td>

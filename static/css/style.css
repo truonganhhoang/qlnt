@@ -363,13 +363,30 @@ div#tabs ul li{
 
 
 /* HELP page */
-div#help {
+.help {
+    width: 300px;
+    height:400px;
+    float: left;
+    overflow: hidden;
+    clear: none;
     color: #333333;
+    border: 1px #cccccc solid;
+    margin: 20px 10px;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #ffffff;
+    text-align: justify;
+    -moz-box-shadow: 1px 1px 5px #888888;
+    -webkit-box-shadow: 1px 1px 5px #888888;
+    box-shadow: 1px 1px 5px #888888;
 }
 
-div#help p, h3 {
-    padding: 5px;
-    color: #999999;
+#content .help h2 {
+    padding: 10px 0px 10px;
+}
+
+#content .help p {
+    padding: 10px 0px 0px;
 }
 
 .leftAlign{
