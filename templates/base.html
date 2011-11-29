@@ -153,8 +153,6 @@
                 </a></li>
                 <li><a class="tiptiphover" href="{%url school.views.classes %}" title="Danh sách lớp học">Lớp học</a>
                 </li>
-                <li><a class="tiptiphover" href="{%url school.views.timeTable_school %}"
-                       title="Thời khóa biểu toàn trường">Thời khóa biểu</a></li>
 
                 {# Khi chưa khởi  tạo năm học #}
                 {% if user.userprofile.organization.status == 3 %}
@@ -172,19 +170,20 @@
                 {% endif %}
                 {% else %}
                 {% if user.userprofile.position == 'GIAO_VIEN' %}
-                  <li><a class="tiptiphover"
-                         href="{%url school.views.school_index %}"
-                         title="Về trang chủ">
+                  <li><a class="tiptiphover" href="{%url school.views.school_index %}" title="Về trang chủ">
                     Trang chủ
                   </a></li>
+
                   <li><a class="tiptiphover" href="{%url school.views.classes %}" title="Quản lý lớp học">Lớp học</a>
                   </li>
 
-                  <li><a class="tiptiphover" href="{% url school.viewMark.markForTeacher %}">Điểm</a></li>
+                  <li><a class="tiptiphover" href="{% url school.viewMark.markForTeacher %}" title="Nhập điểm">Điểm</a>
+                  </li>
                   {% else %}
                   {% if user.userprofile.position == 'HOC_SINH' %}
                     <li><a class="tiptiphover"
-                           href="{% url school.views.viewStudentDetail user.pupil.id %}">Hồ sơ cá nhân</a></li>
+                           href="{% url school.views.viewStudentDetail user.pupil.id %}">Hồ sơ</a></li>
+
                   {% else %}
                     {% if user.userprofile.position == 'GIAO_VU' %}
                     {% endif %}
@@ -193,6 +192,9 @@
                   </li>
                 {% endif %}
               {% endif %}
+
+              <li><a class="tiptiphover" href="{%url school.views.timeTable_school %}"
+                     title="Thời khóa biểu toàn trường">Thời khóa biểu</a></li>
             {% else %}
               {# Khi chưa khởi  tạo năm học #}
               {% if user.userprofile.organization.status == 0 %}
