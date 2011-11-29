@@ -171,7 +171,7 @@ nav ul li a {
     font-weight: bold;
     text-decoration: none;
     text-align: center;
-    padding: 8px 14px 4px;
+    padding: 8px 16px 4px;
     width: auto;
 }
 
@@ -375,6 +375,22 @@ section#classes a, nav ul li a, aside a{
     background: -ms-linear-gradient(top, #6395e5 0%, #547ec2 100%);
     /*background: linear-gradient(top, #02779E 0%, #64B6B1 100%);*/
 }
+
+nav ul li a {
+    border-right: 0px;
+    border-radius: 0;
+}
+
+nav ul li:last-child a {
+    border: thin solid #547ec2;
+    border-radius: 0 5px 5px 0px;
+}
+
+nav ul li:first-child a {
+    border: thin solid #547ec2;
+    border-radius: 5px 0 0 5px;
+}
+
 
 section#classes a:hover, nav ul li a:hover, aside a:hover, section#hearder-bar a:hover {
     /*text-decoration: none;*/
