@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.http import HttpResponse, HttpResponseRedirect
 from school.models import *
 from django.shortcuts import render_to_response
@@ -180,7 +181,7 @@ def thu1(request):
 def thu1(request):
     t1= time.time()
     
-    markList = Mark.objects.filter(subject_id__class_id=27)
+    markList = Mark.objects.filter(subject_id__class_id=148)
     for m in markList:
         m.mieng_1 = random.randrange( 7,11 )
         m.mieng_2 = random.randrange( 7,11 )
@@ -200,17 +201,17 @@ def thu1(request):
         m.mot_tiet_4 = random.randrange( 7,11 )
         m.mot_tiet_5 = random.randrange( 7,11 )
         m.ck=random.randrange( 7,11 )
-        m.tb=random.randrange( 7,11 )
+        m.tb=random.randrange( 3,11 )
         m.save() 
-    tkmonList= TKMon.objects.filter(subject_id__class_id=27)
+    tkmonList= TKMon.objects.filter(subject_id__class_id=148)
     for tkmon in tkmonList:
-        tkmon.tb_nam=random.randrange( 2,8 )
+        tkmon.tb_nam=random.randrange( 3,11 )
         tkmon.save()
 
-    hanhKiemList =TBNam.objects.filter(student_id__class_id=27)
+    hanhKiemList =TBNam.objects.filter(student_id__classes=148)
     print len(hanhKiemList)
     for hk in hanhKiemList:
-        t =random.randrange( 1,3 )
+        t =random.randrange( 1,5 )
         if   t==1: hk.year='T'
         elif t==2: hk.year='K'
         elif t==3: hk.year='TB'
@@ -239,17 +240,66 @@ def thu1(request):
 
     #print (t2-t1)
     return HttpResponse(t.render(c))
+@transaction.commit_on_success
+def thu1(request):
+    t1= time.time()
+    numberPupil=Pupil.objects.all().count()
+    
+    term=Term.objects.get(id=1)
+    tong1=0
+    tong2=0
+    """
+    for i in range(10000):
+        try:
+            p=random.randrange( 1,numberPupil)+1
+            pp=Pupil.objects.get(id=p)
+            year = random.randrange(2)
+            month= random.randrange(12)+1
+            day  = random.randrange(30)+1
+            date = datetime.date(2011+year,month,day)
+            t=random.randrange(2)
+            if t==0:
+                dd=DiemDanh(student_id=pp,time=date,term_id=term,loai=u'Không phép')
+            else:     
+                dd=DiemDanh(student_id=pp,time=date,term_id=term,loai=u'Có phép')
+            dd.save()
+            tong1+=1
+        except Exception as e: 
+            #print e 
+            tong2+=1
+            #print "tong1=",tong1
+            #print "tong2=",tong2
+            if tong1 % 100 ==0:
+                print tong1
+    """
+    tong=0
+    diemDanh=DiemDanh.objects.all()
+    for dd in diemDanh:
+        #print dd.loai
+        #print dd.loai==u'Có phép'
+        dd.delete()
+        if (dd.loai!='Có phép') & (dd.loai!='Không phép'):
+            #dd.delete()
+            tong+=1
+            if tong % 100==0:
+                print tong
+            
+            
+                                                
+    t = loader.get_template(os.path.join('school','ll.html'))
+    t2=time.time()
+    print (t2-t1)
+    x='K'
+    c = RequestContext(request, {'list':list,
+                                 'x':x,
+                                }
+                       )
+    #print (t2-t1)
+    return HttpResponse(t.render(c))
 
 def thu(request):
-    t1= time.time()
-    
-    attends=Attend.objects.filter(is_member=True)
-    #attends=Attend.objects.filter(_class=26,is_member=False)
-    print attends[0].id, attends[0].is_member
-    attends[0].is_member=False
-    attends[0].save(force_update=True)
-    print len(attends)
-    
+    t1= time.time()            
+                                                
     t = loader.get_template(os.path.join('school','ll.html'))
     t2=time.time()
     print (t2-t1)
