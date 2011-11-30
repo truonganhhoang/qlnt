@@ -21,8 +21,9 @@
 	//}, false);
 
 	var length={{lengthList}} + 1;
-	var oldAr = new Array(length);
-	var newAr = new Array(length); 
+	var oldAr     = new Array(length);
+	var newAr     = new Array(length); 
+	var enableEdit= new Array(length);
 	var tempNewAr = new Array(length); 
 	
 	var sentMark  = new Array(length);
@@ -47,6 +48,7 @@
 		tempNewAr[i] = new Array(20); 
 		sentMark[i]  = new Array(20);
 		tempSent[i]  = new Array(20);
+		enableEdit[i]= new Array(20); 
 	}	
 	for(var i=1;i<length;i++)
 		for(var j=1;j<20;j++)
@@ -171,6 +173,7 @@ window.onload = function() {
 		table.rows[number+2].className="";
 		if (isSecondTerm==0) var  numberRow = 18;
 		else                 var numberRow = 20;  
+		
 		for(var i=1;i<numberRow;i++)
 		{
 			var name = number*100+i;
@@ -180,8 +183,7 @@ window.onload = function() {
 			else	
 			if (temp.value==undefined)
 			{				
-				if (i<17)
-				
+				if (i<17)				
 					temp.className = "noedit";
 				else	
 					temp.className = "";

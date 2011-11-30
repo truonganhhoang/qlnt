@@ -1,6 +1,6 @@
 ﻿<script>
 	// ngan chan khi dang luu diem hoac chua luu diem	
-	
+var table   = document.getElementById("markTable");	
 var primary = {{selectedSubject.primary}};	
 var needToConfirm = false;
 
@@ -363,7 +363,6 @@ function calculateNewArray(newAr)
 				if (document.getElementById(name).value!=undefined)
 				{
 					table.rows[i+2].cells[j+4].className="normal";
-					document.getElementById(name).className="mark";
 				}
 				else	
 				if (j<17)
@@ -414,7 +413,6 @@ function calculateNewArray(newAr)
 	}
 	function selectAllToSend()
 	{
-		var table=document.getElementById("markTable");
 		var name=0;
 		for(var i=1;i<length;i++)
 			for(var j=1;j<20;j++)
@@ -422,8 +420,6 @@ function calculateNewArray(newAr)
 				{
 					table.rows[i+2].cells[j+4].className="selected";
 					name = i*100+j;
-					if (document.getElementById(name).value!=undefined)
-						document.getElementById(name).className="selected";
 				}
 		for(var i=1;i<length;i++)
 		{
@@ -452,25 +448,16 @@ function calculateNewArray(newAr)
 			for(var j=1;j<20;j++)
 				if (newAr[i][j]!=-1)
 					if (sentMark[i][j]==1)
-					{
-						//alert(i+" "+j);
-
 						table.rows[i+2].cells[j+4].className="sent";
-						var name = i*100+j;
-						if (document.getElementById(name).value!=undefined)
-							document.getElementById(name).className="sent";
-					}
 					else
-					{
-						if (j<17)
-							table.rows[i+2].cells[j+4].className="noedit";
-						else	
-							table.rows[i+2].cells[j+4].className="";
-					
-						var name = i*100+j;
-						if (document.getElementById(name).value!=undefined)
-							document.getElementById(name).className="mark";
-					}			
+					if (!enableEdit[i][j]) 
+						table.rows[i+2].cells[j+4].className="noedit";
+					else	
+					if (i % 2==1)
+						table.rows[i+2].cells[j+4].className="mark1";
+					else	
+						table.rows[i+2].cells[j+4].className="mark";
+						
 		for(var i=1;i<length;i++)
 		{
 			table.rows[i+2].className="";
@@ -497,62 +484,33 @@ function calculateNewArray(newAr)
 		var table=document.getElementById("markTable");
 		for(var i=1;i<length;i++)
 			for(var j=1;j<20;j++)
-			{
 				if ((newAr[i][j]!=-1) && (sentMark[i][j]==0))
-				{
 					table.rows[i+2].cells[j+4].className="selected";
-					name=i*100+j;
-					if (document.getElementById(name).value!=undefined)
-						document.getElementById(name).className="selected";
-					
-				}
-			}	
 	}
 	
 	function checkToSend(tb)
 	{
 		var rowIndex =tb.parentNode.rowIndex;
 		var cellIndex=tb.cellIndex;
-		var name=(rowIndex-2)*100+(cellIndex-4);
-		var temp = document.getElementById(name).value;		
-		if (temp!=undefined)
+		var name     = (rowIndex-2)*100 + cellIndex-4;
+		if (enableEdit[rowIndex-2][cellIndex-4])
 			document.getElementById(name).focus();
+			
 		if ((activeMode==1) && (newAr[rowIndex-2][cellIndex-4]!=-1))					
 		{
 			if (tb.className!="selected")
-			{	
-				if (temp==undefined)
-					tb.className="selected";
-				else
-				if (temp!="")
-				{
-					document.getElementById(name).className="selected";
-					tb.className="selected";
-				}	
-			}	
+				tb.className="selected";
 			else
-			{
-				if (temp!=undefined)
-				{	
-					if (cellIndex-4<17)
-						tb.className="noedit";
-					else 	
-						tb.className="";
-					if (sentMark[rowIndex-2][cellIndex-4])	
-						
-						document.getElementById(name).className="sent";
-					else
-						document.getElementById(name).className="mark";						
-				}
-				else				
-				if (sentMark[rowIndex-2][cellIndex-4]==1)
-					tb.className="sent";
-				else
-				if (cellIndex-4<17)
-					tb.className="noedit";
-				else 	
-					tb.className="";
-			}	
+			if (sentMark[rowIndex-2][cellIndex-4])							
+				tb.className="sent";
+			else
+			if (!enableEdit[rowIndex-2][cellIndex-4])
+				tb.className="noedit";				
+			else	
+			if (rowIndex % 2 ==1)
+				tb.className="mark";
+			else	
+				tb.className="mark1";	
 		}				
 	}
 		
@@ -623,14 +581,10 @@ function calculateNewArray(newAr)
 	{
 		if (!isComment)
 			viewAverage();
-		var table=document.getElementById("markTable");
-		var str="";
-		
-		emptyTempSent();
-		
+		var str="";		
+		emptyTempSent();		
 		for(var i=1;i<length;i++)
-		{				
-			
+		{							
 			var number="";
 			var value ="";
 			var ok=false;
@@ -646,7 +600,6 @@ function calculateNewArray(newAr)
 			if (ok)
 				str=str+"/"+idAr[i]+":"+number+":"+value;						
 		}
-		//alert(str);
 		var temp=document.getElementById("notify");									
 		if (str!="")
 		{
@@ -660,12 +613,10 @@ function calculateNewArray(newAr)
 			$(temp).fadeIn('fast');
 			$(temp).delay(2000).fadeOut('fast');
 		}						
-	}	
-	
+	}		
 	function select(tb)
 	{
 		if (activeMode==0) return;
-		var table=document.getElementById("markTable");
 		if (tb.parentNode.className=="selected")
 		{
 			tb.parentNode.className="";
@@ -677,30 +628,15 @@ function calculateNewArray(newAr)
 			for (var j=1;j<20;j++)
 				if (newAr[i][j]!=-1)
 					if (sentMark[i][j]==1)
-					{
 						table.rows[i+2].cells[j+4].className="sent";
-						var name = i*100+j;
-						if (document.getElementById(name).value!=undefined)
-							document.getElementById(name).className="sent"
-					}
 					else
-					{
-						var name = i*100+j;
-						if (document.getElementById(name).value!=undefined)
-						{
-							if (j<17)
-								table.rows[i+2].cells[j+4].className="noedit";
-							else	
-								table.rows[i+2].cells[j+4].className="";								
-
-							document.getElementById(name).className="mark";
-						}
-						else
-							table.rows[i+2].cells[j+4].className="noedit";
-						
-					}			
-				
-			//alert(number);
+					if (!enableEdit[i][j])
+						table.rows[i+2].cells[j+4].className="noedit"
+					else
+					if (i % 2==1)
+						table.rows[i+2].cells[j+4].className="mark1";
+					else	
+						table.rows[i+2].cells[j+4].className="mark";					
 		}		
 		else				
 		{
@@ -712,14 +648,7 @@ function calculateNewArray(newAr)
 			var i=number-2;
 			for(var j=1;j<20;j++)
 			if (newAr[i][j]!=-1)
-				{
-					table.rows[i+2].cells[j+4].className="selected";
-					name = i*100+j;
-					if (document.getElementById(name).value!=undefined)
-						document.getElementById(name).className="selected";
-				}
-			
-			//alert(number);
+				table.rows[i+2].cells[j+4].className="selected";
 		}	
 	}
 	function checkCol(tb,rowIndex)
@@ -728,7 +657,6 @@ function calculateNewArray(newAr)
 		
 		var number = (-parseInt(tb.id)) % 100;
 		var boxName="checkbox"+number;
-		var table=document.getElementById("markTable");		
 		var temp = document.getElementById(boxName)
 		if (tb.className=="selected")
 		{
@@ -756,12 +684,7 @@ function calculateNewArray(newAr)
 		{
 			for(var i=1;i<length;i++)
 			if (newAr[i][number]!=-1)
-			{
-				var name=i*100+number;
 				table.rows[i+2].cells[number+4].className="selected";
-				if (document.getElementById(name).value!=undefined)
-					document.getElementById(name).className="selected";										
-			}			    	
 		}	
 		else
 		{
@@ -770,40 +693,21 @@ function calculateNewArray(newAr)
 					cancelCell(i,number);
 		}							
 	}
-
-	function checkCell(x,y)
-	{
-		var name=x*100+y;
-		document.getElementById("markTable").rows[x+2].cells[y+4].className="selected";
-		if (document.getElementById(name).value!=undefined)
-			document.getElementById(name).className="selected";												
-	}	
+	
 	function cancelCell(x,y)
 	{
-		var name=x*100+y;
-		var cellInput=document.getElementById(name);
-		var tb=document.getElementById("markTable").rows[x+2].cells[y+4];		
+		var tb=table.rows[x+2].cells[y+4];				
 		
-		if (cellInput.value!=undefined)
-		{	
-			if  (sentMark[x][y])
-				cellInput.className="sent";
-			else	
-				cellInput.className="mark";
-					
-			if (sentMark[x][y]==1)
-				tb.className="sent";
-			else
-				tb.className="";									
-		}		
-		else	
 		if (sentMark[x][y]==1)
 			tb.className="sent";
 		else
-		if (y<17)
-			tb.className="noedit";	
+		if (!enableEdit[x][y])
+			tb.className="noedit"
 		else
-			tb.className="";					
+		if (x % 2==1)
+			tb.className="mark1";
+		else	
+			tb.className="mark";
 	}
 	
 	function checkAll(tb)
@@ -814,15 +718,33 @@ function calculateNewArray(newAr)
 			selectAllToSend();
 	}
 	
-	for (var i=1;i<length;i++)
-		for (var j=1;j<17;j++)
-			{
-				var name= i*100+j;
-				var temp = document.getElementById(name);
-				if (temp.value ==undefined)
-					temp.className ="noedit";										
-			}
-			
+	if (enableChangeMark)
+		for (var i=1;i<length;i++)
+			for (var j=1;j<17;j++)
+				{
+					var name= i*100+j;
+					var temp = document.getElementById(name);
+					if (temp.value ==undefined)
+						{
+							table.rows[i+2].cells[j+4].className="noedit";
+							enableEdit[i][j]=0;	
+						}
+					else
+						enableEdit[i][j]=1;
+				}
+	
+	var str="";
+	for(var i=1;i<length;i++)
+	{
+		for(var j=0;j<20;j++)
+		{
+			str=str+enableEdit[i][j]+" ";
+		}		
+		str=str+"<p>"
+	}	
+	document.getElementById("myDiv3").innerHTML = str;
+
+	
 	$(document).ready(function() {
 		$('input[type=text]').focus(function(e) {
 			highLight(this);
