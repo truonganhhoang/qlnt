@@ -486,12 +486,12 @@ def printPage30(class_id,book):
                 s.write(tt+5,length+3,'',h71)
     
     printPage31(class_id,s,tbNamList,0,length+8)
-    max = 55
+    max = 56
     str1=u'Trong trang này có ... điểm được sửa chữa, trong đó môn:'
     for ss in subjectList:
         str1+=ss.name+u'.......điểm, '
     str1 = str1[:len(str1)-2]+'.'
-    s.write_merge(max+5,max+8,0,length,str1,h8)
+    s.write_merge(max+5,max+9,0,length,str1,h8)
     
     s.write_merge(max+5,max+5,length+1,length+6,u'Ký xác nhận của',h9)
     s.write_merge(max+6,max+6,length+1,length+6,u'giáo viên chủ nhiệm',h9)
@@ -528,6 +528,7 @@ def printInTerm(class_id,book,termNumber):
         printPage14(class_id,s,termNumber,i,subjectList[2*i].name,noneSubject,(i+1)*70,0,ls)
     
     printPage20(class_id,termNumber,ls,length,subjectList)
+    
 def printFirstPage(class_id,book):
     x=0
     y=0
@@ -565,7 +566,7 @@ def printFirstPage(class_id,book):
         s.write_merge(x+54,x+54,y,y+1,className,f3)
         s.write_merge(x+54,x+54,y+2,y+3,'Ban:.........................',f3)
         s.write_merge(x+54,x+54,y+4,y+6,yearString,f3)
-        s.write_merge(x+58,x+58,y,y+6,'Các môn học tự chọn nâng cao(nếu là ban Cơ bản):',f3)
+        s.write_merge(x+58,x+58,y,y+6,'Các môn học tự chọn nâng cao(nếu là ban Cơ bản):......................................................................',f3)
     
     s.write_merge(x+62,x+62,y,y+2,'Giáo viên chủ nhiệm',h9)
     s.write_merge(x+63,x+63,y,y+2,'(Ký và ghi rõ họ, tên)',hh2)
@@ -831,7 +832,7 @@ def markBookClass(class_id):
     printInTerm(class_id,book,2)
     printPage30(class_id,book)
     
-    book.set_active_sheet(2)
+    book.set_active_sheet(0)
     selectedClass=Class.objects.get(id=class_id)
     response = HttpResponse(mimetype='application/ms-excel')
     name = 'soGhiDiemGoiTen%s.xls' % unicode(selectedClass.name)
@@ -842,7 +843,7 @@ def markBookClass(class_id):
     print (tt2-tt1)
     return response
 
-def printMarkBook(request,termNumber=None,class_id=-2):
+def printMarkBook(request,class_id=-2):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect( reverse('login'))
@@ -863,12 +864,6 @@ def printMarkBook(request,termNumber=None,class_id=-2):
             class_id=teaching_class.id
     elif get_position(request) != 4:
        return HttpResponseRedirect('/school')
-
-    if termNumber==None:
-        if currentTerm.number==3:
-            termNumber==2
-        else:
-            termNumber= currentTerm.number    
         
     class_id  = int(class_id)
     classList =Class.objects.filter(year_id=currentTerm.year_id) 
@@ -878,14 +873,11 @@ def printMarkBook(request,termNumber=None,class_id=-2):
     t = loader.get_template(os.path.join('school','print_mark_book.html'))    
     c = RequestContext(request, {"message":message,
                                  'classList':classList,
-                                 'termNumber':termNumber,
                                  'classChoice':class_id,
                                  'teaching_class':teaching_class,
                                 }
                        )
     return HttpResponse(t.render(c))
-
-
 
 def printPage15(book,class_id,number,mon1,mon2,mon3):
     s = book.add_sheet('trang'+str(number+13) ,True)

@@ -1252,144 +1252,17 @@ def sendSMSResult(request,class_id,termNumber=None):
         else:
             for hk in hkList:
                 hkList1.append(hk.term2)
-        list=zip(pupilList,tbHocKyList,hkList1)        
+        list1=zip(pupilList,tbHocKyList,hkList1)        
     else:
         tbNamList = TBNam.objects.filter(student_id__classes=class_id).order_by('student_id__index','student_id__first_name','student_id__last_name','student_id__birthday')
-        list=zip(pupilList,tbNamList,tbNamList)
-                
-    if request.method=="POST":
-        data  = request.POST[u'data']
-        datas = data.split('-')
-        if termNumber<3:
-            subjectList=Subject.objects.filter(class_id=class_id,primary__in=[0,termNumber,3,4]).order_by("index",'name')    
-            markList = Mark.objects.filter(subject_id__class_id=class_id,term_id__number=termNumber,subject_id__primary__in=[0,termNumber,3,4],current=True).order_by('student_id__index','student_id__first_name','student_id__last_name','student_id__birthday','subject_id__index','subject_id__name')
-            
-            length = len(subjectList)    
-            i=0    
-            for m in markList:
-                t= i % length
-                if t ==0:
-                    markOfAPupil=[]
-                if m.mg:
-                      markOfAPupil.append("MG")
-                elif m.tb==None:    
-                      markOfAPupil.append("")
-                elif subjectList[t].nx:
-                    markOfAPupil.append(convertMarkToCharacter1(m.tb))
-                else:            
-                    markOfAPupil.append(m.tb)        
-                
-                if t==0:            
-                    tempList.append(markOfAPupil) 
-                i+=1
-             
-        else:
-            pass    
-            idYear = selectedYear.id
-            subjectList=Subject.objects.filter(class_id=class_id).order_by("index",'name')    
-            markList   =TKMon.objects.filter(subject_id__class_id=class_id,current=True).order_by('student_id__index','student_id__first_name','student_id__last_name','student_id__birthday','subject_id__index','subject_id__name') 
-            length = len(subjectList)
-    
-            i=0    
-            for m in markList:
-                t= i % length
-                if t ==0:
-                    markOfAPupil=[]
-                    
-                if m.mg:
-                      markOfAPupil.append("MG")
-                elif m.tb_nam==None:    
-                      markOfAPupil.append("")
-                elif subjectList[t].nx:
-                    markOfAPupil.append(convertMarkToCharacter1(m.tb_nam))
-                else:                  
-                    markOfAPupil.append(m.tb_nam)        
-                
-                if t==0:            
-                    tempList.append(markOfAPupil) 
-                i+=1
-        successString=''
-        numberSent=0
-        numberSuccess=0
-        i=1
-        for p,tb,hk in list:
-            if str(i) in datas:
-                smsString = u'Tong ket '
-                if termNumber==1:
-                    termString=u'hoc ky I nam hoc '
-                elif termNumber==2:
-                    termString=u'hoc ky II nam hoc '
-                else:
-                    termString=u'ca nam nam hoc '        
-                smsString+=termString+yearString
-                smsString+=' cua hs '+to_en1(p.last_name)+' '+to_en1(p.first_name)+' nhu sau:'
-                
-                markOfAPupil=tempList[i-1]
-                for s,m in zip(subjectList,markOfAPupil):
-                    smsString+=to_en1(s.name)+':'+str(m)+', '
-                if termNumber<3:    
-                    smsString+='TB:'+str(tb.tb_hk)+', '                
-                    smsString+='hoc luc :' + to_en1(convertHlToVietnamese(tb.hl_hk))+', '
-                    smsString+='hanh kiem:' + to_en1(convertHkToVietnamese(hk))+', '
-                    if (tb.danh_hieu_hk=='G') | (tb.danh_hieu_hk=='TT') :
-                        smsString+='danh hieu:'+convertDanhHieu(tb.danh_hieu_hk)+'.'
-                else:
-                    smsString+='TB:'+str(tb.tb_nam)+', '                
-                    smsString+='hoc luc :' + to_en1(convertHlToVietnamese(tb.hl_nam))+', '
-                    smsString+='hanh kiem:' + to_en1(convertHkToVietnamese(tb.year))+', '
-                    if (tb.danh_hieu_nam=='G') | (tb.danh_hieu_nam=='TT') :
-                        smsString+='danh hieu:'+convertDanhHieu(tb.danh_hieu_nam)+','
-                    smsString+='thuoc dien:'
-                    if  tb.len_lop==True:
-                        smsString+='len lop.'
-                    elif tb.len_lop==False:
-                        smsString+='khong len lop.'
-                    elif tb.thi_lai==True:
-                        smsString+='kiem tra lai mot so mon.'
-                    elif tb.ren_luyen_lai:
-                        smsString+='ren luyen them trong he.'
-                    else:
-                        smsString+='chua xep loai.'                            
-                print i
-                print smsString
-                if p.sms_phone:
-                    sent=''
-                    try:
-                        sent=sendSMS(p.sms_phone,smsString,user)                        
-                    except Exception as e:
-                        pass
-                    print sent
-                    numberSent+=1
-                    if sent=='1':
-                        numberSuccess+=1
-                        successString+=str(i)+'-'
-                        tb.sent=True
-                        tb.save()
-            i+=1
-            
-        message="ok111111111111"  
-        result ='Đã gửi thành công '+str(numberSuccess)+'/'+str(numberSent)  
-        data = simplejson.dumps({'successString':successString,
-                                 'result':result})
-        return HttpResponse(data, mimetype = 'json')            
-     
-    """              
-    if termNumber<3:        
+        list1=zip(pupilList,tbNamList,tbNamList)        
 
+    contentList=[]            
+    if termNumber<3:
         subjectList=Subject.objects.filter(class_id=class_id,primary__in=[0,termNumber,3,4]).order_by("index",'name')    
-        markList = Mark.objects.filter(subject_id__class_id=class_id,term_id__number=termNumber,subject_id__primary__in=[0,termNumber,3,4],current=True).order_by('student_id__index','student_id__first_name','student_id__last_name','student_id__birthday','subject_id__index','subject_id__name') 
-        tbHocKyList = TBHocKy.objects.filter(student_id__classes=class_id,term_id__number=termNumber).order_by('student_id__index','student_id__first_name','student_id__last_name','student_id__birthday')
-        hkList      = TBNam.objects.filter(student_id__classes=class_id).order_by('student_id__index','student_id__first_name','student_id__last_name','student_id__birthday')
-        hkList1 =[]
-        if termNumber==1:
-            for hk in hkList:
-                hkList1.append(hk.term1)
-        else:
-            for hk in hkList:
-                hkList1.append(hk.term2)
-                                        
-        length = len(subjectList)
-
+        markList = Mark.objects.filter(subject_id__class_id=class_id,term_id__number=termNumber,subject_id__primary__in=[0,termNumber,3,4],current=True).order_by('student_id__index','student_id__first_name','student_id__last_name','student_id__birthday','subject_id__index','subject_id__name')
+        
+        length = len(subjectList)    
         i=0    
         for m in markList:
             t= i % length
@@ -1406,15 +1279,11 @@ def sendSMSResult(request,class_id,termNumber=None):
             
             if t==0:            
                 tempList.append(markOfAPupil) 
-            i+=1
- 
-        list=zip(pupilList,tempList,tbHocKyList,hkList1)    
+            i+=1         
     else:
-        calculateTKMon(class_id)
         idYear = selectedYear.id
         subjectList=Subject.objects.filter(class_id=class_id).order_by("index",'name')    
         markList   =TKMon.objects.filter(subject_id__class_id=class_id,current=True).order_by('student_id__index','student_id__first_name','student_id__last_name','student_id__birthday','subject_id__index','subject_id__name') 
-        tbNamList = TBNam.objects.filter(student_id__classes=class_id).order_by('student_id__index','student_id__first_name','student_id__last_name','student_id__birthday')
         length = len(subjectList)
 
         i=0    
@@ -1435,11 +1304,87 @@ def sendSMSResult(request,class_id,termNumber=None):
             if t==0:            
                 tempList.append(markOfAPupil) 
             i+=1
-        list=zip(pupilList,tempList,tbNamList,tbNamList)    
+            
+    i=1
+    for p,tb,hk in list1:
+        smsString=''
+        markOfAPupil=tempList[i-1]
+        for s,m in zip(subjectList,markOfAPupil):
+            smsString+=to_en1(s.name)+':'+str(m)+', '
+        if termNumber<3:    
+            smsString+='TB:'+str(tb.tb_hk)+', '                
+            smsString+='hoc luc :' + to_en1(convertHlToVietnamese(tb.hl_hk))+', '
+            smsString+='hanh kiem:' + to_en1(convertHkToVietnamese(hk))
+            if (tb.danh_hieu_hk=='G') | (tb.danh_hieu_hk=='TT') :
+                smsString+=', '+'danh hieu:'+convertDanhHieu(tb.danh_hieu_hk)+'.'
+            else:    
+                smsString+='.'
+        else:
+            smsString+='TB:'+str(tb.tb_nam)+', '                
+            smsString+='hoc luc :' + to_en1(convertHlToVietnamese(tb.hl_nam))+', '
+            smsString+='hanh kiem:' + to_en1(convertHkToVietnamese(tb.year))+', '
+            if (tb.danh_hieu_nam=='G') | (tb.danh_hieu_nam=='TT') :
+                smsString+='danh hieu:'+convertDanhHieu(tb.danh_hieu_nam)+','
+            smsString+='thuoc dien:'
+            if  tb.len_lop==True:
+                smsString+='len lop.'
+            elif tb.len_lop==False:
+                smsString+='khong len lop.'
+            elif tb.thi_lai==True:
+                smsString+='kiem tra lai mot so mon.'
+            elif tb.ren_luyen_lai:
+                smsString+='ren luyen them trong he.'
+            else:
+                smsString+='chua xep loai.'                            
+        i+=1
         
-    """
-    
+        contentList.append(smsString)
 
+    if termNumber < 3:    
+        list=zip(pupilList,contentList,tbHocKyList)
+    else:    
+        list=zip(pupilList,contentList,tbNamList)
+                        
+    if request.method=="POST":
+        data  = request.POST[u'data']
+        datas = data.split('-')
+        successString=''
+        numberSent=0
+        numberSuccess=0        
+        i=1
+        for p,c,tb in list:
+            if str(i) in datas:   
+                smsString = u'Tong ket '
+                if termNumber==1:
+                    termString=u'hoc ky I nam hoc '
+                elif termNumber==2:
+                    termString=u'hoc ky II nam hoc '
+                else:
+                    termString=u'ca nam nam hoc '        
+                smsString+=termString+yearString
+                smsString+=' cua hs '+to_en1(p.last_name)+' '+to_en1(p.first_name)+' nhu sau:'
+
+                smsString+=c
+                numberSent+=1
+                if p.sms_phone:
+                    sent=''
+                    try:
+                        sent=sendSMS(p.sms_phone,smsString,user)                        
+                    except Exception as e:
+                        pass
+                    if sent=='1':
+                        numberSuccess+=1
+                        successString+=str(i)+'-'
+                        tb.sent=True
+                        tb.save()
+            i+=1
+            
+        message="ok111111111111"  
+        result ='Đã gửi thành công '+str(numberSuccess)+'/'+str(numberSent)  
+        data = simplejson.dumps({'successString':successString,
+                                 'result':result})
+        return HttpResponse(data, mimetype = 'json')
+                
     t = loader.get_template(os.path.join('school','send_sms_result.html'))
 
     t2=time.time()

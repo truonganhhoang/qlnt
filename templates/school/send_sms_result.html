@@ -61,7 +61,7 @@
 						if (document.getElementById(id))
 							{
 								document.getElementById(id).innerHTML='Đã gửi';	
-								document.getElementById(id).className='mark-sent';
+								document.getElementById(id).className='sent';
 							}							
 					}
 				}
@@ -96,7 +96,7 @@
 				//var id = $(this).attr('class').split(' ')[0];
 				var id =this.rowIndex;
 				var sentId     = '#sent_' + id;
-				if ($(sentId).hasClass('mark-sent'))
+				if ($(sentId).hasClass('sent'))
 				{
 					if ($(this).hasClass('selected'))
 						$(this).trigger('click');
@@ -137,37 +137,23 @@
 				Ngày sinh
 			</th>
 			<th>
+				Nội dung sẽ gửi
+			</th>
+			<th>
 				Số điện thoại
 			</th>
-			<th>
-				Điểm TB
-			</th>
-			<th>
-				Học lực
-			</th>
-			<th>
-				Hạnh kiểm
-			</th>
-			<th>
-				Danh hiệu
-			</th>
-			{% if termNumber == 3 %}
-				<th>
-					Xếp loại
-				</th>
-			{% endif %}	
 			<th>
 				Trạng thái
 			</th>
 		</tr>
-	{% for p,tb,hk in list %}
+	{% for p,c,tb in list %}
         {% if p.sms_phone %}
 		<tr>
 			<td style="text-align: center;"> 
 				<input type="checkbox" id="checkbox_{{forloop.counter}}" >			
 			</td>
 		{% else%}
-		<tr title="Không có số điện thoại nên sẽ không thể chọn được học sinh này.">
+		<tr class="tiptiphover" title="Không có số điện thoại nên sẽ không thể chọn được học sinh này.">
 			<td style="text-align: center;"> 
 				<input type="checkbox"  id="checkbox_{{forloop.counter}}" disabled  >			
 			</td>				
@@ -179,70 +165,25 @@
 			<td>
 				{{ p.birthday|date:"SHORT_DATE_FORMAT"}} 
 			</td>
-			<td>
-				{{p.sms_phone}}
+			<td style="font-size:12px">
+				{{ c }}
 			</td>
-			{% if termNumber  < 3 %}
-				<td>
-					{{ tb.tb_hk|floatformat:"1" }}
-				</td>
-				
-				<td>
-					{{ tb.hl_hk|convertHlToVietnamese}}
-				</td>
-				<td>
-					{{hk|convertHKToVietnamese}}				
-				</td>
-				<td>
-					{{ tb.danh_hieu_hk|convertDHToVietnamese}}
-				</td>				
-			{% else %}
-				<td>
-					{{ tb.tb_nam|floatformat:"1"  }}
-				</td>
-				
-				<td>
-					{{ tb.hl_nam|convertHlToVietnamese}}
-				</td>
-				<td>
-					{{hk.year|convertHKToVietnamese}}				
-				</td>
-				<td>
-					{{ tb.danh_hieu_nam|convertDHToVietnamese}}
-				</td>
-			{% if termNumber == 3 %}
-				<td>
-					{% if tb.len_lop %}
-						Lên lớp
-					{% else %}	
-					{% if tb.len_lop != None %}
-						Không lên lớp
-					{% else %}
-					{% if tb.thi_lai %}
-						Kt lại
-					{% else %}
-					{% if tb.ren_luyen_lai %}
-						rèn luyện thêm
-					{% else %}
-						&nbsp
-					{% endif %} 	
-					{% endif %} 	
-					{% endif %} 	
-					{% endif %} 	
-						
-				</td>
-			{% endif %}
-			
-			{% endif %}
-				{% if tb.sent %}
-				<td class="mark-sent" id="sent_{{forloop.counter}}" >
-					Đã gửi
-				</td>	
-				{% else %}	
-				<td id="sent_{{forloop.counter}}">
-					Chưa gửi
-				</td>
-				{% endif %}	
+			<td>
+				{% if p.sms_phone %}
+					{{p.sms_phone}}
+				{% else %}
+					&nbsp
+				{% endif %}
+			</td>
+			{% if tb.sent %}
+			<td class="sent" id="sent_{{forloop.counter}}" >
+				Đã gửi
+			</td>	
+			{% else %}	
+			<td id="sent_{{forloop.counter}}">
+				Chưa gửi
+			</td>
+			{% endif %}	
 		</tr>
 	{% endfor %}	
 	</table>	

@@ -8,25 +8,13 @@
 
 {% block content %}
 <script>
-function reset()
-{
-	document.getElementById("classList").value="-2";
-}
 function submit(tb)
 {
-	var value1 =document.getElementById("mode").value; 
 	if (tb.value!="-2")
-		window.location.href="/school/printMarkBook/"+value1+"/"+tb.value;
+		window.location.href="/school/printMarkBook/"+tb.value;
 }
 </script>
 <br>
-  Học kỳ
-<select id="mode" onchange="reset()" >
-    <option value ="1" > Học kỳ I  </option>
-    <option value ="3" > Cả năm    </option>	 
-</select>
-
-&nbsp&nbsp&nbsp
 Lớp
 <select id="classList" onchange="submit(this)" >
 		<option value="-2" >Chọn lớp </option>
@@ -37,7 +25,7 @@ Lớp
 </select>
 <br>
   <br>
-  (Chọn kỳ và lớp để tải file báo cáo Excel về. Sau đó bạn có thể mở file Excel xem báo cáo trên máy.)
+  (Chọn lớp để tải file báo cáo Excel về. Sau đó bạn có thể mở file Excel xem báo cáo trên máy.)
 <script>
 	document.getElementById("mode").value={{termNumber}}; 
 	document.getElementById("classList").value={{classChoice}}; 	
