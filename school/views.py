@@ -4112,156 +4112,160 @@ def import_timeTable(request):
 
 
 def timeTable(request, class_id):
-    user = request.user
-    if not user.is_authenticated():
-        return HttpResponseRedirect(reverse('login'))
     try:
-        school = get_school(request)
-    except Exception :
-        return HttpResponseRedirect(reverse('index'))
-    pos = get_position(request);
-    if pos < 1:
-        return HttpResponseRedirect('/')
-    if pos == 1 and inClass(request, class_id) == 0:
-        return HttpResponseRedirect('/')
-
-    year = school.year_set.latest('time')
-    classList = Class.objects.filter(year_id = year).order_by('name')
-    cl = Class.objects.get(id = class_id)
-
-    for d in range(2, 8):
+        user = request.user
+        if not user.is_authenticated():
+            return HttpResponseRedirect(reverse('login'))
         try:
-            tmp = cl.tkb_set.get(day = d)
-        except Exception as e:
-            t = TKB()
-            t.day = d
-            t.class_id = cl
-            t.save()
+            school = get_school(request)
+        except Exception :
+            return HttpResponseRedirect(reverse('index'))
+        pos = get_position(request);
+        if pos < 1:
+            return HttpResponseRedirect('/')
+        if pos == 1 and inClass(request, class_id) == 0:
+            return HttpResponseRedirect('/')
 
-    if request.method == "POST":
-        if request.is_ajax():
-            print request.POST
-            d = int(request.POST['day'])
-            t = cl.tkb_set.get(day = d)
-            if request.POST['sub']:
-                if request.POST['request_type'] == 'period_1' : t.period_1 = Subject.objects.get(id = int(request.POST['sub']))
-                if request.POST['request_type'] == 'period_2' : t.period_2 = Subject.objects.get(id = int(request.POST['sub']))
-                if request.POST['request_type'] == 'period_3' : t.period_3 = Subject.objects.get(id = int(request.POST['sub']))
-                if request.POST['request_type'] == 'period_4' : t.period_4 = Subject.objects.get(id = int(request.POST['sub']))
-                if request.POST['request_type'] == 'period_5' : t.period_5 = Subject.objects.get(id = int(request.POST['sub']))
-                if request.POST['request_type'] == 'period_6' : t.period_6 = Subject.objects.get(id = int(request.POST['sub']))
-                if request.POST['request_type'] == 'period_7' : t.period_7 = Subject.objects.get(id = int(request.POST['sub']))
-                if request.POST['request_type'] == 'period_8' : t.period_8 = Subject.objects.get(id = int(request.POST['sub']))
-                if request.POST['request_type'] == 'period_9' : t.period_9 = Subject.objects.get(id = int(request.POST['sub']))
-                if request.POST['request_type'] == 'period_10' : t.period_10 = Subject.objects.get(id = int(request.POST['sub']))
-            else:
-                if request.POST['request_type'] == 'period_1' : t.period_1 = None
-                if request.POST['request_type'] == 'period_2' : t.period_2 = None
-                if request.POST['request_type'] == 'period_3' : t.period_3 = None
-                if request.POST['request_type'] == 'period_4' : t.period_4 = None
-                if request.POST['request_type'] == 'period_5' : t.period_5 = None
-                if request.POST['request_type'] == 'period_6' : t.period_6 = None
-                if request.POST['request_type'] == 'period_5' : t.period_7 = None
-                if request.POST['request_type'] == 'period_8' : t.period_8 = None
-                if request.POST['request_type'] == 'period_9' : t.period_9 = None
-                if request.POST['request_type'] == 'period_10' : t.period_10 = None
-                
-            t.save()
-            
-            
-        else:
-            print request.POST
-            for d in range(2, 8):
+        year = school.year_set.latest('time')
+        classList = Class.objects.filter(year_id = year).order_by('name')
+        cl = Class.objects.get(id = class_id)
+
+        for d in range(2, 8):
+            try:
+                tmp = cl.tkb_set.get(day = d)
+            except Exception as e:
+                t = TKB()
+                t.day = d
+                t.class_id = cl
+                t.save()
+
+        if request.method == "POST":
+            if request.is_ajax():
+                print request.POST
+                d = int(request.POST['day'])
                 t = cl.tkb_set.get(day = d)
-                plist = request.POST.getlist('period_1')
-                if plist[d-2]:
-                    t.period_1=Subject.objects.get(id = int(plist[d-2]))
+                if request.POST['sub']:
+                    if request.POST['request_type'] == 'period_1' : t.period_1 = Subject.objects.get(id = int(request.POST['sub']))
+                    if request.POST['request_type'] == 'period_2' : t.period_2 = Subject.objects.get(id = int(request.POST['sub']))
+                    if request.POST['request_type'] == 'period_3' : t.period_3 = Subject.objects.get(id = int(request.POST['sub']))
+                    if request.POST['request_type'] == 'period_4' : t.period_4 = Subject.objects.get(id = int(request.POST['sub']))
+                    if request.POST['request_type'] == 'period_5' : t.period_5 = Subject.objects.get(id = int(request.POST['sub']))
+                    if request.POST['request_type'] == 'period_6' : t.period_6 = Subject.objects.get(id = int(request.POST['sub']))
+                    if request.POST['request_type'] == 'period_7' : t.period_7 = Subject.objects.get(id = int(request.POST['sub']))
+                    if request.POST['request_type'] == 'period_8' : t.period_8 = Subject.objects.get(id = int(request.POST['sub']))
+                    if request.POST['request_type'] == 'period_9' : t.period_9 = Subject.objects.get(id = int(request.POST['sub']))
+                    if request.POST['request_type'] == 'period_10' : t.period_10 = Subject.objects.get(id = int(request.POST['sub']))
                 else:
-                    t.period_1=None
+                    if request.POST['request_type'] == 'period_1' : t.period_1 = None
+                    if request.POST['request_type'] == 'period_2' : t.period_2 = None
+                    if request.POST['request_type'] == 'period_3' : t.period_3 = None
+                    if request.POST['request_type'] == 'period_4' : t.period_4 = None
+                    if request.POST['request_type'] == 'period_5' : t.period_5 = None
+                    if request.POST['request_type'] == 'period_6' : t.period_6 = None
+                    if request.POST['request_type'] == 'period_5' : t.period_7 = None
+                    if request.POST['request_type'] == 'period_8' : t.period_8 = None
+                    if request.POST['request_type'] == 'period_9' : t.period_9 = None
+                    if request.POST['request_type'] == 'period_10' : t.period_10 = None
 
-                plist = request.POST.getlist('period_2')
-                if plist[d-2]:
-                    t.period_2=Subject.objects.get(id = int(plist[d-2]))
-                else:
-                    t.period_2=None
-
-                plist = request.POST.getlist('period_3')
-                if plist[d-2]:
-                    t.period_3=Subject.objects.get(id = int(plist[d-2]))
-                else:
-                    t.period_3=None
-
-                plist = request.POST.getlist('period_4')
-                if plist[d-2]:
-                    t.period_4=Subject.objects.get(id = int(plist[d-2]))
-                else:
-                    t.period_4=None
-
-                plist = request.POST.getlist('period_5')
-                if plist[d-2]:
-                    t.period_5=Subject.objects.get(id = int(plist[d-2]))
-                else:
-                    t.period_5=None
                 t.save()
 
-                plist = request.POST.getlist('period_6')
-                if plist[d-2]:
-                    t.period_6=Subject.objects.get(id = int(plist[d-2]))
-                else:
-                    t.period_6=None
-                t.save()
 
-                plist = request.POST.getlist('period_7')
-                if plist[d-2]:
-                    t.period_7=Subject.objects.get(id = int(plist[d-2]))
-                else:
-                    t.period_7=None
-                t.save()
+            else:
+                print request.POST
+                for d in range(2, 8):
+                    t = cl.tkb_set.get(day = d)
+                    plist = request.POST.getlist('period_1')
+                    if plist[d-2]:
+                        t.period_1=Subject.objects.get(id = int(plist[d-2]))
+                    else:
+                        t.period_1=None
 
-                plist = request.POST.getlist('period_5')
-                if plist[d-2]:
-                    t.period_8=Subject.objects.get(id = int(plist[d-2]))
-                else:
-                    t.period_8=None
-                t.save()
+                    plist = request.POST.getlist('period_2')
+                    if plist[d-2]:
+                        t.period_2=Subject.objects.get(id = int(plist[d-2]))
+                    else:
+                        t.period_2=None
 
-                plist = request.POST.getlist('period_9')
-                if plist[d-2]:
-                    t.period_9=Subject.objects.get(id = int(plist[d-2]))
-                else:
-                    t.period_9=None
-                t.save()
+                    plist = request.POST.getlist('period_3')
+                    if plist[d-2]:
+                        t.period_3=Subject.objects.get(id = int(plist[d-2]))
+                    else:
+                        t.period_3=None
 
-                plist = request.POST.getlist('period_10')
-                if plist[d-2]:
-                    t.period_10=Subject.objects.get(id = int(plist[d-2]))
-                else:
-                    t.period_10=None
-                t.save()
+                    plist = request.POST.getlist('period_4')
+                    if plist[d-2]:
+                        t.period_4=Subject.objects.get(id = int(plist[d-2]))
+                    else:
+                        t.period_4=None
 
-    timeTables = TKB.objects.filter(class_id=class_id).order_by('day')
-    TKBForms = []
-    for t in timeTables:
-        TKBForms.append(TKBForm(class_id, instance=t))
-    lesson = []
-    week = []
-    for d in range(1, 11):
-        lesson.append(d)
-    for w in range(2, 8):
-        week.append(w)
-    subject = cl.subject_set.all()
+                    plist = request.POST.getlist('period_5')
+                    if plist[d-2]:
+                        t.period_5=Subject.objects.get(id = int(plist[d-2]))
+                    else:
+                        t.period_5=None
+                    t.save()
 
-    list = zip(timeTables, TKBForms)
-    t = loader.get_template(os.path.join('school', 'time_table.html'))
-    c = RequestContext(request, {'list': list,
-                                 'subject' : subject,
-                                 'lesson': lesson,
-                                 'week' : week,
-                                'pos':get_position(request),
-                                'classList':classList,
-                                'class':cl,
-                                })
-    return HttpResponse(t.render(c))
+                    plist = request.POST.getlist('period_6')
+                    if plist[d-2]:
+                        t.period_6=Subject.objects.get(id = int(plist[d-2]))
+                    else:
+                        t.period_6=None
+                    t.save()
+
+                    plist = request.POST.getlist('period_7')
+                    if plist[d-2]:
+                        t.period_7=Subject.objects.get(id = int(plist[d-2]))
+                    else:
+                        t.period_7=None
+                    t.save()
+
+                    plist = request.POST.getlist('period_5')
+                    if plist[d-2]:
+                        t.period_8=Subject.objects.get(id = int(plist[d-2]))
+                    else:
+                        t.period_8=None
+                    t.save()
+
+                    plist = request.POST.getlist('period_9')
+                    if plist[d-2]:
+                        t.period_9=Subject.objects.get(id = int(plist[d-2]))
+                    else:
+                        t.period_9=None
+                    t.save()
+
+                    plist = request.POST.getlist('period_10')
+                    if plist[d-2]:
+                        t.period_10=Subject.objects.get(id = int(plist[d-2]))
+                    else:
+                        t.period_10=None
+                    t.save()
+
+        timeTables = TKB.objects.filter(class_id=class_id).order_by('day')
+        TKBForms = []
+        for t in timeTables:
+            TKBForms.append(TKBForm(class_id, instance=t))
+        lesson = []
+        week = []
+        for d in range(1, 11):
+            lesson.append(d)
+        for w in range(2, 8):
+            week.append(w)
+        subject = cl.subject_set.all()
+
+        list = zip(timeTables, TKBForms)
+        t = loader.get_template(os.path.join('school', 'time_table.html'))
+        c = RequestContext(request, {'list': list,
+                                     'subject' : subject,
+                                     'lesson': lesson,
+                                     'week' : week,
+                                    'pos':get_position(request),
+                                    'classList':classList,
+                                    'class':cl,
+                                    })
+        return HttpResponse(t.render(c))
+    except Exception as e:
+        print e
+        raise e
 
 def timeTable_school(request):
     user = request.user

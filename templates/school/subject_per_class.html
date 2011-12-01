@@ -1,7 +1,10 @@
 {% extends "base.html" %}
 {% if pos > 3 %}
+    {% block css %}
+        <link href="/static/css/googlePlusPopup.css?0.6" rel="stylesheet" type="text/css"/>
+    {% endblock %}
     {% block js %}
-        <script type="text/javascript" src="/static/js/template_js/sortable_table.js"></script>
+        <script type="text/javascript" src="/static/js/template_js/sortable_table.js?0.6"></script>
     {% endblock %}
 {% endif %}
 
@@ -30,6 +33,27 @@
             }
         </script>
         <script type="text/javascript" src="/static/js/template_js/subject_per_class.js"></script>
+        <script type="text/javascript" src="/static/js/ggplus_popup.js"></script>
+
+        <script type="text/javascript">
+            $(document).ready(function(){
+                var init = function(p){
+                    alert(p);
+                };
+                var callback = function(e, window){
+                    console.log(e);
+                    console.log(window);
+                };
+                $(".sortable").each(function(){
+                    $(this).find('#id_primary').googlePlusPopup();
+                    $(this).find('#id_type').googlePlusPopup();
+                    //$(this).find('#id_nx').addClass('googlePlusPopupCheckbox');
+                });
+                $("#subject_form").find('#id_primary').googlePlusPopup();
+                $("#subject_form").find('#id_type').googlePlusPopup();
+                //$("#id_primary").googlePlusPopup();
+            });
+        </script>
     {% endif %}
     <form action="" name="info" method="post">{% csrf_token %}
         <h2>Danh sách môn học lớp
@@ -208,4 +232,7 @@
     </form>
     <p id="ajax_to" style="display: none;">{% url school.views.change_index 'subject' class.id %}</p>
     <p id="redirect_link" style="display: none;">{% url school.views.subjectPerClass class.id %}</p>
+    <div id="popupTest" class="googlePlusPopupButton" style="display: none; margin: 0; height: 100px;">
+        Thís is a testing div
+    </div>
 {% endblock %}
