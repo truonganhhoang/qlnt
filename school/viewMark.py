@@ -66,7 +66,7 @@ class Editable:
 #cac chuc nang:
 #hien thu bang diem cua mot lop, cho edit roi save lai
 
-def defineEdit(mt,timeToEdit):
+def defineEdit(mt,timeToEdit,tkMonTime=None,isComment=False):
     timeNow =datetime.datetime.now()
     if mt==None:
         return Editable(0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0 ,0)
@@ -151,10 +151,24 @@ def defineEdit(mt,timeToEdit):
             if (timeNow-mt.ck).total_seconds()/60 > timeToEdit: a16=0
             else: a16=1
         else: a16=1
-        #can bo sung doan nay
         a17=1
         a18=1
         a19=1
+        if isComment:             
+            if mt.tb!=None:
+                if (timeNow-mt.tb).total_seconds()/60 > timeToEdit: a17=0
+                else: a17=1
+            else: a17=1
+                    
+            if mt.tb!=None:
+                if (timeNow-mt.tb).total_seconds()/60 > timeToEdit: a18=0
+                else: a18=1
+            else: a18=1        
+
+            if tkMonTime!=None:
+                if (timeNow-tkMonTime).total_seconds()/60 > timeToEdit: a19=0
+                else: a19=1
+            else: a19=1        
         return Editable(a1,a2,a3,a4,a5, a6,a7,a8,a9,a10, a11,a12,a13,a14,a15 ,a16,a17,a18,a19)
         ###########################################################    
             
@@ -191,8 +205,8 @@ def getMark(subjectChoice,selectedTerm):
         tbhk1List    =Mark.objects.filter(term_id=beforeTerm,subject_id=subjectChoice,current=True).order_by('student_id__index','student_id__first_name','student_id__last_name','student_id__birthday')
         tbnamList    =TKMon.objects.filter(subject_id=subjectChoice,current=True).order_by('student_id__index','student_id__first_name','student_id__last_name','student_id__birthday')
         
-        for mt in markTimeList:                      
-            ea=defineEdit(mt,timeToEdit)                
+        for mt,tbnam in zip(markTimeList,tbnamList):                      
+            ea=defineEdit(mt,timeToEdit,tbnam.time,selectedSubject.nx)                
             editList.append(ea)                                                                                                               
             k=i*100
             id=MarkID(k+1,k+2,k+3,k+4,k+5,k+6,k+7,k+8,k+9,k+10,k+11,k+12,k+13,k+14,k+15,k+16,k+17,k+18,k+19)
@@ -482,7 +496,7 @@ def markForAStudent(request,class_id,student_id):
 
 # diem cho 1 mon
 
-def update(s,primary):
+def update(s,primary,isComment):
     strings=s.split(':')
     idMark=int(strings[0])    
     setOfNumber =strings[1].split('*')
@@ -577,31 +591,40 @@ def update(s,primary):
             
         elif (number==17):                    
             m.tb = value
-            
-            subject_id = m.subject_id
-            student_id = m.student_id
-            
-            tbk2=Mark.objects.get(subject_id=subject_id.id,student_id=student_id.id,term_id__number=2)
-            tbcn=TKMon.objects.get(subject_id=subject_id.id,student_id=student_id.id)
-            if (tbk2.tb==None) | (value==None):
-                tbcn.tb_nam = None
-            else:     
-                tbcn.tb_nam = round((m.tb + tbk2.tb*2+e)/3 , 1)            
-            tbcn.save()
+            if isComment:
+                mt.tb=time
+            else:    
+                subject_id = m.subject_id
+                student_id = m.student_id
+                
+                tbk2=Mark.objects.get(subject_id=subject_id.id,student_id=student_id.id,term_id__number=2)
+                tbcn=TKMon.objects.get(subject_id=subject_id.id,student_id=student_id.id)
+                if (tbk2.tb==None) | (value==None):
+                    tbcn.tb_nam = None
+                else:     
+                    tbcn.tb_nam = round((m.tb + tbk2.tb*2+e)/3 , 1)            
+                tbcn.save()
             
         elif (number==18):                 
             m.tb = value
+            if (isComment):
+                mt.tb=time
         elif (number==19): 
+            
+                
             subject_id = m.subject_id
             student_id = m.student_id
             tbcn=TKMon.objects.get(subject_id=subject_id.id,student_id=student_id.id)
-
-            if (primary==0)| (primary==3)| (primary==4):
-                tbcn.tb_nam   = value
-            elif (primary==1) | (primary==2):
-                tbcn.tb_nam   =m.tb      
-            tbcn.save()
-            
+            if isComment:
+                tbcn.tb_nam=value
+                tbcn.time  =time
+            else:    
+                if (primary==0)| (primary==3)| (primary==4):
+                    tbcn.tb_nam   = value
+                elif (primary==1) | (primary==2):
+                    tbcn.tb_nam   =m.tb
+                          
+            tbcn.save()            
     m.save()  
     mt.save()  
 @transaction.commit_on_success    
@@ -621,10 +644,12 @@ def saveMark(request):
         else: return
         length = len(strs)
         primary= int(strs[2])
+        isComment = strs[3]=="true"
         print str
         print length
-        for i in range(3,length):
-                update(strs[i],primary)
+        print isComment
+        for i in range(4,length):
+                update(strs[i],primary,isComment)
                      
         message=strs[0]
         
@@ -696,10 +721,10 @@ def sendSMSForAPupil(s,user):
         except Exception as e:
             pass
             #print e     
-    return ''
     print smsString    
     print len(smsString)
     print user
+    return ''
         
 def sendSMSMark(request):
     message = '-'

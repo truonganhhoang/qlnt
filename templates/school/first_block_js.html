@@ -169,28 +169,7 @@ window.onload = function() {
 	{
 		if (activeMode==1) return;
 		var number = parseInt(tb.id/100);	
-		var table =document.getElementById("markTable");
 		table.rows[number+2].className="";
-		if (isSecondTerm==0) var  numberRow = 18;
-		else                 var numberRow = 20;  
-		
-		for(var i=1;i<numberRow;i++)
-		{
-			var name = number*100+i;
-			var temp = document.getElementById(name);
-			if (sentMark[number][i]==1 &&  activeMode==1) 
-				temp.className="sent"
-			else	
-			if (temp.value==undefined)
-			{				
-				if (i<17)				
-					temp.className = "noedit";
-				else	
-					temp.className = "";
-			}	
-			else
-				temp.className = "mark";				
-		}	
 	}
 	function direction(nameNumber,valueOfMove)
 	{
@@ -202,27 +181,28 @@ window.onload = function() {
 			else					
 				nameNumber=nameNumber+100;	
 				
-			var cel=document.getElementById(nameNumber);
-			if (cel.value!=undefined)
+			var cell=document.getElementById(nameNumber);
+			if (cell.value!=undefined)
 			{
-				cel.focus();
+				cell.focus();
 				break;
 			}			
 		}		
 		else
 		if (valueOfMove==0)			
 		while(true){
-			if (nameNumber % 100==16)
+			if (nameNumber % 100==19)
 				nameNumber=parseInt(nameNumber/100)*100+101
 			else
 				nameNumber=nameNumber+1;
 				
-			var cel=document.getElementById(nameNumber);
-			if (cel.value!=undefined)
-			{
-				cel.focus();
-				break;
-			}
+			var cell=document.getElementById(nameNumber);
+			if (cell)
+				if (cell.value!=undefined)
+				{
+					cell.focus();
+					break;
+				}
 		}		
 				
 	}
@@ -250,10 +230,10 @@ window.onload = function() {
 				{
 					nameNumber=nameNumber+100;					
 				}	
-				var cel=document.getElementById(nameNumber);
-				if (cel.value!=undefined)
+				var cell=document.getElementById(nameNumber);
+				if (cell.value!=undefined)
 				{
-					cel.focus();
+					cell.focus();
 					break;
 				}
 			}		
@@ -268,10 +248,10 @@ window.onload = function() {
 				{	
 					nameNumber=nameNumber-100;					
 				}	
-				var cel=document.getElementById(nameNumber);
-				if (cel.value!=undefined)
+				var cell=document.getElementById(nameNumber);
+				if (cell.value!=undefined)
 				{
-					cel.focus();
+					cell.focus();
 					break;
 				}
 			}		
@@ -285,10 +265,10 @@ window.onload = function() {
 				{
 					nameNumber=nameNumber-1;				
 				}	
-				var cel=document.getElementById(nameNumber);
-				if (cel.value!=undefined)
+				var cell=document.getElementById(nameNumber);
+				if (cell.value!=undefined)
 				{
-					cel.focus();
+					cell.focus();
 					break;
 				}
 			}		
@@ -297,17 +277,18 @@ window.onload = function() {
 		if (keycode==39)
 		{
 			while(true){
-				if (nameNumber % 100==16) break;
+				if (nameNumber % 100==19) break;
 				else
 				{
 					nameNumber=nameNumber+1;				
 				}	
-				var cel=document.getElementById(nameNumber);
-				if (cel.value!=undefined)
-				{
-					cel.focus();
-					break;
-				}
+				var cell=document.getElementById(nameNumber);
+				if (cell)
+					if (cell.value!=undefined)
+					{
+						cell.focus();
+						break;
+					}
 			}		
 		}
 	}
@@ -337,19 +318,19 @@ window.onload = function() {
 	function convertToChar(value)
 	{
 		if (value==9)
-			return 'G';
+			return "G";
 		else
 		if (value==7)
-			return 'K';
+			return "K";
 		else
 		if (value==6)
-			return 'TB';
+			return "TB";
 		else
 		if (value==4)
-			return 'Y';
+			return "Y";
 		else
 		if (value==1)
-			return 'Kem';
+			return "Kem";
 		else
 			return "";			
 	}
