@@ -686,26 +686,32 @@ def sendSMSForAPupil(s,user):
     if markStr6 !="":  smsString+="TBHK I:" + markStr6         
     if markStr7 !="":  smsString+="TB ca nam:" + markStr7
     
+    print m.student_id.sms_phone
     if m.student_id.sms_phone:
-        sendSMS(m.student_id.sms_phone,smsString,user)
-        m.save()    
+        try:
+            sent=sendSMS(m.student_id.sms_phone,smsString,user)
+            if sent=='1':
+                m.save()
+                return  str(idMark)            
+        except Exception as e:
+            pass
+            #print e     
+    return ''
     print smsString    
     print len(smsString)
     print user
         
 def sendSMSMark(request):
-    message = 'hello'
+    message = '-'
     print "hello"
     if request.method == 'POST':
-        print "hello1"    
         str = request.POST['str']
         strs=str.split('/')
         print str
         for s in strs:
             if s!="":
-                sendSMSForAPupil(s,request.user)
-                                                            
-        message='ok'
+                message+=sendSMSForAPupil(s,request.user)+"-"
+        print message        
         data = simplejson.dumps({'message': message})
         return HttpResponse( data, mimetype = 'json')    
     

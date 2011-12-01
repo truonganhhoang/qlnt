@@ -535,14 +535,32 @@ function calculateNewArray(newAr)
 				//alert("fdfdf fsdfffhello1");
 				//tong=tong+1
 				//document.getElementById("myDiv1").innerHTML=tong;
-				var temp = document.getElementById("notify");
-					temp.innerHTML="Đã gửi thành công";
-					$(temp).delay(2000).fadeOut('fast');      
-					
+				
+				var message = new String(xmlhttp.responseText);
+				var sum=0,successSum=0;				
+				var ok=false;
 				for(var i=1;i<length;i++)
+				{
+					var str="-"+idAr[i]+"-";
+					var answerIdx= message.search(str);
+					if ( answerIdx != -1 )
+					{
+						successSum+=1;
+						for(var j=1;j<20;j++)
+						if (tempSent[i][j]==1)
+							sentMark[i][j]=1;
+					}	
+					ok=false;
 					for(var j=1;j<20;j++)
-					if (tempSent[i][j]==1)
-						sentMark[i][j]=1;
+						if (tempSent[i][j]==1)
+							ok=true;
+					if (ok)
+						sum+=1;
+				}	
+					
+				var temp = document.getElementById("notify");
+					temp.innerHTML="Đã gửi thành công " + successSum+" / "+ sum+" học sinh" ;
+					$(temp).delay(7000).fadeOut('fast');      
 				cancelAll();
 				/*
 				activeMode=0;
@@ -600,6 +618,7 @@ function calculateNewArray(newAr)
 			if (ok)
 				str=str+"/"+idAr[i]+":"+number+":"+value;						
 		}
+		
 		var temp=document.getElementById("notify");									
 		if (str!="")
 		{
@@ -611,7 +630,7 @@ function calculateNewArray(newAr)
 		{
 			temp.innerHTML="Chưa chọn điểm nào để gửi.";
 			$(temp).fadeIn('fast');
-			$(temp).delay(2000).fadeOut('fast');
+			$(temp).delay(3000).fadeOut('fast');
 		}						
 	}		
 	function select(tb)
