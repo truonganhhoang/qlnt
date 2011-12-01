@@ -160,11 +160,11 @@ table.main-table td.selected {
 }
 table.main-table td.mark-even {
     padding: 0px; 
-    background-color: #ffffff;
+    background-color: #eeeeee;
 }
 table.main-table td.mark-odd {
     padding: 0px; 
-    background-color: #eeeeee;
+    background-color: #ffffff;
 }
 
 /* controls */
