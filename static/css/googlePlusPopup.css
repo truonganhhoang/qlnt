@@ -45,7 +45,7 @@
     font-weight: bold;
     text-align: left;
     outline: 2px;
-    padding: 0 4px 0 4px;
+    padding: 2px 4px;
     max-height: 350px;
     overflow-y: scroll;
     overflow-x: hidden;
@@ -55,11 +55,23 @@
     width: 10px;
 }
 
+/*.googlePlusPopupDiv-moz-appearance:scrollbar{*/
+    /*width: 20px;*/
+/*}*/
+
 /* Track */
 .googlePlusPopupDiv::-webkit-scrollbar-track{
     -webkit-border-radius: 2px;
     border-radius: 2px;
 }
+
+/*.googlePlusPopupDiv-moz-appearance:scrollbartrack-vertical{*/
+    /*border-radius: 2px;*/
+    /*-moz-border-radius: 2px;*/
+/*}*/
+
+
+
 .googlePlusPopupDiv::-webkit-scrollbar-track:hover {
     -webkit-box-shadow: inset 0 0 2px rgba(0,0,0,0.3);
     -webkit-border-radius: 2px;

@@ -185,6 +185,7 @@ class BasicPersonInfo(models.Model):
     current_address = models.CharField("Địa chỉ", max_length = 200, blank = True)
     email = models.EmailField("Email", null = True, blank = True)
     index = models.IntegerField("Số thứ tự(*)", default=0)
+    note = models.TextField("Ghi chú", blank= True)
     class Meta:
         abstract = True
     
@@ -483,6 +484,7 @@ class Mark(models.Model):
     ck = models.FloatField("Điểm thi cuối kì", null = True, blank = True, validators = [validate_mark])
     mg = models.BooleanField("Miễn giảm", default = False)
     tb = models.FloatField("Điểm trung bình", null = True, blank = True, validators = [validate_mark])
+    note = models.TextField("Ghi chú", blank = True)
     
     sent_mark=models.CharField("Đánh dấu đã gửi tin nhắn",max_length=19,default="0000000000000000000")
     current=models.BooleanField("Thuộc lớp hiện tại", default=True )
@@ -706,3 +708,5 @@ class TKB(models.Model):
     period_8 = models.ForeignKey(Subject, related_name="Tiết 8", blank = True, null = True)
     period_9 = models.ForeignKey(Subject, related_name="Tiết 9", blank = True, null = True)
     period_10 = models.ForeignKey(Subject, related_name="Tiết 10", blank = True, null = True)
+    #chaoco = models.IntegerField("")
+    #sinhhoat= models.IntegerField()

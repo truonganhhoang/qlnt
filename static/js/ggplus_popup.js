@@ -46,19 +46,17 @@
                     var option = $(this);
                     var name = (option.attr('name'))?(ob.attr('name')):('popupSelect'+ob.attr('id'));
                     var id = (name + option.attr('value')).replace(/ /g,'');
-                    var radioBox = jQuery('<input type="radio"/>').attr(
-                            {
-                                name: name,
+                    var radioBox = jQuery('<input type="radio"/>')
+                            .attr({name: name,
                                 id: id,
-                                value: option.attr('value')
-                                
-                            }
-                    ).css('margin-right', '10px').click(function(e){
+                                value: option.attr('value')})
+                            .css('margin-right', '10px')
+                            .click(function(e){
                                 if ($(this).prop('checked') && emptySelectValue)
                                     $(this).prop('checked', false);
                                 else
                                     console.log('clicked input '+ $(this).attr('id'));
-                                    $(this).prop('checked', true);
+                                $(this).prop('checked', true);
                                 return true;
                             });
                     if (option.attr('selected') == 'selected'){
@@ -70,11 +68,8 @@
                         //'<input type="radio" name="'+name+'" value="'+ option.attr('value')+'" />' + option.text(),
                         class: 'popupSelectOption',
                         click: function(e){
-                            if ($("#"+id).prop('checked') && emptySelectValue)
-                                $("#"+id).prop('checked', false);
-                            else
-                                console.log('clicked div' + "#"+id);
-                                $("#"+id).prop('checked', true);
+                            if ($("#"+id).prop('checked') && emptySelectValue) $("#"+id).prop('checked', false);
+                            else $("#"+id).prop('checked', true);
                             return true;
                         }
                     });
@@ -83,9 +78,6 @@
                     result.append(newOptionDiv);
 
                 });
-
-                console.log(result.height());
-
                 return result;
             }
         };
@@ -111,8 +103,7 @@
         // insert before this with a button
         var width = this.outerWidth();
         var height= this.outerHeight();
-        var button = jQuery('<button/>',
-                {
+        var button = jQuery('<button/>',{
                     class: 'googlePlusPopupButton',
                     text: getValue(this),
                     css: {
@@ -125,8 +116,7 @@
         button.bind('mouseenter', function(e){
             ev = jQuery.extend({},e);
             init.apply(this,[ev]);
-            var top = button.offset().top;
-            var left= button.offset().left;
+
             if (autoCreatePopup){
                 popupWindow = getPopupDiv(self);
                 $(".googlePlusPopupDiv").each(function(){
@@ -134,25 +124,37 @@
                 });
                 popupWindow.insertAfter(button);
             }
+            var top = button.offset().top;
+            var left= button.offset().left;
+            var viewportTop = top - $(document).scrollTop();
+            var viewportHeight = $(window).height();
+            var lowArea = false;
+            popupWindow.css({position:'absolute', visibility:'hidden',display:'block'});
+            var popupHeight = popupWindow.outerHeight();
+            popupWindow.css({position:'absolute', visibility:'visible',display:'none'});
+            if (viewportHeight-viewportTop < popupHeight){
+                var buttonHeight = button.height();
+                top = top - popupHeight + buttonHeight;
+                console.log(buttonHeight, popupHeight);
+            }
+
             popupWindow.css({
                 'top': top,
                 'left': left,
                 'min-width': width,
                 'position':'absolute',
                 'z-index': '2000'
-            });
-            popupWindow.bind('mouseleave',function(e){
-                ev = jQuery.extend({}, e);
-                popupWindow.fadeOut(400);
-                if (live){
-                    applyValue(popupWindow, self);
-                    button.text(getValue(self));
-                }
-                if (autoCreatePopup)
-                    popupWindow.remove();
-                callback.apply(this,[ev, popupWindow]);
-            });
-
+            }).bind('mouseleave',function(e){
+                        ev = jQuery.extend({}, e);
+                        popupWindow.fadeOut(400);
+                        if (live){
+                            applyValue(popupWindow, self);
+                            button.text(getValue(self));
+                        }
+                        if (autoCreatePopup)
+                            popupWindow.remove();
+                        callback.apply(this,[ev, popupWindow]);
+                    });
             popupWindow.fadeIn(200);
         });
         //this.replaceWith(button);
