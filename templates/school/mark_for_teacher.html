@@ -38,7 +38,9 @@
 		</th>
 	{% endifequal %}
 		
-		
+		<th width="1%" rowspan=3 >
+			Ghi chú
+		</th>
 	</tr>
 	<tr>
 	<th width ="3%" align="center" onclick="checkCol(this,1)" id="-101" style="border-bottom-width:0px"> 1 </th>
@@ -323,6 +325,15 @@
 				{{ m.tb|floatformat:"1"}}
 			</td>	
 		{% endif %}
+		{% if m.note != None and m.note != "" %}
+			<td class="sent" title="{{m.note}}"  style="cursor:pointer" id="edit_{{forloop.counter}}" >
+				<img src="/static/images/noteicon.png">
+			</td>
+		{% else %}	
+			<td class="" title="{{m.note}}" style="cursor:pointer" id="edit_{{forloop.counter}}" >
+				<img src="/static/images/noteicon.png">
+			</td>
+		{% endif %}	
 	</tr>	
 	{% endfor %}
 </table>	
@@ -603,6 +614,16 @@
 			<td class="normal" id="{{id.d19}}" onclick="checkToSend(this)" >
 					{{ tbnam.tb_nam|floatformat:"1"}}
 			</td>	
+		{% endif %}	
+		
+		{% if m.note != None and m.note != "" %}
+			<td class="sent" title="{{m.note}}"  style="cursor:pointer" id="edit_{{forloop.counter}}" >
+				<img src="/static/images/noteicon.png">
+			</td>
+		{% else %}	
+			<td class="" title="{{m.note}}" style="cursor:pointer" id="edit_{{forloop.counter}}" >
+				<img src="/static/images/noteicon.png">
+			</td>
 		{% endif %}	
 		</tr>
 	{% endfor %}			

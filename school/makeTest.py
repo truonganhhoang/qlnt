@@ -181,7 +181,8 @@ def thu1(request):
 def thu1(request):
     t1= time.time()
     
-    markList = Mark.objects.filter(subject_id__class_id=148)
+    markList = Mark.objects.filter(subject_id__class_id=26)
+    i=0
     for m in markList:
         m.mieng_1 = random.randrange( 7,11 )
         m.mieng_2 = random.randrange( 7,11 )
@@ -202,16 +203,18 @@ def thu1(request):
         m.mot_tiet_5 = random.randrange( 7,11 )
         m.ck=random.randrange( 7,11 )
         m.tb=random.randrange( 3,11 )
+        i+=1
+        m.note=str(i)
         m.save() 
-    tkmonList= TKMon.objects.filter(subject_id__class_id=148)
+    tkmonList= TKMon.objects.filter(subject_id__class_id=26)
     for tkmon in tkmonList:
-        tkmon.tb_nam=random.randrange( 3,11 )
+        tkmon.tb_nam=random.randrange( 7,11 )
         tkmon.save()
 
-    hanhKiemList =TBNam.objects.filter(student_id__classes=148)
+    hanhKiemList =TBNam.objects.filter(student_id__classes=26)
     print len(hanhKiemList)
     for hk in hanhKiemList:
-        t =random.randrange( 1,5 )
+        t =random.randrange( 1,3 )
         if   t==1: hk.year='T'
         elif t==2: hk.year='K'
         elif t==3: hk.year='TB'

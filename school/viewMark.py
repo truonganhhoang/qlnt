@@ -820,3 +820,25 @@ def capNhapMienGiam(request,class_id, student_id):
                                 }
                        )
     return HttpResponse(t.render(c))
+def saveNote(request):
+    t1=time.time()
+    message = 'hello'
+    if request.method == 'POST':
+        data=request.POST['data']
+        print data
+        datas=data.split('/')
+        
+        position = get_position(request)
+        if   position ==4 :pass
+        elif position ==3 :
+            idTeacher= int(datas[0])
+            teacher= Teacher.objects.get(id=idTeacher)
+            if request.user.id!=teacher.user_id.id: return
+        else: return
+        m = Mark.objects.get(id=datas[1])
+        m.note=datas[2]
+        m.save()
+        data = simplejson.dumps({'message': message})
+        t2=time.time()
+        print (t2-t1)
+        return HttpResponse( data, mimetype = 'json')

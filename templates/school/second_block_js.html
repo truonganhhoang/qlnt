@@ -772,6 +772,7 @@ function calculateNewArray(newAr)
 	document.getElementById("myDiv3").innerHTML = str;
 	*/
 	$(document).ready(function() {
+	
 		$('input[type=text]').focus(function(e) {
 			highLight(this);
 		}
@@ -807,8 +808,76 @@ function calculateNewArray(newAr)
 			maxWidth: 700,
 			maxHeight: 400,
 			title: "Nhập điểm từ file Excel"
-		});				
+		});
+		var currentIndex=0
+		for(var i=1;i<length;i++)
+		{
+			var id="#edit_"+i;
+			$(id).click(function(){
+				// setting up layout
+				$("#editContent").val(this.title);
+				var buttonOffsetTop = $(this).offset().top;
+				var editOffsetTop   = $("#editWindow").offset().top;	
+				if (($("#editWindow").css('display') == 'none') || (buttonOffsetTop!=editOffsetTop)){
+					$("#saveNote").removeAttr("disabled");
+					$("#saveNote").html("Lưu");	
+					currentIndex=(this.id).split('_')[1];
+					var buttonOffsetTop = $(this).offset().top;
+					var buttonOffsetLeft = $(this).offset().left;				
+					var editWindow = $("#editWindow");				
+					var editWindowWidth = parseInt(editWindow.css('width'));
+					editWindow.css('position', 'absolute');
+					editWindow.css('top', buttonOffsetTop);
+					editWindow.css('left',buttonOffsetLeft-editWindowWidth);
+					editWindow.slideDown(400);
+					$("#editContent").focus();
+				} 
+				else $("#editWindow").slideUp(100);
+			});
+			
+		}	
 		
+		$("#editContent").keyup(function(e){
+			var code = (e.keyCode) ? e.keyCode : e.which;
+			if (code==13)
+				$("#saveNote").trigger("click");
+			else
+			{	
+				$("#saveNote").removeAttr("disabled");
+				$("#saveNote").html("Lưu");	
+			}	
+		});	
+		$("#saveNote").click(function(){
+			var data1=$("#editContent").val();
+			data=idTeacher+"/"+idAr[currentIndex]+"/"+data1;
+			var arg = { 
+				type:"POST",
+				url:"/school/saveNote",
+				global: false,
+				data: { 
+					data:data,
+				},
+				datatype:"json",
+				success: function(json) {
+					//$("#editWindow").slideUp(400);
+					$("#saveNote").attr("disabled","disabled");
+					$("#saveNote").html("Đã lưu");	
+					var id="#edit_"+currentIndex;
+					$(id).attr("title", data1);
+					if (data1!="")
+						$(id).addClass("sent");
+					else	
+						$(id).removeClass("sent");
+				},
+				error: function(){
+					$("#notify").showNotification("Gặp lỗi khi lưu dữ liệu");
+				}
+			};
+			$.ajax(arg);			
+		})
+		$("#editClose").click(function(){
+			$("#editWindow").slideUp(100);
+		});
 	});
 	if (!isComment)
 		viewAverage();
