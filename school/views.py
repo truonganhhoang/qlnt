@@ -4313,4 +4313,172 @@ def timeTable_school(request):
                                 'classList':classList,
                                 })
     return HttpResponse(t.render(c))
-    
+
+def teacher_test(request):
+    user = request.user
+    if not user.is_authenticated():
+        return HttpResponseRedirect(reverse('login'))
+    try:
+        school = get_school(request)
+    except Exception :
+        return HttpResponseRedirect(reverse('index'))
+    pos = get_position(request)
+    if request.is_ajax():
+        if request.method == 'POST' and request.POST['request_type'] == u'rename':
+            data = request.POST['type'].split('-')
+            if data[0] =='group':
+                group = Group.objects.get(id=data[1]);
+                group.name = request.POST['name']
+                group.save()
+                return HttpResponse()
+            elif data[0] == 'team':
+                team = school.team_set.get(id=data[1]);
+                team.name = request.POST['name']
+                team.save()
+                return HttpResponse()
+            return None
+        elif request.method == 'POST' and request.POST['request_type'] == u'deletetg':
+            data = request.POST['type'].split('-')
+            if data[0] =='group':
+                group = Group.objects.get(id=data[1]);
+                group.delete()
+                return HttpResponse()
+            elif data[0] == 'team':
+                team = school.team_set.get(id=data[1]);
+                team.delete()
+                return HttpResponse()
+            return None
+        elif request.method == 'POST' and request.POST['request_type'] == u'del':
+            data = request.POST[u'type']
+            data = data.split('-')
+            for e in data:
+                if e.strip():
+                    teacher = Teacher.objects.get(id__exact = int(e))
+                    del_teacher(teacher);
+            data = simplejson.dumps({'success': True})
+            return HttpResponse(data, mimetype='json')
+        elif request.method == 'POST' and request.POST['request_type']==u'add':
+            print request.POST
+            if request.POST['first_name'].strip():
+                name = request.POST['first_name'].split()
+                last_name = ' '.join(name[:len(name)-1])
+                first_name = name[len(name)-1]
+            else:
+                last_name = ''
+                first_name = ''
+            index = school.teacher_set.count() + 1
+            teamlist = request.POST.getlist('team_id')
+            tid = teamlist.pop()
+            if tid != u'':
+                team = school.team_set.get(id = tid)
+                team_id = team.id
+            else:
+                team = None
+                team_id = ''
+            data = {'first_name':first_name, 'last_name':last_name, 'birthday':request.POST['birthday'],
+                    'sex':request.POST['sex'], 'school_id':school.id, 'home_town':request.POST['home_town'].strip(),
+                    'team_id': team_id, 'major' : request.POST['major'], 'index':index}
+            addform = TeacherForm(school.id,data)
+            if addform.is_valid():
+                birthday = to_date(request.POST['birthday'])
+                try:
+                    test = school.teacher_set.get(first_name__exact=data['first_name'], last_name__exact=data['last_name'],birthday__exact=birthday)
+                    message = 'Giáo viên này đã tồn tại trong hệ thống'
+                    data = simplejson.dumps( {'message': message,'status': 'dup'} )
+                    return HttpResponse(data, mimetype = 'json')
+                except ObjectDoesNotExist:
+                    add_teacher(first_name=data['first_name'], last_name=data['last_name'], school=get_school(request), birthday=birthday,
+                                sex=data['sex'], home_town=data['home_town'], team_id =team, major=data['major'])
+                    message = 'Bạn vừa thêm một giáo viên mới'
+                    teacher = school.teacher_set.get(first_name=data['first_name'], last_name=data['last_name'], birthday=birthday,
+                                sex=data['sex'])
+                    teacher_html = render_to_string(os.path.join('school','add_teacher_one_teacher.html'),
+                            {'ss':teacher,'pos':pos,'index':index})
+                    data = simplejson.dumps( {'message': message,'status': 'success','text':teacher_html} )
+                    return HttpResponse(data, mimetype = 'json')
+            else:
+                name = ''
+                birthday = ''
+                for a in addform:
+                        if a.name == 'first_name':
+                            if a.errors:
+                                first_name = str(a.errors)
+                        elif a.name == 'birthday':
+                            if a.errors:
+                                birthday = str(a.errors)
+                message = 'Thông tin nhập vào không hợp lệ'
+                data = simplejson.dumps( {'message': message,'status': 'failed',
+                                          'first_name':first_name,'birthday':birthday} )
+                return HttpResponse(data, mimetype = 'json')
+        elif request.method == 'POST' and request.POST['request_type']==u'addgroup':
+            add_group_form = GroupForm(school,request.POST)
+            if add_group_form.is_valid():
+                try:
+                    test = Group.objects.get(name=request.POST['name'],team_id = request.POST['team_id'])
+                    message ='Nhóm này đã tồn tại trong hệ thống'
+                    data = simplejson.dumps({'message':message, 'status':'dup'})
+                    return HttpResponse(data, mimetype = 'json')
+                except:
+                    message = 'Bạn vừa thêm nhóm mới'
+                    add_group_form.save()
+                    data = simplejson.dumps({'message':message, 'status':'success'})
+                    return HttpResponse(data, mimetype = 'json')
+            else:
+                name = ''
+                team_id = ''
+                message = 'Thông tin nhập vào không hợp lệ'
+                for a in add_group_form:
+                    if a.name == 'name':
+                        if a.errors:
+                            name = str(a.errors)
+                    if a.name == 'team_id':
+                        if a.errors:
+                            team_id = str(a.errors)
+                data = simplejson.dumps({'message':message, 'status':'failed',
+                                         'name':name, 'team_id':team_id})
+                return HttpResponse(data, mimetype = 'json')
+        elif request.method == 'POST' and request.POST['request_type']==u'addteam':
+            form_data = request.POST.copy()
+            form_data['school_id'] = school.id
+            add_team_form = TeamForm(form_data)
+            if add_team_form.is_valid():
+                try:
+                    test = school.team_set.get(name=request.POST['name'])
+                    message =u'Tổ này đã tồn tại trong hệ thống'
+                    data = simplejson.dumps({'message':message, 'status':'dup'})
+                    return HttpResponse(data, mimetype = 'json')
+                except:
+                    message = u'Bạn vừa thêm tổ mới'
+                    add_team_form.save()
+                    data = simplejson.dumps({'message':message, 'status':'success'})
+                    return HttpResponse(data, mimetype = 'json')
+            else:
+                name = ''
+                message = 'Thông tin nhập vào không hợp lệ'
+                for a in add_team_form:
+                    if a.name == 'name':
+                        if a.errors:
+                            name = str(a.errors)
+                data = simplejson.dumps({'message':message, 'status':'failed',
+                                         'name':name})
+                return HttpResponse(data, mimetype = 'json')
+    teacherList = school.teacher_set.all().order_by('first_name','last_name')
+    teamList = school.team_set.all()
+    groupList = []
+    for t in teamList:
+        groupList.append(t.group_set.all())
+    gnt = zip(teamList,groupList)
+    addform = TeacherForm(school.id)
+    add_group_form = GroupForm(school)
+    add_team_form = TeamForm()
+    t = loader.get_template(os.path.join('school','teacher_test.html'))
+    c = RequestContext(request,{'teacherList':teacherList,
+                                'teamList':teamList,
+                                'list':list,
+                                'pos':pos,
+                                'form':addform,
+                                'add_group_form':add_group_form,
+                                'add_team_form':add_team_form,
+                                'gnt':gnt,
+                                })
+    return HttpResponse(t.render(c))

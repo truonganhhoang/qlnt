@@ -117,6 +117,7 @@ urlpatterns = patterns('',
     url(r'khenthuong/(?P<kt_id>\w+)/delete$', 'school.views.delete_khen_thuong'),    
     url(r'khenthuong/(?P<kt_id>\w+)/edit$', 'school.views.edit_khen_thuong'),    
     url(r'khenthuong/(?P<student_id>\w+)$', 'school.views.khen_thuong'),
+    url(r'teacher_test$','school.views.teacher_test'),
 
     
     url(r'kiluat/(?P<student_id>\w+)/add$', 'school.views.add_ki_luat'),

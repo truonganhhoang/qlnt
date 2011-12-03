@@ -27,6 +27,10 @@ class TeacherForm(forms.ModelForm):
         super(TeacherForm,self).__init__(*args, **kwargs)
         school = Organization.objects.get(id = school_id)
         self.fields['team_id'] = forms.ModelChoiceField(queryset= school.team_set.all(), required=False, label=u'Tổ')
+        if 'instance' in kwargs:
+            team = kwargs['instance'].team_id
+            if team != None:
+                self.fields['group_id'] = forms.ModelChoiceField(queryset= team.group_set.all(), required=False, label=u'Nhóm')
 
 
 class TeacherITForm(forms.ModelForm):
@@ -292,11 +296,14 @@ class KiLuatForm(forms.ModelForm):
 
 class TeamForm(forms.ModelForm):
     class Meta:
-            model = Team
+        model = Team
         
 class GroupForm(forms.ModelForm):
     class Meta:
-            model = Group
+        model = Group
+    def __init__(self, school, *args, **kw):
+        super(GroupForm,self).__init__(*args, **kw)
+        self.fields['team_id'] = forms.ModelChoiceField(required=True, queryset=school.team_set, label=u'Tổ')
 
 class HanhKiemForm(forms.ModelForm):
     class Meta:
