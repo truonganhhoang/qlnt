@@ -472,3 +472,7 @@ a.ggButton{
     cursor: default;
     text-shadow: none;
 }
+
+li.selected{
+    background-color: #fbfbb6;
+}

@@ -19,12 +19,26 @@
  */
 
 (function($){
-    $.fn.googlePlusPopup = function( popupWindow, init, callback){
+    $.fn.googlePlusPopup = function(config){
         // normalize params
-        var live = true;
+        var conf = {
+            popupWindow: $('<div/>',{}),
+            init: function(){},
+            callback: function(){},
+            getValue: function(){},
+            applyValue: function(){}
+        };
+        if (config)
+            conf = $.extend(conf, config);
+            console.log(conf);
+        var auto = true; // auto handle for some type of inputs
+        var popupWindow = conf.popupWindow;
+        var init = conf.init;
+        var callback = conf.callback;
+        var live = true; // button's text changes along with popupwindow
         var emptySelectValue = false;
-        init = (init && typeof(init)==="function")?(init): function(){};
-        callback = (callback && typeof(callback)==="function")?(callback): function(){};
+        //init = (init && typeof(init)==="function")?(init): function(){};
+        //callback = (callback && typeof(callback)==="function")?(callback): function(){};
         // end normalize
         var self = this;
         var oldValue;
@@ -83,19 +97,22 @@
         };
 
         var getValue = function(ob){
-            if (ob.is('select')){
+            if (ob.is('select') && auto){
                 return ob.find('option:selected').text();
             }
+            return conf.getValue.apply(this, [ob]);
         };
         var applyValue = function(popup, original){
-            if (original.is('select')){
+            if (original.is('select') && auto){
                 var newValue = popup.find('input:checked').val();
                 original.val(newValue);
                 if (newValue != oldValue)
                     original.trigger('change');
+                return null;
             }
+            return conf.applyValue.apply(this, [popup, original]);
         };
-        if (!popupWindow){
+        if (auto && (self.is('select'))){
             // auto create popup window base on the input context
             autoCreatePopup = true;
         }
