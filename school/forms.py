@@ -201,7 +201,7 @@ class SettingForm(forms.Form):
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop('request')
         super(SettingForm, self).__init__(*args, **kwargs)
-        self.fields['lock_time'] = forms.IntegerField(label=u"Thời gian khóa điểm(Giờ):", required = True) #
+        self.fields['lock_time'] = forms.IntegerField(label=u"Thời gian khóa điểm:", required = True) #
         self.fields['class_labels'] = forms.CharField(label=u"Danh sách lớp học:",
                                                       max_length = 512,
                                                       validators=[validate_class_label],
