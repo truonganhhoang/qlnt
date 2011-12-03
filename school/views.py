@@ -4349,7 +4349,7 @@ def teacher_test(request):
                 return HttpResponse()
             return None
         elif request.method == 'POST' and request.POST['request_type'] == u'del':
-            data = request.POST[u'type']
+            data = request.POST[u'data']
             data = data.split('-')
             for e in data:
                 if e.strip():
