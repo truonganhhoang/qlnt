@@ -114,6 +114,17 @@
                 });
             });
 
+            var reNumber = function(){
+                $(".list").each(function(){
+                    var count = 1;
+                    $("tr",this).each(function(){
+                        if (!$(this).hasClass('thread')){
+                            $(".index",this).text(count);
+                            count = count + 1;
+                        }
+                    });
+                });
+            }
             
             var select = function() {
                 if (!$(this).hasClass('thread') && !$(this).hasClass('form') && !$(this).hasClass('function')) {
@@ -180,9 +191,11 @@
                     success: function() {
                         $("#notify").showNotification("Đã xóa xong");
                         $("tr.selected").each(function(){
-                            $(this).remove();
+                            var select = '.' + $(this).attr('class').split(' ')[0];
+                            $(select).remove();
                         });
                         $(".checkbox_all").prop("checked", false);
+                        reNumber();
                     }
                 };
                 $.ajax(arg);
