@@ -1,0 +1,36 @@
+<tr class="{{ss.id}} team{{ ss.team_id.id }} group{{ ss.group_id.id }}">
+    {% if pos > 3 %}
+    <td style="text-align: center;">
+        <input type="checkbox" class="checkbox_{{ss.id}}"/>
+    </td>
+    {% endif %}
+    <td class="index">{{ index }}</td>
+    <td>
+        {% if pos > 3 or teacher_id == ss.id %}
+            <a href="{%url school.views.school_index  %}viewTeacherDetail/{{ss.id}}">
+        {% endif %}
+        {{ ss.last_name }} {{ ss.first_name }} </a>
+    </td>
+    <td> {{ ss.birthday|date:"SHORT_DATE_FORMAT" }}</td>
+    <td> {{ ss.home_town }}</td>
+    <td> {{ ss.sex }} </td>
+        <td>
+            {% if ss.major == '-1' %}
+                Chưa rõ
+            {% else %}
+                {{ ss.major }}
+            {% endif %}
+        </td>
+        <td>
+            {% if ss.team_id %}
+                {{ ss.team_id }}
+            {% else %}
+                Chưa rõ
+            {% endif %}
+        </td>
+        <td>
+            {% if ss.group_id %}
+                {{ ss.group_id }}
+            {% endif %}
+        </td>
+</tr>
