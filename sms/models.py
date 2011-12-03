@@ -20,7 +20,7 @@ class customDateField(forms.DateField):
 
 class sms(models.Model):
     phone = models.CharField("Số điện thoại", max_length=20, blank=False)
-    content = models.CharField("Nội dung", max_length=1000, blank=False)
+    content = models.TextField("Nội dung")
     created = models.DateTimeField("Thời gian tạo", auto_now_add=True)
     sender = models.ForeignKey(User)
     receiver = models.CharField("Người nhận", max_length=64, blank=False)

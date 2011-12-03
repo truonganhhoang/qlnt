@@ -124,7 +124,25 @@ def validate_num(value):
         int(value)
     except :
         raise ValidationError(u'Định dạng không đúng')
-    
+
+
+def log_action(request, object, change_message):
+    """
+    Log an entry to Django admin's log
+    """
+    from django.contrib.admin.models import LogEntry
+    from django.contrib.contenttypes.models import ContentType
+
+    LogEntry.objects.log_action(
+        user_id         = request.user.id,
+        content_type_id = ContentType.objects.get_for_model(object).pk,
+        object_id       = object.pk,
+        object_repr     = change_message, # Message you want to show in admin action list
+        change_message  = "app-log", # I used same
+        action_flag     = 4
+    )
+
+
 class DanhSachLoaiLop(models.Model):
     loai = models.CharField("Loại", max_length = 15)
     school_id = models.ForeignKey(Organization,verbose_name = "Trường")
@@ -708,5 +726,5 @@ class TKB(models.Model):
     period_8 = models.ForeignKey(Subject, related_name="Tiết 8", blank = True, null = True)
     period_9 = models.ForeignKey(Subject, related_name="Tiết 9", blank = True, null = True)
     period_10 = models.ForeignKey(Subject, related_name="Tiết 10", blank = True, null = True)
-    #chaoco = models.IntegerField("")
-    #sinhhoat= models.IntegerField()
+    chaoco = models.IntegerField("Tiết chào cơ", null= True)
+    sinhhoat= models.IntegerField("Tiết sinh hoạt", null= True)
