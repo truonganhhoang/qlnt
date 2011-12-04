@@ -199,6 +199,7 @@ function calculateNewArray(newAr)
 }
 	function viewAverage()
 	{
+		console.log("chao");
 		var termNumber = {{selectedTerm.number}};
 		calculateNewArray(newAr);
 		
@@ -346,13 +347,14 @@ function calculateNewArray(newAr)
 		
 	{% if enableChangeMark %}
 	<script>
-		var myTimer;
-		var myTimer1;
-		myTimer  = setInterval("update()", 3000);
-		if (!isComment)
-			myTimer1 = setInterval("viewAverage()", 1001);
+		if (! haveError ){
+			var myTimer;
+			var myTimer1;
+			myTimer  = setInterval("update()", 3000);
+			if (!isComment)
+				myTimer1 = setInterval("viewAverage()", 1001);
+		}		
 		//clearInterval(myTimer);
-   
 	</script>
     {% endif %}
 	

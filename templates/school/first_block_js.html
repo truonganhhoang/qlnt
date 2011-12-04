@@ -41,6 +41,8 @@
 	var activeMode = 0;
 	var currentId =0;
     var numberId  =0;	
+	var haveError = false;
+	
 	for(var i=1;i<length;i++)
 	{	
 		oldAr[i]     = new Array(20);
@@ -70,7 +72,11 @@ function catchEnter(e)
 }
 
 window.onload = function() { 
-		document.onkeydown = catchEnter;		
+	document.onkeydown = catchEnter;		
+};
+window.onerror= function(){
+	haveError=true;	
+	window.location.reload();
 };
    
 
