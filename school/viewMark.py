@@ -825,7 +825,6 @@ def saveNote(request):
     message = 'hello'
     if request.method == 'POST':
         data=request.POST['data']
-        print data
         datas=data.split('/')
         
         position = get_position(request)
