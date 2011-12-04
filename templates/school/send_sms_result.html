@@ -64,6 +64,9 @@
 								document.getElementById(id).className='sent';
 							}							
 					}
+				},
+				error: function(){
+					$("#notify").showNotification("Gặp lỗi khi gửi tin nhắn");
 				}
 			};
 			$.ajax(arg);
