@@ -59,5 +59,13 @@ def convertDHToVietnamese(x):
     elif x=='TT':
         return u'HSTT'
     else:
-        return u''    
-  
+        return u''
+
+@register.filter
+def filterNote(content,userId):
+    contentList = content.split("/")
+    for c in contentList:
+        cs = c.split("##")
+        if (cs[0]==str(userId)):
+            return cs[1]
+    return ""

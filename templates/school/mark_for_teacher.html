@@ -1,4 +1,5 @@
-﻿<table  class="main-table"  width = "100%" id="markTable" >
+﻿{% load mark %}
+<table  class="main-table"  width = "100%" id="markTable" >
 	<tr>
 		
 		<th rowspan=2 colspan=1 align="center" width="1%" 
@@ -325,12 +326,12 @@
 				{{ m.tb|floatformat:"1"}}
 			</td>	
 		{% endif %}
-		{% if m.note != None and m.note != "" %}
-			<td class="sent" title="{{m.note}}"  style="cursor:pointer" id="edit_{{forloop.counter}}" >
+		{% if  m.note|filterNote:user.id != "" %}
+			<td class="sent" title="{{m.note|filterNote:user.id}}"  style="cursor:pointer" id="edit_{{forloop.counter}}" >
 				<img src="/static/images/noteicon.png">
 			</td>
 		{% else %}	
-			<td class="" title="{{m.note}}" style="cursor:pointer" id="edit_{{forloop.counter}}" >
+			<td class="" title="{{m.note|filterNote:user.id}}" style="cursor:pointer" id="edit_{{forloop.counter}}" >
 				<img src="/static/images/noteicon.png">
 			</td>
 		{% endif %}	
@@ -616,15 +617,16 @@
 			</td>	
 		{% endif %}	
 		
-		{% if m.note != None and m.note != "" %}
-			<td class="sent" title="{{m.note}}"  style="cursor:pointer" id="edit_{{forloop.counter}}" >
+		{% if m.note|filterNote:user.id != "" %}
+			<td class="sent" title="{{m.note|filterNote:user.id}}"  style="cursor:pointer" id="edit_{{forloop.counter}}" >
 				<img src="/static/images/noteicon.png">
 			</td>
 		{% else %}	
-			<td class="" title="{{m.note}}" style="cursor:pointer" id="edit_{{forloop.counter}}" >
+			<td class="" title="{{m.note|filterNote:user.id}}" style="cursor:pointer" id="edit_{{forloop.counter}}" >
 				<img src="/static/images/noteicon.png">
 			</td>
 		{% endif %}	
+
 		</tr>
 	{% endfor %}			
 </table>

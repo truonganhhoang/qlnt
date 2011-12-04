@@ -834,8 +834,24 @@ def saveNote(request):
             teacher= Teacher.objects.get(id=idTeacher)
             if request.user.id!=teacher.user_id.id: return
         else: return
-        m = Mark.objects.get(id=datas[1])
-        m.note=datas[2]
+        m = Mark.objects.get(id=datas[2])
+
+        contentList = m.note.split("/")
+        newContent=''
+        ok=False
+        for c in contentList:
+            cs = c.split("##")
+            if (cs[0]==datas[1]):
+                newContent+="/"+datas[1]+"##"+datas[3]
+                ok=True
+            else:
+                newContent+="/"+c
+
+        if not ok :
+            m.note+="/"+datas[1]+"##"+datas[3]
+        else:
+            m.note=newContent
+            
         m.save()
         data = simplejson.dumps({'message': message})
         t2=time.time()

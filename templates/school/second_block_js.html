@@ -811,6 +811,7 @@ function calculateNewArray(newAr)
 			maxHeight: 400,
 			title: "Nhập điểm từ file Excel"
 		});
+		
 		var currentIndex=0
 		for(var i=1;i<length;i++)
 		{
@@ -851,7 +852,7 @@ function calculateNewArray(newAr)
 		});	
 		$("#saveNote").click(function(){
 			var data1=$("#editContent").val();
-			data=idTeacher+"/"+idAr[currentIndex]+"/"+data1;
+			data=idTeacher+"/{{user.id}}/"+idAr[currentIndex]+"/"+data1;
 			var arg = { 
 				type:"POST",
 				url:"/school/saveNote",
