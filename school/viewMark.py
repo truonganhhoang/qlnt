@@ -697,19 +697,19 @@ def sendSMSForAPupil(s,user):
     smsString+=to_en1(m.student_id.last_name)+" "+to_en1(m.student_id.first_name)+" nhu sau: "    
     termNumber = m.term_id.number
      
-    if markStr1 !="":  smsString+="mieng:" + markStr1     
-    if markStr2 !="":  smsString+="diem 15 phut:" + markStr2     
-    if markStr3 !="":  smsString+="diem 45 phut:" + markStr3     
-    if markStr4 !="":  smsString+="thi cuoi ky:" + markStr4
+    if markStr1 !="":  smsString+="\nmieng:" + markStr1
+    if markStr2 !="":  smsString+="\ndiem 15 phut:" + markStr2
+    if markStr3 !="":  smsString+="\ndiem 45 phut:" + markStr3
+    if markStr4 !="":  smsString+="\nthi cuoi ky:" + markStr4
     
     if markStr5 !="":
         if termNumber==2:
-            smsString+="TBHK II:" + markStr5
+            smsString+="\nTBHK II:" + markStr5
         else:         
-            smsString+="TBHK I:" + markStr5
+            smsString+="\nTBHK I:" + markStr5
 
-    if markStr6 !="":  smsString+="TBHK I:" + markStr6         
-    if markStr7 !="":  smsString+="TB ca nam:" + markStr7
+    if markStr6 !="":  smsString+="\nTBHK I:" + markStr6
+    if markStr7 !="":  smsString+="\nTB ca nam:" + markStr7
     
     print m.student_id.sms_phone
     if m.student_id.sms_phone:
