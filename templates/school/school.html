@@ -13,35 +13,43 @@
     {% if user.userprofile.position == 'HIEU_TRUONG' or user.userprofile.position == 'HIEU_PHO' or user.userprofile.position == 'GIAO_VU' %}
       <aside title="Một số chức năng khác của hệ thống">
         {#        <p>Các chức năng</p>#}
-        <a class="item" href="{% url school.views.tnc_select %}">
-          <img class="icon" src="/static/menu/checklist.png" alt="Điểm danh"/>
+        <a class="item  " href="{% url school.views.tnc_select %}" title="Điểm danh hàng ngày theo lớp">
+          <img class="icon " src="/static/menu/checklist.png" alt="Điểm danh"/>
           Điểm danh
         </a>
-        <a class="item" href="{% url school.viewMark.markTable %}">
+        <a class="item  " href="{% url school.viewMark.markTable %}" title="Nhập điểm số theo lớp">
           <img class="icon" src="/static/menu/mark.png" alt="Điểm"/>
           Điểm
         </a>
-        <a class="item" href="{% url school.views.hanh_kiem %}">
+        <a class="item  " href="{% url school.views.hanh_kiem %}" title="Nhập hạnh kiểm theo lớp">
           <img class="icon" src="/static/menu/medal.png" alt="Hạnh kiểm"/>
           Hạnh kiểm
         </a>
 
+{#        <li>#}
+          <a class="item " href="{%url school.viewFinish.finish %}"
+            title="Tính điểm tổng kết toàn trường và kết thúc học kỳ">
+            <img class="icon" src="/static/menu/bookmark.png" alt="Tổng kết"/>
+            Tổng kết
+        </a>
+{#        </li>#}
         <p>
         <hr>
         <a class="item" href="{% url school.views.teachers %}">
           <img class="icon" src="/static/menu/teachers.png" alt="Giáo viên"/>
           Giáo viên
         </a>
-        <a class="item" href="{% url school.views.info %}"
-           title="Khai báo thông tin về trường học">
-          <img class="icon" src="/static/menu/settings.png" alt="Thông tin trường"/>
-          Thiết lập
-        </a>
-
+        
         <a class="item" href="{% url school.views.move_students %}"
            title="Chuyển lớp, chuyển trường">
           <img class="icon" src="/static/menu/transfer.png" alt="Chuyển lớp"/>
           Chuyển lớp
+        </a>
+
+        <a class="item" href="{% url school.views.info %}"
+           title="Khai báo thông tin về trường học">
+          <img class="icon" src="/static/menu/settings.png" alt="Thông tin trường"/>
+          Thiết lập
         </a>
 
       </aside>
@@ -56,17 +64,18 @@
                  href="{% url school.views.viewClassDetail class.id %}">
                 <div id="{{ class.id }}">
                   <span class="class-name"> {{ class.name }} </span>
-                    <div class="class-pupils-total tiptiphover" title="Sĩ số">
-                      {{ class.number_of_pupils }}</div>
-                      {% if class.teacher %}
-                        <div class="class-main-teacher tiptiphover" title="Giáo viên chủ nhiệm">
-                        {{ class.teacher }}
-                        </div>
-                      {% else %}
-                        <div class="class-main-teacher tiptiphover" title="Chưa gán giáo viên chủ nhiệm">
-                        ...
-                        </div>
-                      {% endif %}
+
+                  <div class="class-pupils-total " title="Sĩ số">
+                    {{ class.number_of_pupils }}</div>
+                  {% if class.teacher %}
+                    <div class="class-main-teacher " title="Giáo viên chủ nhiệm">
+                      {{ class.teacher }}
+                    </div>
+                  {% else %}
+                    <div class="class-main-teacher " title="Chưa gán giáo viên chủ nhiệm">
+                      ...
+                    </div>
+                  {% endif %}
                 </div>
               </a>
             {% endif %}
@@ -95,35 +104,37 @@
         </aside>
 
         <section id="classes">
+          {% if teaching_class %}
+            <h2>Lớp chủ nhiệm </h2>
+            <a class="ggButton" href="school/viewClassDetail/{{teaching_class.id}}"> Danh sách
+              lớp {{ teaching_class }} </a>
+            {#          {% else %}#}
+            {#            <p>(Bạn không chủ nhiệm lớp nào.)</p>#}
+          {% endif %}
+
+
+          <h2>Điểm</h2>
           {% if not teaching_subjects %}
-            <h2>(Bạn đang không giảng dạy lớp nào.)</h2>
+            <p>(Bạn đang không giảng dạy lớp nào.)</p>
           {% else %}
-            <h2>Các lớp giảng dạy</h2>
+            {#            <h4>Các lớp giảng dạy</h4>#}
             {% for subject in teaching_subjects %}
-              <a class="classDiv"
+              <a class="ggButton"
                  href="school/markForTeacher/1/{{term.id}}/{{subject.id}}">
                 <span class="classname"> {{ subject.class_id }} </span>
-                <span class="dimmer">Điểm</span>
+                {#                <span class="dimmer">Điểm</span>#}
                 <span>{{ subject.name }}</span>
-
               </a>
             {% endfor %}
           {% endif %}
 
-          {% if teaching_class %}
-            <h2>Lớp chủ nhiệm: 
-			<a  href="school/viewClassDetail/{{teaching_class.id}}" > {{ teaching_class }} </a></h2>
-			<h2>Điểm lớp chủ nhiệm: </h2> 
-            {% for subject in head_subjects %}
-              <a class="classDiv"
-                 href="school/markForTeacher/2/{{term.id}}/{{subject.id}}">
-                <span>{{ subject.name }}</span>
-              </a>
-            {% endfor %}
-          {% else %}
-            <h2>(Bạn không chủ nhiệm lớp nào.)</h2>
-          {% endif %}
-
+          <h2>Điểm các môn khác</h2>
+          {% for subject in head_subjects %}
+            <a class="ggButton" style="margin-bottom: 10px;"
+               href="school/markForTeacher/2/{{term.id}}/{{subject.id}}">
+              <span>{{ subject.name }}</span>
+            </a>
+          {% endfor %}
 
         </section>
       {% else %}

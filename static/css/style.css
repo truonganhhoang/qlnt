@@ -113,7 +113,7 @@ table.main-table tr.selected {
     background-color: #f3f48d;
 }
 
-table.main-table tr.endblock{
+table.main-table tr.endblock {
     background-color: #FFFFFF;
 }
 
@@ -349,14 +349,14 @@ div#tabs ul li{
 
 /* HELP page */
 .help {
-    width: 300px;
+    width: 270px;
     height:400px;
     float: left;
     overflow: hidden;
     clear: none;
     color: #333333;
     border: 1px #cccccc solid;
-    margin: 20px 10px;
+    margin: 10px 10px;
     padding: 10px;
     border-radius: 5px;
     background-color: #ffffff;

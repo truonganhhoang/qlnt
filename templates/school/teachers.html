@@ -280,9 +280,9 @@
         <div id="tableFunction">
             {% if pos > 3 %}
                 <a class="ggButton" href="#popupDiv" id="import"> Nhập từ Excel </a>
-                <a class="tiptiphover ggButton" title="Xuất danh sách giáo viên ra file Excel."
+                <a class=" ggButton" title="Xuất danh sách giáo viên ra file Excel."
                     href="{% url school.views.teacher_generate 'all' %}" id="export"> Xuất ra Excel </a>
-                <button class="ggButton tiptiphover" id="delete"> Xóa những giáo viên đã chọn </button>
+                <button class="ggButton " id="delete"> Xóa những giáo viên đã chọn </button>
             {% endif %}
         </div>
         <div id="dialog" title="Thêm tổ mới" style="display: none;">
@@ -306,14 +306,14 @@
                 <li style="padding-top: 1px; padding-right: 1px;" class="tab-label">
                     <a style="padding-top: 4px; padding-right: 6px;" href="school/team/{{ t.id }}">{{ t.name }}</a>
                     {% if pos > 3 %}
-                        <span title="Đổi tên" id ="{{t.id}}-{{t}}-team" class="ui-icon ui-icon-gear teamrn tiptiphover"></span>
-                        <span title="Xóa" id ="{{t.id}}-team" class="ui-icon ui-icon-close team tiptiphover"></span>
+                        <span title="Đổi tên" id ="{{t.id}}-{{t}}-team" class="ui-icon ui-icon-gear teamrn "></span>
+                        <span title="Xóa" id ="{{t.id}}-team" class="ui-icon ui-icon-close team "></span>
                     {% endif %}
                 </li>
             {% endfor %}
             {% if pos > 3 %}
                 <li style="padding-top: 1px; padding-right: 1px; padding-left: 1px;" class="tab-label">
-                    <input class="ggButton tiptiphover" title="Thêm tổ mới" type="button" id="add_tab" value=" + ">
+                    <input class="ggButton " title="Thêm tổ mới" type="button" id="add_tab" value=" + ">
                 </li>
             {% endif %}
         </ul>

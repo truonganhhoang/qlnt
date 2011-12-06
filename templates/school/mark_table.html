@@ -14,7 +14,7 @@
 	{% else %}
     > <a href="/school/markForTeacher/{{type}}">Điểm</a>
 		{% if selectedSubject %}
-			> {{selectedSubject.name}}-{{selectedSubject.class_id.name}}
+			> {{selectedSubject.name}} - {{selectedSubject.class_id.name}}
 		{% endif %}
 	{% endif %}
 {% endblock %} 
@@ -69,7 +69,7 @@
     onsubmit="return false">{% csrf_token %}
 	<input type="hidden" name="submitChoice" value="" style="display: none;">
 	<div id="myDiv2" style="display: none;"> </div>
-	<div id="myDiv3" > </div>
+	<div id="myDiv3" style="display: none;"> </div>
 	
     <h2>Bảng điểm học kỳ
 		<select name="term" onchange="submitTerm();">

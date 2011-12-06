@@ -31,22 +31,27 @@ var applyListener = function(){
         }
     });
 
-    $('*[class~="tiptipclick"]').tipTip({
-        activation: "click",
-        delay: 100
-    });
-    $('*[class~="tiptiphover"]').tipTip({
-        activation: "hover",
-        delay: 100
-    });
+//    $('*[class~="tiptipclick"]').tipTip({
+//        activation: "click",
+//        delay: 100
+//    });
+//    $('*[class~="tiptiphover"]').tipTip({
+//        activation: "hover",
+//        delay: 100
+//    });
     $('*[class~="tiptiphover_delay"]').tipTip({
         activation: "hover",
         delay: 1500
     });
-    $('*[class~="tiptipfocus"]').tipTip({
-        activation: "focus",
-        delay: 100
-    });
+//    $('*[class~="tiptipfocus"]').tipTip({
+//        activation: "focus",
+//        delay: 100
+//    });
+
+//    change all default tooltip (title) to tiptip
+    $(function(){
+      $("[title]").tipTip();
+    })
 };
 
 

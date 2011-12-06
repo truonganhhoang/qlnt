@@ -199,13 +199,13 @@
                 <li style="padding-top: 1px; padding-right: 1px;" class="tab-label">
                     <a style="padding-top: 4px; padding-right: 6px;" href="/school/teachers_in_group/{{ g.id }}">{{ g.name }}</a>
                 {% if pos > 3 %}
-                    <span title="Đổi tên" id ="{{g.id}}-{{g}}-group" class="ui-icon ui-icon-gear grouprn tiptiphover"></span>
-                    <span id ="{{g.id}}-group" title="Xóa" class="ui-icon ui-icon-close group tiptiphover">xóa</span>
+                    <span title="Đổi tên" id ="{{g.id}}-{{g}}-group" class="ui-icon ui-icon-gear grouprn "></span>
+                    <span id ="{{g.id}}-group" title="Xóa" class="ui-icon ui-icon-close group ">xóa</span>
                 {% endif %}
                 </li>
             {% endfor %}
             {% if pos > 3 %}
-                <button id="add_group{{team.id}}" class="ggButton tiptiphover" title="Thêm nhóm mới"> + </button>
+                <button id="add_group{{team.id}}" class="ggButton " title="Thêm nhóm mới"> + </button>
             {% endif %}
         </ul>
         <input id="reload" type="hidden" onclick="location.replace(location.href)"/>

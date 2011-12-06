@@ -187,7 +187,7 @@ nav ul li a img {
 
 section#main {
     margin: 30px 15px 10px 15px;
-    padding: 10px 10px 10px 10px;
+    /*padding: 10px 10px 10px 10px;*/
     /*background-color: #FFFFFF;*/
     background-color: #eeeeee;
     border: #aaaaaa solid thin;
@@ -262,6 +262,7 @@ aside p {
 
 /*---- CONTENT ----*/
 #content {
+    margin:10px;
     min-height: 450px;
 }
 
@@ -274,7 +275,6 @@ aside p {
 
 #nav-path {
     font-size: 90%;
-    margin: -10px -10px 0px -10px;
     padding: 5px 0px 0px 10px;
     height: 24px;
     background-color: #cccccc;

@@ -55,36 +55,36 @@
 
     <div id="submenu">
         {% if pos > 1 %}
-            <a title="Cập nhật điểm danh theo lớp" class="tiptiphover ggButton"
+            <a title="Cập nhật điểm danh theo lớp" class="ggButton"
                href="{%url school.views.school_index  %}diemdanh/{{class.id}}">Điểm danh</a>
         {% endif %}
 
 
         {% if pos > 3 %}
-            <a title="Nhập hoặc chỉnh sửa điểm của tất cả các môn trong lớp" class="tiptiphover ggButton"
+            <a title="Nhập hoặc chỉnh sửa điểm của tất cả các môn trong lớp" class=" ggButton"
                href="{%url school.views.school_index  %}markTable/{{currentTerm.id}}/{{class.id}}">Điểm</a>
         {% else %}
             {% if gvcn %}
-                <a title="Xem điểm các môn do người dùng chủ nhiệm" class="tiptiphover ggButton"
+                <a title="Xem điểm các môn do người dùng chủ nhiệm" class=" ggButton"
                    href="/school/markForTeacher/2/{{currentTerm.id}}">Điểm</a>
             {% endif %}
         {% endif %}
-        <a title="Xem thời khóa biểu lớp" class="tiptiphover ggButton"
+        <a title="Xem thời khóa biểu lớp" class=" ggButton"
            href="/school/timeTable/{{class.id}}">Thời khóa biểu</a>
 
 
         {% if pos > 2 %}
-            <a title="Đánh giá hạnh kiểm học sinh trong lớp" class="tiptiphover ggButton"
+            <a title="Đánh giá hạnh kiểm học sinh trong lớp" class=" ggButton"
                href="{%url school.views.school_index  %}hanhkiem/{{class.id}}">Hạnh kiểm</a>
         {% endif %}
 
         {% if pos > 3 or gvcn == 1 %}
             {% ifequal class.year_id.school_id.status 1 %}
-                <a title="Tính trung bình học lực của cả lớp" class="tiptiphover ggButton"
+                <a title="Tính trung bình học lực của cả lớp" class=" ggButton"
                    href="{%url school.views.school_index  %}xepLoaiHlTheoLop/{{class.id}}/1">
                     Tổng kết </a>
             {% else %}
-                <a title="Tính trung bình học lực của cả lớp" class="tiptiphover ggButton"
+                <a title="Tính trung bình học lực của cả lớp" class=" ggButton"
                    href="{%url school.views.school_index  %}xepLoaiHlTheoLop/{{class.id}}/2">
                     Tổng kết </a>
             {% endifequal %}
@@ -92,26 +92,26 @@
 
             {% ifnotequal class.year_id.school_id.status 1 %}
                 <a title="Xếp loại, xét lên lớp, ở lại lớp, kiểm tra lại, rèn luyện thêm trong hè"
-                   class="tiptiphover ggButton"
+                   class=" ggButton"
                    href="{%url school.views.school_index  %}xlCaNamTheoLop/{{class.id}}/1">Xếp loại</a>
             {% else %}
-                <a title="Chức năng này đã bị vô hiệu hóa vì đang trong học kỳ I" class="tiptiphover ggButton disabled">Xếp loại</a>
+                <a title="Chức năng này đã bị vô hiệu hóa vì đang trong học kỳ I" class=" ggButton disabled">Xếp loại</a>
             {% endifnotequal %}
         {% endif %}
 
         {% if pos > 1 or inClass == 1 %}
-            <a title="Xem tất cả thông tin của của môn học trong lớp" class="tiptiphover ggButton"
+            <a title="Xem tất cả thông tin của của môn học trong lớp" class=" ggButton"
                href="{%url school.views.school_index  %}subjectPerClass/{{class.id}}">Môn học</a>
         {% endif %}
 
         {% if pos > 3 %}
-            <a class="tiptiphover ggButton"
+            <a class=" ggButton"
                title="Nhập danh sách học sinh từ file Excel"
                href="#popupDiv"
                id="import" > Nhập từ Excel </a>
         {% endif %}
         {% if pos > 3 or gvcn == 1 %}
-            <a class="tiptiphover ggButton"
+            <a class=" ggButton"
                title="Xuất danh sách học sinh ra file Excel."
                href="{% url school.views.class_generate class.id 'student_list' %}"
                id="export"> Xuất ra Excel </a>
@@ -119,34 +119,34 @@
     </div>
     {% if pos > 3 or gvcn == 1 %}
         <div id="tableFunction">
-            <a class="tiptiphover ggButton"
+            <a class=" ggButton"
                title="Nhắn tin kết quả học tập"
                href="/school/sendSMSResult/{{class.id}}">
                 Nhắn tin học tập
             </a>
             {% if pos == 3 %}
-                <a class="tiptiphover ggButton" title="In phiếu báo điểm kỳ I"
+                <a class=" ggButton" title="In phiếu báo điểm kỳ I"
                    href="/school/printMarkForClass/1">
                     Phiếu báo điểm kì I	</a>
-                <a class="tiptiphover ggButton" title="In phiếu báo điểm kỳ II"
+                <a class=" ggButton" title="In phiếu báo điểm kỳ II"
                    href="/school/printMarkForClass/2">
                     Phiếu báo điểm kì II	</a>
 					
-                <a class="tiptiphover ggButton" title="In phiếu báo điểm kỳ II"
+                <a class=" ggButton" title="In phiếu báo điểm kỳ II"
                    href="/school/printMarkBook/{{class.id}}">
                     Sổ ghi điểm và gọi tên	</a>
 					
                 {% if gvcn == 1 %}
-                    <button id="textSms" class="tiptiphover ggButton"
+                    <button id="textSms" class=" ggButton"
                             title="Nhắn tin đến những học sinh đã chọn">Nhắn tin</button>
                 {% endif %}
             {% else %}
-                <button id="textSms" class="tiptiphover ggButton"
+                <button id="textSms" class=" ggButton"
                         title="Nhắn tin đến những học sinh đã chọn">Nhắn tin</button>
-                <a class="ggButton tiptiphover "
+                <a class="ggButton  "
                    href="{% url school.views.organize_students class.id "0" %}"
                    title="Sắp xếp thứ tự học sinh trong lớp">Sắp xếp</a>
-                <button id="delSelected" class="tiptiphover ggButton"
+                <button id="delSelected" class=" ggButton"
                         title="Xóa những học sinh đang được chọn">Xóa chọn</button>
             {% endif %}
         </div>
@@ -167,25 +167,25 @@
 
         <tr class="thread">
             {% if pos > 3 or gvcn == 1%}
-                <th class="leftAlign" title="Chọn cả lớp" class="tiptiphover" style="text-align: center;">
+                <th class="leftAlign" title="Chọn cả lớp" class="" style="text-align: center;">
                     <input type="checkbox" id="checkbox_all" class="studentCheckbox"/>
                 </th>
             {% endif %}
             <th class="leftAlign"><a
                     href="{%url school.views.school_index  %}viewClassDetail/{{class.id}}/0/{{next_status}}"
-                    class="tiptiphover" title="Hiển thị theo thứ tự sắp xếp">STT</a></th>
+                    class="" title="Hiển thị theo thứ tự sắp xếp">STT</a></th>
             <th class="leftAlign" id="thLastName">Họ</th>
             <th class="leftAlign" id="thFirstName"><a
                     href="{%url school.views.school_index  %}viewClassDetail/{{class.id}}/1/{{next_status}} "
-                    class="tiptiphover" title="Sắp xếp theo tên">Tên</a></th>
+                    class="" title="Sắp xếp theo tên">Tên</a></th>
             <th class="leftAlign" id="thBirthday"><a
                     href="{%url school.views.school_index  %}viewClassDetail/{{class.id}}/2/{{next_status}}"
-                    class="tiptiphover" title="Sắp xếp ngày sinh">Ngày sinh</a>
+                    class="" title="Sắp xếp ngày sinh">Ngày sinh</a>
             </th>
             <th class="leftAlign" id=""> Nơi sinh</th>
             <th class="leftAlign"><a
                     href="{%url school.views.school_index  %}viewClassDetail/{{class.id}}/3/{{next_status}}"
-                    class="tiptiphover" title="Sắp xếp giới tính">Giới tính</a>
+                    class="" title="Sắp xếp giới tính">Giới tính</a>
             </th>
             <th class="leftAlign">Dân tộc</th>
             <th class="leftAlign">Số điện thoại</th>

@@ -10,11 +10,11 @@
     <h2>Thông tin tài khoản: {{ user.username }}</h2>
     {% if profile %}
       <div id="submenu">
-        <a href="{% url profiles_edit_profile %}" class="tiptiphover ggButton">Chỉnh sửa</a>
-{#        <a href="{% url app.views.change_password %}" class="tiptiphover ggButton">Đổi mật khẩu </a>#}
-        <a class="tiptiphover ggButton" href="/school/password_change">Đổi mật khẩu</a>
+        <a href="{% url profiles_edit_profile %}" class="ggButton">Chỉnh sửa</a>
+{#        <a href="{% url app.views.change_password %}" class="ggButton">Đổi mật khẩu </a>#}
+        <a class="ggButton" href="/school/password_change">Đổi mật khẩu</a>
         {% if user.userprofile.username_change == 0 %}
-          <a class="tiptiphover ggButton" href="/school/username_change">Đổi tên tài khoản</a>
+          <a class="ggButton" href="/school/username_change">Đổi tên tài khoản</a>
         {% endif %}
       </div>
       <table class="dataform">

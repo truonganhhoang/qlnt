@@ -73,25 +73,25 @@
 
                 <tr class="thread">
                     {% if pos > 3 %}
-                    <th title="Chọn tất cả" class="tiptiphover" style="text-align: center;">
+                    <th title="Chọn tất cả" class="" style="text-align: center;">
                         <input type="checkbox" class="checkbox_all"/>
                     </th>
                     {% endif %}
                     <th class="leftAlign">STT</th>
                     <th class="leftAlign"><a
                             href="{%url school.views.school_index  %}teachers/1/{{next_status}}"
-                            class="tiptiphover" title="Sắp xếp theo tên">Họ tên </a></th>
+                            class="" title="Sắp xếp theo tên">Họ tên </a></th>
                     <th class="leftAlign"><a
                             href="{%url school.views.school_index  %}teachers/2/{{next_status}}"
-                            class="tiptiphover" title="Sắp xếp theo ngày sinh">Ngày sinh</a></th>
+                            class="" title="Sắp xếp theo ngày sinh">Ngày sinh</a></th>
                     <th class="leftAlign">Quê quán</th>
                     <th class="leftAlign"><a
                             href="{%url school.views.school_index  %}teachers/3/{{next_status}}"
-                            class="tiptiphover" title="Sắp xếp giới tính">Giới tính </a></th>
+                            class="" title="Sắp xếp giới tính">Giới tính </a></th>
                     <th class="leftAlign">Dạy môn</th>
                     <th class="leftAlign"><a
                             href="{%url school.views.school_index  %}teachers/4/{{next_status}}"
-                            class="tiptiphover" title="Sắp xếp theo tổ">Tổ </a></th>
+                            class="" title="Sắp xếp theo tổ">Tổ </a></th>
                     {% if pos > 3 %}
                         <th></th>
                     {% endif %}

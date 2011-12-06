@@ -122,20 +122,20 @@
     <ul>
       {% if not user.is_authenticated %}
         {# Chưa đăng nhập vào hệ thống #}
-        <li><a class="tiptiphover"
+        <li><a 
                href="{%url app.views.login %}" title="Đăng nhập để sử dụng hệ thống">Đăng nhập</a></li>
-        <li><a class="tiptiphover" href="/help" title="Xem hướng dẫn sử dụng">Trợ giúp</a></li>
-        <li><a class="tiptiphover" href="{%url app.views.feedback %}" title="Gửi thông tin về hệ thống">Liên hệ</a></li>
+        <li><a  href="/help" title="Xem hướng dẫn sử dụng">Trợ giúp</a></li>
+        <li><a  href="{%url app.views.feedback %}" title="Gửi thông tin về hệ thống">Liên hệ</a></li>
         {% else %}
         {% if user.is_superuser %}
-          <li><a class="tiptiphover"
+          <li><a 
                  href="/admin" title="Mở trình quản trị sẵn có của hệ thống">Quản trị CSDL</a></li>
-          <li><a class="tiptiphover"
+          <li><a 
                  href="{%url app.views.manage_register %}"
                  title="Quản lý đăng ký người dùng">Quản lý đăng ký</a></li>
           {% else %}
           {% if user.userprofile.position == 'GIAM_DOC_SO' or user.userprofile.position == 'TRUONG_PHONG' %}
-            <li><a class="tiptiphover"
+            <li><a 
                    title="Xem các đơn vị trực thuộc">Đơn vị trực thuộc</a></li>
             <li><a title="Xem thống kê báo cáo tổng hợp">Báo cáo</a></li>
           {% endif %}
@@ -145,60 +145,60 @@
             {# Đang trong năm học #}
             {% if user.userprofile.organization.status != 0 %}
               {% if user.userprofile.position == 'HIEU_TRUONG'  or user.userprofile.position == 'HIEU_PHO' %}
-                <li><a class="tiptiphover"
+                <li><a 
                        href="{%url school.views.school_index %}"
                        title="Về trang chủ">
                   <img src="/static/menu/home.png" alt="Trang chủ"/>
 {#                  Trang chủ#}
                 </a></li>
-                <li><a class="tiptiphover" href="{%url school.views.classes %}" title="Danh sách lớp học">Lớp học</a>
+                <li><a  href="{%url school.views.classes %}" title="Danh sách lớp học">Lớp học</a>
                 </li>
 
                 {# Khi chưa khởi  tạo năm học #}
                 {% if user.userprofile.organization.status == 3 %}
-                  <li><a class="tiptiphover"
+                  <li><a 
                          href="{%url school.views.setup %}"
                          title="Khai báo thông tin trường học và tạo nhanh các lớp học">
                     Thông tin trường học</a></li>
                 {% else %}
                   <li><a href="{%url school.writeExcel.report %}"
                          title="Xem thống kê, báo cáo tổng hợp"
-                         class="tiptiphover">Báo cáo</a></li>
+                         >Báo cáo</a></li>
 
-                  <li><a class="tiptiphover" href="{%url school.viewFinish.finish %}"
-                         title="Tính điểm tổng kết toàn trường và kết thúc học kỳ">Tổng kết</a></li>
+{#                  <li><a  href="{%url school.viewFinish.finish %}"#}
+{#                         title="Tính điểm tổng kết toàn trường và kết thúc học kỳ">Tổng kết</a></li>#}
                 {% endif %}
                 {% else %}
                 {% if user.userprofile.position == 'GIAO_VIEN' %}
-                  <li><a class="tiptiphover" href="{%url school.views.school_index %}" title="Về trang chủ">
+                  <li><a  href="{%url school.views.school_index %}" title="Về trang chủ">
                     Trang chủ
                   </a></li>
 
-                  <li><a class="tiptiphover" href="{%url school.views.classes %}" title="Quản lý lớp học">Lớp học</a>
+                  <li><a  href="{%url school.views.classes %}" title="Quản lý lớp học">Lớp học</a>
                   </li>
 
-                  <li><a class="tiptiphover" href="{% url school.viewMark.markForTeacher %}" title="Nhập điểm">Điểm</a>
+                  <li><a  href="{% url school.viewMark.markForTeacher %}" title="Nhập điểm">Điểm</a>
                   </li>
                   {% else %}
                   {% if user.userprofile.position == 'HOC_SINH' %}
-                    <li><a class="tiptiphover"
+                    <li><a 
                            href="{% url school.views.viewStudentDetail user.pupil.id %}">Hồ sơ</a></li>
 
                   {% else %}
                     {% if user.userprofile.position == 'GIAO_VU' %}
                     {% endif %}
                   {% endif %}
-                  <li><a class="tiptiphover" href="{%url school.views.classes %}" title="Quản lý lớp học">Lớp học</a>
+                  <li><a  href="{%url school.views.classes %}" title="Quản lý lớp học">Lớp học</a>
                   </li>
                 {% endif %}
               {% endif %}
 
-              <li><a class="tiptiphover" href="{%url school.views.timeTable_school %}"
+              <li><a  href="{%url school.views.timeTable_school %}"
                      title="Thời khóa biểu toàn trường">Thời khóa biểu</a></li>
             {% else %}
               {# Khi chưa khởi  tạo năm học #}
               {% if user.userprofile.organization.status == 0 %}
-                <li><a class="tiptiphover"
+                <li><a 
                        href="{%url school.views.setup %}"
                        title="Khai báo thông tin trường học và tạo nhanh các lớp học">
                   Thông tin trường học</a></li>
@@ -206,12 +206,12 @@
 
             {% endif %}
             {#                        {% if user.userprofile.position == 'GIAO_VIEN' or user.userprofile.position == 'HIEU_TRUONG' or user.userprofile.position == 'HIEU_PHO' or user.userprofile.position == 'GIAO_VU' %}#}
-            {#                            <li><a class="tiptiphover" href="{%url school.sms_views.manual_sms %}" title="Gửi tin nhắn SMS">Nhắn tin</a></li>#}
+            {#                            <li><a  href="{%url school.sms_views.manual_sms %}" title="Gửi tin nhắn SMS">Nhắn tin</a></li>#}
             {#                        {% endif %}#}
           {% endif %}
         {% endif %}
       {% endif %}
-      <li><a class="tiptiphover"
+      <li><a 
              style="color:#f3f48d;"
              href="#feedbackDiv"
              id="feedback"

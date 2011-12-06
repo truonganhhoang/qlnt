@@ -381,9 +381,9 @@
         <div id="tableFunction">
             {% if pos > 3 %}
                 <a class="ggButton" href="#popupDiv" id="import"> Nhập từ Excel </a>
-                <a class="tiptiphover ggButton" title="Xuất danh sách giáo viên ra file Excel."
+                <a class=" ggButton" title="Xuất danh sách giáo viên ra file Excel."
                     href="{% url school.views.teacher_generate 'all' %}" id="export"> Xuất ra Excel </a>
-                <button class="ggButton tiptiphover" id="delete"> Xóa những giáo viên đã chọn </button>
+                <button class="ggButton " id="delete"> Xóa những giáo viên đã chọn </button>
             {% endif %}
         </div>
     {% endif %}
@@ -427,7 +427,7 @@
 
                         <tr class="thread">
                             {% if pos > 3 %}
-                            <th title="Chọn tất cả" class="tiptiphover" style="text-align: center;">
+                            <th title="Chọn tất cả" class="" style="text-align: center;">
                                 <input type="checkbox" class="checkbox_all"/>
                             </th>
                             {% endif %}
