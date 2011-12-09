@@ -4278,8 +4278,6 @@ def timeTable_school(request):
     pos = get_position(request);
     if pos < 1:
         return HttpResponseRedirect('/')
-    if pos == 1 and inClass(request) == 0:
-        return HttpResponseRedirect('/')
 
     year = school.year_set.latest('time')
     classList = Class.objects.filter(year_id = year).order_by('name')
