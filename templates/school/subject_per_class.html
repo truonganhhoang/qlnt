@@ -82,11 +82,11 @@
         <table class="main-table" id="sortable">
             <colgroup class="naviColgroup" style="width: 3%; display: none;"></colgroup>
             <colgroup class="naviColgroup" style="width: 3%; display: none;"></colgroup>
-            <colgroup style="width: 3%;"></colgroup>
-            <colgroup style="width: 10%;"></colgroup>
             <colgroup style="width: 5%;"></colgroup>
+            <colgroup style="width: 10%;"></colgroup>
+            <colgroup style="width: 7%;"></colgroup>
             <colgroup style="width: 3%; min-width: 50px; max-width: 50px;"></colgroup>
-            <colgroup style="width: 32%;"></colgroup>
+            <colgroup style="width: 30%;"></colgroup>
             <colgroup></colgroup>
             <colgroup></colgroup>
             {% if pos > 3 %}
@@ -186,8 +186,14 @@
                                 {{ ss.teacher_id }}
                             {% endif %}
                         </td>
-                        <td style="text-align: center;"> {{ ss.primary }} </td>
-                        <td style="text-align: center;"> {{ ss.nx }} </td>
+                        <td style="text-align: center;"> {{ ss.get_primary }} </td>
+                        <td style="text-align: center;">
+                            {% if ss.nx == true %}
+                                Có
+                            {% else %}
+                                Không
+                            {% endif %}
+                        </td>
                     {% endif %}
                 </tr>
             {% endfor %}

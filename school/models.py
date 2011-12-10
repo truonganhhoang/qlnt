@@ -479,6 +479,8 @@ class Subject(models.Model):
 
     def strip_name(self):
         return self.name.lower().replace(' ', '')
+    def get_primary(self):
+        return LOAI_CHOICES[self.primary][1].encode("UTF-8")
     
     #class Admin: pass
 
