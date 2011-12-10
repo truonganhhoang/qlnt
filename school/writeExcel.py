@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 #from school.views import *
 
 from django.http import HttpResponse, HttpResponseRedirect
@@ -1581,7 +1582,77 @@ def printMarkForClass(request,termNumber=None,class_id=-2):
                                 }
                        )
     return HttpResponse(t.render(c))
- 
+def markExcelForAStudent(request,class_id,student_id,term_id):
+    tt1 = time.time()
+    user = request.user
+    if not user.is_authenticated():
+        return HttpResponseRedirect( reverse('login'))
+
+    message=None
+    currentTerm=get_current_term(request)
+    try:
+        if in_school(request,currentTerm.year_id.school_id) == False:
+            return HttpResponseRedirect('/school')
+    except Exception as e:
+        return HttpResponseRedirect(reverse('index'))
+    teaching_class=None
+    if get_position(request)==3:
+        teaching_class = user.teacher.teaching_class()
+        if teaching_class==None:
+            return HttpResponseRedirect('/school')
+        else:
+            class_id=teaching_class.id
+    elif get_position(request) != 4:
+       return HttpResponseRedirect('/school')
+
+    class_id  = int(class_id)
+    selectedTerm=Term.objects.get(id=term_id)
+
+    selectedClass = Class.objects.get(id=class_id)
+    book = Workbook(encoding = 'utf-8')
+    s    = book.add_sheet('s1',True)
+
+    markList=[]
+    tkMonList=[]
+
+    if selectedTerm.number==1:
+        subjectList = Subject.objects.filter(class_id=class_id,primary__in=[0,selectedTerm.number,3,4]).order_by("index",'name')
+    else:
+        subjectList = Subject.objects.filter(class_id=class_id).order_by("index",'name')
+    pupilList = Pupil.objects.filter(id=student_id).order_by('index','first_name','last_name','birthday')
+    checkNxList=[]
+    for sub in subjectList:
+        l = Mark.objects.filter(subject_id=sub.id,term_id=term_id,student_id=student_id)
+        markList.append(l)
+        if selectedTerm.number==2:
+            tkMon=TKMon.objects.filter(subject_id=sub.id,student_id=student_id)
+            tkMonList.append(tkMon)
+        if sub.nx:  checkNxList+=[1]
+        else     :  checkNxList+=[0]
+    print checkNxList
+    ddHKList=TKDiemDanh.objects.filter(student_id__classes=class_id,term_id=term_id,student_id=student_id)
+    tbHKList=TBHocKy.objects.filter(student_id__classes=class_id,term_id=term_id,student_id=student_id)
+    TBNamList      =TBNam  .objects.filter(student_id__classes=class_id,student_id=student_id)
+
+    ddHK1List=None
+    if selectedTerm.number==2:
+        ddHK1List=TKDiemDanh.objects.filter(student_id__classes=class_id,term_id__number=1,student_id=student_id)
+
+    schoolName= selectedClass.year_id.school_id.name
+    setSizeOfMarkClass(s,len(pupilList))
+    printMarkToExcel(selectedTerm.number,selectedClass,checkNxList,s,pupilList,markList,tkMonList,ddHKList,tbHKList,TBNamList,schoolName,ddHK1List)
+
+    response = HttpResponse(mimetype='application/ms-excel')
+
+    name = 'phieuBaoDiem%s.xls' % unicode(selectedClass.name)
+    name1=name.replace(' ','_')
+    response['Content-Disposition'] = u'attachment; filename=%s' % name1
+    book.save(response)
+    tt2= time.time()
+    print (tt2-tt1)
+    print "fffffffffffffff"
+    return response
+
 def printHanhKiemExcel(list,termNumber,type,currentTerm):
     
     book = Workbook(encoding = 'utf-8')

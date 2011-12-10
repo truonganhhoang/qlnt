@@ -1,5 +1,4 @@
-﻿
-{% block content %}
+﻿{% block content %}
 {% load mark %}
 {% if message != None %}
 {{message}}
@@ -7,6 +6,7 @@
 <script>
     $(document).ready(function(){
         $("select[name=term]").change(function(){
+			/*
             if ($(this).val != -1){
                 var d = $(this).parents("form").serialize();
                 var arg = {data: d,
@@ -19,19 +19,36 @@
                 };
                 $.ajax(arg);
             }
+			*/
+			var arg = {				
+				url:"/school/markForAStudent/{{class_id}}/{{student_id}}/"+$(this).val() ,
+				success: function(response) {
+					$('.ui-tabs-panel:visible').html(response);
+				},
+				global:false
+			};
+			$.ajax(arg);				
         });
     });
 </script>
-    <form action="/school/markForAStudent/{{class_id}}/{{student_id}}"  name="info" method="post" id='myform' > {% csrf_token %}
-		Học kỳ 
-        <select name="term" >
-            {% for term in termList %}
-                <option   value={{ term.id }} selected> {{ term}} </option>
-            {% endfor %}
+<table width="100%" >
+<tr>
+	<td width="60%">
+		<form action="/school/markForAStudent/{{class_id}}/{{student_id}}"  name="info" method="post" id='myform' > {% csrf_token %}
+			Học kỳ 
+			<select name="term" >
+				{% for term in termList %}
+					<option   value={{ term.id }} selected> {{ term}} </option>
+				{% endfor %}
 
-        </select>
-    </form>
-	
+			</select>
+		</form>
+	</td>
+	<td width="40%" style="text-align:right">
+		<a class="ggButton" href="/school/markExcelForAStudent/{{class_id}}/{{student_id}}/{{termChoice}}"> Xuất ra bảng điểm </a>
+	</td>
+</tr>
+</table>	
 	<br>
 	<br>
 	<table border=1 width="50%" class="main-table" >

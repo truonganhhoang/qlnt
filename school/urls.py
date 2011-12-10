@@ -24,6 +24,7 @@ urlpatterns = patterns('',
     url(r'markForTeacher/(?P<type>\w+)/(?P<term_id>\w+)/(?P<subject_id>\w+)/(?P<move>\w+)$','school.viewMark.markForTeacher'),
     
     url(r'markForAStudent/(?P<class_id>\w+)/(?P<student_id>\w+)$','school.viewMark.markForAStudent'),
+    url(r'markForAStudent/(?P<class_id>\w+)/(?P<student_id>\w+)/(?P<term_id>\w+)$','school.viewMark.markForAStudent'),
     #url(r'markForASubject/(?P<subject_id>\w+)','school.viewMark.markForASubject'),
     
     url(r'saveMark$','school.viewMark.saveMark'),
@@ -77,7 +78,8 @@ urlpatterns = patterns('',
     url(r'printMarkForClass$' , 'school.writeExcel.printMarkForClass'), 
     url(r'printMarkForClass/(?P<termNumber>\w+)$' , 'school.writeExcel.printMarkForClass'), 
     url(r'printMarkForClass/(?P<termNumber>\w+)/(?P<class_id>\w+)$' , 'school.writeExcel.printMarkForClass'), 
-    
+    url(r'markExcelForAStudent/(?P<class_id>\w+)/(?P<student_id>\w+)/(?P<term_id>\w+)$' , 'school.writeExcel.markExcelForAStudent'),
+
     url(r'printDanhHieu$' , 'school.viewCount.printDanhHieu'), 
     url(r'printDanhHieu/(?P<termNumber>\w+)/(?P<type>\w+)$' , 'school.viewCount.printDanhHieu'), 
     url(r'printDanhHieu/(?P<termNumber>\w+)/(?P<type>\w+)/(?P<isExcel>\w+)$' , 'school.viewCount.printDanhHieu'), 

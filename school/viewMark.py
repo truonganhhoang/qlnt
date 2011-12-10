@@ -389,7 +389,7 @@ def markForTeacher(request,type=1,term_id=-1,subject_id=-1,move=None):
 
     return HttpResponse(t.render(c))
 
-def markForAStudent(request,class_id,student_id):
+def markForAStudent(request,class_id,student_id,term_id=None):
 
     user = request.user
     if not user.is_authenticated():
@@ -424,15 +424,18 @@ def markForAStudent(request,class_id,student_id):
     studentName=student.last_name+" "+student.first_name
 
     yearChoice=selectedClass.year_id.id
-
-    selectedTerm=get_current_term(request)
-    termChoice  =selectedTerm.id
+    if term_id==None:
+        selectedTerm=get_current_term(request)
+        termChoice  =selectedTerm.id
+    else:
+        termChoice = term_id
+        selectedTerm=Term.objects.get(id=termChoice)
 
     termList= Term.objects.filter(year_id=yearChoice,number__lt=3).order_by('number')
 
-    if request.method == 'POST':
-        termChoice =int(request.POST['term'])
-        selectedTerm=Term.objects.get(id=termChoice)
+    #if request.method == 'POST':
+    #    termChoice =int(request.POST['term'])
+    #    selectedTerm=Term.objects.get(id=termChoice)
 
     subjectList=selectedClass.subject_set.all().order_by("index",'name')
 
