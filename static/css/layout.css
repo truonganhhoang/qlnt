@@ -196,11 +196,11 @@ section#main {
 
 aside {
     border-radius: 5px;
-    width:152px; /*+*/
+    width:152px; 
     float:right;
     overflow: hidden;
     margin: 15px 5px;
-    border: #bbbbbb outset 2px;
+    border: #bbbbbb outset 1px;
     /*padding: 3px 3px 3px 3px;*/
     /*border: thin solid #547ec2;*/
     /*background: #547ec2;*/
@@ -382,13 +382,14 @@ nav ul li a {
 }
 
 nav ul li:last-child a {
-    border: thin solid #547ec2;
+    border-right: thin solid #547ec2;
     border-radius: 0 5px 5px 0px;
 }
 
 nav ul li:first-child a {
     border: thin solid #547ec2;
     border-radius: 5px 0 0 5px;
+    border-right: 0px;
 }
 
 

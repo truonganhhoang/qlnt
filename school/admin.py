@@ -28,27 +28,78 @@ class MultiDBModelAdmin(admin.ModelAdmin):
         return super(MultiDBModelAdmin, self).formfield_for_manytomany(db_field, request=request, using=self.using, **kwargs)
 
 
-admin.site.register(Block)
-admin.site.register(Class)
-admin.site.register(Team)
-admin.site.register(Group)
-admin.site.register(Teacher)
-admin.site.register(Pupil)
-admin.site.register(Mark)
-admin.site.register(Subject)
-admin.site.register(Term)
-admin.site.register(Year)
-admin.site.register(StartYear)
-admin.site.register(KhenThuong)
-admin.site.register(KiLuat)
-admin.site.register(HanhKiem)
-admin.site.register(TBHocKy)
-admin.site.register(TBNam)
-admin.site.register(DiemDanh)
-admin.site.register(TKDiemDanh)
-admin.site.register(TKMon)
-admin.site.register(DanhSachLoaiLop)
-admin.site.register(MarkTime)
-admin.site.register(Attend)
+#admin.site.register(Block)
+
+#admin.site.register(Class)
+class ClassAdmin(admin.ModelAdmin):
+    list_display = ['name', 'year_id']
+    ordering = ['year_id']
+admin.site.register(Class, ClassAdmin)
+
+#admin.site.register(Team)
+#admin.site.register(Group)
+
+#admin.site.register(Teacher)
+class TeacherAdmin(admin.ModelAdmin):
+    list_display = ['last_name', 'first_name', 'birthday', 'cmt', 'school_id']
+    ordering = ['school_id', 'user_id']
+admin.site.register(Teacher, TeacherAdmin)
+
+#admin.site.register(Pupil)
+class PupilAdmin(admin.ModelAdmin):
+    list_display = ['last_name', 'first_name', 'birthday', 'school_id', 'class_id']
+    ordering = ['school_id', 'class_id', 'first_name', 'last_name']
+admin.site.register(Pupil, PupilAdmin)
+
+class MarkAdmin(admin.ModelAdmin):
+    list_display = ['student_id', 'subject_id', 'term_id', 'mieng_1', 'mieng_2', 'mlam_1', 'mlam_2', 'mot_tiet_1', 'mot_tiet_2']
+    ordering = ['term_id', 'subject_id', 'student_id']
+admin.site.register(Mark, MarkAdmin)
+
+#admin.site.register(Subject)
+
+#admin.site.register(Term)
+class TermAdmin(admin.ModelAdmin):
+    list_display = ['year_id', 'number']
+    ordering = ['year_id']
+admin.site.register(Term, TermAdmin)
+
+#admin.site.register(Year)
+class YearAdmin(admin.ModelAdmin):
+    list_display = ['school_id', 'time']
+    ordering = ['school_id']
+admin.site.register(Year, YearAdmin)
+
+#admin.site.register(StartYear)
+
+class KhenThuongAdmin(admin.ModelAdmin):
+    list_display = ['student_id', 'term_id', 'hinh_thuc', 'noi_dung']
+    ordering = ['term_id', 'student_id', 'time']
+admin.site.register(KhenThuong, KhenThuongAdmin)
+
+class KiLuatAdmin(admin.ModelAdmin):
+    list_display = ['student_id', 'term_id', 'hinh_thuc', 'noi_dung']
+    ordering = ['term_id', 'student_id', 'time']
+admin.site.register(KiLuat, KiLuatAdmin)
+
+class HanhKiemAdmin(admin.ModelAdmin):
+    list_display = ['student_id', 'year_id', 'ren_luyen_lai', 'hk_ren_luyen_lai']
+    ordering = ['student_id', 'year_id']
+admin.site.register(HanhKiem, HanhKiemAdmin)
+
+#admin.site.register(TBHocKy)
+
+#admin.site.register(TBNam)
+
+class DiemDanhAdmin(admin.ModelAdmin):
+    list_display = ['student_id', 'term_id', 'time', 'loai']
+    ordering = ['student_id', 'term_id', 'time']
+admin.site.register(DiemDanh, DiemDanhAdmin)
+
+#admin.site.register(TKDiemDanh)
+#admin.site.register(TKMon)
+#admin.site.register(DanhSachLoaiLop)
+#admin.site.register(MarkTime)
+#admin.site.register(Attend)
 
 

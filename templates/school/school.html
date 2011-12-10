@@ -13,33 +13,31 @@
     {% if user.userprofile.position == 'HIEU_TRUONG' or user.userprofile.position == 'HIEU_PHO' or user.userprofile.position == 'GIAO_VU' %}
       <aside title="Một số chức năng khác của hệ thống">
         {#        <p>Các chức năng</p>#}
-        <a class="item  " href="{% url school.views.tnc_select %}" title="Điểm danh hàng ngày theo lớp">
+        <a class="item" href="{% url school.views.tnc_select %}" title="Điểm danh hàng ngày theo lớp">
           <img class="icon " src="/static/menu/checklist.png" alt="Điểm danh"/>
           Điểm danh
         </a>
-        <a class="item  " href="{% url school.viewMark.markTable %}" title="Nhập điểm số theo lớp">
+        <a class="item" href="{% url school.viewMark.markTable %}" title="Nhập điểm số theo lớp">
           <img class="icon" src="/static/menu/mark.png" alt="Điểm"/>
           Điểm
         </a>
-        <a class="item  " href="{% url school.views.hanh_kiem %}" title="Nhập hạnh kiểm theo lớp">
+        <a class="item" href="{% url school.views.hanh_kiem %}" title="Nhập hạnh kiểm theo lớp">
           <img class="icon" src="/static/menu/medal.png" alt="Hạnh kiểm"/>
           Hạnh kiểm
         </a>
 
-{#        <li>#}
-          <a class="item " href="{%url school.viewFinish.finish %}"
-            title="Tính điểm tổng kết toàn trường và kết thúc học kỳ">
-            <img class="icon" src="/static/menu/bookmark.png" alt="Tổng kết"/>
-            Tổng kết
+        <a class="item" href="{%url school.viewFinish.finish %}" title="Tính điểm tổng kết toàn trường và kết thúc học kỳ">
+          <img class="icon" src="/static/menu/bookmark.png" alt="Tổng kết"/>
+          Tổng kết
         </a>
-{#        </li>#}
+
         <p>
         <hr>
         <a class="item" href="{% url school.views.teachers %}">
           <img class="icon" src="/static/menu/teachers.png" alt="Giáo viên"/>
           Giáo viên
         </a>
-        
+
         <a class="item" href="{% url school.views.move_students %}"
            title="Chuyển lớp, chuyển trường">
           <img class="icon" src="/static/menu/transfer.png" alt="Chuyển lớp"/>
