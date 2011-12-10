@@ -1596,7 +1596,10 @@ def markExcelForAStudent(request,class_id,student_id,term_id):
     except Exception as e:
         return HttpResponseRedirect(reverse('index'))
     teaching_class=None
-    if get_position(request)==3:
+    if get_position(request)==1:
+        if user.pupil.id !=student_id:
+            return HttpResponseRedirect('/school')
+    elif get_position(request)==3:
         teaching_class = user.teacher.teaching_class()
         if teaching_class==None:
             return HttpResponseRedirect('/school')
@@ -1619,7 +1622,7 @@ def markExcelForAStudent(request,class_id,student_id,term_id):
         subjectList = Subject.objects.filter(class_id=class_id,primary__in=[0,selectedTerm.number,3,4]).order_by("index",'name')
     else:
         subjectList = Subject.objects.filter(class_id=class_id).order_by("index",'name')
-    pupilList = Pupil.objects.filter(id=student_id).order_by('index','first_name','last_name','birthday')
+    pupilList = Pupil.objects.filter(id=student_id)
     checkNxList=[]
     for sub in subjectList:
         l = Mark.objects.filter(subject_id=sub.id,term_id=term_id,student_id=student_id)
@@ -1644,8 +1647,10 @@ def markExcelForAStudent(request,class_id,student_id,term_id):
 
     response = HttpResponse(mimetype='application/ms-excel')
 
-    name = 'phieuBaoDiem%s.xls' % unicode(selectedClass.name)
-    name1=name.replace(' ','_')
+    name=pupilList[0].last_name+pupilList[0].first_name+"hk"+str(selectedTerm.number)
+
+    name = 'phieuBaoDiem%s.xls' % unicode(to_en1(name))
+    name1=name.replace(' ','')
     response['Content-Disposition'] = u'attachment; filename=%s' % name1
     book.save(response)
     tt2= time.time()
