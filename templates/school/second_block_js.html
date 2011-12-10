@@ -815,15 +815,16 @@ function calculateNewArray(newAr)
 		for(var i=1;i<length;i++)
 		{
 			var id="#edit_"+i;
+			messageNote[i]=$(id).attr("title");
 			$(id).click(function(){
 				// setting up layout
-				$("#editContent").val(this.title);
+				currentIndex=(this.id).split('_')[1];
+				$("#editContent").val(messageNote[currentIndex]);
 				var buttonOffsetTop = $(this).offset().top;
 				var editOffsetTop   = $("#editWindow").offset().top;	
 				if (($("#editWindow").css('display') == 'none') || (buttonOffsetTop!=editOffsetTop)){
 					$("#saveNote").removeAttr("disabled");
 					$("#saveNote").html("Lưu");	
-					currentIndex=(this.id).split('_')[1];
 					var buttonOffsetTop = $(this).offset().top;
 					var buttonOffsetLeft = $(this).offset().left;				
 					var editWindow = $("#editWindow");				
@@ -850,7 +851,7 @@ function calculateNewArray(newAr)
 			}	
 		});	
 		$("#saveNote").click(function(){
-			var data1=$("#editContent").val();
+			var data1=$("#editContent").val().trim();
 			data=idTeacher+"/{{user.id}}/"+idAr[currentIndex]+"/"+data1;
 			var arg = { 
 				type:"POST",
@@ -865,11 +866,19 @@ function calculateNewArray(newAr)
 					$("#saveNote").attr("disabled","disabled");
 					$("#saveNote").html("Đã lưu");	
 					var id="#edit_"+currentIndex;
-					$(id).attr("title", data1);
+					
+					//$(id).attr("title", data1);
+					messageNote[currentIndex]=data1;
 					if (data1!="")
+					{
 						$(id).addClass("sent");
+						$(id).tipTip({content:data1});					
+					}	
 					else	
+					{
 						$(id).removeClass("sent");
+						$(id).unbind("hover");
+					}	
 				},
 				error: function(){
 					$("#notify").showNotification("Gặp lỗi khi lưu dữ liệu");
