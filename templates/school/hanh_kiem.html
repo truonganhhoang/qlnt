@@ -1,205 +1,197 @@
 ﻿{% extends "base.html" %}
 
 {% block backward_link %}
-  <a href="{% url school.views.school_index %}"> Trang chủ </a>
-  {% if pos > 1 %}
-    > <a href="{% url school.views.school_index %}classes"> Toàn trường</a>
-    > <a href="{% url school.views.school_index %}viewClassDetail/{{ class.id }}"> {{ class }} </a>
-    > Hạnh kiểm
-  {% endif %}
+    <a href="{% url school.views.school_index %}"> Trang chủ </a>
+    {% if pos > 1 %}
+        > <a href="{% url school.views.school_index %}classes"> Toàn trường</a>
+        > <a href="{% url school.views.school_index %}viewClassDetail/{{ class.id }}"> {{ class }} </a>
+        > Hạnh kiểm
+    {% endif %}
 {% endblock %}
 {% block content %}
     {% if pos > 2 %}
-    <script language="JavaScript" type="text/javascript" >
-    function submitClass(){
-            if (document.info.class.value!={{class.id}})
-            if (document.info.class.value!=-1)
-            {
-                window.location = "{%url school.views.school_index  %}hanhkiem/"+document.info.class.value;
+        <script language="JavaScript" type="text/javascript">
+            function submitClass() {
+                if (document.info.class.value !={{class.id}})
+                    if (document.info.class.value != -1) {
+                        window.location = "{%url school.views.school_index  %}hanhkiem/" + document.info.class.value;
+                    }
             }
-    }
 
-    $(document).ready(function(){
-            $(".submitbutton").attr("disabled", true);
-            $("select[name=term1]").each(function() {
-                $(this).change(function() {
-                    var id = $(this).parents("tr").attr('class').split(' ')[0];
-                    var term1 = $(this).val();
-                    var data = { id: id, term1:term1, request_type:'term1'};
-                    var arg = { type:"POST",
-                        url:"",
-                        data: data,
-                        datatype:"json",
-                        error: function(){
-                            $(".submitbutton").attr("disabled", false);
-                        }
-                    };
-                    $.ajax(arg);
-                    return false;
+            $(document).ready(function() {
+                $(".submitbutton").attr("disabled", true);
+                $("select[name=term1]").each(function() {
+                    $(this).change(function() {
+                        var id = $(this).parents("tr").attr('class').split(' ')[0];
+                        var term1 = $(this).val();
+                        var data = { id: id, term1:term1, request_type:'term1'};
+                        var arg = { type:"POST",
+                            url:"",
+                            data: data,
+                            datatype:"json",
+                            error: function() {
+                                $(".submitbutton").attr("disabled", false);
+                            }
+                        };
+                        $.ajax(arg);
+                        return false;
 
+                    });
+                });
+
+                $("select[name=term2]").each(function() {
+                    $(this).change(function() {
+                        var id = $(this).parents("tr").attr('class').split(' ')[0];
+                        var term2 = $(this).val();
+                        var data = { id: id, term2:term2, request_type:'term2'};
+                        var arg = { type:"POST",
+                            url:"",
+                            data: data,
+                            datatype:"json",
+                            error: function() {
+                                $(".submitbutton").attr('disabled', false);
+                            }
+                        };
+                        $.ajax(arg);
+                        return false;
+
+                    });
+                });
+
+                $("select[name=year]").each(function() {
+                    $(this).change(function() {
+                        var id = $(this).parents("tr").attr('class').split(' ')[0];
+                        var y = $(this).val();
+                        var data = { id: id, year:y, request_type:'year'};
+                        var arg = { type:"POST",
+                            url:"",
+                            data: data,
+                            datatype:"json",
+                            error: function() {
+                                $(".submitbutton").attr('disabled', false);
+                            }
+                        };
+                        $.ajax(arg);
+                        return false;
+
+                    });
                 });
             });
-
-            $("select[name=term2]").each(function() {
-                $(this).change(function() {
-                    var id = $(this).parents("tr").attr('class').split(' ')[0];
-                    var term2 = $(this).val();
-                    var data = { id: id, term2:term2, request_type:'term2'};
-                    var arg = { type:"POST",
-                        url:"",
-                        data: data,
-                        datatype:"json",
-                        error: function(){
-                            $(".submitbutton").attr('disabled', false);
-                        }
-                    };
-                    $.ajax(arg);
-                    return false;
-
-                });
-            });
-
-            $("select[name=year]").each(function() {
-                $(this).change(function() {
-                    var id = $(this).parents("tr").attr('class').split(' ')[0];
-                    var y = $(this).val();
-                    var data = { id: id, year:y, request_type:'year'};
-                    var arg = { type:"POST",
-                        url:"",
-                        data: data,
-                        datatype:"json",
-                        error: function(){
-                            $(".submitbutton").attr('disabled', false);
-                        }
-                    };
-                    $.ajax(arg);
-                    return false;
-
-                });
-            });
-        });
-    </script>
-{% endif %}
-
-
-<form action="" name = "info" method = "post">{% csrf_token %}
-    {% if pos > 1 %}
-        <h2> Hạnh kiểm lớp
-        <select name="class" onchange="submitClass()">
-            {% for cl in classList %}
-                {%if cl.id != class.id%}
-                <option value={{cl.id }}> {{cl}}</option>
-                {% else %}
-                    <option selected="selected" value={{cl.id }}> {{cl}}</option>
-                {%endif%}
-            {% endfor %}
-        </select>
-        </h2>
-    {% else %}
-        <h2> Hạnh kiểm lớp {{ class }}</h2>
-    {% endif %}
-</form>
-
-<form action="/school/hanhkiem/{{class.id}}" method="post">{% csrf_token %}       
-{%if pos > 3%}
-<div id="tableFunction">
-    <input type ="submit" class="ggButton submitbutton" value="Lưu"/>
-</div>
-{%endif%}
-    {% if pos < 4 %}
-        <div id="tableFunction">
-            <a href="{%url school.views.school_index  %}viewClassDetail/{{class.id}}" title ="Quay về danh sách lớp" class="ggButton"> Quay lại </a>
-        </div>
-
+        </script>
     {% endif %}
 
-    <table class="main-table" >
-    <tr>
-        <th class="leftAlign" > STT </th>
-        <th class="leftAlign" > <a href="{%url school.views.school_index  %}hanhkiem/{{class.id}}/1/{{next_status}}">Họ tên </a></th>
-        <th class="leftAlign" > <a href="{%url school.views.school_index  %}hanhkiem/{{class.id}}/2/{{next_status}}">Ngày sinh</a></th>
-        <th class="leftAlign" > <a href="{%url school.views.school_index  %}hanhkiem/{{class.id}}/3/{{next_status}}">Giới tính </a></th>
-        <th class="leftAlign" > Kì 1 </th>
-        <th class="leftAlign" > Kì 2 </th>
-        <th class="leftAlign" > Cả năm </th>
-    </tr>
-    {% if message != None %}
-    <br>
-    {{message}}
-    {% endif %}    
-        
-        {% for p,f, v in list %}
-            <tr class = "{{p.id}}">
-                <td >
-                    <p>{{ forloop.counter}}</p>
-                </td>
-            
-                <td >
-                    <p>{{ p.last_name }} {{p.first_name}}</p>
-                </td>
 
-                <td>
-                    <p>{{ p.birthday|date:"SHORT_DATE_FORMAT"}}</p>
-                </td>
+    <form action="" name="info" method="post">{% csrf_token %}
+        {% if pos > 1 %}
+            <h2> Hạnh kiểm lớp
+                <select name="class" onchange="submitClass()">
+                    {% for cl in classList %}
+                        {% if cl.id != class.id %}
+                            <option value={{ cl.id }}> {{ cl }}</option>
+                        {% else %}
+                            <option selected="selected" value={{ cl.id }}> {{ cl }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            </h2>
+        {% else %}
+            <h2> Hạnh kiểm lớp {{ class }}</h2>
+        {% endif %}
+    </form>
 
-                <td>
-                    <p>{{ p.sex }}</p>
-                </td>
-                {%if pos > 3 %}
-                    {%if term.number == 1%}
-                        <td>
-                            {{ f.term1.errors }}
-                            {{ f.term1 }}
-                        </td>
-                        <td></td>
-                        <td></td>
-                    {%else%}
-                        <td>
-                            {%  if v.term1 %}
-                                {{v.term1}}
-                            {% else %}
-                                Chưa xét
-                            {% endif %}
-                        </td>
-                        
-                        <td>
-                            {{ f.term2.errors }}
-                            {{ f.term2 }}
-                        </td>
-                        <td>
-                            {{ f.year.errors }}
-                            {{ f.year }}
-                        </td>                
-                    {%endif%}
-                {% else %}
-                    <td>
-                    {%  if v.term1 %}
-                                {{v.term1}}
-                            {% else %}
-                                Chưa xét
-                            {% endif %}
-                    </td>
-                    <td>
-                        {%  if v.term2 %}
-                                {{v.term2}}
-                            {% else %}
-                                Chưa xét
-                            {% endif %}
-                    </td>
-                    <td>
-                        {%  if v.year %}
-                                {{v.year}}
-                            {% else %}
-                                Chưa xét
-                            {% endif %}
-                    </td>
-                {%endif%}
+    <form action="/school/hanhkiem/{{class.id}}" method="post">{% csrf_token %}
+        {% if pos > 3 %}
+            <div id="tableFunction">
+                <input type="submit" class="ggButton submitbutton" value="Lưu"/>
+            </div>
+        {% endif %}
+        {% if pos < 4 %}
+            <div id="tableFunction">
+                <a href="{%url school.views.school_index  %}viewClassDetail/{{class.id}}" title="Quay về danh sách lớp"
+                   class="ggButton"> Quay lại </a>
+            </div>
+
+        {% endif %}
+
+        <table class="main-table">
+            <tr>
+                <th class="leftAlign"> STT</th>
+                <th class="leftAlign"><a
+                        href="{%url school.views.school_index  %}hanhkiem/{{class.id}}/1/{{next_status}}">Họ tên </a>
+                </th>
+                <th class="leftAlign"><a
+                        href="{%url school.views.school_index  %}hanhkiem/{{class.id}}/2/{{next_status}}">Ngày sinh</a>
+                </th>
+                <th class="leftAlign"><a
+                        href="{%url school.views.school_index  %}hanhkiem/{{class.id}}/3/{{next_status}}">Giới tính </a>
+                </th>
+                <th class="leftAlign"> Kì 1</th>
+                <th class="leftAlign"> Kì 2</th>
+                <th class="leftAlign"> Cả năm</th>
             </tr>
-        {% endfor %}        
-</table>
-{%if pos > 3%}
-<input class="ggButton submitbutton" type ="submit" value="Lưu"/>
-{%endif%}
-<a href="{%url school.views.school_index  %}viewClassDetail/{{class.id}}" title ="Quay về danh sách lớp" class="ggButton"> Quay lại </a>
-	</form>
+            {% if message != None %}
+                <br>
+                {{ message }}
+            {% endif %}
+
+            {% for p,f, v in list %}
+                <tr class="{{p.id}}">
+                    <td>
+                        <p>{{ forloop.counter }}</p>
+                    </td>
+
+                    <td>
+                        <p>{{ p.last_name }} {{ p.first_name }}</p>
+                    </td>
+
+                    <td>
+                        <p>{{ p.birthday|date:"SHORT_DATE_FORMAT" }}</p>
+                    </td>
+
+                    <td>
+                        <p>{{ p.sex }}</p>
+                    </td>
+                    {% if pos > 3 %}
+                        {% if term.number == 1 %}
+                            <td>
+                                {{ f.term1.errors }}
+                                {{ f.term1 }}
+                            </td>
+                            <td></td>
+                            <td></td>
+                        {% else %}
+                            <td>
+                                {{ v.get_hk_term1 }}
+                            </td>
+
+                            <td>
+                                {{ f.term2.errors }}
+                                {{ f.term2 }}
+                            </td>
+                            <td>
+                                {{ f.year.errors }}
+                                {{ f.year }}
+                            </td>
+                        {% endif %}
+                    {% else %}
+                        <td>
+                            {{ v.get_hk_term1 }}
+                        </td>
+                        <td>
+                            {{ v.get_hk_term2 }}
+                        </td>
+                        <td>
+                            {{ v.get_hk_year }}
+
+                        </td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+        </table>
+        {% if pos > 3 %}
+            <input class="ggButton submitbutton" type="submit" value="Lưu"/>
+        {% endif %}
+        <a href="{%url school.views.school_index  %}viewClassDetail/{{class.id}}" title="Quay về danh sách lớp"
+           class="ggButton"> Quay lại </a>
+    </form>
 {% endblock %}

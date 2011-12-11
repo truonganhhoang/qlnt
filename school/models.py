@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.core.exceptions import ValidationError
-from datetime import date
-
+#from school.utils import *
 from app.models import *
 
 LOAI_CHOICES = ((0,u'Tính cả 2 kỳ'),(1,u'Chỉ tính kì 1'),(2,u'Chỉ tính kì 2'),(3,u'Cộng vào điểm TB(NN2)'),(4,u'Không tính điểm'))
@@ -629,6 +628,7 @@ class HanhKiem(models.Model):
     
     def __unicode__(self):
         return unicode(self.student_id) + '-' + unicode(self.year_id)
+
         
 class TBHocKy(models.Model):
     student_id = models.ForeignKey(Pupil, verbose_name = "Học sinh")
@@ -683,7 +683,36 @@ class TBNam(models.Model):
         verbose_name = "Trung bình năm"
         verbose_name_plural = "Trung bình năm"
     def __unicode__(self):
-        return self.student_id.__unicode__() + " " + str(self.year_id.__unicode__()) + " " + str(self.tb_nam) 
+        return self.student_id.__unicode__() + " " + str(self.year_id.__unicode__()) + " " + str(self.tb_nam)
+
+    def convertHk(self, x):
+        if x=='T':
+            return u'Tốt'
+        elif x=='K':
+            return u'Khá'
+        elif x=='TB':
+            return u'TB'
+        elif x=='Y':
+            return u'Yếu'
+
+    def get_hk_term1(self):
+        if self.term1:
+            return self.convertHk(self.term1)
+        else:
+            return "Chưa xét"
+    
+    def get_hk_term2(self):
+        if self.term2:
+            return self.convertHk(self.term2)
+        else:
+            return "Chưa xét"
+
+    def get_hk_year(self):
+        if self.year:
+            return self.convertHk(self.year)
+        else:
+            return "Chưa xét"
+
 
 class DiemDanh(models.Model):
     student_id = models.ForeignKey(Pupil, verbose_name = "Học sinh")
