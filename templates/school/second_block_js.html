@@ -871,12 +871,12 @@ function calculateNewArray(newAr)
 					messageNote[currentIndex]=data1;
 					if (data1!="")
 					{
-						$(id).addClass("sent");
+						$(id).addClass("noted");
 						$(id).tipTip({content:data1});					
 					}	
 					else	
 					{
-						$(id).removeClass("sent");
+						$(id).removeClass("noted");
 						$(id).unbind("hover");
 					}	
 				},

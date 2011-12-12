@@ -69,7 +69,7 @@
 </tr>
 	
 	<tr>
-	<th width ="1%" title="Click vào đây để chọn tất cả" style="border-right-width:1px; border-top-width:1px;text-align:left;padding:1px" > 
+	<th width ="1%" title="Click vào đây để chọn tất cả" style="border-right-width:1px; border-top-width:1px" > 
 		<input type="checkbox" id="checkAllRow" onclick="checkAll(this)" style="display:none">  
 	</th>
 	
@@ -109,17 +109,17 @@
 		<td align="left" onclick="select(this)" style="border-right-width:0px" >
 		 <input title="Có thể click vào cột họ tên và ngày sinh để chọn cho nhanh hơn" type="checkbox" id="{{forloop.counter}}00" style="display:none" > 	
 		</td>
-		<td title="Click vào đây để chọn học sinh được gửi tin nhắn" align="center" onclick="select(this)" style="border-left-width:0px" >
+		<td  align="center" onclick="select(this)" style="border-left-width:0px" >
 		 {{forloop.counter}}	
 		</td>
-		<td title="Click vào đây để chọn học sinh được gửi tin nhắn" style="border-right-width:0px" width ="15%" onclick="select(this)">
+		<td  style="border-right-width:0px" width ="15%" onclick="select(this)">
 		 {{p.last_name}}
 		</td>
 		
-		<td title="Click vào đây để chọn học sinh được gửi tin nhắn" style="border-left-width:0px" width ="5%"  onclick="select(this)">
+		<td  style="border-left-width:0px" width ="5%"  onclick="select(this)">
 		{{ p.first_name }} 			
 		</td>
-		<td title="Click vào đây để chọn học sinh được gửi tin nhắn" onclick="select(this)" >
+		<td  onclick="select(this)" >
 		{{ p.birthday|date:"SHORT_DATE_FORMAT" }} 
 		</td>
 		
@@ -193,17 +193,17 @@
 		<td  onclick="select(this)" style="border-right-width:0px" >
 		   <input title="Có thể click vào cột họ tên và ngày sinh để chọn cho nhanh hơn" type="checkbox" id="{{forloop.counter}}00" style="display:none" > 	
 		</td>
-		<td title="Click vào đây để chọn học sinh được gửi tin nhắn" align="center" onclick="select(this)" style="border-left-width:0px" >
+		<td  align="center" onclick="select(this)" style="border-left-width:0px" >
 		 {{forloop.counter}}	
 		</td>
-		<td title="Click vào đây để chọn học sinh được gửi tin nhắn" style="border-right-width:0px" width ="15%" onclick="select(this)">
+		<td  style="border-right-width:0px" width ="15%" onclick="select(this)">
 		 {{m.student_id.last_name}}
 		</td>
 		
-		<td title="Click vào đây để chọn học sinh được gửi tin nhắn" style="border-left-width:0px" width ="5%"  onclick="select(this)">
+		<td  style="border-left-width:0px" width ="5%"  onclick="select(this)">
 		{{ m.student_id.first_name }} 			
 		</td>
-		<td title="Click vào đây để chọn học sinh được gửi tin nhắn" onclick="select(this)" >
+		<td  onclick="select(this)" >
 		{{ m.student_id.birthday.day}}/{{ m.student_id.birthday.month}}/{{ m.student_id.birthday.year}} 
 		</td>
 

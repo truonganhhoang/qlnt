@@ -126,7 +126,7 @@ table.main-table td {
     border: #dddddd thin solid;
     padding: 4px; 
     text-align: left;
-    vertical-align: bottom;
+   /* vertical-align: bottom; */
 }
 
 table.main-table td.lastname {
@@ -165,6 +165,12 @@ table.main-table td.mark-even {
 table.main-table td.mark-odd {
     padding: 0px; 
     background-color: #ffffff;
+}
+
+table.main-table td.noted {
+    background-color: #B2FFDB;
+    padding: 4px; 
+    text-align: left;
 }
 
 /* controls */
