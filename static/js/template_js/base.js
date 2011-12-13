@@ -17,7 +17,11 @@ var applyListener = function(){
     $("input:text").each(function(){
         $(this).focusout(function(){
             var origin = $(this).val();
-            if ($(this).is_harmful(origin)){
+            if (origin.length > 1000){
+                $(this).focus();
+                $("#notify").showNotification("Thông tin bạn vừa nhập quá dài.");
+            }
+            else if ($(this).is_harmful(origin)){
                 $(this).focus();
                 $(this).showNotification("Thông tin bạn vừa nhập có chứa mã độc.");
             }
@@ -212,7 +216,11 @@ $(document).ready(function(){
             var ok = true;
             $('input:text').each(function(){
                 var origin = $(this).val();
-                if ($(this).is_harmful(origin)){
+                if (origin.length > 1000) {
+                    $(this).focus();
+                    $("#notify").showNotification("Thông tin bạn vừa nhập quá dài.");
+                    ok = false;
+                }else if ($(this).is_harmful(origin)){
                     $(this).focus();
                     $("#notify").showNotification("Thông tin bạn vừa nhập có chứa mã độc.");
                     ok = false;
