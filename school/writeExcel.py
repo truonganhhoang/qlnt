@@ -18,7 +18,7 @@ import xlrd
 from xlrd import cellname
 from school.templateExcel import *
 
-def normalize(x,checkNx,isRound=None):
+def normalize(x,checkNx=0,isRound=None):
     if checkNx==0:
         if isRound:
             return str(x)
@@ -89,11 +89,11 @@ def printASubject(class_id,termNumber,s,mon,x,y,ls,number):
     for m in monList:
         i+=1    
         str1=""
-        if m.mieng_1!=None: str1+=str(m.mieng_1)+" "
-        if m.mieng_2!=None: str1+=str(m.mieng_2)+" "
-        if m.mieng_3!=None: str1+=str(m.mieng_3)+" "
-        if m.mieng_4!=None: str1+=str(m.mieng_4)+" "
-        if m.mieng_5!=None: str1+=str(m.mieng_5)+" "
+        if m.mieng_1!=None: str1+=normalize(m.mieng_1)+" "
+        if m.mieng_2!=None: str1+=normalize(m.mieng_2)+" "
+        if m.mieng_3!=None: str1+=normalize(m.mieng_3)+" "
+        if m.mieng_4!=None: str1+=normalize(m.mieng_4)+" "
+        if m.mieng_5!=None: str1+=normalize(m.mieng_5)+" "
         str2=""
         if m.mlam_1!=None: str2+=str(m.mlam_1)+" "
         if m.mlam_2!=None: str2+=str(m.mlam_2)+" "
@@ -235,7 +235,9 @@ def printPage20(class_id,termNumber,s,length,subjectList):
             s.write_merge(1,3,i+3,i+3,'GD\nCD',h10)
         elif ss.name=='GDQP-AN':     
             s.write_merge(1,3,i+3,i+3,'GD\nQP-\nAN',h10)
-        else:    
+        elif ss.name=='GDQP':
+            s.write_merge(1,3,i+3,i+3,'GD\nQP',h10)
+        else:
             s.write_merge(1,3,i+3,i+3,ss.name,h10)
             
     s.write_merge(1,3,length+3,length+3,'TB',h10)
