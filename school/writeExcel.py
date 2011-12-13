@@ -248,8 +248,8 @@ def printPage20(class_id,termNumber,s,length,subjectList):
     
     selectedClass = Class.objects.get(id=class_id)
     
-    tbhkList = TBHocKy.objects.filter(student_id__classes=class_id,term_id__number=termNumber)
-    hkList   = TBNam.objects.filter(student_id__classes=class_id,year_id=selectedClass.year_id)
+    tbhkList = TBHocKy.objects.filter(student_id__classes=class_id,term_id__number=termNumber).order_by('student_id__index','student_id__first_name','student_id__last_name','student_id__birthday')
+    hkList   = TBNam.objects.filter(student_id__classes=class_id,year_id=selectedClass.year_id).order_by('student_id__index','student_id__first_name','student_id__last_name','student_id__birthday')
     
     i=-1
     for (i,(tbhk,hk)) in enumerate(zip(tbhkList,hkList)):
