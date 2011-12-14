@@ -2,11 +2,15 @@
 
 from django.http import HttpResponse, HttpResponseRedirect
 from school.models import *
+from app.models import *
+from sms.models import *
+
 from django.shortcuts import render_to_response
 from django.template import RequestContext, loader
 from django.core.urlresolvers import reverse
 import os.path 
-import time 
+import time
+from datetime import datetime
 from school.utils import *
 from school.templateExcel import *
 from school.writeExcel import count1Excel,count2Excel,printHanhKiemExcel,printNoPassExcel
@@ -998,6 +1002,78 @@ def printNoPass(request,type=None,isExcel=None):
     c = RequestContext(request, {
                                  'list':list,
                                  'type':type,
+                                 })
+    return HttpResponse(t.render(c))
+
+def countSMS(request,type=None,day=None,month=None,year=None,day1=None,month1=None,year1=None):
+    tt1=time.time()
+    
+    user = request.user
+    if not user.is_authenticated():
+        return HttpResponseRedirect( reverse('login'))
+    currentTerm = get_current_term(request)
+    try:
+        if in_school(request,currentTerm.year_id.school_id) == False:
+            return HttpResponseRedirect('/school')
+    except Exception as e:
+        return HttpResponseRedirect(reverse('index'))
+
+    if get_position(request) != 4:
+       return HttpResponseRedirect('/school')
+
+    if request.method == 'POST':
+        firstDay =request.POST['firstDate'].split('/')
+        secondDay =request.POST['secondDate'].split('/')
+        day=int(firstDay[0])
+        month=int(firstDay[1])
+        year=int(firstDay[2])
+
+        day1=int(secondDay[0])
+        month1=int(secondDay[1])
+        year1=int(secondDay[2])
+        
+        type =request.POST['type1']
+        print type,'ffffffffff'
+    if (type==None):
+        type=1
+    if day==None:
+        day1   = datetime.datetime.now().day
+        month1 = datetime.datetime.now().month
+        year1  = datetime.datetime.now().year
+
+        day   = day1
+        month = (month1-1) % 12
+        if month==0:
+            month=12
+            year= year1-1
+        else:
+            year=year1
+            
+    firstDay  =datetime.datetime(year,month,day)
+    secondDay =datetime.datetime(year1,month1,day1,23, 59, 0)
+    print firstDay
+    print secondDay
+    school=get_school(request)
+    if   int(type)==1:
+        list=sms.objects.filter(created__gte=firstDay,created__lte=secondDay, sender__userprofile__organization=school).order_by("-created")
+    elif int(type)==2:
+        list=sms.objects.filter(created__gte=firstDay,created__lte=secondDay, sender__userprofile__organization=school,success=True).order_by("-created")
+    elif int(type)==3:
+        list=sms.objects.filter(created__gte=firstDay,created__lte=secondDay, sender__userprofile__organization=school,success=False).order_by("-created")
+    tt2=time.time()
+    print "time",tt2-tt1
+    t = loader.get_template(os.path.join('school','countSMS.html'))
+    c = RequestContext(request, {
+                                'list':list,
+                                'type':type,
+
+                                'day':day,
+                                'month':month,
+                                'year':year,
+
+                                'day1':day1,
+                                'month1':month1,
+                                'year1':year1,
                                  })
     return HttpResponse(t.render(c))
 

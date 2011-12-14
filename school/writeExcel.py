@@ -1400,8 +1400,10 @@ def printMarkToExcel(termNumber,selectedClass,checkNxList,s,pupilList,markList,t
         s.write(x+i*numberLine+7+j,y+5,'Danh hiệu',h82)
         s.write(x+i*numberLine+7+j,y+6,'Nghỉ có phép',h82)
         s.write_merge(x+i*numberLine+7+j,x+i*numberLine+7+j,y+7,y+8,'Nghỉ không phép',h82)
-        
-        s.write(x+i*numberLine+8+j,y+2,tbhk.tb_hk,h82)
+        if tbhk.tb_hk!=None:
+            s.write(x+i*numberLine+8+j,y+2,str(tbhk.tb_hk),h82)
+        else:
+            s.write(x+i*numberLine+8+j,y+2,'',h82)
         s.write(x+i*numberLine+8+j,y+3,convertHlToVietnamese(tbhk.hl_hk),h82)
         
         if termNumber==1:

@@ -1,0 +1,88 @@
+﻿{% extends "base.html" %}
+
+{% block backward_link %}
+  <a href="{% url school.views.school_index %}"> Trang chủ </a> >
+  <a href="/school/report">Báo cáo, thống kê</a>  >
+  Thống kê tin nhắn
+{% endblock %}
+ 
+{% block content %}
+		
+	<form action="/school/countSMS" name="info" method="post" > {% csrf_token %}
+	Từ ngày:
+		<input id="id_date1" name="firstDate" class="datepicker" value="{{day}}/{{month}}/{{year}}">
+	&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspđến ngày		
+		<input id="id_date1" name="secondDate" class="datepicker" value="{{day1}}/{{month1}}/{{year1}}">
+	<br>
+	<br>	
+		<INPUT TYPE="radio" NAME="type1" id='1' value="1">Tất cả &nbsp&nbsp&nbsp&nbsp&nbsp     	
+		<INPUT TYPE="radio" NAME="type1" id='2' value="2">Gửi thành công &nbsp&nbsp&nbsp&nbsp&nbsp
+		<INPUT TYPE="radio" NAME="type1" id='3' value="3">Gửi không thành công 
+		<br>
+		<input type="submit" value="Xem" class="ggButton" >
+	</form>
+
+	<br>
+	<table class="main-table" width="100%" >
+	<tr>
+		<th>
+			STT
+		</th>
+		<th>
+			Người gửi
+		</th>
+		<th>
+			Người nhận
+		</th>
+		<th>
+			SĐT
+		</th>
+		<th>
+			Ngày gửi
+		</th>
+		<th>
+			Nội dung
+		</th>
+		<th>
+			Trạng thái
+		</th>
+	</tr>
+	{% for l in list %}
+	<tr>
+		<td> 
+			{{forloop.counter}}
+		</td>
+		<td>
+			{{l.sender}}
+		</td>	
+		<td>
+			{{l.receiver}}
+		</td>	
+		<td>
+			{{l.phone}}
+		</td>	
+		<td>
+			{{l.created|date:"SHORT_DATETIME_FORMAT"}}
+		</td>	
+		
+		<td>
+			{{l.content}}
+		</td>
+		<td>
+			{% if l.success %}
+				Thành công
+			{% else %}
+				Thất bại 
+			{% endif %}	
+		</td>			
+	</tr>	
+	{% endfor %}
+	</table>
+	<script>
+		$(document).ready(function(){
+			$("#id_date").datepicker();
+		});
+		$("#{{type}}").attr("checked","true");
+	</script>
+	
+{% endblock %}
