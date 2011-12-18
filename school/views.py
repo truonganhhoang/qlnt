@@ -1843,18 +1843,18 @@ def viewClassDetail(request, class_id, sort_type=0, sort_status=0):
         return HttpResponseRedirect('/')
     message = None
     school = cl.block_id.school_id
-    cyear = get_current_year(request)
+    cyear =  school.year_set.latest('time')
     classList = cyear.class_set.all().order_by('name')
     form = PupilForm(school.id)
 
     if request.method == 'POST':
         if request.is_ajax():
-            if request.POST[u'request_type'] == u'del':
+            if request.POST[u'request_type'] == u'del' and pos > 3:
                 data = request.POST[u'data']
                 data = data.split('-')
                 for e in data:
                     if e.strip():
-                        std = Pupil.objects.get(id__exact = int(e))
+                        std = school.pupil_set.get(id__exact = int(e))
                         completely_del_student(std)
 
                 data = simplejson.dumps({'success': True})
@@ -1905,7 +1905,7 @@ def viewClassDetail(request, class_id, sort_type=0, sort_status=0):
                     print e
                     raise e
 
-            elif request.POST[u'request_type'] == u'add':
+            elif request.POST[u'request_type'] == u'add' and pos > 3:
                 start_year = StartYear.objects.get(time = int(date.today().year), school_id = school.id)
                 try:
                     data = {'first_name':request.POST['first_name'], 'last_name':request.POST['last_name'], 'birthday':request.POST['birthday'],
@@ -2004,8 +2004,7 @@ def viewClassDetail(request, class_id, sort_type=0, sort_status=0):
     if tmp:
         id = tmp.id
 
-
-    currentTerm= get_current_term(request)
+    currentTerm = cyear.term_set.get(number = school.status)
     if currentTerm.number ==3:
         currentTerm=Term.objects.get(year_id=currentTerm.year_id,number=2)
 
@@ -2045,13 +2044,13 @@ def teachers(request,  sort_type=1, sort_status=0):
     message = None
     form = TeacherForm(school.id)
     school = get_school(request)
-    if request.is_ajax():
+    if request.is_ajax() and pos > 3:
         if request.POST['request_type'] == u'del':
             data = request.POST[u'data']
             data = data.split('-')
             for e in data:
                 if e.strip():
-                    teacher = Teacher.objects.get(id__exact = int(e))
+                    teacher = school.teacher_set.get(id__exact = int(e))
                     del_teacher(teacher);
             data = simplejson.dumps({'success': True})
             return HttpResponse(data, mimetype='json')
@@ -2077,11 +2076,12 @@ def teachers(request,  sort_type=1, sort_status=0):
             return HttpResponse()
         if request.POST['request_type'] == u'delete_group':
             g = Group.objects.get(id = request.POST['id'])
-            teacherList = g.teacher_set.all()
-            for teacher in teacherList:
-                teacher.group_id = None
-            g.delete()
-            return HttpResponse()
+            if g.team_id.school_id == school:
+                teacherList = g.teacher_set.all()
+                for teacher in teacherList:
+                    teacher.group_id = None
+                g.delete()
+                return HttpResponse()
         if request.POST['request_type'] == u'rename_team':
             t = school.team_set.get(id = request.POST['id'])
             try:
@@ -2118,7 +2118,7 @@ def team(request, team_id ,sort_type=1, sort_status=0):
     message = None
     form = TeacherForm(school.id)
     school = get_school(request)
-    if request.method == 'POST' and request.is_ajax():
+    if request.method == 'POST' and request.is_ajax() and pos > 3:
         try:
             if request.POST['request_type'] == u'addGroup':
                 try:
@@ -2172,7 +2172,7 @@ def teachers_tab(request, sort_type=1, sort_status=0):
     pos = get_position(request)
     message = None
     form = TeacherForm(school.id)
-    if request.is_ajax():
+    if request.is_ajax() and pos > 3:
         if request.method == 'POST' and request.POST['request_type'] == u'team':
             try:
                 t = school.teacher_set.get(id=request.POST['id'])
@@ -2287,7 +2287,7 @@ def teachers_in_team(request, team_id):
 
     pos = get_position(request)
     school = get_school(request)
-    if request.is_ajax():
+    if request.is_ajax() and pos > 3:
         if (request.method == 'POST' and request.POST['request_type'] == u'team'):
             t = school.teacher_set.get(id = request.POST['id'])
             if request.POST['team']:
@@ -2353,7 +2353,7 @@ def teachers_in_group(request, group_id):
         return HttpResponseRedirect(reverse('index'))
     pos = get_position(request)
     school = get_school(request)
-    if request.is_ajax():
+    if request.is_ajax() and pos > 3:
         if (request.method == 'POST' and request.POST['request_type'] == u'team'):
             t = school.teacher_set.get(id = request.POST['id'])
             if request.POST['team']:
@@ -2428,8 +2428,10 @@ def viewTeacherDetail(request, teacher_id):
         return HttpResponseRedirect('/')
     pos = get_position(request)
     school = get_school(request)
-    if (pos==3) and not(get_teacher(request).id == int(teacher_id)):
-        pos = 1
+    if (pos == 3):
+        if get_teacher(request) != None:
+            if not(get_teacher(request).id == int(teacher_id)):
+                pos = 1
     if (pos < 1):
         return HttpResponseRedirect('/')
     form = TeacherForm (school.id,instance=teacher)
@@ -2455,7 +2457,7 @@ def viewTeacherDetail(request, teacher_id):
             if ttcbform.is_valid():
                 ttcbform.save()
                 message = 'Bạn vừa cập nhật thành công thông tin cán bộ'
-    if request.is_ajax():
+    if request.is_ajax() and pos >= 3:
         if request.method == 'POST':
             if request.POST['request_type'] == 'ttcn':
                 first_name = ''
@@ -2546,9 +2548,9 @@ def subjectPerClass(request, class_id, sort_type=4, sort_status=0):
     if (pos == 0):
         return HttpResponseRedirect('/')
     message = None
-    cl = Class.objects.get(id=class_id)
     term=get_current_term(request)
     school = get_school(request)
+    cl = Class.objects.get(id=class_id)
     try:
         if int(sort_type) == 1:
             if int(sort_status) == 0:
@@ -2578,7 +2580,7 @@ def subjectPerClass(request, class_id, sort_type=4, sort_status=0):
     for s in subjectList:
         sfl.append(SubjectForm(school.id, instance=s))
     list = zip(subjectList, sfl)
-    if request.is_ajax():
+    if request.is_ajax() and pos > 3:
         sid = request.POST['id']
         sub = cl.subject_set.get(id = sid)
         if request.POST['request_type'] == u'teacher':
@@ -2629,7 +2631,7 @@ def subjectPerClass(request, class_id, sort_type=4, sort_status=0):
             else:
                 sub.hs = shs
                 sub.save()
-    elif request.method == 'POST':
+    elif request.method == 'POST' and pos > 3:
         hs_list = request.POST.getlist('hs')
         teacher_list = request.POST.getlist('teacher_id')
         p_list = request.POST.getlist('primary')
@@ -2716,14 +2718,15 @@ def viewStudentDetail(request, student_id):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
-
     try:
         school = get_school(request)
     except Exception as e:
         return HttpResponseRedirect(reverse('index'))
     pos = get_position(request)
-    if (pos==1) and not(get_student(request).id==int(student_id)):
-        pos = 2
+    if (pos==1):
+        if get_student(request) != None:
+            if not(get_student(request).id==int(student_id)):
+                pos = 2
     if get_position(request) < 1:
         return HttpResponseRedirect('/')
     message = None
@@ -3694,7 +3697,7 @@ def hanh_kiem(request, class_id = 0, sort_type = 0, sort_status = 0):
         form[i] =TBNamForm(instance=hk)
         i += 1
 
-    if request.is_ajax() and request.POST['request_type'] != u'all':
+    if request.is_ajax() and request.POST['request_type'] != u'all' and pos > 3:
         p_id = request.POST['id']
         p = c.pupil_set.get(id = int(p_id))
         hk = p.tbnam_set.get(year_id__exact=year.id)
@@ -3723,7 +3726,7 @@ def hanh_kiem(request, class_id = 0, sort_type = 0, sort_status = 0):
             hk.year = y
             hk.save()
 
-    elif request.is_ajax() and request.POST['request_type']=='all':
+    elif request.is_ajax() and request.POST['request_type']=='all' and pos > 3:
         message = 'Cập nhật thành công hạnh kiểm lớp ' + str(Class.objects.get(id=class_id))
         term1 = request.POST.getlist('term1')
         term2 = request.POST.getlist('term2')

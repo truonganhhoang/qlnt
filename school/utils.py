@@ -808,9 +808,9 @@ def delete_history(history):
 def get_school(request):
     if not request.user.is_authenticated():
         raise Exception('NotAuthenticated')
-    if request.user.userprofile.organization.level != 'T':
+    if request.user.userprofile.organization.level != 'T' and request.user.userprofile.organization.level != 'S':
         raise Exception('UserDoesNotHaveAnySchool')
-    return Organization.objects.get(id=request.user.userprofile.organization.id)
+    return request.user.userprofile.organization
 
 def get_permission(request):
     if request.user.userprofile.organization.level != 'T':
@@ -835,18 +835,21 @@ def get_upper_bound(school):
     else:
         raise Exception('SchoolLevelIsNotProvied')
 def get_position(request):
-    if request.user.userprofile.position == 'HOC_SINH':
-        return 1
-    elif request.user.userprofile.position == 'GIAO_VU':
-        return 2
-    elif request.user.userprofile.position == 'GIAO_VIEN':
+    if request.user.userprofile.organization.level == 'T':
+        if request.user.userprofile.position == 'HOC_SINH':
+            return 1
+        elif request.user.userprofile.position == 'GIAO_VU':
+            return 2
+        elif request.user.userprofile.position == 'GIAO_VIEN':
+            return 3
+        elif request.user.userprofile.position == 'HIEU_PHO':
+            return 4
+        elif request.user.userprofile.position == 'HIEU_TRUONG':
+            return 4
+        else:
+            return 0
+    elif request.user.userprofile.organization.level == 'S':
         return 3
-    elif request.user.userprofile.position == 'HIEU_PHO':
-        return 4
-    elif request.user.userprofile.position == 'HIEU_TRUONG':
-        return 4
-    else:
-        return 0
 
 def get_current_year(request):
     school = get_school(request)
@@ -883,14 +886,20 @@ def get_current_term(request):
         return None
 
 def in_school(request,school_id):
-    try:
-        school = get_school(request)
-        if school == school_id:
+    if request.user.userprofile.organization.level == 'T':
+        try:
+            school = get_school(request)
+            if school == school_id:
+                return True
+            else:
+                return False
+        except Exception('UserDoesNotHaveAnySchool'):
+            return False
+    elif request.user.userprofile.organization.level == 'S':
+        if request.user.userprofile.organization == school_id.upper_organization:
             return True
         else:
             return False
-    except Exception('UserDoesNotHaveAnySchool'):
-        return False
 
 def save_file(file):
     saved_file = open(os.path.join(TEMP_FILE_LOCATION, 'sms_input.xls'), 'wb+')
