@@ -239,7 +239,10 @@ $(document).ready(function(){
             feedbackWindow.css('position', 'absolute');
             feedbackWindow.css('top', buttonOffsetTop + 35);
             feedbackWindow.css('left', contentWidth - feedbackWindowWidth + 30);
-            feedbackWindow.slideDown(350);
+            feedbackWindow.slideDown(350, function(){
+                $('#feedbackContent').focus();
+            });
+
         } else $("#feedbackWindow").slideUp(350);
         return false;
     });
