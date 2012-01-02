@@ -1117,7 +1117,7 @@ def student_import( request, class_id, request_type='' ):
             try:
                 if request_type==u'update':
                     chosen_class = Class.objects.get( id = int(class_id) )
-                    year = school.startyear_set.get(time=datetime.date.today().year)
+                    year = school.startyear_set.latest('time')
                     current_year = school.year_set.latest('time')
                     term = get_current_term( request)
                     saving_import_student = request.session.pop('saving_import_student')
@@ -1177,7 +1177,7 @@ def student_import( request, class_id, request_type='' ):
                  'error': u'File excel không đúng định dạng'}]
     else:
         chosen_class = Class.objects.get( id = int(class_id) )
-        year = school.startyear_set.get(time=datetime.date.today().year)
+        year = school.startyear_set.latest('time')
         current_year = school.year_set.latest('time')
         term = get_current_term( request)
         try:
