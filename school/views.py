@@ -1,4 +1,4 @@
-﻿# -*- coding: utf-8 -*-
+ # -*- coding: utf-8 -*-
 
 # Create your views here.
 import os.path
@@ -1906,7 +1906,7 @@ def viewClassDetail(request, class_id, sort_type=0, sort_status=0):
                     raise e
 
             elif request.POST[u'request_type'] == u'add' and pos > 3:
-                start_year = StartYear.objects.get(time = int(date.today().year), school_id = school.id)
+                start_year = StartYear.objects.filter(school_id = school.id).latest('time')
                 try:
                     data = {'first_name':request.POST['first_name'], 'last_name':request.POST['last_name'], 'birthday':request.POST['birthday'],
                             'sex':request.POST['sex'], 'birth place': request.POST['birth_place'].strip(), 'current_address':request.POST['current_address'].strip(),
