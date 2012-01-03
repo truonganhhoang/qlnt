@@ -254,7 +254,7 @@ class TBNamForm(forms.ModelForm):
 class SubjectForm(forms.ModelForm):
     class Meta:
         model = Subject
-        exclude = {'index','class_id'}
+        exclude = {'index','class_id', 'number_lesson', 'current_lesson'}
         
     def __init__(self, school_id, *args, **kwargs):
         super(SubjectForm, self).__init__(*args, **kwargs)
@@ -457,3 +457,12 @@ class TKBForm(forms.ModelForm):
         self.fields['period_8'] = forms.ModelChoiceField(required = False, queryset = Subject.objects.filter(class_id = class_id), label=u'Tiết 8')
         self.fields['period_9'] = forms.ModelChoiceField(required = False, queryset = Subject.objects.filter(class_id = class_id), label=u'Tiết 9')
         self.fields['period_10'] = forms.ModelChoiceField(required = False, queryset = Subject.objects.filter(class_id = class_id), label=u'Tiết 10')
+
+class LessonForm(forms.ModelForm):
+    class Meta:
+        model = Lesson
+        exclude = ('index', 'subject_id')
+        widgets = {
+            'ngay_day' : DateInput(attrs = {'class':'datepicker'}),
+            'title': forms.Textarea(attrs = {'cols': 70, 'rows': 1})
+        }

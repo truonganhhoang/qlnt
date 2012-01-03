@@ -465,6 +465,8 @@ class Subject(models.Model):
     primary = models.SmallIntegerField("Tính điểm(*)", default = 0, choices = LOAI_CHOICES)
     index = models.IntegerField("Số thứ tự(*)", default=0)
 
+    number_lesson = models.IntegerField("So Tiet", default = 0)
+    current_lesson = models.IntegerField("Tiet hoc hien tai", default=0)
     class_id = models.ForeignKey(Class, verbose_name = "Lớp(*)")    
     teacher_id = models.ForeignKey(Teacher, verbose_name = "Giáo viên", null= True ) # field nay de cung cap permission cho giao vien de nhap diem
     
@@ -759,3 +761,11 @@ class TKB(models.Model):
     period_10 = models.ForeignKey(Subject, related_name="Tiết 10", blank = True, null = True)
     chaoco = models.IntegerField("Tiết chào cơ", null= True)
     sinhhoat= models.IntegerField("Tiết sinh hoạt", null= True)
+
+class Lesson(models.Model):
+    subject_id = models.ForeignKey(Subject, verbose_name="Môn")
+    index = models.IntegerField("Thứ tự", default = 0)
+    title = models.TextField("Tên bài học", blank = True, null = True)
+    ngay_day = models.DateField("Ngày dạy", blank = True, null = True)
+    def __unicode__(self):
+        return self.subject_id.__unicode__() + u' Tiết ' + str(self.index)

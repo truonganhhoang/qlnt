@@ -1,8 +1,9 @@
- # -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 
 # Create your views here.
 import os.path
 import datetime
+from datetime import date
 from django.core.paginator import *
 from django.core import serializers
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseNotAllowed
@@ -32,13 +33,13 @@ NHAP_BANG_TAY = os.path.join('school', 'import', 'manual_adding.html')
 SCHOOL = os.path.join('school', 'school.html')
 YEARS = os.path.join('school', 'years.html')
 CLASS_LABEL = os.path.join('school', 'class_labels.html')
-CLASSIFY = os.path.join('school','classify.html')
-INFO = os.path.join('school','info.html')
-SETUP = os.path.join('school','setup.html')
-ORGANIZE_STUDENTS = os.path.join('school','organize_students.html')
-STUDENT = os.path.join('school','classDetail_one_student.html')
-def school_index(request):
+CLASSIFY = os.path.join('school', 'classify.html')
+INFO = os.path.join('school', 'info.html')
+SETUP = os.path.join('school', 'setup.html')
+ORGANIZE_STUDENTS = os.path.join('school', 'organize_students.html')
+STUDENT = os.path.join('school', 'classDetail_one_student.html')
 
+def school_index(request):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
@@ -62,28 +63,32 @@ def school_index(request):
         grades = school.block_set.all()
         classes = year.class_set.order_by('name')
         context = RequestContext(request)
-        return render_to_response(SCHOOL,{'classes': classes,
-                                          'grades': grades}, context_instance=context)
+        return render_to_response(SCHOOL, {'classes': classes,
+                                           'grades': grades}, context_instance=context)
     elif user_type == 'GIAO_VIEN':
-        teaching_subjects = Subject.objects.filter(teacher_id = user.teacher).order_by("class_id__block_id__number","index")
+        teaching_subjects = Subject.objects.filter(teacher_id=user.teacher).order_by("class_id__block_id__number",
+                                                                                     "index")
         teaching_class = user.teacher.teaching_class()
         term = get_current_term(request)
-        if term.number==3:
-            term =Term.objects.get(year_id=term.year_id,number=2)
-        head_subjects=None
+        if term.number == 3:
+            term = Term.objects.get(year_id=term.year_id, number=2)
+        head_subjects = None
         if teaching_class:
-            head_subjects=Subject.objects.filter(class_id=teaching_class).order_by("index")
+            head_subjects = Subject.objects.filter(class_id=teaching_class).order_by("index")
         context = RequestContext(request)
 
-        return render_to_response(SCHOOL,{'teaching_subjects': teaching_subjects,
-                                          'term': term, 'teaching_class': teaching_class,
-                                          'head_subjects':head_subjects},
+        return render_to_response(SCHOOL, {'teaching_subjects': teaching_subjects,
+                                           'term': term, 'teaching_class': teaching_class,
+                                           'head_subjects': head_subjects},
                                   context_instance=context)
-    elif user_type  == 'HOC_SINH':
+    elif user_type == 'HOC_SINH':
         return HttpResponseRedirect(reverse('student_detail', args=[user.pupil.id]))
+
+
 def is_safe(school):
     if school.danhsachloailop_set.all(): return True
     else: return False
+
 
 def setup(request):
     user = request.user
@@ -91,22 +96,21 @@ def setup(request):
     try:
         school = get_school(request)
     except Exception as e:
-        return HttpResponseRedirect( reverse('index'))
+        return HttpResponseRedirect(reverse('index'))
     permission = get_permission(request)
-    if not permission in [u'HIEU_TRUONG',u'HIEU_PHO']:
+    if not permission in [u'HIEU_TRUONG', u'HIEU_PHO']:
         return HttpResponseRedirect(reverse('school_index'))
-
 
     if request.is_ajax():
         if request.method == 'POST':
             if 'update_school_detail' in request.POST:
-                school_form = SchoolForm(request.POST, request = request)
+                school_form = SchoolForm(request.POST, request=request)
                 if school_form.is_valid():
                     school_form.save_to_model()
                     message = u'Bạn vừa cập nhật thông tin trường học thành công.\
                     Hãy cung cấp danh sách tên lớp học theo dạng [khối] [tên lớp]. Ví dụ: 10 A'
 
-                data = simplejson.dumps( {'message': message, 'status':'done'})
+                data = simplejson.dumps({'message': message, 'status': 'done'})
             elif 'update_class_name' in request.POST:
                 message, labels, success = parse_class_label(request, school)
 
@@ -119,37 +123,37 @@ def setup(request):
                     upper_bound = get_upper_bound(school)
                     grades = '-'.join([str(grade) for grade in range(lower_bound, upper_bound)])
 
-                data = simplejson.dumps( {'message': message, 'status': success,
-                                          'classes': classes_, 'grades': grades})
+                data = simplejson.dumps({'message': message, 'status': success,
+                                         'classes': classes_, 'grades': grades})
 
             elif 'start_year' in request.POST:
                 if is_safe(school):
-
-                    data = simplejson.dumps({'status':'done'})
+                    data = simplejson.dumps({'status': 'done'})
                 else:
-                    data = simplejson.dumps( {'message': message,'status': 'failed'} )
-            return HttpResponse(data, mimetype = 'json')
+                    data = simplejson.dumps({'message': message, 'status': 'failed'})
+            return HttpResponse(data, mimetype='json')
         else:
             raise Exception('StrangeRequestMethod')
 
-    form_data = {'name': school.name, 'school_level':school.school_level,
+    form_data = {'name': school.name, 'school_level': school.school_level,
                  'address': school.address, 'phone': school.phone,
                  'email': school.email}
-    school_form = SchoolForm(form_data, request= request)
+    school_form = SchoolForm(form_data, request=request)
     message, labels, success = parse_class_label(request, school)
 
     if request.method == 'POST':
-        school_form = SchoolForm(request.POST, request = request)
+        school_form = SchoolForm(request.POST, request=request)
         if school_form.is_valid():
             school_form.save_to_model()
             message = u'Bạn vừa cập nhật thông tin trường học thành công. '
 
         if 'start_year' in request.POST and is_safe(school):
-            HttpResponseRedirect( reverse('start_year'))
+            HttpResponseRedirect(reverse('start_year'))
 
     context = RequestContext(request)
-    return render_to_response( SETUP, { 'form': school_form, 'message':message, 'labels':labels},
-                               context_instance = context )
+    return render_to_response(SETUP, {'form': school_form, 'message': message, 'labels': labels},
+                              context_instance=context)
+
 
 def info(request):
     try:
@@ -158,7 +162,7 @@ def info(request):
         try:
             school = get_school(request)
         except Exception as e:
-            return HttpResponseRedirect( reverse('index'))
+            return HttpResponseRedirect(reverse('index'))
         form = None
         setting_form = None
         if request.method == 'POST':
@@ -168,14 +172,14 @@ def info(request):
             data['name'] = data['name'].strip()
             data['lock_time'] = data['lock_time'].strip()
             data['class_labels'] = data['class_labels'].strip()
-            name=''
-            address=''
-            email=''
-            phone=''
-            lock_time =''
+            name = ''
+            address = ''
+            email = ''
+            phone = ''
+            lock_time = ''
             class_labels = ''
             if request.is_ajax():
-                form = SchoolForm(data, request = request)
+                form = SchoolForm(data, request=request)
                 setting_form = SettingForm(data, request=request)
                 if form.is_valid():
                     form.save_to_model()
@@ -213,39 +217,41 @@ def info(request):
                     status = 'error'
                 response = simplejson.dumps({'message': message,
                                              'status': status,
-                                             'phone':phone,
-                                             'email':email,
-                                             'name':name,
-                                             'address':address,
+                                             'phone': phone,
+                                             'email': email,
+                                             'name': name,
+                                             'address': address,
                                              'lock_time': lock_time,
                                              'class_labels': class_labels})
-                return HttpResponse(response, mimetype = 'json')
+                return HttpResponse(response, mimetype='json')
 
-            form = SchoolForm(data, request = request)
+            form = SchoolForm(data, request=request)
             if form.is_valid():
                 form.save_to_model()
                 message = u'Bạn vừa cập nhật thông tin trường học thành công.'
-                return HttpResponseRedirect( reverse('info'))
+                return HttpResponseRedirect(reverse('info'))
         else:
             data = {'name': school.name,
                     'address': school.address, 'phone': school.phone,
                     'email': school.email}
-            form = SchoolForm(data, request= request)
+            form = SchoolForm(data, request=request)
             lock_time = school.get_setting('lock_time')
             labels = school.get_setting('class_labels')
             class_labels = ', '.join(labels)
             setting = {'lock_time': lock_time, 'class_labels': class_labels}
-            setting_form = SettingForm(setting, request= request)
+            setting_form = SettingForm(setting, request=request)
 
         context = RequestContext(request)
-        return render_to_response(INFO, { 'form':form,
-                                          'school':school,
-                                          'message':message,
-                                          'setting_form': setting_form},
-                                  context_instance = context)
+        return render_to_response(INFO, {'form': form,
+                                         'school': school,
+                                         'message': message,
+                                         'setting_form': setting_form},
+                                  context_instance=context)
     except Exception as e:
         print e
         raise e
+
+
 def empty(label_list):
     for l in label_list:
         if l.strip(): return False
@@ -278,27 +284,28 @@ def change_index(request, target, class_id):
                             item.save()
                 transaction.commit()
                 response = simplejson.dumps({'success': True})
-                return HttpResponse( response, mimetype='json')
+                return HttpResponse(response, mimetype='json')
             except Exception as e:
                 print e
     else:
         raise Exception('NotAjaxRequest')
 
-def organize_students(request, class_id, type = '0'):
+
+def organize_students(request, class_id, type='0'):
     try:
         school = get_school(request)
     except Exception as e:
         return HttpResponseRedirect(reverse('index'))
 
     permission = get_permission(request)
-    if not permission in [u'HIEU_TRUONG',u'HIEU_PHO']:
+    if not permission in [u'HIEU_TRUONG', u'HIEU_PHO']:
         return HttpResponseRedirect(reverse('school_index'))
 
     student_list = None
     _class = None
     try:
-        _class = Class.objects.get( id = int(class_id))
-        if type=='1':
+        _class = Class.objects.get(id=int(class_id))
+        if type == '1':
             student_list = _class.pupil_set.order_by('first_name', 'last_name')
         else:
             student_list = _class.pupil_set.order_by('index')
@@ -307,9 +314,7 @@ def organize_students(request, class_id, type = '0'):
 
     context = RequestContext(request)
     return render_to_response(ORGANIZE_STUDENTS, {'student_list': student_list, 'class': _class},
-                              context_instance = context)
-
-
+                              context_instance=context)
 
 
 def parse_class_label(request, school):
@@ -345,7 +350,7 @@ def parse_class_label(request, school):
                 for label in list_labels:
                     if label:
                         label = label.strip()
-                        lb = school.danhsachloailop_set.filter( loai__exact = label )
+                        lb = school.danhsachloailop_set.filter(loai__exact=label)
                         if not lb:
                             lb = DanhSachLoaiLop()
                             lb.loai = label
@@ -357,7 +362,7 @@ def parse_class_label(request, school):
                 school.save_settings('class_labels', str(labels_to_save))
                 message = u'Bạn vừa thiết lập thành công danh sách tên lớp cho trường.'
                 success = True
-            labels = 'Nhanh: '+ labels
+            labels = 'Nhanh: ' + labels
         else:
             if ',' in labels:
                 list_labels = labels.split(',')
@@ -367,7 +372,7 @@ def parse_class_label(request, school):
                     success = False
                 else:
                     ds = school.danhsachloailop_set.all()
-                    labels_to_save= []
+                    labels_to_save = []
                     for d in ds:
                         d.delete()
                     for label in list_labels:
@@ -375,7 +380,7 @@ def parse_class_label(request, school):
                         if label:
                             try:
                                 class_type = label.split(' ')[1]
-                                lb = school.danhsachloailop_set.filter( loai__exact = class_type )
+                                lb = school.danhsachloailop_set.filter(loai__exact=class_type)
                                 if not lb:
                                     lb = DanhSachLoaiLop()
                                     lb.loai = class_type
@@ -394,6 +399,7 @@ def parse_class_label(request, school):
 
     return message, labels, success
 
+
 @transaction.commit_on_success
 def class_label(request):
     try:
@@ -402,7 +408,7 @@ def class_label(request):
         return HttpResponseRedirect(reverse('index'))
 
     permission = get_permission(request)
-    if not permission in [u'HIEU_TRUONG',u'HIEU_PHO']:
+    if not permission in [u'HIEU_TRUONG', u'HIEU_PHO']:
         return HttpResponseRedirect(reverse('school_index'))
 
 
@@ -414,6 +420,7 @@ def class_label(request):
     c = RequestContext(request, {'labels': labels, 'message': message}, )
     return HttpResponse(t.render(c))
 
+
 @transaction.commit_on_success
 def b1(request):
     # tao moi cac khoi neu truong moi thanh lap
@@ -423,7 +430,7 @@ def b1(request):
         return HttpResponseRedirect(reverse('index'))
 
     permission = get_permission(request)
-    if not permission in [u'HIEU_TRUONG',u'HIEU_PHO']:
+    if not permission in [u'HIEU_TRUONG', u'HIEU_PHO']:
         return HttpResponseRedirect(reverse('school_index'))
 
     message = None
@@ -432,7 +439,7 @@ def b1(request):
                     danh sách tên lớp học cho nhà trường rồi ấn nút Lưu lại'
         request.session['message'] = message
         transaction.commit()
-        return HttpResponseRedirect( reverse('class_label'))
+        return HttpResponseRedirect(reverse('class_label'))
     if school.school_level == u'1':
         lower_bound = 1
         upper_bound = 5
@@ -449,8 +456,8 @@ def b1(request):
         raise Exception('SchoolLevelInvalid')
 
     if not school.status:
-        for khoi in range(lower_bound, upper_bound+1):
-            if not school.block_set.filter(number = khoi):
+        for khoi in range(lower_bound, upper_bound + 1):
+            if not school.block_set.filter(number=khoi):
                 block = Block()
                 block.number = khoi
                 block.school_id = school
@@ -495,18 +502,18 @@ def b1(request):
             _class = Class()
             _class.name = class_name
             _class.status = 1
-            _class.block_id = school.block_set.get( number = int(class_name.split(' ')[0]))
+            _class.block_id = school.block_set.get(number=int(class_name.split(' ')[0]))
             _class.year_id = year
             _class.save()
-            i =0
+            i = 0
             for mon in ds_mon_hoc:
-                i+=1
+                i += 1
                 if mon == u'Toán' or mon == u'Ngữ văn':
-                    add_subject(subject_name= mon, subject_type= mon, hs=2,_class=_class, index=i)
+                    add_subject(subject_name=mon, subject_type=mon, hs=2, _class=_class, index=i)
                 else:
-                    add_subject(subject_name= mon, subject_type= mon, _class=_class, index=i)
-            # -- day cac hoc sinh len lop
-        last_year = school.year_set.filter(time__exact=current_year -1)
+                    add_subject(subject_name=mon, subject_type=mon, _class=_class, index=i)
+                    # -- day cac hoc sinh len lop
+        last_year = school.year_set.filter(time__exact=current_year - 1)
         if last_year:
             blocks = school.block_set.all()
             for block in blocks:
@@ -542,36 +549,37 @@ def b1(request):
         pass
     return HttpResponseRedirect(reverse("classes"))
 
+
 def years(request):
     school = get_school(request)
     years = school.year_set.all()
-    return render_to_response(YEARS, {'years':years}, context_instance=RequestContext(request))
+    return render_to_response(YEARS, {'years': years}, context_instance=RequestContext(request))
+
 
 @transaction.commit_on_success
 def classify(request):
     try:
         school = get_school(request)
     except Exception as e:
-        return HttpResponseRedirect( reverse("index"))
+        return HttpResponseRedirect(reverse("index"))
     try:
         startyear = get_latest_startyear(request)
         year = get_current_year(request)
     except Exception as e:
         print e
-        return HttpResponseRedirect( reverse("school_index"))
+        return HttpResponseRedirect(reverse("school_index"))
 
     permission = get_permission(request)
-    if not permission in [u'HIEU_TRUONG',u'HIEU_PHO']:
+    if not permission in [u'HIEU_TRUONG', u'HIEU_PHO']:
         return HttpResponseRedirect(reverse('school_index'))
-
 
     message = None
     nothing = False
-    student_list = startyear.pupil_set.filter( class_id__exact = None).order_by('first_name')
+    student_list = startyear.pupil_set.filter(class_id__exact=None).order_by('first_name')
     lower_bound = get_lower_bound(school)
-    grade = school.block_set.filter( number__exact = lower_bound)
+    grade = school.block_set.filter(number__exact=lower_bound)
     _class_list = [(u'-1', u'Chọn lớp')]
-    class_list = year.class_set.filter( block_id__exact = grade)
+    class_list = year.class_set.filter(block_id__exact=grade)
     for _class in class_list:
         _class_list.append((_class.id, _class.name))
     if request.method == "GET":
@@ -579,9 +587,9 @@ def classify(request):
             message = u'Không còn học sinh nào cần được phân lớp.'
             nothing = True
     else:
-        form = ClassifyForm( request.POST, student_list = student_list, class_list = _class_list)
+        form = ClassifyForm(request.POST, student_list=student_list, class_list=_class_list)
         if form.is_valid():
-            count =0
+            count = 0
             for student in student_list:
                 _class = form.cleaned_data[str(student.id)]
                 if _class == u'-1':
@@ -590,16 +598,17 @@ def classify(request):
                     student.save()
 
                 else:
-                    _class = year.class_set.get( id = int(_class))
+                    _class = year.class_set.get(id=int(_class))
                     move_student(school, student, _class)
-                    count +=1
+                    count += 1
             message = u'Bạn vừa phân lớp thành công cho ' + str(count) + u' học sinh.'
         else:
             message = u'Xảy ra trục trặc trong quá trình nhập dữ liệu.'
-        student_list = startyear.pupil_set.filter( class_id__exact = None).order_by('first_name')
-    form = ClassifyForm( student_list = student_list, class_list= _class_list)
-    return render_to_response( CLASSIFY, { 'message':message, 'student_list':student_list, 'form':form, 'nothing':nothing},
-                               context_instance = RequestContext(request))
+        student_list = startyear.pupil_set.filter(class_id__exact=None).order_by('first_name')
+    form = ClassifyForm(student_list=student_list, class_list=_class_list)
+    return render_to_response(CLASSIFY,
+            {'message': message, 'student_list': student_list, 'form': form, 'nothing': nothing},
+                              context_instance=RequestContext(request))
 
 #-----------------------------------------------------------------------------------------------------------------
 #----------- Exporting from Excel -------------------------------------
@@ -608,20 +617,20 @@ def class_generate(request, class_id, object):
     try:
         school = get_school(request)
     except Exception as e:
-        return HttpResponseRedirect( reverse("index"))
+        return HttpResponseRedirect(reverse("index"))
     try:
         startyear = get_latest_startyear(request)
         year = get_current_year(request)
     except Exception as e:
         print e
-        return HttpResponseRedirect( reverse("school_index"))
+        return HttpResponseRedirect(reverse("school_index"))
 
     permission = get_permission(request)
-    if not permission in [u'HIEU_TRUONG',u'HIEU_PHO']:
+    if not permission in [u'HIEU_TRUONG', u'HIEU_PHO']:
         return HttpResponseRedirect(reverse('school_index'))
 
     try:
-        _class = Class.objects.get(id = class_id)
+        _class = Class.objects.get(id=class_id)
     except Exception as e:
         print e
         return HttpResponse()
@@ -629,7 +638,7 @@ def class_generate(request, class_id, object):
         file_name = request.session.session_key + unicode(_class) + '_student_list.xls'
         file_name = os.path.join(settings.TEMP_FILE_LOCATION, file_name)
         student_list = _class.pupil_set.all().order_by('index')
-        book = Workbook(encoding = 'utf-8')
+        book = Workbook(encoding='utf-8')
         #renderring xls file
 
         fnt = Font()
@@ -651,7 +660,6 @@ def class_generate(request, class_id, object):
         borders.top_colour = 0x17
         borders.bottom_colour = 0x17
 
-
         style = XFStyle()
         style.font = fnt
         style.borders = borders
@@ -661,9 +669,8 @@ def class_generate(request, class_id, object):
         style_bold.borders = borders
 
         sheet = book.add_sheet('Danh sách học sinh')
-        sheet.write(0,0,u'Danh sách học sinh lớp %s' % unicode(_class), style_bold)
+        sheet.write(0, 0, u'Danh sách học sinh lớp %s' % unicode(_class), style_bold)
         sheet.row(0).height = 350
-
 
         sheet.col(0).width = 1500
         sheet.col(1).width = 7000
@@ -676,22 +683,22 @@ def class_generate(request, class_id, object):
         sheet.col(8).width = 7000
         sheet.row(4).height = 350
 
-        sheet.write(4,0,'STT', style_bold)
-        sheet.write(4,1,'Họ và Tên', style_bold)
-        sheet.write(4,2,'Ngày sinh', style_bold)
-        sheet.write(4,3,'Nơi sinh', style_bold)
-        sheet.write(4,4,'Giới tính', style_bold)
-        sheet.write(4,5,'Dân tộc', style_bold)
-        sheet.write(4,6,'Chỗ ở hiện tại', style_bold)
-        sheet.write(4,7,'Số điện thoại', style_bold)
-        sheet.write(4,8,'Số điện thoại nhắn tin', style_bold)
-        sheet.write(4,9,'Ghi chú', style_bold)
-        sheet.write(4,10, 'Tên tài khoản', style_bold)
+        sheet.write(4, 0, 'STT', style_bold)
+        sheet.write(4, 1, 'Họ và Tên', style_bold)
+        sheet.write(4, 2, 'Ngày sinh', style_bold)
+        sheet.write(4, 3, 'Nơi sinh', style_bold)
+        sheet.write(4, 4, 'Giới tính', style_bold)
+        sheet.write(4, 5, 'Dân tộc', style_bold)
+        sheet.write(4, 6, 'Chỗ ở hiện tại', style_bold)
+        sheet.write(4, 7, 'Số điện thoại', style_bold)
+        sheet.write(4, 8, 'Số điện thoại nhắn tin', style_bold)
+        sheet.write(4, 9, 'Ghi chú', style_bold)
+        sheet.write(4, 10, 'Tên tài khoản', style_bold)
         row = 5
         for student in student_list:
             sheet.row(row).height = 350
-            sheet.write(row, 0, row -4, style)
-            sheet.write(row, 1, student.last_name + ' '+student.first_name, style)
+            sheet.write(row, 0, row - 4, style)
+            sheet.write(row, 1, student.last_name + ' ' + student.first_name, style)
             sheet.write(row, 2, student.birthday.strftime('%d/%m/%Y'), style)
             sheet.write(row, 3, student.birth_place, style)
             sheet.write(row, 4, student.sex, style)
@@ -701,38 +708,39 @@ def class_generate(request, class_id, object):
             sheet.write(row, 8, student.sms_phone, style)
             sheet.write(row, 9, '', style)
             sheet.write(row, 10, student.user_id.username, style)
-            row +=1
+            row += 1
             #return HttpResponse
         response = HttpResponse(mimetype='application/ms-excel')
-        strstr=unicode(_class)
-        strstr1=strstr.replace(' ','_')
+        strstr = unicode(_class)
+        strstr1 = strstr.replace(' ', '_')
         response['Content-Disposition'] = u'attachment; filename=ds_hoc_sinh_%s.xls' % strstr1
         book.save(response)
         return response
     else:
-        raise Http404( "Page does not exist!" )
+        raise Http404("Page does not exist!")
+
 
 def teacher_generate(request, type):
     try:
         school = get_school(request)
     except Exception as e:
-        return HttpResponseRedirect( reverse("index"))
+        return HttpResponseRedirect(reverse("index"))
     try:
         startyear = get_latest_startyear(request)
         year = get_current_year(request)
     except Exception as e:
         print e
-        return HttpResponseRedirect( reverse("school_index"))
+        return HttpResponseRedirect(reverse("school_index"))
 
     permission = get_permission(request)
-    if not permission in [u'HIEU_TRUONG',u'HIEU_PHO']:
+    if not permission in [u'HIEU_TRUONG', u'HIEU_PHO']:
         return HttpResponseRedirect(reverse('school_index'))
 
     if type == 'all':
         file_name = request.session.session_key + unicode(school) + '_teacher_list.xls'
         file_name = os.path.join(settings.TEMP_FILE_LOCATION, file_name)
-        teacher_list = school.teacher_set.all().order_by('first_name', 'last_name','birthday')
-        book = Workbook(encoding = 'utf-8')
+        teacher_list = school.teacher_set.all().order_by('first_name', 'last_name', 'birthday')
+        book = Workbook(encoding='utf-8')
         #renderring xls file
 
         fnt = Font()
@@ -754,7 +762,6 @@ def teacher_generate(request, type):
         borders.top_colour = 0x17
         borders.bottom_colour = 0x17
 
-
         style = XFStyle()
         style.font = fnt
         style.borders = borders
@@ -764,9 +771,8 @@ def teacher_generate(request, type):
         style_bold.borders = borders
 
         sheet = book.add_sheet('Danh sách giáo viên')
-        sheet.write(0,0,u'Danh sách giáo viên  %s' % unicode(school), style_bold)
+        sheet.write(0, 0, u'Danh sách giáo viên  %s' % unicode(school), style_bold)
         sheet.row(0).height = 350
-
 
         sheet.col(0).width = 1500
         sheet.col(1).width = 7000
@@ -777,24 +783,24 @@ def teacher_generate(request, type):
         sheet.col(6).width = 7000
         sheet.row(4).height = 350
 
-        sheet.write(4,0,'STT', style_bold)
-        sheet.write(4,1,'Họ và Tên', style_bold)
-        sheet.write(4,2,'Ngày sinh', style_bold)
-        sheet.write(4,3,'Quê quán', style_bold)
-        sheet.write(4,4,'Giới tính', style_bold)
-        sheet.write(4,5,'Dạy môn', style_bold)
-        sheet.write(4,6,'Tổ', style_bold)
-        sheet.write(4,7,'Tài Khoản', style_bold)
+        sheet.write(4, 0, 'STT', style_bold)
+        sheet.write(4, 1, 'Họ và Tên', style_bold)
+        sheet.write(4, 2, 'Ngày sinh', style_bold)
+        sheet.write(4, 3, 'Quê quán', style_bold)
+        sheet.write(4, 4, 'Giới tính', style_bold)
+        sheet.write(4, 5, 'Dạy môn', style_bold)
+        sheet.write(4, 6, 'Tổ', style_bold)
+        sheet.write(4, 7, 'Tài Khoản', style_bold)
 
         row = 5
         for teacher in teacher_list:
             sheet.row(row).height = 350
-            sheet.write(row, 0, row -4, style)
-            sheet.write(row, 1, teacher.last_name + ' '+teacher.first_name, style)
+            sheet.write(row, 0, row - 4, style)
+            sheet.write(row, 1, teacher.last_name + ' ' + teacher.first_name, style)
             sheet.write(row, 2, teacher.birthday.strftime('%d/%m/%Y'), style)
             sheet.write(row, 3, teacher.home_town, style)
             sheet.write(row, 4, teacher.sex, style)
-            if teacher.major and teacher.major!= '-1':
+            if teacher.major and teacher.major != '-1':
                 sheet.write(row, 5, teacher.get_major_display(), style)
             else:
                 sheet.write(row, 5, '', style)
@@ -803,14 +809,15 @@ def teacher_generate(request, type):
             else:
                 sheet.write(row, 6, '', style)
             sheet.write(row, 7, teacher.user_id.username, style)
-            row +=1
+            row += 1
             #return HttpResponse
         response = HttpResponse(mimetype='application/ms-excel')
         response['Content-Disposition'] = u'attachment; filename=ds_giao_vien.xls'
         book.save(response)
         return response
     else:
-        raise Http404( "Page does not exist!" )
+        raise Http404("Page does not exist!")
+
 #----------- Importing form Excel -------------------------------------
 
 def save_file(import_file, session):
@@ -822,6 +829,7 @@ def save_file(import_file, session):
         saved_file.write(chunk)
     saved_file.close()
     return save_file_name
+
 
 def process_file(file_name, task):
     message = u'<ul>'
@@ -892,18 +900,17 @@ def process_file(file_name, task):
             elif value == u'Số nhắn tin' or value == u'Số điện thoại nhắn tin':
                 c_so_dt_nt = c
 
-
         for r in range(start_row + 1, sheet.nrows):
             name = ''
-            birthday =''
-            gt='Nam'
-            dan_toc=u'Kinh'
-            noi_sinh=''
-            cho_o_ht=''
-            ten_bo=''
-            dt_bo=''
-            ten_me=''
-            dt_me=''
+            birthday = ''
+            gt = 'Nam'
+            dan_toc = u'Kinh'
+            noi_sinh = ''
+            cho_o_ht = ''
+            ten_bo = ''
+            dt_bo = ''
+            ten_me = ''
+            dt_me = ''
             ban_dk = u'CB'
             sms_phone = ''
             name = sheet.cell(r, c_ten).value.strip()
@@ -914,49 +921,51 @@ def process_file(file_name, task):
             number += 1
             birthday = sheet.cell(r, c_ngay_sinh).value
             if not birthday:
-                message += u'<li>Ô ' + unicode(cellname(r, c_ngay_sinh)) + u':Trống. Học sinh: ' + name + u' không đủ thông tin.</li>'
+                message += u'<li>Ô ' + unicode(
+                    cellname(r, c_ngay_sinh)) + u':Trống. Học sinh: ' + name + u' không đủ thông tin.</li>'
                 continue
-            if c_gioi_tinh>-1:
+            if c_gioi_tinh > -1:
                 gt = sheet.cell(r, c_gioi_tinh).value.strip().capitalize()
                 if not gt: gt = 'Nam'
-            if c_noi_sinh>-1:
+            if c_noi_sinh > -1:
                 noi_sinh = sheet.cell(r, c_noi_sinh).value.strip()
-            if c_dan_toc>-1:
+            if c_dan_toc > -1:
                 dan_toc = sheet.cell(r, c_dan_toc).value.strip()
                 if not dan_toc.strip(): dan_toc = 'Kinh'
-            if c_cho_o_ht>-1:
+            if c_cho_o_ht > -1:
                 cho_o_ht = sheet.cell(r, c_cho_o_ht).value.strip()
-            if c_ten_bo>-1:
+            if c_ten_bo > -1:
                 ten_bo = sheet.cell(r, c_ten_bo).value.strip().capitalize()
-            if c_so_dt_bo>-1:
+            if c_so_dt_bo > -1:
                 dt_bo = sheet.cell(r, c_so_dt_bo).value.strip()
-            if c_ten_me>-1:
+            if c_ten_me > -1:
                 ten_me = sheet.cell(r, c_ten_me).value.strip().capitalize()
-            if c_so_dt_me>-1:
+            if c_so_dt_me > -1:
                 dt_me = sheet.cell(r, c_so_dt_me).value.strip()
-            if c_nguyen_vong>-1:
-                ban_dk = sheet.cell( r, c_nguyen_vong).value.strip()
+            if c_nguyen_vong > -1:
+                ban_dk = sheet.cell(r, c_nguyen_vong).value.strip()
                 if not ban_dk.strip(): ban_dk = 'CB'
 
-            if c_so_dt_nt>-1:
+            if c_so_dt_nt > -1:
                 sms_phone = sheet.cell(r, c_so_dt_nt).value.strip()
                 if sms_phone:
                     try:
                         validate_phone(sms_phone)
                     except Exception as e:
-                        message += u'<li>Ô ' + unicode(cellname(r, c_ngay_sinh)) + u':   Số điện thoại không hợp lệ ' + u'</li>'
+                        message += u'<li>Ô ' + unicode(
+                            cellname(r, c_ngay_sinh)) + u':   Số điện thoại không hợp lệ ' + u'</li>'
                         sms_phone = ''
                         print e
             try:
-                if type(birthday) == unicode or type(birthday)== str:
+                if type(birthday) == unicode or type(birthday) == str:
                     birthday = to_date(birthday)
                 else:
-
                     date_value = xlrd.xldate_as_tuple(sheet.cell(r, c_ngay_sinh).value, book.datemode)
                     birthday = date(*date_value[:3])
             except Exception as e:
                 print e
-                message += u'<li>Ô ' + unicode(cellname(r, c_ngay_sinh)) + u':Không đúng định dạng "ngày/tháng/năm" ' + u'</li>'
+                message += u'<li>Ô ' + unicode(
+                    cellname(r, c_ngay_sinh)) + u':Không đúng định dạng "ngày/tháng/năm" ' + u'</li>'
                 continue
             data = {'fullname': name,
                     'birthday': birthday,
@@ -1032,14 +1041,13 @@ def process_file(file_name, task):
             elif value == u'Dạy môn':
                 c_chuyen_mon = c
 
-
         for r in range(start_row + 1, sheet.nrows):
             name = ''
-            birthday =''
-            gt=''
-            dan_toc=''
-            que_quan=''
-            cho_o_ht=''
+            birthday = ''
+            gt = ''
+            dan_toc = ''
+            que_quan = ''
+            cho_o_ht = ''
             to = ''
             nhom = ''
             chuyen_mon = ''
@@ -1053,35 +1061,35 @@ def process_file(file_name, task):
             if not birthday:
                 message += u'<li>Ô ' + unicode(cellname(r, c_ngay_sinh)) + u':Trống. </li>'
                 birthday = None
-            if c_gioi_tinh>-1:
+            if c_gioi_tinh > -1:
                 gt = sheet.cell(r, c_gioi_tinh).value.strip().capitalize()
                 if not gt: gt = 'Nam'
-            if c_que_quan >-1:
+            if c_que_quan > -1:
                 que_quan = sheet.cell(r, c_que_quan).value.strip()
-            if c_dan_toc>-1:
+            if c_dan_toc > -1:
                 dan_toc = sheet.cell(r, c_dan_toc).value.strip()
                 if not dan_toc.strip(): dan_toc = 'Kinh'
-            if c_cho_o_ht>-1:
+            if c_cho_o_ht > -1:
                 cho_o_ht = sheet.cell(r, c_cho_o_ht).value.strip()
 
-            if c_to>-1:
+            if c_to > -1:
                 to = sheet.cell(r, c_to).value.strip()
-            if c_nhom>-1:
+            if c_nhom > -1:
                 nhom = sheet.cell(r, c_nhom).value.strip()
-            if c_chuyen_mon>-1:
+            if c_chuyen_mon > -1:
                 chuyen_mon = sheet.cell(r, c_chuyen_mon).value.strip()
 
             if birthday:
                 try:
-                    if type(birthday) == unicode or type(birthday)== str:
+                    if type(birthday) == unicode or type(birthday) == str:
                         birthday = to_date(birthday)
                     else:
-
                         date_value = xlrd.xldate_as_tuple(sheet.cell(r, c_ngay_sinh).value, book.datemode)
                         birthday = date(*date_value[:3])
                 except Exception as e:
                     print e
-                    message += u'<li>Ô ' + unicode(cellname(r, c_ngay_sinh)) + u':Không đúng định dạng "ngày/tháng/năm" ' + u'</li>'
+                    message += u'<li>Ô ' + unicode(
+                        cellname(r, c_ngay_sinh)) + u':Không đúng định dạng "ngày/tháng/năm" ' + u'</li>'
                     continue
 
             data = {'fullname': name,
@@ -1100,6 +1108,7 @@ def process_file(file_name, task):
         return teacher_list, message, number, number_ok
     return None
 
+
 def student_import( request, class_id, request_type='' ):
     try:
         school = get_school(request)
@@ -1107,83 +1116,84 @@ def student_import( request, class_id, request_type='' ):
         return HttpResponseRedirect(reverse('index'))
 
     permission = get_permission(request)
-    if not permission in [u'HIEU_TRUONG',u'HIEU_PHO']:
+    if not permission in [u'HIEU_TRUONG', u'HIEU_PHO']:
         return HttpResponseRedirect(reverse('school_index'))
 
     file = None
     if request.method == "POST":
-        if request.is_ajax( ):
+        if request.is_ajax():
             # the file is stored raw in the request
             try:
-                if request_type==u'update':
-                    chosen_class = Class.objects.get( id = int(class_id) )
+                if request_type == u'update':
+                    chosen_class = Class.objects.get(id=int(class_id))
                     year = school.startyear_set.latest('time')
                     current_year = school.year_set.latest('time')
-                    term = get_current_term( request)
+                    term = get_current_term(request)
                     saving_import_student = request.session.pop('saving_import_student')
                     print saving_import_student
                     try:
-                        number_of_change = add_many_students( student_list = saving_import_student,
-                                                              _class = chosen_class,
-                                                              start_year = year, year = current_year,
-                                                              term = term, school=school,
-                                                              force_update= True)
+                        number_of_change = add_many_students(student_list=saving_import_student,
+                                                             _class=chosen_class,
+                                                             start_year=year, year=current_year,
+                                                             term=term, school=school,
+                                                             force_update=True)
                     except Exception as e:
                         print e
                     if number_of_change:
-                        data =simplejson.dumps({'success': True, 'message': u'Đã cập nhật %s học sinh.' %number_of_change})
+                        data = simplejson.dumps(
+                                {'success': True, 'message': u'Đã cập nhật %s học sinh.' % number_of_change})
                     else:
-                        data =simplejson.dumps({'success': True, 'message': u'Thông tin không thay đổi'})
+                        data = simplejson.dumps({'success': True, 'message': u'Thông tin không thay đổi'})
                     return HttpResponse(data, mimetype='json')
                     # AJAX Upload will pass the filename in the querystring if it is the "advanced" ajax upload
                 try:
                     file = request.FILES.get('file')
                 except KeyError:
-                    return HttpResponseBadRequest( "AJAX request not valid" )
+                    return HttpResponseBadRequest("AJAX request not valid")
                     # not an ajax upload, so it was the "basic" iframe version with submission via form
             except Exception as e:
                 print e
                 raise e
         else:
             is_raw = False
-            if len( request.FILES ) == 1:
+            if len(request.FILES) == 1:
             # FILES is a dictionary in Django but Ajax Upload gives the uploaded file an
             # ID based on a random number, so it cannot be guessed here in the code.
             # Rather than editing Ajax Upload to pass the ID in the querystring,
             # observer that each upload is a separate request,
             # so FILES should only have one entry.
             # Thus, we can just grab the first (and only) value in the dict.
-                upload = request.FILES.values( )[ 0 ]
+                upload = request.FILES.values()[0]
             else:
-                raise Http404( "Bad Upload" )
-            filename = '_'.join([request.session.session_key,upload.name])
+                raise Http404("Bad Upload")
+            filename = '_'.join([request.session.session_key, upload.name])
     else:
-        return HttpResponseRedirect( reverse('school_index'))
+        return HttpResponseRedirect(reverse('school_index'))
         # save the file
 
     filename = save_file(request.FILES.get('file'), request.session)
     message = None
     process_file_message = None
 
-    result, process_file_message, number, number_ok = process_file( filename, "import_student")
+    result, process_file_message, number, number_ok = process_file(filename, "import_student")
     existing_student = []
     if 'error' in result:
         success = False
         message = result['error']
         data = [{'name': file.name,
                  'url': filename,
-                 'sizef':file.size,
+                 'sizef': file.size,
                  'process_message': process_file_message,
                  'error': u'File excel không đúng định dạng'}]
     else:
-        chosen_class = Class.objects.get( id = int(class_id) )
+        chosen_class = Class.objects.get(id=int(class_id))
         year = school.startyear_set.latest('time')
         current_year = school.year_set.latest('time')
-        term = get_current_term( request)
+        term = get_current_term(request)
         try:
-            existing_student= add_many_students(student_list = result, _class = chosen_class,
-                                                start_year = year, year = current_year,
-                                                term = term, school=school)
+            existing_student = add_many_students(student_list=result, _class=chosen_class,
+                                                 start_year=year, year=current_year,
+                                                 term=term, school=school)
 
 
         except Exception as e:
@@ -1194,73 +1204,74 @@ def student_import( request, class_id, request_type='' ):
             student_confliction = u'Có %s học sinh không được nhập do đã tồn tại trong hệ thống' % len(existing_student)
             request.session['saving_import_student'] = existing_student
         data = [{'name': file.name, 'url': filename,
-                 'sizef':file.size,
+                 'sizef': file.size,
                  'process_message': process_file_message,
                  'student_confliction': student_confliction,
                  'number': number,
                  'number_ok': number_ok - len(existing_student),
                  'message': 'Nhập dữ liệu thành công'}]
-    return HttpResponse( simplejson.dumps( data ) )
+    return HttpResponse(simplejson.dumps(data))
 
-def teacher_import( request, request_type = ''):
+
+def teacher_import( request, request_type=''):
     try:
         school = get_school(request)
     except Exception as e:
         return HttpResponseRedirect(reverse('index'))
 
     permission = get_permission(request)
-    if not permission in [u'HIEU_TRUONG',u'HIEU_PHO']:
+    if not permission in [u'HIEU_TRUONG', u'HIEU_PHO']:
         return HttpResponseRedirect(reverse('school_index'))
 
     file = None
     if request.method == "POST":
-        if request.is_ajax( ):
-            if request_type==u'update':
+        if request.is_ajax():
+            if request_type == u'update':
                 saving_import_teacher = request.session.pop('saving_import_teacher')
                 print saving_import_teacher
                 for teacher in saving_import_teacher:
                     try:
-                        add_teacher(  full_name= teacher['fullname'],
-                                      birthday= teacher['birthday'],
-                                      sex= teacher['sex'],
-                                      dan_toc= teacher['dan_toc'],
-                                      home_town= teacher['home_town'],
-                                      current_address= teacher['current_address'],
-                                      team_id= teacher['team'],
-                                      group_id= teacher['group'],
-                                      major= teacher['major'],
-                                      school= school,
-                                      force_update=True)
+                        add_teacher(full_name=teacher['fullname'],
+                                    birthday=teacher['birthday'],
+                                    sex=teacher['sex'],
+                                    dan_toc=teacher['dan_toc'],
+                                    home_town=teacher['home_town'],
+                                    current_address=teacher['current_address'],
+                                    team_id=teacher['team'],
+                                    group_id=teacher['group'],
+                                    major=teacher['major'],
+                                    school=school,
+                                    force_update=True)
                     except Exception as e:
                         print e
-                data =simplejson.dumps({'success': True, 'message': 'Đã cập nhật.'})
+                data = simplejson.dumps({'success': True, 'message': 'Đã cập nhật.'})
                 return HttpResponse(data, mimetype='json')
             try:
                 file = request.FILES.get('file')
             except KeyError:
-                return HttpResponseBadRequest( "AJAX request not valid" )
+                return HttpResponseBadRequest("AJAX request not valid")
                 # not an ajax upload, so it was the "basic" iframe version with submission via form
         else:
             is_raw = False
-            if len( request.FILES ) == 1:
+            if len(request.FILES) == 1:
             # FILES is a dictionary in Django but Ajax Upload gives the uploaded file an
             # ID based on a random number, so it cannot be guessed here in the code.
             # Rather than editing Ajax Upload to pass the ID in the querystring,
             # observer that each upload is a separate request,
             # so FILES should only have one entry.
             # Thus, we can just grab the first (and only) value in the dict.
-                upload = request.FILES.values( )[ 0 ]
+                upload = request.FILES.values()[0]
             else:
-                raise Http404( "Bad Upload" )
-            filename = '_'.join([request.session.session_key,upload.name])
+                raise Http404("Bad Upload")
+            filename = '_'.join([request.session.session_key, upload.name])
     else:
-        return HttpResponseRedirect( reverse('school_index'))
+        return HttpResponseRedirect(reverse('school_index'))
         # save the file
     filename = save_file(request.FILES.get('file'), request.session)
     message = None
     process_file_message = None
 
-    result, process_file_message, number, number_ok = process_file( filename, "import_teacher")
+    result, process_file_message, number, number_ok = process_file(filename, "import_teacher")
     existing_teacher = []
     saving_import_teacher = []
     if 'error' in result:
@@ -1268,7 +1279,7 @@ def teacher_import( request, request_type = ''):
         message = result['error']
         data = [{'name': file.name,
                  'url': filename,
-                 'sizef':file.size,
+                 'sizef': file.size,
                  'process_message': process_file_message,
                  'error': u'File excel không đúng định dạng'}]
     else:
@@ -1286,16 +1297,16 @@ def teacher_import( request, request_type = ''):
             #                    'major': chuyen_mon
             #                    }
                 try:
-                    existing = add_teacher(  full_name= teacher['fullname'],
-                                             birthday= teacher['birthday'],
-                                             sex= teacher['sex'],
-                                             dan_toc= teacher['dan_toc'],
-                                             home_town= teacher['home_town'],
-                                             current_address= teacher['current_address'],
-                                             team_id= teacher['team'],
-                                             group_id= teacher['group'],
-                                             major= teacher['major'],
-                                             school= school)
+                    existing = add_teacher(full_name=teacher['fullname'],
+                                           birthday=teacher['birthday'],
+                                           sex=teacher['sex'],
+                                           dan_toc=teacher['dan_toc'],
+                                           home_town=teacher['home_town'],
+                                           current_address=teacher['current_address'],
+                                           team_id=teacher['team'],
+                                           group_id=teacher['group'],
+                                           major=teacher['major'],
+                                           school=school)
                     if existing:
                         existing_teacher.append(existing)
                         saving_import_teacher.append(teacher)
@@ -1308,17 +1319,19 @@ def teacher_import( request, request_type = ''):
 
         teacher_confliction = ''
         if existing_teacher:
-            teacher_confliction = u'Có %s giáo viên không được nhập do đã tồn tại trong hệ thống' % len(existing_teacher)
+            teacher_confliction = u'Có %s giáo viên không được nhập do đã tồn tại trong hệ thống' % len(
+                existing_teacher)
             request.session['saving_import_teacher'] = saving_import_teacher
         data = [{'name': file.name, 'url': filename,
-                 'sizef':file.size,
+                 'sizef': file.size,
                  'process_message': process_file_message,
                  'teacher_confliction': teacher_confliction,
                  'number': number,
                  'number_existing': len(existing_teacher),
                  'number_ok': number_ok - len(existing_teacher),
                  'message': 'Hoàn tất'}]
-    return HttpResponse( simplejson.dumps( data ) )
+    return HttpResponse(simplejson.dumps(data))
+
 
 def nhap_danh_sach_trung_tuyen(request):
     try:
@@ -1327,7 +1340,7 @@ def nhap_danh_sach_trung_tuyen(request):
         return HttpResponseRedirect(reverse('index'))
 
     permission = get_permission(request)
-    if not permission in [u'HIEU_TRUONG',u'HIEU_PHO']:
+    if not permission in [u'HIEU_TRUONG', u'HIEU_PHO']:
         return HttpResponseRedirect(reverse('school_index'))
 
     message = ''
@@ -1348,7 +1361,8 @@ def nhap_danh_sach_trung_tuyen(request):
             if chosen_class:
                 request.session['save_file_name'] = save_file_name
                 request.session['chosen_class'] = chosen_class
-                student_list, process_file_message, number, number_ok = process_file(file_name=save_file_name, task="import_student")
+                student_list, process_file_message, number, number_ok = process_file(file_name=save_file_name,
+                                                                                     task="import_student")
                 if 'error' in student_list:
                     message = student_list['error']
                 else:
@@ -1358,8 +1372,9 @@ def nhap_danh_sach_trung_tuyen(request):
         else:
             message = u'Gặp lỗi trong quá trình tải file lên server'
     form = UploadImportFileForm(class_list=_class_list)
-    context = RequestContext(request, {'form':form, 'message': message})
+    context = RequestContext(request, {'form': form, 'message': message})
     return render_to_response(NHAP_DANH_SACH_TRUNG_TUYEN, context_instance=context)
+
 
 @transaction.commit_on_success
 def manual_adding(request):
@@ -1369,7 +1384,7 @@ def manual_adding(request):
         return HttpResponseRedirect(reverse('index'))
 
     permission = get_permission(request)
-    if not permission in [u'HIEU_TRUONG',u'HIEU_PHO']:
+    if not permission in [u'HIEU_TRUONG', u'HIEU_PHO']:
         return HttpResponseRedirect(reverse('school_index'))
 
     _class_list = []
@@ -1405,12 +1420,12 @@ def manual_adding(request):
                 i = max_index
                 for student in student_list:
                     i += 1
-                    data = {'full_name': student['ten'], 'birthday':student['ngay_sinh'],
-                            'ban':student['nguyen_vong'], }
+                    data = {'full_name': student['ten'], 'birthday': student['ngay_sinh'],
+                            'ban': student['nguyen_vong'], }
                     try:
                         add_student(student=data, _class=chosen_class,
                                     start_year=year, year=this_year,
-                                    index = i,
+                                    index=i,
                                     term=term, school=school)
                     except Exception as e:
                         print e
@@ -1428,11 +1443,11 @@ def manual_adding(request):
                 try:
                     ns = to_date(request.POST['ns_hs_trung_tuyen'])
                     if request.POST['name_hs_trung_tuyen'].strip():
-                        element = { 'ten': request.POST['name_hs_trung_tuyen'],
-                                    'ngay_sinh': ns,
-                                    'nguyen_vong': request.POST['nv_hs_trung_tuyen'],
-                                    'tong_diem': diem,
-                                    }
+                        element = {'ten': request.POST['name_hs_trung_tuyen'],
+                                   'ngay_sinh': ns,
+                                   'nguyen_vong': request.POST['nv_hs_trung_tuyen'],
+                                   'tong_diem': diem,
+                                   }
                         student_list.append(element)
 
                 except Exception as e:
@@ -1445,21 +1460,21 @@ def manual_adding(request):
         request.session['student_list'] = student_list
         form = ManualAddingForm(class_list=_class_list)
     context = RequestContext(request, {'student_list': student_list})
-    return render_to_response(NHAP_BANG_TAY, {'form':form,
-                                              'name_error':name_error,
-                                              'ns_error':ns_error,
-                                              'ns_entered':ns_entered}, context_instance=context)
+    return render_to_response(NHAP_BANG_TAY, {'form': form,
+                                              'name_error': name_error,
+                                              'ns_error': ns_error,
+                                              'ns_entered': ns_entered}, context_instance=context)
+
 
 @transaction.commit_on_success
 def danh_sach_trung_tuyen(request):
-
     try:
         school = get_school(request)
     except Exception as e:
         return HttpResponseRedirect(reverse('index'))
 
     permission = get_permission(request)
-    if not permission in [u'HIEU_TRUONG',u'HIEU_PHO']:
+    if not permission in [u'HIEU_TRUONG', u'HIEU_PHO']:
         return HttpResponseRedirect(reverse('school_index'))
 
     student_list = request.session['student_list']
@@ -1480,19 +1495,18 @@ def danh_sach_trung_tuyen(request):
             i = max_index
             for student in student_list:
                 i += 1
-                data = {'full_name': student['ten'], 'birthday':student['ngay_sinh'],
-                        'ban':student['nguyen_vong'], }
+                data = {'full_name': student['ten'], 'birthday': student['ngay_sinh'],
+                        'ban': student['nguyen_vong'], }
 
                 add_student(student=data, _class=chosen_class,
                             start_year=year, year=current_year,
-                            index = i,
+                            index=i,
                             term=term, school=school)
             message = u'Bạn vừa nhập thành công danh sách học sinh trúng tuyển.'
             student_list = []
             request.session['student_list'] = student_list
-            return HttpResponseRedirect('/school/viewClassDetail/'+ str(chosen_class.id))
+            return HttpResponseRedirect('/school/viewClassDetail/' + str(chosen_class.id))
         elif request.POST['clickedButton'] == 'add':
-
             diem = float(request.POST['diem_hs_trung_tuyen'])
             ns = to_date(request.POST['ns_hs_trung_tuyen'])
             element = {'ten': request.POST['name_hs_trung_tuyen'],
@@ -1504,7 +1518,8 @@ def danh_sach_trung_tuyen(request):
             request.session['student_list'] = student_list
 
     context = RequestContext(request, {'student_list': student_list})
-    return render_to_response(DANH_SACH_TRUNG_TUYEN, {'message':message}, context_instance=context)
+    return render_to_response(DANH_SACH_TRUNG_TUYEN, {'message': message}, context_instance=context)
+
 #------------------------------------------------------------------------------------
 
 def password_change(request):
@@ -1514,13 +1529,14 @@ def password_change(request):
     form = PasswordChangeForm(user)
     message = ''
     if request.method == 'POST':
-        form = PasswordChangeForm(user,request.POST)
+        form = PasswordChangeForm(user, request.POST)
         if form.is_valid():
             form.save()
             message = u'Bạn đã thay đổi mật khẩu thành công'
-    t = loader.get_template(os.path.join('school','password_change.html'))
-    c = RequestContext(request, {'form':form, 'message':message})
+    t = loader.get_template(os.path.join('school', 'password_change.html'))
+    c = RequestContext(request, {'form': form, 'message': message})
     return HttpResponse(t.render(c))
+
 
 def username_change(request):
     user = request.user
@@ -1529,13 +1545,14 @@ def username_change(request):
     form = UsernameChangeForm(user)
     message = ''
     if request.method == 'POST':
-        form = UsernameChangeForm(user,request.POST)
+        form = UsernameChangeForm(user, request.POST)
         if form.is_valid() and user.userprofile.username_change == 0:
             form.save()
             message = u'Bạn đã thay tên tài khoản thành công'
-    t = loader.get_template(os.path.join('school','username_change.html'))
-    c = RequestContext(request, {'form':form, 'message':message})
+    t = loader.get_template(os.path.join('school', 'username_change.html'))
+    c = RequestContext(request, {'form': form, 'message': message})
     return HttpResponse(t.render(c))
+
 
 def student_account(request, student_id):
     user = request.user
@@ -1545,15 +1562,16 @@ def student_account(request, student_id):
     if pos < 4:
         return HttpResponseRedirect('/')
     message = ''
-    student = user.userprofile.organization.pupil_set.get(id = student_id)
+    student = user.userprofile.organization.pupil_set.get(id=student_id)
     url = '/school/student/account/' + student_id
     if request.method == 'POST':
         student.user_id.set_password(student.user_id.username)
         student.save()
         message = 'Mật khẩu của học sinh đã được tạo lại giống tên tài khoản'
-    t = loader.get_template(os.path.join('school','account.html'))
-    c = RequestContext(request, {'account':student.user_id.username,'url':url,'message':message})
+    t = loader.get_template(os.path.join('school', 'account.html'))
+    c = RequestContext(request, {'account': student.user_id.username, 'url': url, 'message': message})
     return HttpResponse(t.render(c))
+
 
 def teacher_account(request, teacher_id):
     user = request.user
@@ -1563,7 +1581,7 @@ def teacher_account(request, teacher_id):
     if pos < 4:
         return HttpResponseRedirect('/')
     message = ''
-    teacher = user.userprofile.organization.teacher_set.get(id = teacher_id)
+    teacher = user.userprofile.organization.teacher_set.get(id=teacher_id)
     url = '/school/teacher/account/' + teacher_id
     if request.method == 'POST':
         print teacher.user_id.username
@@ -1571,9 +1589,10 @@ def teacher_account(request, teacher_id):
 
         teacher.user_id.save()
         message = 'Mật khẩu của giáo viên đã được tạo lại giống tên tài khoản'
-    t = loader.get_template(os.path.join('school','account.html'))
-    c = RequestContext(request, {'account':teacher.user_id.username,'url':url,'message':message})
+    t = loader.get_template(os.path.join('school', 'account.html'))
+    c = RequestContext(request, {'account': teacher.user_id.username, 'url': url, 'message': message})
     return HttpResponse(t.render(c))
+
 
 def classes(request):
     user = request.user
@@ -1595,17 +1614,17 @@ def classes(request):
         if request.is_ajax():
             cyear = get_current_year(request)
             class_id = request.POST['id']
-            c = cyear.class_set.get(id = int(class_id))
+            c = cyear.class_set.get(id=int(class_id))
             tc = None
             teacher = None
             teacher_id = None
             if request.POST['teacher_id'] != u'':
                 teacher_id = request.POST['teacher_id']
                 print 'teacher_id', teacher_id
-                teacher = school.teacher_set.get(id = int(teacher_id))
+                teacher = school.teacher_set.get(id=int(teacher_id))
                 print teacher
                 try:
-                    tc = cyear.class_set.get(teacher_id__exact = teacher.id)
+                    tc = cyear.class_set.get(teacher_id__exact=teacher.id)
                 except ObjectDoesNotExist:
                     pass
             else:
@@ -1613,10 +1632,10 @@ def classes(request):
 
             if not teacher or not tc:
                 try:
-                    data = {'name':c.name, 'year_id':c.year_id.id,
-                            'block_id':c.block_id.id, 'teacher_id':teacher_id,
-                            'phan_ban':c.phan_ban,
-                            'status':c.status,'index':c.index}
+                    data = {'name': c.name, 'year_id': c.year_id.id,
+                            'block_id': c.block_id.id, 'teacher_id': teacher_id,
+                            'phan_ban': c.phan_ban,
+                            'status': c.status, 'index': c.index}
                     form = ClassForm(school.id, data, instance=c)
                     if form.is_valid():
                         form.save()
@@ -1626,12 +1645,12 @@ def classes(request):
 
             else:
                 message = 'Giáo viên đã có lớp chủ nhiệm'
-                data = simplejson.dumps({'message':message})
-                return HttpResponse(data, mimetype = 'json')
+                data = simplejson.dumps({'message': message})
+                return HttpResponse(data, mimetype='json')
     t = loader.get_template(os.path.join('school', 'classes.html'))
-    c = RequestContext(request, {   'message': message,
-                                    'blockList': blockList,
-                                    'pos':pos,})
+    c = RequestContext(request, {'message': message,
+                                 'blockList': blockList,
+                                 'pos': pos, })
     return HttpResponse(t.render(c))
 
 
@@ -1680,10 +1699,10 @@ def classtab(request, block_id=0):
                         tc = cyear.class_set.get(teacher_id__exact=teacher.id)
                     except ObjectDoesNotExist as e:
                         pass
-                    #                        print e
-                    #                        message = u'Không tồn tại giáo viên'
-                    #                        data = simplejson.dumps({'message':message})
-                    #                        return HttpResponse(data, mimetype = 'json')
+                        #                        print e
+                        #                        message = u'Không tồn tại giáo viên'
+                        #                        data = simplejson.dumps({'message':message})
+                        #                        return HttpResponse(data, mimetype = 'json')
                 else:
                     print 'teacher', 'None'
                     teacher_id = None
@@ -1760,7 +1779,9 @@ def addClass(request):
                 return HttpResponse(t.render(c))
 
             index = get_current_year(request).class_set.count()
-            data = {'name':request.POST['name'], 'year_id':request.POST['year_id'], 'block_id':block.id, 'teacher_id':request.POST['teacher_id'], 'phan_ban':request.POST['phan_ban'], 'max' : 0, 'status':school.status,'index':index}
+            data = {'name': request.POST['name'], 'year_id': request.POST['year_id'], 'block_id': block.id,
+                    'teacher_id': request.POST['teacher_id'], 'phan_ban': request.POST['phan_ban'], 'max': 0,
+                    'status': school.status, 'index': index}
             form = ClassForm(school.id, data)
             if form.is_valid():
                 _class = form.save()
@@ -1781,12 +1802,13 @@ def addClass(request):
                     print e
 
         t = loader.get_template(os.path.join('school', 'add_class.html'))
-        c = RequestContext(request, {'form': form, 'low':low, 'up':up})
+        c = RequestContext(request, {'form': form, 'low': low, 'up': up})
         return HttpResponse(t.render(c))
     else:
         t = loader.get_template(os.path.join('school', 'add_class.html'))
         c = RequestContext(request)
         return HttpResponse(t.render(c))
+
 
 def student(request, student_id):
     try:
@@ -1804,7 +1826,7 @@ def student(request, student_id):
             student = Pupil.objects.get(id=student_id)
             if school != student.get_school():
                 raise Exception("IllegalAccess")
-            return render_to_response(STUDENT, {'student': student}, context_instance = RequestContext(request))
+            return render_to_response(STUDENT, {'student': student}, context_instance=RequestContext(request))
         except ObjectDoesNotExist as e:
             raise Exception("StudentDoesNotExist")
     except Exception as e:
@@ -1832,18 +1854,19 @@ def viewClassDetail(request, class_id, sort_type=0, sort_status=0):
     except Class.DoesNotExist:
         return HttpResponseRedirect('/school/classes')
 
-    year_max = int(date.today().year)- cl.block_id.number - 4
-    year_min = int(date.today().year)- cl.block_id.number - 8
+    year_max = int(date.today().year) - cl.block_id.number - 4
+    year_min = int(date.today().year) - cl.block_id.number - 8
     year_range = str(year_min) + ':' + str(year_max)
     print year_min, year_max
-    default_date = str(-cl.block_id.number-6) + 'y -' + str(int(date.today().month)-1) + 'm-'+ str(int(date.today().day)-1)
-    cn=gvcn(request, cl)
-    inCl=inClass(request, class_id)
+    default_date = str(-cl.block_id.number - 6) + 'y -' + str(int(date.today().month) - 1) + 'm-' + str(
+        int(date.today().day) - 1)
+    cn = gvcn(request, cl)
+    inCl = inClass(request, class_id)
     if not in_school(request, cl.block_id.school_id):
         return HttpResponseRedirect('/')
     message = None
     school = cl.block_id.school_id
-    cyear =  school.year_set.latest('time')
+    cyear = school.year_set.latest('time')
     classList = cyear.class_set.all().order_by('name')
     form = PupilForm(school.id)
 
@@ -1854,7 +1877,7 @@ def viewClassDetail(request, class_id, sort_type=0, sort_status=0):
                 data = data.split('-')
                 for e in data:
                     if e.strip():
-                        std = school.pupil_set.get(id__exact = int(e))
+                        std = school.pupil_set.get(id__exact=int(e))
                         completely_del_student(std)
 
                 data = simplejson.dumps({'success': True})
@@ -1879,7 +1902,7 @@ def viewClassDetail(request, class_id, sort_type=0, sort_status=0):
                         if student.sms_phone:
                             try:
                                 if include_name == 'true':
-                                    if sendSMS(student.sms_phone,to_en1('(' + student.first_name + ')' + content),
+                                    if sendSMS(student.sms_phone, to_en1('(' + student.first_name + ')' + content),
                                                user) == '1':
                                         number_of_sent += 1
                                     else:
@@ -1906,13 +1929,18 @@ def viewClassDetail(request, class_id, sort_type=0, sort_status=0):
                     raise e
 
             elif request.POST[u'request_type'] == u'add' and pos > 3:
-                start_year = StartYear.objects.filter(school_id = school.id).latest('time')
+                start_year = StartYear.objects.filter(school_id=school.id).latest('time')
                 try:
-                    data = {'first_name':request.POST['first_name'], 'last_name':request.POST['last_name'], 'birthday':request.POST['birthday'],
-                            'sex':request.POST['sex'], 'birth place': request.POST['birth_place'].strip(), 'current_address':request.POST['current_address'].strip(),
-                            'school_join_date': date.today().strftime("%d/%m/%Y"), 'ban_dk':u'CB', 'quoc_tich':u'Việt Nam', 'index': cl.pupil_set.count()+1,
-                            'class_id':int(class_id), 'start_year_id': start_year.id, 'mother_name':request.POST['mother_name'].strip(), 'father_name':request.POST['father_name'].strip(),
-                            'sms_phone':request.POST['sms_phone']}
+                    data = {'first_name': request.POST['first_name'], 'last_name': request.POST['last_name'],
+                            'birthday': request.POST['birthday'],
+                            'sex': request.POST['sex'], 'birth place': request.POST['birth_place'].strip(),
+                            'current_address': request.POST['current_address'].strip(),
+                            'school_join_date': date.today().strftime("%d/%m/%Y"), 'ban_dk': u'CB',
+                            'quoc_tich': u'Việt Nam', 'index': cl.pupil_set.count() + 1,
+                            'class_id': int(class_id), 'start_year_id': start_year.id,
+                            'mother_name': request.POST['mother_name'].strip(),
+                            'father_name': request.POST['father_name'].strip(),
+                            'sms_phone': request.POST['sms_phone']}
 
                 except Exception as e:
                     print e
@@ -1925,16 +1953,16 @@ def viewClassDetail(request, class_id, sort_type=0, sort_status=0):
                     data['birthday'] = birthday
                     _class = Class.objects.get(id=class_id)
                     index = _class.max + 1
-                    student = add_student( student=data, start_year=start_year,
-                                           year=get_current_year(request),
-                                           _class=_class,
-                                           index= index,
-                                           term=get_current_term(request),
-                                           school=get_school(request),
-                                           school_join_date=school_join_date)
+                    student = add_student(student=data, start_year=start_year,
+                                          year=get_current_year(request),
+                                          _class=_class,
+                                          index=index,
+                                          term=get_current_term(request),
+                                          school=get_school(request),
+                                          school_join_date=school_join_date)
                     message = u'Bạn vừa thêm 1 học sinh'
-                    data = simplejson.dumps({'message':message, 'success': True, 'student_id': student.id})
-                    return HttpResponse(data, mimetype = 'json')
+                    data = simplejson.dumps({'message': message, 'success': True, 'student_id': student.id})
+                    return HttpResponse(data, mimetype='json')
                     #form = PupilForm(school.id)
                 else:
                     message = ''
@@ -1945,9 +1973,9 @@ def viewClassDetail(request, class_id, sort_type=0, sort_status=0):
                         if birthday >= date.today():
                             message += u'<li> ' + u'Ngày không hợp lệ' + u'</li>'
 
-                        find = start_year.pupil_set.filter( first_name__exact = request.POST['first_name'])\
-                        .filter(last_name__exact = request.POST['last_name'])\
-                        .filter(birthday__exact = birthday)
+                        find = start_year.pupil_set.filter(first_name__exact=request.POST['first_name'])\
+                        .filter(last_name__exact=request.POST['last_name'])\
+                        .filter(birthday__exact=birthday)
                         if find:
                             message += u'<li> ' + u'Học sinh đã tồn tại' + u'</li>'
                     except Exception as e:
@@ -1961,7 +1989,6 @@ def viewClassDetail(request, class_id, sort_type=0, sort_status=0):
                         message = u'<li> ' + u'Số điện thoại không tồn tại' + u'</li>'
                         print e
 
-
                     if not request.POST['first_name']:
                         message += u'<li> ' + u'Ô tên là bắt buộc' + u'</li>'
 
@@ -1969,14 +1996,14 @@ def viewClassDetail(request, class_id, sort_type=0, sort_status=0):
                     return HttpResponse(data, mimetype='json')
     if int(sort_type) == 0:
         if int(sort_status) == 0:
-            studentList = cl.students().order_by('index','first_name', 'last_name','birthday')
+            studentList = cl.students().order_by('index', 'first_name', 'last_name', 'birthday')
         else:
-            studentList = cl.students().order_by('index','-first_name', '-last_name','-birthday')
+            studentList = cl.students().order_by('index', '-first_name', '-last_name', '-birthday')
     if int(sort_type) == 1:
         if int(sort_status) == 0:
-            studentList = cl.students().order_by('first_name', 'last_name','birthday')
+            studentList = cl.students().order_by('first_name', 'last_name', 'birthday')
         else:
-            studentList = cl.students().order_by('-first_name', '-last_name','-birthday')
+            studentList = cl.students().order_by('-first_name', '-last_name', '-birthday')
     if int(sort_type) == 2:
         if int(sort_status) == 0:
             studentList = cl.students().order_by('birthday')
@@ -2004,33 +2031,33 @@ def viewClassDetail(request, class_id, sort_type=0, sort_status=0):
     if tmp:
         id = tmp.id
 
-    currentTerm = cyear.term_set.get(number = school.status)
-    if currentTerm.number ==3:
-        currentTerm=Term.objects.get(year_id=currentTerm.year_id,number=2)
+    currentTerm = cyear.term_set.get(number=school.status)
+    if currentTerm.number == 3:
+        currentTerm = Term.objects.get(year_id=currentTerm.year_id, number=2)
 
     t = loader.get_template(os.path.join('school', 'classDetail.html'))
-    c = RequestContext(request, {   'form': form,
-                                    'csrf_token': get_token(request),
-                                    'message': message,
-                                    'studentList': studentList,
-                                    'class': cl,
-                                    'cl':classList,
-                                    'inClass' : inCl,
-                                    'sort_type':int(sort_type),
-                                    'sort_status':int(sort_status),
-                                    'next_status':1-int(sort_status),
-                                    'pos': pos,
-                                    'gvcn':cn,
-                                    'student_id':id,
-                                    'currentTerm':currentTerm,
-                                    'year_range':year_range,
-                                    'default_date':default_date
-                                    })
+    c = RequestContext(request, {'form': form,
+                                 'csrf_token': get_token(request),
+                                 'message': message,
+                                 'studentList': studentList,
+                                 'class': cl,
+                                 'cl': classList,
+                                 'inClass': inCl,
+                                 'sort_type': int(sort_type),
+                                 'sort_status': int(sort_status),
+                                 'next_status': 1 - int(sort_status),
+                                 'pos': pos,
+                                 'gvcn': cn,
+                                 'student_id': id,
+                                 'currentTerm': currentTerm,
+                                 'year_range': year_range,
+                                 'default_date': default_date
+    })
     return HttpResponse(t.render(c))
 
 #sort_type = '1': fullname, '2': birthday, '3':'sex'
 #sort_status = '0':ac '1':'dec
-def teachers(request,  sort_type=1, sort_status=0):
+def teachers(request, sort_type=1, sort_status=0):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
@@ -2050,7 +2077,7 @@ def teachers(request,  sort_type=1, sort_status=0):
             data = data.split('-')
             for e in data:
                 if e.strip():
-                    teacher = school.teacher_set.get(id__exact = int(e))
+                    teacher = school.teacher_set.get(id__exact=int(e))
                     del_teacher(teacher);
             data = simplejson.dumps({'success': True})
             return HttpResponse(data, mimetype='json')
@@ -2067,7 +2094,7 @@ def teachers(request,  sort_type=1, sort_status=0):
             data = simplejson.dumps({'message': message})
             return HttpResponse(data, mimetype='json')
         if request.POST['request_type'] == u'delete_team':
-            t = school.team_set.get(id = request.POST['id'])
+            t = school.team_set.get(id=request.POST['id'])
             teacherList = t.teacher_set.all()
             for teacher in teacherList:
                 teacher.group_id = None
@@ -2075,7 +2102,7 @@ def teachers(request,  sort_type=1, sort_status=0):
             t.delete()
             return HttpResponse()
         if request.POST['request_type'] == u'delete_group':
-            g = Group.objects.get(id = request.POST['id'])
+            g = Group.objects.get(id=request.POST['id'])
             if g.team_id.school_id == school:
                 teacherList = g.teacher_set.all()
                 for teacher in teacherList:
@@ -2083,7 +2110,7 @@ def teachers(request,  sort_type=1, sort_status=0):
                 g.delete()
                 return HttpResponse()
         if request.POST['request_type'] == u'rename_team':
-            t = school.team_set.get(id = request.POST['id'])
+            t = school.team_set.get(id=request.POST['id'])
             try:
                 tmp = school.team_set.get(name=request.POST['name'].strip())
                 message = u'Tên Tổ này đã tồn tại'
@@ -2097,15 +2124,16 @@ def teachers(request,  sort_type=1, sort_status=0):
     teamList = school.team_set.all()
     t = loader.get_template(os.path.join('school', 'teachers.html'))
 
-    c = RequestContext(request, {   'list' : teamList,
-                                    'pos':pos,
-                                    'sort_type':sort_type,
-                                    'sort_status':sort_status,
-                                    'next_status':1-int(sort_status),
-                                    })
+    c = RequestContext(request, {'list': teamList,
+                                 'pos': pos,
+                                 'sort_type': sort_type,
+                                 'sort_status': sort_status,
+                                 'next_status': 1 - int(sort_status),
+                                 })
     return HttpResponse(t.render(c))
 
-def team(request, team_id ,sort_type=1, sort_status=0):
+
+def team(request, team_id, sort_type=1, sort_status=0):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
@@ -2122,7 +2150,7 @@ def team(request, team_id ,sort_type=1, sort_status=0):
         try:
             if request.POST['request_type'] == u'addGroup':
                 try:
-                    g = Group.objects.get(name = request.POST['name'].strip(), team_id=request.POST['team_id'])
+                    g = Group.objects.get(name=request.POST['name'].strip(), team_id=request.POST['team_id'])
                     message = u'Nhóm này đã tồn tại'
                     data = simplejson.dumps({'message': message})
                     return HttpResponse(data, mimetype='json')
@@ -2133,9 +2161,9 @@ def team(request, team_id ,sort_type=1, sort_status=0):
                         t.save()
                     return HttpResponseRedirect('/school/team/' + request.POST['team_id'])
             if request.POST['request_type'] == u'renameGroup':
-                g = Group.objects.get( id = request.POST['id'])
+                g = Group.objects.get(id=request.POST['id'])
                 try:
-                    _t = g.team_id.group_set.get( name = request.POST['name'])
+                    _t = g.team_id.group_set.get(name=request.POST['name'])
                     message = u'Nhóm này đã tồn tại'
                     data = simplejson.dumps({'message': message})
                     return HttpResponse(data, mimetype='json')
@@ -2150,14 +2178,15 @@ def team(request, team_id ,sort_type=1, sort_status=0):
     groupList = team.group_set.all()
     t = loader.get_template(os.path.join('school', 'team.html'))
 
-    c = RequestContext(request, {   'groupList' : groupList,
-                                    'team' : team,
-                                    'pos':pos,
-                                    'sort_type':sort_type,
-                                    'sort_status':sort_status,
-                                    'next_status':1-int(sort_status),
-                                    })
+    c = RequestContext(request, {'groupList': groupList,
+                                 'team': team,
+                                 'pos': pos,
+                                 'sort_type': sort_type,
+                                 'sort_status': sort_status,
+                                 'next_status': 1 - int(sort_status),
+                                 })
     return HttpResponse(t.render(c))
+
 
 def teachers_tab(request, sort_type=1, sort_status=0):
     user = request.user
@@ -2197,12 +2226,12 @@ def teachers_tab(request, sort_type=1, sort_status=0):
                 return HttpResponse(response, mimetype='json')
             except Exception as e:
                 print e
-        elif request.method == 'POST' and request.POST['request_type']==u'add':
+        elif request.method == 'POST' and request.POST['request_type'] == u'add':
             print request.POST
             if request.POST['first_name'].strip():
                 name = request.POST['first_name'].split()
-                last_name = ' '.join(name[:len(name)-1])
-                first_name = name[len(name)-1]
+                last_name = ' '.join(name[:len(name) - 1])
+                first_name = name[len(name) - 1]
             else:
                 last_name = ''
                 first_name = ''
@@ -2210,29 +2239,31 @@ def teachers_tab(request, sort_type=1, sort_status=0):
             teamlist = request.POST.getlist('team_id')
             tid = teamlist.pop()
             if tid != u'':
-                team = school.team_set.get(id = tid)
+                team = school.team_set.get(id=tid)
                 team_id = team.id
             else:
                 team = None
                 team_id = ''
-            data = {'first_name':first_name, 'last_name':last_name, 'birthday':request.POST['birthday'],
-                    'sex':request.POST['sex'], 'school_id':school.id, 'home_town':request.POST['home_town'].strip(),
-                    'team_id': team_id, 'major' : request.POST['major'], 'index':index}
-            form = TeacherForm(school.id,data)
+            data = {'first_name': first_name, 'last_name': last_name, 'birthday': request.POST['birthday'],
+                    'sex': request.POST['sex'], 'school_id': school.id, 'home_town': request.POST['home_town'].strip(),
+                    'team_id': team_id, 'major': request.POST['major'], 'index': index}
+            form = TeacherForm(school.id, data)
             if form.is_valid():
                 birthday = to_date(request.POST['birthday'])
                 try:
-                    test = school.teacher_set.get(first_name__exact=data['first_name'], last_name__exact=data['last_name'],birthday__exact=birthday)
+                    test = school.teacher_set.get(first_name__exact=data['first_name'],
+                                                  last_name__exact=data['last_name'], birthday__exact=birthday)
                     message = 'Giáo viên này đã tồn tại trong hệ thống'
                 except ObjectDoesNotExist:
-                    add_teacher(first_name=data['first_name'], last_name=data['last_name'], school=get_school(request), birthday=birthday,
-                                sex=data['sex'], home_town=data['home_town'], team_id =team, major=data['major'])
+                    add_teacher(first_name=data['first_name'], last_name=data['last_name'], school=get_school(request),
+                                birthday=birthday,
+                                sex=data['sex'], home_town=data['home_town'], team_id=team, major=data['major'])
                     message = 'Bạn vừa thêm một giáo viên mới'
                 form = TeacherForm(school.id)
             else:
                 if data['first_name'] != '':
                     data['first_name'] = data['last_name'] + ' ' + data['first_name']
-                    form = TeacherForm(school.id,data)
+                    form = TeacherForm(school.id, data)
 
     if int(sort_type) == 1:
         if int(sort_status) == 0:
@@ -2259,7 +2290,7 @@ def teachers_tab(request, sort_type=1, sort_status=0):
     i = 0
     for t in teacherList:
         flist.append(TeacherForm(school.id))
-        flist[i] = TeacherForm(school.id,instance = t)
+        flist[i] = TeacherForm(school.id, instance=t)
         i += 1
     list = zip(teacherList, flist)
     t = loader.get_template(os.path.join('school', 'teachers_tab.html'))
@@ -2267,15 +2298,17 @@ def teachers_tab(request, sort_type=1, sort_status=0):
     id = 0
     if tmp:
         id = tmp.id
-    c = RequestContext(request, {   'form': form,
-                                    'message': message,
-                                    'list': list,
-                                    'sort_type':sort_type,
-                                    'sort_status':sort_status,
-                                    'next_status':1-int(sort_status),
-                                    'pos':pos,
-                                    'teacher_id':id})
+    c = RequestContext(request, {'form': form,
+                                 'message': message,
+                                 'list': list,
+                                 'sort_type': sort_type,
+                                 'sort_status': sort_status,
+                                 'next_status': 1 - int(sort_status),
+                                 'pos': pos,
+                                 'teacher_id': id})
     return HttpResponse(t.render(c))
+
+
 def teachers_in_team(request, team_id):
     user = request.user
     if not user.is_authenticated():
@@ -2289,9 +2322,9 @@ def teachers_in_team(request, team_id):
     school = get_school(request)
     if request.is_ajax() and pos > 3:
         if (request.method == 'POST' and request.POST['request_type'] == u'team'):
-            t = school.teacher_set.get(id = request.POST['id'])
+            t = school.teacher_set.get(id=request.POST['id'])
             if request.POST['team']:
-                team = school.team_set.get (id = request.POST['team'])
+                team = school.team_set.get(id=request.POST['team'])
                 t.team_id = team
                 t.group_id = None
                 t.save()
@@ -2300,7 +2333,7 @@ def teachers_in_team(request, team_id):
                 t.group_id = None
                 t.save()
             response = simplejson.dumps({'success': True})
-            return HttpResponse( response, mimetype='json')
+            return HttpResponse(response, mimetype='json')
         elif (request.method == 'POST' and request.POST['request_type'] == u'major'):
             try:
                 t = school.teacher_set.get(id=request.POST['id'])
@@ -2312,24 +2345,24 @@ def teachers_in_team(request, team_id):
             except Exception as e:
                 print e
         if (request.method == 'POST' and request.POST['request_type'] == u'group'):
-            t = school.teacher_set.get(id = request.POST['id'])
-            team = school.team_set.get(id = team_id)
+            t = school.teacher_set.get(id=request.POST['id'])
+            team = school.team_set.get(id=team_id)
             if request.POST['group']:
-                group = team.group_set.get (id = request.POST['group'])
+                group = team.group_set.get(id=request.POST['group'])
                 t.group_id = group
                 t.save()
             else:
                 t.group_id = None
                 t.save()
             response = simplejson.dumps({'success': True})
-            return HttpResponse( response, mimetype='json')
-    teacherList =  school.teacher_set.filter(team_id = team_id).order_by('first_name', 'last_name')
+            return HttpResponse(response, mimetype='json')
+    teacherList = school.teacher_set.filter(team_id=team_id).order_by('first_name', 'last_name')
     flist = []
-    team = school.team_set.get(id = team_id)
+    team = school.team_set.get(id=team_id)
     i = 0
     for t in teacherList:
         flist.append(TeacherITForm(team_id))
-        flist[i] = TeacherITForm(team_id,instance = t)
+        flist[i] = TeacherITForm(team_id, instance=t)
         i += 1
     list = zip(teacherList, flist)
     t = loader.get_template(os.path.join('school', 'teachers_in_team.html'))
@@ -2337,11 +2370,12 @@ def teachers_in_team(request, team_id):
     id = 0
     if (tmp):
         id = tmp.id
-    c = RequestContext(request, {   'list': list,
-                                    'pos':pos,
-                                    'teacher_id':id,
-                                    'team' : team})
+    c = RequestContext(request, {'list': list,
+                                 'pos': pos,
+                                 'teacher_id': id,
+                                 'team': team})
     return HttpResponse(t.render(c))
+
 
 def teachers_in_group(request, group_id):
     user = request.user
@@ -2355,9 +2389,9 @@ def teachers_in_group(request, group_id):
     school = get_school(request)
     if request.is_ajax() and pos > 3:
         if (request.method == 'POST' and request.POST['request_type'] == u'team'):
-            t = school.teacher_set.get(id = request.POST['id'])
+            t = school.teacher_set.get(id=request.POST['id'])
             if request.POST['team']:
-                team = school.team_set.get (id = request.POST['team'])
+                team = school.team_set.get(id=request.POST['team'])
                 t.team_id = team
                 t.group_id = None
                 t.save()
@@ -2366,7 +2400,7 @@ def teachers_in_group(request, group_id):
                 t.group_id = None
                 t.save()
             response = simplejson.dumps({'success': True})
-            return HttpResponse( response, mimetype='json')
+            return HttpResponse(response, mimetype='json')
         elif (request.method == 'POST' and request.POST['request_type'] == u'major'):
             try:
                 t = school.teacher_set.get(id=request.POST['id'])
@@ -2378,24 +2412,24 @@ def teachers_in_group(request, group_id):
             except Exception as e:
                 print e
         if (request.method == 'POST' and request.POST['request_type'] == u'group'):
-            t = school.teacher_set.get(id = request.POST['id'])
+            t = school.teacher_set.get(id=request.POST['id'])
             if request.POST['group']:
-                group = Group.objects.get(id = request.POST['group'])
+                group = Group.objects.get(id=request.POST['group'])
                 t.group_id = group
                 t.save()
             else:
                 t.group_id = None
                 t.save()
             response = simplejson.dumps({'success': True})
-            return HttpResponse( response, mimetype='json')
-    teacherList =  school.teacher_set.filter(group_id = group_id).order_by('first_name', 'last_name')
+            return HttpResponse(response, mimetype='json')
+    teacherList = school.teacher_set.filter(group_id=group_id).order_by('first_name', 'last_name')
     flist = []
-    group = Group.objects.get(id = group_id)
+    group = Group.objects.get(id=group_id)
     team = group.team_id
     i = 0
     for t in teacherList:
         flist.append(TeacherITForm(team.id))
-        flist[i] = TeacherITForm(team.id,instance = t)
+        flist[i] = TeacherITForm(team.id, instance=t)
         i += 1
     list = zip(teacherList, flist)
     t = loader.get_template(os.path.join('school', 'teachers_in_group.html'))
@@ -2403,11 +2437,12 @@ def teachers_in_group(request, group_id):
     id = 0
     if (tmp):
         id = tmp.id
-    c = RequestContext(request, {   'list': list,
-                                    'pos':pos,
-                                    'teacher_id':id,
-                                    'group' : group})
+    c = RequestContext(request, {'list': list,
+                                 'pos': pos,
+                                 'teacher_id': id,
+                                 'group': group})
     return HttpResponse(t.render(c))
+
 
 def viewTeacherDetail(request, teacher_id):
     user = request.user
@@ -2434,7 +2469,7 @@ def viewTeacherDetail(request, teacher_id):
                 pos = 1
     if (pos < 1):
         return HttpResponseRedirect('/')
-    form = TeacherForm (school.id,instance=teacher)
+    form = TeacherForm(school.id, instance=teacher)
     ttcnform = TeacherTTCNForm(instance=teacher)
     ttllform = TeacherTTLLForm(instance=teacher)
     ttcbform = TeacherTTCBForm(instance=teacher)
@@ -2479,8 +2514,8 @@ def viewTeacherDetail(request, teacher_id):
                                 birthday = str(a.errors)
                                 print birthday
                 response = simplejson.dumps({'message': message, 'response_type': 'ttcn',
-                                             'first_name':first_name, 'last_name':last_name,'birthday':birthday})
-                return HttpResponse(response, mimetype = 'json')
+                                             'first_name': first_name, 'last_name': last_name, 'birthday': birthday})
+                return HttpResponse(response, mimetype='json')
             if request.POST['request_type'] == 'ttll':
                 phone = ''
                 email = ''
@@ -2498,8 +2533,8 @@ def viewTeacherDetail(request, teacher_id):
                             if a.errors:
                                 sms_phone = str(a.errors)
                 response = simplejson.dumps({'message': message, 'response_type': 'ttll',
-                                             'phone':phone, 'email':email,'sms_phone':sms_phone})
-                return HttpResponse(response, mimetype = 'json')
+                                             'phone': phone, 'email': email, 'sms_phone': sms_phone})
+                return HttpResponse(response, mimetype='json')
             if request.POST['request_type'] == 'ttcb':
                 cmt = ''
                 ngay_vao_doan = ''
@@ -2527,13 +2562,14 @@ def viewTeacherDetail(request, teacher_id):
                                              'cmt': cmt, 'ngay_vao_doan': ngay_vao_doan,
                                              'ngay_vao_dang': ngay_vao_dang, 'muc_luong': muc_luong,
                                              'hs_luong': hs_luong, 'bhxh': bhxh})
-                return HttpResponse(response, mimetype = 'json')
+                return HttpResponse(response, mimetype='json')
 
     t = loader.get_template(os.path.join('school', 'teacher_detail.html'))
-    c = RequestContext(request, {   'form': form, 'message': message, 'teacher' : teacher,
-                                    'id': teacher_id, 'ttcnform':ttcnform,
-                                    'pos': pos, 'ttllform':ttllform, 'ttcbform':ttcbform})
+    c = RequestContext(request, {'form': form, 'message': message, 'teacher': teacher,
+                                 'id': teacher_id, 'ttcnform': ttcnform,
+                                 'pos': pos, 'ttllform': ttllform, 'ttcbform': ttcbform})
     return HttpResponse(t.render(c))
+
 
 def subjectPerClass(request, class_id, sort_type=4, sort_status=0):
     user = request.user
@@ -2548,7 +2584,7 @@ def subjectPerClass(request, class_id, sort_type=4, sort_status=0):
     if (pos == 0):
         return HttpResponseRedirect('/')
     message = None
-    term=get_current_term(request)
+    term = get_current_term(request)
     school = get_school(request)
     cl = Class.objects.get(id=class_id)
     try:
@@ -2582,14 +2618,14 @@ def subjectPerClass(request, class_id, sort_type=4, sort_status=0):
     list = zip(subjectList, sfl)
     if request.is_ajax() and pos > 3:
         sid = request.POST['id']
-        sub = cl.subject_set.get(id = sid)
+        sub = cl.subject_set.get(id=sid)
         if request.POST['request_type'] == u'teacher':
             if request.POST['teacher'] != u'':
                 shs = int(request.POST['teacher'])
             else:
                 shs = None
             if shs:
-                teacher = school.teacher_set.get(id = shs)
+                teacher = school.teacher_set.get(id=shs)
             else:
                 teacher = None
             sub.teacher_id = teacher
@@ -2641,9 +2677,10 @@ def subjectPerClass(request, class_id, sort_type=4, sort_status=0):
         i = 0
         j = 0
         for s in subjectList:
-            data = {'name': s.name, 'hs': hs_list[i], 'class_id': class_id, 'teacher_id': teacher_list[i], 'index': i,'primary': p_list[i], 'type': t_list[i], 'nx':s.nx}
+            data = {'name': s.name, 'hs': hs_list[i], 'class_id': class_id, 'teacher_id': teacher_list[i], 'index': i,
+                    'primary': p_list[i], 'type': t_list[i], 'nx': s.nx}
             if (s.nx):
-                j = j+1
+                j = j + 1
             of = sfl[i]
             sfl[i] = SubjectForm(school.id, data, instance=s)
             if str(of) != str(sfl[i]):
@@ -2652,21 +2689,24 @@ def subjectPerClass(request, class_id, sort_type=4, sort_status=0):
                     message = 'Danh sách môn học đã được cập nhật.'
             i += 1
         if teacher_list[i] != u'' or request.POST['name'].strip() != u'' or hs_list[i] != u'':
-            index = i+1
+            index = i + 1
             nxn = False
             if len(nx_list) > j:
                 nxn = True
 
-            data = {'name':request.POST['name'].strip(), 'hs':hs_list[i], 'class_id':class_id, 'teacher_id':teacher_list[i], 'index':index, 'primary':p_list[i], 'type':t_list[i], 'nx':nxn}
+            data = {'name': request.POST['name'].strip(), 'hs': hs_list[i], 'class_id': class_id,
+                    'teacher_id': teacher_list[i], 'index': index, 'primary': p_list[i], 'type': t_list[i], 'nx': nxn}
             form = SubjectForm(school.id, data)
             if form.is_valid():
                 _class = Class.objects.get(id=class_id)
                 if teacher_list[i] != u'':
                     teacher = Teacher.objects.get(id=int(data['teacher_id']))
-                    add_subject(subject_name=data['name'], hs=float(data['hs']), teacher=teacher, _class=_class, index = index, subject_type=data['type'], nx=data['nx'])
+                    add_subject(subject_name=data['name'], hs=float(data['hs']), teacher=teacher, _class=_class,
+                                index=index, subject_type=data['type'], nx=data['nx'])
                     form = SubjectForm(school.id)
                 else:
-                    add_subject(subject_name=data['name'], hs=float(data['hs']), _class=_class, index = index, subject_type = data['type'], nx=data['nx'])
+                    add_subject(subject_name=data['name'], hs=float(data['hs']), _class=_class, index=index,
+                                subject_type=data['type'], nx=data['nx'])
                     form = SubjectForm(school.id)
                 message = 'Môn học mới đã được thêm.'
             else:
@@ -2699,20 +2739,21 @@ def subjectPerClass(request, class_id, sort_type=4, sort_status=0):
     allteacher = school.teacher_set.all()
     list = zip(subjectList, sfl)
     t = loader.get_template(os.path.join('school', 'subject_per_class.html'))
-    c = RequestContext(request, {   'list':list,
-                                    'form': form,
-                                    'message': message,
-                                    'subjectList': subjectList,
-                                    'class': cl,
-                                    'sort_type': sort_type,
-                                    'sort_status':sort_status,
-                                    'next_status':1-int(sort_status),
-                                    'term':term,
-                                    'classList':classList,
-                                    'teachers':teachers,
-                                    'allteacher':allteacher,
-                                    'pos':pos})
+    c = RequestContext(request, {'list': list,
+                                 'form': form,
+                                 'message': message,
+                                 'subjectList': subjectList,
+                                 'class': cl,
+                                 'sort_type': sort_type,
+                                 'sort_status': sort_status,
+                                 'next_status': 1 - int(sort_status),
+                                 'term': term,
+                                 'classList': classList,
+                                 'teachers': teachers,
+                                 'allteacher': allteacher,
+                                 'pos': pos})
     return HttpResponse(t.render(c))
+
 
 def viewStudentDetail(request, student_id):
     user = request.user
@@ -2723,9 +2764,9 @@ def viewStudentDetail(request, student_id):
     except Exception as e:
         return HttpResponseRedirect(reverse('index'))
     pos = get_position(request)
-    if (pos==1):
+    if (pos == 1):
         if get_student(request) != None:
-            if not(get_student(request).id==int(student_id)):
+            if not(get_student(request).id == int(student_id)):
                 pos = 2
     if get_position(request) < 1:
         return HttpResponseRedirect('/')
@@ -2734,11 +2775,11 @@ def viewStudentDetail(request, student_id):
     school_id = pupil.school_id.id
     if not in_school(request, pupil.current_class().block_id.school_id):
         return HttpResponseRedirect('/')
-    form = PupilForm (school_id, instance=pupil)
+    form = PupilForm(school_id, instance=pupil)
     ttcnform = ThongTinCaNhanForm(school_id, instance=pupil)
     ttllform = ThongTinLienLacForm(instance=pupil)
     ttgdform = ThongTinGiaDinhForm(instance=pupil)
-    ttddform = ThongTinDoanDoiForm(student_id,instance=pupil)
+    ttddform = ThongTinDoanDoiForm(student_id, instance=pupil)
     if request.method == 'POST':
         data = request.POST.copy()
         if request.POST['request_type'] == 'ttcn':
@@ -2792,10 +2833,10 @@ def viewStudentDetail(request, student_id):
                             if a.errors:
                                 school_join_mark = str(a.errors)
                 response = simplejson.dumps({'message': message, 'response_type': 'ttcn',
-                                             'first_name':first_name, 'last_name':last_name,
-                                             'birthday':birthday, 'school_join_date':school_join_date,
-                                             'school_join_mark':school_join_mark})
-                return HttpResponse(response, mimetype = 'json')
+                                             'first_name': first_name, 'last_name': last_name,
+                                             'birthday': birthday, 'school_join_date': school_join_date,
+                                             'school_join_mark': school_join_mark})
+                return HttpResponse(response, mimetype='json')
             if request.POST['request_type'] == 'ttll':
                 phone = ''
                 father_phone = ''
@@ -2821,9 +2862,9 @@ def viewStudentDetail(request, student_id):
                             if a.errors:
                                 sms_phone = str(a.errors)
                 response = simplejson.dumps({'message': message, 'response_type': 'ttll',
-                                             'father_phone':father_phone, 'mother_phone':mother_phone,
-                                             'phone':phone, 'email':email,'sms_phone':sms_phone})
-                return HttpResponse(response, mimetype = 'json')
+                                             'father_phone': father_phone, 'mother_phone': mother_phone,
+                                             'phone': phone, 'email': email, 'sms_phone': sms_phone})
+                return HttpResponse(response, mimetype='json')
             if request.POST['request_type'] == 'ttgd':
                 father_birthday = ''
                 mother_birthday = ''
@@ -2835,8 +2876,8 @@ def viewStudentDetail(request, student_id):
                         if a.name == 'mother_birthday':
                             mother_birthday = str(a.errors)
                 response = simplejson.dumps({'message': message, 'response_type': 'ttgd',
-                                             'father_birthday':father_birthday, 'mother_birthday':mother_birthday})
-                return HttpResponse(response, mimetype = 'json')
+                                             'father_birthday': father_birthday, 'mother_birthday': mother_birthday})
+                return HttpResponse(response, mimetype='json')
             if request.POST['request_type'] == 'ttdd':
                 ngay_vao_doi = ''
                 ngay_vao_doan = ''
@@ -2854,26 +2895,27 @@ def viewStudentDetail(request, student_id):
                             if a.errors:
                                 ngay_vao_dang = str(a.errors)
                 response = simplejson.dumps({'message': message, 'response_type': 'ttdd',
-                                             'ngay_vao_doi':ngay_vao_doi, 'ngay_vao_doan':ngay_vao_doan,
-                                             'ngay_vao_dang':ngay_vao_dang})
-                return HttpResponse(response, mimetype = 'json')
+                                             'ngay_vao_doi': ngay_vao_doi, 'ngay_vao_doan': ngay_vao_doan,
+                                             'ngay_vao_dang': ngay_vao_dang})
+                return HttpResponse(response, mimetype='json')
     attended = pupil.get_attended()
     #print attended
     t = loader.get_template(os.path.join('school', 'student_detail.html'))
-    c = RequestContext(request, {   'form': form,
-                                    'ttcnform': ttcnform,
-                                    'ttllform': ttllform,
-                                    'ttgdform': ttgdform,
-                                    'ttddform': ttddform,
-                                    'message': message,
-                                    'id': student_id,
-                                    'class':pupil.current_class(),
-                                    'attended': attended,
-                                    'pos':pos,
-                                    'student': pupil,
-                                    }
+    c = RequestContext(request, {'form': form,
+                                 'ttcnform': ttcnform,
+                                 'ttllform': ttllform,
+                                 'ttgdform': ttgdform,
+                                 'ttddform': ttddform,
+                                 'message': message,
+                                 'id': student_id,
+                                 'class': pupil.current_class(),
+                                 'attended': attended,
+                                 'pos': pos,
+                                 'student': pupil,
+                                 }
     )
     return HttpResponse(t.render(c))
+
 
 def diem_danh(request, class_id, day, month, year):
     user = request.user
@@ -2888,26 +2930,25 @@ def diem_danh(request, class_id, day, month, year):
         return HttpResponseRedirect('/')
     url = '/school/dsnghi/' + str(class_id) + '/' + str(day) + '/' + str(month) + '/' + str(year)
     pos = get_position(request)
-    if pos < 3 or (pos == 3 and not gvcn(request,class_id)):
+    if pos < 3 or (pos == 3 and not gvcn(request, class_id)):
         return HttpResponseRedirect(url)
     message = ''
     listdh = None
     term = None
-    dncdata = {'date':date(int(year),int(month),int(day)),'class_id':class_id}
+    dncdata = {'date': date(int(year), int(month), int(day)), 'class_id': class_id}
     year_id = get_current_year(request).id
-    dncform = DateAndClassForm(year_id,dncdata)
+    dncform = DateAndClassForm(year_id, dncdata)
     if request.is_ajax():
         if request.method == 'POST':
             request_type = request.POST[u'request_type']
             if request_type == u'update':
                 id = request.POST[u'id']
                 loai = request.POST[u'loai']
-                student = Pupil.objects.get( id = int(id))
+                student = Pupil.objects.get(id=int(id))
                 time = date(int(year), int(month), int(day))
-                diemdanh = student.diemdanh_set.filter( student_id__exact = student)\
-                .filter( time__exact = time)
+                diemdanh = student.diemdanh_set.filter(student_id__exact=student)\
+                .filter(time__exact=time)
                 if not diemdanh:
-
                     diemdanh = DiemDanh()
                     diemdanh.term_id = get_current_term(request)
                     diemdanh.student_id = student
@@ -2919,8 +2960,8 @@ def diem_danh(request, class_id, day, month, year):
                     if loai == 'k':
                         diemdanh.delete()
                         message = u'No need to update'
-                        data = simplejson.dumps({'message':message})
-                        return HttpResponse(data, mimetype = 'json')
+                        data = simplejson.dumps({'message': message})
+                        return HttpResponse(data, mimetype='json')
 
                     if diemdanh.loai != loai:
                         diemdanh.loai = loai
@@ -2928,7 +2969,7 @@ def diem_danh(request, class_id, day, month, year):
 
                 message = student.full_name() + ': updated.'
                 data = simplejson.dumps({'message': message})
-                return HttpResponse( data, mimetype = 'json')
+                return HttpResponse(data, mimetype='json')
             if request_type == 'sms':
                 data = request.POST[u'data']
                 data = data.split(':')
@@ -2938,7 +2979,7 @@ def diem_danh(request, class_id, day, month, year):
                         id = element[0]
                         loai = element[1]
                         # send sms
-                        student = Pupil.objects.get( id = id)
+                        student = Pupil.objects.get(id=id)
                         phone_number = student.sms_phone
 
                         if loai == 'k':
@@ -2947,9 +2988,9 @@ def diem_danh(request, class_id, day, month, year):
                             loai = u'nghỉ học có phép'
                         else:
                             loai = u'nghỉ học không phép'
-                        name = ' '.join([student.last_name,student.first_name])
-                        time = '/'.join([str(day),str(month),str(year)])
-                        sms_message = u' Em '+ name + u' đã ' + loai + u' ngày ' + time
+                        name = ' '.join([student.last_name, student.first_name])
+                        time = '/'.join([str(day), str(month), str(year)])
+                        sms_message = u' Em ' + name + u' đã ' + loai + u' ngày ' + time
                         if phone_number:
                             try:
                                 sent = sendSMS(phone_number, to_en1(sms_message), user)
@@ -2963,17 +3004,19 @@ def diem_danh(request, class_id, day, month, year):
                                     message = e.message
                                     continue
                             if sent == '1':
-                                message = message + u'<li><b>-> ' + str(phone_number) + u': ' + sms_message + u'</b></li>'
+                                message = message + u'<li><b>-> ' + str(
+                                    phone_number) + u': ' + sms_message + u'</b></li>'
                             else:
                                 print sent
                                 message = message + u'<li> ' + str(phone_number) + u': ' + sms_message + u'</li>'
                         else:
                             message = message + u'<li> ' + u'<b>Không số</b>' + u': ' + sms_message + u'</li>'
-                data = simplejson.dumps({'message':message})
-                return HttpResponse(data, mimetype = 'json')
+                data = simplejson.dumps({'message': message})
+                return HttpResponse(data, mimetype='json')
         else:
             raise Exception('StrangeRequestMethod')
-    pupilList = Pupil.objects.filter(attend___class=class_id,attend__is_member=True).order_by('index','first_name', 'last_name')
+    pupilList = Pupil.objects.filter(attend___class=class_id, attend__is_member=True).order_by('index', 'first_name',
+                                                                                               'last_name')
     time = date(int(year), int(month), int(day))
     term = get_current_term(request)
     form = []
@@ -2995,7 +3038,7 @@ def diem_danh(request, class_id, day, month, year):
                 try:
                     dd = DiemDanh.objects.get(time__exact=time, student_id__exact=p.id, term_id__exact=term.id)
                     if list[i] != 'k':
-                        data = {'student_id':p.id, 'time':time, 'loai':list[i], 'term_id':term.id}
+                        data = {'student_id': p.id, 'time': time, 'loai': list[i], 'term_id': term.id}
                         of = form[i]
                         form[i] = DiemDanhForm(data, instance=dd)
                         if str(of) != str(form[i]):
@@ -3007,7 +3050,7 @@ def diem_danh(request, class_id, day, month, year):
                     i += 1
                 except ObjectDoesNotExist:
                     if list[i] != 'k':
-                        data = {'student_id':p.id, 'time':time, 'loai':list[i], 'term_id':term.id}
+                        data = {'student_id': p.id, 'time': time, 'loai': list[i], 'term_id': term.id}
                         form[i] = DiemDanhForm(data)
                         if form[i].is_valid():
                             form[i].save()
@@ -3016,9 +3059,12 @@ def diem_danh(request, class_id, day, month, year):
         message = None
     listdh = zip(pupilList, form)
     t = loader.get_template(os.path.join('school', 'diem_danh.html'))
-    c = RequestContext(request, {'dncform':dncform, 'form':form, 'pupilList': pupilList, 'time': time, 'message':message, 'class_id':class_id, 'time':time, 'list':listdh,
-                                 'day':day, 'month':month, 'year':year, 'cl':cl,'pos':pos})
+    c = RequestContext(request,
+            {'dncform': dncform, 'form': form, 'pupilList': pupilList, 'time': time, 'message': message,
+             'class_id': class_id, 'time': time, 'list': listdh,
+             'day': day, 'month': month, 'year': year, 'cl': cl, 'pos': pos})
     return HttpResponse(t.render(c))
+
 
 def time_select(request, class_id):
     user = request.user
@@ -3037,6 +3083,7 @@ def time_select(request, class_id):
     url = '/school/diemdanh/' + str(class_id) + '/' + str(day) + '/' + str(month) + '/' + str(year)
     return HttpResponseRedirect(url)
 
+
 def tnc_select(request):
     user = request.user
     if not user.is_authenticated():
@@ -3044,19 +3091,20 @@ def tnc_select(request):
     y = get_current_year(request)
     year_id = y.id
     pos = get_position(request)
-    if (pos < 2 and pos !=3):
+    if (pos < 2 and pos != 3):
         return HttpResponseRedirect('/')
     elif (pos == 3):
         try:
-            tc = y.class_set.get(teacher_id__exact = request.user.teacher.id)
-            url = '/school/diemdanh/' + str(tc.id) + '/' + str(date.today().day) + '/' + str(date.today().month) + '/' + str(date.today().year)
+            tc = y.class_set.get(teacher_id__exact=request.user.teacher.id)
+            url = '/school/diemdanh/' + str(tc.id) + '/' + str(date.today().day) + '/' + str(
+                date.today().month) + '/' + str(date.today().year)
             return HttpResponseRedirect(url)
         except ObjectDoesNotExist:
             return HttpResponseRedirect('/')
     message = 'Hãy chọn ngày và lớp học bạn muốn điểm danh'
     form = DateAndClassForm(year_id)
     if request.method == 'POST':
-        form = DateAndClassForm(year_id,request.POST)
+        form = DateAndClassForm(year_id, request.POST)
         if form.is_valid():
             d = to_date(request.POST['date'])
             class_id = str(request.POST['class_id'])
@@ -3068,23 +3116,25 @@ def tnc_select(request):
         else:
             message = 'Chọn lớp và ngày chưa đúng.'
     t = loader.get_template(os.path.join('school', 'time_class_select.html'))
-    c = RequestContext(request, {'form':form, 'message':message})
+    c = RequestContext(request, {'form': form, 'message': message})
     return HttpResponse(t.render(c))
+
 
 def ds_nghi(request, class_id, day, month, year):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
     pos = get_position(request)
-    if (pos == 3 and not gvcn(request,class_id)):
+    if (pos == 3 and not gvcn(request, class_id)):
         pos = 2
-    cl  = Class.objects.get(id=class_id)
-    pupilList = Pupil.objects.filter(attend___class=class_id,attend__is_member=True).order_by('first_name', 'last_name')
+    cl = Class.objects.get(id=class_id)
+    pupilList = Pupil.objects.filter(attend___class=class_id, attend__is_member=True).order_by('first_name',
+                                                                                               'last_name')
     time = date(int(year), int(month), int(day))
     term = get_current_term(request)
-    dncdata = {'date':date(int(year),int(month),int(day)),'class_id':class_id}
+    dncdata = {'date': date(int(year), int(month), int(day)), 'class_id': class_id}
     year_id = get_current_year(request).id
-    dncform = DateAndClassForm(year_id,dncdata)
+    dncform = DateAndClassForm(year_id, dncdata)
     hs_nghi = []
     stt = []
     message = ''
@@ -3099,7 +3149,7 @@ def ds_nghi(request, class_id, day, month, year):
                     id = element[0]
                     loai = element[1]
                     # send sms
-                    student = Pupil.objects.get( id = id)
+                    student = Pupil.objects.get(id=id)
                     phone_number = student.sms_phone
 
                     if loai == 'k':
@@ -3108,9 +3158,9 @@ def ds_nghi(request, class_id, day, month, year):
                         loai = u'nghỉ học có phép'
                     else:
                         loai = u'nghỉ học không phép'
-                    name = ' '.join([student.last_name,student.first_name])
-                    time = '/'.join([str(day),str(month),str(year)])
-                    sms_message = u' Em '+ name + u' đã ' + loai + u' ngày ' + time
+                    name = ' '.join([student.last_name, student.first_name])
+                    time = '/'.join([str(day), str(month), str(year)])
+                    sms_message = u' Em ' + name + u' đã ' + loai + u' ngày ' + time
                     if phone_number:
                         try:
                             sent = sendSMS(phone_number, to_en1(sms_message), user)
@@ -3130,11 +3180,11 @@ def ds_nghi(request, class_id, day, month, year):
                             message = message + u'<li> ' + str(phone_number) + u': ' + sms_message + u'</li>'
                     else:
                         message = message + u'<li> ' + u'<b>Không số</b>' + u': ' + sms_message + u'</li>'
-            data = simplejson.dumps({'message':message})
-            return HttpResponse(data, mimetype = 'json')
+            data = simplejson.dumps({'message': message})
+            return HttpResponse(data, mimetype='json')
         else:
             raise Exception("StrangeRequestMethod")
-        #end if request.is_ajax()
+            #end if request.is_ajax()
     for p in pupilList:
         try:
             dd = DiemDanh.objects.get(time__exact=time, student_id__exact=p.id, term_id__exact=term.id)
@@ -3142,18 +3192,21 @@ def ds_nghi(request, class_id, day, month, year):
             stt.append(dd.loai)
         except ObjectDoesNotExist:
             pass
-    ds_nghi = zip(hs_nghi,stt)
+    ds_nghi = zip(hs_nghi, stt)
     t = loader.get_template(os.path.join('school', 'ds_nghi_hoc.html'))
-    c = RequestContext(request, {'list':ds_nghi, 'class_id':class_id, 'time':time, 'day':day, 'month':month, 'year':year, 'cl':cl, 'pos':pos,'dncform':dncform})
+    c = RequestContext(request,
+            {'list': ds_nghi, 'class_id': class_id, 'time': time, 'day': day, 'month': month, 'year': year, 'cl': cl,
+             'pos': pos, 'dncform': dncform})
     return HttpResponse(t.render(c))
 
-def diem_danh_hs(request, student_id, view_type = 0):
+
+def diem_danh_hs(request, student_id, view_type=0):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
     pos = get_position(request)
     pupil = Pupil.objects.get(id=student_id)
-    if pos == 3 and not gvcn(request,pupil.current_class()):
+    if pos == 3 and not gvcn(request, pupil.current_class()):
         pos = 1
     if pos < 1:
         return HttpResponseRedirect('/')
@@ -3165,7 +3218,7 @@ def diem_danh_hs(request, student_id, view_type = 0):
     if not term:
         message = None
         t = loader.get_template(os.path.join('school', 'time_select.html'))
-        ct = RequestContext(request, {'class_id':c.id, 'message':message})
+        ct = RequestContext(request, {'class_id': c.id, 'message': message})
         return HttpResponse(t.render(ct))
     ddl = DiemDanh.objects.filter(student_id=student_id, term_id=term.id).order_by('time')
     count = ddl.count()
@@ -3179,7 +3232,7 @@ def diem_danh_hs(request, student_id, view_type = 0):
             i = 0
             for dd in ddl:
                 if list[i] != 'k':
-                    data = {'loai':list[i]}
+                    data = {'loai': list[i]}
                     form[i] = DiemDanhForm(data, instance=dd)
                     if form[i].is_valid():
                         form[i].save()
@@ -3189,7 +3242,7 @@ def diem_danh_hs(request, student_id, view_type = 0):
                     i += 1
             if list[i] != 'k':
                 time = to_date(request.POST['time'])
-                data = {'student_id':student_id, 'time':time, 'loai':list[i], 'term_id':term.id}
+                data = {'student_id': student_id, 'time': time, 'loai': list[i], 'term_id': term.id}
                 iform = DiemDanhForm(data)
                 if iform.is_valid():
                     iform.save()
@@ -3199,30 +3252,32 @@ def diem_danh_hs(request, student_id, view_type = 0):
         ddl = DiemDanh.objects.filter(student_id=student_id, term_id=term.id).order_by('time')
         for dd in ddl:
             form.append(DiemDanhForm(instance=dd))
-        ddhs = zip(ddl,form)
+        ddhs = zip(ddl, form)
         t = loader.get_template(os.path.join('school', 'diem_danh_hs_edit.html'))
-        c = RequestContext(request, {   'ddhs':ddhs,
-                                        'iform':iform,
-                                        'pupil':pupil,
-                                        'student_id':student_id,
-                                        'term':term,
-                                        'pos':pos,
-                                        'count':count})
+        c = RequestContext(request, {'ddhs': ddhs,
+                                     'iform': iform,
+                                     'pupil': pupil,
+                                     'student_id': student_id,
+                                     'term': term,
+                                     'pos': pos,
+                                     'count': count})
         return HttpResponse(t.render(c))
     else:
         t = loader.get_template(os.path.join('school', 'diem_danh_hs.html'))
-        c = RequestContext(request, {   'form': ddl,
-                                        'pupil':pupil,
-                                        'student_id':student_id,
-                                        'term':term,
-                                        'pos':pos,
-                                        'count':count})
+        c = RequestContext(request, {'form': ddl,
+                                     'pupil': pupil,
+                                     'student_id': student_id,
+                                     'term': term,
+                                     'pos': pos,
+                                     'count': count})
         return HttpResponse(t.render(c))
+
 
 def tk_dd_lop(class_id, term_id):
     ppl = Pupil.objects.filter(class_id=class_id)
     for p in ppl:
         tk_diem_danh(p.id, term_id)
+
 
 def tk_diem_danh(student_id, term_id):
     pupil = Pupil.objects.get(id=student_id)
@@ -3230,23 +3285,24 @@ def tk_diem_danh(student_id, term_id):
     ts = DiemDanh.objects.filter(student_id=student_id, term_id=term_id).count()
     cp = DiemDanh.objects.filter(student_id=student_id, term_id=term_id, loai=u'C').count()
     kp = ts - cp
-    data = {'student_id':student_id, 'tong_so':ts, 'co_phep':cp, 'khong_phep':kp, 'term_id':term_id}
+    data = {'student_id': student_id, 'tong_so': ts, 'co_phep': cp, 'khong_phep': kp, 'term_id': term_id}
     tk = TKDiemDanhForm()
     try:
-
         tkdd = TKDiemDanh.objects.get(student_id__exact=student_id, term_id__exact=term_id)
         tk = TKDiemDanhForm(data, instance=tkdd)
     except ObjectDoesNotExist:
         tk = TKDiemDanhForm(data)
     tk.save()
 
+
 def test(request):
     form = PupilForm()
     message = 'Hello'
     t = loader.get_template('school/time_select.html')
-    c = RequestContext(request, {'form':form, 'message':message})
+    c = RequestContext(request, {'form': form, 'message': message})
 
     return HttpResponse(t.render(c))
+
 
 def deleteSubject(request, subject_id):
     user = request.user
@@ -3272,7 +3328,8 @@ def deleteSubject(request, subject_id):
     url = '/school/subjectPerClass/' + str(class_id.id)
     return HttpResponseRedirect(url)
 
-def deleteTeacher(request, teacher_id, team_id = 0):
+
+def deleteTeacher(request, teacher_id, team_id=0):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
@@ -3285,7 +3342,7 @@ def deleteTeacher(request, teacher_id, team_id = 0):
     message = "Đã xóa xong."
     school = get_school(request)
     try:
-        s = Teacher.objects.get(id = teacher_id)
+        s = Teacher.objects.get(id=teacher_id)
     except Teacher.DoesNotExist:
         return HttpResponseRedirect('/')
 
@@ -3293,11 +3350,11 @@ def deleteTeacher(request, teacher_id, team_id = 0):
         return HttpResponseRedirect('/school/teachers')
     if get_position(request) < 4:
         return HttpResponseRedirect('/')
-    cl = Subject.objects.filter(teacher_id = s.id)
+    cl = Subject.objects.filter(teacher_id=s.id)
     for sj in cl:
         sj.teacher_id = None
         sj.save()
-    cl = Class.objects.filter(teacher_id = s.id)
+    cl = Class.objects.filter(teacher_id=s.id)
     for sj in cl:
         sj.teacher_id = None
         sj.save()
@@ -3306,6 +3363,7 @@ def deleteTeacher(request, teacher_id, team_id = 0):
     if int(team_id) != 0:
         return HttpResponseRedirect("/school/teachers_in_team/" + team_id)
     return HttpResponseRedirect("/school/teachers_tab")
+
 
 def deleteClass(request, class_id, block_id):
     user = request.user
@@ -3327,7 +3385,8 @@ def deleteClass(request, class_id, block_id):
     if get_position(request) < 4:
         return HttpResponseRedirect('/')
     s.delete()
-    return HttpResponseRedirect('/school/classtab/'+block_id)
+    return HttpResponseRedirect('/school/classtab/' + block_id)
+
 
 def deleteStudentInClass(request, student_id):
     user = request.user
@@ -3351,7 +3410,8 @@ def deleteStudentInClass(request, student_id):
     if get_position(request) < 4:
         return HttpResponseRedirect('/')
     completely_del_student(student)
-    return HttpResponseRedirect('/school/viewClassDetail/'+str(class_id.id))
+    return HttpResponseRedirect('/school/viewClassDetail/' + str(class_id.id))
+
 
 @transaction.commit_manually
 def deleteAllStudentsInClass(request, class_id):
@@ -3379,7 +3439,8 @@ def deleteAllStudentsInClass(request, class_id):
     for student in students:
         completely_del_student(student)
     transaction.commit()
-    return HttpResponseRedirect('/school/viewClassDetail/'+str(cl.id))
+    return HttpResponseRedirect('/school/viewClassDetail/' + str(cl.id))
+
 
 def deleteStudentInSchool(request, student_id):
     user = request.user
@@ -3394,12 +3455,12 @@ def deleteStudentInSchool(request, student_id):
     #    message = "Đã xóa xong."
     sub = Pupil.objects.get(id=student_id)
     if not in_school(request, sub.current_class().block_id.school_id):
-
         return HttpResponseRedirect('/')
     if get_position(request) < 4:
         return HttpResponseRedirect('/')
     sub.delete()
-    return HttpResponseRedirect ('/school/students')
+    return HttpResponseRedirect('/school/students')
+
 
 def khen_thuong(request, student_id):
     user = request.user
@@ -3415,7 +3476,7 @@ def khen_thuong(request, student_id):
     if not in_school(request, sub.current_class().block_id.school_id):
         return HttpResponseRedirect('/')
     pos = get_position(request)
-    if pos == 3 and gvcn(request,sub.current_class()):
+    if pos == 3 and gvcn(request, sub.current_class()):
         pos = 4
     if get_position(request) < 1:
         return HttpResponseRedirect('/')
@@ -3423,8 +3484,10 @@ def khen_thuong(request, student_id):
     ktl = sub.khenthuong_set.order_by('time')
     count = ktl.count()
     t = loader.get_template(os.path.join('school', 'khen_thuong.html'))
-    c = RequestContext(request, {'ktl': ktl, 'message':message, 'student_id':student_id,'pupil':sub, 'pos':pos, 'count':count})
+    c = RequestContext(request,
+            {'ktl': ktl, 'message': message, 'student_id': student_id, 'pupil': sub, 'pos': pos, 'count': count})
     return HttpResponse(t.render(c))
+
 
 def add_khen_thuong(request, student_id):
     user = request.user
@@ -3441,25 +3504,26 @@ def add_khen_thuong(request, student_id):
     if not in_school(request, pupil.current_class().block_id.school_id):
         return HttpResponseRedirect('/')
     pos = get_position(request)
-    if pos == 3 and gvcn(request,pupil.current_class()):
+    if pos == 3 and gvcn(request, pupil.current_class()):
         pos = 4
     if pos < 4:
         return HttpResponseRedirect('/')
-    url = "/school/khenthuong/"+str(student_id) + "/add"
+    url = "/school/khenthuong/" + str(student_id) + "/add"
     cl = Class.objects.get(id__exact=pupil.current_class().id)
     term = get_current_term(request)
     if request.method == 'POST':
         form = KhenThuongForm(student_id, request.POST)
         if form.is_valid():
-            kt = form.save(commit = False)
+            kt = form.save(commit=False)
             kt.student_id = pupil
             kt.term_id = term
             kt.save()
             url = '/school/khenthuong/' + str(student_id)
             return HttpResponseRedirect(url)
     t = loader.get_template(os.path.join('school', 'khen_thuong_detail.html'))
-    c = RequestContext(request, {'form': form, 'p': pupil, 'student_id':student_id, 'term':term, 'url':url})
+    c = RequestContext(request, {'form': form, 'p': pupil, 'student_id': student_id, 'term': term, 'url': url})
     return HttpResponse(t.render(c))
+
 
 def delete_khen_thuong(request, kt_id):
     user = request.user
@@ -3476,13 +3540,14 @@ def delete_khen_thuong(request, kt_id):
     if not in_school(request, student.current_class().block_id.school_id):
         return HttpResponseRedirect('/')
     pos = get_position(request)
-    if pos == 3 and gvcn(request,pupil.current_class()):
+    if pos == 3 and gvcn(request, pupil.current_class()):
         pos = 4
     if pos < 4:
         return HttpResponseRedirect('/')
     kt.delete()
     url = '/school/khenthuong/' + str(student.id)
     return HttpResponseRedirect(url)
+
 
 def edit_khen_thuong(request, kt_id):
     user = request.user
@@ -3499,25 +3564,26 @@ def edit_khen_thuong(request, kt_id):
     if not in_school(request, pupil.current_class().block_id.school_id):
         return HttpResponseRedirect('/')
     pos = get_position(request)
-    if pos == 3 and gvcn(request,pupil.current_class()):
+    if pos == 3 and gvcn(request, pupil.current_class()):
         pos = 4
     if pos < 4:
         return HttpResponseRedirect('/')
-    url = "/school/khenthuong/"+str(pupil.id) + "/edit"
+    url = "/school/khenthuong/" + str(pupil.id) + "/edit"
     term = kt.term_id
-    form = KhenThuongForm(pupil.id,instance=kt)
+    form = KhenThuongForm(pupil.id, instance=kt)
     if request.method == 'POST':
         form = KhenThuongForm(pupil.id, request.POST, instance=kt)
         if form.is_valid():
-            kt = form.save(commit = False)
+            kt = form.save(commit=False)
             kt.student_id = pupil
             kt.term_id = term
             kt.save()
             url = '/school/viewStudentDetail/' + str(pupil.id)
             return HttpResponseRedirect(url)
     t = loader.get_template(os.path.join('school', 'khen_thuong_detail.html'))
-    c = RequestContext(request, {'form': form, 'p': pupil, 'student_id':pupil.id, 'term':term, 'url':url})
+    c = RequestContext(request, {'form': form, 'p': pupil, 'student_id': pupil.id, 'term': term, 'url': url})
     return HttpResponse(t.render(c))
+
 
 def ki_luat(request, student_id):
     user = request.user
@@ -3533,7 +3599,7 @@ def ki_luat(request, student_id):
     if not in_school(request, student.current_class().block_id.school_id):
         return HttpResponseRedirect('/')
     pos = get_position(request)
-    if pos == 3 and gvcn(request,student.current_class()):
+    if pos == 3 and gvcn(request, student.current_class()):
         pos = 4
     if get_position(request) < 1:
         return HttpResponseRedirect('/')
@@ -3541,8 +3607,10 @@ def ki_luat(request, student_id):
     ktl = student.kiluat_set.order_by('time')
     count = ktl.count()
     t = loader.get_template(os.path.join('school', 'ki_luat.html'))
-    c = RequestContext(request, {'ktl': ktl, 'message':message, 'student_id':student_id, 'pupil':student, 'pos':pos, 'count':count})
+    c = RequestContext(request,
+            {'ktl': ktl, 'message': message, 'student_id': student_id, 'pupil': student, 'pos': pos, 'count': count})
     return HttpResponse(t.render(c))
+
 
 def add_ki_luat(request, student_id):
     user = request.user
@@ -3559,25 +3627,26 @@ def add_ki_luat(request, student_id):
     if not in_school(request, pupil.current_class().block_id.school_id):
         return HttpResponseRedirect('/')
     pos = get_position(request)
-    if pos == 3 and gvcn(request,pupil.current_class()):
+    if pos == 3 and gvcn(request, pupil.current_class()):
         pos = 4
     if pos < 4:
         return HttpResponseRedirect('/')
-    url = "/school/kiluat/"+str(student_id) + "/add"
+    url = "/school/kiluat/" + str(student_id) + "/add"
     cl = Class.objects.get(id__exact=pupil.current_class().id)
     term = get_current_term(request)
     if request.method == 'POST':
-        form = KiLuatForm(student_id,request.POST)
+        form = KiLuatForm(student_id, request.POST)
         if form.is_valid():
-            kt = form.save(commit = False)
+            kt = form.save(commit=False)
             kt.student_id = pupil
             kt.term_id = term
             kt.save()
             url = '/school/kiluat/' + str(student_id)
             return HttpResponseRedirect(url)
     t = loader.get_template(os.path.join('school', 'ki_luat_detail.html'))
-    c = RequestContext(request, {'form': form, 'p': pupil, 'student_id':student_id, 'term':term, 'url':url})
+    c = RequestContext(request, {'form': form, 'p': pupil, 'student_id': student_id, 'term': term, 'url': url})
     return HttpResponse(t.render(c))
+
 
 def delete_ki_luat(request, kt_id):
     user = request.user
@@ -3594,13 +3663,14 @@ def delete_ki_luat(request, kt_id):
     if not in_school(request, student.current_class().block_id.school_id):
         return HttpResponseRedirect('/')
     pos = get_position(request)
-    if pos == 3 and gvcn(request,pupil.current_class()):
+    if pos == 3 and gvcn(request, pupil.current_class()):
         pos = 4
     if pos < 4:
         return HttpResponseRedirect('/')
     kt.delete()
     url = '/school/kiluat/' + str(student.id)
     return HttpResponseRedirect(url)
+
 
 def edit_ki_luat(request, kt_id):
     user = request.user
@@ -3609,7 +3679,7 @@ def edit_ki_luat(request, kt_id):
 
     try:
         school = get_school(request)
-    except Exception :
+    except Exception:
         return HttpResponseRedirect(reverse('index'))
 
     kt = KiLuat.objects.get(id=kt_id)
@@ -3618,28 +3688,28 @@ def edit_ki_luat(request, kt_id):
     if not in_school(request, pupil.current_class().block_id.school_id):
         return HttpResponseRedirect('/')
     pos = get_position(request)
-    if pos == 3 and gvcn(request,pupil.current_class()):
+    if pos == 3 and gvcn(request, pupil.current_class()):
         pos = 4
     if pos < 4:
         return HttpResponseRedirect('/')
-    url = "/school/kiluat/"+str(pupil.id) + "/edit"
+    url = "/school/kiluat/" + str(pupil.id) + "/edit"
     term = kt.term_id
     form = KiLuatForm(pupil.id, instance=kt)
     if request.method == 'POST':
         form = KiLuatForm(pupil.id, request.POST, instance=kt)
         if form.is_valid():
-            kt = form.save(commit = False)
+            kt = form.save(commit=False)
             kt.student_id = pupil
             kt.term_id = term
             kt.save()
             url = '/school/kiluat/' + str(pupil.id)
             return HttpResponseRedirect(url)
     t = loader.get_template(os.path.join('school', 'ki_luat_detail.html'))
-    c = RequestContext(request, {'form': form, 'p': pupil, 'student_id':pupil.id, 'term':term, 'url':url})
+    c = RequestContext(request, {'form': form, 'p': pupil, 'student_id': pupil.id, 'term': term, 'url': url})
     return HttpResponse(t.render(c))
 
 
-def hanh_kiem(request, class_id = 0, sort_type = 0, sort_status = 0):
+def hanh_kiem(request, class_id=0, sort_type=0, sort_status=0):
     user = request.user
     if not user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
@@ -3652,38 +3722,38 @@ def hanh_kiem(request, class_id = 0, sort_type = 0, sort_status = 0):
     classList = year.class_set.all().order_by('name');
     if class_id == 0:
         for cl in classList:
-            return HttpResponseRedirect('/school/hanhkiem/'+str(cl.id))
+            return HttpResponseRedirect('/school/hanhkiem/' + str(cl.id))
 
     c = classList.get(id__exact=class_id)
     if not in_school(request, c.block_id.school_id):
         return HttpResponseRedirect('/')
 
-    pos=get_position(request)
+    pos = get_position(request)
     if pos < 1:
         return HttpResponseRedirect('/')
     if pos == 1:
-        if not inClass(request,class_id):
+        if not inClass(request, class_id):
             return HttpResponseRedirect('/')
     if gvcn(request, class_id) == 1:
         pos = 4
     message = None
-    pupilList = c.student_set.filter(attend__leave_time = None).order_by('index')
+    pupilList = c.student_set.filter(attend__leave_time=None).order_by('index')
     term = get_current_term(request)
     if int(sort_type) == 1:
         if not int(sort_status):
-            pupilList = c.student_set.filter(attend__leave_time = None).order_by('first_name', 'last_name')
+            pupilList = c.student_set.filter(attend__leave_time=None).order_by('first_name', 'last_name')
         else:
-            pupilList = c.student_set.filter(attend__leave_time = None).order_by('-first_name', '-last_name')
+            pupilList = c.student_set.filter(attend__leave_time=None).order_by('-first_name', '-last_name')
     if int(sort_type) == 2:
         if not int(sort_status):
-            pupilList = c.student_set.filter(attend__leave_time = None).order_by('birthday')
+            pupilList = c.student_set.filter(attend__leave_time=None).order_by('birthday')
         else:
-            pupilList = c.student_set.filter(attend__leave_time = None).order_by('-birthday')
+            pupilList = c.student_set.filter(attend__leave_time=None).order_by('-birthday')
     if int(sort_type) == 3:
         if not int(sort_status):
-            pupilList = c.student_set.filter(attend__leave_time = None).order_by('sex')
+            pupilList = c.student_set.filter(attend__leave_time=None).order_by('sex')
         else:
-            pupilList = c.student_set.filter(attend__leave_time = None).order_by('-sex')
+            pupilList = c.student_set.filter(attend__leave_time=None).order_by('-sex')
 
     #tk_dd_lop(class_id, term.id)
     form = []
@@ -3694,12 +3764,12 @@ def hanh_kiem(request, class_id = 0, sort_type = 0, sort_status = 0):
         all.append(TBNam())
         hk = p.tbnam_set.get(year_id__exact=year.id)
         all[i] = hk
-        form[i] =TBNamForm(instance=hk)
+        form[i] = TBNamForm(instance=hk)
         i += 1
 
     if request.is_ajax() and request.POST['request_type'] != u'all' and pos > 3:
         p_id = request.POST['id']
-        p = c.pupil_set.get(id = int(p_id))
+        p = c.pupil_set.get(id=int(p_id))
         hk = p.tbnam_set.get(year_id__exact=year.id)
         if request.POST['request_type'] == u'term1':
             if request.POST['term1'] != u'':
@@ -3726,7 +3796,7 @@ def hanh_kiem(request, class_id = 0, sort_type = 0, sort_status = 0):
             hk.year = y
             hk.save()
 
-    elif request.is_ajax() and request.POST['request_type']=='all' and pos > 3:
+    elif request.is_ajax() and request.POST['request_type'] == 'all' and pos > 3:
         message = 'Cập nhật thành công hạnh kiểm lớp ' + str(Class.objects.get(id=class_id))
         term1 = request.POST.getlist('term1')
         term2 = request.POST.getlist('term2')
@@ -3735,26 +3805,27 @@ def hanh_kiem(request, class_id = 0, sort_type = 0, sort_status = 0):
         for p in pupilList:
             hk = p.tbnam_set.get(year_id__exact=year.id)
             if term.number == 1:
-                hk.term1=term1[i]
+                hk.term1 = term1[i]
             else:
-                hk.term2=term2[i]
-                hk.year=y[i]
+                hk.term2 = term2[i]
+                hk.year = y[i]
             hk.save()
             i += 1
     listdh = zip(pupilList, form, all)
     t = loader.get_template(os.path.join('school', 'hanh_kiem.html'))
-    c = RequestContext(request, {   'form':form,
-                                    'message':message,
-                                    'class':c,
-                                    'list':listdh,
-                                    'sort_type':sort_type,
-                                    'sort_status':sort_status,
-                                    'next_status':1-int(sort_status),
-                                    'year' : year,
-                                    'term' : term,
-                                    'classList':classList,
-                                    'pos':pos})
+    c = RequestContext(request, {'form': form,
+                                 'message': message,
+                                 'class': c,
+                                 'list': listdh,
+                                 'sort_type': sort_type,
+                                 'sort_status': sort_status,
+                                 'next_status': 1 - int(sort_status),
+                                 'year': year,
+                                 'term': term,
+                                 'classList': classList,
+                                 'pos': pos})
     return HttpResponse(t.render(c))
+
 
 def viewSubjectDetail (request, subject_id):
     user = request.user
@@ -3762,7 +3833,7 @@ def viewSubjectDetail (request, subject_id):
         return HttpResponseRedirect(reverse('login'))
     try:
         school = get_school(request)
-    except Exception :
+    except Exception:
         return HttpResponseRedirect(reverse('index'))
 
     if get_position(request) < 4:
@@ -3773,23 +3844,24 @@ def viewSubjectDetail (request, subject_id):
     if not in_school(request, class_id.block_id.school_id):
         return HttpResponseRedirect('/')
 
-    form = SubjectForm (class_id.block_id.school_id.id, instance = sub)
+    form = SubjectForm(class_id.block_id.school_id.id, instance=sub)
     message = None
     if request.method == 'POST':
         data = request.POST.copy()
         data['name'] = data['name'].strip()
-        form = SubjectForm(class_id.block_id.school_id.id, data, instance = sub)
+        form = SubjectForm(class_id.block_id.school_id.id, data, instance=sub)
         if form.is_valid():
             form.save()
             message = 'Bạn đã cập nhật thành công'
 
     t = loader.get_template(os.path.join('school', 'subject_detail.html'))
-    c = RequestContext(request, {   'form':form,
-                                    'message':message,
-                                    'sub': sub,
-                                    'pos':pos,
-                                    })
+    c = RequestContext(request, {'form': form,
+                                 'message': message,
+                                 'sub': sub,
+                                 'pos': pos,
+                                 })
     return HttpResponse(t.render(c))
+
 
 def move_one_student(request, student_id):
     user = request.user
@@ -3797,41 +3869,42 @@ def move_one_student(request, student_id):
         return HttpResponseRedirect(reverse('login'))
     try:
         school = get_school(request)
-    except Exception :
+    except Exception:
         return HttpResponseRedirect(reverse('index'))
     if get_position(request) < 4:
         return HttpResponseRedirect('/')
     if request.is_ajax():
-        student = Pupil.objects.get(id = student_id)
+        student = Pupil.objects.get(id=student_id)
         message = ''
         form = MoveClassForm(student)
         attends = student.get_attended()
         check = []
         for a in attends:
             check.append(a.history_check())
-        attendlist = zip(attends,check)
+        attendlist = zip(attends, check)
         if request.method == 'POST':
             if request.POST['request_type'] == 'movestudent':
-                form = MoveClassForm(student,request.POST)
+                form = MoveClassForm(student, request.POST)
                 if form.is_valid():
-                    new_class = Class.objects.get(id = request.POST['move_to'])
-                    move_student(school,student,new_class)
+                    new_class = Class.objects.get(id=request.POST['move_to'])
+                    move_student(school, student, new_class)
                     form = MoveClassForm(student)
                     message = 'Bạn đã chuyển thành công lớp cho học sinh ' + str(student) + '.'
             elif request.POST['request_type'] == 'delete_history':
                 try:
-                    history = attends.get(id = request.POST['id'])
+                    history = attends.get(id=request.POST['id'])
                 except DoesNotExist:
                     return
                 delete_history(history)
                 return HttpResponse()
         t = loader.get_template(os.path.join('school', 'move_one_student.html'))
-        c = RequestContext(request, { 'student':student,
+        c = RequestContext(request, {'student': student,
                                      'message': message,
-                                     'form':form,
-                                     'attendlist':attendlist})
+                                     'form': form,
+                                     'attendlist': attendlist})
         return HttpResponse(t.render(c))
     return HttpResponseNotAllowed('Không được phép truy cập')
+
 
 def move_students(request):
     user = request.user
@@ -3839,43 +3912,44 @@ def move_students(request):
         return HttpResponseRedirect(reverse('login'))
     try:
         school = get_school(request)
-    except Exception :
+    except Exception:
         return HttpResponseRedirect(reverse('index'))
     if get_position(request) < 4:
         return HttpResponseRedirect('/')
     year = school.year_set.latest('time')
     message = ''
-    classList = Class.objects.filter(year_id = year).order_by('name')
+    classList = Class.objects.filter(year_id=year).order_by('name')
     if request.is_ajax():
         if request.method == 'POST':
             if request.POST['request_type'] == u'source':
                 class_id = int(request.POST['class_id'])
                 if not class_id:
                     responseClassList = classList
-                    studentList = school.pupil_set.filter(class_id = None)
+                    studentList = school.pupil_set.filter(class_id=None)
                 else:
                     _class = Class.objects.get(id=class_id)
-                    studentList = school.pupil_set.filter(class_id = class_id)
-                    responseClassList = classList.filter(block_id=_class.block_id).exclude(id = class_id)
+                    studentList = school.pupil_set.filter(class_id=class_id)
+                    responseClassList = classList.filter(block_id=_class.block_id).exclude(id=class_id)
                 list = '<option value=-1> ------ </option>'
                 for cl in responseClassList:
                     list = list + "<option value=" + str(cl.id) + ">" + str(cl) + "</option>"
-                table = render_to_string(os.path.join('school','classTable.html'),{'list':studentList})
-                data = simplejson.dumps( {'message': message,'ClassList': list,'table':table})
-                return HttpResponse(data, mimetype = 'json')
+                table = render_to_string(os.path.join('school', 'classTable.html'), {'list': studentList})
+                data = simplejson.dumps({'message': message, 'ClassList': list, 'table': table})
+                return HttpResponse(data, mimetype='json')
             if request.POST['request_type'] == u'move':
-                new_class = Class.objects.get(id = request.POST['target'])
+                new_class = Class.objects.get(id=request.POST['target'])
                 data = request.POST[u'data']
                 data = data.split('-')
                 for e in data:
                     if e.strip():
-                        student = Pupil.objects.get(id__exact = int(e))
-                        move_student(school,student,new_class)
+                        student = Pupil.objects.get(id__exact=int(e))
+                        move_student(school, student, new_class)
                 return HttpResponse()
     t = loader.get_template(os.path.join('school', 'move_students.html'))
-    c = RequestContext(request,{'classList':classList,
-                                'message':message})
+    c = RequestContext(request, {'classList': classList,
+                                 'message': message})
     return HttpResponse(t.render(c))
+
 
 def processFileTKB(request, file_name):
     filepath = os.path.join(TEMP_FILE_LOCATION, file_name)
@@ -3933,7 +4007,7 @@ def processFileTKB(request, file_name):
         for d in range(2, 8):
             try:
                 try:
-                    t = cl.tkb_set.get(day = d)
+                    t = cl.tkb_set.get(day=d)
                 except Exception as e:
                     t = TKB()
                     t.day = d
@@ -3953,7 +4027,8 @@ def processFileTKB(request, file_name):
                     break
             t.period_1 = sb
             if not sb and subjectName:
-                message += u'<li>Không tồn tại môn ' + sheet.cell(r, c).value + u' trong lớp ' + sheet.cell(start_row, c).value.strip() + u'</li>'
+                message += u'<li>Không tồn tại môn ' + sheet.cell(r, c).value + u' trong lớp ' + sheet.cell(start_row,
+                                                                                                            c).value.strip() + u'</li>'
 
             sb = None
             subjectName = sheet.cell(r + 1, c).value.strip().lower().replace(' ', '')
@@ -3964,7 +4039,8 @@ def processFileTKB(request, file_name):
 
             t.period_2 = sb
             if not sb and subjectName:
-                message += u'<li>Không tồn tại môn ' + sheet.cell(r + 1, c).value + u' trong lớp ' + sheet.cell(start_row, c).value.strip() + u'</li>'
+                message += u'<li>Không tồn tại môn ' + sheet.cell(r + 1, c).value + u' trong lớp ' + sheet.cell(
+                    start_row, c).value.strip() + u'</li>'
 
             sb = None
             subjectName = sheet.cell(r + 2, c).value.strip().lower().replace(' ', '')
@@ -3974,7 +4050,8 @@ def processFileTKB(request, file_name):
                     break
             t.period_3 = sb
             if not sb and subjectName:
-                message += u'<li>Không tồn tại môn ' + sheet.cell(r + 2, c).value + u' trong lớp ' + sheet.cell(start_row, c).value.strip() + u'</li>'
+                message += u'<li>Không tồn tại môn ' + sheet.cell(r + 2, c).value + u' trong lớp ' + sheet.cell(
+                    start_row, c).value.strip() + u'</li>'
 
             sb = None
             subjectName = sheet.cell(r + 3, c).value.strip().lower().replace(' ', '')
@@ -3984,7 +4061,8 @@ def processFileTKB(request, file_name):
                     break
             t.period_4 = sb
             if not sb and subjectName:
-                message += u'<li>Không tồn tại môn ' + sheet.cell(r + 3, c).value + u' trong lớp ' + sheet.cell(start_row, c).value.strip() + u'</li>'
+                message += u'<li>Không tồn tại môn ' + sheet.cell(r + 3, c).value + u' trong lớp ' + sheet.cell(
+                    start_row, c).value.strip() + u'</li>'
 
             sb = None
             subjectName = sheet.cell(r + 4, c).value.strip().lower().replace(' ', '')
@@ -3994,7 +4072,8 @@ def processFileTKB(request, file_name):
                     break
             t.period_5 = sb
             if not sb and subjectName:
-                message += u'<li>Không tồn tại môn ' + sheet.cell(r + 4, c).value + u' trong lớp ' + sheet.cell(start_row, c).value.strip() + u'</li>'
+                message += u'<li>Không tồn tại môn ' + sheet.cell(r + 4, c).value + u' trong lớp ' + sheet.cell(
+                    start_row, c).value.strip() + u'</li>'
 
             sb = None
             subjectName = sheet.cell(r + 5, c).value.strip().lower().replace(' ', '')
@@ -4004,7 +4083,8 @@ def processFileTKB(request, file_name):
                     break
             t.period_6 = sb
             if not sb and subjectName:
-                message += u'<li>Không tồn tại môn ' + sheet.cell(r + 5, c).value + u' trong lớp ' + sheet.cell(start_row, c).value.strip() + u'</li>'
+                message += u'<li>Không tồn tại môn ' + sheet.cell(r + 5, c).value + u' trong lớp ' + sheet.cell(
+                    start_row, c).value.strip() + u'</li>'
 
             sb = None
             subjectName = sheet.cell(r + 6, c).value.strip().lower().replace(' ', '')
@@ -4063,7 +4143,7 @@ def import_timeTable(request):
         return HttpResponseRedirect(reverse('login'))
     try:
         school = get_school(request)
-    except Exception :
+    except Exception:
         return HttpResponseRedirect(reverse('index'))
     if get_position(request) < 2:
         return HttpResponseRedirect('/')
@@ -4077,7 +4157,7 @@ def import_timeTable(request):
             try:
                 file = request.FILES.get('file')
             except KeyError:
-                return HttpResponseBadRequest( "AJAX request not valid" )
+                return HttpResponseBadRequest("AJAX request not valid")
         else:
             is_raw = False
             if len(request.FILES) == 1:
@@ -4105,13 +4185,11 @@ def import_timeTable(request):
                  'error': u'File excel không đúng định dạng'}]
 
     else:
-
         data = [{'name': file.name, 'url': filename,
                  'sizef': file.size,
                  'process_message': process_file_message,
                  'message': u'Nhập dữ liệu thành công'}]
     return HttpResponse(simplejson.dumps(data))
-
 
 
 def timeTable(request, class_id):
@@ -4121,7 +4199,7 @@ def timeTable(request, class_id):
             return HttpResponseRedirect(reverse('login'))
         try:
             school = get_school(request)
-        except Exception :
+        except Exception:
             return HttpResponseRedirect(reverse('index'))
         pos = get_position(request);
         if pos < 1:
@@ -4130,12 +4208,12 @@ def timeTable(request, class_id):
             return HttpResponseRedirect('/')
 
         year = school.year_set.latest('time')
-        classList = Class.objects.filter(year_id = year).order_by('name')
-        cl = Class.objects.get(id = class_id)
+        classList = Class.objects.filter(year_id=year).order_by('name')
+        cl = Class.objects.get(id=class_id)
 
         for d in range(2, 8):
             try:
-                tmp = cl.tkb_set.get(day = d)
+                tmp = cl.tkb_set.get(day=d)
             except Exception as e:
                 t = TKB()
                 t.day = d
@@ -4146,29 +4224,39 @@ def timeTable(request, class_id):
             if request.is_ajax():
                 print request.POST
                 d = int(request.POST['day'])
-                t = cl.tkb_set.get(day = d)
+                t = cl.tkb_set.get(day=d)
                 if request.POST['sub']:
-                    if request.POST['request_type'] == 'period_1' : t.period_1 = Subject.objects.get(id = int(request.POST['sub']))
-                    if request.POST['request_type'] == 'period_2' : t.period_2 = Subject.objects.get(id = int(request.POST['sub']))
-                    if request.POST['request_type'] == 'period_3' : t.period_3 = Subject.objects.get(id = int(request.POST['sub']))
-                    if request.POST['request_type'] == 'period_4' : t.period_4 = Subject.objects.get(id = int(request.POST['sub']))
-                    if request.POST['request_type'] == 'period_5' : t.period_5 = Subject.objects.get(id = int(request.POST['sub']))
-                    if request.POST['request_type'] == 'period_6' : t.period_6 = Subject.objects.get(id = int(request.POST['sub']))
-                    if request.POST['request_type'] == 'period_7' : t.period_7 = Subject.objects.get(id = int(request.POST['sub']))
-                    if request.POST['request_type'] == 'period_8' : t.period_8 = Subject.objects.get(id = int(request.POST['sub']))
-                    if request.POST['request_type'] == 'period_9' : t.period_9 = Subject.objects.get(id = int(request.POST['sub']))
-                    if request.POST['request_type'] == 'period_10' : t.period_10 = Subject.objects.get(id = int(request.POST['sub']))
+                    if request.POST['request_type'] == 'period_1': t.period_1 = Subject.objects.get(
+                        id=int(request.POST['sub']))
+                    if request.POST['request_type'] == 'period_2': t.period_2 = Subject.objects.get(
+                        id=int(request.POST['sub']))
+                    if request.POST['request_type'] == 'period_3': t.period_3 = Subject.objects.get(
+                        id=int(request.POST['sub']))
+                    if request.POST['request_type'] == 'period_4': t.period_4 = Subject.objects.get(
+                        id=int(request.POST['sub']))
+                    if request.POST['request_type'] == 'period_5': t.period_5 = Subject.objects.get(
+                        id=int(request.POST['sub']))
+                    if request.POST['request_type'] == 'period_6': t.period_6 = Subject.objects.get(
+                        id=int(request.POST['sub']))
+                    if request.POST['request_type'] == 'period_7': t.period_7 = Subject.objects.get(
+                        id=int(request.POST['sub']))
+                    if request.POST['request_type'] == 'period_8': t.period_8 = Subject.objects.get(
+                        id=int(request.POST['sub']))
+                    if request.POST['request_type'] == 'period_9': t.period_9 = Subject.objects.get(
+                        id=int(request.POST['sub']))
+                    if request.POST['request_type'] == 'period_10': t.period_10 = Subject.objects.get(
+                        id=int(request.POST['sub']))
                 else:
-                    if request.POST['request_type'] == 'period_1' : t.period_1 = None
-                    if request.POST['request_type'] == 'period_2' : t.period_2 = None
-                    if request.POST['request_type'] == 'period_3' : t.period_3 = None
-                    if request.POST['request_type'] == 'period_4' : t.period_4 = None
-                    if request.POST['request_type'] == 'period_5' : t.period_5 = None
-                    if request.POST['request_type'] == 'period_6' : t.period_6 = None
-                    if request.POST['request_type'] == 'period_5' : t.period_7 = None
-                    if request.POST['request_type'] == 'period_8' : t.period_8 = None
-                    if request.POST['request_type'] == 'period_9' : t.period_9 = None
-                    if request.POST['request_type'] == 'period_10' : t.period_10 = None
+                    if request.POST['request_type'] == 'period_1': t.period_1 = None
+                    if request.POST['request_type'] == 'period_2': t.period_2 = None
+                    if request.POST['request_type'] == 'period_3': t.period_3 = None
+                    if request.POST['request_type'] == 'period_4': t.period_4 = None
+                    if request.POST['request_type'] == 'period_5': t.period_5 = None
+                    if request.POST['request_type'] == 'period_6': t.period_6 = None
+                    if request.POST['request_type'] == 'period_5': t.period_7 = None
+                    if request.POST['request_type'] == 'period_8': t.period_8 = None
+                    if request.POST['request_type'] == 'period_9': t.period_9 = None
+                    if request.POST['request_type'] == 'period_10': t.period_10 = None
 
                 t.save()
 
@@ -4176,71 +4264,71 @@ def timeTable(request, class_id):
             else:
                 print request.POST
                 for d in range(2, 8):
-                    t = cl.tkb_set.get(day = d)
+                    t = cl.tkb_set.get(day=d)
                     plist = request.POST.getlist('period_1')
-                    if plist[d-2]:
-                        t.period_1=Subject.objects.get(id = int(plist[d-2]))
+                    if plist[d - 2]:
+                        t.period_1 = Subject.objects.get(id=int(plist[d - 2]))
                     else:
-                        t.period_1=None
+                        t.period_1 = None
 
                     plist = request.POST.getlist('period_2')
-                    if plist[d-2]:
-                        t.period_2=Subject.objects.get(id = int(plist[d-2]))
+                    if plist[d - 2]:
+                        t.period_2 = Subject.objects.get(id=int(plist[d - 2]))
                     else:
-                        t.period_2=None
+                        t.period_2 = None
 
                     plist = request.POST.getlist('period_3')
-                    if plist[d-2]:
-                        t.period_3=Subject.objects.get(id = int(plist[d-2]))
+                    if plist[d - 2]:
+                        t.period_3 = Subject.objects.get(id=int(plist[d - 2]))
                     else:
-                        t.period_3=None
+                        t.period_3 = None
 
                     plist = request.POST.getlist('period_4')
-                    if plist[d-2]:
-                        t.period_4=Subject.objects.get(id = int(plist[d-2]))
+                    if plist[d - 2]:
+                        t.period_4 = Subject.objects.get(id=int(plist[d - 2]))
                     else:
-                        t.period_4=None
+                        t.period_4 = None
 
                     plist = request.POST.getlist('period_5')
-                    if plist[d-2]:
-                        t.period_5=Subject.objects.get(id = int(plist[d-2]))
+                    if plist[d - 2]:
+                        t.period_5 = Subject.objects.get(id=int(plist[d - 2]))
                     else:
-                        t.period_5=None
+                        t.period_5 = None
                     t.save()
 
                     plist = request.POST.getlist('period_6')
-                    if plist[d-2]:
-                        t.period_6=Subject.objects.get(id = int(plist[d-2]))
+                    if plist[d - 2]:
+                        t.period_6 = Subject.objects.get(id=int(plist[d - 2]))
                     else:
-                        t.period_6=None
+                        t.period_6 = None
                     t.save()
 
                     plist = request.POST.getlist('period_7')
-                    if plist[d-2]:
-                        t.period_7=Subject.objects.get(id = int(plist[d-2]))
+                    if plist[d - 2]:
+                        t.period_7 = Subject.objects.get(id=int(plist[d - 2]))
                     else:
-                        t.period_7=None
+                        t.period_7 = None
                     t.save()
 
                     plist = request.POST.getlist('period_5')
-                    if plist[d-2]:
-                        t.period_8=Subject.objects.get(id = int(plist[d-2]))
+                    if plist[d - 2]:
+                        t.period_8 = Subject.objects.get(id=int(plist[d - 2]))
                     else:
-                        t.period_8=None
+                        t.period_8 = None
                     t.save()
 
                     plist = request.POST.getlist('period_9')
-                    if plist[d-2]:
-                        t.period_9=Subject.objects.get(id = int(plist[d-2]))
+                    if plist[d - 2]:
+                        t.period_9 = Subject.objects.get(id=int(plist[d - 2]))
                     else:
-                        t.period_9=None
+                        t.period_9 = None
                     t.save()
 
                     plist = request.POST.getlist('period_10')
-                    if plist[d-2]:
-                        t.period_10=Subject.objects.get(id = int(plist[d-2]))
+                    if plist[d - 2]:
+                        t.period_10 = Subject.objects.get(id=int(plist[d - 2]))
                     else:
-                        t.period_10=None
+                        t.period_10 = None
                     t.save()
 
         timeTables = TKB.objects.filter(class_id=class_id).order_by('day')
@@ -4258,17 +4346,18 @@ def timeTable(request, class_id):
         list = zip(timeTables, TKBForms)
         t = loader.get_template(os.path.join('school', 'time_table.html'))
         c = RequestContext(request, {'list': list,
-                                     'subject' : subject,
+                                     'subject': subject,
                                      'lesson': lesson,
-                                     'week' : week,
-                                    'pos':get_position(request),
-                                    'classList':classList,
-                                    'class':cl,
-                                    })
+                                     'week': week,
+                                     'pos': get_position(request),
+                                     'classList': classList,
+                                     'class': cl,
+                                     })
         return HttpResponse(t.render(c))
     except Exception as e:
         print e
         raise e
+
 
 def timeTable_school(request):
     user = request.user
@@ -4276,21 +4365,21 @@ def timeTable_school(request):
         return HttpResponseRedirect(reverse('login'))
     try:
         school = get_school(request)
-    except Exception :
+    except Exception:
         return HttpResponseRedirect(reverse('index'))
     pos = get_position(request);
     if pos < 1:
         return HttpResponseRedirect('/')
 
     year = school.year_set.latest('time')
-    classList = Class.objects.filter(year_id = year).order_by('name')
+    classList = Class.objects.filter(year_id=year).order_by('name')
     table = []
     for cl in classList:
         tcl = cl.tkb_set.all()
         if not (tcl.count() == 6):
             for d in range(2, 8):
                 try:
-                    tmp = cl.tkb_set.get(day = d)
+                    tmp = cl.tkb_set.get(day=d)
                 except Exception as e:
                     t = TKB()
                     t.day = d
@@ -4308,12 +4397,13 @@ def timeTable_school(request):
     list = zip(classList, table)
     t = loader.get_template(os.path.join('school', 'time_table_school.html'))
     c = RequestContext(request, {'list': list,
-                                'pos':get_position(request),
-                                'lesson': lesson,
-                                 'week' : week,
-                                'classList':classList,
-                                })
+                                 'pos': get_position(request),
+                                 'lesson': lesson,
+                                 'week': week,
+                                 'classList': classList,
+                                 })
     return HttpResponse(t.render(c))
+
 
 def teacher_test(request):
     user = request.user
@@ -4321,13 +4411,13 @@ def teacher_test(request):
         return HttpResponseRedirect(reverse('login'))
     try:
         school = get_school(request)
-    except Exception :
+    except Exception:
         return HttpResponseRedirect(reverse('index'))
     pos = get_position(request)
     if request.is_ajax():
         if request.method == 'POST' and request.POST['request_type'] == u'rename':
             data = request.POST['type'].split('-')
-            if data[0] =='group':
+            if data[0] == 'group':
                 group = Group.objects.get(id=data[1]);
                 group.name = request.POST['name']
                 group.save()
@@ -4340,7 +4430,7 @@ def teacher_test(request):
             return None
         elif request.method == 'POST' and request.POST['request_type'] == u'deletetg':
             data = request.POST['type'].split('-')
-            if data[0] =='group':
+            if data[0] == 'group':
                 group = Group.objects.get(id=data[1]);
                 group.delete()
                 return HttpResponse()
@@ -4354,16 +4444,16 @@ def teacher_test(request):
             data = data.split('-')
             for e in data:
                 if e.strip():
-                    teacher = Teacher.objects.get(id__exact = int(e))
+                    teacher = Teacher.objects.get(id__exact=int(e))
                     del_teacher(teacher);
             data = simplejson.dumps({'success': True})
             return HttpResponse(data, mimetype='json')
-        elif request.method == 'POST' and request.POST['request_type']==u'add':
+        elif request.method == 'POST' and request.POST['request_type'] == u'add':
             print request.POST
             if request.POST['first_name'].strip():
                 name = request.POST['first_name'].split()
-                last_name = ' '.join(name[:len(name)-1])
-                first_name = name[len(name)-1]
+                last_name = ' '.join(name[:len(name) - 1])
+                first_name = name[len(name) - 1]
             else:
                 last_name = ''
                 first_name = ''
@@ -4371,59 +4461,62 @@ def teacher_test(request):
             teamlist = request.POST.getlist('team_id')
             tid = teamlist.pop()
             if tid != u'':
-                team = school.team_set.get(id = tid)
+                team = school.team_set.get(id=tid)
                 team_id = team.id
             else:
                 team = None
                 team_id = ''
-            data = {'first_name':first_name, 'last_name':last_name, 'birthday':request.POST['birthday'],
-                    'sex':request.POST['sex'], 'school_id':school.id, 'home_town':request.POST['home_town'].strip(),
-                    'team_id': team_id, 'major' : request.POST['major'], 'index':index}
-            addform = TeacherForm(school.id,data)
+            data = {'first_name': first_name, 'last_name': last_name, 'birthday': request.POST['birthday'],
+                    'sex': request.POST['sex'], 'school_id': school.id, 'home_town': request.POST['home_town'].strip(),
+                    'team_id': team_id, 'major': request.POST['major'], 'index': index}
+            addform = TeacherForm(school.id, data)
             if addform.is_valid():
                 birthday = to_date(request.POST['birthday'])
                 try:
-                    test = school.teacher_set.get(first_name__exact=data['first_name'], last_name__exact=data['last_name'],birthday__exact=birthday)
+                    test = school.teacher_set.get(first_name__exact=data['first_name'],
+                                                  last_name__exact=data['last_name'], birthday__exact=birthday)
                     message = 'Giáo viên này đã tồn tại trong hệ thống'
-                    data = simplejson.dumps( {'message': message,'status': 'dup'} )
-                    return HttpResponse(data, mimetype = 'json')
+                    data = simplejson.dumps({'message': message, 'status': 'dup'})
+                    return HttpResponse(data, mimetype='json')
                 except ObjectDoesNotExist:
-                    add_teacher(first_name=data['first_name'], last_name=data['last_name'], school=get_school(request), birthday=birthday,
-                                sex=data['sex'], home_town=data['home_town'], team_id =team, major=data['major'])
+                    add_teacher(first_name=data['first_name'], last_name=data['last_name'], school=get_school(request),
+                                birthday=birthday,
+                                sex=data['sex'], home_town=data['home_town'], team_id=team, major=data['major'])
                     message = 'Bạn vừa thêm một giáo viên mới'
-                    teacher = school.teacher_set.get(first_name=data['first_name'], last_name=data['last_name'], birthday=birthday,
-                                sex=data['sex'])
-                    teacher_html = render_to_string(os.path.join('school','add_teacher_one_teacher.html'),
-                            {'ss':teacher,'pos':pos,'index':index})
-                    data = simplejson.dumps( {'message': message,'status': 'success','text':teacher_html} )
-                    return HttpResponse(data, mimetype = 'json')
+                    teacher = school.teacher_set.get(first_name=data['first_name'], last_name=data['last_name'],
+                                                     birthday=birthday,
+                                                     sex=data['sex'])
+                    teacher_html = render_to_string(os.path.join('school', 'add_teacher_one_teacher.html'),
+                            {'ss': teacher, 'pos': pos, 'index': index})
+                    data = simplejson.dumps({'message': message, 'status': 'success', 'text': teacher_html})
+                    return HttpResponse(data, mimetype='json')
             else:
                 name = ''
                 birthday = ''
                 for a in addform:
-                        if a.name == 'first_name':
-                            if a.errors:
-                                first_name = str(a.errors)
-                        elif a.name == 'birthday':
-                            if a.errors:
-                                birthday = str(a.errors)
+                    if a.name == 'first_name':
+                        if a.errors:
+                            first_name = str(a.errors)
+                    elif a.name == 'birthday':
+                        if a.errors:
+                            birthday = str(a.errors)
                 message = 'Thông tin nhập vào không hợp lệ'
-                data = simplejson.dumps( {'message': message,'status': 'failed',
-                                          'first_name':first_name,'birthday':birthday} )
-                return HttpResponse(data, mimetype = 'json')
-        elif request.method == 'POST' and request.POST['request_type']==u'addgroup':
-            add_group_form = GroupForm(school,request.POST)
+                data = simplejson.dumps({'message': message, 'status': 'failed',
+                                         'first_name': first_name, 'birthday': birthday})
+                return HttpResponse(data, mimetype='json')
+        elif request.method == 'POST' and request.POST['request_type'] == u'addgroup':
+            add_group_form = GroupForm(school, request.POST)
             if add_group_form.is_valid():
                 try:
-                    test = Group.objects.get(name=request.POST['name'],team_id = request.POST['team_id'])
-                    message ='Nhóm này đã tồn tại trong hệ thống'
-                    data = simplejson.dumps({'message':message, 'status':'dup'})
-                    return HttpResponse(data, mimetype = 'json')
+                    test = Group.objects.get(name=request.POST['name'], team_id=request.POST['team_id'])
+                    message = 'Nhóm này đã tồn tại trong hệ thống'
+                    data = simplejson.dumps({'message': message, 'status': 'dup'})
+                    return HttpResponse(data, mimetype='json')
                 except:
                     message = 'Bạn vừa thêm nhóm mới'
                     add_group_form.save()
-                    data = simplejson.dumps({'message':message, 'status':'success'})
-                    return HttpResponse(data, mimetype = 'json')
+                    data = simplejson.dumps({'message': message, 'status': 'success'})
+                    return HttpResponse(data, mimetype='json')
             else:
                 name = ''
                 team_id = ''
@@ -4435,24 +4528,24 @@ def teacher_test(request):
                     if a.name == 'team_id':
                         if a.errors:
                             team_id = str(a.errors)
-                data = simplejson.dumps({'message':message, 'status':'failed',
-                                         'name':name, 'team_id':team_id})
-                return HttpResponse(data, mimetype = 'json')
-        elif request.method == 'POST' and request.POST['request_type']==u'addteam':
+                data = simplejson.dumps({'message': message, 'status': 'failed',
+                                         'name': name, 'team_id': team_id})
+                return HttpResponse(data, mimetype='json')
+        elif request.method == 'POST' and request.POST['request_type'] == u'addteam':
             form_data = request.POST.copy()
             form_data['school_id'] = school.id
             add_team_form = TeamForm(form_data)
             if add_team_form.is_valid():
                 try:
                     test = school.team_set.get(name=request.POST['name'])
-                    message =u'Tổ này đã tồn tại trong hệ thống'
-                    data = simplejson.dumps({'message':message, 'status':'dup'})
-                    return HttpResponse(data, mimetype = 'json')
+                    message = u'Tổ này đã tồn tại trong hệ thống'
+                    data = simplejson.dumps({'message': message, 'status': 'dup'})
+                    return HttpResponse(data, mimetype='json')
                 except:
                     message = u'Bạn vừa thêm tổ mới'
                     add_team_form.save()
-                    data = simplejson.dumps({'message':message, 'status':'success'})
-                    return HttpResponse(data, mimetype = 'json')
+                    data = simplejson.dumps({'message': message, 'status': 'success'})
+                    return HttpResponse(data, mimetype='json')
             else:
                 name = ''
                 message = 'Thông tin nhập vào không hợp lệ'
@@ -4460,26 +4553,268 @@ def teacher_test(request):
                     if a.name == 'name':
                         if a.errors:
                             name = str(a.errors)
-                data = simplejson.dumps({'message':message, 'status':'failed',
-                                         'name':name})
-                return HttpResponse(data, mimetype = 'json')
-    teacherList = school.teacher_set.all().order_by('first_name','last_name')
+                data = simplejson.dumps({'message': message, 'status': 'failed',
+                                         'name': name})
+                return HttpResponse(data, mimetype='json')
+    teacherList = school.teacher_set.all().order_by('first_name', 'last_name')
     teamList = school.team_set.all()
     groupList = []
     for t in teamList:
         groupList.append(t.group_set.all())
-    gnt = zip(teamList,groupList)
+    gnt = zip(teamList, groupList)
     addform = TeacherForm(school.id)
     add_group_form = GroupForm(school)
     add_team_form = TeamForm()
-    t = loader.get_template(os.path.join('school','teacher_test.html'))
-    c = RequestContext(request,{'teacherList':teacherList,
-                                'teamList':teamList,
-                                'list':list,
-                                'pos':pos,
-                                'form':addform,
-                                'add_group_form':add_group_form,
-                                'add_team_form':add_team_form,
-                                'gnt':gnt,
-                                })
+    t = loader.get_template(os.path.join('school', 'teacher_test.html'))
+    c = RequestContext(request, {'teacherList': teacherList,
+                                 'teamList': teamList,
+                                 'list': list,
+                                 'pos': pos,
+                                 'form': addform,
+                                 'add_group_form': add_group_form,
+                                 'add_team_form': add_team_form,
+                                 'gnt': gnt,
+                                 })
     return HttpResponse(t.render(c))
+
+
+def subjectAgenda(request, subject_id):
+    user = request.user
+    if not user.is_authenticated():
+        return HttpResponseRedirect(reverse('login'))
+    try:
+        school = get_school(request)
+    except Exception as e:
+        return HttpResponseRedirect(reverse('index'))
+    pos = get_position(request)
+    sub = Subject.objects.get(id=subject_id)
+    if request.is_ajax():
+        print request.POST
+        if request.POST['request_type'] == 'nLesson':
+            _n = int(request.POST['value'])
+            if sub.number_lesson > _n:
+                message = u'Số lượng tiết học mới không được nhỏ hơn hiện tại'
+            else:
+                for i in range(sub.number_lesson + 1, _n + 1):
+                    newLesson = Lesson()
+                    newLesson.index = i
+                    newLesson.subject_id = sub
+                    newLesson.save()
+                sub.number_lesson = _n
+                sub.save()
+                message = u'Đã lưu. Vui lòng cập nhật các tiết học mới'
+            data = simplejson.dumps({'message': message})
+            return HttpResponse(data, mimetype='json')
+
+        elif request.POST['request_type'] == 'title':
+            newTitle = request.POST['value']
+            _id = int(request.POST['id'])
+            less = sub.lesson_set.get(id=_id)
+            less.title = newTitle
+            less.save()
+            message = u'Đã lưu'
+            data = simplejson.dumps({'message': message})
+            return HttpResponse(data, mimetype='json')
+
+        elif request.POST['request_type'] == 'ngay_day':
+            _id = int(request.POST['id'])
+            less = sub.lesson_set.get(id=_id)
+            less.ngay_day = to_date(request.POST['value'])
+            print to_date(request.POST['value'])
+            less.save()
+            message = u'Đã lưu'
+            data = simplejson.dumps({'message': message})
+            return HttpResponse(data, mimetype='json')
+
+    lessList = sub.lesson_set.all().order_by("index")
+    lessForm = []
+    for i in lessList:
+        newForm = LessonForm(instance=i)
+        print newForm.as_p()
+        lessForm.append(newForm)
+    list = zip(lessList, lessForm)
+    #print sub.number_lesson
+    t = loader.get_template(os.path.join('school', 'subject_agenda.html'))
+    c = RequestContext(request, {'list': list,
+                                 'pos': pos,
+                                 'class': sub.class_id,
+                                 'sub': sub,
+                                 'nLesson': sub.number_lesson,
+                                 })
+    return HttpResponse(t.render(c))
+
+
+def timetableStudent(request, day=date.today().day, month=date.today().month, year=date.today().year):
+    user = request.user
+    if not user.is_authenticated():
+        return HttpResponseRedirect(reverse('login'))
+    try:
+        school = get_school(request)
+    except Exception as e:
+        return HttpResponseRedirect(reverse('index'))
+    pos = get_position(request)
+    if pos != 1:
+        return HttpResponseRedirect(reverse('index'))
+    t1 = date(int(year), int(month), int(day))
+    try:
+        cl = request.user.pupil.class_id
+    except Exceptrion as e:
+        return HttpResponseRedirect(reverse('index'))
+
+    print cl
+    t = cl.tkb_set.get(day=t1.weekday() + 2)
+    print t.day
+
+    list = []
+    if t.period_1:
+        l1 = t.period_1.lesson_set.filter(ngay_day__exact=t1).order_by("index")
+        for i in l1:
+            if not (i in list): list.append(i)
+
+    if t.period_2:
+        l1 = t.period_2.lesson_set.filter(ngay_day__exact=t1).order_by("index")
+        for i in l1:
+            if not (i in list): list.append(i)
+
+    if t.period_3:
+        l1 = t.period_3.lesson_set.filter(ngay_day__exact=t1).order_by("index")
+        for i in l1:
+            if not (i in list): list.append(i)
+
+    if t.period_4:
+        l1 = t.period_4.lesson_set.filter(ngay_day__exact=t1).order_by("index")
+        for i in l1:
+            if not (i in list): list.append(i)
+
+    if t.period_5:
+        l1 = t.period_5.lesson_set.filter(ngay_day__exact=t1).order_by("index")
+        for i in l1:
+            if not (i in list): list.append(i)
+
+    if t.period_6:
+        l1 = t.period_6.lesson_set.filter(ngay_day__exact=t1).order_by("index")
+        for i in l1:
+            if not (i in list): list.append(i)
+
+    if t.period_7:
+        l1 = t.period_7.lesson_set.filter(ngay_day__exact=t1).order_by("index")
+        for i in l1:
+            if not (i in list): list.append(i)
+
+    if t.period_8:
+        l1 = t.period_8.lesson_set.filter(ngay_day__exact=t1).order_by("index")
+        for i in l1:
+            if not (i in list): list.append(i)
+
+    if t.period_9:
+        l1 = t.period_9.lesson_set.filter(ngay_day__exact=t1).order_by("index")
+        for i in l1:
+            if not (i in list): list.append(i)
+
+    if t.period_10:
+        l1 = t.period_10.lesson_set.filter(ngay_day__exact=t1).order_by("index")
+        for i in l1:
+            if not (i in list): list.append(i)
+
+    tp = loader.get_template(os.path.join('school', 'timetableTodayStudent.html'))
+    c = RequestContext(request, {'list': list,
+                                 'pos': pos,
+                                 'today': t1,
+                                 'class': cl,
+                                 'tkb': t,
+                                 })
+    return HttpResponse(tp.render(c))
+
+
+def timetableTeacher(request, day=date.today().day, month=date.today().month, year=date.today().year):
+    user = request.user
+    if not user.is_authenticated():
+        return HttpResponseRedirect(reverse('login'))
+    try:
+        school = get_school(request)
+    except Exception as e:
+        return HttpResponseRedirect(reverse('index'))
+    pos = get_position(request)
+
+    t1 = date(int(year), int(month), int(day))
+    tc = get_teacher(request)
+
+    if not tc:
+        return HttpResponseRedirect(reverse('index'))
+    if request.is_ajax():
+        if request.POST['request_type'] == 'title':
+            newTitle = request.POST['value']
+            _id = int(request.POST['id'])
+            less = Lesson.objects.get(id=_id)
+            less.title = newTitle
+            less.save()
+            message = u'Đã lưu'
+            data = simplejson.dumps({'message': message})
+            return HttpResponse(data, mimetype='json')
+        
+    subjectList = tc.subject_set.all()
+    print subjectList
+    lessonList = []
+    for s in subjectList:
+        s1 = []
+        s2 = []
+        s3 = []
+        t = s.class_id.tkb_set.get(day=t1.weekday() + 2)
+        
+        if t is None:
+            print '111111111111'
+            lessonList.append(zip(s1, s2, s3))
+            continue
+
+        if t.period_1 == s:
+            s1.append(1)
+
+        if t.period_2 == s:
+            s1.append(2)
+
+        if t.period_3 == s:
+            s1.append(3)
+
+        if t.period_4 == s:
+            s1.append(4)
+
+        if t.period_5 == s:
+            s1.append(5)
+
+        if t.period_6 == s:
+            s1.append(6)
+
+        if t.period_7 == s:
+            s1.append(7)
+
+        if t.period_8 == s:
+            s1.append(8)
+
+        if t.period_9 == s:
+            s1.append(9)
+
+        if t.period_10 == s:
+            s1.append(10)
+        print s1
+        _s2 = s.lesson_set.filter(ngay_day__exact = t1).order_by("index")
+        for i in _s2:
+            s2.append(i)
+        delta = len(s1) - len(s2)
+        deltaset = s.lesson_set.filter(ngay_day = None).order_by("index")[:5]
+        for dts in deltaset:
+            dts.ngay_day = t1
+            dts.save()
+            s2.append(dts)
+
+        for i in s2:
+            s3.append(LessonForm(instance = i))
+        lessonList.append(zip(s1, s2, s3))
+        
+    list = zip(subjectList, lessonList)
+    tp = loader.get_template(os.path.join('school', 'timetableTeacher.html'))
+    c = RequestContext(request, {'list': list,
+                                 'pos': pos,
+                                 'today': t1,
+                                 'teacher': tc,
+                                 })
+    return HttpResponse(tp.render(c))

@@ -162,6 +162,11 @@ urlpatterns = patterns('',
     url(r'import/timeTable$','school.views.import_timeTable'),
     url(r'timeTable/(?P<class_id>\w+)$','school.views.timeTable'),
     url(r'timeTableSchool$','school.views.timeTable_school'),
+    url(r'timetableStudent/(?P<day>\w+)/(?P<month>\w+)/(?P<year>\w+)$','school.views.timetableStudent'),
+    url(r'timetableStudent$','school.views.timetableStudent'),
+    url(r'timetableTeacher/(?P<day>\w+)/(?P<month>\w+)/(?P<year>\w+)$','school.views.timetableTeacher'),
+    url(r'timetableTeacher$','school.views.timetableTeacher'),
+    url(r'subjectAgenda/(?P<subject_id>\w+)$','school.views.subjectAgenda'),
 
     #top menu
     url(r'years/$', 'school.views.years', name = "years"),

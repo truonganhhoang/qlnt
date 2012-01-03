@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block backward_link %}
+    <a href="{% url school.views.school_index %}"> Trang chủ </a>
+    > <a href="{% url school.views.school_index %}classes"> Toàn trường</a>
+    > Thời khóa biểu giáo viên {{ teacher }}
+{% endblock %}
+
+{% block content %}
+    <script language="JavaScript" type="text/javascript">
+        $(document).ready(function(){
+            $("#timeselect").each(function(){
+                $(this).change(function(){
+                    window.location = "{%url school.views.school_index  %}timetableTeacher/" + $(this).val().split('/')[0] + '/' + $(this).val().split('/')[1] + '/' + $(this).val().split('/')[2];
+                    //alert($(this).val());
+                });
+            });
+            $("#notify").ajaxSuccess(function(event, request, settings, json) {
+                if (json.message != null) {
+                    $(this).html("<ul>" + json.message + "</ul>");
+                    $(this).delay(1000).fadeOut(10000);
+                }
+                else {
+                    $(this).text("Đã lưu");
+                    $(this).delay(1000).fadeOut('fast');
+                }
+            });
+
+            $("textarea[name=title]").each(function() {
+                $(this).change(function() {
+                    var value = $(this).val();
+                    var id = $(this).parents("tr").attr('id').split(' ')[0];
+                    var data = {value : value, id : id, request_type:'title'};
+                    var arg = { type:"POST",
+                        url:"",
+                        data: data,
+                        datatype:"json"
+                    };
+                    $.ajax(arg);
+                    return false;
+                })
+            });
+        });
+    </script>
+    <h2>Thời khóa biểu giáo viên {{ tecaher }} ngày <input id="timeselect" class="datepicker" type="text" name="ngay"
+                                                   value="{{ today|date:"SHORT_DATE_FORMAT" }}"/></h2>
+    
+    {% if list %}
+        {% for sub, s in list %}
+            {% if s %}
+                <h2>Môn {{ sub }} lớp {{ sub.class_id }}</h2>
+                
+            <table class="main-table" style="table-layout:auto">
+
+                <tr>
+                    <th>Tiết</th>
+                    <th>Tên bài học</th>
+                </tr>
+                {% for u, j, v in s %}
+                    <tr id = {{ j.id }}>
+                        <td>{{ u }}</td>
+                        <td>{{ v.title }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+            {% endif %}
+        {% endfor %}
+    {% else %}
+        <h2>Không có thời khóa biểu hôm nay</h2>
+    {% endif %}
+{% endblock %}

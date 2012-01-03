@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+
+{% block backward_link %}
+    <a href="{% url school.views.school_index %}"> Trang chủ </a>
+    > <a href="{% url school.views.school_index %}classes"> Toàn trường</a>
+    > <a href="{% url school.views.school_index %}viewClassDetail/{{ class.id }}"> {{ class }} </a>
+    > <a href="{% url school.views.school_index %}subjectPerClass/{{ sub.class_id.id }}"> Môn học </a>
+    > Chương trình học môn {{ sub }}
+{% endblock %}
+
+{% block content %}
+    {% if pos > 3 %}
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $("#notify").ajaxSuccess(function(event, request, settings, json) {
+                    if (json.message != null) {
+                        $(this).html("<ul>" + json.message + "</ul>");
+                        $(this).delay(1000).fadeOut(10000);
+                        if (json.message == 'Đã lưu. Vui lòng cập nhật các tiết học mới') window.location.reload(true);
+                    }
+                    else {
+                        $(this).text("Đã lưu");
+                        $(this).delay(1000).fadeOut('fast');
+                    }
+                });
+
+                $("input[name=nLesson]").each(function() {
+                    $(this).change(function() {
+                        var value = $(this).val();
+                        var data = {value: value, request_type:'nLesson'};
+                        var arg = { type:"POST",
+                            url:"",
+                            data: data,
+                            datatype:"json"
+                        };
+                        $.ajax(arg);
+                        return false;
+                    });
+                });
+
+                $("textarea[name=title]").each(function() {
+                    $(this).change(function() {
+                        var value = $(this).val();
+                        var id = $(this).parents("tr").attr('id').split(' ')[0];
+                        var data = {value : value, id : id, request_type:'title'};
+                        var arg = { type:"POST",
+                            url:"",
+                            data: data,
+                            datatype:"json"
+                        };
+                        $.ajax(arg);
+                        return false;
+                    })
+                });
+
+                $("input[name=ngay_day]").each(function() {
+
+                    $(this).change(function() {
+
+                        var value = $(this).val();
+                        var id = $(this).parents("tr").attr('id').split(' ')[0];
+                        var data = {value : value, id : id, request_type:'ngay_day'};
+                        var arg = { type:"POST",
+                            url:"",
+                            data: data,
+                            datatype:"json"
+                        };
+                        $.ajax(arg);
+                        return false;
+                    });
+
+                });
+
+                $("form").submit(function() {
+                    return false;
+                });
+
+            });
+        </script>
+    {% endif %}
+    {% if nLesson == 0 %}
+        Chưa có chương trình học môn {{ sub }}
+    {% else %}
+        <h2>Chương trình học môn {{ sub }}</h2>
+    {% endif %}
+
+    {% if pos > 3 %}
+        <form action="/school/subjectAgenda/{{sub.id}}" method="post">{% csrf_token %}
+            <b>Số tiết:</b> <input name="nLesson" type="text"
+                            title="Số tiết học của môn {{sub}}. Giá trị mới không bé hơn giá trị hiện tại."
+                            value="{{ nLesson }}">
+            <table class="main-table">
+                <tr>
+                    <th>STT</th>
+                    <th>Tiêu đề</th>
+                    <th>Ngày dạy</th>
+                </tr>
+                {% for u, v in list %}
+                    <tr id="{{ u.id }}">
+                        <td>{{ u.index }}</td>
+                        <td>{{ v.title }}</td>
+                        <td><input id ="id_{{ u.id }}" class="datepicker" type="text" name="ngay_day" value="{{ u.ngay_day|date:"SHORT_DATE_FORMAT" }}"/></td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </form>
+    {% endif %}
+    <p id="redirect_link" style="display: none;">{% url school.views.subjectAgenda sub.id %}</p>
+{% endblock %}
