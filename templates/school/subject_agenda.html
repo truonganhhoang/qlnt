@@ -93,12 +93,14 @@
                 <tr>
                     <th>STT</th>
                     <th>Tiêu đề</th>
+                    <th>Ghi chú</th>
                     <th>Ngày dạy</th>
                 </tr>
                 {% for u, v in list %}
                     <tr id="{{ u.id }}">
                         <td>{{ u.index }}</td>
                         <td>{{ v.title }}</td>
+                        <td>{{ v.note }}</td>
                         <td><input id ="id_{{ u.id }}" class="datepicker" type="text" name="ngay_day" value="{{ u.ngay_day|date:"SHORT_DATE_FORMAT" }}"/></td>
                     </tr>
                 {% endfor %}

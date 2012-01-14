@@ -464,5 +464,6 @@ class LessonForm(forms.ModelForm):
         exclude = ('index', 'subject_id')
         widgets = {
             'ngay_day' : DateInput(attrs = {'class':'datepicker'}),
-            'title': forms.Textarea(attrs = {'cols': 70, 'rows': 1})
+            'title': forms.Textarea(attrs = {'cols': 50, 'rows': 2}),
+            'note': forms.Textarea(attrs = {'cols': 50, 'rows': 2})
         }

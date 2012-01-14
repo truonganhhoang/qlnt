@@ -169,6 +169,7 @@
                 <th>STT</th>
                 <th>Môn</th>
                 <th>Tên bài học</th>
+                <th>Ghi chú</th>
             </tr>
             {% for i in list %}
                 <tr>
@@ -176,6 +177,11 @@
                     <td>{{ i.subject_id }}</td>
                     {% if i.title %}
                         <td>{{ i.title }}</td>
+                    {% else %}
+                        <td>Chưa rõ</td>
+                    {% endif %}
+                    {% if i.note %}
+                        <td>{{ i.note }}</td>
                     {% else %}
                         <td>Chưa rõ</td>
                     {% endif %}

@@ -766,6 +766,7 @@ class Lesson(models.Model):
     subject_id = models.ForeignKey(Subject, verbose_name="Môn")
     index = models.IntegerField("Thứ tự", default = 0)
     title = models.TextField("Tên bài học", blank = True, null = True)
+    note = models.TextField("Ghi chú", blank = True, null = True)
     ngay_day = models.DateField("Ngày dạy", blank = True, null = True)
     def __unicode__(self):
         return self.subject_id.__unicode__() + u' Tiết ' + str(self.index)

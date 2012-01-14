@@ -56,11 +56,13 @@
                 <tr>
                     <th>Tiết</th>
                     <th>Tên bài học</th>
+                    <th>Ghi chú</th>
                 </tr>
                 {% for u, j, v in s %}
                     <tr id = {{ j.id }}>
                         <td>{{ u }}</td>
                         <td>{{ v.title }}</td>
+                        <td>{{ v.note }}</td>
                     </tr>
                 {% endfor %}
             </table>
