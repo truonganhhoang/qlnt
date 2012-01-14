@@ -5,12 +5,15 @@ from school.forms import *
 from school.school_settings import *
 from sms.views import *
 #from SOAPpy import WSDL
+from django.shortcuts import render_to_response
+from django.template.context import RequestContext
+from django.conf import settings
 
 
 SYNC_RESULT = os.path.join('helptool','recover_marktime.html')
 SYNC_SUBJECT = os.path.join('helptool','sync_subject.html')
 TEST_TABLE = os.path.join('helptool','test_table.html')
-
+REALTIME = os.path.join('helptool','realtime_test.html')
 
 def convert_data_1n_mn(request):
     classes = Class.objects.all()
@@ -359,6 +362,15 @@ def test_table(request):
     return render_to_response( TEST_TABLE, {'mark_list': mark_list,
                                             'student_list': student_list}, context_instance = context)
 
+def realtime(request):
+    print request.session.session_key
+    return render_to_response( REALTIME, {
+        "user":request.user,
+        "CHANNEL_NAME":'message',
+        "STOMP_PORT":settings.STOMP_PORT,
+        "HOST":settings.INTERFACE,
+        "SESSION_COOKIE_NAME": settings.SESSION_COOKIE_NAME
+    }, context_instance = RequestContext(request))
 
 #class myHTTPTransport(HTTPTransport):
 #    username = None

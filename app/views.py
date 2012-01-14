@@ -188,13 +188,17 @@ def manage_register(request, sort_by_date=0, sort_by_status=0):
                                 org_status = 0
                                 org_manager_name = register.register_name
                                 org_address = register.school_address
+                                phone = register.register_phone
+                                email = register.register_email
                                 school = Organization.objects.create(
                                                             name= org_name,
                                                             level= org_level,
                                                             school_level= org_school_level,
                                                             status= org_status,
                                                             manager_name= org_manager_name,
-                                                            address= org_address
+                                                            address= org_address,
+                                                            phone= phone,
+                                                            email= email
                                                         )
                                 user = User()
                                 user.username = make_username( full_name=org_manager_name)

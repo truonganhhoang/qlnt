@@ -22,7 +22,7 @@
             <colgroup></colgroup>
             <colgroup></colgroup>
             <colgroup></colgroup>
-
+            <colgroup></colgroup>
             <tr class="thread">
                 <th title="Chọn tất cả" style="text-align: center;">
                     <input type="checkbox" id="checkbox_all" class="registerCheckbox"/>
@@ -35,7 +35,7 @@
                 </th>
                 <th style="text-align: center">Người đăng ký</th>
                 <th style="text-align: center">Số điện thoại</th>
-                <th style="text-align: center">Tên trường</th>
+                <th style="text-align: center">Email</th>
                 <th style="text-align: center">Cấp</th>
                 <th style="text-align: center">Địa chỉ</th>
                 <th style="text-align: center">Tỉnh/Thành phố</th>
@@ -56,7 +56,8 @@
                     <td style="text-align: center">{{ forloop.counter }}</td>
                     <td style="padding-left: 4px;">{{ register.get_status_display }}</td>
                     <td style="padding-left: 4px;">{{ register.register_name }}</td>
-                    <td style="padding-left: 4px;">{{ register.phone }}</td>
+                    <td style="padding-left: 4px;">{{ register.register_phone }}</td>
+                    <td style="padding-left: 4px;">{{ register.register_email }}</td>
                     <td style="padding-left: 4px;">{{ register.school_name }}</td>
                     <td style="text-align: center;">{{ register.get_school_level_display }}</td>
                     <td style="padding-left: 4px;">{{ register.school_address }}</td>

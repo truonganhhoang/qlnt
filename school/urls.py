@@ -183,13 +183,14 @@ urlpatterns = patterns('',
     
     #help
     #url(r'recover/$', 'school.helptools.recover_marktime', name = "recover_marktime"),
-    url(r'sync_index/$', 'school.helptools.sync_index', name = "sync_index"),
+    #url(r'sync_index/$', 'school.helptools.sync_index', name = "sync_index"),
     #url(r'sync_subject/$', 'school.helptools.sync_subject', name='sync_subject'),
     #url(r'check_logic/$', 'school.helptools.check_logic', name='check_logic'),
     #url(r'sync_subject_type/$', 'school.helptools.sync_subject_type', name='sync_subject_type'),
     #url(r'sync_subject_primary/$', 'school.helptools.sync_subject_primary', name='sync_subject_primary'),
     #url(r'test_table/$', 'school.helptools.test_table'),
-    url(r'copy_hanh_kiem_data/$','school.helptools.copy_hanh_kiem_data'),
-    url(r'make_setting/$','school.helptools.make_setting'),
-    url(r'convert_1n_mn/$', 'school.helptools.convert_data_1n_mn'),
+    #url(r'copy_hanh_kiem_data/$','school.helptools.copy_hanh_kiem_data'),
+    #url(r'make_setting/$','school.helptools.make_setting'),
+    #url(r'convert_1n_mn/$', 'school.helptools.convert_data_1n_mn'),
+    url(r'realtime/$', 'school.helptools.realtime', name='realtime'),
 	)

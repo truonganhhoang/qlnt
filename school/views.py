@@ -1,6 +1,4 @@
-﻿# -*- coding: utf-8 -*-
-
-# Create your views here.
+﻿# Create your views here.
 import os.path
 import datetime
 from datetime import date

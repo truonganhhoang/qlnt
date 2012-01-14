@@ -34,6 +34,10 @@ DATABASES = {
 #       'PORT': '', # Set to empty string for default. Not used with sqlite3.
 #   },
 }
+STATIC_PORT = 8080
+STOMP_PORT = 9000
+INTERFACE = "localhost"
+
 
 # uncomment following line to use auto multiple db router.
 #DATABASE_ROUTERS = ['school.schoolrouter.SchoolRouter']
