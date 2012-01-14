@@ -188,10 +188,11 @@
                     class="" title="Sắp xếp giới tính">Giới tính</a>
             </th>
             <th class="leftAlign">Dân tộc</th>
-            <th class="leftAlign">Số điện thoại</th>
+
             <th class="leftAlign">Chỗ ở hiện tại</th>
             <th class="leftAlign">Họ tên bố</th>
             <th class="leftAlign">Họ tên mẹ</th>
+            <th class="leftAlign">Số điện thoại</th>
 
         </tr>
 
@@ -218,10 +219,11 @@
                 <td> {{ ss.birth_place }} </td>
                 <td> {{ ss.sex }} </td>
                 <td> {{ ss.dan_toc }} </td>
-                <td class="smsPhone"> {{ ss.sms_phone }}</td>
+
                 <td> {{ ss.current_address }} </td>
                 <td> {{ ss.father_name }} </td>
                 <td> {{ ss.mother_name }} </td>
+                <td class="smsPhone"> {{ ss.sms_phone }}</td>
             </tr>
         {% endfor %}
 
@@ -261,10 +263,7 @@
                         {{ form.dan_toc }}
                     </td>
 
-                     <td>
-                        {{ form.sms_phone.errors }}
-                        {{ form.sms_phone }}
-                    </td>
+
                     
                     <td>
                         {{ form.current_address.errors }}
@@ -279,6 +278,10 @@
                     <td>
                         {{ form.mother_name.errors }}
                         {{ form.mother_name }}
+                    </td>
+                    <td>
+                        {{ form.sms_phone.errors }}
+                        {{ form.sms_phone }}
                     </td>
 
                 </tr>
