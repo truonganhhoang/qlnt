@@ -1,10 +1,8 @@
-
-
 $(document).ready(function() {
     // setup layout
     console.log('start');
     var form = $("#submitform");
-    $("#trForm").find("input").each(function(){
+    $("#trForm").find("input").each(function() {
         var td = $(this).parent("td");
         console.log(td.css('width'));
         $(this).css('width', parseInt(td.css('width')) - 6);
@@ -40,20 +38,20 @@ $(document).ready(function() {
                         global: false
                     });
                     $("#student_placeholder").load("/school/getStudent/" + json.student_id + "/",
-                            function() {
-                                $.ajaxSetup({
-                                    global: true
-                                });
-                                var newStudent = $("#student_placeholder").find("tr");
-                                newStudent.insertBefore(self).click(select);
-                                var stt = parseInt(theLast.find('td:eq(1)').text());
-                                if (stt) newStudent.find('td:eq(1)').text(stt + 1);
-                                else newStudent.find('td:eq(1)').text(1);
-                                $(".form").find('input:text').val('');
-                                $(".form").find('input#id_dan_toc').val('Kinh');
-                                $("#notify").showNotification(json.message);
+                        function() {
+                            $.ajaxSetup({
+                                global: true
+                            });
+                            var newStudent = $("#student_placeholder").find("tr");
+                            newStudent.insertBefore(self).click(select);
+                            var stt = parseInt(theLast.find('td:eq(1)').text());
+                            if (stt) newStudent.find('td:eq(1)').text(stt + 1);
+                            else newStudent.find('td:eq(1)').text(1);
+                            $(".form").find('input:text').val('');
+                            $(".form").find('input#id_dan_toc').val('Kinh');
+                            $("#notify").showNotification(json.message);
 
-                            })
+                        })
 
                 }
             }
@@ -64,6 +62,18 @@ $(document).ready(function() {
 
     $("#import").click(function() {
         $("#fileupload").dialog('open');
+    });
+
+    $("#id_sms_phone").keydown(function (event) {
+        if ((event.keyCode >= 48 && event.keyCode <= 57) || (event.keyCode >= 96 && event.keyCode <= 105)) // 0-9 or numpad 0-9
+        {
+// check textbox value now and tab over if necessary
+        }
+        else if (event.keyCode != 8 && event.keyCode != 9 && event.keyCode != 46 && event.keyCode != 37 && event.keyCode != 39) // not esc, del, left or right
+        {
+            event.preventDefault();
+        }
+// else the key should be handled normally
     });
 
     $("#fileupload").dialog({
@@ -95,15 +105,15 @@ $(document).ready(function() {
                 $(this).removeClass('selected');
                 $(checkboxid).prop("checked", false);
                 var n = $("input.studentCheckbox:checked").length;
-                if (n == 1 || n==0) {
+                if (n == 1 || n == 0) {
                     $(checkboxall).prop("checked", false);
                 }
                 var numberOfSelected = $("tr.selected").length;
-                if (numberOfSelected == 0){
+                if (numberOfSelected == 0) {
                     $("#showChosenStudent").html("Chưa chọn học sinh nào");
                     $("#send").attr('disabled', 'disabled');
                 } else {
-                    $("#showChosenStudent").html( (numberOfSelected).toString() + " học sinh");
+                    $("#showChosenStudent").html((numberOfSelected).toString() + " học sinh");
                 }
             } else {
                 $(this).addClass('selected');
@@ -111,7 +121,7 @@ $(document).ready(function() {
                 $(checkboxall).prop("checked", true);
                 var n = $("input.studentCheckbox:checked").length;
                 var numberOfSelected = $("tr.selected").length;
-                $("#showChosenStudent").html( (numberOfSelected).toString() + " học sinh");
+                $("#showChosenStudent").html((numberOfSelected).toString() + " học sinh");
                 $("#send").removeAttr('disabled');
             }
         }
@@ -173,9 +183,9 @@ $(document).ready(function() {
         return false;
     });
 
-    $("#textSms").click(function(){
+    $("#textSms").click(function() {
         // setting up layout
-        if ($("#smsWindow").css('display') == 'none'){
+        if ($("#smsWindow").css('display') == 'none') {
             var buttonOffsetTop = $(this).offset().top;
             var contentWidth = parseInt($("#content").css('width'));
             var smsWindow = $("#smsWindow");
@@ -186,17 +196,17 @@ $(document).ready(function() {
             smsWindow.slideDown(400);
         } else $("#smsWindow").slideUp(400);
     });
-    $("#smsClose").click(function(){
+    $("#smsClose").click(function() {
         $("#smsWindow").fadeOut(400);
     });
-    $("#send").click(function(){
+    $("#send").click(function() {
         var content = $("#smsContent").val();
         console.log(content);
         var studentList = "";
-        $("tr.selected").each(function(){
+        $("tr.selected").each(function() {
             studentList += $(this).attr('class').split(" ")[0] + "-";
         });
-        if (content.replace(/ /g,'') == ''){
+        if (content.replace(/ /g, '') == '') {
             $("#notify").showNotification("Nội dung còn trống");
         } else {
             var arg = { type:"POST",
@@ -208,20 +218,20 @@ $(document).ready(function() {
                     student_list:studentList},
                 datatype:"json",
                 success: function(json) {
-                    $("#notify").showNotification("Đã gửi "+ json.number_of_sent +" tin nhắn");
+                    $("#notify").showNotification("Đã gửi " + json.number_of_sent + " tin nhắn");
                     $("#smsProgressbar").hide();
-                    if (json.number_of_blank != '0' || json.number_of_failed != '0'){
+                    if (json.number_of_blank != '0' || json.number_of_failed != '0') {
                         var html = "<ul>";
                         if (parseInt(json.number_of_blank) > 0)
                             html += "<li>" + json.number_of_blank + " học sinh không có số điện thoại.</li>";
                         if (parseInt(json.number_of_failed) > 0)
-                            html += "<li>"+json.number_of_failed + " học sinh không gửi được tin nhắn</li>";
+                            html += "<li>" + json.number_of_failed + " học sinh không gửi được tin nhắn</li>";
                         html += "</ul>";
                         $("#smsErrorDetail").css('width', $("#smsContent").css('width'));
                         $("#smsErrorDetail").html(html).show();
                     }
                 },
-                error: function(){
+                error: function() {
                     $("#notify").showNotification("Gặp lỗi khi gửi tin nhắn");
                     $("#smsProgressbar").hide();
                 }

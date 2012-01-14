@@ -261,6 +261,11 @@
                         {{ form.dan_toc }}
                     </td>
 
+                     <td>
+                        {{ form.sms_phone.errors }}
+                        {{ form.sms_phone }}
+                    </td>
+                    
                     <td>
                         {{ form.current_address.errors }}
                         {{ form.current_address }}
@@ -275,10 +280,7 @@
                         {{ form.mother_name.errors }}
                         {{ form.mother_name }}
                     </td>
-                    <td>
-                        {{ form.sms_phone.errors }}
-                        {{ form.sms_phone }}
-                    </td>
+
                 </tr>
             </form>
         {% endif %}
