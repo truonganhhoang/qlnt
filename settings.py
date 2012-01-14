@@ -199,8 +199,8 @@ INSTALLED_APPS = (
     'pagination',
 #    'profiles',
 
-    'sentry', #for logging exceptions.
-    'sentry.client', #and viewing exceptions
+#    'sentry', #for logging exceptions.
+#    'sentry.client', #and viewing exceptions
 
     'south', #for database migration/upgrade
 #    'nose', #nose must come after south.
