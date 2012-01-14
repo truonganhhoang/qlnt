@@ -1,23 +1,13 @@
 ﻿{% extends "base.html" %}
 
-{% block backward_link %}
-  <a href="{% url school.views.school_index %}"> Trang chủ </a>
-  > <a href="/school/report"> Báo cáo, thống kê </a>
-  > Học lực, hạnh kiểm, danh hiệu
-{#  <a href="/school/count1"> Học lực, hạnh kiểm, danh hiệu </a> >#}
-{#  {% if number == 1 %}#}
-{#    Học kỳ I#}
-{#    {% else %}#}
-{#    {% if number == 2 %}#}
-{#      Học kỳ II#}
-{#    {% else %}#}
-{#      Cả năm#}
-{#    {% endif %}#}
-{#  {% endif %}#}
+{% block breadcrumb %}
+    {{ block.super }}
+    {% load breadcrumb_tags %}
+    {% add_crumb 'Báo cáo' '/school/report' %}
+    {% add_crumb 'Học lực, hạnh kiểm, danh hiệu' %}
 {% endblock %}
 
 {% block content %}
-
   <div class="notify-widget-pane">
     <div class="notify" id="notify1" style="display: none;">
     </div>

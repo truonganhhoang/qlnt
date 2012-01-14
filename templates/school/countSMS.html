@@ -1,20 +1,21 @@
 ﻿{% extends "base.html" %}
 
-{% block backward_link %}
-  <a href="{% url school.views.school_index %}"> Trang chủ </a> >
-  <a href="/school/report">Báo cáo, thống kê</a>  >
-  Thống kê tin nhắn
+{% block breadcrumb %}
+    {{ block.super }}
+    {% load breadcrumb_tags %}
+    {% add_crumb 'Báo cáo' '/school/report' %}
+    {% add_crumb 'Thống kê tin nhắn' %}
 {% endblock %}
- 
+
 {% block content %}
-		
+    <h2>Báo cáo về tin nhắn SMS</h2>
 	<form action="/school/countSMS" name="info" method="post" > {% csrf_token %}
 	Từ ngày:
 		<input id="id_date1" name="firstDate" class="datepicker" value="{{day}}/{{month}}/{{year}}">
 	&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspđến ngày		
 		<input id="id_date1" name="secondDate" class="datepicker" value="{{day1}}/{{month1}}/{{year1}}">
 	<br>
-	<br>	
+	<br>
 		<INPUT TYPE="radio" NAME="type1" id='1' value="1">Tất cả &nbsp&nbsp&nbsp&nbsp&nbsp     	
 		<INPUT TYPE="radio" NAME="type1" id='2' value="2">Gửi thành công &nbsp&nbsp&nbsp&nbsp&nbsp
 		<INPUT TYPE="radio" NAME="type1" id='3' value="3">Gửi không thành công 

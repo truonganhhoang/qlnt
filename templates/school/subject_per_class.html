@@ -8,15 +8,14 @@
     {% endblock %}
 {% endif %}
 
-{% block backward_link %}
-    <a href="{% url school.views.school_index %}"> Trang chủ </a>
-    > <a href="{% url school.views.school_index %}classes"> Toàn trường</a>
-    > <a href="{% url school.views.school_index %}viewClassDetail/{{ class.id }}"> {{ class }} </a>
-    > Môn học
+{% block breadcrumb %}
+    {{ block.super }}
+    {% load breadcrumb_tags %}
+    {% add_crumb class 'school.views.viewClassDetail' class.id %}
+    {% add_crumb 'Môn học' %}
 {% endblock %}
 
 {% block content %}
-
     <script type="text/javascript">
         function submitClass() {
             if (document.info.class.value !={{class.id}})

@@ -1,12 +1,13 @@
 {% extends "base.html" %}
 {% load upload_tags %}
 
-{% block backward_link %}
-    <a href="{% url school.views.school_index %}"> Trang chủ </a>
-    > <a href="{% url school.views.school_index %}classes">Toàn trường</a>
-    > <a href="{% url school.views.school_index %}viewClassDetail/{{ class.id }}">{{ class }}</a>
-    > Thời khóa biểu
+{% block breadcrumb %}
+    {{ block.super }}
+    {% load breadcrumb_tags %}
+    {% add_crumb class 'school.views.viewClassDetail' class.id %}
+    {% add_crumb 'Thời khóa biểu' %}
 {% endblock %}
+
 {% block content %}
     {% if pos > 1 %}
         <script>
@@ -369,7 +370,7 @@
                             {% endif %}
                         {% else %}
                             <td id="{{w}}"> {{ f.period_1 }}
-                                <p class="teacher">GV:
+                                <p class="teacher">
                                     {% if t.period_1 %}
                                         {{ t.period_1.teacher_id }}
                                     {% endif %}
@@ -391,7 +392,7 @@
                             {% endif %}
                         {% else %}
                             <td id="{{w}}"> {{ f.period_2 }}
-                            <p class="teacher">GV:
+                            <p class="teacher">
                                 {% if t.period_2 %}
                                     {{ t.period_2.teacher_id }}
                                 {% endif %}
@@ -411,7 +412,7 @@
                         {% endif %}
                     {% else %}
                         <td id="{{w}}"> {{ f.period_3 }}
-                        <p class="teacher">GV:
+                        <p class="teacher">
                             {% if t.period_3 %}
                                 {{ t.period_3.teacher_id }}
                             {% endif %}
@@ -434,7 +435,7 @@
                             {% endif %}
                         {% else %}
                             <td id="{{w}}"> {{ f.period_4 }}
-                            <p class="teacher">GV:
+                            <p class="teacher">
                                 {% if t.period_4 %}
                                     {{ t.period_4.teacher_id }}
                                 {% endif %}
@@ -455,7 +456,7 @@
                         {% endif %}
                     {% else %}
                         <td id="{{w}}"> {{ f.period_5 }}
-                        <p class="teacher">GV:
+                        <p class="teacher">
                             {% if t.period_5 %}
                                 {{ t.period_5.teacher_id }}
                             {% endif %}
@@ -476,7 +477,7 @@
                         {% endif %}
                     {% else %}
                         <td id="{{w}}"> {{ f.period_6 }}
-                            <p class="teacher">GV:
+                            <p class="teacher">
                                 {% if t.period_6 %}
                                     {{ t.period_6.teacher_id }}
                                 {% endif %}
@@ -498,7 +499,7 @@
                             {% endif %}
                         {% else %}
                             <td id="{{w}}"> {{ f.period_7 }}
-                                <p class="teacher">GV:
+                                <p class="teacher">
                                     {% if t.period_7 %}
                                         {{ t.period_7.teacher_id }}
                                     {% endif %}
@@ -520,7 +521,7 @@
                             {% endif %}
                         {% else %}
                             <td id="{{w}}"> {{ f.period_8 }}
-                                <p class="teacher">GV:
+                                <p class="teacher">
                                     {% if t.period_8 %}
                                         {{ t.period_8.teacher_id }}
                                     {% endif %}
@@ -542,7 +543,7 @@
                             {% endif %}
                         {% else %}
                             <td id="{{w}}"> {{ f.period_9 }}
-                                <p class="teacher">GV:
+                                <p class="teacher">
                                     {% if t.period_9 %}
                                         {{ t.period_9.teacher_id }}
                                     {% endif %}
@@ -564,7 +565,7 @@
                             {% endif %}
                         {% else %}
                             <td id="{{w}}"> {{ f.period_10 }}
-                                <p class="teacher">GV:
+                                <p class="teacher">
                                     {% if t.period_10 %}
                                         {{ t.period_10.teacher_id }}
                                     {% endif %}

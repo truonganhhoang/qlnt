@@ -33,6 +33,9 @@ urlpatterns = patterns('',
 
     (r'^topdf/$', 'views.topdf'),
     url(r'^profiles/', include('profiles.urls')),
+
+    url(r'^profile/', 'views.get_absolute_url'),
+
     
     (r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
     (r'^favicon\.ico$', 'django.views.generic.simple.redirect_to', {'url': '/static/images/favicon.ico'}),

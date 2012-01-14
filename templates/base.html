@@ -222,8 +222,12 @@
 
 <section id="main">
   <div id="nav-path">
-    {% block backward_link %}
+    {% block breadcrumb %}
+        {% load breadcrumb_tags %}
+        {% add_crumb 'Trang chủ' 'school.views.school_index' %}
     {% endblock %}
+    {% render_breadcrumbs %}
+
   </div>
   <div id="content">
     {% block content %}

@@ -86,7 +86,7 @@ table.main-table {
     color: #333333;
     border: #cccccc thin solid;
     border-collapse: collapse;
-    border-radius: 5px; 
+    border-radius: 5px;
     border-spacing: 0px;
     /*-moz-box-shadow: 1px 1px 2px #888888;*/
     /*-webkit-box-shadow: 1px 1px 2px #888888;*/
@@ -124,7 +124,7 @@ table.main-table tr.high-light {
 /* cells */
 table.main-table td {
     border: #dddddd thin solid;
-    padding: 4px; 
+    padding: 4px;
     text-align: left;
    /* vertical-align: bottom; */
 }
@@ -140,36 +140,36 @@ table.main-table td.firstname {
 }
 
 table.main-table td.normal {
-    padding: 0px; 
+    padding: 0px;
 }
 
 table.main-table td.noedit {
-    padding: 0px; 
-    color: #999999; 
+    padding: 0px;
+    color: #999999;
 	background-color: #F4F4F4;
 }
 
 table.main-table td.sent {
-    padding: 0px; 
+    padding: 0px;
     background-color: #B2FFDB;
 }
 
 table.main-table td.selected {
-    padding: 0px; 
+    padding: 0px;
     background-color: #f3f48d;
 }
 table.main-table td.mark-even {
-    padding: 0px; 
+    padding: 0px;
     background-color: #eeeeee;
 }
 table.main-table td.mark-odd {
-    padding: 0px; 
+    padding: 0px;
     background-color: #ffffff;
 }
 
 table.main-table td.noted {
     background-color: #B2FFDB;
-    padding: 4px; 
+    padding: 4px;
     text-align: left;
 }
 
@@ -201,9 +201,9 @@ div.autocomplete button{
 }
 
 
-#markTable input{ 
-    margin:-4px -3px ; 
-    border: 0px; 
+#markTable input{
+    margin:-4px -3px ;
+    border: 0px;
 }
 
 table.main-table#school-timetable td p {
@@ -395,7 +395,7 @@ table.dataform {
     margin: 10px 0px;
     border: #ffffff thin groove;
     background-color:  #eeeeee;
-    
+
     -moz-box-shadow: 1px 1px 5px #888888;
     -webkit-box-shadow: 1px 1px 5px #888888;
     box-shadow: 1px 1px 5px #888888;

@@ -1,10 +1,11 @@
 ﻿{% extends "base.html" %}
 
-{% block backward_link %}
-  <a href="{% url school.views.school_index %}"> Trang chủ </a>
-  > <a href="/school/report"> Báo cáo, thống kê </a> 
-  > Danh sách không lên lớp, thi lại, rèn luyện thêm	
- {% endblock %}
+{% block breadcrumb %}
+    {{ block.super }}
+    {% load breadcrumb_tags %}
+    {% add_crumb 'Báo cáo' '/school/report' %}
+    {% add_crumb 'Danh sách không lên lớp, thi lại, rèn luyện thêm' %}
+{% endblock %}
 
 {% block content %}
 	<br>

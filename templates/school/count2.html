@@ -1,35 +1,36 @@
 ﻿{% extends "base.html" %}
 
-{% block backward_link %}
-<div id="termString">
-  <a href="{% url school.views.school_index %}"> Trang chủ </a>
-  > <a href="/school/report"> Báo cáo, thống kê </a> 
+{% block breadcrumb %}
+    {{ block.super }}
+    {% load breadcrumb_tags %}
+    {% add_crumb 'Báo cáo' '/school/report' %}
     {% if type == 1 %}
-      > <a href="/school/count2/{{type}}/1">
-       Điểm trung bình
-      </a> >
+        {% add_crumb 'Điểm trung bình' %}
     {% else %}
-      {% if type == 2 %}
-        > <a href="/school/count2/{{type}}/1">
-         Điểm thi cuối kì
-        </a> >
-      {% endif %}
+        {% if type == 2 %}
+            {% add_crumb 'Điểm thi cuối kì' %}
+        {% endif %}
     {% endif %}
+{% endblock %}
 
-{#    {% if number == 1 %}#}
-{#      Học kì I#}
-{#      {% else %}#}
-{#      {% if number == 2 %}#}
-{#        Học kì II#}
-{#      {% else %}#}
-{#        Cả năm#}
+{# TODO @Lưu: chỉnh lại vì không để termString trong breadcrumb #}
+{#{% block backward_link %}#}
+{#<div id="termString">#}
+{#  <a href="{% url school.views.school_index %}"> Trang chủ </a>#}
+{#  > <a href="/school/report"> Báo cáo, thống kê </a> #}
+{#    {% if type == 1 %}#}
+{#      > <a href="/school/count2/{{type}}/1">#}
+{#       Điểm trung bình#}
+{#      </a> >#}
+{#    {% else %}#}
+{#      {% if type == 2 %}#}
+{#        > <a href="/school/count2/{{type}}/1">#}
+{#         Điểm thi cuối kì#}
+{#        </a> >#}
 {#      {% endif %}#}
 {#    {% endif %}#}
-{#    {% if  subjectName %}#}
-{#      {{ subjectName }}#}
-{#    {% endif %}#}
-  </div>
-{% endblock %}
+{#  </div>#}
+{#{% endblock %}#}
 
 {% block content %}
  <h2>

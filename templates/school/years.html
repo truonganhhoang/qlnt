@@ -1,8 +1,11 @@
 {% extends "base.html" %}
-{% block backward_link %}
-  <a href="{% url school.views.school_index %}"> Trang chủ </a>
-  > Năm học
+
+{% block breadcrumb %}
+    {{ block.super }}
+    {% load breadcrumb_tags %}
+    {% add_crumb 'Các năm học' %}
 {% endblock %}
+
 {% block content %}
 	<h2>Các năm học</h2> 
 	<ul>
@@ -10,6 +13,5 @@
 			<li>{{ year.time }}</li>
 	{% endfor %}
 	</ul>		
-	
 {% endblock %}
 

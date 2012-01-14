@@ -1,11 +1,11 @@
 ﻿{% extends "base.html"%}
 
-{% block backward_link %}
-  <a href="{% url school.views.school_index %}"> Trang chủ </a>
-	> <a href="/school/classes"> Toàn trường  </a>
-	> <a href="/school/viewClassDetail/{{selectedClass.id}}"> {{selectedClass.name}}  </a>
-  > Nhắn tin kết quả học tập
-{% endblock %} 
+{% block breadcrumb %}
+    {{ block.super }}
+    {% load breadcrumb_tags %}
+    {% add_crumb selectedClass 'school.views.viewClassDetail' selectedClass.id %}
+    {% add_crumb 'Nhắn tin kết quả học tập' %}
+{% endblock %}
 
 {% block content %}
 {% load mark %}

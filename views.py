@@ -46,7 +46,7 @@ def thanks(request):
 def topdf(request):
     return render_to_pdf('app/list_org.html',{
         'pagesize': 'A4'})
-    
+
 #method routes to the view ``profiles.views.profile_detail``, passing the username
 @models.permalink
 def get_absolute_url(self):

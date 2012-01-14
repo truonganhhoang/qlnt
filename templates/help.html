@@ -1,8 +1,9 @@
 {% extends "base.html" %}
 
-{% block backward_link %}
-  <a href="{% url school.views.school_index %}"> Trang chủ </a>
-  > Trợ giúp
+{% block breadcrumb %}
+    {{ block.super }}
+    {% load breadcrumb_tags %}
+    {% add_crumb 'Trợ giúp' %}
 {% endblock %}
 
 {% block content %}
@@ -52,9 +53,8 @@
     </p>
     </p>
     Hướng dẫn ngắn gọn về phần mềm có thể xem
-    <a target="_blank" href="https://docs.google.com/presentation/pub?id=13hf2QFv-q5GR2Gb40SYJ2PFrYOK_ptnht1ECCtVsL5Y&start=false&loop=false&delayms=3000">
+    <a target="_blank" href="https://docs.google.com/open?id=0B-w5Nu1TpdFRYzc4NmMyZWQtMTc0My00ZDQwLWJlM2YtNDg5MWU5NDIwMzQz">
       tại đây</a>.
-    {#    <iframe src="https://docs.google.com/presentation/embed?id=13hf2QFv-q5GR2Gb40SYJ2PFrYOK_ptnht1ECCtVsL5Y&start=false&loop=true&delayms=3000" frameborder="0" width="960" height="749" allowfullscreen="true" webkitallowfullscreen="true"></iframe>#}
     </p>
   </div>
 

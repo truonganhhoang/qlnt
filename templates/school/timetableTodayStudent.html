@@ -1,10 +1,11 @@
 {% extends "base.html" %}
 
-{% block backward_link %}
-    <a href="{% url school.views.school_index %}"> Trang chủ </a>
-    > <a href="{% url school.views.school_index %}classes"> Toàn trường</a>
-    > <a href="{% url school.views.school_index %}viewClassDetail/{{ class.id }}"> {{ class }} </a>
-    > Thời khóa biểu
+{% block breadcrumb %}
+    {{ block.super }}
+    {% load breadcrumb_tags %}
+    {% add_crumb class 'school.views.viewClassDetail' class.id %}
+    {% add_crumb 'Thời khóa biểu' %}
+    {#    {% add_crumb teacher %}#}
 {% endblock %}
 
 {% block content %}

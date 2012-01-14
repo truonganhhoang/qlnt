@@ -4,9 +4,9 @@
     <link href="/static/css/template_css/popup.css" rel="stylesheet" type="text/css"/>
 {% endblock %}
 
-{% block backward_link %}
-    <a href="{% url school.views.school_index %}"> Trang chủ </a>
-    > Nhắn tin
+{% block breadcrumb %}
+    {% load breadcrumb_tags %}
+    {% add_crumb 'Nhắn tin'  %}
 {% endblock %}
 
 {% block content %}

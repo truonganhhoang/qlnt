@@ -1,8 +1,9 @@
 {% extends "base.html" %}
 
-{% block backward_link %}
-  <a href="{% url school.views.school_index %}"> Trang chủ </a>
-  > Người sử dụng
+{% block breadcrumb %}
+    {{ block.super }}
+    {% load breadcrumb_tags %}
+    {% add_crumb 'Người sử dụng' %}
 {% endblock %}
 
 {% block content %}

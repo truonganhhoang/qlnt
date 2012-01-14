@@ -1,25 +1,26 @@
 {% extends "base.html" %}
- 
 
-{% block backward_link %}
-  <a href="{% url school.views.school_index %}"> Trang chủ </a>
-	{% if user.userprofile.position != "GIAO_VIEN" %}
-    > <a href="/school/classes"> Toàn trường  </a>
-		{% if selectedClass %}
-			> <a href="/school/viewClassDetail/{{selectedClass.id}}"> {{selectedClass.name}}  </a>
-		{% endif %}
-		{% if selectedSubject %}
-			> {{selectedSubject.name}}
-		{% endif %}
-	{% else %}
-    > <a href="/school/markForTeacher/{{type}}">Điểm</a>
-		{% if selectedSubject %}
-			> {{selectedSubject.name}} - {{selectedSubject.class_id.name}}
-		{% endif %}
-	{% endif %}
-{% endblock %} 
+{% block breadcrumb %}
+    {{ block.super }}
+    {% load breadcrumb_tags %}
+    {% if user.userprofile.position != "GIAO_VIEN" %}
+        {% if selectedClass %}
+            {% add_crumb selectedClass 'school.views.viewClassDetail' selectedClass.id  %}
+        {% endif %}
+        {% if selectedSubject %}
+            {% add_crumb selectedSubject %}
+        {% else %}
+            {% add_crumb 'Chọn môn' %}
+        {% endif %}
+    {% else %}
+        {% if selectedSubject %}
+            {% add_crumb selectedSubject %}
+        {% else %}
+            {% add_crumb 'Bảng điểm' %}
+        {% endif %}
+    {% endif %}
 
-
+{% endblock %}
 
 {% block content %}
 

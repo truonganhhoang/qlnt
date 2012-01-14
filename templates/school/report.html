@@ -1,9 +1,9 @@
 ﻿{% extends "base.html" %}
 
-{% block backward_link %}
-  <a href="{% url school.views.school_index %}"> Trang chủ </a>
-  > Báo cáo, thống kê
-{#  <a href="/school/report">Báo cáo, thống kê</a>  >#}
+{% block breadcrumb %}
+    {{ block.super }}
+    {% load breadcrumb_tags %}
+    {% add_crumb 'Báo cáo' '/school/report' %}
 {% endblock %}
 
 {% block content %}
@@ -16,7 +16,7 @@
 
   {# <a title="Chức năng đang trong quá trình hoàn thiện" href="/school/countInSchool"> Thống kê </a> #}
     <tr>
-      <td><a href="/school/count1"> Thống kê học lực, hạnh kiểm, danh hiệu</a></td>
+      <td><a href="/school/count1"> Học lực, hạnh kiểm, danh hiệu</a></td>
       <td><a href="/school/countSMS"> Thống kê tin nhắn</a></td>
     </tr>
     <tr>
@@ -26,16 +26,16 @@
       <td><a href="/school/count2/2/1"> Thống kê điểm cuối kì</a></td>
     </tr>
     <tr>
-      <td><a href="/school/printMarkBook"> In sổ gọi tên và ghi điểm </a></td>
+      <td><a href="/school/printMarkBook"> Sổ gọi tên và ghi điểm (xuất ra Excel)</a></td>
     </tr>
     <tr>
-      <td><a href="/school/printMarkForClass"> In phiếu báo điểm </a></td>
+      <td><a href="/school/printMarkForClass"> Phiếu báo điểm (xuất ra Excel)</a></td>
     </tr>
     <tr>
-      <td><a href="/school/printDanhHieu"> Danh sách học sinh có danh hiệu </a></td>
+      <td><a href="/school/printDanhHieu"> Học sinh có danh hiệu </a></td>
     </tr>
     <tr>
-      <td><a href="/school/printNoPass"> Danh sách không lên lớp, thi lại, rèn luyện thêm </a></td>
+      <td><a href="/school/printNoPass"> Học sinh không lên lớp, thi lại, rèn luyện thêm </a></td>
     </tr>
   </table>
 {% endblock %}

@@ -1,7 +1,9 @@
 {% extends "base.html" %}
-{% block backward_link %}
-    <a href="{% url school.views.school_index %}"> Trang chủ </a>
-    > Thông tin về trường
+
+{% block breadcrumb %}
+    {{ block.super }}
+    {% load breadcrumb_tags %}
+    {% add_crumb 'Thông tin về trường'  %}
 {% endblock %}
 
 {% block content %}

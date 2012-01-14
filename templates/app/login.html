@@ -1,9 +1,10 @@
 {% extends "base.html" %}
 {% load i18n %}
 
-{% block backward_link %}
-  <a href="{% url school.views.school_index %}"> Trang chủ </a>
-  > Đăng nhập
+{% block breadcrumb %}
+    {{ block.super }}
+    {% load breadcrumb_tags %}
+    {% add_crumb 'Đăng nhập' %}
 {% endblock %}
 
 {% block content %}

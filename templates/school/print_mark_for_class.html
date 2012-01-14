@@ -1,24 +1,11 @@
-﻿{% extends "base.html"%}  
+﻿{% extends "base.html"%}
 
-{% block backward_link %}
-  <a href="{% url school.views.school_index %}"> Trang chủ </a>
-	> <a href="/school/report"> Báo cáo, thống kê  </a>
-  > In phiếu báo điểm
-{#	<a href="/school/printMarkForClass"> #}
-{#  In phiếu báo điểm#}
-{#  </a> >#}
-{#	{% if number == 1 %}#}
-{#		Học kỳ I#}
-{#	{% else %}#}
-{#	{% if number == 2 %}#}
-{#		Học kỳ II#}
-{#	{% else %}#}
-{#		Cả năm#}
-{#	{% endif %}#}
-{#	{% endif %}#}
-{#	#}
+{% block breadcrumb %}
+    {{ block.super }}
+    {% load breadcrumb_tags %}
+    {% add_crumb 'Báo cáo' '/school/report' %}
+    {% add_crumb 'Phiếu báo điểm' %}
 {% endblock %}
-
 
 {% block content %}
 <br>

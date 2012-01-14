@@ -1,163 +1,156 @@
-﻿{% extends "base.html"%}
-{% block backward_link %}
-  <a href="{% url school.views.school_index %}"> Trang chủ </a>
-	> <a href="/school/classes"> Toàn trường  </a>
-	> <a href="/school/viewClassDetail/{{selectedClass.id}}"> {{selectedClass.name}}  </a>
-	> Tổng kết điểm
-	{% if number == 1 %}
-		kỳ I
-	{% else %}
-    {% if number == 2 %}
-      kỳ II
-    {% else %}
-      cả năm
-    {% endif %}
-	{% endif %}
-		
-{% endblock %} 
+﻿{% extends "base.html" %}
+
+
+{% block breadcrumb %}
+    {{ block.super }}
+    {% load breadcrumb_tags %}
+    {% add_crumb selectedClass 'school.views.viewClassDetail' selectedClass.id %}
+    {% add_crumb 'Tổng kết điểm' %}
+{% endblock %}
+
 {% block content %}
-<div class="notify-widget-pane" >
-    <div class="notify" id="notify1" style="display: none;">
+    <div class="notify-widget-pane">
+        <div class="notify" id="notify1" style="display: none;">
+        </div>
     </div>
-</div>
 
-{% load mark %}
-				
-	
-	<br>
-	<form name="info" >
-		<INPUT TYPE="radio" NAME="term" id='1' value="1">Học kỳ I &nbsp&nbsp&nbsp&nbsp&nbsp     	
-		<INPUT TYPE="radio" NAME="term" id='2'value="2">Học kỳ II&nbsp&nbsp&nbsp&nbsp&nbsp
-		<INPUT TYPE="radio" NAME="term" id='3'value="3">Cả năm 
-	</form>
-		
-	<br>
-	<form action=" " method="post">{% csrf_token %}
-		<input class = " ggButton" title="Tính điểm trung bình của cả lớp" type="submit" value="Tính điểm trung bình" />
-	</form>
-	<br>
-	<table id="mark-table" class="main-table">
-		<tr>
-			<th rowspan=2 align="center" style="width:4px" >
-				Stt
-			</th>	
-			<th colspan=2 rowspan=2 align="center" >
-				Họ và tên
-			</th>	
-			<th rowspan=2 align="center" width="1%">			
-				Ngày sinh
-			</th>	
-			{% for s in subjectList %}
-				
-				<th  rowspan=2 class="mark-column" >
-					{% if s.name == 'GDQP-AN' or  s.name == 'GDQP' %}
-						GD<br>QP<br>AN
-					{% else %}	
-					{% if s.name == 'GDCD' %}
-						GD<br>CD
-					{% else %}
-						{{s.name}}
-					{% endif %}	
-					{% endif %}	
-				</th>				
-			{% endfor %}	
-			<th rowspan=2 width ="" align="center" >
-			  TB			
-			</th>
-			<th colspan=3 width="" align="center">
-				Kết quả xếp loại và thi đua
-			</th>
-		</tr>
-		<tr>
-			<th> HL </th>
-			<th> HK </th>
-			<th> DH </th>							
-		</tr>
-		{% for p,m,tbhocky,hk in list %}
-			<tr>
-				<td style="text-align: center;">
-					{{forloop.counter}}	
-				</td>
-				<td class="lastname">
-					{{ p.last_name }} 
-				</td>
-				<td class="firstname">
-					{{ p.first_name }}					
-				</td>
-				<td>
-					{{ p.birthday|date:"SHORT_DATE_FORMAT"}} 
-				</td>
-				{% for s in m %}
-					{% ifequal s 'MG' %}
-						<td style="color:red;text-align: center" >
-							MG
-						</td>
-					{% else %}	
-						<td style="text-align: right" >
-						{{ s }}
-						</td>
-					{% endifequal %}	
-				{% endfor %}
-			{% ifnotequal termNumber  3 %}  
-				<td>
-					{% if tbhocky.tb_hk  %}
-						{{tbhocky.tb_hk}}
-					{% else %}	
-						&nbsp
-					{% endif %}	
-				</td>	
-				<td>
-					{{tbhocky.hl_hk|convertHlToVietnamese}}
-				</td>	
-				<td>
-					{{hk|convertHKToVietnamese}}
-				</td>	
-				
-				<td>
-					{{tbhocky.danh_hieu_hk|convertDHToVietnamese}}
-				</td>	
-				
-			{% else %}
-				<td>
-					{% if tbhocky.tb_nam %}
-						{{tbhocky.tb_nam}}
-					{% else %}	
-						&nbsp
-					{% endif %}	
-				</td>	
-				
-				<td>
-					{{tbhocky.hl_nam|convertHlToVietnamese}}
-				</td>
-				<td>
-					{{hk.year|convertHKToVietnamese}}						
-				</td>	
-				
-				<td>
-					{{tbhocky.danh_hieu_nam|convertDHToVietnamese}}
-				</td>	
-			{% endifnotequal %}	
-				
-			</tr>
-		{% endfor %}
-	</table>
-{% if message != None %}		
-	<script>
-		var temp = document.getElementById("notify1");
-		temp.innerHTML="{{message}}";
-		$(temp).fadeIn('fast');
-		$(temp).delay(7000).fadeOut('fast');     
-		
-	</script>	
-{% endif %}
+    {% load mark %}
 
-<script>	
-	$(document).ready(function() {
-		$('input[type=radio]').change(function() {
-			window.location.href="/school/xepLoaiHlTheoLop/" + {{selectedClass.id}}+ "/" +this.value;
-		})
-	});
-	document.getElementById({{termNumber}}).checked=true;	
-</script>
-	
+
+    <br>
+    <form name="info">
+        <INPUT TYPE="radio" NAME="term" id='1' value="1">Học kỳ I &nbsp&nbsp&nbsp&nbsp&nbsp
+        <INPUT TYPE="radio" NAME="term" id='2' value="2">Học kỳ II&nbsp&nbsp&nbsp&nbsp&nbsp
+        <INPUT TYPE="radio" NAME="term" id='3' value="3">Cả năm
+    </form>
+
+    <br>
+    <form action=" " method="post">{% csrf_token %}
+        <input class=" ggButton" title="Tính điểm trung bình của cả lớp" type="submit" value="Tính điểm trung bình"/>
+    </form>
+    <br>
+    <table id="mark-table" class="main-table">
+        <tr>
+            <th rowspan=2 align="center" style="width:4px">
+                Stt
+            </th>
+            <th colspan=2 rowspan=2 align="center">
+                Họ và tên
+            </th>
+            <th rowspan=2 align="center" width="1%">
+                Ngày sinh
+            </th>
+            {% for s in subjectList %}
+
+                <th rowspan=2 class="mark-column">
+                    {% if s.name == 'GDQP-AN' or  s.name == 'GDQP' %}
+                        GD<br>QP<br>AN
+                    {% else %}
+                        {% if s.name == 'GDCD' %}
+                            GD<br>CD
+                        {% else %}
+                            {{ s.name }}
+                        {% endif %}
+                    {% endif %}
+                </th>
+            {% endfor %}
+            <th rowspan=2 width="" align="center">
+                TB
+            </th>
+            <th colspan=3 width="" align="center">
+                Kết quả xếp loại và thi đua
+            </th>
+        </tr>
+        <tr>
+            <th> HL</th>
+            <th> HK</th>
+            <th> DH</th>
+        </tr>
+        {% for p,m,tbhocky,hk in list %}
+            <tr>
+                <td style="text-align: center;">
+                    {{ forloop.counter }}
+                </td>
+                <td class="lastname">
+                    {{ p.last_name }}
+                </td>
+                <td class="firstname">
+                    {{ p.first_name }}
+                </td>
+                <td>
+                    {{ p.birthday|date:"SHORT_DATE_FORMAT" }}
+                </td>
+                {% for s in m %}
+                    {% ifequal s 'MG' %}
+                        <td style="color:red;text-align: center">
+                            MG
+                        </td>
+                    {% else %}
+                        <td style="text-align: right">
+                            {{ s }}
+                        </td>
+                    {% endifequal %}
+                {% endfor %}
+                {% ifnotequal termNumber  3 %}
+                    <td>
+                        {% if tbhocky.tb_hk %}
+                            {{ tbhocky.tb_hk }}
+                        {% else %}
+                            &nbsp
+                        {% endif %}
+                    </td>
+                    <td>
+                        {{ tbhocky.hl_hk|convertHlToVietnamese }}
+                    </td>
+                    <td>
+                        {{ hk|convertHKToVietnamese }}
+                    </td>
+
+                    <td>
+                        {{ tbhocky.danh_hieu_hk|convertDHToVietnamese }}
+                    </td>
+
+                {% else %}
+                    <td>
+                        {% if tbhocky.tb_nam %}
+                            {{ tbhocky.tb_nam }}
+                        {% else %}
+                            &nbsp
+                        {% endif %}
+                    </td>
+
+                    <td>
+                        {{ tbhocky.hl_nam|convertHlToVietnamese }}
+                    </td>
+                    <td>
+                        {{ hk.year|convertHKToVietnamese }}
+                    </td>
+
+                    <td>
+                        {{ tbhocky.danh_hieu_nam|convertDHToVietnamese }}
+                    </td>
+                {% endifnotequal %}
+
+            </tr>
+        {% endfor %}
+    </table>
+    {% if message != None %}
+        <script>
+            var temp = document.getElementById("notify1");
+            temp.innerHTML = "{{message}}";
+            $(temp).fadeIn('fast');
+            $(temp).delay(7000).fadeOut('fast');
+
+        </script>
+    {% endif %}
+
+    <script>
+        $(document).ready(function () {
+            $('input[type=radio]').change(function () {
+                window.location.href = "/school/xepLoaiHlTheoLop/" + {{selectedClass.id}}+"/" + this.value;
+            })
+        });
+        document.getElementById({{termNumber}}).checked = true;
+    </script>
+
 {% endblock %}

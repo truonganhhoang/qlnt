@@ -1,16 +1,15 @@
 ﻿ {% extends "base.html" %}
 
-{% block backward_link %}
-  <a href="{% url school.views.school_index %}"> Trang chủ </a>
-  > <a href="/school/finish">Tổng kết</a>
-  {% ifequal selectedTerm.number 1 %}
-    > Học kỳ I
-  {% else %}
-    > Học kỳ II
-  {% endifequal %}
-  {#  năm học {{ yearString }}#}
+ {% block breadcrumb %}
+     {{ block.super }}
+     {% load breadcrumb_tags %}
+     {% add_crumb 'Tổng kết' '/school/finish' %}
+     {% ifequal selectedTerm.number 1 %}
+         {% add_crumb 'Học kỳ I'  %}
+     {% else %}
+         {% add_crumb 'Học kỳ II'  %}
+     {% endifequal %}
 {% endblock %}
-
 
 {% block content %}
 

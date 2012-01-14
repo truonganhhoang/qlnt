@@ -1,19 +1,18 @@
 ﻿{% extends "base.html"%}
 
-{% block backward_link %}
-  <a href="{% url school.views.school_index %}"> Trang chủ </a>
-  > <a href="/school/finish">Tổng kết</a>
-  > Năm học {{yearString}}
+{% block breadcrumb %}
+    {{ block.super }}
+    {% load breadcrumb_tags %}
+    {% add_crumb 'Tổng kết' '/school/finish' %}
+    {% add_crumb 'Cả năm' %}
 {% endblock %}
 
 {% block content %}
-
 {{selecteTerm.number}}
 <div class="notify-widget-pane" >
     <div class="notify" id="notify1" style="display: none;">
     </div>
 </div>
-
 
 {% if message != None %}
 <script>

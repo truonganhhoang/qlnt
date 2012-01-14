@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 {% load upload_tags %}
 
-{% block backward_link %}
-    <a href="{% url school.views.school_index %}"> Trang chủ </a>
-    > <a href="{% url school.views.school_index %}classes">Toàn trường</a>
-    > Thời khóa biểu toàn trường
+{% block breadcrumb %}
+    {{ block.super }}
+    {% load breadcrumb_tags %}
+    {% add_crumb 'Thời khóa biểu toàn trường' %}
 {% endblock %}
 
 {% block content %}

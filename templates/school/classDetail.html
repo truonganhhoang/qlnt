@@ -11,26 +11,10 @@
     <script type="text/javascript" src="/static/js/template_js/class_detail.js?0.7"></script>
 {% endblock %}
 
-{% block backward_link %}
-    {% if pos > 1 %}
-        <form action="" name="info" method="post">{% csrf_token %}
-            <a href="{% url school.views.school_index %}"> Trang chủ </a>
-            > <a href="{% url school.views.school_index %}classes"> Toàn trường</a>
-            > Lớp
-            <select name="class" onchange="submitClass()">
-                {% for c in cl %}
-                    {% if c.id != class.id %}
-                        <option value={{ c.id }}> {{ c }}</option>
-                    {% else %}
-                        <option selected="selected" value={{ c.id }}> {{ c }}</option>
-                    {% endif %}
-                {% endfor %}
-            </select>
-        </form>
-    {% else %}
-        <a href="{% url school.views.school_index %}"> Hồ sơ cá nhân </a>
-        {#      > <a href="{% url school.views.school_index %}viewClassDetail/{{ class.id }}"> {{ class }} </a>#}
-    {% endif %}
+{% block breadcrumb %}
+    {{ block.super }}
+    {% load breadcrumb_tags %}
+    {% add_crumb class 'school.views.viewClassDetail' class.id %}
 {% endblock %}
 
 {% block content %}

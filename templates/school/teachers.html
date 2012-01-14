@@ -2,9 +2,10 @@
 
 {% load upload_tags %}
 
-{% block backward_link %}
-  <a href="{% url school.views.school_index %}"> Trang chủ </a>
-  > Giáo viên
+{% block breadcrumb %}
+    {{ block.super }}
+    {% load breadcrumb_tags %}
+    {% add_crumb 'Giáo viên' %}
 {% endblock %}
 
 {% block content %}

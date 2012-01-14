@@ -1,7 +1,10 @@
 {% extends "base.html" %}
 
-{% block backward_link %}
-  Trang chủ
+
+{% block breadcrumb %}
+    {{ block.super }}
+    {% load breadcrumb_tags %}
+    {% add_crumb 'Lớp học' %}
 {% endblock %}
 
 {% block js %}

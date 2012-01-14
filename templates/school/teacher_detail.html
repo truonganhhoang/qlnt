@@ -1,11 +1,12 @@
 {% extends "base.html" %}
 
-{% block backward_link %}
-  <a href="{% url school.views.school_index %}"> Trang chủ </a>
-  {% if pos > 1 %}
-    > <a href="{% url school.views.school_index %}teachers"> Giáo viên</a>
-    > {{ teacher }}
-  {% endif %}
+{% block breadcrumb %}
+    {{ block.super }}
+    {% load breadcrumb_tags %}
+    {% if pos > 1 %}
+        {% add_crumb 'Giáo viên' 'school.views.teachers' %}
+        {% add_crumb teacher %}
+    {% endif %}
 {% endblock %}
 
 {% block content %}
